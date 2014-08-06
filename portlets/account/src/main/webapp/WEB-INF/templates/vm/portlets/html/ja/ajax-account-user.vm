@@ -46,19 +46,49 @@
 ##AUIconfigfooter()
 
 #AUISummaryDivfooter()
-#AUISummaryDiv()
-<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
-<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">$l10n.ACCOUNT_ALL_POST</option>
-#foreach( $record in $result.PostMap )
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter",$!record.PostId).addQueryData("filtertype","post").addQueryData("adminfiltered",$adminfiltered ))" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) selected="selected" #end>$!record.PostName</option>
-#end
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filtertype","post"))">----------</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","admin").addQueryData("filtertype","role"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "admin") selected="selected" #end>$l10n.ACCOUNT_USER_IS_ADMIN</option>
-</select>
-#ALformfooter()
-<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
-#AUISummaryDivfooter()
+
+#AUISummaryFilterDivHeader()
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserListScreen')" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-indicator-list-'); return false;")
+<input type="hidden" name="template" value="AccountUserListScreen"/>
+<div class="filterInputField">
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen")' />
+<div class="filters" id="filters_$!portlet.ID">#*
+*##if($!result.CurrentRole && "$!result.CurrentRole" != "")#*
+	*#<span class="filterTip">#*
+	*##foreach( $record in $result.RoleMap )#*
+	*##if ($!result.CurrentRole && $!result.CurrentRole == $!record.RoleId.toString())#*
+	*##set($selectedRoleName = $!record.RoleName)#*
+	*##end#*
+	*##end#*
+	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter_role","").addQueryData("filter",$!result.CurrentPost).addQueryData("filtertype","role")))#*
+		*#<span>$!selectedRoleName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick="aipo.account_user.onChangeRole('$url','$!portlet.ID','');"><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*##if($!result.CurrentPost && "$!result.CurrentPost" != "")#*
+	*#<span class="filterTip">#*
+	*##set($selectedPostName = "")#*
+	*##foreach( $record in $result.PostMap )#*
+	*##if ($!result.CurrentPost && $!result.CurrentPost == $!record.PostId.toString())#*
+	*##set($selectedPostName = $!record.PostName)#*
+	*##end#*
+	*##end#*
+	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filter_role",$!result.CurrentRole).addQueryData("filtertype","post")))#*
+		*#<span>$!selectedPostName</span>#*
+		*#<a href="javascript:void(0);" class="btn" onclick="aipo.account_user.onChangePost('$url','$!portlet.ID','');"><i class="auiIcon auiIconDelete"></i></a>#*
+	*#</span>#*
+*##end#*
+*#</div>
+
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.account_user.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
+</div>
+#AUIButtonSearch("$l10n.ACCOUNT_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()
+#AUISummaryFilterDivFooter()
+
+
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader($l10n.ACCOUNT_USER)
 #if($result.List.size() == 0)
@@ -74,6 +104,13 @@ $l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
+
+#if($!result.targetKeyword && ($!result.targetKeyword.toString() != ""))
+#AUISummaryDiv()
+#AUIsearchresult($!result.targetKeyword.toString())
+#AUISummaryDivfooter()
+#end
+
 <table class="auiRowTable auiMbTable wide">
 #if($!{client}=="IPHONE")
 <colgroup>
@@ -174,3 +211,30 @@ $!postname
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
 #end
+
+<img src="images/common/dot.gif" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' alt="" />
+
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+    	<p class="caption">$l10n.ACCOUNT_USER</p>
+		<ul class="filtertype_role_$!portlet.ID" data-type="post" data-defaultparam="0">
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter_role","").addQueryData("filter",$!result.CurrentPost).addQueryData("filtertype","role")))
+			<li data-param="" ><a href="javascript:void(0)" #if (!$!result.CurrentRole || $!result.CurrentRole == "") class="selected" #end onclick="aipo.account_user.onChangeRole('$url','$!portlet.ID','')" >$l10n.ACCOUNT_ALL_USER</a></li>
+			#foreach( $record in $result.RoleMap )
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter_role",$!record.RoleId).addQueryData("filter",$!result.CurrentPost).addQueryData("filtertype","role")))
+			<li data-param="$!record.RoleId"><a href="javascript:void(0)" #if ($!result.CurrentRole && $!result.CurrentRole == $!record.RoleId.toString()) class="selected" #end onclick="aipo.account_user.onChangeRole('$url','$!portlet.ID','$!record.RoleId')" >$!record.RoleName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+    	<p class="caption">$l10n.ACCOUNT_POST</p>
+		<ul class="filtertype_post_$!portlet.ID" data-type="post" data-defaultparam="0">
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter","").addQueryData("filter_role",$!result.CurrentRole).addQueryData("filtertype","post")))
+			<li data-param="" ><a href="javascript:void(0)" #if (!$!result.CurrentFilter || $!result.CurrentFilter == "") class="selected" #end onclick="aipo.account_user.onChangePost('$url','$!portlet.ID','')" >$l10n.ACCOUNT_ALL_POST</a></li>
+			#foreach( $record in $result.PostMap )
+			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListScreen").addQueryData("filter",$!record.PostId).addQueryData("filter_role",$!result.CurrentRole).addQueryData("filtertype","post")))
+			<li data-param="$!record.PostId"><a href="javascript:void(0)" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.PostId.toString()) class="selected" #end onclick="aipo.account_user.onChangePost('$url','$!portlet.ID','$!record.PostId')" >$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+</div>
