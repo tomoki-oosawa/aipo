@@ -51,6 +51,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -110,6 +111,8 @@ public class WikiSelectData extends
   private String tempWikiNote = null;
 
   private boolean isTop = false;
+
+  private long tempOwnerId;
 
   /**
    * 
@@ -550,6 +553,8 @@ public class WikiSelectData extends
         rd.setParentName(parentWiki.getWikiName());
       }
 
+      tempOwnerId = rd.getOwnerId().getValue();
+
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);
@@ -699,6 +704,18 @@ public class WikiSelectData extends
     result.initField();
     result.setNote(tn);
     tempNote = tn;
+
+    // 新規作成でなければ、既にアップロードされている添付ファイルを取得する
+    if (entityId != null) {
+      result.setId(Long.parseLong(entityId));
+      result.setOwnerId(tempOwnerId);
+      result.setBaseImageRawLink(baseImageRawLink);
+      result.setBaseInternalLink(baseImageLink);
+      List<FileuploadBean> tempFileuploadList =
+        WikiFileUtils.getAttachmentFiles(Integer.parseInt(entityId));
+      result.setAttachmentFiles(tempFileuploadList);
+    }
+
     tempWikiNote = result.getNote();
   }
 
