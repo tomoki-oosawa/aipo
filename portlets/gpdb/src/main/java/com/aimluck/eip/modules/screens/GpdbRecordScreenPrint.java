@@ -37,7 +37,7 @@ public class GpdbRecordScreenPrint extends GpdbScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(GpdbRecordScreen.class.getName());
+    .getLogger(GpdbRecordScreenPrint.class.getName());
 
   /**
    * 
@@ -64,7 +64,7 @@ public class GpdbRecordScreenPrint extends GpdbScreen {
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
-      logger.error("[GpdbRecordScreen] Exception.", ex);
+      logger.error("[GpdbRecordScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
