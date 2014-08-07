@@ -97,7 +97,7 @@
 
 			<p>
 				#set($preview_dialog_link = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiPreviewScreen")))
-				<a title="$l10n.WIKI_PREVIEW" href="javascript:void(0);" onclick="aipo.wiki.showPreviewDialog('$preview_dialog_link');" >$l10n.WIKI_PREVIEW</a>
+				<a title="$l10n.WIKI_CONTENT_PREVIEW" href="javascript:void(0);" onclick="aipo.wiki.showPreviewDialog('$preview_dialog_link');" >$l10n.WIKI_CONTENT_PREVIEW</a>
 			</p>
 			<div class="wikiPreview auiWikiContent" id="wikiPreview" style="display: none;"></div>
         </tr>
