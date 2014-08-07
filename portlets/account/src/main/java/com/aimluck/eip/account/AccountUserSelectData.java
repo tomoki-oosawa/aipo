@@ -69,21 +69,21 @@ public class AccountUserSelectData extends
     .getLogger(AccountUserSelectData.class.getName());
 
   /** 現在表示している部署 */
-  private String currentPost = "";
+  protected String currentPost = "";
 
   /** 現在表示しているユーザー */
-  private String currentRole = "";
+  protected String currentRole = "";
 
-  private int registeredUserNum = 0;
+  protected int registeredUserNum = 0;
 
-  private static final String LIST_FILTER_ROLE = "filter_role";
+  protected static final String LIST_FILTER_ROLE = "filter_role";
 
-  private final String LIST_FILTER_ROLE_STR = new StringBuffer().append(
+  protected final String LIST_FILTER_ROLE_STR = new StringBuffer().append(
     this.getClass().getName()).append(LIST_FILTER_ROLE).toString();
 
   private boolean adminFilter;
 
-  private ALStringField target_keyword;
+  protected ALStringField target_keyword;
 
   /**
    * 初期化します。
