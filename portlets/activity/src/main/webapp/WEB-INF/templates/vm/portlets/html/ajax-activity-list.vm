@@ -74,14 +74,14 @@
     <div class="auiSelectButton floatLeft">
       <ul>
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><i class="icon-caret-left"></i></a></li>
 #else
-	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></li>
+	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" class="first arrow"><i class="icon-caret-left"></i></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+        <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><i class="icon-caret-right"></i></a></li>
 #else
-	    <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></li>
+	    <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" class="last arrow"><i class="icon-caret-right"></i></a></li>
 #end
       </ul>
     </div>
