@@ -573,8 +573,9 @@ public class AccountUtils {
       roleMap.put(ROLE_IN_ACTIVE, new FilterRole(
         ROLE_IN_ACTIVE,
         ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_IN_ACTIVE")));
-      roleMap.put(ROLE_INVITE, new FilterRole(ROLE_INVITE, ALLocalizationUtils
-        .getl10nFormat("ACCOUNT_ROLE_INVITE")));
+      // roleMap.put(ROLE_INVITE, new FilterRole(ROLE_INVITE,
+      // ALLocalizationUtils
+      // .getl10nFormat("ACCOUNT_ROLE_INVITE")));
     }
 
     return roleMap;

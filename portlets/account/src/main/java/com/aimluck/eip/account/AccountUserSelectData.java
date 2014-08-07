@@ -69,10 +69,10 @@ public class AccountUserSelectData extends
     .getLogger(AccountUserSelectData.class.getName());
 
   /** 現在表示している部署 */
-  private String currentPost;
+  private String currentPost = "";
 
   /** 現在表示しているユーザー */
-  private String currentRole;
+  private String currentRole = "";
 
   private int registeredUserNum = 0;
 
