@@ -384,6 +384,9 @@ public class ProjectTaskFormData extends ALAbstractFormData {
           end_date.setValue(nullStr);
         }
       }
+    } catch (RuntimeException ex) {
+      logger.error("RuntimeException", ex);
+      res = false;
     } catch (Exception ex) {
       logger.error("Exception", ex);
       res = false;
