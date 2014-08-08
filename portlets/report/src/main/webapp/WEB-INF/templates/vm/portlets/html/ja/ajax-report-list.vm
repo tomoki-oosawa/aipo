@@ -24,12 +24,32 @@
 #AUIcontentsAreaHeader()
 #AUISummaryDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
+<input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen")' />
 <input type="hidden" name="template" value="ReportListScreen"/>
-#AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
+<div class="filterInputField">
+<div class="filters" id="filters_$!portlet.ID">
+#foreach($record in $result.postList)
+#if($!result.issetFilter("post",$!{record.Name}))
+<span class="filterTip">
+<span>$!record.AliasName</span>
+<a href="javascript:void(0)" onclick="aipo.report.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end#end
+#foreach($record in $result.PostMap)
+#if($!result.issetFilter("post",$!{record.GroupName}))
+<span class="filterTip">
+<span>$!record.PostName</span>
+<a href="javascript:void(0)" onclick="aipo.report.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>
+</span>
+#end#end
+</div>
+<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.report.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.report.initFilterSearch("$!portlet.ID");' onblur='aipo.report.finFilterSearch("$!portlet.ID");' />
+</div>
 #AUIButtonSearch("$l10n.REPORT_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
-#AUISummaryDivFooter()
+#AUISummaryFilterDivFooter()
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Report')
 #if($result.List.size() == 0)
@@ -66,5 +86,20 @@
 #end
 #ALformfooter()
 #AUIcontentsAreaFooter()
+<img src="images/common/dot.gif" alt="" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0){dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
+	<div class="single">
+		<p class="caption">$l10n.COMMON_GROUP</p>
+		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
+			<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$l10n.REPORT_ALL_GROUP</a></li>
+		#foreach($record in $result.postList)
+			<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
+		#end
+		#foreach($record in $result.PostMap)
+			<li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
+		#end
+		</ul>
+	</div>
+</div>
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/report-widgets.vm")
