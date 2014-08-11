@@ -541,7 +541,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   right: 0;
   float: right;
   min-height: 15px;
-  padding: 10px;
+  padding: 9px 10px 11px;
   position: absolute;
 }
 .auiPortlet .auiPortletTool > div {
