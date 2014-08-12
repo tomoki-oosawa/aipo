@@ -1693,6 +1693,24 @@ input.auiButtonSearch.active {
   border-radius: 0;
   border-color: #d2d2d2 #d2d2d2 silver;
 }
+
+.auiSelectButton a [class*=icon-] {
+  line-height: 30px;
+}
+
+.auiSelectButton a .icon-backward,
+.auiSelectButton a .icon-forward {
+  font-size: 10px;
+}
+
+.auiSelectButton a .icon-backward {
+  margin-right: 2px;
+}
+
+.auiSelectButton a .icon-forward {
+  margin-left: 1px;
+}
+
 .auiSelectButton a.first,
 .auiSelectButton a.btn {
   margin-left: 0;
