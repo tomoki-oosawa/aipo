@@ -1825,6 +1825,9 @@ input.auiButtonSearch.active {
 .auiSummaryMeta form {
   line-height: 32px;
 }
+.auiSummaryMeta .icon-print {
+  font-size: 17px;
+}
 
 .count {
   float: left;

@@ -747,7 +747,7 @@ $item.get(0)
 		<div class="auiPopupHead clearfix">
 	    	<div class="auiPopupTool">
 	    		#if(($portlet_id!=""))
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="auiIcon auiIconPrint"></i></span></a></div>
+	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="icon-print"></i></span></a></div>
 	        	#end
 	        	<div>#ALdialogCloseButton($onclick)</div>
 	    	</div>
@@ -1509,7 +1509,7 @@ $link.get(0)
 
 #macro(AUIprintbutton $jslink)
 <a href="javascript:void(0);" onclick="javascript:window.open('$!utils.escapeXML($jslink)');void(0);" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" class="auiButton pl5 pr5">
-<span><i class="auiIcon auiIconPrint"></i></span>
+<span><i class="icon-print"></i></span>
 </a>
 #end
 
