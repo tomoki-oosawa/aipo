@@ -37,6 +37,8 @@ import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
+
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
  * 
@@ -441,6 +443,17 @@ public class ALCommonUtils {
 
   public static boolean isAndroid2Browser(RunData rundata) {
     return ALEipUtils.isAndroid2Browser(rundata);
+  }
+
+  /**
+   * 指定したポートレットが利用可能かどうかを返す
+   * 
+   * @param portletName
+   * 
+   * @return
+   */
+  public static boolean isActive(String portletName) {
+    return ALPortalApplicationService.isActive(portletName);
   }
 
   // :HACK
