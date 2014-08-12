@@ -1618,11 +1618,6 @@ $item.get(0)
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdelete$portlet_id" value="" />
 #end
 
-#macro(AUIajaxbuttonCheckboxDeleteIcon $name $url $indicator_id $portlet_id $rt)
-<a name="ajaxbuttonCheckboxDelete" class="auiButton" onclick="aimluck.io.ajaxCheckboxDeleteSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxdeleteicon$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" title="$name"><span><i class="icon-trash"></i></span></a>
-<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdeleteicon$portlet_id" value="" />
-#end
-
 #macro(AUIajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
 <a name="ajaxbuttonCheckboxEnable" class="auiButton" onclick="aimluck.io.ajaxCheckboxEnableSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxenable$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxenable$portlet_id" value="" />
