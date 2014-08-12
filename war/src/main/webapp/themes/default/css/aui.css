@@ -1,38 +1,192 @@
 @charset "UTF-8";
-.bRadius3, .hdUserName .avatar, img.avatar,
-.avatar img, .activityField, .auiSearchOption, .auiAvatarList li a img, textarea,
-select, input[type=text],
-input[type=password], #timelineOuter #inputField,
-#timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .newMessage, .timeline .readMore, .filterTip, .auiAbsLayer {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+.clearfix, #auiHeader, .hdPages > ul, .hdNavigation > ul, .dropdown .title, .dropdown .body, .dropdown .contents, .dropdown .foot, .messageSummary li a, #auiLauncher, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .auiTabs .tab, .timelineOuter .message {
+  *zoom: 1;
+}
+.clearfix:before, #auiHeader:before, .hdPages > ul:before, .hdNavigation > ul:before, .dropdown .title:before, .dropdown .body:before, .dropdown .contents:before, .dropdown .foot:before, .messageSummary li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
+#auiLauncher ul.setting li a:before, .auiTabs .tab:before, .timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after, .dropdown .body:after, .dropdown .contents:after, .dropdown .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+#auiLauncher ul.setting li a:after, .auiTabs .tab:after, .timelineOuter .message:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after, .dropdown .body:after, .dropdown .contents:after, .dropdown .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+#auiLauncher ul.setting li a:after, .auiTabs .tab:after, .timelineOuter .message:after {
+  clear: both;
 }
 
-.bRadius4, .counter, .auiPopup,
-.activityPopup, .loginAlert,
-.alert, .alertSuccess, .submenu_v2 li a, input[type=submit],
+.inline-block, .auiSelectButton ul,
+.auiSelectButtonSmall ul {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+
+.border-box, #auiHeader, #auiHeader a, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdCommunications .num, .dropdown, .dropdown .title, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .buttonBase, input[type=submit],
 input[type=button],
 input[type=reset],
 button,
 .auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonSearch,
-.auiButtonSmall,
-.auiButtonDisabled,
-.auiButtonIcon,
-.auiButtonDummy,
-.auiButtonIconDummy,
 .auiSelectButton a,
-.auiWidget .auiSelectButton a, .filterInputField, #auiLauncher_1 li a, #auiLauncher_2 li a {
+.auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButtonSmall a,
+.auiButtonBold,
+input[type=submit].auiButtonBold,
+input[type=button].auiButtonBold,
+input[type=reset].auiButtonBold,
+button.auiButtonBold,
+.auiButtonIcon,
+input[type=submit].auiButtonIcon,
+input[type=button].auiButtonIcon,
+input[type=reset].auiButtonIcon,
+button.auiButtonIcon, .auiButtonAction,
+input[type=submit].auiButtonAction,
+input[type=button].auiButtonAction,
+input[type=reset].auiButtonAction,
+button.auiButtonAction, .auiButtonSmall,
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall, .auiButtonDisabled,
+input[type=submit].auiButtonDisabled,
+input[type=button].auiButtonDisabled,
+input[type=reset].auiButtonDisabled,
+button.auiButtonDisabled, .auiButtonDummy,
+input[type=submit].auiButtonDummy,
+input[type=button].auiButtonDummy,
+input[type=reset].auiButtonDummy,
+button.auiButtonDummy, .auiButtonIconDummy,
+input[type=submit].auiButtonIconDummy,
+input[type=button].auiButtonIconDummy,
+input[type=reset].auiButtonIconDummy,
+button.auiButtonIconDummy, .auiTabs .tab > li a {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.bRadius2, #auiLauncher ul.launcher li .name,
+#auiLauncher ul.setting li .name, .counter, .nrCount {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown, .messageSummary .avatar img, .messageSummary .avatar .icon-group, .auiSearchOption, .auiAvatarList li a img, textarea,
+select, input[type=text],
+input[type=password], .timelineOuter .inputField,
+.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, .timelineOuter .newMessage, .timeline .readMore, .filterTip, .auiAbsLayer {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.bRadius4, .buttonBase, input[type=submit],
+input[type=button],
+input[type=reset],
+button,
+.auiButton,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButtonSmall a,
+.auiButtonBold,
+input[type=submit].auiButtonBold,
+input[type=button].auiButtonBold,
+input[type=reset].auiButtonBold,
+button.auiButtonBold,
+.auiButtonIcon,
+input[type=submit].auiButtonIcon,
+input[type=button].auiButtonIcon,
+input[type=reset].auiButtonIcon,
+button.auiButtonIcon, .auiButtonAction,
+input[type=submit].auiButtonAction,
+input[type=button].auiButtonAction,
+input[type=reset].auiButtonAction,
+button.auiButtonAction, .auiButtonSmall,
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall, .auiButtonDisabled,
+input[type=submit].auiButtonDisabled,
+input[type=button].auiButtonDisabled,
+input[type=reset].auiButtonDisabled,
+button.auiButtonDisabled, .auiButtonDummy,
+input[type=submit].auiButtonDummy,
+input[type=button].auiButtonDummy,
+input[type=reset].auiButtonDummy,
+button.auiButtonDummy, .auiButtonIconDummy,
+input[type=submit].auiButtonIconDummy,
+input[type=button].auiButtonIconDummy,
+input[type=reset].auiButtonIconDummy,
+button.auiButtonIconDummy, .auiPopup,
+.activityPopup, .loginAlert,
+.alert, .alertSuccess, .submenu_v2 li a, .filterInputField, #auiLauncher_1 li a, #auiLauncher_2 li a {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
-  -o-border-radius: 4px;
   border-radius: 4px;
+}
+
+.bRadius50p {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdTools .name, .dropdown_menu a, .dropdown_list ul a, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .auiTabs .tab > li a {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.transition01 {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+}
+
+.transition02 {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.popupShadow, .dropdown {
+  -webkit-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.scrollDecoration, .scroll, .auiCheckList {
+  scrollbar-face-color: #d2d2d2;
+  scrollbar-track-color: #f6f6f6;
+  scrollbar-arrow-color: #d2d2d2;
+  scrollbar-shadow-color: #d2d2d2;
+}
+.scrollDecoration::-webkit-scrollbar, .scroll::-webkit-scrollbar, .auiCheckList::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: #f6f6f6;
+}
+.scrollDecoration::-webkit-scrollbar-piece, .scroll::-webkit-scrollbar-piece, .auiCheckList::-webkit-scrollbar-piece {
+  background: #f0f0f0;
+}
+.scrollDecoration::-webkit-scrollbar-thumb, .scroll::-webkit-scrollbar-thumb, .auiCheckList::-webkit-scrollbar-thumb {
+  background: #d2d2d2;
 }
 
 @font-face {
@@ -74,101 +228,1751 @@ h1, h2, h3, h4, h5, h6, p, span {
   outline: none;
 }
 
+input[type=submit], input[type=button], input[type=reset] {
+  outline: none;
+}
+
 /***************************************************
 	auiHeader
 --------------------------------------------------*/
-#header {
-  padding-top: 5px;
-  height: 35px;
+#auiHeader {
+  position: fixed;
+  width: 100%;
+  min-width: 960px;
+  padding: 0 0 0 10px;
+  background-color: white;
+  border-bottom: solid 1px #d2d2d2;
+  z-index: 10;
+}
+#auiHeader ul li {
+  padding: 0;
+  background-image: none;
 }
 
-#header .inner {
-  height: 30px;
+.hdLogo {
+  float: left;
+}
+.hdLogo a {
+  display: inline-block;
+  padding: 15px 10px;
+}
+
+.hdPages {
+  float: left;
+  padding-left: 20px;
+}
+.hdPages > ul > li {
+  position: relative;
+  display: block;
+  float: left;
+}
+.hdPages > ul > li > a {
+  display: block;
+  float: left;
+  line-height: 60px;
   padding: 0 20px;
-}
-
-.hdSign {
-  float: left;
-}
-
-.hdNavi {
-  float: right;
-  padding-top: 3px;
-}
-
-.hdGiftSpace,
-.hdMessege,
-.hdActivity,
-.hdUserName,
-.hdSetting,
-.hdInformation {
-  float: left;
-  line-height: 23px;
-  padding-right: 8px;
-  padding-left: 8px;
-  font-size: 11px;
-  vertical-align: middle;
-  white-space: nowrap;
-}
-
-.hdGiftSpace a,
-.hdMessege a,
-.hdActivity a,
-.hdUserName a,
-.hdSetting a,
-.hdInformation a {
+  color: #d2d2d2;
   text-decoration: none;
+}
+.hdPages > ul > li > a [class*=icon-] {
+  color: #d2d2d2;
+}
+.hdPages > ul > li > a:hover {
+  color: #333333;
+  text-decoration: none;
+}
+.hdPages > ul > li > a:hover [class*=icon-] {
+  color: #333333;
+}
+.hdPages > ul > li [class^="icon-"], .hdPages > ul > li [class*=" icon-"] {
+  line-height: 60px;
+}
+.hdPages > ul > li:hover a.setting {
   display: block;
 }
-
-.hdLogo a:hover img {
-  opacity: 0.75;
-  filter: alpha(opacity=75);
+.hdPages a.name {
+  max-width: 12em;
+}
+.hdPages a.setting {
+  display: none;
+  position: absolute;
+  right: 0;
+  width: 16px;
+  padding: 0;
+  text-align: center;
+}
+.hdPages a.plus {
+  padding: 0 15px;
+}
+.hdPages a.plus [class*=icon-] {
+  color: #d2d2d2;
+}
+.hdPages .current {
+  position: relative;
+}
+.hdPages .current:after {
+  position: absolute;
+  display: block;
+  content: "";
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background-color: #333333;
+}
+.hdPages .current a {
+  color: #333333;
 }
 
-.hdActivity,
-.hdInformation {
+.hdNavigation {
+  position: absolute;
+  right: 10px;
+  background: white;
+}
+.hdNavigation > ul {
+  float: left;
+}
+.hdNavigation > ul > li {
+  display: block;
+  float: left;
+  list-style: none;
+  line-height: 60px;
+}
+.hdNavigation > ul > li > a {
+  position: relative;
+  display: block;
+  height: 60px;
+  padding: 0 10px;
+  min-width: 50px;
+  text-align: center;
+  text-decoration: none;
+  color: #999999;
+  border-top: solid 1px transparent;
+  border-right: solid 1px transparent;
+  border-left: solid 1px transparent;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+}
+.hdNavigation > ul > li > a [class^="icon-"], .hdNavigation > ul > li > a [class*=" icon-"] {
+  line-height: 60px;
+  vertical-align: middle;
+  font-size: 18px;
+  color: #d2d2d2;
+}
+.hdNavigation > ul > li > a:hover {
+  text-decoration: none;
+}
+.hdNavigation > ul > li > a:hover [class^="icon-"], .hdNavigation > ul > li > a:hover [class*=" icon-"] {
+  color: #333333;
+}
+.hdNavigation > ul > li > a.active {
+  position: relative;
+  border-top: solid 1px silver;
+  border-right: solid 1px silver;
+  border-left: solid 1px silver;
+  background-color: white;
+}
+.hdNavigation > ul > li > a.active [class^="icon-"], .hdNavigation > ul > li > a.active [class*=" icon-"] {
+  color: #333333;
+}
+.hdNavigation > ul > li > a.active:before {
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  z-index: 10;
+}
+
+.search {
+  position: relative;
+  border: solid 1px #d2d2d2;
+  background-color: white;
+}
+.search:hover {
+  border: solid 1px #999999;
+}
+.search input[type=text], .search .submit {
+  height: 30px;
+  border: none;
+  vertical-align: middle;
+  outline: none;
+}
+.search input[type=text] {
+  width: 100%;
+  padding: 0 30px 0 3px;
+}
+.search input[type=text]:hover, .search input[type=text]:focus {
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.search .submit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  filter: none;
+  cursor: pointer;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.search .submit [class^="icon-"], .search .submit [class*=" icon-"] {
+  display: block;
+  width: 30px;
+  color: #999999;
+}
+.search .submit:hover [class^="icon-"], .search .submit:hover [class*=" icon-"] {
+  color: #333333;
+}
+.search .placeholder {
+  top: 7px !important;
+  line-height: 1.6;
+}
+
+.hdSearch {
+  position: relative;
+  float: left;
+  margin: 10px;
+}
+.hdSearch form {
+  border: solid 1px #d2d2d2;
+  background-color: white;
+}
+.hdSearch form:hover {
+  border: solid 1px #999999;
+}
+.hdSearch input[type=text], .hdSearch .submit {
+  height: 20px;
+  border: none;
+  vertical-align: middle;
+  outline: none;
+}
+.hdSearch input[type=text] {
+  width: 160px;
+  margin: 0 3px;
+}
+.hdSearch input[type=text]:hover, .hdSearch input[type=text]:focus {
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.hdSearch .submit {
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  filter: none;
+  cursor: pointer;
+  border-left: solid 1px #ededed;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.hdSearch .submit [class^="icon-"], .hdSearch .submit [class*=" icon-"] {
+  display: block;
+  width: 30px;
+  color: #999999;
+}
+.hdSearch .submit:hover {
+  background-color: #f6f6f6;
+}
+.hdSearch .submit:hover [class^="icon-"], .hdSearch .submit:hover [class*=" icon-"] {
+  color: #333333;
+}
+.hdSearch .dropdown_menu a, .hdSearch .dropdown_list ul a, .dropdown_list .hdSearch ul a {
+  line-height: 1.5;
+}
+.hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body {
+  width: 100%;
+}
+.hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date {
+  color: #999999;
+}
+.hdSearch #preSearch {
+  width: 100%;
+}
+.hdSearch #preSearch li {
+  border-top: solid 1px #ededed;
+}
+.hdSearch .placeholder {
+  top: 7px !important;
+  line-height: 1.6;
+}
+
+.searchCategory {
+  display: inline-block;
+  float: left;
+  width: 60px;
+  border-right: solid 1px #ededed;
+  color: #999999;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  -ms-border-radius: 3px 0 0 3px;
+  -o-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+.searchCategory .name {
+  line-height: 38px;
+  text-align: center;
+}
+.searchCategory [class^="icon-"], .searchCategory [class*=" icon-"] {
+  margin-left: 5px;
+}
+.searchCategory:hover, .searchCategory .active {
+  color: #333333;
+  background-color: #f6f6f6;
+}
+.searchCategory:hover [class^="icon-"], .searchCategory:hover [class*=" icon-"], .searchCategory .active [class^="icon-"], .searchCategory .active [class*=" icon-"] {
+  color: #333333;
+}
+
+ul.hdCommunications {
+  padding: 5px 0;
+}
+ul.hdCommunications > li {
+  position: static;
+}
+ul.hdCommunications > li > a {
+  display: table-cell;
+  vertical-align: middle;
+  height: 50px;
+}
+ul.hdCommunications > li > a [class^="icon-"], ul.hdCommunications > li > a [class*=" icon-"] {
+  line-height: 50px;
+}
+ul.hdCommunications .num {
+  position: absolute;
+  display: none;
+  top: 8px;
+  right: 8px;
+  min-width: 12px;
+  line-height: 13px;
+  padding: 0 2px;
+  font-size: 10px;
+  text-align: center;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+ul.hdCommunications .valid [class*=icon-] {
+  color: #999999;
+}
+ul.hdCommunications .valid .num {
+  display: block;
+  background-color: #ff3333;
+  color: white;
+}
+ul.hdCommunications .label {
+  text-wrap: nowrap;
+}
+
+[class^="sprite-"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/common/head_icons.png);
+}
+
+.sprite-comment {
+  background-position: left top;
+}
+a:hover .sprite-comment, a.active .sprite-comment {
+  background-position: left bottom;
+}
+
+.sprite-notification {
+  background-position: center top;
+}
+a:hover .sprite-notification, a.active .sprite-notification {
+  background-position: center bottom;
+}
+
+.sprite-support {
+  background-position: right top;
+}
+a:hover .sprite-support, a.active .sprite-support {
+  background-position: right bottom;
+}
+
+.tweet textarea {
+  width: 100%;
+}
+
+ul.hdTools {
+  padding: 5px 0;
+}
+ul.hdTools > li {
+  position: relative;
+  min-width: 120px;
+  line-height: 50px;
+}
+ul.hdTools > li > a {
+  height: 50px;
+  text-decoration: none;
+  text-align: left;
+}
+ul.hdTools > li > a:hover, ul.hdTools > li > a:hover .name {
+  color: #333333;
+}
+ul.hdTools > li > a [class^="icon-"], ul.hdTools > li > a [class*=" icon-"] {
+  line-height: 50px;
+}
+ul.hdTools .name {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 10em;
+  margin: 0 5px;
+}
+ul.hdTools .dropdown {
+  min-width: 100%;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  -ms-border-radius: 0 0 3px 3px;
+  -o-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+}
+ul.hdTools .dropdown:before {
+  width: 100%;
+}
+
+.hdLauncher {
+  border-left: solid 1px #f0f0f0;
+}
+.hdLauncher a {
+  width: 60px;
+  margin-right: -10px;
+}
+.hdLauncher a.launcherActive [class^="icon-"], .hdLauncher a.launcherActive [class*=" icon-"] {
+  color: #333333;
+}
+
+/***************************************************
+	dropdown
+--------------------------------------------------*/
+.dropdown {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  border: solid 1px silver;
+  background-color: white;
+  line-height: 2;
+  filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=0, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=90, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=180, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=270, strength=3, enabled=true);
+}
+.dropdown.open {
+  display: block;
+}
+.hdCommunications .dropdown, .hdTools .dropdown, .tools .dropdown {
+  right: 0;
+}
+.hdCommunications .dropdown {
+  width: 320px;
+}
+.dropdown .title {
+  height: 40px;
+  padding: 8px 10px;
+  line-height: 24px;
+  border-bottom: solid 1px #d2d2d2;
+}
+.dropdown .sideBlock {
+  position: relative;
+  float: left;
+  width: 280px;
+}
+.dropdown .sideBlock .inner {
+  padding: 10px;
+}
+.dropdown .contents {
+  position: relative;
+  padding: 10px;
+}
+.dropdown h2 {
+  margin: 0 0 1em 0;
+  font-weight: normal;
+}
+.dropdown h2:first-child {
+  border-top: none;
+}
+.dropdown .foot {
+  padding: 8px 10px;
+}
+
+.dropdown_menu a, .dropdown_list ul a {
+  display: block;
+  padding: 6px 10px;
+  color: #333333;
+  text-decoration: none;
+}
+#auiHeader .dropdown_menu a, #auiHeader .dropdown_list ul a, .dropdown_list #auiHeader ul a {
+  min-width: 118px;
+}
+.dropdown_menu a:hover, .dropdown_list ul a:hover {
+  text-decoration: none;
+  background-color: #f6f6f6;
+}
+.dropdown_menu .active a, .dropdown_list ul .active a {
+  background-color: #f6f6f6;
+}
+
+.dropdown_list {
+  min-height: 200px;
+  position: relative;
+}
+.dropdown_list ul {
+  font-size: 11px;
+}
+.dropdown_list li {
+  border-bottom: solid 1px #ededed;
+}
+.dropdown_list li > a > .avatar {
+  position: absolute;
+}
+.dropdown_list li > a > .avatar + .body {
+  padding-left: 30px;
+}
+.dropdown_list .name {
+  margin-bottom: 5px;
+}
+.dropdown_list .date {
+  float: right;
+  color: #999999;
+}
+.dropdown_list .new {
+  background-color: #f6f6f6;
+}
+.dropdown_list .new .date, .dropdown_list .new .name {
+  color: #333333;
+  font-weight: bold;
+}
+
+.contentList li {
+  padding: 6px 10px !important;
+  line-height: 1.5;
+  border-top: solid 1px #ededed;
+}
+.contentList li:first-child {
+  border-top: none;
+}
+.contentList .date {
+  margin-bottom: 3px;
+  color: #999999;
+}
+
+.divider {
+  border-bottom: solid 1px #ededed;
+}
+
+/***************************************************
+	dd_message
+--------------------------------------------------*/
+#dd_message {
+  width: 100%;
+}
+#dd_message .sideBlock {
+  background-color: #333333;
+  color: white;
+}
+#dd_message .sideBlock .search {
+  background-color: #999999;
+  border-color: #999999;
+}
+#dd_message .sideBlock .search input[type=text] {
+  background-color: #999999;
+}
+#dd_message .sideBlock .search button {
+  text-shadow: none;
+}
+#dd_message .sideBlock .search label,
+#dd_message .sideBlock .search [class*="icon-"] {
+  color: #d2d2d2;
+}
+#dd_message .mainBlock {
+  margin-left: 280px;
+  border-left: solid 1px #d2d2d2;
+}
+#dd_message .subContents {
+  float: right;
+  width: 280px;
+  border-left: solid 1px #d2d2d2;
+}
+#dd_message .inputField {
+  margin-bottom: 10px;
+}
+
+.nrCount {
+  margin: 0;
+}
+
+.messageSummary {
+  font-size: 11px;
+}
+.messageSummary li {
+  position: relative;
+  padding: 0;
+  background-image: none;
+  border-bottom: solid 1px black;
+}
+.messageSummary li a {
+  display: block;
+  text-decoration: none;
+  padding: 5px 5px 5px 40px;
+  color: #999999;
+}
+.messageSummary li a .name {
+  color: white;
+}
+.messageSummary li a:hover {
+  color: #ff9900;
+  background-color: #222222;
+}
+.messageSummary li a:hover .name {
+  color: #ff9900;
+}
+.messageSummary li span {
+  display: block;
+}
+.messageSummary .avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 8px;
+}
+.messageSummary .avatar img, .messageSummary .avatar .icon-group {
+  display: block;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+}
+.messageSummary .avatar .icon-group {
+  background-color: #999999;
+  color: white;
+  font-size: 18px;
+}
+.messageSummary .date {
+  float: right;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+.messageSummary .date, .messageSummary .name, .messageSummary .latest {
+  line-height: 16px;
+  height: 16px;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+.messageSummary .nrCount {
+  margin: 0 3px 0 0;
+}
+.messageSummary .active {
+  background-color: white;
+}
+.messageSummary .active a, .messageSummary .active a:hover {
+  color: #999999 !important;
+  background-color: white;
+}
+.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest {
+  color: #999999 !important;
+}
+.messageSummary .active a .name, .messageSummary .active a:hover .name {
+  color: #333333;
+}
+.messageSummary [class*="icon-"] {
+  color: #049cdb;
+}
+
+.messageSummaryHead div {
+  border-bottom: solid 1px black;
+}
+
+#messageTimeline {
+  margin: 0 -10px;
+}
+#messageTimeline .message {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+#messageTimeline .message.invite {
+  background-color: #f6f6f6;
+}
+
+--------------------------------------------------*/
+/***************************************************
+	scroll
+--------------------------------------------------*/
+.scroll {
+  overflow: auto;
+}
+
+/***************************************************
+	emptyMessage
+--------------------------------------------------*/
+.emptyMessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 17em;
+  height: 160px;
+  margin: auto;
+  text-align: center;
+  color: #999999;
+}
+.emptyMessage [class*=icon-] {
+  font-size: 10em;
+  color: #d2d2d2;
+  text-shadow: 0 -1px 0 #b8b8b8;
+}
+
+/***************************************************
+	auiButton
+--------------------------------------------------
+input[type=submit],
+input[type=button],
+input[type=reset],
+button,
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch,
+.auiButtonSmall,
+.auiButtonDisabled,
+.auiButtonIcon,
+.auiButtonDummy,
+.auiButtonIconDummy,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a {
+	display: inline-block;
+	*display: inline;
+	padding: 4px 12px;
+	margin-bottom: 0;
+	*margin-left: .3em;
+	line-height: 20px;
+	color: #333333;
+	text-align: center;
+	text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+	vertical-align: middle;
+	cursor: pointer;
+	background-color: $grayHightLight;
+	background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#e6e6e6));
+	background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+	background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
+	border: 1px solid $grayBorder;
+	border-color: $grayBorder $grayBorder $grayBorderDark;
+	//border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+	border-bottom-color: #b3b3b3;
+	@extend .bRadius4;
+	*zoom: 1;
+	white-space:nowrap;
+	text-decoration:none;
+	@include box-sizing(content-box);
+}
+@-moz-document url-prefix() {/*Fx
+	input[type=submit],
+	input[type=button],
+	input[type=reset],
+	button {
+		padding: 0 6px !important;
+	}
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus,
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:hover,
+input[type=reset]:focus,
+input[type=reset]:active,
+input[type=reset].active,
+button:hover,
+button:focus,
+button:active,
+button.active,
+.auiButton:hover,
+.auiButton:focus,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiSelectButton a:active {
+	color: #333333;
+	background-color: #e6e6e6;
+}
+
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:active,
+input[type=reset].active,
+button:active,
+button.active,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
+.auiSelectButton a:active {
+	background-color: #cccccc \9;
+}
+
+input[type=submit]:first-child,
+input[type=button]:first-child,
+input[type=reset]:first-child,
+button:first-child,
+.auiButton:first-child,
+.auiButtonAction:first-child,
+.auiButtonBold:first-child,
+.auiButtonSearch:first-child,
+.auiButtonSmall:first-child,
+.auiButtonDisabled:first-child,
+.auiButtonIcon:first-child,
+.auiButtonDummy:first-child,
+.auiButtonIconDummy:first-child,
+.auiSelectButton a:first-child {
+	*margin-left: 0;
+}
+
+input[type=submit]:hover,
+input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=reset]:hover,
+input[type=reset]:focus,
+button:hover,
+button:focus,
+.auiButton:hover,
+.auiButton:focus,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus {
+	color: #333333;
+	text-decoration: none;
+	background-position: 0 -15px;
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+}
+
+input[type=submit]:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+button:focus,
+.auiButton:focus,
+.auiButtonAction:focus,
+.auiButtonBold:focus,
+.auiButtonSearch:focus,
+.auiButtonSmall:focus,
+.auiButtonDisabled:focus,
+.auiButtonIcon:focus,
+.auiSelectButton a:focus {
+	outline: thin dotted #333;
+	outline: 5px auto -webkit-focus-ring-color;
+	outline-offset: -2px;
+}
+
+input[type=submit]:active,
+input[type=submit].active,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:active,
+input[type=reset].active,
+button:active,
+button.active,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
+.auiSelectButton a:active {
+	background-image: none;
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+	outline: 0;
+	@include box-shadow(inset 0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonDisabled,
+.auiButtonIcon,
+.auiButtonDummy,
+.auiButtonIconDummy,
+.auiButtonSearch,
+.auiSelectButton a,
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+	height:$inputHeight;
+	line-height:$inputHeight;
+	padding:0 8px;
+}
+
+input[type=submit],
+input[type=button],
+input[type=reset],
+button {
+	@include box-sizing(content-box);
+}
+*:first-child+html input[type=submit],
+*:first-child+html input[type=button],
+*:first-child+html input[type=reset],
+*:first-child+html button {
+	height:$inputHeight + 2;
+	line-height:$inputHeight - 4;
+}
+
+button.auiButton,
+button {
+	padding:0 0.55em;
+}
+
+.auiButtonSmall {
+	padding:0 5px;
+	height:16px !important;
+	line-height:16px !important;
+	font-size:10px;
+}
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall {
+	line-height:1em !important;
+}
+
+/* auiButtonAction
+.auiButtonAction,
+input.auiButtonAction {
+	color: #ffffff !important;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+	background-color: #ffb133;
+	@include gradient-vertical(#ffb133,#f37318);
+	background-repeat: repeat-x;
+	border-color: #f39600 #e15e04 #e15e04;
+	*background-color: #f37318;
+	*border: 1px solid #e15e04;
+}
+
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+input.auiButtonAction:hover,
+input.auiButtonAction:focus,
+input.auiButtonAction:active,
+input.auiButtonAction.active {
+	color: #ffffff;
+	background-color: #f37318;
+	*background-color: #f37318;
+}
+
+.auiButtonAction:active,
+.auiButtonAction.active {
+	background-color: #c67605 \9;
+}
+
+/* auiButtonDisabled
+.auiButtonDisabled,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:active,
+input[disabled],
+input[disabled]:hover,
+input[disabled]:active,
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+	color:$gray;
+	background-image: none !important;
+	filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+	background-color:$grayBack;
+	border:solid 1px $grayBorder;
+	cursor: default;
+	@include box-shadow(none);
+	text-shadow:0 1px 0 $white;
+}
+
+/* auiButtonSearch
+.auiButtonSearch,
+input.auiButtonSearch {
+	background-color: #d0d0d0;
+	@include gradient-vertical(#eeeeee,#d0d0d0);
+	background-repeat: repeat-x;
+}
+
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+input.auiButtonSearch:hover,
+input.auiButtonSearch:focus,
+input.auiButtonSearch:active,
+input.auiButtonSearch.active {
+	background-color: #d0d0d0;
+}
+
+.auiButtonSearch:active,
+.auiButtonSearch.active {
+	background-color: #c0c0c0 \9;
+}
+
+
+.auiButton span {
+	display:table-cell;
+	min-width:$inputHeight - 10;
+	height:$inputHeight;
+	line-height:$inputHeight;
+	text-align:center;
+	vertical-align:middle;
+}
+.auiButton i {
+	color:#333333;
+}
+.auiButtonSmall span {
+	display:table-cell;
+	text-align:center;
+	vertical-align:middle;
+}
+.auiButton img,
+.auiButtonSmall img {
+	display:inline;
+	vertical-align:middle;
+}
+/* auiButtonIcon
+.auiButtonIcon,
+.auiButtonIconDummy, {
+	width:16px;
+	height:16px;
+	line-height: 16px;
+	padding:3px !important;
+	//font-size:14px;
+	color:lighten($grayDark,20) !important;
+
+	&:hover i {
+		color:lighten($grayDark,20) !important;
+	}
+	span {
+		display:table-cell;
+		width:16px;
+		height:16px;
+		line-height:16px;
+		text-align:center;
+		vertical-align:middle;
+	}
+	span,
+	i {
+		cursor:pointer;
+		vertical-align:baseline;
+	}
+	[class^=auiButton],
+	[class^=icon-] {
+		font-size:14px;
+	}
+}
+[class^="auiButton"] {
+	[class^="icon-"] {
+		line-height: 16px;
+	}
+	.icon-remove {
+		font-size:15px !important;
+		line-height: 15px !important;
+	}
+}
+
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+	cursor: default !important;
+}
+*/
+/***************************************************
+	auiSelectButton
+--------------------------------------------------
+.auiSelectButton {
+	background:#fff;
+
+	ul {
+		display:inline;
+	}
+	li,
+	div {
+		float:left;
+		background:none;
+		padding:0;
+		line-height:1;
+	}
+	a,
+	.auiWidget & a {
+		display:block;
+		margin:0 -1px;
+		padding:0 !important;
+		line-height:$inputHeight;
+		min-width:$inputHeight - 3;
+		@include border-radius(0);
+		border-color: $grayBorder $grayBorder $grayBorderDark;
+	}
+	a {
+		[class*=icon-] {
+			line-height: 30px;
+		}
+		.icon-backward,
+		.icon-forward {
+			font-size: 10px;
+		}
+		.icon-backward {
+			margin-right:2px;
+		}
+		.icon-forward {
+			margin-left:1px;
+		}
+	}
+	a.first,
+	a.btn {
+		margin-left:0;
+		@include border-top-left-radius(4px);
+		@include border-bottom-left-radius(4px);
+	}
+	a.last,
+	a.btn {
+		margin-right:0;
+		@include border-top-right-radius(4px);
+		@include border-bottom-right-radius(4px);
+	}
+	a:hover span {
+		color:#333333;
+	}
+	span i,
+	span img {
+		margin:6px 0;
+	}
+	.active {
+		a {
+			background:$grayLight;
+			border-color:$grayLight $grayLight $grayBorderDark;
+			cursor:default;
+			filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+		}
+		a:focus,
+		a:active {
+			@include box-shadow(none);
+		}
+		a:hover span {
+			cursor:default;
+		}
+	}
+	.auiIconArrowLeft {
+		margin-left:-4px !important;
+	}
+	.auiWidget & span {
+		padding:0;
+		background-image:none;
+	}
+}
+*/
+.buttonBase, input[type=submit],
+input[type=button],
+input[type=reset],
+button,
+.auiButton,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButtonSmall a,
+.auiButtonBold,
+input[type=submit].auiButtonBold,
+input[type=button].auiButtonBold,
+input[type=reset].auiButtonBold,
+button.auiButtonBold,
+.auiButtonIcon,
+input[type=submit].auiButtonIcon,
+input[type=button].auiButtonIcon,
+input[type=reset].auiButtonIcon,
+button.auiButtonIcon, .auiButtonAction,
+input[type=submit].auiButtonAction,
+input[type=button].auiButtonAction,
+input[type=reset].auiButtonAction,
+button.auiButtonAction, .auiButtonSmall,
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall, .auiButtonDisabled,
+input[type=submit].auiButtonDisabled,
+input[type=button].auiButtonDisabled,
+input[type=reset].auiButtonDisabled,
+button.auiButtonDisabled, .auiButtonDummy,
+input[type=submit].auiButtonDummy,
+input[type=button].auiButtonDummy,
+input[type=reset].auiButtonDummy,
+button.auiButtonDummy, .auiButtonIconDummy,
+input[type=submit].auiButtonIconDummy,
+input[type=button].auiButtonIconDummy,
+input[type=reset].auiButtonIconDummy,
+button.auiButtonIconDummy {
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 8px;
+  border: solid 1px #d2d2d2;
+  cursor: pointer;
+  color: #333333;
+  text-decoration: none;
+  text-align: center;
+  background-color: white;
+}
+.buttonBase:hover, input[type=submit]:hover,
+input[type=button]:hover,
+input[type=reset]:hover,
+button:hover,
+.auiButton:hover,
+.auiSelectButton a:hover,
+.auiSelectButtonSmall a:hover,
+.auiButtonBold:hover,
+.auiButtonIcon:hover, .auiButtonAction:hover, .auiButtonSmall:hover, .auiButtonDisabled:hover, .auiButtonDummy:hover, .auiButtonIconDummy:hover, .buttonBase:focus, input[type=submit]:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+button:focus,
+.auiButton:focus,
+.auiSelectButton a:focus,
+.auiSelectButtonSmall a:focus,
+.auiButtonBold:focus,
+.auiButtonIcon:focus, .auiButtonAction:focus, .auiButtonSmall:focus, .auiButtonDisabled:focus, .auiButtonDummy:focus, .auiButtonIconDummy:focus {
+  border: solid 1px #999999;
+  color: #333333;
+  text-decoration: none;
+}
+.buttonBase:active, input[type=submit]:active,
+input[type=button]:active,
+input[type=reset]:active,
+button:active,
+.auiButton:active,
+.auiSelectButton a:active,
+.auiSelectButtonSmall a:active,
+.auiButtonBold:active,
+.auiButtonIcon:active, .auiButtonAction:active, .auiButtonSmall:active, .auiButtonDisabled:active, .auiButtonDummy:active, .auiButtonIconDummy:active {
+  background-image: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  filter: none !important;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+}
+.buttonBase span, input[type=submit] span,
+input[type=button] span,
+input[type=reset] span,
+button span,
+.auiButton span,
+.auiSelectButton a span,
+.auiWidget .auiSelectButton a span,
+.auiSelectButtonSmall a span,
+.auiWidget .auiSelectButtonSmall a span,
+.auiButtonBold span,
+input[type=submit].auiButtonBold span,
+input[type=button].auiButtonBold span,
+input[type=reset].auiButtonBold span,
+.auiButtonIcon span,
+input[type=submit].auiButtonIcon span,
+input[type=button].auiButtonIcon span,
+input[type=reset].auiButtonIcon span, .auiButtonAction span,
+input[type=submit].auiButtonAction span,
+input[type=button].auiButtonAction span,
+input[type=reset].auiButtonAction span, .auiButtonSmall span,
+input[type=submit].auiButtonSmall span,
+input[type=button].auiButtonSmall span,
+input[type=reset].auiButtonSmall span, .auiButtonDisabled span,
+input[type=submit].auiButtonDisabled span,
+input[type=button].auiButtonDisabled span,
+input[type=reset].auiButtonDisabled span, .auiButtonDummy span,
+input[type=submit].auiButtonDummy span,
+input[type=button].auiButtonDummy span,
+input[type=reset].auiButtonDummy span, .auiButtonIconDummy span,
+input[type=submit].auiButtonIconDummy span,
+input[type=button].auiButtonIconDummy span,
+input[type=reset].auiButtonIconDummy span {
+  display: table-cell;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+.buttonBase .fa, input[type=submit] .fa,
+input[type=button] .fa,
+input[type=reset] .fa,
+button .fa,
+.auiButton .fa,
+.auiSelectButton a .fa,
+.auiSelectButtonSmall a .fa,
+.auiButtonBold .fa,
+.auiButtonIcon .fa, .auiButtonAction .fa, .auiButtonSmall .fa, .auiButtonDisabled .fa, .auiButtonDummy .fa, .auiButtonIconDummy .fa, .buttonBase [class*="icon-"], input[type=submit] [class*="icon-"],
+input[type=button] [class*="icon-"],
+input[type=reset] [class*="icon-"],
+button [class*="icon-"],
+.auiButton [class*="icon-"],
+.auiSelectButton a [class*="icon-"],
+.auiSelectButtonSmall a [class*="icon-"],
+.auiButtonBold [class*="icon-"],
+.auiButtonIcon [class*="icon-"], .auiButtonAction [class*="icon-"], .auiButtonSmall [class*="icon-"], .auiButtonDisabled [class*="icon-"], .auiButtonDummy [class*="icon-"], .auiButtonIconDummy [class*="icon-"], .buttonBase [class^="icon-"], input[type=submit] [class^="icon-"],
+input[type=button] [class^="icon-"],
+input[type=reset] [class^="icon-"],
+button [class^="icon-"],
+.auiButton [class^="icon-"],
+.auiSelectButton a [class^="icon-"],
+.auiSelectButtonSmall a [class^="icon-"],
+.auiButtonBold [class^="icon-"],
+.auiButtonIcon [class^="icon-"], .auiButtonAction [class^="icon-"], .auiButtonSmall [class^="icon-"], .auiButtonDisabled [class^="icon-"], .auiButtonDummy [class^="icon-"], .auiButtonIconDummy [class^="icon-"] {
   cursor: pointer;
 }
 
-.hdActivity span,
-.hdInformation span {
-  line-height: 23px;
+input[type=submit],
+input[type=button],
+input[type=reset],
+button,
+.auiButton,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButtonSmall a,
+.auiButtonBold,
+input[type=submit].auiButtonBold,
+input[type=button].auiButtonBold,
+input[type=reset].auiButtonBold,
+button.auiButtonBold,
+.auiButtonIcon,
+input[type=submit].auiButtonIcon,
+input[type=button].auiButtonIcon,
+input[type=reset].auiButtonIcon,
+button.auiButtonIcon {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f0f0f0));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -o-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: linear-gradient(top, #ffffff, #f0f0f0);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0');
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+input[type=submit]:active,
+input[type=button]:active,
+input[type=reset]:active,
+button:active,
+.auiButton:active,
+.auiSelectButton a:active,
+.auiSelectButtonSmall a:active,
+.auiButtonBold:active,
+input[type=submit].auiButtonBold:active,
+input[type=button].auiButtonBold:active,
+input[type=reset].auiButtonBold:active,
+button.auiButtonBold:active,
+.auiButtonIcon:active,
+input[type=submit].auiButtonIcon:active,
+input[type=button].auiButtonIcon:active,
+input[type=reset].auiButtonIcon:active,
+button.auiButtonIcon:active {
+  background-color: #d2d2d2;
+  border: solid 1px #999999;
 }
 
-.hdActivity:hover .mb_hide,
-.hdInformation:hover .mb_hide {
-  color: #FF9900;
+.auiButtonAction,
+input[type=submit].auiButtonAction,
+input[type=button].auiButtonAction,
+input[type=reset].auiButtonAction,
+button.auiButtonAction {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffa31a), color-stop(100%, #ff8400));
+  background-image: -webkit-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: -moz-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: -o-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: linear-gradient(top, #ffa31a, #ff8400);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFA31A', endColorstr='#FFFF8400');
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  color: white;
+  border: solid 1px #e68a00 !important;
+}
+.auiButtonAction:hover, .auiButtonAction:focus,
+input[type=submit].auiButtonAction:hover,
+input[type=submit].auiButtonAction:focus,
+input[type=button].auiButtonAction:hover,
+input[type=button].auiButtonAction:focus,
+input[type=reset].auiButtonAction:hover,
+input[type=reset].auiButtonAction:focus,
+button.auiButtonAction:hover,
+button.auiButtonAction:focus {
+  color: white;
+  border: solid 1px #804d00 !important;
+}
+.auiButtonAction:active,
+input[type=submit].auiButtonAction:active,
+input[type=button].auiButtonAction:active,
+input[type=reset].auiButtonAction:active,
+button.auiButtonAction:active {
+  background-color: #ff6e00 !important;
+  border: solid 1px #804d00 !important;
+}
+.auiButtonAction .fa, .auiButtonAction [class*="icon-"], .auiButtonAction [class^="icon-"],
+input[type=submit].auiButtonAction .fa,
+input[type=submit].auiButtonAction [class*="icon-"],
+input[type=submit].auiButtonAction [class^="icon-"],
+input[type=button].auiButtonAction .fa,
+input[type=button].auiButtonAction [class*="icon-"],
+input[type=button].auiButtonAction [class^="icon-"],
+input[type=reset].auiButtonAction .fa,
+input[type=reset].auiButtonAction [class*="icon-"],
+input[type=reset].auiButtonAction [class^="icon-"],
+button.auiButtonAction .fa,
+button.auiButtonAction [class*="icon-"],
+button.auiButtonAction [class^="icon-"] {
+  color: white;
 }
 
-.hdUserName {
-  position: relative;
-  padding-right: 0;
+.auiButtonSmall,
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall {
+  font-size: 10px;
+  height: 24px;
+  line-height: 24px;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f0f0f0));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -o-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: linear-gradient(top, #ffffff, #f0f0f0);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0');
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  -webkit-box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
+  -moz-box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
 }
 
-.hdUserName .auiIcon,
-.hdUserName .auiWFicon {
-  margin-bottom: 2px;
-  vertical-align: middle;
+.auiButtonIcon,
+input[type=submit].auiButtonIcon,
+input[type=button].auiButtonIcon,
+input[type=reset].auiButtonIcon,
+button.auiButtonIcon,
+.auiButtonIconDummy,
+input[type=submit].auiButtonIconDummy,
+input[type=button].auiButtonIconDummy,
+input[type=reset].auiButtonIconDummy,
+button.auiButtonIconDummy {
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  padding: 3px;
+}
+.auiButtonIcon span,
+input[type=submit].auiButtonIcon span,
+input[type=button].auiButtonIcon span,
+input[type=reset].auiButtonIcon span,
+button.auiButtonIcon span,
+.auiButtonIconDummy span,
+input[type=submit].auiButtonIconDummy span,
+input[type=button].auiButtonIconDummy span,
+input[type=reset].auiButtonIconDummy span,
+button.auiButtonIconDummy span {
+  display: table-cell;
+  min-width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+}
+.auiButtonIcon [class*="icon-"],
+input[type=submit].auiButtonIcon [class*="icon-"],
+input[type=button].auiButtonIcon [class*="icon-"],
+input[type=reset].auiButtonIcon [class*="icon-"],
+button.auiButtonIcon [class*="icon-"],
+.auiButtonIconDummy [class*="icon-"],
+input[type=submit].auiButtonIconDummy [class*="icon-"],
+input[type=button].auiButtonIconDummy [class*="icon-"],
+input[type=reset].auiButtonIconDummy [class*="icon-"],
+button.auiButtonIconDummy [class*="icon-"] {
+  display: inline-block;
+  color: #666;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
 }
 
-.hdUserName a:hover .auiIcon {
-  background-color: #999999;
+.auiButtonDisabled,
+input[type=submit].auiButtonDisabled,
+input[type=button].auiButtonDisabled,
+input[type=reset].auiButtonDisabled,
+button.auiButtonDisabled {
+  background-color: #f0f0f0;
+  color: #999999;
+  cursor: default;
+}
+.auiButtonDisabled:hover, .auiButtonDisabled:focus, .auiButtonDisabled:active,
+input[type=submit].auiButtonDisabled:hover,
+input[type=submit].auiButtonDisabled:focus,
+input[type=submit].auiButtonDisabled:active,
+input[type=button].auiButtonDisabled:hover,
+input[type=button].auiButtonDisabled:focus,
+input[type=button].auiButtonDisabled:active,
+input[type=reset].auiButtonDisabled:hover,
+input[type=reset].auiButtonDisabled:focus,
+input[type=reset].auiButtonDisabled:active,
+button.auiButtonDisabled:hover,
+button.auiButtonDisabled:focus,
+button.auiButtonDisabled:active {
+  color: #999999;
+  border: solid 1px #d2d2d2;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
 
-.hdUserName a:hover .auiIconSetting {
-  background-position: 0px -16px;
+.auiSelectButton a span,
+.auiWidget .auiSelectButton a span,
+.auiSelectButtonSmall a span,
+.auiWidget .auiSelectButtonSmall a span {
+  display: block;
 }
 
-.hdUserName .avatar {
+/***************************************************
+	auiSelectButton
+--------------------------------------------------*/
+.auiSelectButton,
+.auiSelectButtonSmall {
+  background: #fff;
+}
+.auiSelectButton li,
+.auiSelectButton div,
+.auiSelectButtonSmall li,
+.auiSelectButtonSmall div {
   float: left;
-  width: 23px;
-  height: 23px;
-  margin: 0 4px 0 0;
+  background: none;
+  padding: 0;
+  line-height: 1;
+}
+.auiSelectButton a, .auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a, .auiWidget
+.auiSelectButtonSmall a {
+  display: block;
+  margin: 0 -1px 0 0;
+  padding: 0 !important;
+  line-height: 30px;
+  min-width: 27px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border-color: #d2d2d2 #d2d2d2 silver;
+}
+.auiSelectButton a,
+.auiSelectButtonSmall a {
+  text-align: center;
+}
+.auiSelectButton a [class*=icon-],
+.auiSelectButtonSmall a [class*=icon-] {
+  line-height: 30px;
+}
+.auiSelectButton a .icon-backward,
+.auiSelectButton a .icon-forward,
+.auiSelectButtonSmall a .icon-backward,
+.auiSelectButtonSmall a .icon-forward {
+  font-size: 10px;
+}
+.auiSelectButton a .icon-backward,
+.auiSelectButtonSmall a .icon-backward {
+  margin-right: 2px;
+}
+.auiSelectButton a .icon-forward,
+.auiSelectButtonSmall a .icon-forward {
+  margin-left: 1px;
+}
+.auiSelectButton a:hover, .auiSelectButton a:active, .auiSelectButton a:focus,
+.auiSelectButtonSmall a:hover,
+.auiSelectButtonSmall a:active,
+.auiSelectButtonSmall a:focus {
+  position: relative;
+}
+.auiSelectButton a:hover span, .auiSelectButton a:active span, .auiSelectButton a:focus span,
+.auiSelectButtonSmall a:hover span,
+.auiSelectButtonSmall a:active span,
+.auiSelectButtonSmall a:focus span {
+  color: #333333;
+}
+.auiSelectButton a.first,
+.auiSelectButton a.btn,
+.auiSelectButtonSmall a.first,
+.auiSelectButtonSmall a.btn {
+  margin-left: 0;
+  -moz-border-radius-topleft: 3px;
+  -webkit-border-top-left-radius: 3px;
+  border-top-left-radius: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.auiSelectButton a.last,
+.auiSelectButtonSmall a.last {
+  margin: 0;
+}
+.auiSelectButton a.last:hover:after,
+.auiSelectButtonSmall a.last:hover:after {
+  display: none;
+}
+.auiSelectButton a.last,
+.auiSelectButton a.btn,
+.auiSelectButtonSmall a.last,
+.auiSelectButtonSmall a.btn {
+  margin-right: 0;
+  -moz-border-radius-topright: 3px;
+  -webkit-border-top-right-radius: 3px;
+  border-top-right-radius: 3px;
+  -moz-border-radius-bottomright: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+.auiSelectButton span i,
+.auiSelectButton span img,
+.auiSelectButtonSmall span i,
+.auiSelectButtonSmall span img {
+  margin: 6px 0;
+}
+.auiSelectButton .active a,
+.auiSelectButtonSmall .active a {
+  background: #d2d2d2;
+  border-color: #d2d2d2 #d2d2d2 silver;
+  cursor: default;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+}
+.auiSelectButton .active a:focus,
+.auiSelectButton .active a:active,
+.auiSelectButtonSmall .active a:focus,
+.auiSelectButtonSmall .active a:active {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.auiSelectButton .active a:hover span,
+.auiSelectButtonSmall .active a:hover span {
+  cursor: default;
+}
+.auiSelectButton .auiIconArrowLeft,
+.auiSelectButtonSmall .auiIconArrowLeft {
+  margin-left: -4px !important;
+}
+.auiWidget .auiSelectButton span, .auiWidget
+.auiSelectButtonSmall span {
+  padding: 0;
+  background-image: none;
 }
 
-.hdUserName .menubar {
-  right: 0;
+.auiSelectButtonSmall a, .auiWidget .auiSelectButtonSmall a {
+  height: 24px;
+  line-height: 24px;
+  font-size: 10px;
+}
+.auiSelectButtonSmall a [class*=icon-], .auiWidget .auiSelectButtonSmall a [class*=icon-] {
+  line-height: 24px;
+}
+
+.selectCount {
+  display: inline-block;
+  line-height: 100%;
+}
+
+/***************************************************
+	icon
+--------------------------------------------------*/
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
+  line-height: 15px !important;
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("../font/fontawesome-webfont.eot?v=3.2.0");
+  src: url("../font/fontawesome-webfont.eot?#iefix&v=3.2.0") format("embedded-opentype"), url("../font/fontawesome-webfont.woff?v=3.2.0") format("woff"), url("../font/fontawesome-webfont.ttf?v=3.2.0") format("truetype"), url("../font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.0") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 /***************************************************
@@ -207,7 +2011,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   color: #ff9900;
 }
 
-.counter {
+.counter, .nrCount {
   float: left !important;
   font-size: 9px;
   height: 13px;
@@ -222,7 +2026,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   text-decoration: none;
 }
 
-.counter.zero {
+.counter.zero, .zero.nrCount {
   background: #b5b5b5 !important;
 }
 
@@ -251,37 +2055,21 @@ h1, h2, h3, h4, h5, h6, p, span {
   top: 0;
 }
 
-.startPopup {
-  width: 600px;
-  padding: 45px 50px 30px;
+.auiPopupHead {
   position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
 }
-
-.startPopupTool {
+.auiPopupHead:before {
+  display: block;
   position: absolute;
-  right: 0;
   top: 0;
-}
-
-.startPopupHead {
-  margin-bottom: 35px;
-  font-size: 32px;
-  text-align: center;
-}
-
-.startPopupContent {
-  text-align: left;
-}
-
-.startPopup img.middle {
-  vertical-align: -0.2em !important;
-}
-
-.startPopup input[type=checkbox],
-.startPopup input[type=radio] {
-  vertical-align: -0.18em;
-  vertical-align: 0\9;
-  *vertical-align: 0;
+  left: 0;
+  font-family: 'FontAwesome';
+  font-size: 15px;
+  line-height: 24px;
+  content: "\f138";
+  color: #d2d2d2;
 }
 
 .auiPopupHead {
@@ -367,7 +2155,9 @@ h1, h2, h3, h4, h5, h6, p, span {
   white-space: nowrap;
 }
 
-.auiPopupButtons .auiButton,
+.auiPopupButtons .auiButton, .auiPopupButtons .auiSelectButton a, .auiSelectButton .auiPopupButtons a,
+.auiPopupButtons .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiPopupButtons a,
 .auiPopupButtons .auiButtonAction,
 .auiPopupButtons .auiButtonBold,
 .auiPopupButtons .auiButtonSearch,
@@ -499,6 +2289,39 @@ h1, h2, h3, h4, h5, h6, p, span {
   max-height: 1000px;
 }
 
+.startPopup {
+  width: 600px;
+  padding: 45px 50px 30px;
+  position: relative;
+}
+
+.startPopupTool {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.startPopupHead {
+  margin-bottom: 35px;
+  font-size: 32px;
+  text-align: center;
+}
+
+.startPopupContent {
+  text-align: left;
+}
+
+.startPopup img.middle {
+  vertical-align: -0.2em !important;
+}
+
+.startPopup input[type=checkbox],
+.startPopup input[type=radio] {
+  vertical-align: -0.18em;
+  vertical-align: 0\9;
+  *vertical-align: 0;
+}
+
 /***************************************************
 	auiColumns
 --------------------------------------------------*/
@@ -515,28 +2338,29 @@ h1, h2, h3, h4, h5, h6, p, span {
 --------------------------------------------------*/
 .auiPortlet {
   background: white;
-  background: white url("../images/common/portlet_20140116.png") repeat-x left bottom;
+  background: white url("../images/common/portlet_20140718.png") repeat-x left bottom;
   margin: 10px 5px;
 }
 .auiPortlet .auiPortletHead {
   border-bottom: solid 1px #ededed;
-  background: url("../images/common/portlet_20140116.png") repeat-x left top;
+  background: url("../images/common/portlet_20140718.png") repeat-x left top;
 }
 .auiPortlet .auiPortletHead .inner {
-  background: url("../images/common/portlet_20140116.png") no-repeat left -100px;
-  padding: 9px 10px;
+  background: url("../images/common/portlet_20140718.png") no-repeat left -100px;
+  padding: 10px;
   position: relative;
   overflow: hidden;
 }
 .auiPortlet .auiPortletBody .auiPortletHead .inner {
-  padding: 9px 10px !important;
+  padding: 0 !important;
 }
 .auiPortlet .auiPortletTitle {
   float: left;
   white-space: nowrap;
+  line-height: 15px;
 }
 .auiPortlet .auiPortletTool {
-  background: url("../images/common/portlet_20140116.png") no-repeat right -200px;
+  background: url("../images/common/portlet_20140718.png") no-repeat right -200px;
   top: 0;
   right: 0;
   float: right;
@@ -578,6 +2402,7 @@ h1, h2, h3, h4, h5, h6, p, span {
   border-right: solid 1px #d2d2d2;
 }
 .auiPortlet .auiPortletBody .inner {
+  position: relative;
   padding: 10px 10px 0 10px;
 }
 .auiPortlet .auiPortletBody .inner:after {
@@ -588,11 +2413,11 @@ h1, h2, h3, h4, h5, h6, p, span {
   visibility: hidden;
 }
 .auiPortlet .auiPortletFoot {
-  background: url("../images/common/portlet_20140116.png") no-repeat left -390px;
+  background: url("../images/common/portlet_20140718.png") no-repeat left -390px;
 }
 .auiPortlet .auiPortletFoot .inner {
   height: 10px;
-  background: url("../images/common/portlet_20140116.png") no-repeat right -490px;
+  background: url("../images/common/portlet_20140718.png") no-repeat right -490px;
 }
 .auiPortlet .auiPortletBody .auiPortletFoot .inner {
   padding: 0 !important;
@@ -648,6 +2473,9 @@ h1, h2, h3, h4, h5, h6, p, span {
   width: 24px;
 }
 
+.userListIcon {
+  margin-bottom: 5px;
+}
 .userListIcon li {
   display: block;
   float: left;
@@ -655,9 +2483,17 @@ h1, h2, h3, h4, h5, h6, p, span {
   margin: 0 4px 5px 0;
   padding: 0;
 }
-.userListIcon .avatar img {
+.userListIcon .avatar img,
+.userListIcon [class*=icon-] {
+  display: block;
   width: 24px;
   height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #d2d2d2;
+}
+.userListIcon a:hover [class*=icon-] {
+  color: #333333;
 }
 
 /***************************************************
@@ -750,139 +2586,49 @@ h1, h2, h3, h4, h5, h6, p, span {
 /***************************************************
 	auiTabs
 --------------------------------------------------*/
-#auiTabs {
-  white-space: nowrap;
-  height: 25px;
-  padding: 0;
-  margin: 0;
-  background: white url("../images/tab.png") left bottom repeat-x;
-  overflow: hidden;
+.auiTabs .tab {
+  border-bottom: solid 1px #d2d2d2;
 }
-#auiTabs ul {
-  position: relative;
+.auiTabs .tab > li {
+  float: left;
+  margin-bottom: -1px;
+}
+.auiTabs .tab > li a {
+  display: block;
+  line-height: 30px;
+  margin: 0 5px 0 0;
   padding: 0 20px;
-  margin: 0;
-  white-space: nowrap;
-}
-#auiTabs li {
-  display: block;
-  float: left;
-  height: 25px;
-  padding: 0;
-  font-size: 11px;
-  background: none;
-}
-#auiTabs li a {
-  margin: 0 5px;
-  white-space: nowrap;
-  text-decoration: none;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-}
-#auiTabs .tab {
-  height: 100%;
-}
-#auiTabs .title {
-  float: left;
-  height: 25px;
-  line-height: 25px;
-  padding-left: 20px;
-  background: url("../images/tab.png") left -180px no-repeat;
-}
-#auiTabs .setting {
-  float: left;
-  height: 25px;
-  background: url("../images/tab.png") left -270px no-repeat;
-}
-#auiTabs .setting a {
-  display: inline-block;
-  margin-top: 4px;
-}
-#auiTabs .first .title {
-  background: url("../images/tab.png") left -120px no-repeat;
-}
-#auiTabs .first .active .title {
-  background: url("../images/tab.png") left 0px no-repeat;
-}
-#auiTabs .last .setting {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -150px no-repeat;
-}
-#auiTabs .last .active {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -30px no-repeat;
-}
-#auiTabs .last .active .setting {
-  padding-right: 0;
-}
-#auiTabs .last .activeNext {
-  background: url("../images/tab.png") left -90px no-repeat;
-}
-#auiTabs .active .title {
-  background: url("../images/tab.png") left -60px no-repeat;
-}
-#auiTabs .active .setting {
-  background: url("../images/tab.png") left -240px no-repeat;
-}
-#auiTabs .activeNext {
-  padding-left: 20px;
-  background: url("../images/tab.png") left -90px no-repeat;
-}
-#auiTabs .activeNext .title {
-  padding-left: 0;
-  background: url("../images/tab.png") left -270px no-repeat;
-}
-#auiTabs .store {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -150px no-repeat;
-}
-#auiTabs li.selectedMenu {
-  height: 25px;
-  background: url("../images/tab.png") right -25px no-repeat;
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu .title {
-  background: url("../images/tab.png") left 0px no-repeat;
-}
-#auiTabs li.selectedMenu .title a {
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu a {
-  white-space: nowrap;
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu .menuIcon {
-  float: left;
-  height: 25px;
-  background: url("../images/tab.png") right 0px no-repeat;
-}
-#auiTabs .singleTab {
-  height: 25px;
-  line-height: 25px;
-  background: url("../images/tab.png") left -100px no-repeat;
-}
-#auiTabs .singleTab a {
-  text-decoration: none;
-}
-#auiTabs .addTab a {
-  display: block;
-  margin: 0 0 0 -5px;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 11px;
-  font-weight: bold;
   text-align: center;
-  background: url(../images/addtab.png) 0 0 no-repeat;
+  text-decoration: none;
+  background-color: white;
+  color: #999999;
+  border: solid 1px #d2d2d2;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
 }
-#auiTabs .addTab a:hover {
-  background: url(../images/addtab.png) 0 -25px no-repeat;
+.auiTabs .tab > li a:hover {
+  color: #ff9900;
 }
-#auiTabs .addTab span {
+.auiTabs .tab > li:first-child a {
+  margin: 0 5px;
+}
+.auiTabs .tab > li.active a {
+  color: #333333;
+  border-bottom-color: transparent;
+}
+.auiTabs .tab > li.active a:hover {
+  color: #333333;
+  cursor: default;
+}
+.auiTabs .tabContents > li {
   display: none;
+  padding: 10px 0 !important;
 }
-
-.tooltip_gray {
-  display: none;
+.auiTabs .tabContents > li.active {
+  display: block;
 }
 
 /***************************************************
@@ -1041,6 +2787,9 @@ h1, h2, h3, h4, h5, h6, p, span {
 #auiWidgetsArea {
   float: left;
   width: 180px;
+}
+#auiWidgetsArea div:first-child {
+  padding-top: 0;
 }
 
 #auiWidgetsArea2 {
@@ -1212,538 +2961,6 @@ h1, h2, h3, h4, h5, h6, p, span {
 }
 
 /***************************************************
-	auiButton
---------------------------------------------------*/
-input[type=submit],
-input[type=button],
-input[type=reset],
-button,
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonSearch,
-.auiButtonSmall,
-.auiButtonDisabled,
-.auiButtonIcon,
-.auiButtonDummy,
-.auiButtonIconDummy,
-.auiSelectButton a,
-.auiWidget .auiSelectButton a {
-  display: inline-block;
-  *display: inline;
-  padding: 4px 12px;
-  margin-bottom: 0;
-  *margin-left: .3em;
-  line-height: 20px;
-  color: #333333;
-  text-align: center;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  vertical-align: middle;
-  cursor: pointer;
-  background-color: #f6f6f6;
-  background-image: -moz-linear-gradient(top, white, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, white, #e6e6e6);
-  background-image: -o-linear-gradient(top, white, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-  border: 1px solid #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 silver;
-  border-bottom-color: #b3b3b3;
-  *zoom: 1;
-  white-space: nowrap;
-  text-decoration: none;
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-@-moz-document url-prefix() {
-  /*Fx*/
-  input[type=submit],
-  input[type=button],
-  input[type=reset],
-  button {
-    padding: 0 6px !important;
-  }
-}
-
-input[type=submit]:hover,
-input[type=submit]:focus,
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:hover,
-input[type=button]:focus,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:hover,
-input[type=reset]:focus,
-input[type=reset]:active,
-input[type=reset].active,
-button:hover,
-button:focus,
-button:active,
-button.active,
-.auiButton:hover,
-.auiButton:focus,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:hover,
-.auiButtonBold:focus,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:hover,
-.auiButtonSmall:focus,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:focus,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:hover,
-.auiButtonIcon:focus,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:hover,
-.auiSelectButton a:focus,
-.auiSelectButton a:active {
-  color: #333333;
-  background-color: #e6e6e6;
-}
-
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:active,
-input[type=reset].active,
-button:active,
-button.active,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:active {
-  background-color: #cccccc \9;
-}
-
-input[type=submit]:first-child,
-input[type=button]:first-child,
-input[type=reset]:first-child,
-button:first-child,
-.auiButton:first-child,
-.auiButtonAction:first-child,
-.auiButtonBold:first-child,
-.auiButtonSearch:first-child,
-.auiButtonSmall:first-child,
-.auiButtonDisabled:first-child,
-.auiButtonIcon:first-child,
-.auiButtonDummy:first-child,
-.auiButtonIconDummy:first-child,
-.auiSelectButton a:first-child {
-  *margin-left: 0;
-}
-
-input[type=submit]:hover,
-input[type=submit]:focus,
-input[type=button]:hover,
-input[type=button]:focus,
-input[type=reset]:hover,
-input[type=reset]:focus,
-button:hover,
-button:focus,
-.auiButton:hover,
-.auiButton:focus,
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonBold:hover,
-.auiButtonBold:focus,
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSmall:hover,
-.auiButtonSmall:focus,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:focus,
-.auiButtonIcon:hover,
-.auiButtonIcon:focus,
-.auiSelectButton a:hover,
-.auiSelectButton a:focus {
-  color: #333333;
-  text-decoration: none;
-  background-position: 0 -15px;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-
-input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-button:focus,
-.auiButton:focus,
-.auiButtonAction:focus,
-.auiButtonBold:focus,
-.auiButtonSearch:focus,
-.auiButtonSmall:focus,
-.auiButtonDisabled:focus,
-.auiButtonIcon:focus,
-.auiSelectButton a:focus {
-  outline: thin dotted #333;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:active,
-input[type=reset].active,
-button:active,
-button.active,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:active {
-  background-image: none;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  outline: 0;
-  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonDisabled,
-.auiButtonIcon,
-.auiButtonDummy,
-.auiButtonIconDummy,
-.auiButtonSearch,
-.auiSelectButton a,
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  height: 30px;
-  line-height: 30px;
-  padding: 0 8px;
-}
-
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-*:first-child + html input[type=submit],
-*:first-child + html input[type=button],
-*:first-child + html input[type=reset],
-*:first-child + html button {
-  height: 32px;
-  line-height: 26px;
-}
-
-button.auiButton,
-button {
-  padding: 0 0.55em;
-}
-
-.auiButtonSmall {
-  padding: 0 5px;
-  height: 16px !important;
-  line-height: 16px !important;
-  font-size: 10px;
-}
-
-input[type=submit].auiButtonSmall,
-input[type=button].auiButtonSmall,
-input[type=reset].auiButtonSmall,
-button.auiButtonSmall {
-  line-height: 1em !important;
-}
-
-/* auiButtonAction */
-.auiButtonAction,
-input.auiButtonAction {
-  color: #ffffff !important;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
-  background-color: #ffb133;
-  background-color: #fa9828;
-  background-image: -moz-linear-gradient(top, #ffb133, #f37318);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb133), to(#f37318));
-  background-image: -webkit-linear-gradient(top, #ffb133, #f37318);
-  background-image: -o-linear-gradient(top, #ffb133, #f37318);
-  background-image: linear-gradient(to bottom, #ffb133, #f37318);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFB133', endColorstr='#FFF37318', GradientType=0);
-  background-repeat: repeat-x;
-  border-color: #f39600 #e15e04 #e15e04;
-  *background-color: #f37318;
-  *border: 1px solid #e15e04;
-}
-
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonAction:active,
-.auiButtonAction.active,
-input.auiButtonAction:hover,
-input.auiButtonAction:focus,
-input.auiButtonAction:active,
-input.auiButtonAction.active {
-  color: #ffffff;
-  background-color: #f37318;
-  *background-color: #f37318;
-}
-
-.auiButtonAction:active,
-.auiButtonAction.active {
-  background-color: #c67605 \9;
-}
-
-/* auiButtonDisabled */
-.auiButtonDisabled,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:active,
-input[disabled],
-input[disabled]:hover,
-input[disabled]:active,
-button[disabled],
-button[disabled]:hover,
-button[disabled]:active {
-  color: #999999;
-  background-image: none !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
-  background-color: #f0f0f0;
-  border: solid 1px #d2d2d2;
-  cursor: default;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  text-shadow: 0 1px 0 white;
-}
-
-/* auiButtonSearch */
-.auiButtonSearch,
-input.auiButtonSearch {
-  background-color: #d0d0d0;
-  background-color: #e2e2e2;
-  background-image: -moz-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#d0d0d0));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: -o-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: linear-gradient(to bottom, #eeeeee, #d0d0d0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFD0D0D0', GradientType=0);
-  background-repeat: repeat-x;
-}
-
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-input.auiButtonSearch:hover,
-input.auiButtonSearch:focus,
-input.auiButtonSearch:active,
-input.auiButtonSearch.active {
-  background-color: #d0d0d0;
-}
-
-.auiButtonSearch:active,
-.auiButtonSearch.active {
-  background-color: #c0c0c0 \9;
-}
-
-.auiButton span {
-  display: table-cell;
-  min-width: 20px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.auiButton i {
-  color: #333333;
-}
-
-.auiButtonSmall span {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.auiButton img,
-.auiButtonSmall img {
-  display: inline;
-  vertical-align: middle;
-}
-
-/* auiButtonIcon */
-.auiButtonIcon,
-.auiButtonIconDummy {
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  padding: 3px !important;
-  color: #666666 !important;
-}
-.auiButtonIcon:hover i,
-.auiButtonIconDummy:hover i {
-  color: #666666 !important;
-}
-.auiButtonIcon span,
-.auiButtonIconDummy span {
-  display: table-cell;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  text-align: center;
-  vertical-align: middle;
-}
-.auiButtonIcon span,
-.auiButtonIcon i,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: pointer;
-  vertical-align: baseline;
-}
-.auiButtonIcon [class^=auiButton],
-.auiButtonIcon [class^=icon-],
-.auiButtonIconDummy [class^=auiButton],
-.auiButtonIconDummy [class^=icon-] {
-  font-size: 14px;
-}
-
-[class^="auiButton"] [class^="icon-"] {
-  line-height: 16px;
-}
-[class^="auiButton"] .icon-remove {
-  font-size: 15px !important;
-  line-height: 15px !important;
-}
-
-.auiButtonDummy,
-.auiButtonDummy span,
-.auiButtonDummy i,
-.auiButtonIconDummy,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: default !important;
-}
-
-/***************************************************
-	auiSelectButton
---------------------------------------------------*/
-.auiSelectButton {
-  background: #fff;
-}
-.auiSelectButton ul {
-  display: inline;
-}
-.auiSelectButton li,
-.auiSelectButton div {
-  float: left;
-  background: none;
-  padding: 0;
-  line-height: 1;
-}
-.auiSelectButton a, .auiWidget .auiSelectButton a {
-  display: block;
-  margin: 0 -1px;
-  padding: 0 !important;
-  line-height: 30px;
-  min-width: 27px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  border-color: #d2d2d2 #d2d2d2 silver;
-}
-.auiSelectButton a.first,
-.auiSelectButton a.btn {
-  margin-left: 0;
-  -moz-border-radius-topleft: 4px;
-  -webkit-border-top-left-radius: 4px;
-  border-top-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-.auiSelectButton a.last,
-.auiSelectButton a.btn {
-  margin-right: 0;
-  -moz-border-radius-topright: 4px;
-  -webkit-border-top-right-radius: 4px;
-  border-top-right-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-.auiSelectButton a:hover span {
-  color: #333333;
-}
-.auiSelectButton span i,
-.auiSelectButton span img {
-  margin: 6px 0;
-}
-.auiSelectButton .active a {
-  background: #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 silver;
-  cursor: default;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
-}
-.auiSelectButton .active a:focus,
-.auiSelectButton .active a:active {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-.auiSelectButton .active a:hover span {
-  cursor: default;
-}
-.auiSelectButton .auiIconArrowLeft {
-  margin-left: -4px !important;
-}
-.auiWidget .auiSelectButton span {
-  padding: 0;
-  background-image: none;
-}
-
-/***************************************************
 	auiMultiSelector
 --------------------------------------------------*/
 .auiMultiSelector.auiSummaryMeta {
@@ -1825,11 +3042,15 @@ input.auiButtonSearch.active {
 .auiSummaryMeta form {
   line-height: 32px;
 }
+.auiSummaryMeta:first-child {
+  margin-top: 0 !important;
+}
+.auiSummaryMeta .icon-print {
+  font-size: 17px;
+}
 
 .count {
   float: left;
-  height: 32px;
-  line-height: 32px !important;
   margin: 0 5px;
   white-space: nowrap;
 }
@@ -2193,7 +3414,9 @@ input.auiButtonSearch.active {
 .auiCalendar td a:hover {
   background: #f0f0f0;
 }
-.auiCalendar .auiButton {
+.auiCalendar .auiButton, .auiCalendar .auiSelectButton a, .auiSelectButton .auiCalendar a,
+.auiCalendar .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiCalendar a {
   padding: 0 0.7em;
 }
 .auiCalendar .sunday {
@@ -2341,6 +3564,7 @@ input[type=password] {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   background-color: #ffffff;
+  -webkit-appearance: none;
 }
 
 /*IE8Hack*/
@@ -2403,14 +3627,14 @@ ul.attachments {
   margin: 5px 0;
 }
 
-.attachments span.deletebutton {
+.attachments .deletebutton {
   margin-left: 10px;
   cursor: pointer;
   text-decoration: underline;
   color: #1b1b1b;
 }
 
-.attachments span.deletebutton:hover {
+.attachments .deletebutton:hover {
   text-decoration: none;
   color: #ff9900;
 }
@@ -2856,7 +4080,9 @@ ul.attachments {
   box-sizing: border-box;
 }
 
-.auiFilter .auiButton {
+.auiFilter .auiButton, .auiFilter .auiSelectButton a, .auiSelectButton .auiFilter a,
+.auiFilter .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiFilter a {
   float: left;
   width: 16px;
 }
