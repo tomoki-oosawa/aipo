@@ -503,6 +503,17 @@ $theLink
 <input name="ajaxbuttonCancel" class="button" type="button" value="$l10n.COMMON_CANCEL" onclick="aipo.common.hideDialog();" />
 #end
 
+#macro(ALfilterRemoveButton $onclick $class)
+<a href="javascript:void(0);" class="$class" onclick="$onclick"><i class="icon-remove"></i></a>
+#end
+
+#macro(ALfilterTip $name $onclick)
+	<span class="filterTip">
+		<span>$name</span>
+		<a href="javascript:void(0);" class="btn" onclick="$onclick"><i class="icon-remove"></i></a>
+	</span>
+#end
+
 #macro(ALrequired $title)
 <span class="required">$title</span>
 #end

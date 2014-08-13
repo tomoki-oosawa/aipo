@@ -42,10 +42,7 @@
 <div class="filters" id="filters_$!portlet.ID">#*
 *##foreach($record in $result.CategoryList)#*
 *##if("$!result.CurrentFilter"=="$!record.CategoryId")#*
-	*#<span class="filterTip">#*
-		*#<span>$!{record.CategoryName}</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.workflow.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!{record.CategoryName} "aipo.workflow.filterSetDefault('$!portlet.ID','category');")#*
 *##end#end#*
 *#</div>
 
@@ -69,7 +66,7 @@
 <tr>
 #ALtdheadAtt("#ALajaxsort('request_name' $l10n.WORKFLOW_REQUEST_NAME $result 'WorkflowListScreen')" 'class=""')
 #ALtdheadAtt("#ALajaxsort('progress' $l10n.WORKFLOW_SITUATION $result 'WorkflowListScreen')" 'class="thin"')
-#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin wName"')#else#ALtdheadAtt("$title" 'class="thin wName"')#end
+#if($result.CurrentSubMenu == "requested")#ALtdheadAtt("#ALajaxsort('user_name' $title $result 'WorkflowListScreen')" 'class="thin wName"')#else#ALtdheadAtt("$title" 'class="thin  wName"')#end
 #ALtdheadAtt("#ALajaxsort('create_date' $l10n.WORKFLOW_CREATEDATE $result 'WorkflowListScreen')" 'class="thin"')
 </tr>
 #foreach ($record in $result.List)

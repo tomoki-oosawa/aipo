@@ -32,10 +32,7 @@
 <input type="hidden" name="template" value="WikiListScreen"/>
 <div class="filters" id="filters_$!portlet.ID">
 #if("$!result.CategoryName"!="")
-<span class="filterTip">
-<span>$!result.CategoryName</span>
-<a href="javascript:void(0);" class="btn" onclick='aipo.wiki.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>
-</span>
+#ALfilterTip($!result.CategoryName "aipo.wiki.filterSetDefault('$!portlet.ID','category');")
 #end
 </div>
 

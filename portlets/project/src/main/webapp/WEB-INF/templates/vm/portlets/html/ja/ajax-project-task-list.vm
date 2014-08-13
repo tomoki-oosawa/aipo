@@ -52,28 +52,16 @@
     <div class="filterInputField">
     	<div class="filters" id="filters_$!portlet.ID">
     	#if("$!result.TargetUserId"!="")
-        <span class="filterTip">
-        <span>$!result.TargetUserName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_user_id");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+		#ALfilterTip($!result.TargetUserName "aipo.project.filterSetDefault('$!portlet.ID','target_user_id');")
         #end
         #if("$!result.TargetTracker"!="")
-        <span class="filterTip">
-        <span>$!result.TargetTrackerName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_tracker");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+		#ALfilterTip($!result.TargetTrackerName "aipo.project.filterSetDefault('$!portlet.ID','target_tracker');")
         #end
         #if("$!result.TargetPriority"!="")
-        <span class="filterTip">
-        <span>$!result.TargetPriorityName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_priority");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+		#ALfilterTip($!result.TargetPriorityName "aipo.project.filterSetDefault('$!portlet.ID','target_priority');")
         #end
         #if("$!result.TargetStatus"!="")
-        <span class="filterTip">
-        <span>$!result.TargetStatusName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_status");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+		#ALfilterTip($!result.TargetStatusName "aipo.project.filterSetDefault('$!portlet.ID','target_status');")
         #end
     	</div>
     	<a href="javascript:void(0)" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="$l10n.PROJECT_FILTER"><i class="auiIcon auiIconArwBottom"></i></a>
