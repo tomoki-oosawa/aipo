@@ -285,11 +285,21 @@ h1, h2, h3, h4, h5, h6, p, span {
 }
 
 .auiPopupHead {
+  position: relative;
   padding-left: 20px;
   margin-bottom: 10px;
-  background: transparent url(../images/common/icon_p.gif) no-repeat left center;
 }
-
+.auiPopupHead:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'FontAwesome';
+  font-size: 15px;
+  line-height: 24px;
+  content: "\f138";
+  color: #d2d2d2;
+}
 .auiPopupHead .auiPopupTitle {
   line-height: 24px;
   white-space: nowrap;
