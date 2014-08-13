@@ -546,7 +546,7 @@ $theLink
 #end
 
 #macro(ALtelLink $tel)
-#if(${client} == "IPHONE")
+#if(${client} == "IPHONE" && $tel.toString()!="")
 #set($telLink =$tel.toString().replaceAll("-",""))
 <a  href="tel:$telLink">$tel</a>
 #else
