@@ -125,7 +125,6 @@ $l10n.COMMON_NOT_REFLECT_MSG
 <h1>$!result.Gpdb.GpdbName</h1>
 #AUIrowMTableWide()
 	<tr>
-	#ALtdheadThin("No")
 	#set($titleItemId = "")
 	#set($dateId = "")
 	#set($createDateId = "")
@@ -155,7 +154,6 @@ $l10n.COMMON_NOT_REFLECT_MSG
 				</tr>
 			#end
 			<tr>
-			#ALtdcell("$!record.RecordNo")
 			#set($recordNo = $record.RecordNo.toString())
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
