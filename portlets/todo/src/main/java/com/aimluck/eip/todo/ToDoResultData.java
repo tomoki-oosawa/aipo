@@ -100,6 +100,10 @@ public class ToDoResultData implements ALData {
 
   private boolean is_self_todo;
 
+  private boolean hasAclListTodoOther;
+
+  private boolean hasAclDetailTodoOther;
+
   private boolean hasAclEditTodoOther;
 
   private boolean hasAclDeleteTodoOther;
@@ -425,6 +429,44 @@ public class ToDoResultData implements ALData {
 
   public void setIsSelfTodo(boolean is_self_todo) {
     this.is_self_todo = is_self_todo;
+  }
+
+  /**
+   * hasAclListTodoOtherを取得します。
+   * 
+   * @return hasAclListTodoOther
+   */
+  public boolean hasAclListTodoOther() {
+    return hasAclListTodoOther;
+  }
+
+  /**
+   * hasAclListTodoOtherを設定します。
+   * 
+   * @param hasAclListTodoOther
+   *          hasAclListTodoOther
+   */
+  public void setAclListTodoOther(boolean hasAclListTodoOther) {
+    this.hasAclListTodoOther = hasAclListTodoOther;
+  }
+
+  /**
+   * hasAclDetailTodoOtherを取得します。
+   * 
+   * @return hasAclDetailTodoOther
+   */
+  public boolean hasAclDetailTodoOther() {
+    return hasAclDetailTodoOther;
+  }
+
+  /**
+   * hasAclDetailTodoOtherを設定します。
+   * 
+   * @param hasAclDetailTodoOther
+   *          hasAclDetailTodoOther
+   */
+  public void setAclDetailTodoOther(boolean hasAclDetailTodoOther) {
+    this.hasAclDetailTodoOther = hasAclDetailTodoOther;
   }
 
   /**
