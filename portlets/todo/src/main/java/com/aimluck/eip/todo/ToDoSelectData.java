@@ -539,6 +539,9 @@ public class ToDoSelectData extends
       // 期限状態を設定する．
       rd.setLimitState(ToDoUtils.getLimitState(record.getEndDate()));
 
+      // 自身のToDoかを設定する
+      rd.setIsSelfTodo(record.getUserId() == login_user_id);
+
       rd.setAclListTodoOther(hasAclListTodoOther);
       rd.setAclDetailTodoOther(hasAclDetailTodoOther);
       rd.setAclEditTodoOther(hasAclEditTodoOther);

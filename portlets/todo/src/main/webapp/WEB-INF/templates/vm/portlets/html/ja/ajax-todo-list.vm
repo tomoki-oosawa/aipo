@@ -122,7 +122,9 @@
 #ALtdcellAtt("<div>$!record.CategoryName</div>" "class='mb_hide' ")
 #ALtdcellAtt("<div>$!record.EndDate</div>" 'nowrap="nowrap"')
 #ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
-#if($!result.currentTab == "list")<img src='images/todo/$!record.StateImage' alt='$!record.StateString' title='$!record.StateString' style="vertical-align: middle;" />&nbsp;#end<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('todo','$!portlet.ID');">
+#if($!result.currentTab == "list")<img src='images/todo/$!record.StateImage' alt='$!record.StateString' title='$!record.StateString' style="vertical-align: middle;" />&nbsp;#end
+#if($!record.isSelfTodo()||$!record.hasAclEditTodoOther())
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID');aipo.portletReload('todo','$!portlet.ID');">
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "0"))"   #if ($!record.State.toString() == "0" )  selected="selected" #end>$l10n.TODO_NOT_START</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "10"))"  #if ($!record.State.toString() == "10")  selected="selected" #end>10%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "20"))"  #if ($!record.State.toString() == "20")  selected="selected" #end>20%</option>
@@ -135,6 +137,9 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "90"))"  #if ($!record.State.toString() == "90")  selected="selected" #end>90%</option>
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "100"))" #if ($!record.State.toString() == "100") selected="selected" #end>$l10n.TODO_FINISHING</option>
 </select>
+#else
+$!{record.State.toString()}%
+#end
 #ALtdcellfooter()
 </tr>
 
