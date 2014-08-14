@@ -22,7 +22,7 @@
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-#AUISummaryDivHeader()
+#AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen")' />
 <input type="hidden" name="template" value="ReportListScreen"/>
@@ -46,6 +46,7 @@
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.report.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.report.initFilterSearch("$!portlet.ID");' onblur='aipo.report.finFilterSearch("$!portlet.ID");' />
 </div>
+
 #AUIButtonSearch("$l10n.REPORT_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
