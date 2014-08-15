@@ -133,6 +133,8 @@ public class ProjectTaskSelectData extends
 
   private Integer loginUserId;
 
+  private boolean isFileUploadable;
+
   /**
    * 初期設定
    * 
@@ -187,6 +189,8 @@ public class ProjectTaskSelectData extends
     isAndroid2 = ALEipUtils.isAndroid2Browser(rundata);
 
     loginUserId = ALEipUtils.getUserId(rundata);
+
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -1159,6 +1163,13 @@ public class ProjectTaskSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
       .valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
+  }
+
+  /**
+   * @return isFileUploadable
+   */
+  public boolean isFileUploadable() {
+    return isFileUploadable;
   }
 
 }
