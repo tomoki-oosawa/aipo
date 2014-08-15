@@ -145,3 +145,48 @@ aipo.account_user.submit2 = function(form) {
   }
   form.positions.value = tmp;
 }
+
+aipo.account_user.toggleMenu = function(node, filter, alwaysPulldown) {
+  var rect = filter.getBoundingClientRect();
+  var html = document.documentElement.getBoundingClientRect();
+  var footer = document.getElementById('auiWidgetsArea');
+  var header = document.getElementById('mobileHeader_v3');
+
+  if (node.style.display == "none") {
+    dojo.query("div.menubar").style("display", "none");
+    
+    var scroll = {
+      left : document.documentElement.scrollLeft
+          || document.body.scrollLeft,
+      top : document.documentElement.scrollTop || document.body.scrollTop
+    };
+    node.style.opacity = "0";
+    setTimeout( function(){
+      dojo.style(node, "display" , "block");
+    }, 0);
+    if (html.right - node.clientWidth > rect.left) {
+      node.style.left = rect.left + scroll.left + "px";
+    } else {
+      node.style.left = rect.right - node.clientWidth + scroll.left
+          + "px";
+    }
+    if (html.bottom - node.clientHeight > rect.bottom || alwaysPulldown) {
+      node.style.top = rect.bottom + scroll.top + "px";
+    } else {
+      node.style.top = rect.top - node.clientHeight + scroll.top + "px";
+    }
+    node.style.opacity = "";
+  } else {
+    dojo.query("div.menubar").style("display", "none");
+  }
+}
+
+
+aipo.account_user.onChangePost = function(url, portlet_id, folder_id) {
+  aipo.viewPage(url, portlet_id);
+}
+
+aipo.account_user.onChangeRole = function(url, portlet_id, group_id) {
+  aipo.viewPage(url, portlet_id);
+}
+
