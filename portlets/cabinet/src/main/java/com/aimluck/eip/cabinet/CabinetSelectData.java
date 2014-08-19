@@ -304,8 +304,8 @@ public class CabinetSelectData extends
 
       SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
-      if (ALEipUtils.getTemp(rundata, context, LIST_SORT_STR).equals(
-        "update_date")
+      String tmpsort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+      if ((tmpsort != null && "update_date".equals(tmpsort))
         && ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR) == null) {
         ALEipUtils.setTemp(
           rundata,
