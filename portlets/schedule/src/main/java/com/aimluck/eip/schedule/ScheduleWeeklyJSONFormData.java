@@ -306,7 +306,6 @@ public class ScheduleWeeklyJSONFormData {
       return res;
 
     } catch (ALPermissionException e) {
-      Database.rollback();
       msgList.add("PermissionError");
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
@@ -339,7 +338,6 @@ public class ScheduleWeeklyJSONFormData {
       return res;
 
     } catch (ALPermissionException e) {
-      Database.rollback();
       msgList.add("PermissionError");
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
