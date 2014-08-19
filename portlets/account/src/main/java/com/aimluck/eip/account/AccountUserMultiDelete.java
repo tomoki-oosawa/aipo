@@ -40,6 +40,8 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -168,6 +170,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         Database.sql(EipTTodoCategory.class, sql5);
 
         String orgId = Database.getDomainName();
+
         // ブログの削除
         SelectQuery<EipTBlog> EipBlogSQL =
           Database.query(EipTBlog.class).where(
@@ -219,6 +222,62 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());
 
+        // タイムライン削除
+        Expression exp01 =
+          ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, record
+            .getUserId());
+
+        Expression exp02 =
+          ExpressionFactory.matchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
+        Expression exp03 =
+          ExpressionFactory.matchDbExp(
+            "TIMELINE_TYPE",
+            EipTTimeline.TIMELINE_TYPE_TIMELINE);
+
+        SelectQuery<EipTTimeline> EipTTimelineSQL =
+          Database.query(EipTTimeline.class).andQualifier(
+            exp01.andExp(exp02.andExp(exp03)));
+        List<EipTTimeline> timelineList = EipTTimelineSQL.fetchList();
+        List<Integer> timelineIdList = new ArrayList<Integer>();
+        for (EipTTimeline timeline : timelineList) {
+          timelineIdList.add(timeline.getTimelineId());
+        }
+        if (!timelineIdList.isEmpty()) {
+          SelectQuery<EipTTimeline> EipTTimelineSQL2 =
+            Database.query(EipTTimeline.class).andQualifier(
+              ExpressionFactory.inDbExp(
+                EipTTimeline.PARENT_ID_COLUMN,
+                timelineIdList));
+          List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
+          if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
+            timelineList.addAll(timelineCommentList);
+          }
+
+          for (EipTTimeline entry : timelineList) {
+            List<String> fpaths = new ArrayList<String>();
+            List<?> files = entry.getEipTTimelineFile();
+            if (files != null && files.size() > 0) {
+              int fileSize = files.size();
+              for (int j = 0; j < fileSize; j++) {
+                fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+              }
+
+              ALDeleteFileUtil.deleteFiles(
+                entry.getTimelineId(),
+                EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
+                AccountUtils.getSaveDirPath(
+                  orgId,
+                  entry.getOwnerId(),
+                  "timeline"),
+                fpaths,
+                EipTTimelineFile.class);
+
+            }
+          }
+
+          EipTTimelineSQL2.deleteAll();
+          EipTTimelineSQL.deleteAll();
+        }
         Database.commit();
 
         // イベントログに保存
