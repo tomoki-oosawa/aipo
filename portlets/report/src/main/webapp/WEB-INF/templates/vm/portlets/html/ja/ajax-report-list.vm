@@ -52,7 +52,7 @@
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.report.initFilterSearch("$!portlet.ID");' onblur='aipo.report.finFilterSearch("$!portlet.ID");' />
 </div>
 
-#AUIButtonSearch("$l10n.REPORT_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()

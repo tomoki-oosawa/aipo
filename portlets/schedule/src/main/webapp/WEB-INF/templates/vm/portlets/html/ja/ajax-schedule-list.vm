@@ -27,7 +27,7 @@
 #AUISummaryDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleListScreen').addQueryData('tab','search'))" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 #AUISearchInput("q$!{portlet.ID}" "keyword" "$!result.targetKeyword" "style='margin-right:5px;'")
-#AUIButtonSearch("$l10n.SCHEDULE_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryDivFooter()

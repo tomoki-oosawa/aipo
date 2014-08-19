@@ -51,8 +51,8 @@ limitations under the License.
                     <td class="$!{skin.ContentStyleClass}" align="left">${l10n.SEARCH_SEARCH_CONTENT_VM}</td>
                     <td class="$!{skin.ContentStyleClass}" align="left">
                       <input tabindex='1' id="search" type="text" name="search" size="50" value="$!search"/>
-                      &nbsp;<input type="submit" 
-                                   border="0" alt="Search" value="${l10n.SEARCH_SEARCH_VM}" name="eventSubmit_doSearch"/>
+                      &nbsp;<input type="submit"
+                                   border="0" alt="Search" value="${l10n.COMMON_SEARCH}" name="eventSubmit_doSearch"/>
                     </td>
                     <td width="5%" class="$!{skin.ContentStyleClass}" align="left">&nbsp;</td>
               </tr>
@@ -69,20 +69,20 @@ limitations under the License.
                     <tr><td colspan="5" class="blackline"/></tr>
                     <tr>
                       <td class="$!{skin.ContentStyleClass}" align="left">
-                      #if ($result.Type == "portlet")                       
-                        <a id="preview_$listIndex" 
+                      #if ($result.Type == "portlet")
+                        <a id="preview_$listIndex"
                            href="#previewLink($result.Key)"
                            target="_blank">
-                           <IMG border="0" SRC="$clink.setURI("images/html/is_portlet.gif")">                           
+                           <IMG border="0" SRC="$clink.setURI("images/html/is_portlet.gif")">
                            <span class="$!{skin.ContentStyleClass}">$result.Title</span>
-                        </a>                      
+                        </a>
                       #else
-                        <a id="preview_$listIndex" 
+                        <a id="preview_$listIndex"
                            href="$result.URL" target="_blank">
-                           <IMG border="0" SRC="$clink.setURI("images/is_url.gif")">                           
+                           <IMG border="0" SRC="$clink.setURI("images/is_url.gif")">
                            <span class="$!{skin.ContentStyleClass}">$result.URL</span>
                         </a>
-                      #end  
+                      #end
                       </td>
                     </tr>
                     #set ($listIndex = $listIndex + 1)
@@ -96,7 +96,7 @@ limitations under the License.
                   <tr><td class="$!{skin.ContentStyleClass}" colspan="5" align="right">&nbsp;</td></tr>
                   </table>
                   </td>
-                  </tr>                  
+                  </tr>
             </table>
           </td>
         </tr>

@@ -39,7 +39,7 @@
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="AddressBookListScreen"/>
 #AUISearchInput("q$!{portlet.ID}" "sword" "$!result.searchWord" "style='margin-right:5px;'")
-#AUIButtonSearch("$l10n.ADDRESSBOOK_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryDivfooter()
