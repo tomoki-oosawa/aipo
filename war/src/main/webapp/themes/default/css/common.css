@@ -1028,31 +1028,32 @@ table.simpleTable .caption {
   clear: both;
 }
 
-i.indicator,
-i.indicatorglay,
-i.indicatorblack {
+.indicator,
+.indicatorGlay,
+.indicatorBlack {
   display: inline-block;
   margin: 0;
   padding: 0;
   width: 18px;
   height: 18px;
   vertical-align: middle;
+  clear: both;
 }
 
 .indicatorDialog .auiIconIndicator {
   vertical-align: -0.4em;
 }
 
+.indicator {
+  background: url(../images/common/indicator.gif) no-repeat left;
+}
+
 .indicatorGray {
   background: url(../images/common/indicatorglay.gif) no-repeat left;
-  padding: 2px 0 2px 18px;
-  margin-left: 2px;
 }
 
 .indicatorBlack {
   background: url(../images/common/indicatorblack.gif) no-repeat left;
-  padding: 2px 0 2px 18px;
-  margin-left: 2px;
 }
 
 img.icon {
@@ -1441,11 +1442,11 @@ div.holiday, td.holiday {
 }
 
 div.today, td.today {
-  background: #f1f1f1;
+  background: #edfeed;
 }
 
 div.off, td.off {
-  background: #EFEFEF;
+  background: #f6f6f6;
 }
 
 .calendarWrapper {
@@ -1942,7 +1943,6 @@ div.userInfo {
 .menubar {
   position: absolute;
   background: #ffffff;
-  padding: 5px;
   border: 1px solid #c0c0c0;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1984,7 +1984,7 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  padding: 4px 6px !important;
+  padding: 6px 10px !important;
   margin: 0;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -2094,7 +2094,7 @@ ul.blockList li a.selected {
 
 /* menubar.multi **********/
 .menubar.multi {
-  padding-left: 0;
+  padding: 5px 5px 5px 0;
 }
 
 .menubar.multi > div {

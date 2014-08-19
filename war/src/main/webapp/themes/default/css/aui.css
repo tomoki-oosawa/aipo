@@ -213,7 +213,7 @@ body {
   margin: 0;
   font-size: .75em;
   line-height: 1.4;
-  background: #fff;
+  background-color: #f0f0f0;
 }
 
 body#login {
@@ -1453,179 +1453,33 @@ input.auiButtonSearch.active {
 	}
 }
 */
-.buttonBase, input[type=submit],
-input[type=button],
-input[type=reset],
-button,
-.auiButton,
-.auiSelectButton a,
-.auiWidget .auiSelectButton a,
-.auiSelectButtonSmall a,
-.auiWidget .auiSelectButtonSmall a,
-.auiButtonBold,
-input[type=submit].auiButtonBold,
-input[type=button].auiButtonBold,
-input[type=reset].auiButtonBold,
-button.auiButtonBold,
-.auiButtonIcon,
-input[type=submit].auiButtonIcon,
-input[type=button].auiButtonIcon,
-input[type=reset].auiButtonIcon,
-button.auiButtonIcon, .auiButtonAction,
-input[type=submit].auiButtonAction,
-input[type=button].auiButtonAction,
-input[type=reset].auiButtonAction,
-button.auiButtonAction, .auiButtonSmall,
-input[type=submit].auiButtonSmall,
-input[type=button].auiButtonSmall,
-input[type=reset].auiButtonSmall,
-button.auiButtonSmall, .auiButtonDisabled,
-input[type=submit].auiButtonDisabled,
-input[type=button].auiButtonDisabled,
-input[type=reset].auiButtonDisabled,
-button.auiButtonDisabled, .auiButtonDummy,
-input[type=submit].auiButtonDummy,
-input[type=button].auiButtonDummy,
-input[type=reset].auiButtonDummy,
-button.auiButtonDummy, .auiButtonIconDummy,
-input[type=submit].auiButtonIconDummy,
-input[type=button].auiButtonIconDummy,
-input[type=reset].auiButtonIconDummy,
-button.auiButtonIconDummy {
-  display: inline-block;
-  height: 32px;
-  line-height: 32px;
-  padding: 0 8px;
-  border: solid 1px #d2d2d2;
-  cursor: pointer;
-  color: #333333;
-  text-decoration: none;
-  text-align: center;
-  background-color: white;
-}
-.buttonBase:hover, input[type=submit]:hover,
-input[type=button]:hover,
-input[type=reset]:hover,
-button:hover,
-.auiButton:hover,
-.auiSelectButton a:hover,
-.auiSelectButtonSmall a:hover,
-.auiButtonBold:hover,
-.auiButtonIcon:hover, .auiButtonAction:hover, .auiButtonSmall:hover, .auiButtonDisabled:hover, .auiButtonDummy:hover, .auiButtonIconDummy:hover, .buttonBase:focus, input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-button:focus,
-.auiButton:focus,
-.auiSelectButton a:focus,
-.auiSelectButtonSmall a:focus,
-.auiButtonBold:focus,
-.auiButtonIcon:focus, .auiButtonAction:focus, .auiButtonSmall:focus, .auiButtonDisabled:focus, .auiButtonDummy:focus, .auiButtonIconDummy:focus {
-  border: solid 1px #999999;
-  color: #333333;
-  text-decoration: none;
-}
-.buttonBase:active, input[type=submit]:active,
-input[type=button]:active,
-input[type=reset]:active,
-button:active,
-.auiButton:active,
-.auiSelectButton a:active,
-.auiSelectButtonSmall a:active,
-.auiButtonBold:active,
-.auiButtonIcon:active, .auiButtonAction:active, .auiButtonSmall:active, .auiButtonDisabled:active, .auiButtonDummy:active, .auiButtonIconDummy:active {
-  background-image: none !important;
-  -webkit-filter: none !important;
-  -moz-filter: none !important;
-  filter: none !important;
-  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-}
-.buttonBase span, input[type=submit] span,
-input[type=button] span,
-input[type=reset] span,
-button span,
-.auiButton span,
-.auiSelectButton a span,
-.auiWidget .auiSelectButton a span,
-.auiSelectButtonSmall a span,
-.auiWidget .auiSelectButtonSmall a span,
-.auiButtonBold span,
-input[type=submit].auiButtonBold span,
-input[type=button].auiButtonBold span,
-input[type=reset].auiButtonBold span,
-.auiButtonIcon span,
-input[type=submit].auiButtonIcon span,
-input[type=button].auiButtonIcon span,
-input[type=reset].auiButtonIcon span, .auiButtonAction span,
-input[type=submit].auiButtonAction span,
-input[type=button].auiButtonAction span,
-input[type=reset].auiButtonAction span, .auiButtonSmall span,
-input[type=submit].auiButtonSmall span,
-input[type=button].auiButtonSmall span,
-input[type=reset].auiButtonSmall span, .auiButtonDisabled span,
-input[type=submit].auiButtonDisabled span,
-input[type=button].auiButtonDisabled span,
-input[type=reset].auiButtonDisabled span, .auiButtonDummy span,
-input[type=submit].auiButtonDummy span,
-input[type=button].auiButtonDummy span,
-input[type=reset].auiButtonDummy span, .auiButtonIconDummy span,
-input[type=submit].auiButtonIconDummy span,
-input[type=button].auiButtonIconDummy span,
-input[type=reset].auiButtonIconDummy span {
-  display: table-cell;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  vertical-align: middle;
-}
-.buttonBase .fa, input[type=submit] .fa,
-input[type=button] .fa,
-input[type=reset] .fa,
-button .fa,
-.auiButton .fa,
-.auiSelectButton a .fa,
-.auiSelectButtonSmall a .fa,
-.auiButtonBold .fa,
-.auiButtonIcon .fa, .auiButtonAction .fa, .auiButtonSmall .fa, .auiButtonDisabled .fa, .auiButtonDummy .fa, .auiButtonIconDummy .fa, .buttonBase [class*="icon-"], input[type=submit] [class*="icon-"],
-input[type=button] [class*="icon-"],
-input[type=reset] [class*="icon-"],
-button [class*="icon-"],
-.auiButton [class*="icon-"],
-.auiSelectButton a [class*="icon-"],
-.auiSelectButtonSmall a [class*="icon-"],
-.auiButtonBold [class*="icon-"],
-.auiButtonIcon [class*="icon-"], .auiButtonAction [class*="icon-"], .auiButtonSmall [class*="icon-"], .auiButtonDisabled [class*="icon-"], .auiButtonDummy [class*="icon-"], .auiButtonIconDummy [class*="icon-"], .buttonBase [class^="icon-"], input[type=submit] [class^="icon-"],
-input[type=button] [class^="icon-"],
-input[type=reset] [class^="icon-"],
-button [class^="icon-"],
-.auiButton [class^="icon-"],
-.auiSelectButton a [class^="icon-"],
-.auiSelectButtonSmall a [class^="icon-"],
-.auiButtonBold [class^="icon-"],
-.auiButtonIcon [class^="icon-"], .auiButtonAction [class^="icon-"], .auiButtonSmall [class^="icon-"], .auiButtonDisabled [class^="icon-"], .auiButtonDummy [class^="icon-"], .auiButtonIconDummy [class^="icon-"] {
-  cursor: pointer;
-}
-
+/***************************************************
+	auiButton (v2)
+--------------------------------------------------*/
 input[type=submit],
 input[type=button],
 input[type=reset],
 button,
 .auiButton,
-.auiSelectButton a,
-.auiWidget .auiSelectButton a,
-.auiSelectButtonSmall a,
-.auiWidget .auiSelectButtonSmall a,
+.auiButtonAction,
 .auiButtonBold,
-input[type=submit].auiButtonBold,
-input[type=button].auiButtonBold,
-input[type=reset].auiButtonBold,
-button.auiButtonBold,
+.auiButtonSearch,
+.auiButtonSmall,
+.auiButtonDisabled,
 .auiButtonIcon,
-input[type=submit].auiButtonIcon,
-input[type=button].auiButtonIcon,
-input[type=reset].auiButtonIcon,
-button.auiButtonIcon {
+.auiButtonDummy,
+.auiButtonIconDummy,
+.auiSelectButton a,
+.auiWidget .auiSelectButton a {
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  padding: 0 8px;
+  color: #333333;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f6f6f6;
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f0f0f0));
   background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
   background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
@@ -1634,33 +1488,214 @@ button.auiButtonIcon {
   *zoom: 1;
   filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0');
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: solid 1px #d2d2d2;
+  border-bottom-color: #b3b3b3;
+  white-space: nowrap;
+  *zoom: 1;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  box-sizing: border-box !important;
+}
+input[type=submit]:hover, input[type=submit]:focus, input[type=submit]:active, input[type=submit].active,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:hover,
+input[type=reset]:focus,
+input[type=reset]:active,
+input[type=reset].active,
+button:hover,
+button:focus,
+button:active,
+button.active,
+.auiButton:hover,
+.auiButton:focus,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
+.auiButtonDummy:hover,
+.auiButtonDummy:focus,
+.auiButtonDummy:active,
+.auiButtonDummy.active,
+.auiButtonIconDummy:hover,
+.auiButtonIconDummy:focus,
+.auiButtonIconDummy:active,
+.auiButtonIconDummy.active,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiSelectButton a:active,
+.auiSelectButton a.active,
+.auiWidget .auiSelectButton a:hover,
+.auiWidget .auiSelectButton a:focus,
+.auiWidget .auiSelectButton a:active,
+.auiWidget .auiSelectButton a.active {
+  border: solid 1px #999999;
+  color: #333333;
+  text-decoration: none;
 }
 input[type=submit]:active,
 input[type=button]:active,
 input[type=reset]:active,
 button:active,
 .auiButton:active,
-.auiSelectButton a:active,
-.auiSelectButtonSmall a:active,
+.auiButtonAction:active,
 .auiButtonBold:active,
-input[type=submit].auiButtonBold:active,
-input[type=button].auiButtonBold:active,
-input[type=reset].auiButtonBold:active,
-button.auiButtonBold:active,
+.auiButtonSearch:active,
+.auiButtonSmall:active,
+.auiButtonDisabled:active,
 .auiButtonIcon:active,
-input[type=submit].auiButtonIcon:active,
-input[type=button].auiButtonIcon:active,
-input[type=reset].auiButtonIcon:active,
-button.auiButtonIcon:active {
-  background-color: #d2d2d2;
+.auiButtonDummy:active,
+.auiButtonIconDummy:active,
+.auiSelectButton a:active,
+.auiWidget .auiSelectButton a:active {
+  background-image: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  filter: none !important;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  background-color: #d2d2d2 !important;
+}
+input[type=submit]:hover, input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=reset]:hover,
+input[type=reset]:focus,
+button:hover,
+button:focus,
+.auiButton:hover,
+.auiButton:focus,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonDummy:hover,
+.auiButtonDummy:focus,
+.auiButtonIconDummy:hover,
+.auiButtonIconDummy:focus,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiWidget .auiSelectButton a:hover,
+.auiWidget .auiSelectButton a:focus {
   border: solid 1px #999999;
+  color: #333333;
+  text-decoration: none;
+}
+input[type=submit]:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+button:focus,
+.auiButton:focus,
+.auiButtonAction:focus,
+.auiButtonBold:focus,
+.auiButtonSearch:focus,
+.auiButtonSmall:focus,
+.auiButtonDisabled:focus,
+.auiButtonIcon:focus,
+.auiButtonDummy:focus,
+.auiButtonIconDummy:focus,
+.auiSelectButton a:focus,
+.auiWidget .auiSelectButton a:focus {
+  outline: none;
+}
+input[type=submit] span,
+input[type=button] span,
+input[type=reset] span,
+button span,
+.auiButton span,
+.auiButtonAction span,
+.auiButtonBold span,
+.auiButtonSearch span,
+.auiButtonSmall span,
+.auiButtonDisabled span,
+.auiButtonIcon span,
+.auiButtonDummy span,
+.auiButtonIconDummy span,
+.auiSelectButton a span,
+.auiWidget .auiSelectButton a span {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+@-moz-document url-prefix() {
+  /*Fx*/
+  input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button {
+    padding: 0 6px !important;
+  }
+}
+
+*:first-child + html input[type=submit],
+*:first-child + html input[type=button],
+*:first-child + html input[type=reset],
+*:first-child + html button {
+  height: 32px;
+  line-height: 26px;
+}
+
+button.auiButton,
+button {
+  padding: 0 0.55em;
+}
+
+.auiButtonSmall {
+  padding: 0 5px;
+  height: 16px !important;
+  line-height: 16px !important;
+  font-size: 10px;
+}
+
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall {
+  line-height: 1em !important;
 }
 
 .auiButtonAction,
-input[type=submit].auiButtonAction,
-input[type=button].auiButtonAction,
-input[type=reset].auiButtonAction,
-button.auiButtonAction {
+input.auiButtonAction {
   background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffa31a), color-stop(100%, #ff8400));
   background-image: -webkit-linear-gradient(top, #ffa31a, #ff8400);
   background-image: -moz-linear-gradient(top, #ffa31a, #ff8400);
@@ -1673,103 +1708,88 @@ button.auiButtonAction {
   border: solid 1px #e68a00 !important;
 }
 .auiButtonAction:hover, .auiButtonAction:focus,
-input[type=submit].auiButtonAction:hover,
-input[type=submit].auiButtonAction:focus,
-input[type=button].auiButtonAction:hover,
-input[type=button].auiButtonAction:focus,
-input[type=reset].auiButtonAction:hover,
-input[type=reset].auiButtonAction:focus,
-button.auiButtonAction:hover,
-button.auiButtonAction:focus {
+input.auiButtonAction:hover,
+input.auiButtonAction:focus {
   color: white;
   border: solid 1px #804d00 !important;
 }
 .auiButtonAction:active,
-input[type=submit].auiButtonAction:active,
-input[type=button].auiButtonAction:active,
-input[type=reset].auiButtonAction:active,
-button.auiButtonAction:active {
+input.auiButtonAction:active {
   background-color: #ff6e00 !important;
   border: solid 1px #804d00 !important;
 }
 .auiButtonAction .fa, .auiButtonAction [class*="icon-"], .auiButtonAction [class^="icon-"],
-input[type=submit].auiButtonAction .fa,
-input[type=submit].auiButtonAction [class*="icon-"],
-input[type=submit].auiButtonAction [class^="icon-"],
-input[type=button].auiButtonAction .fa,
-input[type=button].auiButtonAction [class*="icon-"],
-input[type=button].auiButtonAction [class^="icon-"],
-input[type=reset].auiButtonAction .fa,
-input[type=reset].auiButtonAction [class*="icon-"],
-input[type=reset].auiButtonAction [class^="icon-"],
-button.auiButtonAction .fa,
-button.auiButtonAction [class*="icon-"],
-button.auiButtonAction [class^="icon-"] {
+input.auiButtonAction .fa,
+input.auiButtonAction [class*="icon-"],
+input.auiButtonAction [class^="icon-"] {
   color: white;
 }
 
-.auiButtonSmall,
-input[type=submit].auiButtonSmall,
-input[type=button].auiButtonSmall,
-input[type=reset].auiButtonSmall,
-button.auiButtonSmall {
-  font-size: 10px;
-  height: 24px;
-  line-height: 24px;
-  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f0f0f0));
-  background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
-  background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
-  background-image: -o-linear-gradient(top, #ffffff, #f0f0f0);
-  background-image: linear-gradient(top, #ffffff, #f0f0f0);
-  *zoom: 1;
-  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0');
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-  -webkit-box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
-  -moz-box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.5);
+.auiButtonDisabled,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:active,
+input[disabled],
+input[disabled]:hover,
+input[disabled]:active,
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+  color: #999999 !important;
+  background-image: none !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+  background-color: #f0f0f0 !important;
+  border: solid 1px #d2d2d2 !important;
+  cursor: default;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  text-shadow: 0 1px 0 white;
+}
+
+.auiButton span {
+  display: table-cell;
+  min-width: 20px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.auiButton i {
+  color: #333333;
+}
+
+.auiButtonSmall span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.auiButton img,
+.auiButtonSmall img {
+  display: inline;
+  vertical-align: middle;
 }
 
 .auiButtonIcon,
-input[type=submit].auiButtonIcon,
-input[type=button].auiButtonIcon,
-input[type=reset].auiButtonIcon,
-button.auiButtonIcon,
-.auiButtonIconDummy,
-input[type=submit].auiButtonIconDummy,
-input[type=button].auiButtonIconDummy,
-input[type=reset].auiButtonIconDummy,
-button.auiButtonIconDummy {
+.auiButtonIconDummy {
   min-width: 24px;
   height: 24px;
   line-height: 24px;
   padding: 3px;
 }
 .auiButtonIcon span,
-input[type=submit].auiButtonIcon span,
-input[type=button].auiButtonIcon span,
-input[type=reset].auiButtonIcon span,
-button.auiButtonIcon span,
-.auiButtonIconDummy span,
-input[type=submit].auiButtonIconDummy span,
-input[type=button].auiButtonIconDummy span,
-input[type=reset].auiButtonIconDummy span,
-button.auiButtonIconDummy span {
+.auiButtonIconDummy span {
   display: table-cell;
   min-width: 16px;
   height: 16px;
   line-height: 16px;
   text-align: center;
+  cursor: pointer;
+  vertical-align: baseline;
 }
 .auiButtonIcon [class*="icon-"],
-input[type=submit].auiButtonIcon [class*="icon-"],
-input[type=button].auiButtonIcon [class*="icon-"],
-input[type=reset].auiButtonIcon [class*="icon-"],
-button.auiButtonIcon [class*="icon-"],
-.auiButtonIconDummy [class*="icon-"],
-input[type=submit].auiButtonIconDummy [class*="icon-"],
-input[type=button].auiButtonIconDummy [class*="icon-"],
-input[type=reset].auiButtonIconDummy [class*="icon-"],
-button.auiButtonIconDummy [class*="icon-"] {
+.auiButtonIconDummy [class*="icon-"] {
   display: inline-block;
   color: #666;
   width: 16px;
@@ -1777,63 +1797,42 @@ button.auiButtonIconDummy [class*="icon-"] {
   line-height: 16px;
 }
 
-.auiButtonDisabled,
-input[type=submit].auiButtonDisabled,
-input[type=button].auiButtonDisabled,
-input[type=reset].auiButtonDisabled,
-button.auiButtonDisabled {
-  background-color: #f0f0f0;
-  color: #999999;
-  cursor: default;
+[class^="auiButton"] [class^="icon-"] {
+  line-height: 16px;
 }
-.auiButtonDisabled:hover, .auiButtonDisabled:focus, .auiButtonDisabled:active,
-input[type=submit].auiButtonDisabled:hover,
-input[type=submit].auiButtonDisabled:focus,
-input[type=submit].auiButtonDisabled:active,
-input[type=button].auiButtonDisabled:hover,
-input[type=button].auiButtonDisabled:focus,
-input[type=button].auiButtonDisabled:active,
-input[type=reset].auiButtonDisabled:hover,
-input[type=reset].auiButtonDisabled:focus,
-input[type=reset].auiButtonDisabled:active,
-button.auiButtonDisabled:hover,
-button.auiButtonDisabled:focus,
-button.auiButtonDisabled:active {
-  color: #999999;
-  border: solid 1px #d2d2d2;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
+  line-height: 15px !important;
 }
 
-.auiSelectButton a span,
-.auiWidget .auiSelectButton a span,
-.auiSelectButtonSmall a span,
-.auiWidget .auiSelectButtonSmall a span {
-  display: block;
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+  cursor: default !important;
 }
 
 /***************************************************
 	auiSelectButton
 --------------------------------------------------*/
-.auiSelectButton,
-.auiSelectButtonSmall {
+.auiSelectButton {
   background: #fff;
 }
+.auiSelectButton ul {
+  display: inline;
+}
 .auiSelectButton li,
-.auiSelectButton div,
-.auiSelectButtonSmall li,
-.auiSelectButtonSmall div {
+.auiSelectButton div {
   float: left;
   background: none;
   padding: 0;
   line-height: 1;
 }
-.auiSelectButton a, .auiWidget .auiSelectButton a,
-.auiSelectButtonSmall a, .auiWidget
-.auiSelectButtonSmall a {
+.auiSelectButton a, .auiWidget .auiSelectButton a {
   display: block;
-  margin: 0 -1px 0 0;
+  margin: 0 -1px;
   padding: 0 !important;
   line-height: 30px;
   min-width: 27px;
@@ -1844,116 +1843,74 @@ button.auiButtonDisabled:active {
   border-radius: 0;
   border-color: #d2d2d2 #d2d2d2 silver;
 }
-.auiSelectButton a,
-.auiSelectButtonSmall a {
-  text-align: center;
-}
-.auiSelectButton a [class*=icon-],
-.auiSelectButtonSmall a [class*=icon-] {
+.auiSelectButton a [class*=icon-] {
   line-height: 30px;
 }
 .auiSelectButton a .icon-backward,
-.auiSelectButton a .icon-forward,
-.auiSelectButtonSmall a .icon-backward,
-.auiSelectButtonSmall a .icon-forward {
+.auiSelectButton a .icon-forward {
   font-size: 10px;
 }
-.auiSelectButton a .icon-backward,
-.auiSelectButtonSmall a .icon-backward {
+.auiSelectButton a .icon-backward {
   margin-right: 2px;
 }
-.auiSelectButton a .icon-forward,
-.auiSelectButtonSmall a .icon-forward {
+.auiSelectButton a .icon-forward {
   margin-left: 1px;
 }
-.auiSelectButton a:hover, .auiSelectButton a:active, .auiSelectButton a:focus,
-.auiSelectButtonSmall a:hover,
-.auiSelectButtonSmall a:active,
-.auiSelectButtonSmall a:focus {
+.auiSelectButton a:hover, .auiSelectButton a:active, .auiSelectButton a:focus {
   position: relative;
 }
-.auiSelectButton a:hover span, .auiSelectButton a:active span, .auiSelectButton a:focus span,
-.auiSelectButtonSmall a:hover span,
-.auiSelectButtonSmall a:active span,
-.auiSelectButtonSmall a:focus span {
+.auiSelectButton a.first,
+.auiSelectButton a.btn {
+  margin-left: 0;
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.auiSelectButton a.last,
+.auiSelectButton a.btn {
+  margin-right: 0;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.auiSelectButton a:hover span {
   color: #333333;
 }
-.auiSelectButton a.first,
-.auiSelectButton a.btn,
-.auiSelectButtonSmall a.first,
-.auiSelectButtonSmall a.btn {
-  margin-left: 0;
-  -moz-border-radius-topleft: 3px;
-  -webkit-border-top-left-radius: 3px;
-  border-top-left-radius: 3px;
-  -moz-border-radius-bottomleft: 3px;
-  -webkit-border-bottom-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-.auiSelectButton a.last,
-.auiSelectButtonSmall a.last {
-  margin: 0;
-}
-.auiSelectButton a.last:hover:after,
-.auiSelectButtonSmall a.last:hover:after {
-  display: none;
-}
-.auiSelectButton a.last,
-.auiSelectButton a.btn,
-.auiSelectButtonSmall a.last,
-.auiSelectButtonSmall a.btn {
-  margin-right: 0;
-  -moz-border-radius-topright: 3px;
-  -webkit-border-top-right-radius: 3px;
-  border-top-right-radius: 3px;
-  -moz-border-radius-bottomright: 3px;
-  -webkit-border-bottom-right-radius: 3px;
-  border-bottom-right-radius: 3px;
-}
 .auiSelectButton span i,
-.auiSelectButton span img,
-.auiSelectButtonSmall span i,
-.auiSelectButtonSmall span img {
+.auiSelectButton span img {
   margin: 6px 0;
 }
-.auiSelectButton .active a,
-.auiSelectButtonSmall .active a {
+.auiSelectButton .active a {
   background: #d2d2d2;
   border-color: #d2d2d2 #d2d2d2 silver;
   cursor: default;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
 }
 .auiSelectButton .active a:focus,
-.auiSelectButton .active a:active,
-.auiSelectButtonSmall .active a:focus,
-.auiSelectButtonSmall .active a:active {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
+.auiSelectButton .active a:active {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
 }
-.auiSelectButton .active a:hover span,
-.auiSelectButtonSmall .active a:hover span {
+.auiSelectButton .active a:hover span {
   cursor: default;
 }
-.auiSelectButton .auiIconArrowLeft,
-.auiSelectButtonSmall .auiIconArrowLeft {
+.auiSelectButton .auiIconArrowLeft {
   margin-left: -4px !important;
 }
-.auiWidget .auiSelectButton span, .auiWidget
-.auiSelectButtonSmall span {
+.auiWidget .auiSelectButton span {
   padding: 0;
   background-image: none;
 }
-
-.auiSelectButtonSmall a, .auiWidget .auiSelectButtonSmall a {
-  height: 24px;
-  line-height: 24px;
-  font-size: 10px;
+.auiSelectButton .count {
+  line-height: 30px;
 }
-.auiSelectButtonSmall a [class*=icon-], .auiWidget .auiSelectButtonSmall a [class*=icon-] {
-  line-height: 24px;
-}
-
 .selectCount {
   display: inline-block;
   line-height: 100%;
@@ -3646,12 +3603,13 @@ ul.attachments {
 
 .uploadText {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
   width: 9em;
   line-height: 2em;
-  margin-top: -1em;
-  margin-left: -4.5em;
 }
 
 .singleFile li {
