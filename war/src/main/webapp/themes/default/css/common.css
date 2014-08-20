@@ -2,7 +2,7 @@
 .bRadius3, span.dispUser, .menubar ul li,
 ul.blockList li, .menubar > ul li a,
 .menubar.multi ul li a,
-ul.blockList li a, .avatar_l, .avatar_m, .avatar_s {
+ul.blockList li a, .avatar img, .avatar_l, .avatar_m, .avatar_s {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -1021,20 +1021,18 @@ table.simpleTable .caption {
   line-height: 32px;
 }
 
-.indicator {
-  background: url(../images/common/indicator.gif) no-repeat left;
-  padding: 2px 0 2px 18px;
-  margin-left: 2px;
-  clear: both;
-}
-
 .indicator,
 .indicatorGlay,
 .indicatorBlack {
+  width: 18px;
+}
+
+i.indicator,
+i.indicatorGlay,
+i.indicatorBlack {
   display: inline-block;
   margin: 0;
   padding: 0;
-  width: 18px;
   height: 18px;
   vertical-align: middle;
   clear: both;
