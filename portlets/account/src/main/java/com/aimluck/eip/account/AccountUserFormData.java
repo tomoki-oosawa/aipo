@@ -1570,6 +1570,10 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       return true;
+    } catch (RuntimeException e) {
+      Database.rollback();
+      logger.error("AccountUserFormData.deleteFormData", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("AccountUserFormData.deleteFormData", e);
