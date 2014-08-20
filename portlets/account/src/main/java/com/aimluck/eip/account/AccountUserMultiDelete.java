@@ -335,6 +335,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
       }
 
       return msgList.size() == 0;
+    } catch (RuntimeException e) {
+      Database.rollback();
+      logger.error("AccountUserMultiDelete.action", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("AccountUserMultiDelete.action", e);
