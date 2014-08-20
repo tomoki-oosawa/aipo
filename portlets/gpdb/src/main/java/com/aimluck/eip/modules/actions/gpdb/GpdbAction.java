@@ -183,6 +183,7 @@ public class GpdbAction extends ALBaseAction {
    */
   private void clearSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
+    list.add("sword");
     list.add(LIST_SORT_STR);
     list.add(LIST_SORT_TYPE_STR);
     list.add(ITEM_LIST_SORT_STR);

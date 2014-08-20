@@ -203,6 +203,12 @@ public class GpdbUtils {
   /** ソート形式 */
   public static final String SORT_STRING = "sort";
 
+  /** 検索キーワード */
+  private static final String SEARCH_WORD = "sword";
+
+  /** パラメータリセットの識別子 */
+  private static final String RESET_KEYWORD_FLAG = "reset_keyword_params";
+
   /** 入力形式のマップ */
   @SuppressWarnings("serial")
   public static final Map<String, String> ITEM_TYPE = Collections
@@ -2123,4 +2129,50 @@ public class GpdbUtils {
     return value;
   }
 
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetKeywordFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_KEYWORD_FLAG);
+    return resetflag != null;
+  }
+
+  /**
+   * フィルターを初期化する．
+   * 
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetKeyword(RunData rundata, Context context,
+      String className) {
+    ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
+  }
+
+  /**
+   * 検索クエリ用のキーワードを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getSearchword(RunData rundata, Context context) {
+    String keyword = null;
+    String keywordParm = rundata.getParameters().getString(SEARCH_WORD);
+    keyword = ALEipUtils.getTemp(rundata, context, SEARCH_WORD);
+    if (keywordParm == null && (keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, "");
+      keyword = "";
+    } else if (keywordParm != null) {
+      keywordParm = keywordParm.trim();
+      ALEipUtils.setTemp(rundata, context, SEARCH_WORD, keywordParm);
+      keyword = keywordParm;
+    }
+
+    return keyword;
+  }
 }

@@ -30,18 +30,31 @@
 #elseif(!$result.List)
 	<div class="auiBlankBox">$l10n.GPDB_SELECT_DATABASE</div>
 #elseif($result.List.size() == 0)
+	<div class="auiSummaryMeta clearfix">
+	#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+	<input type="hidden" name="template" value="GpdbRecordListScreen"/>
+	<input type="hidden" name="mode" value="ajaxsearch"/>
+	#AUISearchInput("sword" "sword" "$!result.searchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")
+	#AUIButtonSearch("$l10n.GPDB_SEARCH")
+	#AUISearchIndicator()
+	#AUISearchFooter()
+	</div>
 	<div class="auiBlankBox">$l10n.GPDB_NO_DATA</div>
 #else
 <div class="auiSummaryMeta clearfix">
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="GpdbRecordListScreen"/>
 <input type="hidden" name="mode" value="ajaxsearch"/>
-#AUISearchInput("sword" "sword" "$!result.SearchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")
+#AUISearchInput("sword" "sword" "$!result.searchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")
 #AUIButtonSearch("$l10n.GPDB_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 </div>
-
+#if($!result.searchWord && ($!result.searchWord.toString() != ""))
+#AUISummaryDiv()
+#AUIsearchresult($!result.searchWord.toString())
+#AUISummaryDivfooter()
+#end
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader('$l10n.GPDB_DATA')

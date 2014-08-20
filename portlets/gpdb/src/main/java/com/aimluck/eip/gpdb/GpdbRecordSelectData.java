@@ -34,6 +34,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdb;
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdbItem;
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecord;
@@ -78,6 +79,9 @@ public class GpdbRecordSelectData extends
   /** 区分値マップ。キー：区分値ID */
   private Map<String, List<GpdbKubunValueResultData>> mapGpdbKubunValue;
 
+  /** ターゲット　 */
+  private ALStringField searchWord;
+
   /**
    * 初期設定
    * 
@@ -97,6 +101,7 @@ public class GpdbRecordSelectData extends
         .setTemp(rundata, context, LIST_SORT_STR, GpdbUtils.SORT_STRING);
     }
 
+    searchWord = new ALStringField();
     super.init(action, rundata, context);
 
     // super.init()後にLIST_FILTER_STRに格納される
@@ -192,6 +197,16 @@ public class GpdbRecordSelectData extends
         }
       }
 
+      if (GpdbUtils.hasResetKeywordFlag(rundata, context)) {
+        GpdbUtils.resetKeyword(rundata, context, this.getClass().getName());
+      }
+      searchWord.setValue(GpdbUtils.getSearchword(rundata, context));
+      String searchValue;
+      if ((searchWord != null) && (!searchWord.getValue().equals(""))) {
+        searchValue = "   AND value LIKE '%" + searchWord + "%'";
+      } else {
+        searchValue = "";
+      }
       String ascDesc;
       if (current_sort_type == null) {
         ascDesc = "DESC";
@@ -211,6 +226,7 @@ public class GpdbRecordSelectData extends
           .append("    ON g.gpdb_id = r.gpdb_id")
           .append(" WHERE r.gpdb_id = #bind($gpdb_id)")
           .append("   AND i.list_flg = #bind($list_flg)")
+          .append(searchValue)
           .append(" ORDER BY (SELECT " + sortValue)
           .append("             FROM eip_t_gpdb_record r2")
           .append("            WHERE r2.record_no = r.record_no")
@@ -452,6 +468,13 @@ public class GpdbRecordSelectData extends
    */
   public List<GpdbItemResultData> getGpdbItemList() {
     return gpdbItemList;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getSearchWord() {
+    return searchWord;
   }
 
   /**
