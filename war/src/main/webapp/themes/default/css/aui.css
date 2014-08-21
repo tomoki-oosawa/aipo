@@ -2355,7 +2355,7 @@ button[disabled]:active {
 }
 .submenu_v2 li {
   padding: 0 5px;
-  background: none;
+  background: #ffffff;
   border-right: solid 1px #d2d2d2;
   border-left: solid 1px #d2d2d2;
 }
