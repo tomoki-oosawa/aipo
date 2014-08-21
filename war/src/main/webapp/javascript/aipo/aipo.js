@@ -307,3 +307,45 @@ aipo.arrayContains=function(a,val){//:TODO binary search
 	}
 	return false;
 };
+
+
+
+//非同期で読み込みを行う
+//target : 読み込んだ要素を入れる場所
+//url : 読み込む要素のurl
+//outerHTML : trueなら読み込んだ要素によってtargetが上書きされる。false（または省略）なら読み込んだ要素がtargetの子要素になる。
+aipo.asyncLoad = function(target, url, outerHTML){
+
+    var makeRequestParams = {
+        "METHOD" : "GET"
+    };
+
+    gadgets.io.makeNonProxiedRequest(url,
+            handleResponse,
+            makeRequestParams,
+            null
+            );
+
+    function handleResponse(ret) {
+        if (ret.rc == 200 && typeof target != "undefined") {
+        	if(outerHTML){
+        		target.outerHTML=ret.text;
+        	}else{
+        		target.innerHTML=ret.text;
+        	}
+        }
+    }
+
+
+};
+
+
+
+
+
+
+
+
+
+
+
