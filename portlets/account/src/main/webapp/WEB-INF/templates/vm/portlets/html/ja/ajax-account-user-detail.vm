@@ -81,9 +81,9 @@ $!record <br />
 #ALtdcell($l10n.ACCOUNT_ISNOT_ADMIN)
 #end
 #ALtdcaption("Webメール容量")
-<td>
+#ALtdcellheader()
 #AsyncLoad("$async_url")
-</td>
+#ALtdcellfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #if(!$!{noedit})
