@@ -138,7 +138,13 @@
 <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoListScreen").addQueryData("mode","update").addQueryData("start","$result.CurrentPage").addQueryData("entityid", $!record.TodoId).addQueryData("secid","$secid").addQueryData("state", "100"))" #if ($!record.State.toString() == "100") selected="selected" #end>$l10n.TODO_FINISHING</option>
 </select>
 #else
+#if($!{record.State.toString()}=="0")
+$l10n.TODO_NOT_START
+#elseif($!{record.State.toString()}=="100")
+$l10n.TODO_FINISHING
+#else
 $!{record.State.toString()}%
+#end
 #end
 
 #ALtdcellfooter()
