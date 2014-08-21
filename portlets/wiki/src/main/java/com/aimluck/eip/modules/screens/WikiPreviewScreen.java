@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import net.sf.json.JSONObject;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -52,10 +54,12 @@ public class WikiPreviewScreen extends ALVelocityScreen {
         page = rundata.getParameters().getString("wikipage");
       }
       String note = null;
-      if (rundata.getParameters().containsKey("note")) {
-        note = rundata.getParameters().getString("note");
-      }
 
+      String payload = WikiUtils.getPayload(rundata);
+      JSONObject jsonObject = JSONObject.fromObject(payload);
+      if (jsonObject != null && jsonObject.containsKey("note")) {
+        note = jsonObject.getString("note");
+      }
       WikiSelectData previewData = new WikiSelectData();
       previewData.initField();
       previewData.doViewDetail(this, rundata, context);

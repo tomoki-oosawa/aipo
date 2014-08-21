@@ -505,10 +505,11 @@ aipo.wiki.showPreviewDialog = function(url){
 	target.style.display = "block";
 
 	var note = dojo.byId("wiki_note").value;
-	url+="&note="+encodeURIComponent(note);
+
+	var request={"note": note };
 
 	var outerHTML=false;
-	aipo.asyncLoad(target, url, outerHTML);
+	aipo.asyncLoad(target, url,request, outerHTML);
 }
 
 

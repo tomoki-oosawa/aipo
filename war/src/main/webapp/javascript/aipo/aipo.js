@@ -312,16 +312,17 @@ aipo.arrayContains=function(a,val){//:TODO binary search
 //target : 読み込んだ要素を入れる場所
 //url : 読み込む要素のurl
 //outerHTML : trueなら読み込んだ要素によってtargetが上書きされる。false（または省略）なら読み込んだ要素がtargetの子要素になる。
-aipo.asyncLoad = function(target, url, outerHTML){
+aipo.asyncLoad = function(target, url,request, outerHTML){
 
   var makeRequestParams = {
-      "METHOD" : "GET"
+	        "METHOD" : "POST",
+	        "POST_DATA" : gadgets.json.stringify(request)
   };
 
   gadgets.io.makeNonProxiedRequest(url,
           handleResponse,
           makeRequestParams,
-          null
+          "application/javascript"
           );
 
   function handleResponse(ret) {
