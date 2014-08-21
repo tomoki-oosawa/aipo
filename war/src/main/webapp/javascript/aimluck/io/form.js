@@ -463,6 +463,22 @@ aimluck.io.ajaxMultiDeleteSubmit = function (button, url, indicator_id, portlet_
   }
 }
 
+aimluck.io.ajaxAllDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWA_STR, {
+	    dwa_del: nlsStrings.DWA_DEL,
+	    dwa_sel: nlsStrings.DWA_SEL,
+	    dwa_name: button.form._name.value
+	  });
+	  // すべての'+button.form._name.value+'を削除してよろしいですか？
+	  if (confirm(confirmString)) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
+
 aimluck.io.ajaxMultiEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.MULTIENABLESUBMIT_STR,
