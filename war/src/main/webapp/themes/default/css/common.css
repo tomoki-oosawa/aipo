@@ -2695,6 +2695,25 @@ ul.blockList li a.selected {
 }
 
 /***************************************************
+	position
+--------------------------------------------------*/
+.static {
+  position: static;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+/***************************************************
 	avatar
 --------------------------------------------------*/
 .avatar_l {

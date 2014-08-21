@@ -627,12 +627,8 @@ ul.hdTools .dropdown:before {
   border-bottom: solid 1px #d2d2d2;
 }
 .dropdown .sideBlock {
-  position: relative;
   float: left;
   width: 280px;
-}
-.dropdown .sideBlock .inner {
-  padding: 10px;
 }
 .dropdown .contents {
   position: relative;
@@ -719,24 +715,6 @@ ul.hdTools .dropdown:before {
 --------------------------------------------------*/
 #dd_message {
   width: 100%;
-}
-#dd_message .sideBlock {
-  background-color: #333333;
-  color: white;
-}
-#dd_message .sideBlock .search {
-  background-color: #999999;
-  border-color: #999999;
-}
-#dd_message .sideBlock .search input[type=text] {
-  background-color: #999999;
-}
-#dd_message .sideBlock .search button {
-  text-shadow: none;
-}
-#dd_message .sideBlock .search label,
-#dd_message .sideBlock .search [class*="icon-"] {
-  color: #d2d2d2;
 }
 #dd_message .mainBlock {
   margin-left: 280px;
@@ -840,6 +818,24 @@ ul.hdTools .dropdown:before {
   border-bottom: solid 1px black;
 }
 
+.roomHeader {
+  margin-bottom: 10px;
+}
+.roomHeader .floatRight a {
+  display: inline-block;
+}
+.roomHeader .floatRight a [class*=icon-] {
+  display: inline-block;
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #d2d2d2;
+}
+.roomHeader .floatRight a:hover [class*=icon-] {
+  color: #333333;
+}
+
 #messageTimeline {
   margin: 0 -10px;
 }
@@ -849,6 +845,47 @@ ul.hdTools .dropdown:before {
 }
 #messageTimeline .message.invite {
   background-color: #f6f6f6;
+}
+
+/***************************************************
+	sideBlock
+--------------------------------------------------*/
+.sideBlock {
+  position: relative;
+  background-color: #333333;
+  color: white;
+}
+.sideBlock .inner {
+  padding: 10px;
+}
+.sideBlock .search {
+  background-color: #999999;
+  border-color: #999999;
+}
+.sideBlock .search input[type=text] {
+  background-color: #999999;
+}
+.sideBlock .search button {
+  text-shadow: none;
+}
+.sideBlock .search label,
+.sideBlock .search [class*="icon-"] {
+  color: #d2d2d2;
+}
+.sideBlock .auiTabs .tab li a, .sideBlock .auiTabs .tab li:first-child a {
+  margin: 0;
+  background-color: #222222;
+  height: 45px;
+  line-height: 45px;
+  border: none;
+  color: #999999;
+}
+.sideBlock .auiTabs .tab li a:hover, .sideBlock .auiTabs .tab li:first-child a:hover {
+  color: white;
+}
+.sideBlock .auiTabs .tab li.active a {
+  background-color: #333333;
+  color: white !important;
 }
 
 /***************************************************
@@ -1462,7 +1499,7 @@ button[disabled]:active {
   margin-top: 5px;
   margin-right: 2px;
   color: #FFFFFF;
-  background: #e63439 !important;
+  background: #ff3333 !important;
   text-decoration: none;
 }
 
@@ -4635,6 +4672,7 @@ a:hover .auiWFicon [class^="icon-"] {
 [class^="icon-"] {
   font-size: 14px;
   color: #666666;
+  text-decoration: none !important;
 }
 
 /***************************************************
@@ -4643,12 +4681,16 @@ a:hover .auiWFicon [class^="icon-"] {
 .loader {
   padding: 10px;
   height: 20px;
+  line-height: 20px;
   background: url(../images/common/indicator.gif) no-repeat center center;
   background-size: 16px;
   text-align: center;
 }
 .loader img {
   vertical-align: middle;
+}
+.loader [class*=icon-] {
+  font-size: 18px;
 }
 
 .auiLoadWrapper {
