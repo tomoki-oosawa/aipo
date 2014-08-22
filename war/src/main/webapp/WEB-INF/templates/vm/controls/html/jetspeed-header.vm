@@ -1,0 +1,131 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2011 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+#*
+Copyright 2004 The Apache Software Foundation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*#
+#if ($data.User.hasLoggedIn() && "$!isError" != "true")
+<div id="auiHeader">
+	<div class="hdLogo"><a href="$!{jslink}/js_pane/$!{mypageId}?action=controls.Restore"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}"></a></div>
+	<div class="hdPages">
+		<ul>
+#foreach ( $tab in $tabs )
+#set($selected = $tab.Link && ($tab.isSelected() == true))
+			<li #if ($tab.isSelected() == true)class="current"#end><a href="$tab.Link" class="name" title="$tab.Title">$tab.Title</a><a href="javascript:void(0)" id="menubar_button_tab_$!{tab.Id}" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" class="setting toggle" title="ページ設定"><i class="icon-cog"></i></a>
+#if ($!tab.Authority)#foreach ($action in $tab.Actions)
+#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
+#set($sgclink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=StartGuideCustomizeFormScreen") )
+											<div class="menubar fixed body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
+											<ul>
+												<li>
+												#if (${client} == "IPAD")
+													<a href="${action.Link}" title="${action.Alt}">設定</a>
+												#else
+													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
+					    						#end
+												</li>
+												#if($!tab.Title.Value != "マイページ")
+												<li class="last">
+													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
+												</li>
+												#end
+											</ul>
+											</div>
+#end#end
+			</li>
+#end
+#set($beforeselected =$selected)
+#if ($data.User.getUserName()!="admin")
+			<li><a href="javascript:void(0)" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" class="plus" title="$l10n.WAR_ADD_MENU_TUB" ><i class="icon-plus"></i></a></li>
+#end
+		</ul>
+	</div>
+	<div class="hdNavigation">
+#if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
+		<ul class="hdCommunications">
+			<li>
+				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_NO_INFO_TO_YOU"><i class="sprite-notification"></i><span class="num" id="activityChecker"></span></a>
+				<div class="dropdown" id="dd_activity">
+					<div id="activityListPane"></div>
+				</div>
+			</li>
+		</ul>
+#end
+		<ul class="hdTools">
+			<li>
+				<a href="javascript:void(0)" id="mb_settings" class="last" onclick='aipo.menu.toggleDropdown("settings")' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');">
+#if ("$!data.User.getUserName()" != "admin")
+#if ($data.User.hasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" width="32" height="32" class="avatar_m" alt="$l10n.USERLIST_PHOTO" />
+#else
+				<img src="images/common/avatar_default3.png" width="32" height="32" class="avatar_m" alt="$l10n.USERLIST_PHOTO"/>
+#end#end
+				<span class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</span></a>
+				<div class="dropdown" id="dd_settings">
+					<ul class="dropdown_menu">
+#if ("$!data.User.getUserName()" != "admin")
+						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
+#if ($data.User.isAdmin())
+						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
+#end#end
+						<li class="divider"></li>
+						<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">$l10n.TOP_LOGOUT</a></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+#else
+<div id="auiHeader">
+	<div class="hdLogo"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}"></div>
+</div>
+#end
+#if("$!{activeurlselected}"!="")
+	<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
+#else
+	<input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
+#end
+#if ("$!data.User.getUserName()" != "admin")
+<script language="JavaScript" type="text/javascript">
+//<![CDATA[
+
+dojo.addOnLoad(function() {
+    aipo.menu.register("activity");
+    aipo.menu.register("settings");
+    aipo.menu.activity.reload();
+    aipo.menu.updateTitle();
+});
+
+
+//]]>
+</script>
+#end
