@@ -124,8 +124,9 @@ $l10n.COMMON_NOT_REFLECT_MSG
 <div id="printBody" style="width:600px;font-size:10pt;">
 
 
-<h1>$!{result.ParentTopic.TopicNameHtml}</h1>
-#AUIrowMTableWide()
+<h1>$!{result.ParentTopic.TopicNameHtml}($!result.ParentTopic.CategoryNameHtml#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")#end)</h1>
+<table class="p5" style="margin-top:10px;">
+  <tbody>
 	<tr>
 		<td style="border-bottom:none;">
 			<b>$!{result.ParentTopic.OwnerName}</b>
@@ -138,6 +139,13 @@ $l10n.COMMON_NOT_REFLECT_MSG
 		<td style="border-bottom:none;border-top:solid 1px #DDD">
 					$!{result.ParentTopic.Note}
 		</td>
+	</tr>
+#AUItablefooter()
+
+<table class="p5" style="margin-top:10px;">
+  <tbody>
+	<tr>
+	#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.MSGBOARD_COMMENT#ALtdheadfooter()
 	</tr>
     #set($firstCoTopic = true)
     #foreach ($record in $result.CoTopicList)
