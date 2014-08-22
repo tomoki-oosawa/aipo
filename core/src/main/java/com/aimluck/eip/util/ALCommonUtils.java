@@ -24,6 +24,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
@@ -464,5 +465,13 @@ public class ALCommonUtils {
 
   public static String getl10nFormat1(String key, Object values) {
     return ALLocalizationUtils.getl10nFormat(key, values);
+  }
+
+  public static String replaceToTelLink(String tel) {
+    if (!StringUtils.isEmpty(tel)) {
+      return tel.replaceAll("-", "");
+    } else {
+      return "";
+    }
   }
 }

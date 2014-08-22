@@ -310,6 +310,7 @@ public class ScheduleWeeklyJSONFormData {
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception e) {
+      Database.rollback();
       logger.error("schedule", e);
       return false;
     }
@@ -341,6 +342,7 @@ public class ScheduleWeeklyJSONFormData {
       msgList.add(ALAccessControlConstants.DEF_PERMISSION_ERROR_STR);
       return false;
     } catch (Exception e) {
+      Database.rollback();
       logger.error("schedule", e);
       return false;
     }

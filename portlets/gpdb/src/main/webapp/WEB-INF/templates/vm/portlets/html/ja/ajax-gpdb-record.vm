@@ -39,6 +39,9 @@
 	<div class="auiSummaryMeta clearfix">
 		<div class="floatLeft">
 			#AUIajaxbuttonCheckboxDelete("$l10n.GPDB_DO_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbRecordFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onListReceiveMessage")
+		    #if(${client}!="IPHONE")
+			#AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordScreenPrint").addQueryData("filter",$!result.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData('tab','list').addQueryData('reset_keyword_params','true').addQueryData('start',$result.CurrentPage))
+			#end
 			#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)

@@ -18,11 +18,16 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#if ($!result.currentSubMenu == 'created')
+#set ($isCreated = true)
+#else
+#set ($isCreated = false)
+#end
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
-#AUISummaryDivHeader()
+#AUISummaryFilterDivHeader()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportListScreen")' />
 <input type="hidden" name="template" value="ReportListScreen"/>
@@ -46,7 +51,8 @@
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.report.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.report.initFilterSearch("$!portlet.ID");' onblur='aipo.report.finFilterSearch("$!portlet.ID");' />
 </div>
-#AUIButtonSearch("$l10n.REPORT_SEARCH")
+
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
@@ -65,6 +71,9 @@
 #ALtdhead("#ALajaxsort('report_name' $l10n.REPORT_SETFIELDNAME_REPORT_NAME $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('start_date' $l10n.REPORT_SETFIELDNAME_CREATEDATE $result 'ReportListScreen')")
 #ALtdheadAtt("#ALajaxsort('user_id' $l10n.REPORT_CREATER $result 'ReportListScreen')" 'class="wName"')
+#if($!isCreated)
+#ALtdheadAtt($l10n.REPORT_SITUATION 'class="mb_hide" style="width:5%"')
+#end
 #ALtdhead("#ALajaxsort('create_date' $l10n.REPORT_CREATE_DATE $result 'ReportListScreen')")
 </tr>
 #foreach ($record in $result.List)
@@ -76,6 +85,9 @@
 #ALtdcellfooter()
 #ALtdcell("<div>$!{record.StartDate.toString($l10n.REPORT_TIME)}&nbsp;-&nbsp;$!{record.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}</div>")
 #ALtdcell("<div>$!record.ClientName</div>")
+#if($!isCreated)
+#ALtdcell("<div>$!record.ReadReport/$!record.SentReport</div>")
+#end
 #ALtdcellAtt("<div>$!record.CreateDateTime</div>" 'class="right mb_hide" nowrap="nowrap"')
 </tr>
 #end

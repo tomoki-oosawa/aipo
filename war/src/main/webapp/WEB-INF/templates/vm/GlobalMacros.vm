@@ -545,9 +545,8 @@ $theLink
 <span class="caution">$text</span>
 #end
 
-#macro(ALtelLink $tel)
-#if(${client} == "IPHONE")
-#set($telLink =$tel.toString().replaceAll("-",""))
+#macro(ALtelLink $tel $telLink)
+#if(${client} == "IPHONE" && $tel.toString()!="")
 <a  href="tel:$telLink">$tel</a>
 #else
 $tel
@@ -1618,6 +1617,11 @@ $item.get(0)
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdelete$portlet_id" value="" />
 #end
 
+#macro(AUIajaxbuttonCheckboxDeleteIcon $name $url $indicator_id $portlet_id $rt)
+<a name="ajaxbuttonCheckboxDelete" class="auiButton" onclick="aimluck.io.ajaxCheckboxDeleteSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxdeleteicon$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);" title="$name"><span><i class="icon-trash"></i></span></a>
+<input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdeleteicon$portlet_id" value="" />
+#end
+
 #macro(AUIajaxbuttonCheckboxEnable $name $url $indicator_id $portlet_id $rt)
 <a name="ajaxbuttonCheckboxEnable" class="auiButton" onclick="aimluck.io.ajaxCheckboxEnableSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxenable$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxenable$portlet_id" value="" />
@@ -1627,6 +1631,11 @@ $item.get(0)
 <a name="ajaxbuttonCheckboxDisable" class="auiButton" onclick="aimluck.io.ajaxCheckboxDisableSubmit(dojo.byId('dummy_btn_auiajaxbuttoncheckboxdisable$portlet_id'), '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $rt);">$name</a>
 <input type="hidden" id="dummy_btn_auiajaxbuttoncheckboxdisable$portlet_id" value="" />
 #end
+
+#macro(AUIajaxbuttonReload)
+<i class="icon-rotate-right"></i>
+#end
+
 
 #macro(AUIsearchresult $keyword)
 #if($!keyword && $!keyword != "")
@@ -1789,4 +1798,11 @@ $!{text}
 
 #macro(AUISearchFooter)
 </form>
+#end
+
+#macro(AsyncLoad $async_url)
+	<div>
+		<div class="indicator">読み込み中...</div>
+		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', true);"/>
+	</div>
 #end

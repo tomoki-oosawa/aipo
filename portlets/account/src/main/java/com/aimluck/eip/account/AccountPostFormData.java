@@ -413,8 +413,12 @@ public class AccountPostFormData extends ALAbstractFormData {
             post_name);
         query.setQualifier(exp);
         List<TurbineGroup> list = query.fetchList();
-        TurbineGroup tg = list.get(0);
-        memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
+        if (!list.isEmpty()) {
+          TurbineGroup tg = list.get(0);
+          memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
+        } else {
+          post_name.setValue(null);
+        }
       }
 
     } catch (RuntimeException ex) {

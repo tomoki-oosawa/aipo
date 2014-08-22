@@ -22,7 +22,9 @@ package com.aimluck.eip.account.util;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -31,6 +33,7 @@ import org.apache.jetspeed.om.security.Role;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.services.security.UnknownUserException;
 import org.apache.turbine.util.RunData;
@@ -55,8 +58,10 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントのユーティリティクラスです
@@ -83,6 +88,25 @@ public class AccountUtils {
   public static final String ACCOUNT_PERSON_PORTLET_NAME = "AccountPerson";
 
   public static final String ACCOUNT_LOGIN_PORTLET_NAME = "AccountLogin";
+
+  /** ユーザーの絞り込みに使用する項目 */
+  private static final Map<Integer, FilterRole> roleMap =
+    new HashMap<Integer, FilterRole>();
+
+  public static final Integer ROLE_ADMIN = 1;
+
+  public static final Integer ROLE_ACTIVE = 2;
+
+  public static final Integer ROLE_IN_ACTIVE = 3;
+
+  public static final Integer ROLE_INVITE = 4;
+
+  /** 検索キーワード変数の識別子 */
+  public static final String TARGET_KEYWORD = "keyword";
+
+  /** 添付ファイルを保管するディレクトリの指定 */
+  public static final String FOLDER_FILEDIR_ACCOUNT = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -539,5 +563,103 @@ public class AccountUtils {
       double value = bi.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
       return value + " MB";
     }
+  }
+
+  /**
+   * ユーザーのRole一覧を返します。
+   * 
+   * @return
+   */
+  public static Map<Integer, FilterRole> getRoleMap() {
+    if (roleMap.size() == 0) {
+      roleMap.put(ROLE_ADMIN, new FilterRole(ROLE_ADMIN, ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ROLE_ADMIN")));
+      roleMap.put(ROLE_ACTIVE, new FilterRole(ROLE_ACTIVE, ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ROLE_ACTIVE")));
+      roleMap.put(ROLE_IN_ACTIVE, new FilterRole(
+        ROLE_IN_ACTIVE,
+        ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_IN_ACTIVE")));
+      // roleMap.put(ROLE_INVITE, new FilterRole(ROLE_INVITE,
+      // ALLocalizationUtils
+      // .getl10nFormat("ACCOUNT_ROLE_INVITE")));
+    }
+
+    return roleMap;
+  }
+
+  public static class FilterRole {
+    private Integer roleId;
+
+    private String roleName;
+
+    public FilterRole(Integer id, String name) {
+      this.setRoleId(id);
+      this.setRoleName(name);
+    }
+
+    /**
+     * @return roleId
+     */
+    public Integer getRoleId() {
+      return roleId;
+    }
+
+    /**
+     * @param roleId
+     *          セットする roleId
+     */
+    public void setRoleId(Integer roleId) {
+      this.roleId = roleId;
+    }
+
+    /**
+     * @return roleName
+     */
+    public String getRoleName() {
+      return roleName;
+    }
+
+    /**
+     * @param roleName
+     *          セットする roleName
+     */
+    public void setRoleName(String roleName) {
+      this.roleName = roleName;
+    }
+
+  }
+
+  /**
+   * 表示切り替えで指定した検索キーワードを取得する．
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  public static String getSaveDirPath(String orgId, int uid, String portletName) {
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_ACCOUNT,
+      getCategoryKey(portletName) + ALStorageService.separator() + uid);
+  }
+
+  public static String getCategoryKey(String portletName) {
+    return JetspeedResources.getString(
+      "aipo." + portletName + ".categorykey",
+      "");
   }
 }

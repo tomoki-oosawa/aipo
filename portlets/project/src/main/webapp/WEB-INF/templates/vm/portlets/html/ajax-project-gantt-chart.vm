@@ -64,7 +64,7 @@
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="$l10n.PROJECT_FILTER"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="target_keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.project.initFilterSearch("$!portlet.ID");' onblur='aipo.project.finFilterSearch("$!portlet.ID");' />
 </div>
-#AUIButtonSearch("$l10n.TODO_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()	</div>
 <div class="auiSummaryMeta clearfix">
