@@ -501,7 +501,6 @@ ul.hdCommunications > li > a [class^="icon-"], ul.hdCommunications > li > a [cla
 }
 ul.hdCommunications .num {
   position: absolute;
-  display: none;
   top: 8px;
   right: 8px;
   min-width: 12px;
@@ -509,17 +508,11 @@ ul.hdCommunications .num {
   padding: 0 2px;
   font-size: 10px;
   text-align: center;
+  background-color: #ff3333;
+  color: white;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-}
-ul.hdCommunications .valid [class*=icon-] {
-  color: #999999;
-}
-ul.hdCommunications .valid .num {
-  display: block;
-  background-color: #ff3333;
-  color: white;
 }
 ul.hdCommunications .label {
   text-wrap: nowrap;
