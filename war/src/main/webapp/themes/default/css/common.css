@@ -1022,13 +1022,18 @@ table.simpleTable .caption {
 }
 
 .indicator,
-.indicatorGlay,
+.indicatorglay {
+  padding: 0 0 0 18px;
+}
+
+.indicatorGray,
 .indicatorBlack {
   width: 18px;
 }
 
 i.indicator,
-i.indicatorGlay,
+i.indicatorglay,
+i.indicatorGray,
 i.indicatorBlack {
   display: inline-block;
   margin: 0;
@@ -1046,6 +1051,7 @@ i.indicatorBlack {
   background: url(../images/common/indicator.gif) no-repeat left;
 }
 
+.indicatorglay,
 .indicatorGray {
   background: url(../images/common/indicatorglay.gif) no-repeat left;
 }

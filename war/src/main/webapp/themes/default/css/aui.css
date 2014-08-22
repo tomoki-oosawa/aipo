@@ -859,11 +859,11 @@ ul.hdTools .dropdown:before {
   padding: 10px;
 }
 .sideBlock .search {
-  background-color: #999999;
-  border-color: #999999;
+  background-color: #666666;
+  border-color: #666666;
 }
 .sideBlock .search input[type=text] {
-  background-color: #999999;
+  background-color: #666666;
 }
 .sideBlock .search button {
   text-shadow: none;
@@ -878,7 +878,7 @@ ul.hdTools .dropdown:before {
   height: 45px;
   line-height: 45px;
   border: none;
-  color: #999999;
+  color: #d2d2d2;
 }
 .sideBlock .auiTabs .tab li a:hover, .sideBlock .auiTabs .tab li:first-child a:hover {
   color: white;
@@ -886,6 +886,9 @@ ul.hdTools .dropdown:before {
 .sideBlock .auiTabs .tab li.active a {
   background-color: #333333;
   color: white !important;
+}
+.sideBlock .auiTabs .tabContents li {
+  padding: 0 !important;
 }
 
 /***************************************************
@@ -2119,8 +2122,8 @@ button[disabled]:active {
 }
 
 #auiLoginInner {
-  padding: 15px 50px;
-  background: url(../images/lobin_body.png) no-repeat;
+  padding: 45px 50px 15px 50px;
+  background: url(../images/login_body.png) no-repeat;
 }
 
 #auiLoginBox .logo {
@@ -2191,6 +2194,7 @@ button[disabled]:active {
 #auiLoginBox input.button:focus,
 #auiLoginBox input.button[disabled] {
   background: url(../images/login_btn_back.png) 0px -100px no-repeat !important;
+  color: white !important;
 }
 
 /***************************************************
