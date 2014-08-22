@@ -1023,7 +1023,7 @@ table.simpleTable .caption {
 
 .indicator,
 .indicatorglay {
-  padding: 0 0 0 18px;
+  padding: 2px 0 2px 18px;
 }
 
 .indicatorGray,
@@ -1038,6 +1038,7 @@ i.indicatorBlack {
   display: inline-block;
   margin: 0;
   padding: 0;
+  width: 18px;
   height: 18px;
   vertical-align: middle;
   clear: both;

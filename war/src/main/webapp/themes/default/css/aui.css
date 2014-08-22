@@ -160,6 +160,12 @@ h1, h2, h3, h4, h5, h6, p, span {
   outline: none;
 }
 
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+}
+
 input[type=submit], input[type=button], input[type=reset] {
   outline: none;
 }
@@ -936,10 +942,13 @@ button,
 .auiButtonDummy,
 .auiButtonIconDummy,
 .auiSelectButton a,
-.auiWidget .auiSelectButton a {
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButton a,
+.auiWidget .auiSelectButtonSmall a {
   display: inline-block;
   height: 32px;
   line-height: 32px;
+  margin: 0;
   padding: 0 8px;
   color: #333333;
   text-decoration: none;
@@ -957,7 +966,7 @@ button,
   border: solid 1px #d2d2d2;
   border-bottom-color: #b3b3b3;
   white-space: nowrap;
-  *zoom: 1;
+  vertical-align: middle;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -1892,7 +1901,6 @@ button[disabled]:active {
   border-right: solid 1px #d2d2d2;
 }
 .auiPortlet .auiPortletBody .inner {
-  position: relative;
   padding: 10px 10px 0 10px;
 }
 .auiPortlet .auiPortletBody .inner:after {

@@ -13,6 +13,7 @@
 --------------------------------------------------*/
 body {
   position: absolute;
+  background: #ffffff;
 }
 
 .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
@@ -1290,7 +1291,7 @@ input[type=password] {
 
 .widgetButton {
   position: absolute;
-  padding: 5px;
+  padding: 5px !important;
 }
 
 .snDrawer {
