@@ -16,7 +16,7 @@ body {
   background: #ffffff;
 }
 
-.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
+#auiHeader, .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
   display: none;
 }
 
@@ -118,6 +118,7 @@ input[type=password] {
 --------------------------------------------------*/
 #roundWrapper .roundMainWrapper {
   padding: 45px 0 0;
+  background: #ffffff;
 }
 
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
