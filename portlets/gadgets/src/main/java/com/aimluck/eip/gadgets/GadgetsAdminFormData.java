@@ -72,6 +72,11 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   private ALStringField sendActivity;
 
   /**
+   * データの更新時に一時的にappIdを保存しておくための変数
+   */
+  private String appId;
+
+  /**
    *
    */
   @Override
@@ -105,8 +110,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (this.getMode().equals(ALEipConstants.MODE_UPDATE)) {
-      String appId =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      appId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       ALApplication app =
         ALApplicationService.get(new ALApplicationGetRequest()
           .withAppId(appId)
@@ -258,9 +262,6 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-
-    String appId =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
 
