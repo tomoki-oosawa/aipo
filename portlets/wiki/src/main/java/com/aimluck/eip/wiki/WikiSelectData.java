@@ -51,6 +51,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -103,7 +104,15 @@ public class WikiSelectData extends
 
   private String baseImageRawLink = null;
 
+  private String entityId = null;
+
+  private String tempNote = null;
+
+  private String tempWikiNote = null;
+
   private boolean isTop = false;
+
+  private long tempOwnerId;
 
   /**
    * 
@@ -127,6 +136,7 @@ public class WikiSelectData extends
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
     }
+    entityId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     target_keyword = new ALStringField();
     super.init(action, rundata, context);
@@ -544,6 +554,8 @@ public class WikiSelectData extends
         rd.setParentName(parentWiki.getWikiName());
       }
 
+      tempOwnerId = rd.getOwnerId().getValue();
+
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultDataDetail", e);
@@ -686,6 +698,34 @@ public class WikiSelectData extends
 
   public boolean isTop() {
     return isTop;
+  }
+
+  public void setTempNote(String tn, RunData rundata, Context context) {
+    WikiResultData result = new WikiResultData();
+    result.initField();
+    result.setNote(tn);
+    tempNote = tn;
+
+    // 新規作成でなければ、既にアップロードされている添付ファイルを取得する
+    if (entityId != null) {
+      result.setId(Long.parseLong(entityId));
+      result.setOwnerId(tempOwnerId);
+      result.setBaseImageRawLink(baseImageRawLink);
+      result.setBaseInternalLink(baseImageLink);
+      List<FileuploadBean> tempFileuploadList =
+        WikiFileUtils.getAttachmentFiles(Integer.parseInt(entityId));
+      result.setAttachmentFiles(tempFileuploadList);
+    }
+
+    tempWikiNote = result.getNote();
+  }
+
+  public String getTempNote() {
+    return tempNote;
+  }
+
+  public String getTempWikiNote() {
+    return tempWikiNote;
   }
 
 }

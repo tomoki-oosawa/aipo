@@ -567,6 +567,15 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
+   * メモを設定します。 <BR>
+   * 
+   * @return
+   */
+  public void setNote(String n) {
+    note.setValue(n);
+  }
+
+  /**
    * メモを取得します。 <BR>
    * 
    * @return

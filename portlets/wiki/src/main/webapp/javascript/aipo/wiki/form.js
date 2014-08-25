@@ -500,6 +500,17 @@ aipo.wiki.image = function () {
   aipo.wiki.insertTag("!", "!", text, true);
 }
 
+aipo.wiki.showPreviewDialog = function(url){
+	var target=dojo.byId("wikiPreview");
+	target.style.display = "block";
+
+	var note = dojo.byId("wiki_note").value;
+
+	var request={"note": note };
+
+	var outerHTML=false;
+	aipo.asyncLoad(target, url,request, outerHTML);
+}
 
 
 

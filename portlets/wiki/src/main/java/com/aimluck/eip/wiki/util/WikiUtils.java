@@ -19,8 +19,13 @@
 
 package com.aimluck.eip.wiki.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletInputStream;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -420,4 +425,40 @@ public class WikiUtils {
     }
     return false;
   }
+
+  public static String getPayload(RunData rundata) {
+    StringBuilder str = new StringBuilder();
+    ServletInputStream in = null;
+    BufferedReader r = null;
+    try {
+      in = rundata.getRequest().getInputStream();
+      r = new BufferedReader(new InputStreamReader(in));
+      String sLine;
+      while ((sLine = r.readLine()) != null) {
+        str.append(sLine);
+      }
+
+    } catch (IOException e) {
+      logger.warn("WikiUtils", e);
+    } finally {
+      if (r != null) {
+        try {
+          r.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+
+      if (in != null) {
+        try {
+
+          in.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return str.toString();
+  }
+
 }
