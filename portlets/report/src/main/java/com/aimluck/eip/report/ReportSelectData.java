@@ -453,6 +453,16 @@ public class ReportSelectData extends
         }
         rd.setStatusList(statusList);
       }
+
+      // メッセージを既読した人数
+      Integer readNotes = 0;
+      for (EipTReportMap reportmap : tmp_maps) {
+        if (reportmap.getStatus().equals(ReportUtils.DB_STATUS_READ)) {
+          readNotes++;
+        }
+      }
+      rd.setSentReport(tmp_maps.size());
+      rd.setReadReport(readNotes.longValue());
       return rd;
     } catch (Exception ex) {
       logger.error("report", ex);

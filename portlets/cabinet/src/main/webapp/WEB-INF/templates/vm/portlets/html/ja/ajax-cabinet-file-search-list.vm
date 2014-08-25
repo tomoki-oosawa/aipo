@@ -57,10 +57,10 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 <input type="hidden" name="_name" value="$l10n.CABINET_FILE" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderSimpleWide()
-#ALtdcaption("$l10n.CABINET_SEARCH")
+#ALtdcaption("$l10n.COMMON_SEARCH")
 #ALtditemheader()
 #ALtextfield('sword' "$!result.SearchWord" "120px" 100 'active')
-#ALsubmitJS('submit' "$l10n.CABINET_SEARCH" 'setHiddenValue(this)')
+#ALsubmitJS('submit' "$l10n.COMMON_SEARCH" 'setHiddenValue(this)')
 <span class="middle">$l10n.CABINET_SEARCH_TITLE_FILE_MEMO</span>
 #ALtditemfooter()
 #ALtablefooter()

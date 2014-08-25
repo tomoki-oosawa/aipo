@@ -260,32 +260,14 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             var unreadCount = data.unreadCount;
             var appIdMap = {Workflow:"workflow", todo:"todo", Report:"report", Note:"note"};
             aipo.activityMax = data.max;
-            var ac = dijit.byId("activitycheckerContainer");
-
-            var num = parseInt(unreadCount)||0;
-            if(dojo.byId("messagechecker") != undefined) {
-            	num +=  parseInt(dojo.byId("messagechecker").innerHTML);
-            }
-            if(dojo.byId("supportchecker") != undefined){
-            	num +=  parseInt(dojo.byId("supportchecker").innerHTML);
-            }
-
-            if (!num){
-            	document.title = djConfig.siteTitle;
-            } else if (num > 99) {
-            	document.title = "(99+) " + djConfig.siteTitle;
-            } else {
-            	document.title = "(" + num + ") " + djConfig.siteTitle;
-            }
-            if (ac) {
-                ac.onCheckActivity(unreadCount);
-                for (key in data.activities) {
-                	var testactivity = data.activities[key];
-                	var appId = testactivity.appId;
-                	var group = appIdMap[appId];
-                	if(group == "workflow" || group == "todo" || group == "report" || group == "note"){
-                		aipo.portletReload(group);
-                	}
+            aipo.menu.activity.count(unreadCount);
+            aipo.menu.updateTitle();
+            for (key in data.activities) {
+                var testactivity = data.activities[key];
+                var appId = testactivity.appId;
+                var group = appIdMap[appId];
+                if(group == "workflow" || group == "todo" || group == "report" || group == "note"){
+                    aipo.portletReload(group);
                 }
             }
             if (aipo.activityDesktopNotifyEnable){
@@ -321,6 +303,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             		}
             	}
             }
+            aipo.menu.activity.reload();
         }
     }
 };

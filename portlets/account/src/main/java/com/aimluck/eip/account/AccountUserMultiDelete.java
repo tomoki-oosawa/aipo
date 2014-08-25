@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -32,16 +33,22 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
@@ -162,17 +169,52 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
           "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
         Database.sql(EipTTodoCategory.class, sql5);
 
-        // ブログを削除する
-        String sql6 =
-          "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
-        Database.sql(EipTBlog.class, sql6);
+        String orgId = Database.getDomainName();
 
+        // ブログの削除
+        SelectQuery<EipTBlog> EipBlogSQL =
+          Database.query(EipTBlog.class).where(
+            Operations.in(EipTBlog.OWNER_ID_PROPERTY, userId));
+        List<EipTBlog> EipBlogList = EipBlogSQL.fetchList();
+        if (EipBlogList != null && EipBlogList.size() > 0) {
+          List<EipTBlogEntry> EipTBlogEntryList =
+            Database
+              .query(EipTBlogEntry.class)
+              .where(
+                Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
+              .fetchList();
+
+          for (EipTBlogEntry entry : EipTBlogEntryList) {
+            List<String> fpaths = new ArrayList<String>();
+            List<?> files = entry.getEipTBlogFiles();
+            if (files != null && files.size() > 0) {
+              int fileSize = files.size();
+              for (int j = 0; j < fileSize; j++) {
+                fpaths.add(((EipTBlogFile) files.get(j)).getFilePath());
+              }
+
+              ALDeleteFileUtil.deleteFiles(
+                entry.getEntryId(),
+                EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
+                AccountUtils.getSaveDirPath(orgId, entry.getOwnerId(), "blog"),
+                fpaths,
+                EipTBlogFile.class);
+
+            }
+          }
+          Database
+            .query(EipTBlogEntry.class)
+            .where(Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
+            .deleteAll();
+
+          EipBlogSQL.deleteAll();
+        }
         // ブログの足跡を削除する
-        String sql7 =
+        String sql6 =
           "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '"
             + userId
             + "'";
-        Database.sql(EipTBlogFootmarkMap.class, sql7);
+        Database.sql(EipTBlogFootmarkMap.class, sql6);
 
         // ソーシャルアプリ関連データ削除
         ALApplicationService.deleteUserData(user_name);
@@ -180,6 +222,62 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         // ワークフロー自動承認
         AccountUtils.acceptWorkflow(record.getUserId());
 
+        // タイムライン削除
+        Expression exp01 =
+          ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, record
+            .getUserId());
+
+        Expression exp02 =
+          ExpressionFactory.matchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
+        Expression exp03 =
+          ExpressionFactory.matchDbExp(
+            "TIMELINE_TYPE",
+            EipTTimeline.TIMELINE_TYPE_TIMELINE);
+
+        SelectQuery<EipTTimeline> EipTTimelineSQL =
+          Database.query(EipTTimeline.class).andQualifier(
+            exp01.andExp(exp02.andExp(exp03)));
+        List<EipTTimeline> timelineList = EipTTimelineSQL.fetchList();
+        List<Integer> timelineIdList = new ArrayList<Integer>();
+        for (EipTTimeline timeline : timelineList) {
+          timelineIdList.add(timeline.getTimelineId());
+        }
+        if (!timelineIdList.isEmpty()) {
+          SelectQuery<EipTTimeline> EipTTimelineSQL2 =
+            Database.query(EipTTimeline.class).andQualifier(
+              ExpressionFactory.inDbExp(
+                EipTTimeline.PARENT_ID_COLUMN,
+                timelineIdList));
+          List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
+          if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
+            timelineList.addAll(timelineCommentList);
+          }
+
+          for (EipTTimeline entry : timelineList) {
+            List<String> fpaths = new ArrayList<String>();
+            List<?> files = entry.getEipTTimelineFile();
+            if (files != null && files.size() > 0) {
+              int fileSize = files.size();
+              for (int j = 0; j < fileSize; j++) {
+                fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+              }
+
+              ALDeleteFileUtil.deleteFiles(
+                entry.getTimelineId(),
+                EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
+                AccountUtils.getSaveDirPath(
+                  orgId,
+                  entry.getOwnerId(),
+                  "timeline"),
+                fpaths,
+                EipTTimelineFile.class);
+
+            }
+          }
+
+          EipTTimelineSQL2.deleteAll();
+          EipTTimelineSQL.deleteAll();
+        }
         Database.commit();
 
         // イベントログに保存
@@ -237,6 +335,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
       }
 
       return msgList.size() == 0;
+    } catch (RuntimeException e) {
+      Database.rollback();
+      logger.error("AccountUserMultiDelete.action", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("AccountUserMultiDelete.action", e);

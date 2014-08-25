@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
+
 ## ---------------------------------------------------------------------------
 
 ## ---------------------------------------------------------------------------
@@ -64,8 +65,6 @@ $l10n.ACCOUNT_USER_NOT_CREATE
 #ALtditemfooter()
 #ALtdcaption($l10n.ACCOUNT_POSITION)
 #ALtditem($!result.Detail.WbrPositionName)
-##ALtdcaption("Webメール容量")
-##ALtdcell($!result.Detail.MailSizeStr)
 #ALtablefooter()
 #ALformfooter()
 

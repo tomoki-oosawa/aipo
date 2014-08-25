@@ -24,6 +24,7 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
@@ -36,6 +37,8 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.services.upload.TurbineUpload;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
@@ -443,6 +446,17 @@ public class ALCommonUtils {
     return ALEipUtils.isAndroid2Browser(rundata);
   }
 
+  /**
+   * 指定したポートレットが利用可能かどうかを返す
+   * 
+   * @param portletName
+   * 
+   * @return
+   */
+  public static boolean isActive(String portletName) {
+    return ALPortalApplicationService.isActive(portletName);
+  }
+
   // :HACK
   // can't be called...
   // public static String getl10nFormat(String key, Object... values) {
@@ -451,5 +465,13 @@ public class ALCommonUtils {
 
   public static String getl10nFormat1(String key, Object values) {
     return ALLocalizationUtils.getl10nFormat(key, values);
+  }
+
+  public static String replaceToTelLink(String tel) {
+    if (!StringUtils.isEmpty(tel)) {
+      return tel.replaceAll("-", "");
+    } else {
+      return "";
+    }
   }
 }
