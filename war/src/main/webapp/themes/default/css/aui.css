@@ -1,19 +1,35 @@
 @charset "UTF-8";
-.clearfix, #auiHeader, .hdPages > ul, .hdNavigation > ul, .dropdown .title, .dropdown .body, .dropdown .contents, .dropdown .foot, .messageSummary li a, #auiLauncher, #auiLauncher ul.launcher li a,
+.clearfix, #auiHeader, .hdPages > ul, .hdNavigation > ul, .dropdown .title,
+.activityPopup .title, .supportPopup .title, .dropdown .body,
+.activityPopup .body, .supportPopup .body, .dropdown .contents,
+.activityPopup .contents, .supportPopup .contents, .dropdown .foot,
+.activityPopup .foot, .supportPopup .foot, .messageSummary li a, #auiLauncher, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab, #timelineOuter .message,
 .timelineOuter .message {
   *zoom: 1;
 }
-.clearfix:before, #auiHeader:before, .hdPages > ul:before, .hdNavigation > ul:before, .dropdown .title:before, .dropdown .body:before, .dropdown .contents:before, .dropdown .foot:before, .messageSummary li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
+.clearfix:before, #auiHeader:before, .hdPages > ul:before, .hdNavigation > ul:before, .dropdown .title:before,
+.activityPopup .title:before, .supportPopup .title:before, .dropdown .body:before,
+.activityPopup .body:before, .supportPopup .body:before, .dropdown .contents:before,
+.activityPopup .contents:before, .supportPopup .contents:before, .dropdown .foot:before,
+.activityPopup .foot:before, .supportPopup .foot:before, .messageSummary li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
 #auiLauncher ul.setting li a:before, .auiTabs .tab:before, #timelineOuter .message:before,
-.timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after, .dropdown .body:after, .dropdown .contents:after, .dropdown .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
+.activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
+.activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
+.activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
+.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   display: table;
   content: "";
   line-height: 0;
 }
-.clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after, .dropdown .body:after, .dropdown .contents:after, .dropdown .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
+.activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
+.activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
+.activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
+.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   clear: both;
@@ -28,7 +44,9 @@
   *display: inline;
 }
 
-.border-box, #auiHeader, #auiHeader a, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdCommunications .num, .dropdown, .dropdown .title, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
+.border-box, #auiHeader, #auiHeader a, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdCommunications .num, .dropdown,
+.activityPopup, .supportPopup, .dropdown .title,
+.activityPopup .title, .supportPopup .title, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab > li a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -43,7 +61,8 @@
   border-radius: 2px;
 }
 
-.bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown, .messageSummary .avatar img, .messageSummary .avatar .icon-group, .auiSearchOption, .auiAvatarList li a img, textarea,
+.bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown,
+.activityPopup, .supportPopup, .messageSummary .avatar img, .messageSummary .avatar .icon-group, .auiSearchOption, .auiAvatarList li a img, textarea,
 select, input[type=text],
 input[type=password], #timelineOuter #inputField,
 #timelineOuter .inputField,
@@ -97,7 +116,8 @@ input[type=password], #timelineOuter #inputField,
   transition: 0.2s;
 }
 
-.popupShadow, .dropdown {
+.popupShadow, .dropdown,
+.activityPopup, .supportPopup {
   -webkit-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
@@ -488,6 +508,8 @@ ul.hdCommunications {
 }
 ul.hdCommunications > li {
   position: static;
+  padding: 0;
+  background-image: none;
 }
 ul.hdCommunications > li > a {
   display: table-cell;
@@ -599,7 +621,8 @@ ul.hdTools .dropdown:before {
 /***************************************************
 	dropdown
 --------------------------------------------------*/
-.dropdown {
+.dropdown,
+.activityPopup, .supportPopup {
   display: none;
   position: absolute;
   z-index: 2;
@@ -608,41 +631,62 @@ ul.hdTools .dropdown:before {
   line-height: 2;
   filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=0, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=90, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=180, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=270, strength=3, enabled=true);
 }
-.dropdown.open {
+.dropdown.open,
+.activityPopup.open, .supportPopup.open {
   display: block;
 }
-.hdCommunications .dropdown, .hdTools .dropdown, .tools .dropdown {
+.hdCommunications .dropdown, .hdTools .dropdown, .tools .dropdown, .hdCommunications
+.activityPopup, .hdTools
+.activityPopup, .tools
+.activityPopup, .hdCommunications .supportPopup, .hdTools .supportPopup, .tools .supportPopup {
   right: 0;
 }
-.hdCommunications .dropdown {
+.hdCommunications .dropdown, .hdCommunications
+.activityPopup, .hdCommunications .supportPopup {
   width: 320px;
 }
-.dropdown .title {
+.dropdown .title,
+.activityPopup .title, .supportPopup .title {
   height: 40px;
   padding: 8px 10px;
   line-height: 24px;
   border-bottom: solid 1px #d2d2d2;
 }
-.dropdown .sideBlock {
+.dropdown .sideBlock,
+.activityPopup .sideBlock, .supportPopup .sideBlock {
   float: left;
   width: 280px;
 }
-.dropdown .contents {
+.dropdown .contents,
+.activityPopup .contents, .supportPopup .contents {
   position: relative;
   padding: 10px;
 }
-.dropdown h2 {
+.dropdown h2,
+.activityPopup h2, .supportPopup h2 {
   margin: 0 0 1em 0;
   font-weight: normal;
 }
-.dropdown h2:first-child {
+.dropdown h2:first-child,
+.activityPopup h2:first-child, .supportPopup h2:first-child {
   border-top: none;
 }
-.dropdown .foot {
+.dropdown .foot,
+.activityPopup .foot, .supportPopup .foot {
   padding: 8px 10px;
 }
-.dropdown .foot .count {
+.dropdown .foot .count,
+.activityPopup .foot .count, .supportPopup .foot .count {
   line-height: 24px;
+}
+
+.activityPopup, .supportPopup {
+  display: block;
+  padding: 0 !important;
+}
+.activityPopup.auiPopup h2, .supportPopup.auiPopup h2 {
+  padding: 0;
+  border: none;
 }
 
 .dropdown_menu li, .dropdown_list ul li {
