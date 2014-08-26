@@ -37,8 +37,8 @@ import com.aimluck.eip.eventlog.EventlogMultiDelete;
 public class EventlogFormJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(EventlogFormJSONScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(EventlogFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -62,6 +62,16 @@ public class EventlogFormJSONScreen extends ALJSONScreen {
 
         EventlogMultiDelete delete = new EventlogMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if ("all_delete".equals(mode)) {
+
+        EventlogMultiDelete delete = new EventlogMultiDelete();
+        if (delete.doAllDelete(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray

@@ -26,6 +26,10 @@
 	DWS_STR:"${dws_del} ${dws_sel} ${dws_name}?",
 	DWS_DEL:"Delete",
 	DWS_SEL:"selected",
+	// 'すべての'+button.form.name+'を削除してよろしいですか？'
+	DWA_STR:"${dwa_del} ${dwa_sel} ${dwa_name}?",
+	DWA_DEL:"Delete",
+	DWA_SEL:"all",
 	// "チェックボックスを１つ以上選択してください。"
 	VERIFYCB_STR:"${verifycb_sel} ${verifycb_gt_one} ${verifycb_cb}.",
 	VERIFYCB_SEL:"Select",

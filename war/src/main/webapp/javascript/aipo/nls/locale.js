@@ -26,6 +26,10 @@
 	DWS_STR:"${dws_sel}${dws_name}\u3092${dws_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
 	DWS_DEL:"\u524a\u9664",
 	DWS_SEL:"\u9078\u629e\u3057\u305f",
+	// 'すべての'+button.form.name+'を削除してよろしいですか？'
+	DWA_STR:"${dwa_sel}${dwa_name}\u3092${dwa_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
+	DWA_DEL:"\u524a\u9664",
+	DWA_SEL:"\u3059\u3079\u3066\u306e",
 	// "チェックボックスを１つ以上選択してください。"
 	VERIFYCB_STR:"${verifycb_cb}\u3092${verifycb_gt_one}${verifycb_sel}\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
 	VERIFYCB_SEL:"\u9078\u629e",
