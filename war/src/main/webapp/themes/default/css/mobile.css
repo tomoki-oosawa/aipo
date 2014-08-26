@@ -872,6 +872,30 @@ input[type=password] {
 }
 
 /***************************************************
+	hdNavigation
+--------------------------------------------------*/
+.hdNavigation {
+  right: 0;
+  background: none;
+}
+.hdNavigation > ul > li {
+  line-height: 42px;
+}
+
+ul.hdCommunications {
+  padding: 0;
+}
+ul.hdCommunications > li > a {
+  height: 42px;
+  min-width: 40px;
+  padding: 0;
+}
+ul.hdCommunications .num {
+  top: 4px;
+  right: 4px;
+}
+
+/***************************************************
 	appsNavigation
 --------------------------------------------------*/
 #appsNavigation {
@@ -2120,6 +2144,14 @@ div.weeklyTermRights div.weeklyTermRightR {
 --------------------------------------------------*/
 #gantt_area {
   border-bottom: solid 1px #d2d2d2;
+}
+
+/***************************************************
+	dropdown
+--------------------------------------------------*/
+.dropdown {
+  width: 98%;
+  margin: 0 1%;
 }
 
 /***************************************************
