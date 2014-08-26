@@ -19,16 +19,20 @@
 
 ## ---------------------------------------------------------------------------
 
-<h2>$l10n.ACTIVITY_INFO_TO_YOU</h2>
-<div style="background:#ffffff;padding:2px;">
+<div class="title">
+  <input type="button" class="auiButtonSmall floatRight" name="allread" value="$l10n.ACTIVITY_ALL_ALREADY_READ" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.container.gadgetService.requestCheckActivity('*')" />
+  $l10n.ACTIVITY_INFO_TO_YOU
+</div>
+<div class="dropdown_list">
 #if($result.List.size() == 0)
-<div class="message">$l10n.ACTIVITY_NO_INFO_TO_YOU</div>
-<p class="rightBtn">
-#if($!notifySupport)<a href="javascript:void(0);" onclick="activitySwitch();dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end
-</p>
+  <div class="emptyMessage">
+    <i class="icon-bell-alt"></i>
+    <p>$l10n.ACTIVITY_NO_INFO_TO_YOU</p>
+  </div>
 #else
 
 #set($pageRange = 5)
+
 #set($pageTrimRange = 2)
 #set($pages = $result.PagesNum)
 #set($currentPage = $result.CurrentPage)
@@ -67,46 +71,49 @@
 #end
 #end
 
-<div class="auiSummaryMeta clearfix">
-<div class="floatRight">
-	<div class="count">$from - $to / $count</div>
-#if ($pages > 1)
-    <div class="auiSelectButton floatLeft">
-      <ul>
-#if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" class="first arrow"><i class="icon-caret-left"></i></a></li>
-#else
-	    <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" class="first arrow"><i class="icon-caret-left"></i></a></li>
-#end
-#if($pages > $currentPage) #set($next = $currentPage + 1)
-        <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" class="last arrow"><i class="icon-caret-right"></i></a></li>
-#else
-	    <li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" class="last arrow"><i class="icon-caret-right"></i></a></li>
-#end
-      </ul>
-    </div>
-#end
-</div>
-</div>
-
-<ul class="activityList">
+<ul>
 #foreach ($record in $result.List)
-<li #if(!$record.isRead()) class="unread" #end >
-<div class="meta">$!record.UpdateDate &nbsp; $!{record.DisplayName}</div>
+  <li #if(!$record.isRead())class="new"#end><a href="javascript:void(0);" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">
+    <!-- div class="avatar"><img src="images/common/avatar_default3.png" class="avatar_s"></div -->
+    <div class="body">
+      <div class="date">$!record.UpdateDate</div>
+      <div class="name">$!{record.DisplayName}</div>
+      <div class="ellipsis">
 #if($!$record.Icon.toString() != "")
-<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
+      <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #end
-<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
-</li>
+$!record.TitleText</div>
+    </div>
+</a></li>
 #end
 </ul>
-
-<img src="images/common/dot.gif" width="1" height="1" onload="aipo.activity.setListSize()" style="display:none" />
-
-
-<p class="rightBtn">
-#if($!notifySupport)<a href="javascript:void(0);" onclick=";dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestDesktopNotifyEnable();" class="small">$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end$l10n.ACTIVITY_DO</a>&nbsp;#end<input type="button" name="allread" value="$l10n.ACTIVITY_ALL_ALREADY_READ" onclick="activitySwitch();dijit.byId('activitycheckerContainer')._closeDropDown();aipo.container.gadgetService.requestCheckActivity('*')" />
-</p>
-
+#end
+</div>
+<div class="foot">
+  <div class="floatLeft">
+#if($!notifySupport)
+    <input type="button" class="auiButtonSmall" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.container.gadgetService.requestDesktopNotifyEnable();" value="$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end">
+#end
+  </div>
+#if($result.List.size() > 0)
+<div class="floatRight">
+<div class="count">$from - $to / $count</div>
+#if ($pages > 1)
+<div class="auiSelectButtonSmall floatLeft">
+<ul class="floatLeft">
+#if($currentPage > 1) #set($pre = $currentPage - 1)
+<li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" title="$l10n.ACTIVITY_PREVIOUS" class="first arrow"><i class="icon-caret-left"></i></a></li>
+#else
+<li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" class="first arrow" title="$l10n.ACTIVITY_PREVIOUS"><i class="icon-caret-left"></i></a></li>
+#end
+#if($pages > $currentPage) #set($next = $currentPage + 1)
+<li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$next');" title="$l10n.ACTIVITY_NEXT" class="last arrow"><i class="icon-caret-right"></i></a></li>
+#else
+<li title="$l10n.ACTIVITY_NEXT"><a href="javascript:void(0);" class="last arrow" title="$l10n.ACTIVITY_NEXT"><i class="icon-caret-right"></i></a></li>
+#end
+</ul>
+</div>
+#end
+</div>
 #end
 </div>

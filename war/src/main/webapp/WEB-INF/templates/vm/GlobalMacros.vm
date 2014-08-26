@@ -666,7 +666,7 @@ $item.get(0)
 		<div class="mhRight clearfix">
 			#ALMessage()
 			#if($data.User.getUserName() != "admin")
-				<div class="hdActivity" title="お知らせ">
+				<div class="hdActivity" title="お知らせ" style="float:left">
 					<a href="javascript:void(0)" onClick="activitySwitch()">
 						#ALActivity()
 					</a>
@@ -689,7 +689,7 @@ $item.get(0)
 #end
 
 #macro(ALActivity)
-<div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle"><div id="activitychecker" class="activitycheckerstyle counter zero"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
+<div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle"><div id="activityChecker" class="activitycheckerstyle counter zero"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span></div>
 #end
 
 #macro(ALcontentfooter)

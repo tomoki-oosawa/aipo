@@ -754,7 +754,7 @@ dojo.addOnLoad(function () {
 #end
 
 #if($!top_form && $!top_form=='simple')
-<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;width: 3em;">
+<div class="menubar" id="menubar_$!{portlet.ID}_date" style="position:absolute;display:none;">
 <ul>
 <li>
 <a href="javascript:void(0);" onclick="aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID');aipo.calendar.populateWeeklySchedule('$!portlet.ID', '');aipo.setCookie('schedule_selected_daylist_$!portlet.ID',1,'/',365*24*60*60*1000)">1$l10n.SCHEDULE_DAY</a>

@@ -20,8 +20,6 @@
 package com.aimluck.eip.portal.controllers;
 
 // Turbine stuff
-import java.util.Map;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 import org.apache.jetspeed.portal.controllers.AbstractPortletController;
@@ -83,10 +81,7 @@ public class ALVelocityPortletController extends AbstractPortletController {
     }
     context.put("accessControl", showDelete);
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

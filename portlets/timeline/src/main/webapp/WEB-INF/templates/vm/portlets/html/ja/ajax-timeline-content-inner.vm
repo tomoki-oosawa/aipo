@@ -35,7 +35,7 @@
 		<div class="name">$!record.OwnerName</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
-				<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
+				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
 			#else
 				$!{record.PreviewNote}#if($record.isDetailNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
 				<p class="more">$l10n.WAR_LONG_ROUND<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
@@ -203,7 +203,7 @@
 	<div class="name">$!record.OwnerName</div>
 	#end
 	<div class="body">
-		<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
+		<a href="javascript:void(0);" onclick="aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
 	</div>
 	<div class="time">
 		$!{record2.UpdateDate}

@@ -2,12 +2,27 @@
 .bRadius3, span.dispUser, .menubar ul li,
 ul.blockList li, .menubar > ul li a,
 .menubar.multi ul li a,
-ul.blockList li a {
+ul.blockList li a, .avatar img, .avatar_l, .avatar_m, .avatar_s {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
+}
+
+.clearfix {
+  overflow: hidden;
+  *zoom: 1;
+}
+
+.clearfix, .inner {
+  zoom: 1;
+  display: block;
+}
+.clearfix:after, .inner:after {
+  content: "";
+  display: block;
+  clear: both;
 }
 
 h1, h2, h3, h4, h5, h6, p, pre, address, cite {
@@ -19,7 +34,6 @@ h1, h2, h3, h4, h5, h6, p, pre, address, cite {
 div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
   margin: 0;
   padding: 0;
-  line-height: 1.4;
 }
 
 blockquote {
@@ -308,8 +322,8 @@ table.center {
 }
 
 .roundMainWrapper {
-  padding: 0 5px;
-  background: white;
+  padding: 60px 5px 0 5px;
+  background-color: #f0f0f0;
 }
 .roundMainWrapper noscript .alert {
   -webkit-border-radius: 8px;
@@ -366,6 +380,13 @@ a.button:hover {
 td.item {
   border: 1px solid #c0c0c0;
   padding: 5px;
+}
+
+table.outer td.f08 {
+  border: solid #c0c0c0 1px;
+  padding: 5px;
+  background-color: #f6f6f6;
+  vertical-align: middle;
 }
 
 .listTable {
@@ -1000,30 +1021,44 @@ table.simpleTable .caption {
   line-height: 32px;
 }
 
-.indicator {
-  background: url(../images/common/indicator.gif) no-repeat left;
+.indicator,
+.indicatorglay {
   padding: 2px 0 2px 18px;
-  margin-left: 2px;
-  clear: both;
 }
 
-i.indicator {
+.indicatorGray,
+.indicatorBlack {
+  width: 18px;
+}
+
+i.indicator,
+i.indicatorglay,
+i.indicatorGray,
+i.indicatorBlack {
   display: inline-block;
   margin: 0;
   padding: 0;
   width: 18px;
   height: 18px;
   vertical-align: middle;
+  clear: both;
 }
 
 .indicatorDialog .auiIconIndicator {
   vertical-align: -0.4em;
 }
 
-.indicatorglay {
+.indicator {
+  background: url(../images/common/indicator.gif) no-repeat left;
+}
+
+.indicatorglay,
+.indicatorGray {
   background: url(../images/common/indicatorglay.gif) no-repeat left;
-  padding: 2px 0 2px 18px;
-  margin-left: 2px;
+}
+
+.indicatorBlack {
+  background: url(../images/common/indicatorblack.gif) no-repeat left;
 }
 
 img.icon {
@@ -1913,7 +1948,6 @@ div.userInfo {
 .menubar {
   position: absolute;
   background: #ffffff;
-  padding: 5px;
   border: 1px solid #c0c0c0;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -1955,7 +1989,7 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  padding: 4px 6px !important;
+  padding: 6px 10px !important;
   margin: 0;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -2065,7 +2099,7 @@ ul.blockList li a.selected {
 
 /* menubar.multi **********/
 .menubar.multi {
-  padding-left: 0;
+  padding: 5px 5px 5px 0;
 }
 
 .menubar.multi > div {
@@ -2634,6 +2668,8 @@ ul.blockList li a.selected {
 --------------------------------------------------*/
 .placeholder {
   position: absolute;
+  top: 0;
+  left: 0;
   line-height: 32px;
   padding-left: 4px;
   color: #999999;
@@ -2653,3 +2689,69 @@ ul.blockList li a.selected {
 	mobile class
 --------------------------------------------------*/
 .pc_hide {display:none !important;}
+
+/***************************************************
+	display
+--------------------------------------------------*/
+.inlineBlock {
+  display: inline-block;
+}
+
+.displayNone {
+  display: none;
+}
+
+/***************************************************
+	position
+--------------------------------------------------*/
+.static {
+  position: static;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
+  position: relative;
+}
+
+.fixed {
+  position: fixed;
+}
+
+/***************************************************
+	avatar
+--------------------------------------------------*/
+.avatar_l {
+  width: 50px;
+  height: 50px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+
+.avatar_m {
+  width: 32px;
+  height: 32px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+
+.avatar_s {
+  width: 24px;
+  height: 24px;
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}

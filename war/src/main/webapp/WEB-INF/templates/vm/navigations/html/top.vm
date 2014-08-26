@@ -18,49 +18,8 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<!-- HEADER -->
-#if ($data.User.hasLoggedIn() && "$!isError" != "true")
-<div id="header" class="clearfix"><div class="inner">
-  <div class="hdSign">
-    <div class="hdLogo"><img src="${external_resources_url}/themes/${theme}/images/logo_aipo.png" alt="Aipo" /></div>
-  </div>
-  <div class="hdNavi">
-#if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
-    <div class="hdActivity" title="$l10n.WIDGET_NOTICE"><div id="activitycheckerContainer" class="dijitInline activitycheckerContainerstyle" ><div id="activitychecker" class="zero counter activitycheckerstyle"></div><span class="mb_hide">$l10n.WIDGET_NOTICE</span><span class="pc_hide"><i class="icon-bell-alt"></i></span></div></div>
-#end
-		<!-- /hdActivity -->
-
-    <div class="hdUserName">
-		<a href="javascript:void(0);" class="arrow_bottom" onclick="aipo.customize.showMenu('hdSetting');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.TOP_CUSTOMIZE">
-		#if ("$!data.User.getUserName()" != "admin")
-			#if ($data.User.hasPhoto())
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" class="avatar" alt="$l10n.USERLIST_PHOTO" />
-			#else
-				<img src="images/common/avatar_default3.png" class="avatar" alt="$l10n.USERLIST_PHOTO"/>
-			#end
-			#if($!data.User.CompanyId >= 1)
-				$!data.User.getCompanyName($!data.User.CompanyId)
-			#end
-		#end
-		$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())
-		<span class="auiWFicon"><i id="menubar_button_hdSetting" class="icon-cog"></i></span>
-		</a>
-		<div class="menubar body-child" id="menubar_hdSetting" style="position: absolute; display:none;">
-		<ul>
-			#if ("$!data.User.getUserName()" != "admin")
-			<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
-			#if ($data.User.isAdmin())
-				<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
-			#end
-			#end
-			<li class="last"><a href="javascript:void(0);" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">$l10n.TOP_LOGOUT</a></li>
-		</ul>
-		</div>
-	</div>
-  </div>
-</div></div>
-#end
 #if ("$!data.User.getUserName()" != "admin")
+#if ("${client}" == "IPHONE" )
 <!-- /HEADER -->
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
@@ -69,10 +28,10 @@ dojo.require("aipo.widget.DropdownActivityChecker");
 
 dojo.addOnLoad(function () {
     var num;
-    if(dojo.byId("messagechecker") != undefined  && dojo.byId("activitychecker") != undefined) {
-    	num = parseInt(dojo.byId("activitychecker").innerHTML) + parseInt(dojo.byId("messagechecker").innerHTML);
-    } else if(dojo.byId("activitychecker") != undefined) {
-    	num = parseInt(dojo.byId("activitychecker"));
+    if(dojo.byId("messageChecker") != undefined  && dojo.byId("activityChecker") != undefined) {
+    	num = parseInt(dojo.byId("activityChecker").innerHTML) + parseInt(dojo.byId("messageChecker").innerHTML);
+    } else if(dojo.byId("activityChecker") != undefined) {
+    	num = parseInt(dojo.byId("activityChecker"));
     } else {
     	num = 0;
     }
@@ -107,4 +66,5 @@ dojo.addOnLoad(function () {
 
 //]]>
 </script>
+#end
 #end
