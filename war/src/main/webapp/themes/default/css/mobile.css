@@ -768,6 +768,7 @@ input[type=password] {
 #mobileHeader_v3 .hdActivity,
 #mobileHeader_v3 .hdInformation,
 #mobileHeader_v3 .auiMbBtnNavi {
+  float: left;
   display: block;
   position: relative;
   padding: 0;

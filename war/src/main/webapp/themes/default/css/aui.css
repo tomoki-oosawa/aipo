@@ -641,7 +641,14 @@ ul.hdTools .dropdown:before {
 .dropdown .foot {
   padding: 8px 10px;
 }
+.dropdown .foot .count {
+  line-height: 24px;
+}
 
+.dropdown_menu li, .dropdown_list ul li {
+  padding: 0;
+  background-image: none;
+}
 .dropdown_menu a, .dropdown_list ul a {
   display: block;
   padding: 6px 10px;
@@ -667,7 +674,9 @@ ul.hdTools .dropdown:before {
   font-size: 11px;
 }
 .dropdown_list li {
+  padding: 0;
   border-bottom: solid 1px #ededed;
+  background-image: none;
 }
 .dropdown_list li > a > .avatar {
   position: absolute;
@@ -2081,6 +2090,8 @@ button[disabled]:active {
 .auiTabs .tab > li {
   float: left;
   margin-bottom: -1px;
+  padding: 0;
+  background: none;
 }
 .auiTabs .tab > li a {
   display: block;
@@ -2115,6 +2126,7 @@ button[disabled]:active {
 .auiTabs .tabContents > li {
   display: none;
   padding: 10px 0 !important;
+  background: none;
 }
 .auiTabs .tabContents > li.active {
   display: block;
@@ -2277,9 +2289,6 @@ button[disabled]:active {
 #auiWidgetsArea {
   float: left;
   width: 180px;
-}
-#auiWidgetsArea div:first-child {
-  padding-top: 0;
 }
 
 #auiWidgetsArea2 {
@@ -2532,15 +2541,13 @@ button[disabled]:active {
 .auiSummaryMeta form {
   line-height: 32px;
 }
-.auiSummaryMeta:first-child {
-  margin-top: 0 !important;
-}
 .auiSummaryMeta .icon-print {
   font-size: 17px;
 }
 
 .count {
   float: left;
+  line-height: 32px;
   margin: 0 5px;
   white-space: nowrap;
 }
