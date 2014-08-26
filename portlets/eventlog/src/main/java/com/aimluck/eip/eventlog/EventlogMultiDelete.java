@@ -120,7 +120,7 @@ public class EventlogMultiDelete extends ALAbstractCheckList {
       List<String> msgList) {
     try {
 
-      String sql = "DELETE FROM eip_t_eventlog WHERE EVENTLOG_ID > '" + 0 + "'";
+      String sql = "DELETE FROM eip_t_eventlog WHERE EVENTLOG_ID > 0";
       Database.sql(EipTEventlog.class, sql).execute();
 
       Database.commit();
