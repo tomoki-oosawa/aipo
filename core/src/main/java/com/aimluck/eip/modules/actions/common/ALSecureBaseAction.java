@@ -21,7 +21,6 @@ package com.aimluck.eip.modules.actions.common;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -157,10 +156,8 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
       ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
+
     if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
       "changeToPc"))) { // PC表示切り替え用
       context.put("client", ALEipUtils.getClient(rundata));

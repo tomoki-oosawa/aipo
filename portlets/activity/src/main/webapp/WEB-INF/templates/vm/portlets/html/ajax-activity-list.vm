@@ -84,9 +84,9 @@
 #end
 $!record.TitleText</div>
     </div>
-#end
 </a></li>
-
+#end
+</ul>
 #end
 </div>
 <div class="foot">

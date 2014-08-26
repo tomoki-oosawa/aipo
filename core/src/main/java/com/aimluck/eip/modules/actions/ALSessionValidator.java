@@ -25,7 +25,6 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -535,10 +534,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
   }
 
   private void setOrgParameters(RunData data, Context context) {
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
   }
 
   private boolean checkDbError(RunData data) {

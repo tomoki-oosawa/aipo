@@ -21,10 +21,12 @@ package com.aimluck.eip.services.orgutils;
 
 import java.util.Map;
 
+import org.apache.velocity.context.Context;
+
 import com.aimluck.eip.orm.Database;
 
 /**
- * 
+ *
  */
 public class ALOrgUtilsService {
 
@@ -70,5 +72,9 @@ public class ALOrgUtilsService {
 
   public static String getExternalResourcesUrl() {
     return getService().getExternalResourcesUrl(Database.getDomainName());
+  }
+
+  public static void assignCommonContext(Context context) {
+    getService().assignCommonContext(context, Database.getDomainName());
   }
 }
