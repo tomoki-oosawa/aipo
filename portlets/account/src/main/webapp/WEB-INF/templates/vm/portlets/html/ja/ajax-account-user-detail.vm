@@ -80,7 +80,7 @@ $!record <br />
 #else
 #ALtdcell($l10n.ACCOUNT_ISNOT_ADMIN)
 #end
-#ALtdcaption("Webメール容量")
+#ALtdcaption($l10n.ACCOUNT_WEBMAIL_CAPACITY)
 #ALtdcellheader()
 #AsyncLoad("$async_url")
 #ALtdcellfooter()
