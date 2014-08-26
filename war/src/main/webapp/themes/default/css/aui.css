@@ -74,7 +74,7 @@ input[type=password], #timelineOuter #inputField,
   border-radius: 50%;
 }
 
-.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdTools .name, .dropdown_menu a, .dropdown_list ul a, #auiLauncher ul.launcher li a,
+.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, ul.hdTools .name, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab > li a {
   white-space: nowrap;
   overflow: hidden;
