@@ -186,6 +186,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     // Create a new Velocity context and load default
     // application pull tools
     Context context = TurbineVelocity.getContext();
+    ALOrgUtilsService.assignCommonContext(context);
 
     // 修正 ：ノーマル表示時のポートレットの右上にメニューを配置できるように，
     // パラメータ functions を追加した．
@@ -195,7 +196,6 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     context.put("conf", getConfig());
     context.put("skin", portlet.getPortletConfig().getPortletSkin());
     context.put("utils", new ALCommonUtils());
-    context.put("theme", ALOrgUtilsService.getTheme());
     try {
       context.put("runs", getPortletList(rundata));
     } catch (NullPointerException e) {

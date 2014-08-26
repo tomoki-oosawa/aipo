@@ -115,6 +115,8 @@
                 <include>aipo/widget/DropdownGrouppicker.js</include>
                 <include>aipo/widget/DropdownMemberpicker.js</include>
                 <include>aipo/widget/ToolTip.js</include>
+                <include>aipo/widget/ActivityList.js</include>
+                <include>aipo/widget/DropdownActivityChecker.js</include>
                 <include>aipo/fileupload/widget/FileuploadDialog.js</include>
                 <include>aipo/fileupload/widget/FileuploadViewDialog.js</include>
                 <include>aipo/gadgets.js</include>

@@ -103,7 +103,7 @@ aipo.customize.showMenuForTab = function(tab_id) {
         }else{
         	menuNode.style("left",rect.right-menuNode[0].clientWidth+scroll.left+"px");
         }
-       	 menuNode.style("top",rect.bottom+scroll.top+"px");
+        menuNode.style("top",rect.bottom+scroll.top-20+"px");
         menuNode.style("opacity","1");
     } else {
         aipo.customize.hideMenu(tab_id);

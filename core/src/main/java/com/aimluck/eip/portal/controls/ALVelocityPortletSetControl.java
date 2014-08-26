@@ -51,6 +51,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -79,6 +80,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    */
   @Override
   public void buildContext(RunData rundata, Context context) {
+    ALOrgUtilsService.assignCommonContext(context);
     if (getPortlet() instanceof PortletSet) {
 
       PortletSet set = (PortletSet) getPortlet();

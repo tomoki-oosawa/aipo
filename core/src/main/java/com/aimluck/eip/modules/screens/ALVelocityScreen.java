@@ -23,7 +23,6 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -230,10 +229,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
 
     if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
       "changeToPc"))) { // PC表示切り替え用

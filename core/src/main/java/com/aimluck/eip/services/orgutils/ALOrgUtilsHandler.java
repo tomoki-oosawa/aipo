@@ -20,10 +20,14 @@
 package com.aimluck.eip.services.orgutils;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.http.ServletContextLocator;
@@ -154,5 +158,14 @@ public abstract class ALOrgUtilsHandler {
       contextPath = "";
     }
     return contextPath;
+  }
+
+  public void assignCommonContext(Context context, String orgId) {
+    Map<String, String> map = getParameters(orgId);
+    Iterator<Entry<String, String>> iterator = map.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Entry<String, String> next = iterator.next();
+      context.put(next.getKey(), next.getValue());
+    }
   }
 }

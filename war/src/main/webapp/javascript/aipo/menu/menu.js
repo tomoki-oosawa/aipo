@@ -79,17 +79,24 @@ aipo.menu.updateTitle = function() {
         document.title = "(" + num + ") " + djConfig.siteTitle;
     }
 }
+
 var bodyHandle = bodyHandle || {};
 dojo.addOnLoad(function() {
     bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null,
             function(e) {
                 if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
+                    var srcElement;
+                    if (document.all) {
+                      srcElement = e.srcElement;
+                    } else {
+                      srcElement = e.target;
+                    }
                     var node = new Array();
                     node[0] = {
-                        nodeName : e.srcElement.nodeName,
-                        className : e.srcElement.className
+                        nodeName : srcElement.nodeName,
+                        className : srcElement.className
                     };
-                    var parent = e.srcElement.parentNode;
+                    var parent = srcElement.parentNode;
                     for ( var i = 1; parent; i++) {
                         node[i] = {
                             nodeName : parent.nodeName,
