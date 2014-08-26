@@ -54,6 +54,12 @@ aipo.menu.hideDropdown = function(key) {
     }
 }
 
+aipo.menu.closeDropdown = function(key) {
+    if(dijit.byId(key + 'checkerContainer')) {
+        dijit.byId(key + 'checkerContainer')._closeDropDown();
+    }
+}
+
 aipo.menu.hideDropdownAll = function(key) {
     for ( var i in aipo.menu.list) {
         aipo.menu.hideDropdown(aipo.menu.list[i]);
@@ -62,9 +68,9 @@ aipo.menu.hideDropdownAll = function(key) {
 
 aipo.menu.updateTitle = function() {
     var num = 0;
-    for (menu in aipo.menu.list) {
-        if (dojo.byId(menu + "Checker") != undefined) {
-            var value = parseInt(dojo.byId(menu + "Checker").innerHTML);
+    for (var i in aipo.menu.list) {
+        if (dojo.byId(aipo.menu.list[i] + "Checker") != undefined) {
+            var value = parseInt(dojo.byId(aipo.menu.list[i] + "Checker").innerHTML);
             if(value) {
                 num += value;
             }
