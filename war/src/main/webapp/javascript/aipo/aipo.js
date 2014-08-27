@@ -333,7 +333,11 @@ aipo.asyncLoad = function(target, url,request, outerHTML){
       		target.innerHTML=ret.text;
       	}
       }
+  	  var modalDialog = document.getElementById('modalDialog');
+  	  if(modalDialog) {
+  	    var wrapper = document.getElementById('wrapper');
+  	    wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+  	  }
   }
-
 
 };
