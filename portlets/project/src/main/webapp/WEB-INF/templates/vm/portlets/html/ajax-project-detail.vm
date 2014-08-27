@@ -73,7 +73,7 @@
 		<div id='popc' style='position:absolute'></div>
 		<div class="thumbBlock">
 			<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectFileRawScreen').addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectFileThumbnailScreen").addQueryData("attachmentIndex", $attachmentFile.FileId)">
+				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectFileThumbnailScreen").addQueryData("attachmentIndex", $attachmentFile.FileId)" />
 			</a><br>
 		</div>
 		#end

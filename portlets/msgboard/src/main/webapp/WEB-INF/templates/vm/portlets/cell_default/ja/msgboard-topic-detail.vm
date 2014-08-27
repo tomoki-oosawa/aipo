@@ -41,7 +41,7 @@
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
-#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>")
+#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)' />")
 #end
 #end
 #end
@@ -75,7 +75,7 @@
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
-#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>")
+#ALcell_dd($career "<img border='0' alt='$attachmentFile.FileName' title='$attachmentFile.FileName' src='$jslink.getTemplate('MsgboardTopicFileThumbnailScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)' />")
 #end
 #end
 #end

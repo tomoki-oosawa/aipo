@@ -56,7 +56,7 @@
 #end
 ##
 #if ($title=="*")
-  #if ($entry.Parent) 
+  #if ($entry.Parent)
     #set ($title=$entry.Parent)
   #else
     #set ($title=$entry.Name)
@@ -68,7 +68,7 @@
   #foreach ($entr in $runs)
     #if ($entr.parent == $entry.Parent  && !$FF)
       #set ($FF=true)
-      <img src="images/html/is_portlet.gif" width=14" height="14" border="0" alt="$l10n.CUSTOMIZER_PORTLET" hspace="2">
+      <img src="images/html/is_portlet.gif" width=14" height="14" border="0" alt="$l10n.CUSTOMIZER_PORTLET" hspace="2" />
     #end
   #end
 
@@ -76,7 +76,7 @@
   #if (!$FF)
     #set ($portletcount = $portletcount + 1)
     <a href="$jslink.getAction("controls.Customize",$entry.Id)">
-      <img src="images/is_pane.gif" alt="$l10n.CUSTOMIZER_CUSTOMIZABLEPANE" width=14" height="14" border="0" hspace="2">
+      <img src="images/is_pane.gif" alt="$l10n.CUSTOMIZER_CUSTOMIZABLEPANE" width=14" height="14" border="0" hspace="2" />
     </a></TD>
   #end
 
@@ -86,8 +86,8 @@
       <b>$title</b>
     </a>
   #else
-    <b>$title</b>  
-  #end    
+    <b>$title</b>
+  #end
     </td>
     <td valign="top" align="center">
     <form action="#psmlLink($jslink.Template)" method="post">
@@ -97,12 +97,12 @@
 #if ($velocityCount < $portlets.size())
         <input type="image" border="0" alt="Move down" src="images/down.gif" name="eventSubmit_doUp">
 #else
-        <img src="images/dot.gif" width=14" height="14" border="0">
+        <img src="images/dot.gif" width=14" height="14" border="0" />
 #end
 #if ($position > 0)
         <input type="image" border="0" src="images/up.gif" alt="Move up" name="eventSubmit_doDown">
 #else
-        <img src="images/dot.gif" width=14" height="14" border="0">
+        <img src="images/dot.gif" width=14" height="14" border="0" />
 #end
       </form>
     </td>

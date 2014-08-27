@@ -67,7 +67,7 @@
 											<div id='popc' style='position:absolute'></div>
 											<div class="thumbBlock">
 												<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-												<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+												<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)" /></a><br>
 											</div>
 										#end
 										</li>
@@ -120,7 +120,7 @@
 								<div id='popc' style='position:absolute'></div>
 								<div class="thumbBlock">
 									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)" /></a><br>
 								</div>
 							#end
 						</li>

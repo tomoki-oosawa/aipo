@@ -73,13 +73,13 @@ limitations under the License.
                         <a id="preview_$listIndex"
                            href="#previewLink($result.Key)"
                            target="_blank">
-                           <IMG border="0" SRC="$clink.setURI("images/html/is_portlet.gif")">
+                           <IMG border="0" SRC="$clink.setURI("images/html/is_portlet.gif")" />
                            <span class="$!{skin.ContentStyleClass}">$result.Title</span>
                         </a>
                       #else
                         <a id="preview_$listIndex"
                            href="$result.URL" target="_blank">
-                           <IMG border="0" SRC="$clink.setURI("images/is_url.gif")">
+                           <IMG border="0" SRC="$clink.setURI("images/is_url.gif")" />
                            <span class="$!{skin.ContentStyleClass}">$result.URL</span>
                         </a>
                       #end

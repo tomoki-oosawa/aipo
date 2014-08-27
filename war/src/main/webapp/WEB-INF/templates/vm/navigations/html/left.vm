@@ -37,21 +37,21 @@ limitations under the License.
   <tr>
     <td>
       <a href="$link">
-        <img src="images/leftnav_home.gif" border="0">
+        <img src="images/leftnav_home.gif" border="0" />
       </a>
     </td>
   </tr>
   <tr>
     <td>
       <a href="$clink.setURI("docs/")">
-        <img src="images/leftnav_docs.gif" border="0">
+        <img src="images/leftnav_docs.gif" border="0" />
       </a>
     </td>
   </tr>
   <tr>
     <td>
       <a href="$clink.setURI("apidocs/")">
-        <img src="images/leftnav_api.gif" border="0">
+        <img src="images/leftnav_api.gif" border="0" />
       </a>
     </td>
   </tr>

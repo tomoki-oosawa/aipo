@@ -124,7 +124,7 @@ $!result.Detail.Explanation
 								<div id='popc' style='position:absolute'></div>
 								<div class="thumbBlock">
 									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskFileRawScreen').addPathInfo("entityid", $result.Detail.TaskId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskFileThumbnailScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskFileThumbnailScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId)" /></a><br>
 								</div>
 							#end
 						</li>
@@ -174,7 +174,7 @@ $!result.Detail.Explanation
 								<div id='popc' style='position:absolute'></div>
 								<div class="thumbBlock">
 									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskCommentFileRawScreen').addPathInfo("entityid", $!record.CommentId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskCommentFileThumbnailScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskCommentFileThumbnailScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId)" /></a><br>
 								</div>
 							#end
 						</li>

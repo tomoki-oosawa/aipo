@@ -45,19 +45,19 @@ limitations under the License.
 
 <table>
 <!--tr><td valign="center"><input type="radio" name="weather_style" value="bigwx_both_cond" #if($weather_style == "bigwx_both_cond") checked #end >
-<img src="$img_base/bigwx_both_cond/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/bigwx_both_cond/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td  valign="center"><input type="radio" name="weather_style" value="default_both" #if($weather_style == "default_both") checked #end>
-<img src="$img_base/default_both/language/www/${weather_city_info}.gif" align="middle"></td></tr-->
+<img src="$img_base/default_both/language/www/${weather_city_info}.gif" align="middle" /></td></tr-->
 <tr><td valign="center"><input type="radio" name="weather_style" value="infobox" #if($weather_style == "infobox") checked #end>
-<img src="$img_base/infobox/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/infobox/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td  valign="center"><input type="radio" name="weather_style" value="bigtemp" #if($weather_style == "bigtemp") checked #end>
-<img src="$img_base/bigtemp/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/bigtemp/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td  valign="center"><input type="radio" name="weather_style" value="sunandmoon" #if($weather_style == "sunandmoon") checked #end>
-<img src="$img_base/sunandmoon/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/sunandmoon/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td valign="center"><input type="radio" name="weather_style" value="bigwx_cond" #if($weather_style == "bigwx_cond") checked #end >
-<img src="$img_base/bigwx_cond/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/bigwx_cond/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td  valign="center"><input type="radio" name="weather_style" value="default" #if($weather_style == "default") checked #end>
-<img src="$img_base/default/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/default/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 <tr><td  valign="center"><input type="radio" name="weather_style" value="gizmotimetempbig" #if($weather_style == "gizmotimetempbig") checked #end>
-<img src="$img_base/gizmotimetempbig/language/www/${weather_city_info}.gif" align="middle"></td></tr>
+<img src="$img_base/gizmotimetempbig/language/www/${weather_city_info}.gif" align="middle" /></td></tr>
 </table>
