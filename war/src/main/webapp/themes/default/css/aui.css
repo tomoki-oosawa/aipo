@@ -198,7 +198,7 @@ input[type=submit], input[type=button], input[type=reset] {
   padding: 0 0 0 10px;
   background-color: white;
   border-bottom: solid 1px #d2d2d2;
-  z-index: 10;
+  z-index: 99999;
 }
 #auiHeader ul li {
   padding: 0;
@@ -297,7 +297,7 @@ input[type=submit], input[type=button], input[type=reset] {
 }
 .hdNavigation > ul > li > a {
   position: relative;
-  display: block;
+  display: block !important;
   height: 60px;
   padding: 0 10px;
   min-width: 50px;
@@ -318,6 +318,14 @@ input[type=submit], input[type=button], input[type=reset] {
   vertical-align: middle;
   font-size: 18px;
   color: #d2d2d2;
+}
+.hdNavigation > ul > li > a [class*="sprite-"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
 }
 .hdNavigation > ul > li > a:hover {
   text-decoration: none;
@@ -530,6 +538,7 @@ ul.hdCommunications .num {
   text-align: center;
   background-color: #ff3333;
   color: white;
+  white-space: nowrap;
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -664,8 +673,9 @@ ul.hdTools .dropdown:before {
 }
 .dropdown h2,
 .activityPopup h2, .supportPopup h2 {
-  margin: 0 0 1em 0;
+  margin: 0 0 10px 0;
   font-weight: normal;
+  line-height: 24px;
 }
 .dropdown h2:first-child,
 .activityPopup h2:first-child, .supportPopup h2:first-child {
