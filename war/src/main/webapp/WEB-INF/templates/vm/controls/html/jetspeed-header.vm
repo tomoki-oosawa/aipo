@@ -43,7 +43,7 @@ limitations under the License.
 #if ($!tab.Authority)#foreach ($action in $tab.Actions)
 #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
 #set($sgclink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=StartGuideCustomizeFormScreen") )
-											<div class="menubar fixed body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
+											<div class="menubar z-upper body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
 											<ul>
 												<li>
 												#if (${client} == "IPAD")
