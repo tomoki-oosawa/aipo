@@ -1956,10 +1956,15 @@ div.userInfo {
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 11;
+  z-index: 100;
   overflow: hidden;
   zoom: 1;
   overflow: visible;
+}
+.menubar.z-upper {
+  position: fixed !important;
+  z-index: 111 !important;
+  top: 40px !important;
 }
 
 .dijitPopup .menubar {
