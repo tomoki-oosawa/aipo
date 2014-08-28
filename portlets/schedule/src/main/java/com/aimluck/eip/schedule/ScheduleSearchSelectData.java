@@ -117,7 +117,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
     List<Integer> tmpUsers = new ArrayList<Integer>();
     List<Integer> tmpFacilities = new ArrayList<Integer>();
-    if ("all".equals(target_user_id)) {
+    if ("all".equals(target_user_id) || target_user_id.equals("")) {
       tmpUsers = ALEipUtils.getUserIds(target_group_name);
       if ("Facility".equals(target_group_name)) {
         tmpFacilities = getFacilityIdAllList();

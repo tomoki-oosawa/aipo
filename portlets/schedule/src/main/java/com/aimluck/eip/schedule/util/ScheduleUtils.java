@@ -796,7 +796,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -3733,6 +3733,34 @@ public class ScheduleUtils {
       body.append(" EXISTS ( ");
       body
         .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
+      if ((users != null && users.size() > 0)
+        || (facilities != null && facilities.size() > 0)) {
+        body.append(" AND (t3.type, t3.user_id) IN ( ");
+        boolean isFirst = true;
+        if (users != null && users.size() > 0) {
+          for (Integer num : users) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('U', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        if (facilities != null && facilities.size() > 0) {
+          for (Integer num : facilities) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('F', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        body.append(" ) ");
+      }
       if (keyword != null && keyword.length() > 0) {
         hasKeyword = true;
         body.append(" AND (");
