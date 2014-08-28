@@ -314,26 +314,32 @@ aipo.arrayContains=function(a,val){//:TODO binary search
 //outerHTML : trueなら読み込んだ要素によってtargetが上書きされる。false（または省略）なら読み込んだ要素がtargetの子要素になる。
 aipo.asyncLoad = function(target, url,request, outerHTML){
 
-  var makeRequestParams = {
-	        "METHOD" : "POST",
-	        "POST_DATA" : gadgets.json.stringify(request)
-  };
+	  try {
+	    dojo
+	      .xhrPost({
+	        url:url,
+	        timeout: 30000,
+	        postData: dojo.toJson(request),
+	        encoding: "utf-8",
+	        handleAs: "text",
+	        headers: {
+	          X_REQUESTED_WITH: "XMLHttpRequest"
+	        },
+	        load: function (response, ioArgs) {
 
-  gadgets.io.makeNonProxiedRequest(url,
-          handleResponse,
-          makeRequestParams,
-          "application/javascript"
-          );
+	            if (typeof target != "undefined") {
+	              	if(outerHTML){
+	              		target.outerHTML=response;
+	              	}else{
+	              		target.innerHTML=response;
+	              	}
+	              }
 
-  function handleResponse(ret) {
-      if (ret.rc == 200 && typeof target != "undefined") {
-      	if(outerHTML){
-      		target.outerHTML=ret.text;
-      	}else{
-      		target.innerHTML=ret.text;
-      	}
-      }
-  }
-
+	        },
+	        error: function (error) {
+	        }
+	      });
+	  } catch (E) {
+	  }
 
 };
