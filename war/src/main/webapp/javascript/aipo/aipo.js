@@ -319,7 +319,7 @@ aipo.asyncLoad = function(target, url,request, outerHTML){
 	      .xhrPost({
 	        url:url,
 	        timeout: 30000,
-	        postData: dojo.toJson(request),
+	        content : request,
 	        encoding: "utf-8",
 	        handleAs: "text",
 	        headers: {
