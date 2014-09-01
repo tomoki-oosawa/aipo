@@ -337,3 +337,15 @@ aipo.asyncLoad = function(target, url,request, outerHTML){
 
 
 };
+aipo.onBeforeUnloadConfirm =function(id){
+
+	var textarea=dojo.byId(id);
+	if(textarea && textarea.offsetHeight){
+		var note =textarea.value;
+		if(note){
+		    return true;
+			}
+		}
+	return false;
+}
+

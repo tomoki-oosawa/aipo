@@ -276,6 +276,35 @@ function activitySwitch(){
         wrapper.style.minHeight = minHeight +  'px';
     }
 }
+var ignoreBeforeUnload=false;
+
+	dojo.addOnLoad(function() {
+		if(dojo.isIE){
+			dojo.query("a[href*='javascript:void(0)']").connect("onclick", function(){
+	     	 ignoreBeforeUnload=true;
+		  });
+ 		 }
+	});
+
+
+   window.onbeforeunload =function(event){
+   if(!ignoreBeforeUnload){
+      event = event || window.event;
+      var timelineConfirm =false;
+      dojo.query("div[id*=timeline_]").forEach( function(obj){
+     	 var portlet_id=  obj.id.split("_")[1];
+     	 if(aipo.onBeforeUnloadConfirm("note_"+portlet_id)){
+			   timelineConfirm= true;
+   			 }
+   	  });
+   	  if(timelineConfirm){
+   	  return  event.returnValue = "$l10n.WAR_BEFORE_UNLOAD";
+   	  }
+    }else{
+      ignoreBeforeUnload=false;
+    }
+
+}
 //]]>
 </script>
 
