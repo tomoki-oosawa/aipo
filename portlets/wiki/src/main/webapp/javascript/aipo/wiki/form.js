@@ -24,6 +24,11 @@ aipo.wiki.onLoadWikiDialog = function (portlet_id) {
   if (obj) {
     obj.focus();
   }
+  if(dojo.isIE){
+  dojo.query("a[href*='javascript:void(0)']").connect("onclick", function(){
+	     	 ignoreBeforeUnload=true;
+	  });
+  }
 }
 
 aipo.wiki.toggleMenu = function (node, filters, event) {
@@ -511,6 +516,7 @@ aipo.wiki.showPreviewDialog = function(url){
 	var outerHTML=false;
 	aipo.asyncLoad(target, url,request, outerHTML);
 }
+
 
 
 

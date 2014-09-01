@@ -165,7 +165,9 @@ var dispChanger = false;
 dojo.require("dojo.dnd.Source");
 dojo.require("aipo.customize.form");
 
+
 dojo.addOnLoad(function() {
+
 
 	aipo.customize.addAutoHideMenuTrigger();
 
@@ -263,6 +265,7 @@ dojo.addOnLoad(function() {
     underlay.show();
 });
 #end
+
 function activitySwitch(){
     var wrapper = document.getElementById('wrapper');
     var header = document.getElementById('mobileHeader_v3');
@@ -276,6 +279,21 @@ function activitySwitch(){
         wrapper.style.minHeight = minHeight +  'px';
     }
 }
+
+var ignoreBeforeUnload=false;
+
+   window.onbeforeunload =function(event){
+   if(!ignoreBeforeUnload){
+      event = event || window.event;
+          if(aipo.onBeforeUnloadConfirm("wiki_note")){
+			return  event.returnValue = "$l10n.WAR_BEFORE_UNLOAD";
+   		 }
+    }else{
+      ignoreBeforeUnload=false;
+    }
+
+}
+
 //]]>
 </script>
 
