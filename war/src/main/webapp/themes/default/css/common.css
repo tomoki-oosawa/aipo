@@ -19,7 +19,7 @@ ul.blockList li a, .avatar img, .avatar_l, .avatar_m, .avatar_s {
   zoom: 1;
   display: block;
 }
-.clearfix:after, .inner:after {
+.clearfix:before, .clearfix:after, .inner:before, .inner:after {
   content: "";
   display: block;
   clear: both;
@@ -183,17 +183,6 @@ div.outer {
   border-right: 1px solid #c0c0c0;
   margin-bottom: 2px;
   margin-top: 2px;
-}
-
-.clearfix, .inner {
-  zoom: 1;
-  display: block;
-}
-
-.clearfix:after, .inner:after {
-  content: "";
-  display: block;
-  clear: both;
 }
 
 .clear {
