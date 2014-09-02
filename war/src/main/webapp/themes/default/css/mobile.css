@@ -1539,10 +1539,6 @@ ul.hdCommunications .num {
   width: auto !important;
 }
 
-.modalDialogUnderlayWrapper {
-  display: none !important;
-}
-
 .memberlistToTop,
 .memberlistToBody,
 .memberlistToBottom {
