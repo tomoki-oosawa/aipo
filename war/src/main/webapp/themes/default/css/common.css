@@ -10,11 +10,16 @@ ul.blockList li a, .avatar img, .avatar_l, .avatar_m, .avatar_s {
   border-radius: 3px;
 }
 
+.clearfix {
+  overflow: hidden;
+  *zoom: 1;
+}
+
 .clearfix, .inner {
   zoom: 1;
   display: block;
 }
-.clearfix:after, .inner:after {
+.clearfix:before, .clearfix:after, .inner:before, .inner:after {
   content: "";
   display: block;
   clear: both;
