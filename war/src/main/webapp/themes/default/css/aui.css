@@ -527,9 +527,13 @@ ul.hdCommunications > li > a [class^="icon-"], ul.hdCommunications > li > a [cla
   line-height: 50px;
 }
 ul.hdCommunications .num {
+  display: block;
   position: absolute;
   top: 8px;
   right: 8px;
+  width: auto;
+  height: 13px;
+  min-width: 13px;
   line-height: 13px;
   padding: 0 3px;
   font-size: 10px;
