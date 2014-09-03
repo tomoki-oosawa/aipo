@@ -961,6 +961,13 @@ public class ALDefaultSocialApplicationHanlder extends
               + "."
               + EipTTimeline.UPDATE_DATE_PROPERTY, cal2.getTime())).deleteAll();
 
+          String sql2 =
+            "delete from eip_t_timeline where update_date < '"
+              + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal2
+                .getTime())
+              + "'";
+          Database.sql(EipTTimeline.class, sql2).execute();
+
           // 親データ再検索
           tQuery = Database.query(EipTTimeline.class);
           tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4.andExp(
