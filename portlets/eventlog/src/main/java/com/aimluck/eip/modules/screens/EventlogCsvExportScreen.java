@@ -124,7 +124,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb =
-          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\"");
+          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\",\"件名\"");
         EventlogResultData data;
         for (ListIterator<EipTEventlog> iterator =
           list.listIterator(list.size()); iterator.hasPrevious();) {
@@ -140,6 +140,8 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
           sb.append(data.getEventName());
           sb.append("\",\"");
           sb.append(data.getIpAddr());
+          sb.append("\",\"");
+          sb.append(data.getNote());
           sb.append("\"");
         }
         return sb.toString();
