@@ -435,3 +435,111 @@ SELECT setval('pk_eip_m_project_kubun_value',12);
 CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
 -- 20140801
 
+-- 20140901
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM
+(
+    ROOM_ID INTEGER NOT NULL,
+    NAME VARCHAR (255),
+    ROOM_TYPE VARCHAR(1) DEFAULT 'G',
+    AUTO_NAME VARCHAR(1) DEFAULT 'F',
+    LAST_MESSAGE TEXT,
+    LAST_UPDATE_DATE TIMESTAMP DEFAULT NULL,
+    CREATE_USER_ID INTEGER NOT NULL,
+    CREATE_DATE DATE DEFAULT NOW(),
+    UPDATE_DATE TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (ROOM_ID)
+);
+
+CREATE SEQUENCE pk_eip_t_message_room INCREMENT 20;
+ALTER SEQUENCE pk_eip_t_message_room OWNED BY EIP_T_MESSAGE_ROOM.ROOM_ID;
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE
+(
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID TEXT NOT NULL,
+    MESSAGE TEXT,
+    MEMBER_COUNT INTEGER NOT NULL,
+    CREATE_DATE DATE DEFAULT NOW(),
+    UPDATE_DATE TIMESTAMP DEFAULT NOW(),
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (MESSAGE_ID)
+);
+
+CREATE SEQUENCE pk_eip_t_message INCREMENT 20;
+ALTER SEQUENCE pk_eip_t_message OWNED BY EIP_T_MESSAGE.MESSAGE_ID;
+
+create index eip_t_message_room_id_create_date ON EIP_T_MESSAGE(ROOM_ID,CREATE_DATE);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM_MEMBER
+(
+    ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    TARGET_USER_ID INTEGER NOT NULL,
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+CREATE SEQUENCE pk_eip_t_message_room_member INCREMENT 20;
+ALTER SEQUENCE pk_eip_t_message_room_member OWNED BY EIP_T_MESSAGE_ROOM_MEMBER.ID;
+
+create index eip_t_message_room_member_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(TARGET_USER_ID);
+create index eip_t_message_room_member_user_id_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(USER_ID,TARGET_USER_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    MESSAGE_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+CREATE SEQUENCE pk_eip_t_message_file INCREMENT 20;
+ALTER SEQUENCE pk_eip_t_message_file OWNED BY EIP_T_MESSAGE_FILE.FILE_ID;
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_READ
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_READ
+(
+    ID INTEGER NOT NULL,
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    IS_READ VARCHAR(1) DEFAULT 'F',
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+CREATE SEQUENCE pk_eip_t_message_read INCREMENT 20;
+ALTER SEQUENCE pk_eip_t_message_read OWNED BY EIP_T_MESSAGE_READ.ID;
+
+create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_READ);
+create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
+-- 20140901
+
+
