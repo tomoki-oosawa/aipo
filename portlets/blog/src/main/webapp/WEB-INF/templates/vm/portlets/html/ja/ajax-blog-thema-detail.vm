@@ -31,7 +31,7 @@
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.BLOG_CREATE_USER_NAME)
 #ALtditem($!result.Detail.CreateUserName)
-#ALtdcaption($l10n.BLOG_UPDATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem($!result.Detail.UpdateUserName)
 #ALtdcaption($l10n.BLOG_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)

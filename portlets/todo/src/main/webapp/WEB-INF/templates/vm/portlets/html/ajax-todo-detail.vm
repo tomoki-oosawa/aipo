@@ -54,7 +54,7 @@ $!result.Detail.TodoName
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.TODO_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
-#ALtdcaption($l10n.TODO_UPDATE_USER)
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem($!result.Detail.CreateUserName)
 #ALtdcaption($l10n.TODO_MEMO)
 #ALtditem($!result.Detail.Note)

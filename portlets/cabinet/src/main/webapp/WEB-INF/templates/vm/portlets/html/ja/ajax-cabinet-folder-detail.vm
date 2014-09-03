@@ -69,7 +69,7 @@ $!record.AliasName <br />
 #ALtditemheader()
 $!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()
-#ALtdcaption("$l10n.BLOG_UPDATE_USER_NAME")
+#ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditemheader()
 $!{result.Detail.UpdateUser} #if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
 #ALtditemfooter()
