@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -129,11 +130,13 @@ public class AccessControlUtils {
     }
 
     for (String portletName : inActiveList) {
-      Expression ex =
-        ExpressionFactory.notLikeExp(
-          EipTAclPortletFeature.FEATURE_NAME_PROPERTY,
-          "%" + portletName + "%");
-      query.andQualifier(ex);
+      if (!StringUtils.isEmpty(portletName)) {
+        Expression ex =
+          ExpressionFactory.notLikeExp(
+            EipTAclPortletFeature.FEATURE_NAME_PROPERTY,
+            portletName + "%");
+        query.andQualifier(ex);
+      }
     }
 
     query.orderAscending(EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
