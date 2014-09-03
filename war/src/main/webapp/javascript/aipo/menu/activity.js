@@ -40,12 +40,12 @@ aipo.menu.activity.count = function(count) {
     var checker = dojo.byId("activityChecker");
     if (checker > 99) {
         checker.innerHTML = '99+';
-        dojo.removeClass("activityChecker", "zero");
+        dojo.addClass("activityChecker", "num");
     } else if (count == 0) {
         checker.innerHTML = '';
-        dojo.addClass("activityChecker", "zero");
+        dojo.removeClass("activityChecker", "num");
     } else {
         checker.innerHTML = count;
-        dojo.removeClass("activityChecker", "zero");
+        dojo.addClass("activityChecker", "num");
     }
 }
