@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -129,18 +127,6 @@ public class AccessControlSelectData extends
   protected SelectQuery<EipTAclRole> getSelectQuery(RunData rundata,
       Context context) {
     SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
-    List<String> featureIdList = new ArrayList<String>();
-    for (AccessControlFeatureBean bean : portletFeatureList) {
-      featureIdList.add(String.valueOf(bean.getFeatureId()));
-    }
-
-    Expression ex =
-      ExpressionFactory.inDbExp(EipTAclRole.EIP_TACL_PORTLET_FEATURE_PROPERTY
-        + "."
-        + EipTAclPortletFeature.FEATURE_ID_PK_COLUMN, featureIdList);
-
-    query.andQualifier(ex);
-
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
