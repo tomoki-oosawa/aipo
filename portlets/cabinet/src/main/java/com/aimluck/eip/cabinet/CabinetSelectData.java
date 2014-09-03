@@ -115,15 +115,16 @@ public class CabinetSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p1c-sort"));
-      logger.debug("[CabinetSelectData] Init Parameter. : "
-        + ALEipUtils
+      try {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
           .getPortlet(rundata, context)
           .getPortletConfig()
           .getInitParameter("p1c-sort"));
+      } catch (RuntimeException e) {
+        throw e;
+      } catch (Exception e) {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "update_date");
+      }
     }
 
     int fid = 0;
