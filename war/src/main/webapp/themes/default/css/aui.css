@@ -226,7 +226,7 @@ input[type=submit], input[type=button], input[type=reset] {
   display: block;
   float: left;
   line-height: 60px;
-  padding: 0 20px;
+  padding: 0 30px 0 15px;
   color: #d2d2d2;
   text-decoration: none;
 }
@@ -252,9 +252,8 @@ input[type=submit], input[type=button], input[type=reset] {
 .hdPages a.setting {
   position: absolute;
   right: 0;
-  width: 16px;
+  width: 25px;
   padding: 0;
-  text-align: center;
 }
 .hdPages a.setting.active [class*=icon-] {
   color: #333333;
@@ -531,9 +530,8 @@ ul.hdCommunications .num {
   position: absolute;
   top: 8px;
   right: 8px;
-  min-width: 12px;
   line-height: 13px;
-  padding: 0 2px;
+  padding: 0 3px;
   font-size: 10px;
   text-align: center;
   background-color: #ff3333;
@@ -751,6 +749,9 @@ ul.hdTools .dropdown:before {
 .dropdown_list .new .date, .dropdown_list .new .name {
   color: #333333;
   font-weight: bold;
+}
+.dropdown_list .new:hover a {
+  background-color: #ededed;
 }
 
 .contentList li {
