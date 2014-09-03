@@ -210,7 +210,7 @@ public class WikiResultData implements ALData {
                 + id
                 + "&attachmentindex="
                 + attachmentfile.getFileId()
-                + "' /></a>");
+                + "'></a>");
       }
 
     } catch (Exception e) {

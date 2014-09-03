@@ -1302,27 +1302,27 @@ $link.get(0)
         #end
 	  #else
 		#if($emoji == "1")
-            <img localsrc="180" />
+            <img localsrc="180">
         #elseif($emoji == "2")
-            <img localsrc="181" />
+            <img localsrc="181">
         #elseif($emoji == "3")
-            <img localsrc="182" />
+            <img localsrc="182">
         #elseif($emoji == "4")
-            <img localsrc="183" />
+            <img localsrc="183">
         #elseif($emoji == "5")
-            <img localsrc="184" />
+            <img localsrc="184">
         #elseif($emoji == "6")
-            <img localsrc="185" />
+            <img localsrc="185">
         #elseif($emoji == "7")
-            <img localsrc="186" />
+            <img localsrc="186">
         #elseif($emoji == "8")
-            <img localsrc="187" />
+            <img localsrc="187">
         #elseif($emoji == "9")
-            <img localsrc="188" />
+            <img localsrc="188">
         #elseif($emoji == "0")
-            <img localsrc="325" />
+            <img localsrc="325">
         #elseif($emoji == "keitai")
-            <img localsrc="161" />
+            <img localsrc="161">
 		#end
 	  #end
 #end

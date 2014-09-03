@@ -34,17 +34,17 @@ limitations under the License.
 *#
 
 #set ($mtype = $!data.Parameters.getString("mtype"))
-#if ($!mtype)
+#if ($!mtype) 
     <form action="$jslink.Template.addQueryData('mtype', $mtype)" method="post">
 #else
     <form action="$jslink.Template" method="post">
 #end
-  #if ($action) <input name="$jslink.ActionKey" type="hidden" value="$action" > #end
+  #if ($action) <input name="$jslink.ActionKey" type="hidden" value="$action" > #end 
 
 <table width=100%" border="1" cellpadding="0" cellspacing="0">
 <tr>
-    <td colspan="5"><img src="images/blank.gif" width="20%" height="1" border="0" /></td>
-    <td><img src="images/blank.gif" width="80%" height="1" border="0" /></td>
+    <td colspan="5"><img src="images/blank.gif" width="20%" height="1" border="0"></td>
+    <td><img src="images/blank.gif" width="80%" height="1" border="0"></td>
 </tr>
 
 #foreach ( $entry in $psml )
@@ -99,7 +99,7 @@ limitations under the License.
         #else
             <tr>
                 <td style="font-size:10">$!category</td>
-                <td colspan=5><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan=5><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -108,9 +108,9 @@ limitations under the License.
         #if($prevCatName == $catName)
         #else
             <tr>
-                <td><img src="images/blank.gif"height="1" border="0" /></td>
+                <td><img src="images/blank.gif"height="1" border="0"></td>
                 <td style="font-size:10">$!catName</td>
-                <td colspan=4><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan=4><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -124,19 +124,19 @@ limitations under the License.
             #else
             <tr>
                 #foreach ($index in [1..$blank])
-                    <td><img src="images/blank.gif" height="1" border="0" /></td>
+                    <td><img src="images/blank.gif" height="1" border="0"></td>
                 #end
                 <td style="font-size:10">$mediaType</td>
-                <td colspan="3"><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan="3"><img src="images/blank.gif" height="1" border="0"></td>
         </tr>
             #end
         #else
             <tr>
                 #foreach ($index in [1..$blank])
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
                 #end
                 <td style="font-size:10">$mediaType</td>
-                <td colspan="3"><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan="3"><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -152,7 +152,7 @@ limitations under the License.
                     <td style="font-size:10">&nbsp;</td>
                 #end
                 <td style="font-size:10">$language</td>
-                <td colspan="2"><img src="images/blank.gif"height="1" border="0" /></td>
+                <td colspan="2"><img src="images/blank.gif"height="1" border="0"></td>
             </tr>
             #end
         #else
@@ -161,7 +161,7 @@ limitations under the License.
                 <td style="font-size:10">&nbsp;</td>
             #end
                 <td style="font-size:10">$language</td>
-                <td colspan="2"><img src="images/blank.gif"height="1" border="0" /></td>
+                <td colspan="2"><img src="images/blank.gif"height="1" border="0"></td>
         </tr>
         #end
     #else
@@ -179,7 +179,7 @@ limitations under the License.
                     <td style="font-size:10">&nbsp;</td>
                 #end
                 <td style="font-size:10">$country</td>
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
             #end
         #else
@@ -188,7 +188,7 @@ limitations under the License.
                 <td style="font-size:10">&nbsp;</td>
             #end
                 <td style="font-size:10">$country</td>
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
         </tr>
         #end
     #end
@@ -197,7 +197,7 @@ limitations under the License.
     <tr>
         #set ($blank = $blank + 1 )
         #foreach ($index in [1..$blank])
-                <td><img src="images/blank.gif"height="1" border="0" /></td>
+                <td><img src="images/blank.gif"height="1" border="0"></td>
         #end
         #set ($number = 6 - $blank)
         <td colspan=$number>
@@ -211,7 +211,7 @@ limitations under the License.
             </tr>
         </table>
         </td>
-
+        
     </tr>
 
     #set ($prevCategory = $category)
@@ -229,7 +229,7 @@ limitations under the License.
       <td>
         #if ($prev)
           #set ($mtype = $!data.Parameters.getString("mtype"))
-          #if ($!mtype)
+          #if ($!mtype) 
             <a href="$jslink.setTemplate("Customize").addPathInfo("start",$prev).addQueryData('mtype', $mtype)">$l10n.CUSTOMIZER_PREVIOUSBTN</a>
           #else
             <a href="$jslink.setTemplate("Customize").addPathInfo("start",$prev)">$l10n.CUSTOMIZER_PREVIOUSBTN</a>
@@ -248,7 +248,7 @@ limitations under the License.
       <td>
         #if ($next)
           #set ($mtype = $!data.Parameters.getString("mtype"))
-          #if ($!mtype)
+          #if ($!mtype) 
           <a href="$jslink.setTemplate("Customize").addPathInfo("start",$next).addQueryData('mtype', $mtype)">$l10n.CUSTOMIZER_NEXTBTN</a>
           #else
           <a href="$jslink.setTemplate("Customize").addPathInfo("start",$next)">$l10n.CUSTOMIZER_NEXTBTN</a>
@@ -262,4 +262,4 @@ limitations under the License.
   </center>
 
 </form>
-
+  

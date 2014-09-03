@@ -30,7 +30,7 @@
 <div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle" />&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle" />&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle" />&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle" />$l10n.PROJECT_FILTER_ORDER_MSG<br>
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">$l10n.PROJECT_FILTER_ORDER_MSG<br>
  $l10n.PROJECT_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("ProjectTaskChangeTurnForm" $jslink $portlet "ProjectTaskChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.project.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
@@ -41,10 +41,10 @@
 <tr>
 <td class="caption" width="30%" nowrap="">$l10n.PROJECT_TASK_LIST</td>
 <td width="5%">
-<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_TEN"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0" /></a></div>
-<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_ONE"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0" /></a></div>
-<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_ONE"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0" /></a></div>
-<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_TEN"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0" /></a></div>
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_TEN"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_ONE"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_ONE"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_TEN"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
 </td>
 <td width="65%"><select id="project_so_$!portlet.ID" name="project_so" size="20" multiple="multiple" style="WIDTH: 100%">
 #if($!result.UserList.size() <= 0)

@@ -74,7 +74,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
         <div class="thumbBlock">
         <div id='popc' style='position:absolute'></div>
         <a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen',"BlogFileRawScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entryid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})');">
-        <img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})" /></a>
+        <img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"></a>
         </div>
       #end
       </li>

@@ -38,5 +38,5 @@ limitations under the License.
 #else
 <a href="http://www.wunderground.com/${weather_city_info}.html"
 target="_blank"><img src="http://banners.wunderground.com/banner/${weather_style}/language/www/${weather_city_info}.gif"
-alt="Click for ${weather_city_info} Forecast" border="0" /></a>
+alt="Click for ${weather_city_info} Forecast" border="0"></a>
 #end

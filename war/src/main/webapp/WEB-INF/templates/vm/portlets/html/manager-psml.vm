@@ -36,7 +36,7 @@ limitations under the License.
 #set ( $filter = $data.getRequest().getParameter("filter_value") )
 #set ( $filter_type = $data.getRequest().getParameter("filter_type") )
 
-#if ($can-search == "true")
+#if ($can-search == "true")                    
 <form method="post">
 <b>$l10n.PSML_MANAGER_FILTER_STRING:</b> <input type="Text" name="filter_value" value="$!filter"/>
 <select name="filter_type">
@@ -52,8 +52,8 @@ limitations under the License.
 </form>
 <table width=100%" border="1" cellpadding="0" cellspacing="0">
 <!--tr>
-    <td colspan="5"><img src="images/blank.gif" width="20%" height="1" border="0" /></td>
-    <td><img src="images/blank.gif" width="80%" height="1" border="0" /></td>
+    <td colspan="5"><img src="images/blank.gif" width="20%" height="1" border="0"></td>
+    <td><img src="images/blank.gif" width="80%" height="1" border="0"></td>
 </tr-->
 
 #foreach ( $entry in $psml )
@@ -108,7 +108,7 @@ limitations under the License.
         #else
             <tr>
                 <td style="font-size:10">$!category</td>
-                <td colspan=5><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan=5><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -117,9 +117,9 @@ limitations under the License.
         #if($prevCatName == $catName)
         #else
             <tr>
-                <td><img src="images/blank.gif"height="1" border="0" /></td>
+                <td><img src="images/blank.gif"height="1" border="0"></td>
                 <td style="font-size:10">$!catName</td>
-                <td colspan=4><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan=4><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -133,19 +133,19 @@ limitations under the License.
             #else
             <tr>
                 #foreach ($index in [1..$blank])
-                    <td><img src="images/blank.gif" height="1" border="0" /></td>
+                    <td><img src="images/blank.gif" height="1" border="0"></td>
                 #end
                 <td style="font-size:10">$mediaType</td>
-                <td colspan="3"><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan="3"><img src="images/blank.gif" height="1" border="0"></td>
         </tr>
             #end
         #else
             <tr>
                 #foreach ($index in [1..$blank])
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
                 #end
                 <td style="font-size:10">$mediaType</td>
-                <td colspan="3"><img src="images/blank.gif" height="1" border="0" /></td>
+                <td colspan="3"><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
         #end
     #end
@@ -161,7 +161,7 @@ limitations under the License.
                     <td style="font-size:10">&nbsp;</td>
                 #end
                 <td style="font-size:10">$language</td>
-                <td colspan="2"><img src="images/blank.gif"height="1" border="0" /></td>
+                <td colspan="2"><img src="images/blank.gif"height="1" border="0"></td>
             </tr>
             #end
         #else
@@ -170,7 +170,7 @@ limitations under the License.
                 <td style="font-size:10">&nbsp;</td>
             #end
                 <td style="font-size:10">$language</td>
-                <td colspan="2"><img src="images/blank.gif"height="1" border="0" /></td>
+                <td colspan="2"><img src="images/blank.gif"height="1" border="0"></td>
         </tr>
         #end
     #else
@@ -188,7 +188,7 @@ limitations under the License.
                     <td style="font-size:10">&nbsp;</td>
                 #end
                 <td style="font-size:10">$country</td>
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
             </tr>
             #end
         #else
@@ -197,7 +197,7 @@ limitations under the License.
                 <td style="font-size:10">&nbsp;</td>
             #end
                 <td style="font-size:10">$country</td>
-                <td><img src="images/blank.gif" height="1" border="0" /></td>
+                <td><img src="images/blank.gif" height="1" border="0"></td>
         </tr>
         #end
     #end
@@ -206,7 +206,7 @@ limitations under the License.
     <tr>
         #set ($blank = $blank + 1 )
         #foreach ($index in [1..$blank])
-                <td><img src="images/blank.gif"height="1" border="0" /></td>
+                <td><img src="images/blank.gif"height="1" border="0"></td>
         #end
         #set ($number = 6 - $blank)
         <td colspan=$number>
@@ -228,12 +228,12 @@ limitations under the License.
             </tr>
         </table>
         </td>
-
+        
     </tr>
 
     #set ($prevCategory = $category)
     #set ($prevCatName = $catName)
-    #set ($prevMediaType = $mediaType)
+    #set ($prevMediaType = $mediaType)                              
     #set ($prevLanguage = $language)
     #set ($prevCountry = $country)
 
@@ -241,9 +241,9 @@ limitations under the License.
 <tr/>
 <tr>
     #set ($link4 = $jslink.addQueryData("mode","insert"))
-    #set ($exportAll = $jslink.addQueryData("mode","export_all"))
-    #set ($importAll = $jslink.addQueryData("mode","import_all"))
-    #set ($import = $jslink.addQueryData("mode","import"))
+    #set ($exportAll = $jslink.addQueryData("mode","export_all")) 
+    #set ($importAll = $jslink.addQueryData("mode","import_all"))       
+    #set ($import = $jslink.addQueryData("mode","import"))           
     <td colspan=6 align="left">
         #if ($can-add == "true") <a style="font-size:10" href='$link4'>${l10n.MANAGER_PSML_ADD_VM}</a>&nbsp;&nbsp;&nbsp;&nbsp; #end
         #if ($can-export-all == "true") <a style="font-size:10" href='$exportAll'>$l10n.PSML_MANAGER_BROWSER_EXPORT_ALL</a>&nbsp;&nbsp;&nbsp;&nbsp; #end
