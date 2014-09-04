@@ -37,14 +37,34 @@ aipo.customize.onReceiveMessage = function(msg){
     }
 }
 
+aipo.customize.ignoreHideMenu =false;
 aipo.customize.showMenu = function(portlet_id) {
+	var timelineConfirm =false;
+	var  cancel =false;
+    dojo.query("div[id*=timeline_]").forEach( function(obj){
+   	 var portlet_id=  obj.id.split("_")[1];
+   	 if(aipo.onBeforeUnloadConfirm("note_"+portlet_id)){
+			   timelineConfirm= true;
+ 			 }
+ 	  });
+    if(timelineConfirm){
+    	 if (!confirm('このページから移動すると、保存されていないデータが失われます。このページから移動してもよろしいですか？')) {
+    		 cancel =true;
+    	 }else{
+    		 if(dojo.isIE || dojo.isFF){
+    		 aipo.customize.ignoreHideMenu =true;
+    		 }
+
+    	 }
+    }
+    if(!cancel){
 	var menuNode = dojo.query('#menubar_' + portlet_id);
 	var buttonNode= dojo.query('#menubar_button_' + portlet_id);
 	if(menuNode.length==0 || buttonNode.length==0)return;//error
 
 	var rect=buttonNode[0].getBoundingClientRect();
 	var html=document.documentElement.getBoundingClientRect();
-	if (menuNode.style('display') == 'none') {
+	if (menuNode.style('display') == 'none' && !cancel) {
 		dojo.query('div.menubar').style('display', 'none');
 		 var scroll={
         	left:document.documentElement.scrollLeft||document.body.scrollLeft,
@@ -77,18 +97,39 @@ aipo.customize.showMenu = function(portlet_id) {
     		dojo.query('#accessControlDelete_'+portlet_id).style('display', 'none');
     	}
     } else {
+    	aipo.customize.ignoreHideMenu =false;
         aipo.customize.hideMenu(portlet_id);
+    }
     }
 }
 
 aipo.customize.showMenuForTab = function(tab_id) {
+
+	var timelineConfirm =false;
+	var  cancel =false;
+    dojo.query("div[id*=timeline_]").forEach( function(obj){
+   	 var portlet_id=  obj.id.split("_")[1];
+   	 if(aipo.onBeforeUnloadConfirm("note_"+portlet_id)){
+			   timelineConfirm= true;
+ 			 }
+ 	  });
+    if(timelineConfirm){
+    	 if (!confirm('このページから移動すると、保存されていないデータが失われます。このページから移動してもよろしいですか？')) {
+    		 cancel =true;
+    	 }else{
+    		 if(dojo.isIE || dojo.isFF){
+    		 aipo.customize.ignoreHideMenu =true;
+    		 }
+    	 }
+    }
+    if(!cancel){
 	var menuNode = dojo.query('#menubar_' + tab_id);
 	var buttonNode= dojo.query('#menubar_button_' + tab_id);
 	if(menuNode.length==0 || buttonNode.length==0)return;//error
 
 	var rect=buttonNode[0].getBoundingClientRect();
 	var html=document.documentElement.getBoundingClientRect();
-	if (menuNode.style('display') == 'none') {
+	if (menuNode.style('display') == 'none' ) {
 		dojo.query('div.menubar').style('display', 'none');
 		 var scroll={
         	left:document.documentElement.scrollLeft||document.body.scrollLeft,
@@ -106,7 +147,9 @@ aipo.customize.showMenuForTab = function(tab_id) {
         menuNode.style("top",rect.bottom+scroll.top-20+"px");
         menuNode.style("opacity","1");
     } else {
+    	 aipo.customize.ignoreHideMenu =false;
         aipo.customize.hideMenu(tab_id);
+    }
     }
 }
 
@@ -280,7 +323,11 @@ aipo.customize.addAutoHideMenuTrigger = function(){
 
 	bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
         if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
+        	if(!aipo.customize.ignoreHideMenu){
             aipo.customize.hideMenu();
+        	}else{
+        		aipo.customize.ignoreHideMenu =false
+        	}
         }
     });
 }

@@ -29,7 +29,7 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 
-#ALajaxscreenformheader("psmlForm" $jslink $portlet "GadgetsPsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gadgets_admin.onReceiveMessageUpdate);aipo.gadgets_admin.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;")
+#ALajaxscreenformheader("psmlForm" $jslink $portlet "GadgetsPsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gadgets_admin.onReceiveMessageUpdate);aipo.gadgets_admin.submit(this,'$indicator_id','$!js_peid',function(){ ignoreBeforeUnload=true; location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;")
 <div class="p">
 <input type="hidden" value="" id="$!{portlet.ID}-mode" name="mode">
 </div>

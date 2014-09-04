@@ -689,17 +689,33 @@ aipo.timeline.getNewMessage = function(url, pid) {
 }
 
 aipo.timeline.displayIndicator = function(url, portletId, indicator_id, post) {
-	dojo.byId("tlDisplayGroup_" + portletId).innerHTML = dojo.byId("PostName_"
+	var timelineConfirm =false;
+	var  cancel =false;
+    dojo.query("div[id*=timeline_]").forEach( function(obj){
+   	 var portlet_id=  obj.id.split("_")[1];
+   	 if(aipo.onBeforeUnloadConfirm("note_"+portlet_id)){
+			   timelineConfirm= true;
+ 			 }
+ 	  });
+    if(timelineConfirm){
+    	 if (!confirm('このページから移動すると、保存されていないデータが失われます。このページから移動してもよろしいですか？')) {
+    		 cancel =true;
+    	 }
+    }
+    if(!cancel){
+
+    	dojo.byId("tlDisplayGroup_" + portletId).innerHTML = dojo.byId("PostName_"
 			+ portletId + "_" + post).innerHTML;
 
-	var obj_indicator = dojo.byId(indicator_id + portletId);
-	if (obj_indicator) {
-		dojo.style(obj_indicator, "display", "");
-	}
+    	var obj_indicator = dojo.byId(indicator_id + portletId);
+    	if (obj_indicator) {
+    		dojo.style(obj_indicator, "display", "");
+    	}
 
-	aipo.viewPage(url, portletId);
+    	aipo.viewPage(url, portletId);
 
-	obj_indicator = dojo.byId(indicator_id + portletId);
+    	obj_indicator = dojo.byId(indicator_id + portletId);
+    }
 }
 
 aipo.timeline.displayIndicatorNotViewPage = function(portletId, indicator_id) {

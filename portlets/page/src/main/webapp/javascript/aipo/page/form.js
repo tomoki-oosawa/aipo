@@ -34,6 +34,7 @@ aipo.page.onReceiveMessage = function(msg){
         if(arrDialog){
             arrDialog.hide();
         }
+        ignoreBeforeUnload=true;
         location.href = location;
     }
     if (dojo.byId('messageDiv')) {

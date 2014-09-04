@@ -27,7 +27,7 @@
 #if($isMypage)
 $!pageTitle
 #else
-<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
+<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ignoreBeforeUnload=true; location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
 <input type="hidden" name="_name" value="form$!{js_peid}" />
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="portlet_id" value="$!{js_peid}" />
@@ -67,7 +67,7 @@ $!set.Controller.getContent($data)
 
 #if(!$!isMypage)
 <h3>$l10n.WAR_PAGE_DELETE</h3>
-<div align="center"><input name="eventSubmit_doCancel" class="auiButtonAction" type="button" value="$l10n.WAR_PAGE_DO_DELETE" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{js_peid}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})"></div>
+<div align="center"><input name="eventSubmit_doCancel" class="auiButtonAction" type="button" value="$l10n.WAR_PAGE_DO_DELETE" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{js_peid}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){ignoreBeforeUnload=true;location.href='$!{jslink}/js_pane/$!{mypageId}'})"></div>
 #end
 #ALspacebothfooter()
 

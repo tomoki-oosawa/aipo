@@ -37,9 +37,9 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #if ($!mtype)
-<form name="DefaultCustomizer" action="$jslink.getPortletById($!{js_peid}).addQueryData('template', 'PortletCustomizeFormJSONScreen').addQueryData('mtype', $mtype)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' }); return false;">
+<form name="DefaultCustomizer" action="$jslink.getPortletById($!{js_peid}).addQueryData('template', 'PortletCustomizeFormJSONScreen').addQueryData('mtype', $mtype)" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ ignoreBeforeUnload=true;location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' }); return false;">
 #else
-<form name="DefaultCustomizer" action="$jslink.getPortletById($!{js_peid}).addQueryData('template', 'PortletCustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' }); return false;">
+<form name="DefaultCustomizer" action="$jslink.getPortletById($!{js_peid}).addQueryData('template', 'PortletCustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ ignoreBeforeUnload=true; location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' }); return false;">
 #end
 <input name="js_peid" type="hidden" value="$data.getJs_peid()" />
 <input type="hidden" name="secid" value="$!secid" />

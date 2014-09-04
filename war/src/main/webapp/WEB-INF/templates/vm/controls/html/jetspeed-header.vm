@@ -54,7 +54,7 @@ limitations under the License.
 												</li>
 												#if($!tab.Title.Value != "マイページ")
 												<li class="last">
-													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
+													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){ignoreBeforeUnload=true; location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
 												</li>
 												#end
 											</ul>

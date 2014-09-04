@@ -278,12 +278,15 @@ function activitySwitch(){
 }
 var ignoreBeforeUnload=false;
 
+
+
 	dojo.addOnLoad(function() {
 		if(dojo.isIE){
-			dojo.query("a[href*='javascript:void(0)']").connect("onclick", function(){
-	     	 ignoreBeforeUnload=true;
+			dojo.connect(dojo.body(),"onclick", function(){
+			 var elment=window.event.srcElement;
+		     aipo.checkBeforeUnload(elment);
 		  });
- 		 }
+		 }
 	});
 
 

@@ -349,3 +349,21 @@ aipo.onBeforeUnloadConfirm =function(id){
 	return false;
 }
 
+aipo.checkBeforeUnload =function(elment){
+	 var href =elment.href;
+	    if(href){
+	      if(href.indexOf('javascript:')>-1){
+		     	 ignoreBeforeUnload=true;
+		   	 }else if(elment.tagName =="IMG"){
+		   		 var logo = dojo.query('.hdLogo');
+                 var  alias =  logo[0].childNodes[0].childNodes[0].alt;
+                 if(elment.alt!= alias){
+		   		 ignoreBeforeUnload=true;
+                 }
+		   	 }
+	     }else if(elment.parentElement){
+	    	 aipo.checkBeforeUnload(elment.parentElement);
+	    }
+
+}
+
