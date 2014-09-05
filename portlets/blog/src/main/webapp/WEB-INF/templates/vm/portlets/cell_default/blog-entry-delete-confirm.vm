@@ -56,7 +56,7 @@ $l10n.BLOG_COMMENT_CELL_NOTHING
 #end
 #ALcell_formheader($career $jslink $portlet)
 <input type="hidden" name="entityid" value=${result.Detail.EntryId}>
-<input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="$l10n.BLOG_DO_DELETE">
+<input type="submit" class="submit" name="eventSubmit_doBlog_entry_delete" value="$l10n.COMMON_DELETE">
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

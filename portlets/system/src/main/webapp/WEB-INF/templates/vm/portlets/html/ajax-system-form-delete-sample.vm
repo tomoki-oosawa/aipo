@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($action_str = $l10n.SYSTEM_DELETE)
+#set ($action_str = $l10n.COMMON_DELETE)
 #set ($subtitle = $l10n.SYSTEM_DELETE_SAMPLEDATA)
 #set ($event_submit = "eventSubmit_doDeletesample_form")
 #ALdialogheader($subtitle)

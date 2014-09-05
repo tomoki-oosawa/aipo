@@ -74,9 +74,9 @@
 <div class="floatLeft">
 #if($isReceive)
 #AUIajaxbuttonCheckboxAction($l10n.NOTE_READ_MESSAGE_TEXT "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('NoteListScreen' $result)
@@ -129,9 +129,9 @@ unread
 <div class="floatLeft">
 #if($isReceive)
 #AUIajaxbuttonCheckboxAction($l10n.NOTE_READ_MESSAGE_TEXT "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
-#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete($l10n.NOTE_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('NoteListScreen' $result)

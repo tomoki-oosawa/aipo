@@ -41,7 +41,7 @@
 #ALajaxlistformheader($l10n.WEBMAIL_FILTER)
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDeleteIcon($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton($l10n.WEBMAIL_DO_SORT_APPLY_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">
@@ -74,7 +74,7 @@ $!{record.FilterType}$l10n.WEBMAIL_IS$!{record.FilterString}$l10n.WEBMAIL_CONTAI
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDeleteIcon($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton($l10n.WEBMAIL_DO_SORT_APPLY_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">

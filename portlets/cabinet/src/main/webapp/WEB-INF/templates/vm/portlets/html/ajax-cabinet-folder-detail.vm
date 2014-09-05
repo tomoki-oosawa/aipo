@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(CabinetajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.CABINET_DO_DELET" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
 #ALdialogheader("$l10n.CABINET_CABINET_FOLDER")

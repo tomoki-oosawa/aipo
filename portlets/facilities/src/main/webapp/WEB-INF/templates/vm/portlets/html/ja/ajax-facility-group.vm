@@ -49,7 +49,7 @@
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
 #AUIajaxpageview('FacilityGroupListScreen' $result)
@@ -88,7 +88,7 @@ $result.getStringCR($!group.FacilityName)
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityGroupFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
 </div>
 #AUIajaxpageview('FacilityGroupListScreen' $result)
 #AUISummaryDivfooter()

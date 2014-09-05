@@ -51,7 +51,7 @@
 <input type="hidden" name="mode" value="delete">
 <input type="hidden" name="secid" value="$secid" />
 ##<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_form" value="編集する">
-<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="削除する">
+<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="$l10n.COMMON_DELETE">
 </form>
 #end
 #ALcell_dl_footer($career)
@@ -93,7 +93,7 @@
 <input type="hidden" name="topic_reply_id" value=${record.TopicId}>
 <input type="hidden" name="mode" value="delete_reply">
 <input type="hidden" name="secid" value="$secid" />
-<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="削除する">
+<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="$l10n.COMMON_DELETE">
 </form>
 #end
 #ALcell_dl_footer($career)
