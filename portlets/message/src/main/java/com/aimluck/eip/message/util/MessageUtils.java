@@ -136,7 +136,6 @@ public class MessageUtils {
       object.setFirstName(firstName);
       object.setLastName(lastName);
       list.add(object);
-
     }
 
     if (page > 0 && limit > 0) {
