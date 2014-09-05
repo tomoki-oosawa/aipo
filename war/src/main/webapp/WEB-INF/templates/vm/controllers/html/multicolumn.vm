@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #if ($data.User.hasLoggedIn())
                                                       <!-- LAYOUT -->
-                                                      <table class="tableWrapper">
+                                                      <table class="tableWrapper" id="portletsBody">
                                                         <tbody>
                                                           <tr>
 #foreach ( $column in $portlets )

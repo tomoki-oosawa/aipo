@@ -846,7 +846,7 @@ $item.get(0)
 #* S U B M E N U *#
 #macro(ALsubmenuheader $tabs)
 <!-- LAYOUT -->
-<table class="tableWrapper">
+<table class="tableWrapper" id="portletsBody">
   <tbody>
     <tr>
       <td class="top mb_hide" width="200">
