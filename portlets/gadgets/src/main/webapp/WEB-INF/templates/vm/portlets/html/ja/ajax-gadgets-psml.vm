@@ -64,7 +64,7 @@
 </div>
 <div align="center">
 <input type="submit" onclick="aimluck.io.setHiddenValue(this)" value="$l10n.GADGETS_CHANGE_SETTING" class="auiButtonAction" name="$event_submit">
-<input type="button" onclick="aipo.common.hideDialog();" value="$l10n.GADGETS_CLOSE2" class="button" name="ajaxbuttonClose">
+<input type="button" onclick="aipo.common.hideDialog();" value="$l10n.COMMON_CLOSE" class="button" name="ajaxbuttonClose">
 </div>
 #ALbuttonfooter()
 #ALformfooter()

@@ -84,7 +84,7 @@ $!result.Detail.Body
 <input name="ajaxbuttonReplyAll" class="button" type="button" value="$l10n.WEBMAIL_REPLY_ALL" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_reply_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '3')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
 <input name="ajaxbuttonTransport" class="button" type="button" value="$l10n.WEBMAIL_FORWARD" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormScreen').addQueryData('eventSubmit_doWebmail_forward_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')', '$!portlet.ID', 'aipo.webmail.onLoadMailDialog')" />
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('entityid', $entityid).addQueryData('mode', 'delete')" "indicator-dlg-" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
-<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.hideDialog();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.webmail.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
   </div>
