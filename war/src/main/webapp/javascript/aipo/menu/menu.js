@@ -40,6 +40,8 @@ aipo.menu.toggleDropdown = function(key) {
             aipo.menu.hideDropdown(aipo.menu.list[i]);
         }
     }
+
+    aipo.message.swapView();
 }
 
 aipo.menu.hideDropdown = function(key) {
@@ -64,6 +66,8 @@ aipo.menu.hideDropdownAll = function(key) {
     for ( var i in aipo.menu.list) {
         aipo.menu.hideDropdown(aipo.menu.list[i]);
     }
+
+    aipo.message.swapView();
 }
 
 aipo.menu.updateTitle = function() {

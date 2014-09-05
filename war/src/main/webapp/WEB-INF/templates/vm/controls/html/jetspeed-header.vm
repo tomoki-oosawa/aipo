@@ -72,6 +72,47 @@ limitations under the License.
 #if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
 		<ul class="hdCommunications">
 			<li>
+				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span class="num" id="messageChecker"></span></a>
+				<div class="dropdown" id="dd_message">
+					<div class="title">メッセージ</div>
+					<div class="body">
+						<div class="sideBlock">
+							<div class="auiTabs" id="messageSideBlockTab">
+								<ul class="tab">
+									<li class="w50 active"><a href="javascript:void(0)" onclick="auiTabs(this,'messageSideBlockTab')">ルーム</a></li>
+									<li class="w50"><a href="javascript:void(0)" onclick="auiTabs(this,'messageSideBlockTab')">ユーザー</a></li>
+								</ul>
+								<ul class="tabContents">
+									<li class="active">
+										<div class="scroll" id="messageSideBlock1">
+											<div class="messageSummaryHead">
+												<div class="inner">
+													<a href="javascript:void(0)" class="auiButton w100" onclick="return true;">ルームを追加する</a>
+												</div>
+												<div class="inner">
+													<form class="search">
+														<input type="text" id="roomSearch" class="" onfocus="return true;" onblur="return true;"><label class="placeholder" for="roomSearch">ルーム検索</label>
+														<button class="submit" title="検索"><i class="icon-search"></i></button>
+													</form>
+												</div>
+											</div>
+											<div id="messageRoomListPane"></div>
+										</div>
+									</li>
+									<li>
+										<div class="scroll" id="messageSideBlock2">
+											<div id="messageUserListPane"></div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="mainBlock">
+						</div>
+					</div>
+				</div>
+			</li>
+			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span class="num" id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
 					<div id="activityListPane"></div>
@@ -119,10 +160,13 @@ limitations under the License.
 //<![CDATA[
 
 dojo.addOnLoad(function() {
+    aipo.menu.register("message");
     aipo.menu.register("activity");
     aipo.menu.register("settings");
     aipo.menu.activity.reload();
     aipo.menu.updateTitle();
+    aipo.message.fixMessageWindow();
+    aipo.message.init();
 });
 
 
