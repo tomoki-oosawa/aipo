@@ -74,7 +74,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALtdheadW33("#ALajaxsort('file_title' "$l10n.CABINET_TITLE" $result 'CabinetFileSearchListScreen')")
 #ALtdheadW33("#ALajaxsort('file_name' "$l10n.CABINET_FILE_NAME" $result 'CabinetFileSearchListScreen')")
 ##ALtdheadThin("#ALajaxsort('update_user' "$l10n.COMMON_UPDATE_USER" $result 'CabinetListScreen')")
-#ALtdheadW25("#ALajaxsort('update_date' "$l10n.CABINET_UPDATE_DATE" $result 'CabinetFileSearchListScreen')")
+#ALtdheadW25("#ALajaxsort('update_date' "$l10n.COMMON_UPDATE_DATE" $result 'CabinetFileSearchListScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' "$l10n.CABINET_CAPACITY_KB" $result 'CabinetFileSearchListScreen')")
 #ALtdheadW33("#ALajaxsort('folder_name' "$l10n.WEBMAIL_FOLDER_NAME"  $result 'CabinetFileSearchListScreen')")
 #ALtdheadThin(' ')

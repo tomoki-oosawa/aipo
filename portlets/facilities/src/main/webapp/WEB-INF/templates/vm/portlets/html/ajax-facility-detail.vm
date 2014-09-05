@@ -32,7 +32,7 @@ $!result.Detail.FacilityName
 #ALtditem($!result.Detail.Note)
 #ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate.toString("$l10n.FACILITIES_DATE_FORMAT"))
-#ALtdcaption("$l10n.FACILITIES_DATE_UPDATING")
+#ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate.toString("$l10n.FACILITIES_DATE_FORMAT"))
 #ALtdcaption("$l10n.FACILITIES_FACILITYGROUP")
 #ALtditemheader()

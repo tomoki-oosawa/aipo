@@ -62,7 +62,7 @@ $l10n.ACTIVITY_CONTENT
 $l10n.ACTIVITY_NAME
 </th>
 <th class="thin">
-$l10n.ACTIVITY_UPDATE_DATE
+$l10n.COMMON_UPDATE_DATE
 </th>
 </tr>
 #foreach ($record in $result.List)

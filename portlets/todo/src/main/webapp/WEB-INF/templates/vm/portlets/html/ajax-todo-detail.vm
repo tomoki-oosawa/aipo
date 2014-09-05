@@ -52,7 +52,7 @@ $!result.Detail.TodoName
 #ALtditem($!result.Detail.PriorityString)
 #ALtdcaption($l10n.COMMON_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption($l10n.TODO_UPDATE_DATE)
+#ALtdcaption($l10n.COMMON_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem($!result.Detail.CreateUserName)
