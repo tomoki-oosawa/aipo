@@ -3,7 +3,7 @@
 .activityPopup .title, .supportPopup .title, .dropdown .body,
 .activityPopup .body, .supportPopup .body, .dropdown .contents,
 .activityPopup .contents, .supportPopup .contents, .dropdown .foot,
-.activityPopup .foot, .supportPopup .foot, .messageSummary li a, #auiLauncher, #auiLauncher ul.launcher li a,
+.activityPopup .foot, .supportPopup .foot, .messageSummary li a, .messageUserlist ul li a, #auiLauncher, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab, #timelineOuter .message,
 .timelineOuter .message {
   *zoom: 1;
@@ -12,13 +12,13 @@
 .activityPopup .title:before, .supportPopup .title:before, .dropdown .body:before,
 .activityPopup .body:before, .supportPopup .body:before, .dropdown .contents:before,
 .activityPopup .contents:before, .supportPopup .contents:before, .dropdown .foot:before,
-.activityPopup .foot:before, .supportPopup .foot:before, .messageSummary li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
+.activityPopup .foot:before, .supportPopup .foot:before, .messageSummary li a:before, .messageUserlist ul li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
 #auiLauncher ul.setting li a:before, .auiTabs .tab:before, #timelineOuter .message:before,
 .timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
 .activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
 .activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
 .activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
-.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   display: table;
@@ -29,7 +29,7 @@
 .activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
 .activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
 .activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
-.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   clear: both;
@@ -62,7 +62,7 @@
 }
 
 .bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown,
-.activityPopup, .supportPopup, .messageSummary .avatar img, .messageSummary .avatar .icon-group, .auiSearchOption, .auiAvatarList li a img, textarea,
+.activityPopup, .supportPopup, .auiSearchOption, .auiAvatarList li a img, textarea,
 select, input[type=text],
 input[type=password], #timelineOuter #inputField,
 #timelineOuter .inputField,
@@ -93,7 +93,7 @@ input[type=password], #timelineOuter #inputField,
   border-radius: 50%;
 }
 
-.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, ul.hdTools .name, #auiLauncher ul.launcher li a,
+.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, ul.hdTools .name, .messageSummary .date, .messageSummary .name, .messageSummary .latest, .messageUserlist .name, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab > li a {
   white-space: nowrap;
   overflow: hidden;
@@ -154,16 +154,12 @@ input[type=password], #timelineOuter #inputField,
 }
 
 html, body {
-  margin: 0;
-  padding: 0;
-  font-size: 100%;
-}
-
-body {
+  position: relative;
   width: 100%;
-  padding: 0;
+  height: 100%;
   margin: 0;
-  font-size: .75em;
+  padding: 0;
+  font-size: 12px;
   line-height: 1.4;
   background-color: #f0f0f0;
 }
@@ -226,7 +222,7 @@ input[type=submit], input[type=button], input[type=reset] {
   display: block;
   float: left;
   line-height: 60px;
-  padding: 0 20px;
+  padding: 0 30px 0 15px;
   color: #d2d2d2;
   text-decoration: none;
 }
@@ -252,9 +248,8 @@ input[type=submit], input[type=button], input[type=reset] {
 .hdPages a.setting {
   position: absolute;
   right: 0;
-  width: 16px;
+  width: 25px;
   padding: 0;
-  text-align: center;
 }
 .hdPages a.setting.active [class*=icon-] {
   color: #333333;
@@ -528,12 +523,15 @@ ul.hdCommunications > li > a [class^="icon-"], ul.hdCommunications > li > a [cla
   line-height: 50px;
 }
 ul.hdCommunications .num {
+  display: block;
   position: absolute;
   top: 8px;
   right: 8px;
-  min-width: 12px;
+  width: auto;
+  height: 13px;
+  min-width: 13px;
   line-height: 13px;
-  padding: 0 2px;
+  padding: 0 3px;
   font-size: 10px;
   text-align: center;
   background-color: #ff3333;
@@ -752,6 +750,9 @@ ul.hdTools .dropdown:before {
   color: #333333;
   font-weight: bold;
 }
+.dropdown_list .new:hover a {
+  background-color: #ededed;
+}
 
 .contentList li {
   padding: 6px 10px !important;
@@ -793,51 +794,43 @@ ul.hdTools .dropdown:before {
   margin: 0;
 }
 
-.messageSummary {
+.messageSummary, .messageUserlist ul {
   font-size: 11px;
 }
-.messageSummary li {
+.messageSummary li, .messageUserlist ul li {
   position: relative;
   padding: 0;
   background-image: none;
   border-bottom: solid 1px black;
 }
-.messageSummary li a {
+.messageSummary li a, .messageUserlist ul li a {
   display: block;
+  min-height: 40px;
   text-decoration: none;
-  padding: 5px 5px 5px 40px;
   color: #999999;
 }
-.messageSummary li a .name {
+.messageSummary li a .name, .messageUserlist ul li a .name {
   color: white;
 }
-.messageSummary li a:hover {
+.messageSummary li a:hover, .messageUserlist ul li a:hover {
   color: #ff9900;
   background-color: #222222;
 }
-.messageSummary li a:hover .name {
+.messageSummary li a:hover .name, .messageUserlist ul li a:hover .name {
   color: #ff9900;
 }
-.messageSummary li span {
+.messageSummary li span, .messageUserlist ul li span {
   display: block;
 }
-.messageSummary .avatar {
+.messageSummary .avatar, .messageUserlist ul .avatar {
   position: absolute;
   top: 0;
   left: 0;
   padding: 8px;
 }
-.messageSummary .avatar img, .messageSummary .avatar .icon-group {
-  display: block;
-  width: 24px;
-  height: 24px;
-  line-height: 24px;
-  text-align: center;
-}
-.messageSummary .avatar .icon-group {
-  background-color: #999999;
-  color: white;
-  font-size: 18px;
+
+.messageSummary li a {
+  padding: 5px 5px 5px 40px;
 }
 .messageSummary .date {
   float: right;
@@ -847,12 +840,6 @@ ul.hdTools .dropdown:before {
 .messageSummary .date, .messageSummary .name, .messageSummary .latest {
   line-height: 16px;
   height: 16px;
-  overflow: hidden;
-  white-space: nowrap;
-  overflow: hidden;
-  -ms-text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
 }
 .messageSummary .nrCount {
   margin: 0 3px 0 0;
@@ -870,8 +857,15 @@ ul.hdTools .dropdown:before {
 .messageSummary .active a .name, .messageSummary .active a:hover .name {
   color: #333333;
 }
-.messageSummary [class*="icon-"] {
-  color: #049cdb;
+
+.messageUserlist ul li a {
+  line-height: 40px;
+  padding-left: 40px;
+}
+.messageUserlist .index {
+  line-height: 20px;
+  padding: 0 8px;
+  background: #222222;
 }
 
 .messageSummaryHead div {
@@ -1890,7 +1884,6 @@ button[disabled]:active {
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet {
-  background: white;
   background: white url("../images/common/portlet_20140718.png") repeat-x left bottom;
   margin: 10px 5px;
 }
@@ -2423,10 +2416,10 @@ button[disabled]:active {
   clear: both;
   width: 200px;
   overflow: hidden;
-  background: url("../images/common/bg_submenu_20140116.gif") no-repeat left top;
+  background: url("../images/common/bg_submenu_20140903.gif") no-repeat left top;
 }
 .submenu_v2 > ul {
-  background: url("../images/common/bg_submenu_20140116.gif") no-repeat right bottom;
+  background: url("../images/common/bg_submenu_20140903.gif") no-repeat right bottom;
   padding: 6px 0;
 }
 .submenu_v2 li {
@@ -3406,9 +3399,11 @@ ul.attachments {
   /*IE7*/
 }
 
+.timeline {
+  position: relative;
+}
 .timeline .avatar {
-  float: left;
-  margin: 0 10px 0 0;
+  position: absolute;
 }
 .timeline .messageContents {
   margin-left: 60px;
@@ -3597,7 +3592,7 @@ ul.attachments {
   margin: 0 0 10px 60px;
 }
 
-.timeline .text_exposed_show.ellipsis, .timeline .hdPages a.text_exposed_show.name, .hdPages .timeline a.text_exposed_show.name, .timeline .hdSearch .dropdown_menu .text_exposed_show.date, .hdSearch .dropdown_menu .timeline .text_exposed_show.date, .timeline .hdSearch .dropdown_list ul .text_exposed_show.date, .hdSearch .dropdown_list ul .timeline .text_exposed_show.date, .timeline .dropdown_list .hdSearch ul .text_exposed_show.date, .dropdown_list .hdSearch ul .timeline .text_exposed_show.date, .timeline .hdSearch .dropdown_menu .text_exposed_show.body, .hdSearch .dropdown_menu .timeline .text_exposed_show.body, .timeline .hdSearch .dropdown_list ul .text_exposed_show.body, .hdSearch .dropdown_list ul .timeline .text_exposed_show.body, .timeline .dropdown_list .hdSearch ul .text_exposed_show.body, .dropdown_list .hdSearch ul .timeline .text_exposed_show.body, .timeline ul.hdTools .text_exposed_show.name, ul.hdTools .timeline .text_exposed_show.name, .timeline .dropdown_menu a.text_exposed_show, .dropdown_menu .timeline a.text_exposed_show, .timeline .dropdown_list ul a.text_exposed_show, .dropdown_list ul .timeline a.text_exposed_show, .timeline #auiLauncher ul.launcher li a.text_exposed_show, #auiLauncher ul.launcher li .timeline a.text_exposed_show,
+.timeline .text_exposed_show.ellipsis, .timeline .hdPages a.text_exposed_show.name, .hdPages .timeline a.text_exposed_show.name, .timeline .hdSearch .dropdown_menu .text_exposed_show.date, .hdSearch .dropdown_menu .timeline .text_exposed_show.date, .timeline .hdSearch .dropdown_list ul .text_exposed_show.date, .hdSearch .dropdown_list ul .timeline .text_exposed_show.date, .timeline .dropdown_list .hdSearch ul .text_exposed_show.date, .dropdown_list .hdSearch ul .timeline .text_exposed_show.date, .timeline ul.hdTools .text_exposed_show.name, ul.hdTools .timeline .text_exposed_show.name, .timeline .messageSummary .text_exposed_show.date, .messageSummary .timeline .text_exposed_show.date, .timeline .messageSummary .text_exposed_show.name, .messageSummary .timeline .text_exposed_show.name, .timeline .messageSummary .text_exposed_show.latest, .messageSummary .timeline .text_exposed_show.latest, .timeline .messageUserlist .text_exposed_show.name, .messageUserlist .timeline .text_exposed_show.name, .timeline #auiLauncher ul.launcher li a.text_exposed_show, #auiLauncher ul.launcher li .timeline a.text_exposed_show,
 .timeline #auiLauncher ul.setting li a.text_exposed_show,
 #auiLauncher ul.setting li .timeline a.text_exposed_show, .timeline .auiTabs .tab > li a.text_exposed_show, .auiTabs .tab > li .timeline a.text_exposed_show,
 .timeline .message .more.opened {
@@ -4073,13 +4068,6 @@ ul.attachments {
 .auiCheckList {
   margin: 5px 0;
   overflow: auto !important;
-  max-height: 200px;
-  border-top: solid 1px #d2d2d2;
-  border-bottom: solid 1px #d2d2d2;
-}
-.auiCheckList ul {
-  border-left: solid 1px #d2d2d2;
-  border-right: solid 1px #d2d2d2;
 }
 .auiCheckList li {
   display: block;
@@ -4765,7 +4753,6 @@ a:hover .auiWFicon [class^="icon-"] {
   padding: 10px;
   height: 20px;
   line-height: 20px;
-  background: url(../images/common/indicator.gif) no-repeat center center;
   background-size: 16px;
   text-align: center;
 }
