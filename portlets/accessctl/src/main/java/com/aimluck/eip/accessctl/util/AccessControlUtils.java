@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -31,6 +32,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.accessctl.bean.AccessControlFeatureBean;
+import com.aimluck.eip.cayenne.om.account.EipMInactiveApplication;
 import com.aimluck.eip.cayenne.om.account.EipTAclPortletFeature;
 import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
@@ -118,6 +120,25 @@ public class AccessControlUtils {
   public static List<AccessControlFeatureBean> getPortletFeatureList() {
     SelectQuery<EipTAclPortletFeature> query =
       Database.query(EipTAclPortletFeature.class);
+
+    List<EipMInactiveApplication> inActiveApplicationList =
+      Database.query(EipMInactiveApplication.class).fetchList();
+
+    List<String> inActiveList = new ArrayList<String>();
+    for (EipMInactiveApplication model : inActiveApplicationList) {
+      inActiveList.add(model.getName().toLowerCase());
+    }
+
+    for (String portletName : inActiveList) {
+      if (!StringUtils.isEmpty(portletName)) {
+        Expression ex =
+          ExpressionFactory.notLikeExp(
+            EipTAclPortletFeature.FEATURE_NAME_PROPERTY,
+            portletName + "%");
+        query.andQualifier(ex);
+      }
+    }
+
     query.orderAscending(EipTAclPortletFeature.FEATURE_ALIAS_NAME_PROPERTY);
 
     List<EipTAclPortletFeature> features = query.fetchList();
