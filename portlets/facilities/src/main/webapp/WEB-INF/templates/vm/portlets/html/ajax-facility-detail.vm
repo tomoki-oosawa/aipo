@@ -30,7 +30,7 @@ $!result.Detail.FacilityName
 #ALtditemfooter()
 #ALtdcaption("$l10n.FACILITIES_MEMO")
 #ALtditem($!result.Detail.Note)
-#ALtdcaption("$l10n.FACILITIES_DATE_ENTRY")
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate.toString("$l10n.FACILITIES_DATE_FORMAT"))
 #ALtdcaption("$l10n.FACILITIES_DATE_UPDATING")
 #ALtditem($!result.Detail.UpdateDate.toString("$l10n.FACILITIES_DATE_FORMAT"))

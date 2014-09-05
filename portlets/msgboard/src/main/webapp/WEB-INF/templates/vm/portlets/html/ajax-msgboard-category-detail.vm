@@ -64,7 +64,7 @@ $!record.AliasName <br />
 #ALtditemfooter()
 #ALtdcaption($l10n.MSGBOARD_CREATE_USER_NAME)
 #ALtditem($!result.Detail.OwnerName)
-#ALtdcaption($l10n.MSGBOARD_CREATE_DATE)
+#ALtdcaption($l10n.COMMON_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.MSGBOARD_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
