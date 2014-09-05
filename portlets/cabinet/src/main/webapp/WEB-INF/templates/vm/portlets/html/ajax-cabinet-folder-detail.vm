@@ -65,7 +65,7 @@ $!record.AliasName <br />
 </div>
 #end
 #ALtditemfooter()
-#ALtdcaption("$l10n.BLOG_CREATE_USER_NAME")
+#ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
 $!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()

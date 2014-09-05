@@ -93,7 +93,7 @@ $!record.Name <br />
 #ALtdcaption($l10n.ADDRESSBOOK_NOTE)
 #ALtditem($!result.Detail.Note)
 #if("$!result.CurrentTab" != "corp")
-#ALtdcaption($l10n.ADDRESSBOOK_CREATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
 #ALtdcaption($l10n.COMMON_UPDATE_USER_NAME)
 #ALtditem("$!result.Detail.UpdatedUser （$!result.Detail.UpdateDate）")

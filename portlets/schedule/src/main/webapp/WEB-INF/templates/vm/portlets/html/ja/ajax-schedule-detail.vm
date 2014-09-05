@@ -146,7 +146,7 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption($l10n.SCHEDULE_CREATE_USER)
+#ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）")
