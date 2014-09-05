@@ -62,13 +62,13 @@
 	// 読み込み中...
 	LOADING_STR:"\u8aad\u307f\u8fbc\u307f\u4e2d...",
 	// 削除
-	DELETE_STR:"\u524a\u9664\u3059\u308b",
+	DELETE_STR:"\u524a\u9664",
     //指定しない
 	NOT_SPECIFIED_STR:"\u0020\u6307\u5b9a\u3057\u306a\u3044",
 	//＜ 追加
 	ADDBTN_STR:"\uff1c \u8ffd\u52a0",
 	//削除
-	DELETEBTN_STR:"\u524a\u9664\u3059\u308b",
+	DELETEBTN_STR:"\u524a\u9664",
 	//"一覧の総数が"+max+"件を超えています。\n日付の範囲を変更してください。"
 	EVENTLOG_STR:"\u4e00\u89a7\u306e\u7dcf\u6570\u304c${max}\u4ef6\u3092\u8d85\u3048\u3066\u3044\u307e\u3059\u3002\n\u65e5\u4ed8\u306e\u7bc4\u56f2\u3092\u5909\u66f4\u3057\u3066\u304f\u3060\u3055\u3044\u3002",
 	// 新しく入力する
