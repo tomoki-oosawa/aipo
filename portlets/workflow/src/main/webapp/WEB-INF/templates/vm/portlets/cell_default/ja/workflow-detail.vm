@@ -51,7 +51,7 @@
 ##ALcell_dd($career "$!{result.Detail.PriceStr}&nbsp;$l10n.WORKFLOW_YEN")
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALcell_hr($career '1')
-#ALcell_submit($career 'eventSubmit_doWorkflow_delete' $l10n.WORKFLOW_DO_REMOVE)
+#ALcell_submit($career 'eventSubmit_doWorkflow_delete' "$l10n.COMMON_DELETE")
 #end
 #if($!result.Detail.OldRequestLinks.size() > 0)
 #ALcell_dt($career $l10n.WORKFLOW_ACCESS_TO_PAST)

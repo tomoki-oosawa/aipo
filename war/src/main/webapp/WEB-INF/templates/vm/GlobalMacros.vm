@@ -654,7 +654,7 @@ $item.get(0)
 <div class="dojoDndItem auiPortlet">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
-		<div id="mobileHeader_v3" class="clearfix">
+		<div id="mobileHeader_v3">
 		<div class="inner">
 		<h1><span>#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
 		<div class="mhLeft">
@@ -663,16 +663,19 @@ $item.get(0)
 			</a>
 			#ALUnreadchecker()
 		</div>
-		<div class="mhRight clearfix">
+		<div class="hdNavigation">
+			<ul class="hdCommunications">
 			#ALMessage()
 			#if($data.User.getUserName() != "admin")
-				<div class="hdActivity" title="お知らせ" style="float:left">
-					<a href="javascript:void(0)" onClick="activitySwitch()">
-						#ALActivity()
-					</a>
+			<li>
+				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
+				<div class="dropdown" id="dd_activity">
+					<div id="activityListPane"></div>
 				</div>
+			</li>
 			#end
 			#ALSupport()
+			</ul>
 		</div>
 		</div>
 	</div>

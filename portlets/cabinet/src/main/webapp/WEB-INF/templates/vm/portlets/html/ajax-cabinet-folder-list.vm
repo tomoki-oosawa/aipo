@@ -33,8 +33,8 @@
 #AUIrowTableWide()
 <tr>
 #ALtdhead("$l10n.CABINET_FOLDER_NAME")
-#ALtdheadAtt("$l10n.CABINET_MODIFIED" 'class="mb_hide wName"')
-#ALtdheadAtt("$l10n.CABINET_UPDATE_DATE" 'style="width:6em" class="mb_hide"')
+#ALtdheadAtt("$l10n.COMMON_UPDATE_USER" 'class="mb_hide wName"')
+#ALtdheadAtt("$l10n.COMMON_UPDATE_DATE" 'style="width:6em" class="mb_hide"')
 </tr>
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())

@@ -39,7 +39,7 @@
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 </div>
 #AUIajaxpageview('ToDoCategoryListScreen' $result)
 </div>
@@ -47,7 +47,7 @@
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadW75("#ALajaxsort('category_name' $l10n.TODO_CATEGORY_NAME $result 'ToDoCategoryListScreen')")
-#ALtdheadAtt("#ALajaxsort('user_name' $l10n.TODO_UPDATE_USER $result 'ToDoCategoryListScreen')" 'class="mb_hide wName"')
+#ALtdheadAtt("#ALajaxsort('user_name' $l10n.COMMON_UPDATE_USER $result 'ToDoCategoryListScreen')" 'class="mb_hide wName"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -62,7 +62,7 @@
 
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 </div>
 #AUIajaxpageview('ToDoCategoryListScreen' $result)
 </div>

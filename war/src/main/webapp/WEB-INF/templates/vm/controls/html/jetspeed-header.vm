@@ -34,7 +34,7 @@ limitations under the License.
 *#
 #if ($data.User.hasLoggedIn() && "$!isError" != "true")
 <div id="auiHeader">
-	<div class="hdLogo"><a href="$!{jslink}/js_pane/$!{mypageId}?action=controls.Restore"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}"></a></div>
+	<div class="hdLogo"><a href="$!{jslink}/js_pane/$!{mypageId}?action=controls.Restore"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}" /></a></div>
 	<div class="hdPages">
 		<ul>
 #foreach ( $tab in $tabs )
@@ -72,7 +72,7 @@ limitations under the License.
 #if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
 		<ul class="hdCommunications">
 			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span class="num" id="messageChecker"></span></a>
+				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
 					<div class="title">メッセージ</div>
 					<div class="body">
@@ -113,7 +113,7 @@ limitations under the License.
 				</div>
 			</li>
 			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span class="num" id="activityChecker"></span></a>
+				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
 					<div id="activityListPane"></div>
 				</div>
@@ -147,7 +147,7 @@ limitations under the License.
 </div>
 #else
 <div id="auiHeader">
-	<div class="hdLogo"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}"></div>
+	<div class="hdLogo"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}" /></div>
 </div>
 #end
 #if("$!{activeurlselected}"!="")

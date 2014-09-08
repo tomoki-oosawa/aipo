@@ -65,7 +65,7 @@
 
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
-#ALcell_submit($career 'eventSubmit_doWorkflow_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doWorkflow_delete' "$l10n.COMMON_DELETE")
 #end
 
 #if($!result.Detail.OldRequestLinks.size() > 0)

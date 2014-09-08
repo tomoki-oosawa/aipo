@@ -48,5 +48,5 @@ ${alias}のバックアップにつきましては<a target="_blank" href="http:
 #ALtablefooter()
 <form action="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doDeletesample_form','1')" method="post">
 <input type="hidden" name="secid" value="$secid" />
-<div align="center"><input type="submit" class="submit" value="削除する" /></div>
+<div align="center"><input type="submit" class="submit" value="$l10n.COMMON_DELETE" /></div>
 </form>

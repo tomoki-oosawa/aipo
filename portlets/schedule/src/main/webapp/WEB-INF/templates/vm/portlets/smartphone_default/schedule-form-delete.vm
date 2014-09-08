@@ -154,7 +154,7 @@ function swapRadio(id) {
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
 <p class="center">
-#ALcell_submit($career 'eventSubmit_doSchedule_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_delete' "$l10n.COMMON_DELETE")
 </p>
 #ALcell_formfooter()
 #ALcell_contents_footer($career)

@@ -1511,7 +1511,6 @@ ul.hdCommunications .num {
   margin: 45px 0 0 0;
   top: 0 !important;
   left: 0 !important;
-  z-index: 9998;
 }
 .modalDialog input[type=checkbox],
 .modalDialog input[type=radio] {
@@ -1539,10 +1538,6 @@ ul.hdCommunications .num {
 .modalDialog .listTable .caption,
 .modalDialog .subTable .caption {
   width: auto !important;
-}
-
-.modalDialogUnderlayWrapper {
-  display: none !important;
 }
 
 .memberlistToTop,

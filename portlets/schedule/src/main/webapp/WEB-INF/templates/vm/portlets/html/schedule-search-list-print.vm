@@ -113,7 +113,7 @@ if(document.all!=undefined){
 <tr>
 <th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>$l10n.SCHEDULE_DATE</th>
 <th #if(${client}=="IPHONE")class="w50"#else class="w40" #end>$l10n.SCHEDULE_TITLE</th>
-<th class="w30 mb_hide">$l10n.SCHEDULE_CREATE_USER</th>
+<th class="w30 mb_hide">$l10n.COMMON_CREATE_USER</th>
 </tr>
 #foreach ($record in $result.ScheduleList)
 ##set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")

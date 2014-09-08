@@ -70,9 +70,9 @@
 #ALajaxlistformheaderAction('ToDo')
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">#if($!result.currentTab == 'list')
-#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 #else
-#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('ToDoListScreen' $result)
@@ -142,9 +142,9 @@
 #AUItablefooter()
 <div class="auiSummaryMeta clearfix">
 	<div class="floatLeft">#if($!result.currentTab == 'list')
-		#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+		#AUIajaxbuttonCheckboxAction($l10n.TODO_FINISH "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_complete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 		#else
-		#AUIajaxbuttonCheckboxDelete($l10n.TODO_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
+		#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.todo.onListReceiveMessage")
 		#end
 	</div>
 #AUIajaxpageview('ToDoListScreen' $result)

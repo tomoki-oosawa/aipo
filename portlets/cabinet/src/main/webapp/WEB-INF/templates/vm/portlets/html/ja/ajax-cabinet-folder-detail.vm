@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #macro(CabinetajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.CABINET_DO_DELET" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aipo.cabinet.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 ## ---------------------------------------------------------------------------
 #ALdialogheader("$l10n.CABINET_CABINET_FOLDER")
@@ -65,11 +65,11 @@ $!record.AliasName <br />
 </div>
 #end
 #ALtditemfooter()
-#ALtdcaption("$l10n.BLOG_CREATE_USER_NAME")
+#ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
 $!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()
-#ALtdcaption("$l10n.BLOG_UPDATE_USER_NAME")
+#ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditemheader()
 $!{result.Detail.UpdateUser} #if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
 #ALtditemfooter()
