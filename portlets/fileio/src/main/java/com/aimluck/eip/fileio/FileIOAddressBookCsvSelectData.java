@@ -138,13 +138,13 @@ public class FileIOAddressBookCsvSelectData extends
     int i, j, k;
     int line = 0;
     String ErrorCode = "";
-    StringBuffer e_line = new StringBuffer();
 
     List<FileIOAddressBookCsvData> collectList =
       new ArrayList<FileIOAddressBookCsvData>();
 
     while (reader.eof != -1) {
       line++;
+      StringBuffer e_line = new StringBuffer();
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
       FileIOAddressBookCsvFormData formData =
