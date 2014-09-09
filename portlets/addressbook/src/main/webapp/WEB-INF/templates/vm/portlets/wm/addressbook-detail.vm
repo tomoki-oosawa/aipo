@@ -70,8 +70,8 @@
 #end
 <dt>FAX番号</dt><dd>$!{result.Detail.CompanyFaxNumber}</dd>
 <dt>URL</dt><dd><a href='$!{result.Detail.CompanyUrl}'>$!{result.Detail.CompanyUrl}</a></dd>
-<dt>登録者名</dt><dd>$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})</dd>
-<dt>更新者名</dt><dd>$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})</dd>
+<dt>登録者</dt><dd>$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})</dd>
+<dt>更新者</dt><dd>$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})</dd>
 </dl>
 
 #ALcell_contents_footer($career)
