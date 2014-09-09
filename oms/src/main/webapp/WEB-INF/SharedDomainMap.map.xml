@@ -1143,7 +1143,6 @@
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="memberCount" type="java.lang.Integer" db-attribute-path="MEMBER_COUNT"/>
 		<obj-attribute name="message" type="java.util.Date" db-attribute-path="MESSAGE"/>
-		<obj-attribute name="roomId" type="java.lang.Integer" db-attribute-path="ROOM_ID"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.String" db-attribute-path="USER_ID"/>
 	</obj-entity>
@@ -1152,13 +1151,11 @@
 		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
 		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
 		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
-		<obj-attribute name="messageId" type="java.lang.Integer" db-attribute-path="MESSAGE_ID"/>
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTMessageRead" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRead" dbEntityName="eip_t_message_read">
 		<obj-attribute name="isRead" type="java.lang.String" db-attribute-path="IS_READ"/>
-		<obj-attribute name="messagaeId" type="java.lang.Integer" db-attribute-path="MESSAGAE_ID"/>
 		<obj-attribute name="roomId" type="java.lang.Integer" db-attribute-path="ROOM_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
@@ -1173,7 +1170,6 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
-		<obj-attribute name="roomId" type="java.lang.Integer" db-attribute-path="ROOM_ID"/>
 		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
@@ -1954,7 +1950,11 @@
 	<obj-relationship name="eipTMessageFiles" source="EipTMessage" target="EipTMessageFile" db-relationship-path="eipTMessageFiles"/>
 	<obj-relationship name="eipTMessageRead" source="EipTMessage" target="EipTMessageRead" db-relationship-path="eipTMessageRead"/>
 	<obj-relationship name="eipTMessageRoom" source="EipTMessage" target="EipTMessageRoom" db-relationship-path="eipTMessageRoom"/>
+	<obj-relationship name="eipTMessage" source="EipTMessageFile" target="EipTMessage" db-relationship-path="eipTMessage"/>
+	<obj-relationship name="eipTMessage" source="EipTMessageRead" target="EipTMessage" db-relationship-path="eipTMessage"/>
 	<obj-relationship name="eipTMessageRoomMember" source="EipTMessageRoom" target="EipTMessageRoomMember" db-relationship-path="eipTMessageRoomMembers"/>
+	<obj-relationship name="eipTMessages" source="EipTMessageRoom" target="EipTMessage" db-relationship-path="eipTMessages"/>
+	<obj-relationship name="eipTMessageRoom" source="EipTMessageRoomMember" target="EipTMessageRoom" db-relationship-path="eipTMessageRoom"/>
 	<obj-relationship name="eipTMsgboardCategoryMaps" source="EipTMsgboardCategory" target="EipTMsgboardCategoryMap" db-relationship-path="eipTMsgboardCategoryMaps"/>
 	<obj-relationship name="eipTMsgboardTopics" source="EipTMsgboardCategory" target="EipTMsgboardTopic" db-relationship-path="eipTMsgboardTopics"/>
 	<obj-relationship name="turbineUser" source="EipTMsgboardCategory" target="TurbineUser" db-relationship-path="turbineUser"/>

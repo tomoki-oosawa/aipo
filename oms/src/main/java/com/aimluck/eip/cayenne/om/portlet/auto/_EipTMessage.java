@@ -12,7 +12,6 @@ public class _EipTMessage extends org.apache.cayenne.CayenneDataObject {
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String MEMBER_COUNT_PROPERTY = "memberCount";
     public static final String MESSAGE_PROPERTY = "message";
-    public static final String ROOM_ID_PROPERTY = "roomId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TMESSAGE_FILES_PROPERTY = "eipTMessageFiles";
@@ -42,14 +41,6 @@ public class _EipTMessage extends org.apache.cayenne.CayenneDataObject {
     }
     public java.util.Date getMessage() {
         return (java.util.Date)readProperty("message");
-    }
-    
-    
-    public void setRoomId(Integer roomId) {
-        writeProperty("roomId", roomId);
-    }
-    public Integer getRoomId() {
-        return (Integer)readProperty("roomId");
     }
     
     

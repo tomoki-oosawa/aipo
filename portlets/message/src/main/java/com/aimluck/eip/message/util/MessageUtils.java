@@ -23,8 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.DataRow;
+import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.util.template.BaseJetspeedLink;
+import org.apache.jetspeed.util.template.ContentTemplateLink;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
@@ -35,6 +41,13 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 public class MessageUtils {
 
   public static final String MESSAGE_PORTLET_NAME = "Message";
+
+  public static void setupContext(RunData rundata, Context context) {
+    Portlet portlet = new MessageMockPortlet();
+    context.put("portlet", portlet);
+    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("clink", new ContentTemplateLink(rundata));
+  }
 
   public static ResultList<EipTMessageRoom> getRoomList(int userId) {
     return getRoomList(userId, null, -1, -1);

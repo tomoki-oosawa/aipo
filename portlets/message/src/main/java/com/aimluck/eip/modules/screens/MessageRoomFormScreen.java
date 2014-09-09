@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2014 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,19 +24,21 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.message.MessageRoomListSelectData;
+import com.aimluck.eip.message.MessageRoomFormData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
  */
-public class MessageRoomListScreen extends ALVelocityScreen {
+public class MessageRoomFormScreen extends ALVelocityScreen {
 
+  /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageRoomListScreen.class.getName());
+    .getLogger(MessageRoomFormScreen.class.getName());
 
   /**
+   * 
    * @param rundata
    * @param context
    * @throws Exception
@@ -47,13 +49,14 @@ public class MessageRoomListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
-      MessageRoomListSelectData listData = new MessageRoomListSelectData();
-      listData.initField();
-      listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
+      MessageRoomFormData formData = new MessageRoomFormData();
+      formData.initField();
+      formData.doViewForm(this, rundata, context);
+
+      String layout_template = "portlets/html/ja/ajax-message-room-form.vm";
       setTemplate(rundata, context, layout_template);
-    } catch (Exception ex) {
-      logger.error("MessageRoomListScreen.doOutput", ex);
+    } catch (Exception e) {
+      logger.error("MessageRoomFormScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }
@@ -65,5 +68,4 @@ public class MessageRoomListScreen extends ALVelocityScreen {
   protected String getPortletName() {
     return MessageUtils.MESSAGE_PORTLET_NAME;
   }
-
 }

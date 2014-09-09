@@ -23,22 +23,25 @@ aipo.message.init = function() {
     aipo.message.reloadRoomList();
 }
 
+aipo.message.messageRoomPane = null;
 aipo.message.reloadRoomList = function() {
-    var content = dijit.byId("messageRoomPane");
-    if (!content) {
-        content = new aimluck.widget.Contentpane({}, 'messageRoomListPane');
+    if (!aipo.message.messageRoomPane) {
+        aipo.message.messageRoomPane = dijit.byId("messageRoomPane");
+        aipo.message.messageRoomPane = new aimluck.widget.Contentpane({}, 'messageRoomListPane');
     }
 
-    content.viewPage("?template=MessageRoomListScreen");
+    aipo.message.messageRoomPane.viewPage("?template=MessageRoomListScreen");
 }
 
 aipo.message.swapView = function() {
-    if(dojo.hasClass("dd_message","open")) {
-        dojo.byId("portletsBody").style.display="none";
-        aipo.message.fixMessageWindow();
-   } else {
-       dojo.byId("portletsBody").style.display="";
-   }
+    if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
+        if (dojo.hasClass("dd_message", "open")) {
+            dojo.byId("portletsBody").style.display = "none";
+            aipo.message.fixMessageWindow();
+        } else {
+            dojo.byId("portletsBody").style.display = "";
+        }
+    }
 }
 
 aipo.message.fixMessageWindow = function() {
@@ -59,6 +62,92 @@ aipo.message.fixMessageWindow = function() {
         }
     }
 };
+
+aipo.message.onLoadMessageRoomDialog = function() {
+
+};
+
+aipo.message.shrinkMember = function(){
+    var node = dojo.byId("memberFieldButton");
+    if(node){
+        var HTML = "";
+        HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
+        var m_t = dojo.byId("member_to");
+         if(m_t){
+             var t_o = m_t.options;
+             to_size = t_o.length;
+             for(i = 0 ; i < to_size; i++ ) {
+               var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+               HTML += "<span>" + text + "</span>";
+               if(i < to_size - 1){
+                   HTML += ",<wbr/>";
+               }
+             }
+         }
+         HTML += "</td><td style=\"border:none;\">";
+         HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("message_val_member1")+'\" onclick=\"aipo.message.expandMember();\" />'
+         HTML += "</td></tr></tbody></table>";
+        node.innerHTML = HTML;
+    }
+
+    var _node = dojo.byId("memberField");
+    if(_node){
+        dojo.style(_node, "display" , "none")
+    }
+    aipo.message.setWrapperHeight();
+ }
+
+aipo.message.expandMember = function(){
+    var node = dojo.byId("memberFieldButton");
+    if(node){
+        var HTML = "";
+        HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
+        var m_t = dojo.byId("member_to");
+        if(m_t){
+             var t_o = m_t.options;
+             to_size = t_o.length;
+             for(i = 0 ; i < to_size; i++ ) {
+               var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+               HTML += "<span>" +  text + "</span>";
+               if(i < to_size - 1){
+                   HTML += ",<wbr/>";
+               }
+             }
+        }
+        HTML += "</td><td style=\"border:none;\">";
+        HTML += '<input type=\"button\" class=\"alignright\" value=\"'+aimluck.io.escapeText("message_val_member2")+'\" onclick=\"aipo.message.shrinkMember();\" />'
+        HTML += "</td></tr></tbody></table>";
+        node.innerHTML = HTML;
+    }
+
+    var _node = dojo.byId("memberField");
+    if(_node){
+        dojo.style(_node, "display" , "block");
+    }
+    aipo.message.setWrapperHeight();
+ }
+
+aipo.message.onReceiveMessage = function(msg) {
+    if(!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if(arrDialog){
+            arrDialog.hide();
+            aipo.message.reloadRoomList();
+        }
+    }
+    if (dojo.byId('messageDiv')) {
+        dojo.byId('messageDiv').innerHTML = msg;
+    }
+
+};
+
+aipo.message.setWrapperHeight = function() {
+    var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+        var wrapper = document.getElementById('wrapper');
+        wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
+}
 
 dojo.addOnLoad(function() {
     dojo.connect(window, "onresize", null, function(e) { aipo.message.fixMessageWindow(); });

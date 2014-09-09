@@ -18,6 +18,7 @@ public class _EipTMessageRoom extends org.apache.cayenne.CayenneDataObject {
     public static final String ROOM_TYPE_PROPERTY = "roomType";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TMESSAGE_ROOM_MEMBER_PROPERTY = "eipTMessageRoomMember";
+    public static final String EIP_TMESSAGES_PROPERTY = "eipTMessages";
 
     public static final String ROOM_ID_PK_COLUMN = "ROOM_ID";
 
@@ -93,6 +94,17 @@ public class _EipTMessageRoom extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTMessageRoomMember() {
         return (List)readProperty("eipTMessageRoomMember");
+    }
+    
+    
+    public void addToEipTMessages(com.aimluck.eip.cayenne.om.portlet.EipTMessage obj) {
+        addToManyTarget("eipTMessages", obj, true);
+    }
+    public void removeFromEipTMessages(com.aimluck.eip.cayenne.om.portlet.EipTMessage obj) {
+        removeToManyTarget("eipTMessages", obj, true);
+    }
+    public List getEipTMessages() {
+        return (List)readProperty("eipTMessages");
     }
     
     

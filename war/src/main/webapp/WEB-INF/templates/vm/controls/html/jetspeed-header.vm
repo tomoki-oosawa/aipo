@@ -87,7 +87,7 @@ limitations under the License.
 										<div class="scroll" id="messageSideBlock1">
 											<div class="messageSummaryHead">
 												<div class="inner">
-													<a href="javascript:void(0)" class="auiButton w100" onclick="return true;">ルームを追加する</a>
+													<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">ルームを追加する</a>
 												</div>
 												<div class="inner">
 													<form class="search">

@@ -1,6 +1,6 @@
-#*
+/*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2014 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,23 +15,21 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *#
-#if($result.List.size() == 0)
+ */
 
-#else
-<ul class="messageSummary">
-#foreach ($record in $result.List)
-	<li>
-		<a href="javascript:void(0)" onclick="return true;">
-			<span class="avatar">
-				<img src="themes/default/images/common/group_default.png" class="avatar_s">
-			</span>
-			#if($!record.UnreadCount.Value > 0)<div class="nrCount"></div>#end
-			<span class="date">$!record.UpdateDate</span>
-			<span class="name">$!record.Name</span>
-			<span class="latest">$!record.LastMessage</span>
-		</a>
-	</li>
-#end
-</ul>
-#end
+package com.aimluck.eip.message;
+
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
+
+/**
+ *
+ */
+public class MessageMockPortlet extends VelocityPortlet {
+
+  private static final long serialVersionUID = 1805775366618467011L;
+
+  public MessageMockPortlet() {
+    super();
+    setID("Message");
+  }
+}

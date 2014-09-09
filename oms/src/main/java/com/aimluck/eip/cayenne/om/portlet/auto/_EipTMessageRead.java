@@ -8,9 +8,9 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _EipTMessageRead extends org.apache.cayenne.CayenneDataObject {
 
     public static final String IS_READ_PROPERTY = "isRead";
-    public static final String MESSAGAE_ID_PROPERTY = "messagaeId";
     public static final String ROOM_ID_PROPERTY = "roomId";
     public static final String USER_ID_PROPERTY = "userId";
+    public static final String EIP_TMESSAGE_PROPERTY = "eipTMessage";
 
     public static final String ID_PK_COLUMN = "ID";
 
@@ -19,14 +19,6 @@ public class _EipTMessageRead extends org.apache.cayenne.CayenneDataObject {
     }
     public String getIsRead() {
         return (String)readProperty("isRead");
-    }
-    
-    
-    public void setMessagaeId(Integer messagaeId) {
-        writeProperty("messagaeId", messagaeId);
-    }
-    public Integer getMessagaeId() {
-        return (Integer)readProperty("messagaeId");
     }
     
     
@@ -44,6 +36,15 @@ public class _EipTMessageRead extends org.apache.cayenne.CayenneDataObject {
     public Integer getUserId() {
         return (Integer)readProperty("userId");
     }
+    
+    
+    public void setEipTMessage(com.aimluck.eip.cayenne.om.portlet.EipTMessage eipTMessage) {
+        setToOneTarget("eipTMessage", eipTMessage, true);
+    }
+
+    public com.aimluck.eip.cayenne.om.portlet.EipTMessage getEipTMessage() {
+        return (com.aimluck.eip.cayenne.om.portlet.EipTMessage)readProperty("eipTMessage");
+    } 
     
     
 }

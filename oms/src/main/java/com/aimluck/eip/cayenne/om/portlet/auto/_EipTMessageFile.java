@@ -11,9 +11,9 @@ public class _EipTMessageFile extends org.apache.cayenne.CayenneDataObject {
     public static final String FILE_NAME_PROPERTY = "fileName";
     public static final String FILE_PATH_PROPERTY = "filePath";
     public static final String FILE_THUMBNAIL_PROPERTY = "fileThumbnail";
-    public static final String MESSAGE_ID_PROPERTY = "messageId";
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
+    public static final String EIP_TMESSAGE_PROPERTY = "eipTMessage";
 
     public static final String FILE_ID_PK_COLUMN = "FILE_ID";
 
@@ -49,14 +49,6 @@ public class _EipTMessageFile extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setMessageId(Integer messageId) {
-        writeProperty("messageId", messageId);
-    }
-    public Integer getMessageId() {
-        return (Integer)readProperty("messageId");
-    }
-    
-    
     public void setOwnerId(Integer ownerId) {
         writeProperty("ownerId", ownerId);
     }
@@ -71,6 +63,15 @@ public class _EipTMessageFile extends org.apache.cayenne.CayenneDataObject {
     public java.util.Date getUpdateDate() {
         return (java.util.Date)readProperty("updateDate");
     }
+    
+    
+    public void setEipTMessage(com.aimluck.eip.cayenne.om.portlet.EipTMessage eipTMessage) {
+        setToOneTarget("eipTMessage", eipTMessage, true);
+    }
+
+    public com.aimluck.eip.cayenne.om.portlet.EipTMessage getEipTMessage() {
+        return (com.aimluck.eip.cayenne.om.portlet.EipTMessage)readProperty("eipTMessage");
+    } 
     
     
 }
