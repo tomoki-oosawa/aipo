@@ -77,7 +77,7 @@
 					<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen").addQueryData("entityid",$record.Id))', '$!portlet.ID');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
-			#if($!record.getParentId().getValue() == 0)
+			#if($!record.getParentId().getValueWithInt() == 0)
 				<td></td>
 			#else
 				<td><div>$!record.ParentName</div></td>
