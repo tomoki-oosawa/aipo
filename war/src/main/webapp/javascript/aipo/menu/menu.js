@@ -33,6 +33,12 @@ aipo.menu.toggleDropdown = function(key) {
     }
     if (dropdown) {
         dojo.toggleClass(dropdown, "open");
+        if(dojo.hasClass(dropdown, "open")) {
+            if(aipo.menu[key] && aipo.menu[key].reload && !aipo.menu[key].isLoad) {
+                aipo.menu[key].reload();
+                aipo.menu[key].isLoad = true;
+            }
+        }
     }
 
     for ( var i in aipo.menu.list) {
