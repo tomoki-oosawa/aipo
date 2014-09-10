@@ -55,7 +55,7 @@
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditem($!result.Detail.UpdateUserName)
 
-#ALtdcaption("$l10n.PROJECT_CREATE_USER")
+#ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditem($!result.Detail.CreateUserName)
 
 
