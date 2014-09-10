@@ -341,7 +341,7 @@ public class TimelineFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         topic.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
-        null);
+        TimelineUtils.compressString(note.getValue()));
 
     } catch (RuntimeException ex) {
       // RuntimeException
