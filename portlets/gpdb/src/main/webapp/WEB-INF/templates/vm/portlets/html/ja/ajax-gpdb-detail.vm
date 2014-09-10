@@ -42,7 +42,7 @@ $!result.Detail.WbrGpdbName
 #end
 #ALtdcaption("$l10n.GPDB_AUTHOR")
 #ALtditem($!result.Detail.WbrCreateUserName)
-#ALtdcaption("$l10n.GPDB_CREATION_DATE")
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)
