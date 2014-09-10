@@ -165,7 +165,7 @@ aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
             var data = obj.data;
             if(data){
                 aipo.activityDesktopNotifyEnable = data.enable;
-                aipo.menu.activity.reload();
+                aipo.menu.activity.isLoad = false;
             }
         }
     }
@@ -304,7 +304,7 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
             		}
             	}
             }
-            aipo.menu.activity.reload();
+            aipo.menu.activity.isLoad = false;
         }
     }
 };
