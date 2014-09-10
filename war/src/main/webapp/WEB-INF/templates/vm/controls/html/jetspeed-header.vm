@@ -72,9 +72,9 @@ limitations under the License.
 #if ("$!data.User.getUserName()" != "admin" && ${client} != "IPHONE")
 		<ul class="hdCommunications">
 			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
+				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"></div>
+					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"></div></div>
 				</div>
 			</li>
 		</ul>
@@ -121,7 +121,6 @@ limitations under the License.
 dojo.addOnLoad(function() {
     aipo.menu.register("activity");
     aipo.menu.register("settings");
-    aipo.menu.activity.reload();
     aipo.menu.updateTitle();
 });
 
