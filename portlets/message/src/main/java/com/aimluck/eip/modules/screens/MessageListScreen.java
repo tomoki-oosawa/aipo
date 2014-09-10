@@ -24,17 +24,18 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.message.MessageRoomListSelectData;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.message.MessageListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
  */
-public class MessageRoomListScreen extends ALVelocityScreen {
+public class MessageListScreen extends ALVelocityScreen {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageRoomListScreen.class.getName());
+    .getLogger(MessageListScreen.class.getName());
 
   /**
    * @param rundata
@@ -53,16 +54,30 @@ public class MessageRoomListScreen extends ALVelocityScreen {
       } catch (Throwable ignore) {
         // ignore
       }
-      context.put("currentRoom", roomId);
+      if (roomId == null) {
+        ALEipUtils.redirectPageNotFound(rundata);
+        return;
+      }
 
-      MessageRoomListSelectData listData = new MessageRoomListSelectData();
+      EipTMessageRoom room = MessageUtils.getRoom(roomId);
+      if (room == null) {
+        ALEipUtils.redirectPageNotFound(rundata);
+        return;
+      }
+      MessageListSelectData listData = new MessageListSelectData();
+      listData.setRoomId(roomId);
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
+      if (listData.getList().size() > 0) {
+        MessageUtils.read(listData.getRoomId(), listData.getUserId(), listData
+          .getLastMessageId());
+      }
+
+      String layout_template = "portlets/html/ja/ajax-message-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("MessageRoomListScreen.doOutput", ex);
+      logger.error("MessageListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

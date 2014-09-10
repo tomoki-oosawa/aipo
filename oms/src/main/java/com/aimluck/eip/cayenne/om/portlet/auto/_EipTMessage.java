@@ -36,11 +36,11 @@ public class _EipTMessage extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setMessage(java.util.Date message) {
+    public void setMessage(String message) {
         writeProperty("message", message);
     }
-    public java.util.Date getMessage() {
-        return (java.util.Date)readProperty("message");
+    public String getMessage() {
+        return (String)readProperty("message");
     }
     
     
@@ -52,11 +52,11 @@ public class _EipTMessage extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         writeProperty("userId", userId);
     }
-    public String getUserId() {
-        return (String)readProperty("userId");
+    public Integer getUserId() {
+        return (Integer)readProperty("userId");
     }
     
     

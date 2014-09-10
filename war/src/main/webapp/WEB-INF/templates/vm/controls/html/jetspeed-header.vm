@@ -107,7 +107,46 @@ limitations under the License.
 								</ul>
 							</div>
 						</div>
-						<div class="mainBlock">
+						<div id="messageMainBlockEmpty" class="mainBlock">
+							<div class="contents">
+								<div class="emptyMessage">
+									<i class="icon-comment-alt"></i>
+									<p>ルームが選択されていません。</p>
+								</div>
+							</div>
+						</div>
+						<div id="messageMainBlock" class="mainBlock" style="display:none">
+							<div class="contents clearfix">
+								<div class="timelineOuter">
+									<div class="roomHeader clearfix">
+										<div class="floatLeft">
+											<span class="avatar mr5" id="messageRoomAvatar"></span><span id="messageRoomName"></span>
+										</div>
+										<!--div class="floatRight">
+											<a href="javascript:void(0)" title="ルーム設定" onclick="popupToggle(this,'popupMask');popupToggle(this,'modalDialog_roomSetting');"><i class="icon-gear"></i></a>
+										</div -->
+									</div>
+									<div class="inputField">
+										<form name="messageForm" id="messageForm" action="?template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.submit(this,'indicator-dlg-','message-top',aipo.message.onReceiveMessage);return false;">
+											<input type="hidden" name="_name" value="formMessage">
+											<input type="hidden" name="secid" value="$secid">
+											<input type="hidden" name="roomId" value="">
+											<div class="tlInputMention relative">
+												<textarea id="messageTextarea1" class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; "></textarea><!-- label class="placeholder" for="messageTextarea1" style="display: block;">近況を共有しましょう</label-->
+											</div>
+											<div class="tlInputControls clearfix">
+												<div class="floatLeft"><a href="javascript:void(0)" class="auiButton">ファイルを追加する</a></div>
+												<div class="floatRight">
+													<i class="indicator" id="indicator-dlg-message-top" style="display:none"></i>
+													<input type="submit" class="auiButtonAction" value="投稿する" onclick="aimluck.io.setHiddenValue(this);">
+												</div>
+											</div>
+										</form>
+									</div>
+									<div id="messagePane" class="timeline scroll">
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

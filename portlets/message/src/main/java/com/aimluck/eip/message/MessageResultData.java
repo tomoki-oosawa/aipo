@@ -1,0 +1,233 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2014 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.aimluck.eip.message;
+
+import java.io.Serializable;
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.common.ALData;
+
+/**
+ *
+ */
+public class MessageResultData implements ALData, Serializable {
+
+  private static final long serialVersionUID = 1884204884214262528L;
+
+  private ALNumberField messageId;
+
+  private ALNumberField roomId;
+
+  private ALNumberField userId;
+
+  private ALStringField lastName;
+
+  private ALStringField firstName;
+
+  private ALNumberField unreadCount;
+
+  private ALNumberField memberCount;
+
+  private ALStringField message;
+
+  private ALDateTimeField createDate;
+
+  private boolean hasPhoto = false;
+
+  private boolean isOwner = false;
+
+  /**
+   *
+   */
+  @Override
+  public void initField() {
+    messageId = new ALNumberField();
+    roomId = new ALNumberField();
+    userId = new ALNumberField();
+    lastName = new ALStringField();
+    firstName = new ALStringField();
+    unreadCount = new ALNumberField();
+    memberCount = new ALNumberField();
+    message = new ALStringField();
+    createDate = new ALDateTimeField("yyyy年M月d日 H:mm");
+  }
+
+  /**
+   * @param messageId
+   *          セットする messageId
+   */
+  public void setMessageId(long messageId) {
+    this.messageId.setValue(messageId);
+  }
+
+  /**
+   * @return roomId
+   */
+  public ALNumberField getMessageId() {
+    return messageId;
+  }
+
+  /**
+   * @param roomId
+   *          セットする roomId
+   */
+  public void setRoomId(long roomId) {
+    this.roomId.setValue(roomId);
+  }
+
+  /**
+   * @return roomId
+   */
+  public ALNumberField getRoomId() {
+    return roomId;
+  }
+
+  public ALNumberField getUnreadCount() {
+    return unreadCount;
+  }
+
+  public void setUnreadCount(long unreadCount) {
+    this.unreadCount.setValue(unreadCount);
+  }
+
+  public void setCreateDate(Date createDate) {
+    this.createDate.setValue(createDate);
+  }
+
+  public ALDateTimeField getUpdateDate() {
+    return createDate;
+  }
+
+  /**
+   * @param userId
+   *          セットする userId
+   */
+  public void setUserId(long userId) {
+    this.userId.setValue(userId);
+  }
+
+  /**
+   * @return userId
+   */
+  public ALNumberField getUserId() {
+    return userId;
+  }
+
+  /**
+   * @param lastName
+   *          セットする lastName
+   */
+  public void setLastName(String lastName) {
+    this.lastName.setValue(lastName);
+  }
+
+  /**
+   * @return lastName
+   */
+  public ALStringField getLastName() {
+    return lastName;
+  }
+
+  /**
+   * @param firstName
+   *          セットする firstName
+   */
+  public void setFirstName(String firstName) {
+    this.firstName.setValue(firstName);
+  }
+
+  /**
+   * @return firstName
+   */
+  public ALStringField getFirstName() {
+    return firstName;
+  }
+
+  /**
+   * @param memberCount
+   *          セットする memberCount
+   */
+  public void setMemberCount(long memberCount) {
+    this.memberCount.setValue(memberCount);
+  }
+
+  /**
+   * @return memberCount
+   */
+  public ALNumberField getMemberCount() {
+    return memberCount;
+  }
+
+  /**
+   * @param message
+   *          セットする message
+   */
+  public void setMessage(String message) {
+    this.message.setValue(message);
+  }
+
+  /**
+   * @return message
+   */
+  public ALStringField getMessage() {
+    return message;
+  }
+
+  /**
+   * @param hasPhoto
+   *          セットする hasPhoto
+   */
+  public void setHasPhoto(boolean hasPhoto) {
+    this.hasPhoto = hasPhoto;
+  }
+
+  /**
+   * @return hasPhoto
+   */
+  public boolean isHasPhoto() {
+    return hasPhoto;
+  }
+
+  public boolean isAllRead() {
+    return 0 == this.unreadCount.getValue();
+  }
+
+  public int getReadCount() {
+    return (int) (this.memberCount.getValue() - this.unreadCount.getValue() - 1);
+  }
+
+  /**
+   * @param isOwner
+   *          セットする isOwner
+   */
+  public void setOwner(boolean isOwner) {
+    this.isOwner = isOwner;
+  }
+
+  /**
+   * @return isOwner
+   */
+  public boolean isOwner() {
+    return isOwner;
+  }
+}

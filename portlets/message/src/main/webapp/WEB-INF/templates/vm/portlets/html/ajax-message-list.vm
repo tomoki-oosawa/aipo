@@ -19,19 +19,23 @@
 #if($result.List.size() == 0)
 
 #else
-<ul class="messageSummary">
 #foreach ($record in $result.List)
-	<li id="messageRoom$!record.RoomId" #if("$!currentRoom" == "$!record.RoomId")class="active"#end>
-		<a href="javascript:void(0)" onclick="aipo.message.selectRoom($!record.RoomId);">
-			<span class="avatar">
-				<img src="themes/default/images/common/group_default.png" class="avatar_s">
-			</span>
-			#if("$!record.UnreadCount" != "0")<div class="nrCount">$!record.UnreadCount</div>#end
-			<span class="date">$!record.UpdateDate</span>
-			<span class="name">$!record.Name</span>
-			<span class="latest">$!record.LastMessage</span>
-		</a>
-	</li>
+<div id="message$!record.MessageId" class="message">
+	<div class="avatar">
+		#if($!record.isHasPhoto())
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "aa"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
+		#else
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" width="50" height="50"/>
+		#end
+	</div>
+	<div class="messageContents">
+		<div class="name">$!record.LastName $!record.FirstName</div>
+		<div class="body">$!record.Message</div>
+		<div class="time">
+			$!record.CreateDate&nbsp;
+			#if($!record.isOwner())<a href="javascript:void(0)">#if($!record.isAllRead())全員が既読#else$!record.ReadCount人が既読#end</a>#end
+		</div>
+	</div>
+</div>
 #end
-</ul>
 #end

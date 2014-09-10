@@ -383,11 +383,11 @@
 	<db-entity name="eip_t_message">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="MEMBER_COUNT" type="INTEGER" isMandatory="true" length="4"/>
-		<db-attribute name="MESSAGE" type="TIME"/>
+		<db-attribute name="MESSAGE" type="CLOB"/>
 		<db-attribute name="MESSAGE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
-		<db-attribute name="USER_ID" type="CLOB" isMandatory="true"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
 	<db-entity name="eip_t_message_file">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
@@ -402,7 +402,7 @@
 	<db-entity name="eip_t_message_read">
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="IS_READ" type="VARCHAR" length="1"/>
-		<db-attribute name="MESSAGAE_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="MESSAGE_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
@@ -1142,9 +1142,9 @@
 	<obj-entity name="EipTMessage" className="com.aimluck.eip.cayenne.om.portlet.EipTMessage" dbEntityName="eip_t_message">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="memberCount" type="java.lang.Integer" db-attribute-path="MEMBER_COUNT"/>
-		<obj-attribute name="message" type="java.util.Date" db-attribute-path="MESSAGE"/>
+		<obj-attribute name="message" type="java.lang.String" db-attribute-path="MESSAGE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
-		<obj-attribute name="userId" type="java.lang.String" db-attribute-path="USER_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
 	<obj-entity name="EipTMessageFile" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageFile" dbEntityName="eip_t_message_file">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1680,7 +1680,7 @@
 		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTMessageRead" source="eip_t_message" target="eip_t_message_read" toMany="true">
-		<db-attribute-pair source="MESSAGE_ID" target="MESSAGAE_ID"/>
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTMessageRoom" source="eip_t_message" target="eip_t_message_room" toMany="false">
 		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>
@@ -1689,7 +1689,7 @@
 		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTMessage" source="eip_t_message_read" target="eip_t_message" toMany="false">
-		<db-attribute-pair source="MESSAGAE_ID" target="MESSAGE_ID"/>
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTMessageRoomMembers" source="eip_t_message_room" target="eip_t_message_room_member" toMany="true">
 		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>

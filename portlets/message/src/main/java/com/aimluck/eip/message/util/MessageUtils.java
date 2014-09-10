@@ -29,6 +29,8 @@ import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
@@ -47,6 +49,99 @@ public class MessageUtils {
     context.put("portlet", portlet);
     context.put("jslink", new BaseJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
+  }
+
+  public static EipTMessageRoom getRoom(int roomId) {
+    return Database.get(EipTMessageRoom.class, roomId);
+  }
+
+  public static ResultList<EipTMessage> getMessageList(int roomId, int page,
+      int limit) {
+    StringBuilder select = new StringBuilder();
+
+    select.append("select");
+    select.append(" t1.message_id, ");
+    select.append(" t1.room_id,  ");
+    select.append(" t1.user_id, ");
+    select.append(" t1.message, ");
+    select.append(" t1.create_date, ");
+    select.append(" t1.member_count, ");
+    select.append(" t2.last_name, ");
+    select.append(" t2.first_name, ");
+    select.append(" t2.has_photo, ");
+
+    select
+      .append(" (select count(*) from eip_t_message_read t3 where t3.message_id = t1.message_id and t3.room_id = t1.room_id and t3.is_read = 'F') as unread ");
+
+    StringBuilder count = new StringBuilder();
+    count.append("select count(t1.message_id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body
+      .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id = #bind($room_id) ");
+
+    StringBuilder last = new StringBuilder();
+
+    last.append(" order by t1.create_date desc ");
+
+    SQLTemplate<EipTMessage> countQuery =
+      Database
+        .sql(EipTMessage.class, count.toString() + body.toString())
+        .param("room_id", Integer.valueOf(roomId));
+
+    int countValue = 0;
+    if (page > 0 && limit > 0) {
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
+      }
+
+      int offset = 0;
+      if (limit > 0) {
+        int num = ((int) (Math.ceil(countValue / (double) limit)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        offset = limit * (page - 1);
+      } else {
+        page = 1;
+      }
+
+      last.append(" LIMIT ");
+      last.append(limit);
+      last.append(" OFFSET ");
+      last.append(offset);
+    }
+
+    SQLTemplate<EipTMessage> query =
+      Database.sql(
+        EipTMessage.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "room_id",
+        Integer.valueOf(roomId));
+
+    List<DataRow> fetchList = query.fetchListAsDataRow();
+
+    List<EipTMessage> list = new ArrayList<EipTMessage>();
+    for (DataRow row : fetchList) {
+      Long unread = (Long) row.get("unread");
+      String lastName = (String) row.get("last_name");
+      String firstName = (String) row.get("first_name");
+      String hasPhoto = (String) row.get("has_photo");
+      EipTMessage object = Database.objectFromRowData(row, EipTMessage.class);
+      object.setUnreadCount(unread.intValue());
+      object.setFirstName(firstName);
+      object.setLastName(lastName);
+      object.setHasPhoto(hasPhoto);
+      list.add(object);
+    }
+
+    if (page > 0 && limit > 0) {
+      return new ResultList<EipTMessage>(list, page, limit, countValue);
+    } else {
+      return new ResultList<EipTMessage>(list, -1, -1, list.size());
+    }
   }
 
   public static ResultList<EipTMessageRoom> getRoomList(int userId) {
@@ -155,6 +250,34 @@ public class MessageUtils {
       return new ResultList<EipTMessageRoom>(list, page, limit, countValue);
     } else {
       return new ResultList<EipTMessageRoom>(list, -1, -1, list.size());
+    }
+  }
+
+  public static void read(int roomId, int userId, int lastMessageId) {
+    SQLTemplate<EipTMessageRead> countQuery =
+      Database
+        .sql(
+          EipTMessageRead.class,
+          "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
+        .param("room_id", Integer.valueOf(roomId))
+        .param("user_id", Integer.valueOf(userId))
+        .param("message_id", Integer.valueOf(lastMessageId));
+
+    int countValue = 0;
+    List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+    for (DataRow row : fetchCount) {
+      countValue = ((Long) row.get("c")).intValue();
+    }
+    if (countValue > 0) {
+      String sql =
+        "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
+      Database
+        .sql(EipTMessageRead.class, sql)
+        .param("room_id", Integer.valueOf(roomId))
+        .param("user_id", Integer.valueOf(userId))
+        .param("message_id", Integer.valueOf(lastMessageId))
+        .execute();
     }
   }
 }
