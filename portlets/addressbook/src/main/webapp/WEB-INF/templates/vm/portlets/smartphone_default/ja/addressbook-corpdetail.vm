@@ -71,8 +71,8 @@
 #end
 #ALthtd('FAX番号' $!{result.Detail.CompanyFaxNumber})
 #ALthtd('URL' $!{result.Detail.CompanyUrl})
-#ALthtd('登録者名' "$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})")
-#ALthtd('更新者名' "$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})")
+#ALthtd('登録者' "$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})")
+#ALthtd('更新者' "$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})")
 #ALtablefooterBorder()
 
 #ALcell_contents_footer($career)

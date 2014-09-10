@@ -74,8 +74,8 @@ $!result.Detail.Name
 #end
 #ALcell_dt($career 'FAX番号')#ALcell_dd($career "$!{result.Detail.CompanyFaxNumber}")
 #ALcell_dt($career 'URL')#ALcell_dd($career "$!{result.Detail.CompanyUrl}")
-#ALcell_dt($career '登録者名')#ALcell_dd($career "$!{result.Detail.CreatedUser}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
-#ALcell_dt($career '更新者名')#ALcell_dd($career "$!{result.Detail.UpdatedUser}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
+#ALcell_dt($career '登録者')#ALcell_dd($career "$!{result.Detail.CreatedUser}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
+#ALcell_dt($career '更新者')#ALcell_dd($career "$!{result.Detail.UpdatedUser}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
 #ALcell_dl_footer($career)
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)
