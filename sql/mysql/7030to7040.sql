@@ -315,3 +315,5 @@ INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, 
 -- 20140801
 CREATE INDEX eip_t_schedule_date_index ON eip_t_schedule(`start_date`, `end_date`, `update_date`);
 -- 20140801
+
+ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`gpdb_id`);

@@ -435,3 +435,5 @@ SELECT setval('pk_eip_m_project_kubun_value',12);
 CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
 -- 20140801
 
+CREATE INDEX eip_t_gpdb_record_gpdb_id_index ON EIP_T_GPDB_RECORD (GPDB_ID);
+
