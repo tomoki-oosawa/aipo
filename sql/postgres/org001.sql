@@ -1066,6 +1066,8 @@ CREATE TABLE EIP_T_ACL_ROLE
     PRIMARY KEY(ROLE_ID)
 );
 
+CREATE INDEX eip_t_acl_role_acl_type_index ON EIP_T_ACL_ROLE(ACL_TYPE);
+
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_PORTLET_FEATURE
 -----------------------------------------------------------------------------
@@ -1090,9 +1092,8 @@ CREATE TABLE EIP_T_ACL_USER_ROLE_MAP
     ROLE_ID INT4 NOT NULL,
     PRIMARY KEY(ID)
 );
+
 CREATE INDEX eip_t_acl_user_role_map_role_id_index ON EIP_T_ACL_USER_ROLE_MAP(ROLE_ID);
-
-
 
 CREATE TABLE jetspeed_group_profile (
     COUNTRY varchar(2) NULL,

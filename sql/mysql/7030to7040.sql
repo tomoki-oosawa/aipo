@@ -417,4 +417,5 @@ CREATE INDEX eip_t_eventlog_event_type_index ON eip_t_eventlog(event_type);
 CREATE INDEX eip_t_eventlog_user_id_index ON eip_t_eventlog(user_id);
 CREATE INDEX eip_t_msgboard_topic_category_id_index ON eip_t_msgboard_topic(category_id);
 CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(role_id);
+CREATE INDEX eip_t_acl_role_acl_type_index ON eip_t_acl_role(acl_type);
 CREATE INDEX eip_t_workflow_request_map_request_id_index ON eip_t_workflow_request_map(request_id);
