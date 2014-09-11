@@ -42,13 +42,21 @@ aipo.message.reloadRoomList = function(roomId) {
         aipo.message.messageRoomPane = dijit.byId("messageRoomPane");
         aipo.message.messageRoomPane = new aimluck.widget.Contentpane({},
                 'messageRoomListPane');
+        aipo.message.messageRoomPane.onLoad = function() {
+            var messageTotalUnreadCountValue = dojo.byId("messageTotalUnreadCountValue");
+            var count = parseInt(messageTotalUnreadCountValue.innerHTML);
+            if(count != NaN) {
+                aipo.menu.message.count(count);
+            }
+            if(aipo.message.messageRoomPane.roomId) {
+                aipo.message.selectRoom(aipo.message.messageRoomPane.roomId);
+                aipo.message.messageRoomPane.roomId = null;
+            }
+        }
     }
 
     if(roomId) {
-        aipo.message.messageRoomPane.onLoad = function() {
-            aipo.message.selectRoom(roomId);
-            aipo.message.messageRoomPane.onLoad = function(){};
-        }
+        aipo.message.messageRoomPane.roomId = roomId;
     }
 
     aipo.message.messageRoomPane.viewPage("?template=MessageRoomListScreen&r="
