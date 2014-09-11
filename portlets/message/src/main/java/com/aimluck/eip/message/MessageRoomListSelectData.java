@@ -41,6 +41,8 @@ public class MessageRoomListSelectData extends
 
   private int userId;
 
+  private int totalUnreadCount = 0;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -96,6 +98,9 @@ public class MessageRoomListSelectData extends
     rd.setRoomType(model.getRoomType());
     rd.setUnreadCount(model.getUnreadCount());
     rd.setUpdateDate(model.getLastUpdateDate());
+
+    totalUnreadCount += model.getUnreadCount().intValue();
+
     return rd;
   }
 
@@ -117,6 +122,10 @@ public class MessageRoomListSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  public int getTotalUnreadCount() {
+    return totalUnreadCount;
   }
 
 }

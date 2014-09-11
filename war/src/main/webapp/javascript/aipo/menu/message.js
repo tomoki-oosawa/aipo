@@ -1,4 +1,4 @@
-#*
+/*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2011 Aimluck,Inc.
  * http://www.aipo.com
@@ -15,24 +15,24 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *#
-#if($result.List.size() == 0)
+ */
 
-#else
-<ul class="messageSummary">
-#foreach ($record in $result.List)
-	<li id="messageRoom$!record.RoomId" #if("$!currentRoom" == "$!record.RoomId")class="active"#end>
-		<a href="javascript:void(0)" onclick="aipo.message.selectRoom($!record.RoomId);">
-			<span class="avatar">
-				<img src="themes/default/images/common/group_default.png" class="avatar_s">
-			</span>
-			#if("$!record.UnreadCount" != "0")<div class="nrCount">$!record.UnreadCount</div>#end
-			<span class="date">$!record.UpdateDate</span>
-			<span class="name">$!record.Name</span>
-			<span class="latest">$!record.LastMessage</span>
-		</a>
-	</li>
-#end
-</ul>
-#end
-<span id="messageTotalUnreadCountValue" style="display:none">$!result.TotalUnreadCount</span>
+dojo.provide("aipo.menu.message");
+
+aipo.menu.message.reload = function() {
+
+}
+
+aipo.menu.message.count = function(count) {
+    var checker = dojo.byId("messageChecker");
+    if (checker > 99) {
+        checker.innerHTML = '99+';
+        dojo.addClass("messageChecker", "num");
+    } else if (count == 0) {
+        checker.innerHTML = '';
+        dojo.removeClass("messageChecker", "num");
+    } else {
+        checker.innerHTML = count;
+        dojo.addClass("messageChecker", "num");
+    }
+}

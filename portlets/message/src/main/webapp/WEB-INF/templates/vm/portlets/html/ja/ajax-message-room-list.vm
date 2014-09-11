@@ -35,3 +35,4 @@
 #end
 </ul>
 #end
+<span id="messageTotalUnreadCountValue" style="display:none">$!result.TotalUnreadCount</span>

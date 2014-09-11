@@ -123,6 +123,7 @@
                 <include>aipo/container.js</include>
                 <include>aipo/menu/menu.js</include>
                 <include>aipo/menu/activity.js</include>
+                <include>aipo/menu/message.js</include>
                 <include>aipo/message.js</include>
               </includes>
               <excludes>
