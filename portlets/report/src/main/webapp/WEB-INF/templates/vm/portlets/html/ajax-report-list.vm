@@ -70,7 +70,7 @@
 <tr>
 #ALtdhead("#ALajaxsort('report_name' $l10n.REPORT_SETFIELDNAME_REPORT_NAME $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('start_date' $l10n.REPORT_SETFIELDNAME_CREATEDATE $result 'ReportListScreen')")
-#ALtdheadAtt("#ALajaxsort('user_id' $l10n.REPORT_CREATER $result 'ReportListScreen')" 'class="wName"')
+#ALtdheadAtt("#ALajaxsort('user_id' $l10n.COMMON_CREATE_USER $result 'ReportListScreen')" 'class="wName"')
 #if($!isCreated)
 #ALtdheadAtt($l10n.REPORT_SITUATION 'class="mb_hide" style="width:5%"')
 #end
