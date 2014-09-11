@@ -270,7 +270,7 @@ CREATE TABLE `eip_t_acl_role` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`role_id`)
+  PRIMARY KEY (`role_id`),
   KEY `eip_t_acl_role_acl_type_index` (`acl_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -642,8 +642,7 @@ CREATE TABLE `eip_t_schedule_map` (
   `common_category_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `eip_t_schedule_map_schedule_id_index` (`schedule_id`),
-  KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`),
-  KEY `eip_t_schedule_map_user_id_index` (`user_id`)
+  KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timecard` (
