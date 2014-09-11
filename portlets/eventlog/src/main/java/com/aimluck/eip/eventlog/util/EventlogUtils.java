@@ -239,6 +239,8 @@ public class EventlogUtils {
       return getNoteName(entityId);
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_COMMON_CATEGORY) {
       return getCommonCategoryName(entityId);
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_TIMELINE) {
+      return null;
     } else {
       return "nothing";
     }
