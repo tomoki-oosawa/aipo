@@ -84,6 +84,7 @@ CREATE TABLE `eip_facility_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `facility_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
+  `sort` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -239,6 +240,7 @@ CREATE TABLE `eip_m_post` (
   `out_telephone` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fax_number` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_name` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`post_id`),
@@ -1015,6 +1017,7 @@ CREATE TABLE eip_m_facility_group
 (
     `group_id` int(11) NOT NULL AUTO_INCREMENT,
     `group_name` varchar (64) COLLATE utf8_unicode_ci,
+    `sort` int(11) DEFAULT NULL,
     PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

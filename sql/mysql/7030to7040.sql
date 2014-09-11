@@ -326,3 +326,6 @@ CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(ro
 CREATE INDEX eip_t_acl_role_acl_type_index ON eip_t_acl_role(acl_type);
 CREATE INDEX eip_m_user_position_index ON eip_m_user_position(position);
 ALTER TABLE `eip_m_position` ADD `sort` int(11) DEFAULT NULL AFTER `position_name`;
+ALTER TABLE `eip_m_post` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
+ALTER TABLE `eip_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_id`;
+ALTER TABLE `eip_m_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
