@@ -223,6 +223,7 @@ INSERT INTO `eip_m_mail_notify_conf` VALUES (1,1,1,3,'07:00:00',now(),now()),(2,
 CREATE TABLE `eip_m_position` (
   `position_id` int(11) NOT NULL AUTO_INCREMENT,
   `position_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`position_id`)
@@ -238,6 +239,7 @@ CREATE TABLE `eip_m_post` (
   `out_telephone` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fax_number` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_name` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`post_id`),
