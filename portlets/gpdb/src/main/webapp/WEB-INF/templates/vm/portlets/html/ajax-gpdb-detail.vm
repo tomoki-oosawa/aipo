@@ -41,9 +41,7 @@ $!result.Detail.WbrGpdbName
 #ALtdcell("$l10n.GPDB_DONOT_SEND_EMAIL_DATA_REGISTRATION")
 #end
 #ALtdcaption("$l10n.GPDB_AUTHOR")
-#ALtditem($!result.Detail.WbrCreateUserName)
-#ALtdcaption("$l10n.GPDB_CREATION_DATE")
-#ALtditem($!result.Detail.CreateDate)
+#ALtditem("$!{result.Detail.WbrCreateUserName} （$!{result.Detail.CreateDate}）")
 #ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
