@@ -1094,6 +1094,7 @@ public class ALEipUtils {
                 ALEipConstants.DEF_CONTENT_ENCODING));
             context
               .put("l10n", ALLocalizationUtils.createLocalization(rundata));
+            context.put("utils", new ALCommonUtils());
             Template templete =
               Velocity.getTemplate("screens/html/AjaxDBError.vm");
             templete.merge(context, writer);
