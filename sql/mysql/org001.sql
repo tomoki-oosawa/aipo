@@ -248,7 +248,8 @@ CREATE TABLE `eip_m_user_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_m_user_position_index` (`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_acl_portlet_feature` (
@@ -269,7 +270,8 @@ CREATE TABLE `eip_t_acl_role` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`role_id`)
+  PRIMARY KEY (`role_id`),
+  KEY `eip_t_acl_role_acl_type_index` (`acl_type`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `eip_t_acl_role` VALUES (1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(2,'スケジュール（他ユーザーの予定）',112,3,NULL,NULL,NULL),(3,'スケジュール（設備の予約）管理者',113,12,NULL,NULL,NULL),(4,'ブログ（自分の記事）管理者',121,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(5,'ブログ（他ユーザーの記事）管理者',122,3,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(6,'ブログ（記事へのコメント）管理者',123,20,NULL,NULL,NULL),(7,'ブログ（テーマ）管理者',124,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(8,'掲示板（トピック）管理者',131,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(9,'掲示板（トピック返信）管理者',132,20,NULL,NULL,NULL),(10,'掲示板（自分のカテゴリ）管理者',133,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(12,'ToDo（自分のToDo）管理者',141,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(13,'ToDo（他ユーザーのToDo）管理者',142,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(14,'ToDo（カテゴリ）管理者',143,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(15,'ワークフロー（自分の依頼）管理者',151,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません ＊承認、再申請や差し戻しは編集の権限が必要です',NULL,NULL),(16,'ワークフロー（他ユーザーの依頼）管理者',152,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません',NULL,NULL),(17,'ユーザー名簿管理者',161,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません',NULL,NULL),(18,'アドレス帳（社外アドレス）管理者',162,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(19,'アドレス帳（会社情報）管理者',163,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(20,'アドレス帳（社外グループ）管理者',164,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(21,'タイムカード（自分のタイムカード）管理者',171,47,'＊追加、編集、外部出力は一覧表示の権限を持っていないと使用できません',NULL,NULL),(22,'タイムカード（他人のタイムカード）管理者',172,33,'＊自分のタイムカード一覧表示の権限を持っていないと使用できません\n＊外部出力は一覧表示の権限を持っていないと使用できません',NULL,NULL),(23,'共有フォルダ（ファイル）管理者',181,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(24,'共有フォルダ（フォルダ）管理者',182,30,'＊編集、削除は詳細表示の権限を持っていないと使用できません',NULL,NULL),(29,'アプリ配置管理者',201,29,NULL,NULL,NULL),(30,'ToDo（他ユーザのカテゴリ）管理者',144,27,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(31, '報告書（自分の報告書）管理者',211,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', NULL, NULL),(32,'報告書（他ユーザーの報告書）管理者',212,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', NULL, NULL),(33,'報告書（報告書への返信）管理者',213,20,NULL, NULL, NULL);
@@ -278,7 +280,8 @@ CREATE TABLE `eip_t_acl_user_role_map` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_acl_user_role_map_role_id_index` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_addressbook_group_map` (
@@ -418,7 +421,9 @@ CREATE TABLE `eip_t_eventlog` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`eventlog_id`)
+  PRIMARY KEY (`eventlog_id`),
+  KEY `eip_t_eventlog_event_type_index` (`event_type`),
+  KEY `eip_t_eventlog_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard` (
@@ -442,7 +447,8 @@ CREATE TABLE `eip_t_ext_timecard` (
   `remarks` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`timecard_id`)
+  PRIMARY KEY (`timecard_id`),
+  KEY `eip_t_ext_timecard_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard_system` (
@@ -574,7 +580,8 @@ CREATE TABLE `eip_t_msgboard_topic` (
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`topic_id`)
+  PRIMARY KEY (`topic_id`),
+  KEY `eip_t_msgboard_topic_category_id_index` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_note` (
@@ -601,7 +608,8 @@ CREATE TABLE `eip_t_note_map` (
   `del_flg` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note_stat` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirm_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_note_map_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_schedule` (

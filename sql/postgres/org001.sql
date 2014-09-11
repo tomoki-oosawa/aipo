@@ -216,6 +216,8 @@ CREATE TABLE EIP_M_USER_POSITION
     PRIMARY KEY(ID)
 );
 
+CREATE INDEX eip_m_user_position_index ON EIP_M_USER_POSITION(POSITION);
+
 -----------------------------------------------------------------------------
 -- EIP_T_COMMON_CATEGORY
 -----------------------------------------------------------------------------
@@ -256,6 +258,8 @@ CREATE TABLE EIP_T_SCHEDULE
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(SCHEDULE_ID)
 );
+
+CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE(START_DATE, END_DATE, UPDATE_DATE);
 
 CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
 
@@ -543,6 +547,8 @@ CREATE TABLE EIP_T_NOTE_MAP
    PRIMARY KEY(ID)
 );
 
+CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_CATEGORY
 -----------------------------------------------------------------------------
@@ -592,6 +598,8 @@ CREATE TABLE EIP_T_MSGBOARD_TOPIC
     FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_MSGBOARD_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(TOPIC_ID)
 );
+
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON EIP_T_MSGBOARD_TOPIC(CATEGORY_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_FILE
@@ -859,6 +867,8 @@ CREATE TABLE EIP_T_EXT_TIMECARD
     PRIMARY KEY(TIMECARD_ID)
 );
 
+CREATE INDEX eip_t_ext_timecard_user_id_index ON EIP_T_EXT_TIMECARD(USER_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_EXT_TIMECARD_SYSTEM
 -----------------------------------------------------------------------------
@@ -1040,7 +1050,8 @@ CREATE TABLE EIP_T_EVENTLOG
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(EVENTLOG_ID)
 );
-
+CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
+CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_ROLE
 -----------------------------------------------------------------------------
@@ -1056,6 +1067,8 @@ CREATE TABLE EIP_T_ACL_ROLE
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(ROLE_ID)
 );
+
+CREATE INDEX eip_t_acl_role_acl_type_index ON EIP_T_ACL_ROLE(ACL_TYPE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_PORTLET_FEATURE
@@ -1082,7 +1095,7 @@ CREATE TABLE EIP_T_ACL_USER_ROLE_MAP
     PRIMARY KEY(ID)
 );
 
-
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON EIP_T_ACL_USER_ROLE_MAP(ROLE_ID);
 
 CREATE TABLE jetspeed_group_profile (
     COUNTRY varchar(2) NULL,

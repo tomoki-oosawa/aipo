@@ -315,3 +315,13 @@ INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, 
 -- 20140801
 CREATE INDEX eip_t_schedule_date_index ON eip_t_schedule(`start_date`, `end_date`, `update_date`);
 -- 20140801
+
+-- 20140911
+CREATE INDEX eip_t_ext_timecard_user_id_index ON eip_t_ext_timecard(user_id);
+CREATE INDEX eip_t_note_map_user_id_index ON eip_t_note_map(user_id);
+CREATE INDEX eip_t_eventlog_event_type_index ON eip_t_eventlog(event_type);
+CREATE INDEX eip_t_eventlog_user_id_index ON eip_t_eventlog(user_id);
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON eip_t_msgboard_topic(category_id);
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(role_id);
+CREATE INDEX eip_t_acl_role_acl_type_index ON eip_t_acl_role(acl_type);
+CREATE INDEX eip_m_user_position_index ON eip_m_user_position(position);
