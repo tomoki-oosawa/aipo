@@ -325,3 +325,4 @@ CREATE INDEX eip_t_msgboard_topic_category_id_index ON eip_t_msgboard_topic(cate
 CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(role_id);
 CREATE INDEX eip_t_acl_role_acl_type_index ON eip_t_acl_role(acl_type);
 CREATE INDEX eip_m_user_position_index ON eip_m_user_position(position);
+ALTER TABLE `eip_m_position` ADD `sort` int(11) DEFAULT NULL AFTER `position_name`;
