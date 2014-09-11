@@ -593,7 +593,9 @@ CREATE TABLE EIP_T_MSGBOARD_TOPIC
     FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_MSGBOARD_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(TOPIC_ID)
 );
+
 CREATE INDEX eip_t_msgboard_topic_category_id_index ON EIP_T_MSGBOARD_TOPIC(CATEGORY_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_FILE
 -----------------------------------------------------------------------------
