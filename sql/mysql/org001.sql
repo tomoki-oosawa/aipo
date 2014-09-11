@@ -628,7 +628,7 @@ CREATE TABLE `eip_t_schedule` (
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`schedule_id`),
-  KEY `eip_t_schedule_start_date_index` (`start_date`)
+  KEY `eip_t_schedule_date_index` (`start_date`, `end_date`, `update_date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_schedule_map` (
