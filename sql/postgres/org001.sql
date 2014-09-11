@@ -280,7 +280,6 @@ CREATE TABLE EIP_T_SCHEDULE_MAP
 
 CREATE INDEX eip_t_schedule_map_schedule_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID);
 CREATE INDEX eip_t_schedule_map_schedule_id_user_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID, USER_ID);
-CREATE INDEX eip_t_schedule_map_user_id_index ON EIP_T_SCHEDULE_MAP(USER_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_TODO_CATEGORY
