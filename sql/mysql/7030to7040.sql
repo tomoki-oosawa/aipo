@@ -420,4 +420,3 @@ CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(ro
 CREATE INDEX eip_t_workflow_request_map_request_id_index ON eip_t_workflow_request_map(request_id);
 CREATE INDEX eip_t_schedule_map_user_id_index ON eip_t_schedule_map(user_id);
 CREATE INDEX eip_t_schedule_start_date_index ON eip_t_schedule(start_date);
-CREATE INDEX eip_t_timeline_parent_id_owner_id_index ON eip_t_timeline(parent_id,owner_id);

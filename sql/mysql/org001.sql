@@ -668,8 +668,7 @@ CREATE TABLE `eip_t_timeline` (
    `create_date` datetime DEFAULT NULL,
    `update_date` datetime DEFAULT NULL,
    PRIMARY KEY(`timeline_id`),
-   KEY `parent_id` (`parent_id`),
-   KEY `eip_t_timeline_parent_id_owner_id_index` (`parent_id`, `owner_id`)
+   KEY `parent_id` (`parent_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_timeline_map` (

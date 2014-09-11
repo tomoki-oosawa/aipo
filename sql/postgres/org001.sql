@@ -1366,7 +1366,6 @@ CREATE TABLE EIP_T_TIMELINE
 );
 
 CREATE INDEX eip_t_timeline_parent_id_index ON EIP_T_TIMELINE (PARENT_ID);
-CREATE INDEX eip_t_timeline_parent_id_owner_id_index ON EIP_T_TIMELINE(PARENT_ID,OWNER_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_TIMELINE_MAP
