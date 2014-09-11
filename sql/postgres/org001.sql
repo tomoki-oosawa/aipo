@@ -1046,8 +1046,8 @@ CREATE TABLE EIP_T_EVENTLOG
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(EVENTLOG_ID)
 );
-CREATE INDEX eventtype_index ON EIP_T_EVENTLOG(EVENT_TYPE);
-CREATE INDEX eip_t_eventlog_userid_index ON EIP_T_EVENTLOG(USER_ID);
+CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
+CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_ROLE
 -----------------------------------------------------------------------------

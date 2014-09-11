@@ -420,8 +420,8 @@ CREATE TABLE `eip_t_eventlog` (
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`eventlog_id`),
-  KEY `eventtype_index` (`event_type`),
-  KEY `eip_t_eventlog_userid_index` (`user_id`)
+  KEY `eip_t_eventlog_event_type_index` (`event_type`),
+  KEY `eip_t_eventlog_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard` (
