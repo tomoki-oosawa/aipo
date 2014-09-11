@@ -956,10 +956,12 @@ public class ALDefaultSocialApplicationHanlder extends
           Calendar cal2 = Calendar.getInstance();
           cal2.add(Calendar.DAY_OF_MONTH, -limit2);
 
-          Database.query(EipTTimelineMap.class).where(
-            Operations.lt(EipTTimelineMap.EIP_TTIMELINE_PROPERTY
-              + "."
-              + EipTTimeline.UPDATE_DATE_PROPERTY, cal2.getTime())).deleteAll();
+          String sql2 =
+            "delete from eip_t_timeline where update_date < '"
+              + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal2
+                .getTime())
+              + "'";
+          Database.sql(EipTTimeline.class, sql2).execute();
 
           // 親データ再検索
           tQuery = Database.query(EipTTimeline.class);
