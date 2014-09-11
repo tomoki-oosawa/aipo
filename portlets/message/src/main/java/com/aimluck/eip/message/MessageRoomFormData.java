@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.message;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -61,6 +63,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private ALEipUser login_user;
 
+  private int roomId;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -79,7 +83,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
     members = new ALStringField();
     members.setTrim(true);
     memberList = new ArrayList<ALEipUser>();
-
   }
 
   /**
@@ -99,6 +102,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       try {
 
         String memberNames[] = rundata.getParameters().getStrings("member_to");
+        memberList.clear();
         if (memberNames != null && memberNames.length > 0) {
           SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
           Expression exp =
@@ -137,7 +141,19 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    return true;
+    if (memberList.size() < 2) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
+    }
+    boolean hasOwn = false;
+    for (ALEipUser user : memberList) {
+      if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
+        hasOwn = true;
+      }
+    }
+    if (!hasOwn) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
+    }
+    return msgList.size() == 0;
   }
 
   /**
@@ -201,6 +217,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      roomId = model.getRoomId();
+
     } catch (Exception ex) {
       Database.rollback();
       logger.error("MessageRoomFormData.insertFormData", ex);
@@ -240,5 +258,13 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   public ALStringField getName() {
     return name;
+  }
+
+  public List<ALEipUser> getMemberList() {
+    return memberList;
+  }
+
+  public int getRoomId() {
+    return roomId;
   }
 }

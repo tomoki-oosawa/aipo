@@ -19,7 +19,10 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.Arrays;
+
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -49,11 +52,18 @@ public class MessageRoomFormJSONScreen extends ALJSONScreen {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
+          JSONArray json =
+            JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
+          JSONObject obj = new JSONObject();
+          obj.put("params", json);
+          result = obj.toString();
         } else {
           JSONArray json =
             JSONArray
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-          result = json.toString();
+          JSONObject obj = new JSONObject();
+          obj.put("err", json);
+          result = obj.toString();
         }
       }
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {

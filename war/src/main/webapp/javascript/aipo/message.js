@@ -37,11 +37,18 @@ aipo.message.reloadMessageList = function() {
 }
 
 aipo.message.messageRoomPane = null;
-aipo.message.reloadRoomList = function() {
+aipo.message.reloadRoomList = function(roomId) {
     if (!aipo.message.messageRoomPane) {
         aipo.message.messageRoomPane = dijit.byId("messageRoomPane");
         aipo.message.messageRoomPane = new aimluck.widget.Contentpane({},
                 'messageRoomListPane');
+    }
+
+    if(roomId) {
+        aipo.message.messageRoomPane.onLoad = function() {
+            aipo.message.selectRoom(roomId);
+            aipo.message.messageRoomPane.onLoad = function(){};
+        }
     }
 
     aipo.message.messageRoomPane.viewPage("?template=MessageRoomListScreen&r="
@@ -69,8 +76,8 @@ aipo.message.selectRoom = function(room_id) {
     var messageRoomAvatar = dojo.byId("messageRoomAvatar");
     var messageRoomName = dojo.byId("messageRoomName");
     if (messageForm && messageRoom) {
-        messageMainBlock.style.display="";
-        messageMainBlockEmpty.style.display="none";
+        messageMainBlock.style.display = "";
+        messageMainBlockEmpty.style.display = "none";
         aipo.message.inputHistory[aipo.message.currentRoomId] = messageForm.message.value;
         aipo.message.currentRoomId = room_id;
         dojo.query(".messageSummary li").forEach(function(item) {
@@ -82,8 +89,10 @@ aipo.message.selectRoom = function(room_id) {
         } else {
             aipo.message.clearInput();
         }
-        messageRoomAvatar.innerHTML = dojo.query("#messageRoom" + room_id + " .avatar")[0].innerHTML;
-        messageRoomName.innerHTML = dojo.query("#messageRoom" + room_id + " .name")[0].innerHTML;
+        messageRoomAvatar.innerHTML = dojo.query("#messageRoom" + room_id
+                + " .avatar")[0].innerHTML;
+        messageRoomName.innerHTML = dojo.query("#messageRoom" + room_id
+                + " .name")[0].innerHTML;
 
         messageForm.roomId.value = aipo.message.currentRoomId;
 
@@ -115,7 +124,7 @@ aipo.message.fixMessageWindow = function() {
             dojo.byId("messageSideBlock2").style.height = h + "px";
         }
     }
-    if(dojo.byId("messagePane") != null) {
+    if (dojo.byId("messagePane") != null) {
         var minusH = 55 + 40 + 145;
         var h = document.documentElement.clientHeight - minusH;
         dojo.byId("messagePane").style.height = h + "px";
@@ -123,7 +132,31 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
+    var mpicker = dijit.byId("membernormalselect");
+    if (mpicker) {
+        var select = dojo.byId('init_memberlist');
+        var i;
+        var s_o = select.options;
+        if (s_o.length == 1 && s_o[0].value == "")
+            return;
+        for (i = 0; i < s_o.length; i++) {
+            mpicker.addOptionSync(s_o[i].value, s_o[i].text, true);
+        }
+    }
+    var btn_ma = dojo.byId("button_member_add");
+    if (btn_ma) {
+        dojo.connect(btn_ma, "onclick", function() {
+            aipo.message.expandMember();
+        });
+    }
 
+    var btn_mr = dojo.byId("button_member_remove");
+    if (btn_mr) {
+        dojo.connect(btn_mr, "onclick", function() {
+            aipo.message.expandMember();
+        });
+    }
+    aipo.message.shrinkMember();
 };
 
 aipo.message.shrinkMember = function() {
@@ -202,15 +235,20 @@ aipo.message.onReceiveMessage = function(msg) {
 };
 
 aipo.message.onReceiveMessageRoom = function(msg) {
-    if (!msg) {
+    if (!msg["error"]) {
         var arrDialog = dijit.byId("modalDialog");
         if (arrDialog) {
             arrDialog.hide();
-            aipo.message.reloadRoomList();
+            var tmpRoomId = parseInt(msg["params"]);
+            if (tmpRoomId != NaN) {
+                aipo.message.reloadRoomList(tmpRoomId);
+            } else {
+                aipo.message.reloadRoomList();
+            }
         }
     }
     if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML = msg;
+        dojo.byId('messageDiv').innerHTML = msg["error"];
     }
 };
 

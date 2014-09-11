@@ -40,7 +40,7 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("messageRoomForm" $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#ALajaxscreenformheader("messageRoomForm" $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
 <input type="hidden" name="mode" value="$!modesrv" />
 
 #ALtableheaderWide()
