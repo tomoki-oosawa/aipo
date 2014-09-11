@@ -216,6 +216,8 @@ CREATE TABLE EIP_M_USER_POSITION
     PRIMARY KEY(ID)
 );
 
+CREATE INDEX eip_m_user_position_index ON EIP_M_USER_POSITION(POSITION);
+
 -----------------------------------------------------------------------------
 -- EIP_T_COMMON_CATEGORY
 -----------------------------------------------------------------------------
