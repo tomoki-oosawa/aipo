@@ -543,7 +543,6 @@ CREATE TABLE EIP_T_NOTE_MAP
    PRIMARY KEY(ID)
 );
 
-CREATE INDEX eip_t_note_map_note_id_index ON EIP_T_NOTE_MAP(NOTE_ID);
 CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
 
 -----------------------------------------------------------------------------

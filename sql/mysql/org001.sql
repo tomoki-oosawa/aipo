@@ -607,7 +607,6 @@ CREATE TABLE `eip_t_note_map` (
   `note_stat` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirm_date` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `eip_t_note_map_note_id_index` (`note_id`),
   KEY `eip_t_note_map_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
