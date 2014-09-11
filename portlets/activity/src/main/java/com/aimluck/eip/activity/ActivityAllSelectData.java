@@ -19,6 +19,12 @@
 
 package com.aimluck.eip.activity;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.turbine.util.RunData;
@@ -27,9 +33,12 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.cayenne.om.social.Activity;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
@@ -41,7 +50,7 @@ import com.aimluck.eip.util.ALEipUtils;
  *
  */
 public class ActivityAllSelectData extends
-    ALAbstractSelectData<ALActivity, ALActivity> {
+    ALAbstractMultiFilterSelectData<ALActivity, ALActivity> {
 
   /** Activity の総数 */
   private int activitySum;
@@ -49,6 +58,15 @@ public class ActivityAllSelectData extends
   private String currentCategory;
 
   private ALStringField target_keyword;
+
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
+
+  /** グループID */
+  private String postId = "";
+
+  /** グループ名 */
+  private String postName = "";
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -63,6 +81,7 @@ public class ActivityAllSelectData extends
       currentCategory = tabParam;
     }
     target_keyword = new ALStringField();
+    postList = ALEipUtils.getMyGroups(rundata);
     super.init(action, rundata, context);
   }
 
@@ -131,6 +150,41 @@ public class ActivityAllSelectData extends
       target_keyword.setValue(ActivityUtils.getTargetKeyword(rundata, context));
     }
 
+    if (current_filterMap.containsKey("post")) {
+
+      List<String> postIds = current_filterMap.get("post");
+      boolean existPost = false;
+      for (int i = 0; i < postList.size(); i++) {
+        String pid = postList.get(i).getName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
+      }
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      if (postIds != null && !postIds.isEmpty()) {
+        for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+          String pid = item.getValue().getGroupName().toString();
+          if (pid.equals(postIds.get(0).toString())) {
+            existPost = true;
+            break;
+          }
+        }
+      }
+      if (existPost) {
+        postId = postIds.get(0).toString();
+        updatePostName();
+        List<Integer> userId = ALEipUtils.getUserIds(postId);
+        if (userId.isEmpty()) {
+          return new ResultList<ALActivity>(new ArrayList<ALActivity>());
+        }
+      } else {
+        current_filterMap.remove("post");
+        updatePostName();
+
+      }
+
+    }
     int page = getCurrentPage();
     int limit = getRowsNum();
     String loginName = ALEipUtils.getALEipUser(rundata).getName().getValue();
@@ -143,7 +197,8 @@ public class ActivityAllSelectData extends
           .withLoginName(loginName)
           .withPriority(0f)
           .withPage(page)
-          .withTargetLoginName(loginName)) : ALActivityService
+          .withTargetLoginName(loginName)
+          .withPostId(postId)) : ALActivityService
         .getList(new ALActivityGetRequest()
           .withLimit(limit)
           .withAppId(currentCategory)
@@ -151,7 +206,8 @@ public class ActivityAllSelectData extends
           .withLoginName(loginName)
           .withPriority(0f)
           .withPage(page)
-          .withTargetLoginName(loginName));
+          .withTargetLoginName(loginName)
+          .withPostId(postId));
     // // withの否定が無いため取得してから取り除く
     // if ("other".equals(currentCategory)) {
     // ResultList<ALActivity> removeList = new ResultList<ALActivity>();
@@ -173,6 +229,28 @@ public class ActivityAllSelectData extends
 
     return list;
 
+  }
+
+  /**
+   * パラメータをマップに変換します。
+   * 
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
   }
 
   /**
@@ -200,4 +278,50 @@ public class ActivityAllSelectData extends
   public ALStringField getTargetKeyword() {
     return target_keyword;
   }
+
+  /**
+   * 部署一覧を取得します
+   * 
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   * 部署の一覧を取得する．
+   * 
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  private void updatePostName() {
+    postName = "";
+    for (int i = 0; i < postList.size(); i++) {
+      String pid = postList.get(i).getName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = postList.get(i).getAliasName().toString();
+        return;
+      }
+    }
+    Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+    for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+      String pid = item.getValue().getGroupName().toString();
+      if (pid.equals(postId.toString())) {
+        postName = item.getValue().getPostName().toString();
+        return;
+      }
+    }
+  }
+
+  public String getPostName() {
+    return postName;
+  }
+
+  public String getPostId() {
+    return postId;
+  }
+
 }
