@@ -542,6 +542,8 @@ CREATE TABLE EIP_T_NOTE_MAP
    FOREIGN KEY (NOTE_ID) REFERENCES EIP_T_NOTE (NOTE_ID) ON DELETE CASCADE,
    PRIMARY KEY(ID)
 );
+
+CREATE INDEX eip_t_note_map_note_id_index ON EIP_T_NOTE_MAP(NOTE_ID);
 CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
 
 -----------------------------------------------------------------------------

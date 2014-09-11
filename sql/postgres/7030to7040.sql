@@ -408,6 +408,7 @@ INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(12,3,'3','低',3, now(), now());
 
 CREATE INDEX eip_t_ext_timecard_user_id_index ON EIP_T_EXT_TIMECARD(USER_ID);
+CREATE INDEX eip_t_note_map_note_id_index ON EIP_T_NOTE_MAP(NOTE_ID);
 CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
 CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
 CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
