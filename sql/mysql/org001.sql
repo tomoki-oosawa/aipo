@@ -497,9 +497,7 @@ CREATE TABLE `eip_t_mail` (
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`mail_id`),
-  KEY `eip_t_mail_user_id_index` (`user_id`),
-  KEY `eip_t_mail_type_index` (`type`),
-  KEY `eip_t_mail_read_flg_index` (`read_flg`)
+  KEY `eip_t_mail_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_mail_filter` (

@@ -396,8 +396,6 @@ CREATE TABLE EIP_T_MAIL
 );
 
 CREATE INDEX eip_t_mail_user_id_index ON EIP_T_MAIL (USER_ID);
-CREATE INDEX eip_t_mail_type_index ON EIP_T_MAIL(TYPE);
-CREATE INDEX eip_t_mail_read_flg_index ON EIP_T_MAIL(READ_FLG);
 
 -----------------------------------------------------------------------------
 -- EIP_T_MAIL_FOLDER
