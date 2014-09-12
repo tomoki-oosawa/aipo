@@ -723,7 +723,6 @@ ul.hdTools .dropdown:before {
 }
 
 .dropdown_list {
-  min-height: 200px;
   position: relative;
 }
 .dropdown_list ul {
@@ -967,21 +966,27 @@ ul.hdTools .dropdown:before {
 	emptyMessage
 --------------------------------------------------*/
 .emptyMessage {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 17em;
-  height: 160px;
   margin: auto;
   text-align: center;
   color: #999999;
+  margin: 120px 0 170px;
 }
 .emptyMessage [class*=icon-] {
   font-size: 10em;
   color: #d2d2d2;
   text-shadow: 0 -1px 0 #b8b8b8;
+}
+.dropdown_list .emptyMessage, .tableWrapper .emptyMessage {
+  margin: 15px 0;
+}
+#dd_message .emptyMessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 160px;
+  margin: auto;
 }
 
 /***************************************************
