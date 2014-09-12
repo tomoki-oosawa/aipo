@@ -32,6 +32,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -250,6 +251,94 @@ public class MessageUtils {
       return new ResultList<EipTMessageRoom>(list, page, limit, countValue);
     } else {
       return new ResultList<EipTMessageRoom>(list, -1, -1, list.size());
+    }
+  }
+
+  public static List<TurbineUser> getUserList(String groupName) {
+    return getUserList(groupName, null, -1, -1);
+  }
+
+  public static List<TurbineUser> getUserList(String groupName, String keyword,
+      int page, int limit) {
+
+    StringBuilder select = new StringBuilder();
+
+    boolean isMySQL = Database.isJdbcMySQL();
+    boolean isSearch = (keyword != null && keyword.length() > 0);
+
+    select
+      .append("select distinct t2.user_id, t2.login_name, t2.last_name, t2.first_name, t2.last_name_kana, t2.first_name_kana, t2.has_photo, t2.photo_modified, (t2.last_name_kana = '') ");
+
+    StringBuilder count = new StringBuilder();
+    count.append("select count(distinct t2.user_id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body
+      .append(" from turbine_user_group_role t1, turbine_user t2, turbine_group t3 where t1.user_id = t2.user_id and t1.group_id = t3.group_id and t2.user_id > 3 and t2.disabled = 'F' and t3.group_name = #bind($group_name)");
+    if (isSearch) {
+      if (isMySQL) {
+        body
+          .append(" and ( (CONCAT(t2.last_name,t2.first_name) like #bind($keyword)) or (CONCAT(t2.last_name_kana,t2.first_name_kana) like #bind($keyword)) ) ");
+      } else {
+        body
+          .append(" and ( ((t2.last_name || t2.first_name)    like #bind($keyword)) or ((t2.last_name_kana || t2.first_name_kana)    like #bind($keyword)) ) ");
+      }
+    }
+
+    StringBuilder last = new StringBuilder();
+
+    last
+      .append(" order by (t2.last_name_kana = ''), t2.last_name_kana, t2.first_name_kana ");
+
+    SQLTemplate<TurbineUser> countQuery =
+      Database
+        .sql(TurbineUser.class, count.toString() + body.toString())
+        .param("group_name", groupName);
+    if (isSearch) {
+      countQuery.param("keyword", "%" + keyword + "%");
+    }
+
+    int countValue = 0;
+    if (page > 0 && limit > 0) {
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
+      }
+
+      int offset = 0;
+      if (limit > 0) {
+        int num = ((int) (Math.ceil(countValue / (double) limit)));
+        if ((num > 0) && (num < page)) {
+          page = num;
+        }
+        offset = limit * (page - 1);
+      } else {
+        page = 1;
+      }
+
+      last.append(" limit ");
+      last.append(limit);
+      last.append(" offset ");
+      last.append(offset);
+    }
+
+    SQLTemplate<TurbineUser> query =
+      Database.sql(
+        TurbineUser.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "group_name",
+        groupName);
+    if (isSearch) {
+      query.param("keyword", "%" + keyword + "%");
+    }
+
+    List<TurbineUser> list = query.fetchList();
+
+    if (page > 0 && limit > 0) {
+      return new ResultList<TurbineUser>(list, page, limit, countValue);
+    } else {
+      return new ResultList<TurbineUser>(list, -1, -1, list.size());
     }
   }
 

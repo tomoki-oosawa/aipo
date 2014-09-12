@@ -19,26 +19,22 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.message.MessageListSelectData;
+import com.aimluck.eip.message.MessageRoomListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
  */
-public class MessageListScreen extends ALVelocityScreen {
+public class MessageUserListScreen extends ALVelocityScreen {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageListScreen.class.getName());
+    .getLogger(MessageUserListScreen.class.getName());
 
   /**
    * @param rundata
@@ -51,38 +47,22 @@ public class MessageListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
-      List<TurbineUser> userList = MessageUtils.getUserList("LoginUser");
-
       Integer roomId = null;
       try {
         roomId = rundata.getParameters().getInteger("r");
       } catch (Throwable ignore) {
         // ignore
       }
-      if (roomId == null) {
-        ALEipUtils.redirectPageNotFound(rundata);
-        return;
-      }
+      context.put("currentRoom", roomId);
 
-      EipTMessageRoom room = MessageUtils.getRoom(roomId);
-      if (room == null) {
-        ALEipUtils.redirectPageNotFound(rundata);
-        return;
-      }
-      MessageListSelectData listData = new MessageListSelectData();
-      listData.setRoomId(roomId);
+      MessageRoomListSelectData listData = new MessageRoomListSelectData();
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      if (listData.getList().size() > 0) {
-        MessageUtils.read(listData.getRoomId(), listData.getUserId(), listData
-          .getLastMessageId());
-      }
-
-      String layout_template = "portlets/html/ja/ajax-message-list.vm";
+      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("MessageListScreen.doOutput", ex);
+      logger.error("MessageRoomListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
