@@ -30,7 +30,7 @@
 	</div>
 	<div class="messageContents">
 		<div class="name">$!record.LastName $!record.FirstName</div>
-		<div class="body">$!record.Message</div>
+		<div class="body">$!record.MessageHtml</div>
 		<div class="time">
 			$!record.CreateDate&nbsp;
 			#if($!record.isOwner())<a href="javascript:void(0)">#if($!record.isAllRead())全員が既読#else$!record.ReadCount人が既読#end</a>#end

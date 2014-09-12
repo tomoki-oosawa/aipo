@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.message;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -73,6 +75,8 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     message = new ALStringField();
+    message.setFieldName(getl10n("MESSAGE_CAPTION_MESSAGE"));
+    message.setTrim(false);
     roomId = new ALNumberField();
 
   }
@@ -100,6 +104,8 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
+    message.setNotNull(true);
+    message.limitMaxLength(10000);
   }
 
   /**
@@ -113,8 +119,9 @@ public class MessageFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     room = Database.get(EipTMessageRoom.class, roomId.getValue());
     if (room == null) {
-      msgList.add("error");
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_NOT_FOUND"));
     }
+    message.validate(msgList);
 
     return msgList.size() == 0;
   }

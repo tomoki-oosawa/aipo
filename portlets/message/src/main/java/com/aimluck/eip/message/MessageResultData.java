@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -114,7 +115,7 @@ public class MessageResultData implements ALData, Serializable {
     this.createDate.setValue(createDate);
   }
 
-  public ALDateTimeField getUpdateDate() {
+  public ALDateTimeField getCreateDate() {
     return createDate;
   }
 
@@ -191,6 +192,10 @@ public class MessageResultData implements ALData, Serializable {
    */
   public ALStringField getMessage() {
     return message;
+  }
+
+  public String getMessageHtml() {
+    return ALEipUtils.getMessageList(message.getValue());
   }
 
   /**

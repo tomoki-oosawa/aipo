@@ -132,7 +132,7 @@ limitations under the License.
 											<input type="hidden" name="secid" value="$secid">
 											<input type="hidden" name="roomId" value="">
 											<div class="tlInputMention relative">
-												<textarea id="messageTextarea1" class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; "></textarea><!-- label class="placeholder" for="messageTextarea1" style="display: block;">近況を共有しましょう</label-->
+												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea><!-- label class="placeholder" for="messageTextarea1" style="display: block;">近況を共有しましょう</label-->
 											</div>
 											<div class="tlInputControls clearfix">
 												<div class="floatLeft"><a href="javascript:void(0)" class="auiButton">ファイルを追加する</a></div>

@@ -26,7 +26,7 @@
 			<span class="avatar">
 				<img src="themes/default/images/common/group_default.png" class="avatar_s">
 			</span>
-			#if("$!record.UnreadCount" != "0")<div class="nrCount">$!record.UnreadCount</div>#end
+			#if("$!record.UnreadCount" != "0")<div class="nrCount" id="messageRoomUnreadCount$!record.RoomId">$!record.UnreadCount</div>#end
 			<span class="date">$!record.UpdateDate</span>
 			<span class="name">$!record.Name</span>
 			<span class="latest">$!record.LastMessage</span>
