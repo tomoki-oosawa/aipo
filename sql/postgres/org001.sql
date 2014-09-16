@@ -1516,6 +1516,7 @@ CREATE TABLE EIP_T_GPDB_RECORD
 );
 
 CREATE INDEX eip_t_gpdb_record_record_no_index ON EIP_T_GPDB_RECORD (RECORD_NO);
+CREATE INDEX eip_t_gpdb_record_gpdb_id_index ON EIP_T_GPDB_RECORD (GPDB_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_GPDB_RECORD_FILE

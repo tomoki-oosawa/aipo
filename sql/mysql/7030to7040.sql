@@ -329,3 +329,4 @@ ALTER TABLE `eip_m_position` ADD `sort` int(11) DEFAULT NULL AFTER `position_nam
 ALTER TABLE `eip_m_post` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
 ALTER TABLE `eip_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_id`;
 ALTER TABLE `eip_m_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
+ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`gpdb_id`);
