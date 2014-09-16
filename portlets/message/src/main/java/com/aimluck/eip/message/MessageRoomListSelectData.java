@@ -90,10 +90,14 @@ public class MessageRoomListSelectData extends
     rd.initField();
     rd.setAutoName("T".equals(model.getAutoName()));
     rd.setLastMessage(model.getLastMessage());
+    Integer userId = model.getUserId();
+    rd.setUserId(userId != null ? userId.longValue() : null);
     boolean isDirect = "O".equals(model.getRoomType());
     rd.setName(isDirect
       ? model.getLastName() + " " + model.getFirstName()
       : model.getName());
+    rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    rd.setPhotoModified(model.getPhotoModified());
     rd.setRoomId(model.getRoomId());
     rd.setRoomType(model.getRoomType());
     rd.setUnreadCount(model.getUnreadCount());

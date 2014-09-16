@@ -43,6 +43,8 @@ public class MessageUserResultData implements ALData, Serializable {
 
   private ALStringField firstNameKana;
 
+  private Long photoModified;
+
   private boolean hasPhoto = false;
 
   private boolean isOwner = false;
@@ -176,4 +178,20 @@ public class MessageUserResultData implements ALData, Serializable {
     }
     return field;
   }
+
+  /**
+   * @param photoModified
+   *          セットする photoModified
+   */
+  public void setPhotoModified(Long photoModified) {
+    this.photoModified = photoModified;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public Long getPhotoModified() {
+    return photoModified;
+  }
+
 }

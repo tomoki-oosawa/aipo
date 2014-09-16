@@ -116,6 +116,7 @@ public class MessageListSelectData extends
     rd.setFirstName(model.getFirstName());
     rd.setLastName(model.getLastName());
     rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    rd.setPhotoModified(model.getPhotoModified());
     rd.setMemberCount(model.getMemberCount());
     rd.setUnreadCount(model.getUnreadCount());
     rd.setMessage(model.getMessage());

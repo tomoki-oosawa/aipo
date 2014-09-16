@@ -23,7 +23,7 @@
 <div id="message$!record.MessageId" class="message">
 	<div class="avatar">
 		#if($!record.isHasPhoto())
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "aa"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" width="50" height="50"/>
 		#end

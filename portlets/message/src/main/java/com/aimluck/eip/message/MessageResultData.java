@@ -53,6 +53,8 @@ public class MessageResultData implements ALData, Serializable {
 
   private ALDateTimeField createDate;
 
+  private Long photoModified;
+
   private boolean hasPhoto = false;
 
   private boolean isOwner = false;
@@ -235,4 +237,19 @@ public class MessageResultData implements ALData, Serializable {
   public boolean isOwner() {
     return isOwner;
   }
+
+  /**
+   * @param photoModified セットする photoModified
+   */
+  public void setPhotoModified(Long photoModified) {
+    this.photoModified = photoModified;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public Long getPhotoModified() {
+    return photoModified;
+  }
+
 }

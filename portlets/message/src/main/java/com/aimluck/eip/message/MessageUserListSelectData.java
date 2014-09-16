@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.message;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -115,6 +116,10 @@ public class MessageUserListSelectData extends
     rd.setFirstNameKana(model.getFirstNameKana());
     rd.setLastNameKana(model.getLastNameKana());
     rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    Date photoModified = model.getPhotoModified();
+    if (photoModified != null) {
+      rd.setPhotoModified(photoModified.getTime());
+    }
 
     return rd;
   }

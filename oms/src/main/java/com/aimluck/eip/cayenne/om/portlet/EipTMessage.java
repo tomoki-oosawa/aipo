@@ -14,6 +14,8 @@ public class EipTMessage extends _EipTMessage {
 
   private String hasPhoto = null;
 
+  private Long photoModified = null;
+
   public Integer getMessageId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(MESSAGE_ID_PK_COLUMN);
@@ -90,6 +92,21 @@ public class EipTMessage extends _EipTMessage {
    */
   public String getHasPhoto() {
     return hasPhoto;
+  }
+
+  /**
+   * @param photoModified
+   *          セットする photoModified
+   */
+  public void setPhotoModified(Long photoModified) {
+    this.photoModified = photoModified;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public Long getPhotoModified() {
+    return photoModified;
   }
 
 }

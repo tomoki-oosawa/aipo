@@ -36,6 +36,8 @@ public class MessageRoomResultData implements ALData, Serializable {
 
   private ALNumberField roomId;
 
+  private ALNumberField userId;
+
   private ALStringField name;
 
   private ALStringField roomType;
@@ -52,6 +54,10 @@ public class MessageRoomResultData implements ALData, Serializable {
 
   private ALDateTimeField updateDateYear;
 
+  private Long photoModified;
+
+  private boolean hasPhoto;
+
   private boolean isAutoName;
 
   /**
@@ -60,6 +66,7 @@ public class MessageRoomResultData implements ALData, Serializable {
   @Override
   public void initField() {
     roomId = new ALNumberField();
+    userId = new ALNumberField();
     name = new ALStringField();
     roomType = new ALStringField();
     unreadCount = new ALNumberField();
@@ -154,4 +161,50 @@ public class MessageRoomResultData implements ALData, Serializable {
   public void setAutoName(boolean isAutoName) {
     this.isAutoName = isAutoName;
   }
+
+  /**
+   * @param hasPhoto
+   *          セットする hasPhoto
+   */
+  public void setHasPhoto(boolean hasPhoto) {
+    this.hasPhoto = hasPhoto;
+  }
+
+  /**
+   * @return hasPhoto
+   */
+  public boolean isHasPhoto() {
+    return hasPhoto;
+  }
+
+  /**
+   * @param photoModified
+   *          セットする photoModified
+   */
+  public void setPhotoModified(Long photoModified) {
+    this.photoModified = photoModified;
+  }
+
+  /**
+   * @return photoModified
+   */
+  public Long getPhotoModified() {
+    return photoModified;
+  }
+
+  /**
+   * @param userId
+   *          セットする userId
+   */
+  public void setUserId(long userId) {
+    this.userId.setValue(userId);
+  }
+
+  /**
+   * @return userId
+   */
+  public ALNumberField getUserId() {
+    return userId;
+  }
+
 }

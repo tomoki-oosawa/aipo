@@ -20,6 +20,7 @@
 package com.aimluck.eip.message.util;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.cayenne.DataRow;
@@ -86,6 +87,7 @@ public class MessageUtils {
     select.append(" t2.last_name, ");
     select.append(" t2.first_name, ");
     select.append(" t2.has_photo, ");
+    select.append(" t2.photo_modified, ");
 
     select
       .append(" (select count(*) from eip_t_message_read t3 where t3.message_id = t1.message_id and t3.room_id = t1.room_id and t3.is_read = 'F') as unread ");
@@ -146,11 +148,16 @@ public class MessageUtils {
       String lastName = (String) row.get("last_name");
       String firstName = (String) row.get("first_name");
       String hasPhoto = (String) row.get("has_photo");
+      Date photoModified = (Date) row.get("photo_modified");
+
       EipTMessage object = Database.objectFromRowData(row, EipTMessage.class);
       object.setUnreadCount(unread.intValue());
       object.setFirstName(firstName);
       object.setLastName(lastName);
       object.setHasPhoto(hasPhoto);
+      if (photoModified != null) {
+        object.setPhotoModified(photoModified.getTime());
+      }
       list.add(object);
     }
 
@@ -175,8 +182,11 @@ public class MessageUtils {
     select.append("select");
     select.append(" t2.room_id, ");
     select.append(" t2.name, ");
+    select.append(" t4.user_id, ");
     select.append(" t4.last_name, ");
     select.append(" t4.first_name, ");
+    select.append(" t4.has_photo, ");
+    select.append(" t4.photo_modified, ");
     select.append(" t2.auto_name, ");
     select.append(" t2.room_type, ");
 
@@ -253,13 +263,22 @@ public class MessageUtils {
     List<EipTMessageRoom> list = new ArrayList<EipTMessageRoom>();
     for (DataRow row : fetchList) {
       Long unread = (Long) row.get("unread");
+      Integer tUserId = (Integer) row.get("user_id");
       String lastName = (String) row.get("last_name");
       String firstName = (String) row.get("first_name");
+      String hasPhoto = (String) row.get("has_photo");
+      Date photoModified = (Date) row.get("photo_modified");
+
       EipTMessageRoom object =
         Database.objectFromRowData(row, EipTMessageRoom.class);
       object.setUnreadCount(unread.intValue());
+      object.setUserId(tUserId);
       object.setFirstName(firstName);
       object.setLastName(lastName);
+      object.setHasPhoto(hasPhoto);
+      if (photoModified != null) {
+        object.setPhotoModified(photoModified.getTime());
+      }
       list.add(object);
     }
 
