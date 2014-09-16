@@ -68,19 +68,19 @@ public class WorkflowResultData implements ALData {
   /** 金額 */
   protected ALNumberField price;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALStringField create_date;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createYear;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createDateYear;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createDate;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createDateTime;
 
   /** 最終閲覧者名 */

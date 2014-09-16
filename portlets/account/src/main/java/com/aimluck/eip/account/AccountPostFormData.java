@@ -510,7 +510,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       // グループ名
       record.setGroupName(groupName);
       Date now = new Date();
-      // 登録日
+      // 作成日
       record.setCreateDate(now);
       // 更新日
       record.setUpdateDate(now);

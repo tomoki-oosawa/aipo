@@ -95,7 +95,7 @@
 #ALtdheadAtt($l10n.NOTE_RECEIVE_PERSON 'class="mb_hide" style="width:20%"')
 #ALtdheadAtt($l10n.NOTE_SITUATION 'class="mb_hide" style="width:5%"')
 #end
-#ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' $l10n.NOTE_CLERK_TIME $result 'NoteListScreen') #else #ALajaxsort('create_date' $l10n.NOTE_CREATE_TIME $result 'NoteListScreen') #end" 'style="width:10em"')
+#ALtdheadAtt("#if($isReceive) #ALajaxsort('accept_date' $l10n.NOTE_CLERK_TIME $result 'NoteListScreen') #else #ALajaxsort('create_date' $l10n.COMMON_CREATE_DATE $result 'NoteListScreen') #end" 'style="width:10em"')
 </tr>
 #set($setEven = true)
 #foreach ($record in $result.List)

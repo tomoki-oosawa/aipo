@@ -140,7 +140,7 @@ public class GpdbUtils {
   /** 項目定義形式：日付 */
   public static final String ITEM_TYPE_DATE = "10";
 
-  /** 項目定義形式：登録日時 */
+  /** 項目定義形式：作成日 */
   public static final String ITEM_TYPE_CREATE_DATE = "11";
 
   /** 項目定義形式：更新日時 */
@@ -182,8 +182,8 @@ public class GpdbUtils {
   /** 項目定義形式名：日付 */
   public static final String ITEM_TYPE_TITLE_DATE = "日付";
 
-  /** 項目定義形式名：登録日時 */
-  public static final String ITEM_TYPE_TITLE_CREATE_DATE = "登録日時";
+  /** 項目定義形式名：作成日 */
+  public static final String ITEM_TYPE_TITLE_CREATE_DATE = "作成日";
 
   /** 項目定義形式名：更新日時 */
   public static final String ITEM_TYPE_TITLE_UPDATE_DATE = "更新日時";
@@ -221,7 +221,7 @@ public class GpdbUtils {
         put(ITEM_TYPE_DATE, ITEM_TYPE_TITLE_DATE); // 日付
         put(ITEM_TYPE_CREATE_USER, ITEM_TYPE_TITLE_CREATE_USER); // 登録者
         put(ITEM_TYPE_UPDATE_USER, ITEM_TYPE_TITLE_UPDATE_USER); // 更新者
-        put(ITEM_TYPE_CREATE_DATE, ITEM_TYPE_TITLE_CREATE_DATE); // 登録日時
+        put(ITEM_TYPE_CREATE_DATE, ITEM_TYPE_TITLE_CREATE_DATE); // 作成日
         put(ITEM_TYPE_UPDATE_DATE, ITEM_TYPE_TITLE_UPDATE_DATE); // 更新日時
       }
     });
@@ -448,7 +448,7 @@ public class GpdbUtils {
       .append(" ")
       .append(user.getFirstName())
       .toString()); // 登録者名
-    data.setCreateDate(model.getCreateDate());// 登録日
+    data.setCreateDate(model.getCreateDate());// 作成日
     data.setUpdateDate(model.getUpdateDate());// 更新日
 
     data.setRecordCnt(getRecordCount("" + model.getGpdbId())); // 登録データ件数
@@ -817,7 +817,7 @@ public class GpdbUtils {
           }
         } else if (ITEM_TYPE_CREATE_DATE.equals(type)
           || ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録日、更新日の場合、フォーマットを変換する。
+          // 作成日、更新日の場合、フォーマットを変換する。
           SimpleDateFormat sdf_data =
             new SimpleDateFormat(ALLocalizationUtils
               .getl10n("GPDB_TIMESTAMP_FORMAT_DATA"));

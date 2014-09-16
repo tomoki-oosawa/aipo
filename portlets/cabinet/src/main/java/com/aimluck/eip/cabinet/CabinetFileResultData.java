@@ -61,7 +61,7 @@ public class CabinetFileResultData implements ALData {
   /** 更新者名 */
   private ALStringField update_user;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */

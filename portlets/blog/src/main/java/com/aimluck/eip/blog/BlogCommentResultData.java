@@ -49,7 +49,7 @@ public class BlogCommentResultData implements ALData {
   /** Entry ID */
   private ALNumberField entry_id;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */

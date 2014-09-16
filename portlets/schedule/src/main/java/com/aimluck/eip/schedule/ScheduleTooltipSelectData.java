@@ -461,7 +461,7 @@ public class ScheduleTooltipSelectData extends
       rd.setUpdateUser(ALEipUtils.getALEipUser(record
         .getUpdateUserId()
         .intValue()));
-      // 登録日時
+      // 作成日
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());

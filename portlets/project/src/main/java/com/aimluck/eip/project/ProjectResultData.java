@@ -79,7 +79,7 @@ public class ProjectResultData implements ALData {
   /** 更新者 */
   protected ALStringField update_user_name;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField create_date;
 
   /** 更新日 */

@@ -28,7 +28,7 @@
 #ALtditem($!result.Detail.MemoName)
 #ALtdcaption('内容')
 #ALtditem("$!result.Detail.NoteStr")
-#ALtdcaption('登録日')
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem("$!result.Detail.CreateDate")
 #ALtdcaption('更新日')
 #ALtditem("$!result.Detail.UpdateDate")

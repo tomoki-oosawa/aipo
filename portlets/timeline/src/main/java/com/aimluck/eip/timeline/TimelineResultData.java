@@ -70,7 +70,7 @@ public class TimelineResultData implements ALData {
   /** 登録者名 */
   private ALStringField create_user;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */

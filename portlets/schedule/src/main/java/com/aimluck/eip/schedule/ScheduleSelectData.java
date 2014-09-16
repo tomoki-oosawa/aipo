@@ -499,7 +499,7 @@ public class ScheduleSelectData extends
         .getUpdateUserId()
         .intValue()));
       createuser = rd.getCreateUser();
-      // 登録日時
+      // 作成日
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());

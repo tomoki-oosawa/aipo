@@ -52,7 +52,7 @@ public class AccountPostResultData implements ALData {
   /** FAX 番号 */
   private ALStringField fax_number;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -62,9 +62,10 @@ public class AccountPostResultData implements ALData {
   private ALStringField group_name;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     post_id = new ALNumberField();
     company_id = new ALNumberField();

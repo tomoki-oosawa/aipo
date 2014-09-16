@@ -44,7 +44,7 @@ public class TimelineLikeResultData implements ALData {
   /** いいね！を押したユーザーID */
   private ALNumberField user_id;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   private ALEipUser user = null;

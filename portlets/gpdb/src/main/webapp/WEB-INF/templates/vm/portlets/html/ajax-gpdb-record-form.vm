@@ -135,7 +135,7 @@
 		</div>
 		#ALtditemfooter()
 	#elseif ($type=='11' || $type=='13')
-		##登録日時、登録者
+		##作成日、登録者
 		#if($record)
 			#ALtditem("$!record.WbrDispValue")
 		#else

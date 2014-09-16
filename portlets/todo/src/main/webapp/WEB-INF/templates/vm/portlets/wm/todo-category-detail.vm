@@ -25,7 +25,7 @@
 #ALcell_contents_header($career)
 <dl class="detail">
 <dt>カテゴリ名</dt><dd>$!{result.Detail.CategoryName}</dd>
-<dt>登録日</dt><dd>$!{result.Detail.CreateDate}</dd>
+<dt>作成日</dt><dd>$!{result.Detail.CreateDate}</dd>
 <dt>更新日</dt><dd>$!{result.Detail.UpdateDate}</dd>
 </dl>
 #ALcell_contents_footer($career)
