@@ -1524,6 +1524,10 @@ $link.get(0)
 <span class="auiButtonDisabled">&nbsp;<i class="$aclass"></i>&nbsp;</span>
 #end
 
+#macro(AUIDisableButton $text)
+<span class="auiButton auiButtonDisabled">$text</span>
+#end
+
 #macro(AUIbutton $text $url)
 <a title="$text" href="$url" class="auiButton">$text</a>
 #end
@@ -1814,4 +1818,13 @@ $!{text}
 		<div class="indicator">$l10n.WAR_ASYNCLOAD_LOADING</div>
 		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', '',  true);"/>
 	</div>
+#end
+
+#macro(AUIEmptyMessage $class $text)
+<div class="contents">
+<div class="emptyMessage">
+#if($class != '')<i class="$class"></i>#end
+<p>$text</p>
+</div>
+</div>
 #end
