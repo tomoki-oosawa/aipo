@@ -32,9 +32,11 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 
@@ -54,6 +56,20 @@ public class MessageUtils {
 
   public static EipTMessageRoom getRoom(int roomId) {
     return Database.get(EipTMessageRoom.class, roomId);
+  }
+
+  public static EipTMessageRoom getRoom(int userId, int targetUserId) {
+    EipTMessageRoomMember model =
+      Database.query(EipTMessageRoomMember.class).where(
+        Operations.eq(EipTMessageRoomMember.USER_ID_PROPERTY, userId)).where(
+        Operations.eq(
+          EipTMessageRoomMember.TARGET_USER_ID_PROPERTY,
+          targetUserId)).fetchSingle();
+    if (model != null) {
+      return model.getEipTMessageRoom();
+    } else {
+      return null;
+    }
   }
 
   public static ResultList<EipTMessage> getMessageList(int roomId, int page,
@@ -254,12 +270,12 @@ public class MessageUtils {
     }
   }
 
-  public static List<TurbineUser> getUserList(String groupName) {
+  public static ResultList<TurbineUser> getUserList(String groupName) {
     return getUserList(groupName, null, -1, -1);
   }
 
-  public static List<TurbineUser> getUserList(String groupName, String keyword,
-      int page, int limit) {
+  public static ResultList<TurbineUser> getUserList(String groupName,
+      String keyword, int page, int limit) {
 
     StringBuilder select = new StringBuilder();
 

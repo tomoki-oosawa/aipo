@@ -79,27 +79,16 @@ limitations under the License.
 						<div class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
 								<ul class="tab">
-									<li class="w50 active"><a href="javascript:void(0)" onclick="auiTabs(this,'messageSideBlockTab')">ルーム</a></li>
-									<li class="w50"><a href="javascript:void(0)" onclick="auiTabs(this,'messageSideBlockTab')">ユーザー</a></li>
+									<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">ルーム</a></li>
+									<li class="w50" id="messageUserTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('user');">ユーザー</a></li>
 								</ul>
 								<ul class="tabContents">
-									<li class="active">
+									<li class="active" id="messageRoomContents">
 										<div class="scroll" id="messageSideBlock1">
-											<div class="messageSummaryHead">
-												<div class="inner">
-													<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">ルームを追加する</a>
-												</div>
-												<div class="inner">
-													<form class="search">
-														<input type="text" id="roomSearch" class="" onfocus="return true;" onblur="return true;"><label class="placeholder" for="roomSearch">ルーム検索</label>
-														<button class="submit" title="検索"><i class="icon-search"></i></button>
-													</form>
-												</div>
-											</div>
 											<div id="messageRoomListPane"></div>
 										</div>
 									</li>
-									<li>
+									<li id="messageUserContents">
 										<div class="scroll" id="messageSideBlock2">
 											<div id="messageUserListPane"></div>
 										</div>
@@ -131,6 +120,7 @@ limitations under the License.
 											<input type="hidden" name="_name" value="formMessage">
 											<input type="hidden" name="secid" value="$secid">
 											<input type="hidden" name="roomId" value="">
+											<input type="hidden" name="userId" value="">
 											<div class="tlInputMention relative">
 												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea><!-- label class="placeholder" for="messageTextarea1" style="display: block;">近況を共有しましょう</label-->
 											</div>

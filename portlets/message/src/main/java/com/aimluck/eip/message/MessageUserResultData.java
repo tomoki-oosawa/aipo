@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.common.ALData;
 
 /**
@@ -161,5 +162,18 @@ public class MessageUserResultData implements ALData, Serializable {
    */
   public boolean isOwner() {
     return isOwner;
+  }
+
+  public ALStringField getIndex() {
+    String value =
+      ALStringUtil.convertKatakana2Hiragana(ALStringUtil
+        .convertH2ZKana(lastNameKana.getValue()));
+    ALStringField field = new ALStringField();
+    if (value.length() > 0) {
+      field.setValue(new StringBuilder().append(value.charAt(0)).toString());
+    } else {
+      field.setValue("#");
+    }
+    return field;
   }
 }

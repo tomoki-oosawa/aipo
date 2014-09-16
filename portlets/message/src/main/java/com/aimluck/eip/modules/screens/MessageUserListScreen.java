@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.message.MessageRoomListSelectData;
+import com.aimluck.eip.message.MessageUserListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -47,22 +47,14 @@ public class MessageUserListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
-      Integer roomId = null;
-      try {
-        roomId = rundata.getParameters().getInteger("r");
-      } catch (Throwable ignore) {
-        // ignore
-      }
-      context.put("currentRoom", roomId);
-
-      MessageRoomListSelectData listData = new MessageRoomListSelectData();
+      MessageUserListSelectData listData = new MessageUserListSelectData();
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
+      String layout_template = "portlets/html/ja/ajax-message-user-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("MessageRoomListScreen.doOutput", ex);
+      logger.error("MessageUserListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

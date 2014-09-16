@@ -19,12 +19,17 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.util.Date;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.MessageRoomListSelectData;
+import com.aimluck.eip.message.MessageRoomResultData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -47,11 +52,31 @@ public class MessageRoomListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
+      Integer targetUserId = null;
       Integer roomId = null;
+      boolean isNewRoom = false;
+      EipTMessageRoom room = null;
+      ALEipUser targetUser = null;
       try {
-        roomId = rundata.getParameters().getInteger("r");
+        targetUserId = rundata.getParameters().getInteger("u");
       } catch (Throwable ignore) {
         // ignore
+      }
+      if (targetUserId != null && targetUserId > 0) {
+        int userId = ALEipUtils.getUserId(rundata);
+        room = MessageUtils.getRoom(userId, targetUserId);
+        if (room != null) {
+          roomId = room.getRoomId();
+        } else {
+          targetUser = ALEipUtils.getALEipUser(targetUserId);
+          isNewRoom = true;
+        }
+      } else {
+        try {
+          roomId = rundata.getParameters().getInteger("r");
+        } catch (Throwable ignore) {
+          // ignore
+        }
       }
       context.put("currentRoom", roomId);
 
@@ -59,6 +84,19 @@ public class MessageRoomListScreen extends ALVelocityScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
+      if (isNewRoom) {
+        MessageRoomResultData rd = new MessageRoomResultData();
+        rd.initField();
+        rd.setAutoName(true);
+        rd.setLastMessage("");
+        rd.setName(targetUser.getAliasName().getValue());
+        rd.setRoomId(0);
+        rd.setRoomType("O");
+        rd.setUnreadCount(0);
+        rd.setUpdateDate(new Date());
+        listData.getList().add(0, rd);
+        context.put("currentRoom", 0);
+      }
       String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

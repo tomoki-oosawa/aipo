@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.message;
 
+import java.util.ArrayList;
 import java.util.jar.Attributes;
 
 import org.apache.turbine.util.RunData;
@@ -45,6 +46,8 @@ public class MessageListSelectData extends
 
   private int roomId;
 
+  private int targetUserId;
+
   private int userId;
 
   private int lastMessageId;
@@ -67,6 +70,13 @@ public class MessageListSelectData extends
   @Override
   protected ResultList<EipTMessage> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    if (targetUserId > 0) {
+      return new ResultList<EipTMessage>(
+        new ArrayList<EipTMessage>(),
+        1,
+        MESSAGE_LIMIT,
+        0);
+    }
     try {
       page = rundata.getParameters().getInt("p", 1);
     } catch (Throwable ignore) {
@@ -154,6 +164,21 @@ public class MessageListSelectData extends
    */
   public int getLastMessageId() {
     return lastMessageId;
+  }
+
+  /**
+   * @param targetUserId
+   *          セットする targetUserId
+   */
+  public void setTargetUserId(int targetUserId) {
+    this.targetUserId = targetUserId;
+  }
+
+  /**
+   * @return targetUserId
+   */
+  public int getTargetUserId() {
+    return targetUserId;
   }
 
 }

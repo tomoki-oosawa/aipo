@@ -19,15 +19,13 @@
 
 package com.aimluck.eip.modules.screens;
 
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.MessageListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -51,26 +49,48 @@ public class MessageListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
-      List<TurbineUser> userList = MessageUtils.getUserList("LoginUser");
-
+      Integer targetUserId = null;
       Integer roomId = null;
+      boolean isNewRoom = false;
+      EipTMessageRoom room = null;
+      ALEipUser targetUser = null;
       try {
-        roomId = rundata.getParameters().getInteger("r");
+        targetUserId = rundata.getParameters().getInteger("u");
       } catch (Throwable ignore) {
         // ignore
       }
-      if (roomId == null) {
-        ALEipUtils.redirectPageNotFound(rundata);
-        return;
-      }
+      if (targetUserId != null && targetUserId > 0) {
+        int userId = ALEipUtils.getUserId(rundata);
+        room = MessageUtils.getRoom(userId, targetUserId);
+        if (room != null) {
+          roomId = room.getRoomId();
+        } else {
+          targetUser = ALEipUtils.getALEipUser(targetUserId);
+          isNewRoom = true;
+        }
+      } else {
+        try {
+          roomId = rundata.getParameters().getInteger("r");
+        } catch (Throwable ignore) {
+          // ignore
+        }
+        if (roomId == null) {
+          ALEipUtils.redirectPageNotFound(rundata);
+          return;
+        }
 
-      EipTMessageRoom room = MessageUtils.getRoom(roomId);
-      if (room == null) {
-        ALEipUtils.redirectPageNotFound(rundata);
-        return;
+        room = MessageUtils.getRoom(roomId);
+        if (room == null) {
+          ALEipUtils.redirectPageNotFound(rundata);
+          return;
+        }
       }
       MessageListSelectData listData = new MessageListSelectData();
-      listData.setRoomId(roomId);
+      if (isNewRoom) {
+        listData.setTargetUserId((int) targetUser.getUserId().getValue());
+      } else {
+        listData.setRoomId(roomId);
+      }
       listData.initField();
       listData.doViewList(this, rundata, context);
 

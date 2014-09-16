@@ -39,6 +39,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
@@ -54,11 +55,15 @@ public class MessageFormData extends ALAbstractFormData {
 
   private ALNumberField roomId;
 
+  private ALNumberField userId;
+
   private ALStringField message;
 
   private ALEipUser login_user;
 
   private EipTMessageRoom room;
+
+  private ALEipUser targetUser;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -78,6 +83,7 @@ public class MessageFormData extends ALAbstractFormData {
     message.setFieldName(getl10n("MESSAGE_CAPTION_MESSAGE"));
     message.setTrim(false);
     roomId = new ALNumberField();
+    userId = new ALNumberField();
 
   }
 
@@ -117,9 +123,13 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    room = Database.get(EipTMessageRoom.class, roomId.getValue());
-    if (room == null) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_NOT_FOUND"));
+    if (userId.getValue() > 0) {
+      targetUser = ALEipUtils.getALEipUser((int) userId.getValue());
+    } else {
+      room = Database.get(EipTMessageRoom.class, roomId.getValue());
+      if (room == null) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_NOT_FOUND"));
+      }
     }
     message.validate(msgList);
 
@@ -155,6 +165,35 @@ public class MessageFormData extends ALAbstractFormData {
 
       Date now = new Date();
 
+      if (room == null && targetUser != null) {
+        int userId = (int) login_user.getUserId().getValue();
+        int targetUserId = (int) targetUser.getUserId().getValue();
+        room = MessageUtils.getRoom(userId, targetUserId);
+        if (room == null) {
+          room = Database.create(EipTMessageRoom.class);
+
+          EipTMessageRoomMember map1 =
+            Database.create(EipTMessageRoomMember.class);
+          map1.setEipTMessageRoom(room);
+          map1.setUserId((int) login_user.getUserId().getValue());
+          map1.setTargetUserId((int) targetUser.getUserId().getValue());
+
+          EipTMessageRoomMember map2 =
+            Database.create(EipTMessageRoomMember.class);
+          map2.setEipTMessageRoom(room);
+          map2.setTargetUserId((int) login_user.getUserId().getValue());
+          map2.setUserId((int) targetUser.getUserId().getValue());
+
+          room.setAutoName("T");
+          room.setRoomType("O");
+          room.setLastUpdateDate(now);
+          room.setCreateDate(now);
+          room.setCreateUserId((int) login_user.getUserId().getValue());
+          room.setUpdateDate(now);
+
+          Database.commit();
+        }
+      }
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
 

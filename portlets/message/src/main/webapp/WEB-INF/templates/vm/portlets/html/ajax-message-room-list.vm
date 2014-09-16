@@ -16,6 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
+ <div class="messageSummaryHead">
+	<div class="inner">
+		<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">ルームを追加する</a>
+	</div>
+	<div class="inner">
+		<form class="search">
+			<input type="text" id="roomSearch" class="" onfocus="return true;" onblur="return true;"><label class="placeholder" for="roomSearch">ルーム検索</label>
+			<button class="submit" title="検索"><i class="icon-search"></i></button>
+		</form>
+	</div>
+</div>
 #if($result.List.size() == 0)
 
 #else
@@ -36,3 +47,4 @@
 </ul>
 #end
 <span id="messageTotalUnreadCountValue" style="display:none">$!result.TotalUnreadCount</span>
+<span id="messageCurrentRoomValue" style="display:none">$!currentRoom</span>
