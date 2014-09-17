@@ -775,6 +775,7 @@ public class ALDefaultSocialApplicationHanlder extends
         query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
           + "."
           + ActivityMap.LOGIN_NAME_PROPERTY, targetLoginName, "-1"));
+
       } else {
         // あなた(自分)宛のお知らせ
         query.where(Operations.in(Activity.ACTIVITY_MAPS_PROPERTY
@@ -794,6 +795,26 @@ public class ALDefaultSocialApplicationHanlder extends
         query.where(Operations.eq(Activity.APP_ID_PROPERTY, appId));
       }
     }
+
+    String postId = request.getPostId();
+    if (postId != null && !"".equals(postId)) {
+      List<Integer> userIds = ALEipUtils.getUserIds(postId);
+      List<String> loginNameList = new ArrayList<String>();
+      for (int userId : userIds) {
+        try {
+          String name = ALEipUtils.getALEipUser(userId).getName().getValue();
+
+          loginNameList.add(name);
+        } catch (ALDBErrorException e) {
+
+        }
+      }
+      if (!loginNameList.isEmpty()) {
+        query.where(Operations.in(Activity.LOGIN_NAME_PROPERTY, loginNameList));
+      }
+
+    }
+
     long max = request.getMax();
     if (max > 0) {
       Date date = new Date();
@@ -956,12 +977,10 @@ public class ALDefaultSocialApplicationHanlder extends
           Calendar cal2 = Calendar.getInstance();
           cal2.add(Calendar.DAY_OF_MONTH, -limit2);
 
-          String sql2 =
-            "delete from eip_t_timeline where update_date < '"
-              + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(cal2
-                .getTime())
-              + "'";
-          Database.sql(EipTTimeline.class, sql2).execute();
+          Database.query(EipTTimelineMap.class).where(
+            Operations.lt(EipTTimelineMap.EIP_TTIMELINE_PROPERTY
+              + "."
+              + EipTTimeline.UPDATE_DATE_PROPERTY, cal2.getTime())).deleteAll();
 
           // 親データ再検索
           tQuery = Database.query(EipTTimeline.class);

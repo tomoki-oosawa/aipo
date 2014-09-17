@@ -18,13 +18,85 @@
  *#
 
 ## ---------------------------------------------------------------------------
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen")' />
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
+		#if(!$!result.issetFilter("post"))
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_ALL_GROUP</span></a>
+		#else
+		#set($break=false)
+			#foreach($record in $result.postList)
+				#if(!$break)
+					#if($!result.issetFilter("post",$!{record.Name}))
+						<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
+						#set($break=true)
+					#end
+				#end
+			#end
+
+			#foreach($record in $result.PostMap)
+				#if(!$break)
+					#if($!result.issetFilter("post",$!{record.GroupName}))
+						<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>
+						#set($break=true)
+					#end
+				#end
+			#end
+		#end
+		#if($!result.CurrentCategory == 'all')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_ALL_APP</span></a>
+		#elseif($!result.CurrentCategory == 'Schedule')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_SCHEDULE</span></a>
+		#elseif($!result.CurrentCategory == 'Msgboard')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_MSGBOARD</span></a>
+		#elseif($!result.CurrentCategory == 'Blog')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_BLOG</span></a>
+		#elseif($!result.CurrentCategory == 'ToDo')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_TODO</span></a>
+		#elseif($!result.CurrentCategory == 'Cabinet')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_CABINET</span></a>
+		#elseif($!result.CurrentCategory == 'Gadget')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_AIPO_APP</span></a>
+		#end
+	</div>
+	<div class="floatRight">
+	#if($result.List.size() != 0)
+	#AUIajaxpageview('ActivityAllScreen' $result)
+	#end
+	</div>
+</div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+		<p class="caption">$l10n.ACTIVITY_GROUP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$l10n.ACTIVITY_ALL_GROUP</a></li>
+
+			#foreach($record in $result.postList)
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">$l10n.ACTIVITY_APP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
+			<li #if($!result.CurrentCategory == 'all') class="selected" #end data-param="all"><a href="javascript:void(0)"  #if($!result.CurrentCategory == 'all') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","all").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_ALL_APP</a></li>
+			<li #if($!result.CurrentCategory == 'Schedule') class="selected" #end data-param="Schedule"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Schedule') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Schedule").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_SCHEDULE</a></li>
+			<li #if($!result.CurrentCategory == 'Msgboard') class="selected" #end data-param="Msgboard"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Msgboard') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Msgboard").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_MSGBOARD</a></li>
+			<li #if($!result.CurrentCategory == 'Blog') class="selected" #end data-param="Blog"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Blog') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Blog").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_BLOG</a></li>
+			<li #if($!result.CurrentCategory == 'ToDo') class="selected" #end data-param="ToDo"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'ToDo') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","ToDo").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_TODO</a></li>
+			<li #if($!result.CurrentCategory == 'Cabinet') class="selected" #end data-param="Cabinet"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Cabinet') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Cabinet").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_CABINET</a></li>
+			<li #if($!result.CurrentCategory == 'Gadget') class="selected" #end data-param="Gadget"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Gadget') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Gadget").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_AIPO_APP</a></li>
+		</ul>
+	</div>
+</div>
+
 #if ($result.List.size() == 0)
 <div class="message">$l10n.ACTIVITY_NO_DATA</div>
 #else
 #ALformheader('Activity' $jslink $portlet)
-<div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllScreen' $result)
-</div>
 <table class="activityTable">
 <tbody>
 #foreach ($record in $result.List)
