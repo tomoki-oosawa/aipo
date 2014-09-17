@@ -29,7 +29,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 #if(!$result.AllProject || $result.AllProject.size() == 0)
-#AUIEmptyMessage("icon-arrow-left" $utils.getl10nFormat1("PROJECT_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
+#AUIEmptyMessage("icon-tasks" $utils.getl10nFormat1("PROJECT_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
 #elseif(!$result.List)
 	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
 #else
