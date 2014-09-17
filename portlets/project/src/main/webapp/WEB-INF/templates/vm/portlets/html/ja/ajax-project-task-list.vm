@@ -104,7 +104,7 @@
     #end
 	#AUISummaryDivfooter()
     #if($result.List.size() == 0)
-		<div class="message">$l10n.PROJECT_NO_RECORD</div>
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
     #else
         #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
         <div id="messageDiv-$!portlet.ID"></div>
