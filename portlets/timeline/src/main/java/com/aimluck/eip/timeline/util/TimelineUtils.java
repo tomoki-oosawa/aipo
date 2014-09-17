@@ -958,7 +958,14 @@ public class TimelineUtils {
       NodeList nodeListTitle = document.getElementsByTagName("title");
       for (int i = 0; i < nodeListTitle.getLength(); i++) {
         Element element = (Element) nodeListTitle.item(i);
-        String title = element.getFirstChild().getNodeValue();
+
+        String title;
+        if (element.getFirstChild() != null) {
+          title = element.getFirstChild().getNodeValue();
+        } else {
+          title = url_str;
+        }
+
         if (title != null) {
           tub.setTitle(title);
           break;
