@@ -31,8 +31,8 @@
 <div class="filters" id="filters_$!portlet.ID">
 #if("$!result.PostName"!="")
 <span class="filterTip">
-<span>$!result.PostName</span>
-<a href="javascript:void(0);" class="btn" onclick='aipo.activity.filterSetDefault("$!portlet.ID","post");'><i class="auiIcon auiIconDelete"></i></a>
+<span>$!result.PostName</span>#*
+*#<a href="javascript:void(0);" class="btn" onclick='aipo.activity.filterSetDefault("$!portlet.ID","post");'><i class="auiIcon auiIconDelete"></i></a>
 </span>
 #end
 </div>
