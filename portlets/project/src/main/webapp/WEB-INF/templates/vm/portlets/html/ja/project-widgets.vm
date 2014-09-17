@@ -25,7 +25,7 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
-#if($result.ProjectCount == 0)
+#if($!result.AllProject && $!result.AllProject.size() == 0)
 #AUIDisableButton("$l10n.PROJECT_DO_TASK_ADD")
 #else
 #if ($!result.SelectedProjectId)
@@ -37,7 +37,7 @@
 </div>
 <div class="auiWidget clearfix">
 <ul>
-#if($result.ProjectCount != 0)
+#if($!result.AllProject && $!result.AllProject.size() != 0)
 <li #if ($!result.SelectedProjectId && $!result.SelectedProjectId.toString() == "0") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter", "0").addQueryData("filtertype","project_id").addQueryData('tab','list').addQueryData('reset_condition','true'))','$!portlet.ID');">$l10n.PROJECT_ALL_PROJECT</a></li>
 #end
 #foreach($record in $!result.AllProject )
