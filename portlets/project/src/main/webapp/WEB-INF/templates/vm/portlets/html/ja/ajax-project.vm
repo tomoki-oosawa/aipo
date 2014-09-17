@@ -63,7 +63,7 @@
     </div>
 
     #if($result.isTaskEmpty())
-		<div class="message">$l10n.PROJECT_TASK_NOT_FOUND</div>
+		#AUIEmptyMessage("" "$l10n.PROJECT_TASK_NOT_FOUND")
     #else
 		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 		<div id="messageDiv-$!portlet.ID"></div>
