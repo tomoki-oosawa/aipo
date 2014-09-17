@@ -22,10 +22,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 
 ## ---------------------------------------------------------------------------
 #if($result.isProjectEmpty())
-	<div class="message">プロジェクトは作成されていません。</div>
+#AUIEmptyMessage("" "$utils.getl10nFormat1('PROJECT_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 #else
     <div class="auiSummaryMeta clearfix auiFilter">
 	  <input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectScreen")' />
