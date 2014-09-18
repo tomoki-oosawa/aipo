@@ -68,6 +68,9 @@ public class ActivityAllSelectData extends
   /** グループ名 */
   private String postName = "";
 
+  /** 初期表示 */
+  private int table_colum_num;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -264,6 +267,21 @@ public class ActivityAllSelectData extends
 
   public String getCurrentCategory() {
     return currentCategory;
+  }
+
+  /**
+   * @return table_colum_num
+   */
+  public int getTableColumNum() {
+    return table_colum_num;
+  }
+
+  /**
+   * @param table_colum_num
+   *          セットする table_colum_num
+   */
+  public void setTableColumNum(int table_colum_num) {
+    this.table_colum_num = table_colum_num;
   }
 
   @Override
