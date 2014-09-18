@@ -18,6 +18,12 @@
  *#
 
 ## ---------------------------------------------------------------------------
+#macro(ALsetCategoryFilterList $category $title)
+#if($category=='all'||  $utils.isActive($category))
+<li #if($!result.CurrentCategory == $category) class="selected" #end data-param=$!{category}><a href="javascript:void(0)"  #if($!result.CurrentCategory == $!{category}) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$title</a></li>
+#end
+#end
+
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen")' />
 	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
@@ -82,13 +88,13 @@
 	<div>
 		<p class="caption">$l10n.ACTIVITY_APP</p>
 		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
-			<li #if($!result.CurrentCategory == 'all') class="selected" #end data-param="all"><a href="javascript:void(0)"  #if($!result.CurrentCategory == 'all') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","all").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_ALL_APP</a></li>
-			<li #if($!result.CurrentCategory == 'Schedule') class="selected" #end data-param="Schedule"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Schedule') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Schedule").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_SCHEDULE</a></li>
-			<li #if($!result.CurrentCategory == 'Msgboard') class="selected" #end data-param="Msgboard"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Msgboard') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Msgboard").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_MSGBOARD</a></li>
-			<li #if($!result.CurrentCategory == 'Blog') class="selected" #end data-param="Blog"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Blog') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Blog").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_BLOG</a></li>
-			<li #if($!result.CurrentCategory == 'ToDo') class="selected" #end data-param="ToDo"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'ToDo') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","ToDo").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_TODO</a></li>
-			<li #if($!result.CurrentCategory == 'Cabinet') class="selected" #end data-param="Cabinet"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Cabinet') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Cabinet").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_CABINET</a></li>
-			<li #if($!result.CurrentCategory == 'Gadget') class="selected" #end data-param="Gadget"><a href="javascript:void(0)" #if($!result.CurrentCategory == 'Gadget') class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen").addQueryData("category","Gadget").addQueryData("reset_params","true")))', '$!portlet.ID');">$l10n.ACTIVITY_AIPO_APP</a></li>
+			#ALsetCategoryFilterList('all' $l10n.ACTIVITY_ALL_APP)
+			#ALsetCategoryFilterList('Schedule' $l10n.ACTIVITY_SCHEDULE)
+			#ALsetCategoryFilterList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
+			#ALsetCategoryFilterList('Blog' $l10n.ACTIVITY_BLOG)
+			#ALsetCategoryFilterList('ToDo' $l10n.ACTIVITY_TODO)
+			#ALsetCategoryFilterList('Cabinet' $l10n.ACTIVITY_CABINET)
+			#ALsetCategoryFilterList('Gadget' $l10n.ACTIVITY_AIPO_APP)
 		</ul>
 	</div>
 </div>

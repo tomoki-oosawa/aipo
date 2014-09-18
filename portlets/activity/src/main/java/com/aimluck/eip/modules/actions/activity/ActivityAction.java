@@ -66,6 +66,7 @@ public class ActivityAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
+    listData.setFiltersFromPSML(portlet, context, rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "activity");
   }
