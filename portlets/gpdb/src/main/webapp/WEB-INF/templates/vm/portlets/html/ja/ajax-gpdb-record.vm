@@ -30,7 +30,7 @@
 #elseif(!$result.List)
 	<div class="auiBlankBox">$l10n.GPDB_SELECT_DATABASE</div>
 #elseif($result.List.size() == 0)
-	<div class="auiBlankBox">$l10n.GPDB_NO_DATA</div>
+	#AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_DATA_MESSAGE")
 #else
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
