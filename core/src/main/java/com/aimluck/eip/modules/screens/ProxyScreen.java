@@ -23,8 +23,6 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -66,12 +64,8 @@ public class ProxyScreen extends ALVelocityScreen {
       return;
     }
 
-    // normalize()でエラーが起きないようにurlStringからスペースを排除する処理
-    urlString = URLEncoder.encode(urlString, "UTF-8");
-    if (urlString.indexOf("+") != -1) {
-      urlString = urlString.replaceAll("\\+", "");
-    }
-    urlString = URLDecoder.decode(urlString, "UTF-8");
+    // normalize()でエラーが起きないようにurlStringから改行コードを排除する処理
+    urlString = urlString.replaceAll("\\n", "");
 
     URI uri = new URI(urlString).normalize();
     String path =
