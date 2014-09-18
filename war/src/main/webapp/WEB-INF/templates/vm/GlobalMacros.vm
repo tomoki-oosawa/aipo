@@ -1821,10 +1821,8 @@ $!{text}
 #end
 
 #macro(AUIEmptyMessage $class $text)
-<div class="contents">
 <div class="emptyMessage">
 #if($class != '')<i class="$class"></i>#end
 <p>$text</p>
-</div>
 </div>
 #end
