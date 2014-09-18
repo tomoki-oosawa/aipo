@@ -94,7 +94,7 @@ public class AccountResultData implements ALData {
   /** FAX 番号 */
   private ALStringField company_fax_number;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */

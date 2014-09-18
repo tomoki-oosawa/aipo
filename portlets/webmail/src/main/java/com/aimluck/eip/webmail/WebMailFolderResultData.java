@@ -37,7 +37,7 @@ public class WebMailFolderResultData implements ALData {
   /** フォルダ名 */
   private ALStringField folder_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateField create_date;
 
   /** 更新日 */

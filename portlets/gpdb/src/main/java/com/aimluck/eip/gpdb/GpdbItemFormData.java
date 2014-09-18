@@ -516,7 +516,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
             gpdbRecord.setValue("" + record.getUpdateUserId());
 
           } else if (GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)) {
-            // 登録日時
+            // 作成日
             ALDateTimeField t = new ALDateTimeField();
             t.setValue(record.getCreateDate());
             gpdbRecord.setValue(t.toStringDateTime());

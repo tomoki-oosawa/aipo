@@ -74,7 +74,7 @@
 #if($!isCreated)
 #ALtdheadAtt($l10n.REPORT_SITUATION 'class="mb_hide" style="width:5%"')
 #end
-#ALtdhead("#ALajaxsort('create_date' $l10n.REPORT_CREATE_DATE $result 'ReportListScreen')")
+#ALtdhead("#ALajaxsort('create_date' $l10n.COMMON_CREATE_DATE $result 'ReportListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr #if($record.getStatus($result.LoginUser.UserId.Value) && $record.getStatus($result.LoginUser.UserId.Value) == "U") class="unread" #end>

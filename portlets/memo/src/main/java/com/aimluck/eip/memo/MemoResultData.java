@@ -34,7 +34,7 @@ public class MemoResultData extends MemoLiteResultData {
   /** メモ */
   private ALStringField note;
 
-  /** 登録日 */
+  /** 作成日 */
   private Date create_date;
 
   /** 更新日 */

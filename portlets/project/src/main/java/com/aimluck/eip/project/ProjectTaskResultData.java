@@ -104,7 +104,7 @@ public class ProjectTaskResultData implements ALData {
   /** 担当者リスト */
   private List<ProjectTaskMemberResultData> memberList = null;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField create_date;
 
   /** 更新日 */

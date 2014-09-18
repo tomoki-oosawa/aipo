@@ -39,7 +39,7 @@ public class WorkflowCategoryDetailResultData extends
   /** テンプレート */
   protected ALStringField template;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALStringField create_date;
 
   /** 更新日 */

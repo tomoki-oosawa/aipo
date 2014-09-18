@@ -159,7 +159,7 @@ public class NoteFormData extends ALAbstractFormData {
   /** 確認日時 */
   private ALDateTimeField confirm_date;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日時 */
@@ -431,7 +431,7 @@ public class NoteFormData extends ALAbstractFormData {
       note.setMessage(message.getValue());
       // 受付日時
       note.setAcceptDate(accept_date.getValue());
-      // 作成日時
+      // 作成日
       note.setCreateDate(nowDate);
       // 更新日時
       note.setUpdateDate(nowDate);
@@ -679,7 +679,7 @@ public class NoteFormData extends ALAbstractFormData {
     confirm_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CHECK_TIME"));
 
     create_date = new ALDateTimeField(NoteUtils.CREATED_DATE_FORMAT);
-    create_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CREATE_TIME"));
+    create_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
     update_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_DATE"));

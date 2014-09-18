@@ -55,10 +55,10 @@ public class ReportResultData implements ALData {
   /** 開始時間 */
   private ALDateTimeField end_date;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createDate;
 
   /** 添付ファイルリスト */

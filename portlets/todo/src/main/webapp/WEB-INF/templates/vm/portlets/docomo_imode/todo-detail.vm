@@ -38,7 +38,7 @@ $!result.Detail.TodoName
 #ALcell_dt($career '締切日')#ALcell_dd($career "$!{result.Detail.EndDate}")
 #ALcell_dt($career '進捗')#ALcell_dd($career "$!{result.Detail.StateString}")
 #ALcell_dt($career '優先度')#ALcell_dd($career "$!{result.Detail.PriorityString}")
-#ALcell_dt($career '登録日')#ALcell_dd($career "$!{result.Detail.CreateDate}")
+#ALcell_dt($career '作成日')#ALcell_dd($career "$!{result.Detail.CreateDate}")
 #ALcell_dt($career '更新日')#ALcell_dd($career "$!{result.Detail.UpdateDate}")
 #ALcell_dt($career 'ﾒﾓ')#ALcell_dd($career "$!{result.Detail.Note}")
 #ALcell_dt($career '公開区分')#ALcell_dd($career "#if($!{result.Detail.isPublic()}) 公開 #else 非公開 #end")

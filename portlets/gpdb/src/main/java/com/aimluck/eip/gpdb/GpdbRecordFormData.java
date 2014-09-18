@@ -178,7 +178,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
           || GpdbUtils.ITEM_TYPE_UPDATE_USER.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)
           || GpdbUtils.ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録者、更新者、登録日時、更新日時、自動採番はチェックしない
+          // 登録者、更新者、作成日、更新日時、自動採番はチェックしない
           continue;
 
         } else if (GpdbUtils.ITEM_TYPE_SELECT_MULTI.equals(type)) {
@@ -416,7 +416,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
         } else if (GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)
           || GpdbUtils.ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録日時、更新日時
+          // 作成日、更新日時
           ALDateTimeField dt = new ALDateTimeField();
           dt.setValue(Calendar.getInstance().getTime());
           value = dt.toStringDateTime();
@@ -598,7 +598,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         } else if (GpdbUtils.ITEM_TYPE_SEQ.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_USER.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)) {
-          // 登録者、登録日時、自動採番
+          // 登録者、作成日、自動採番
           value = gpdbRecord.getValue(); // 変更なし（更新日のみ変更する）
 
         } else {

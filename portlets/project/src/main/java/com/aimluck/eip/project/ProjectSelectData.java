@@ -308,7 +308,7 @@ public class ProjectSelectData extends
       data.setAttachmentFileList(attachmentFileList);
     }
 
-    data.setCreateDate(record.getCreateDate());// 登録日
+    data.setCreateDate(record.getCreateDate());// 作成日
     data.setUpdateDate(record.getUpdateDate());// 更新日
     return data;
 

@@ -49,7 +49,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   /** <code>updateUser</code> 更新ユーザー */
   private ALEipUser updateUser;
 
-  /** <code>createDate</code> 登録日時 */
+  /** <code>createDate</code> 作成日 */
   private ALDateTimeField createDate;
 
   /** <code>updateDate</code> 更新日時 */
@@ -85,7 +85,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     // テキスト
     text = new ALStringField();
     text.setValue("");
-    // 登録日時
+    // 作成日
     createDate =
       new ALDateTimeField(ALLocalizationUtils
         .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
@@ -160,7 +160,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
-   * 登録日時を取得します。
+   * 作成日を取得します。
    * 
    * @return
    */
@@ -196,7 +196,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
-   * 登録日時を設定します。
+   * 作成日を設定します。
    * 
    * @param date
    */

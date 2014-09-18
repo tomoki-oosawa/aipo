@@ -56,7 +56,7 @@
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2a-sort.style.items" value="priority,create_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="優先度,作成日時" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="優先度,作成日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="workflow.CellWorkflowAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="WorkflowFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_screen1" value="true" hidden="true" cachedOnName="true" cachedOnValue="true"/>

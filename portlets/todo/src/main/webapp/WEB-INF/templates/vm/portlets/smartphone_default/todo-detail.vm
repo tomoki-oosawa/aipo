@@ -69,7 +69,7 @@
 #ALtdcell("$!{result.Detail.PriorityString}")
 </tr>
 <tr>
-#ALtdhead('登録日')
+#ALtdhead('作成日')
 #ALtdcell("$!{result.Detail.CreateDate}")
 </tr>
 <tr>
