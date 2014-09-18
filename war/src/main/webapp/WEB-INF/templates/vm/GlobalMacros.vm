@@ -270,6 +270,14 @@ $theLink
       <td $option>$text</td>
 #end
 
+#macro(ALtdcellNowrap $text)
+      <td><div>$text</div></td>
+#end
+
+#macro(ALtdcellNowrapAtt $text $option)
+      <td $option><div>$text</div></td>
+#end
+
 #macro(ALtdheadheader)
     <th>
 #end
