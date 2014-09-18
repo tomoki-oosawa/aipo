@@ -73,13 +73,13 @@
 			#set($recordNo = $record.RecordNo.toString())
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
-			<td class="auiMTCaption">
+			#ALtdcellNowrapheaderAtt('class="auiMTCaption"')
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
-			</td>
+			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
-			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
+			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
-			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')
+			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end
 		#if($velocityCount == $result.List.size())
 			##最終行の場合
