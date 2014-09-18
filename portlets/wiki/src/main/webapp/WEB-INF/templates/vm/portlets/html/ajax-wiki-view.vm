@@ -26,7 +26,10 @@
 
 #if(!$!result.Detail)
 <h2>$l10n.WIKI_MANAGEMENT</h2>
-#AUIbuttonActionInBlankBox($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-edit-sign" "$l10n.WIKI_EMPTY_MESSAGE")
 #else
 
 <div class="auiSummaryMeta auiFilter clearfix">
