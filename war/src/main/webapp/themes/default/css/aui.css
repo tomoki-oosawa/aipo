@@ -3277,7 +3277,6 @@ ul.attachments {
 }
 #timelineOuter .message,
 .timelineOuter .message {
-  position: relative;
   margin: 0;
   padding: 10px 0 0;
   clear: both;
