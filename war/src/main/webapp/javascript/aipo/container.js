@@ -91,6 +91,7 @@ aipo.IfrGadgetService = function() {
     gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
     gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
     gadgets.rpc.register('requestCheckTimeline', this.requestCheckTimeline);
+    gadgets.rpc.register('requestCheckMessage', this.requestCheckMessage);
     //gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
@@ -327,6 +328,12 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 	} else {
 		dojo.query(".newMessage").style('display', '');
 	}
+}
+
+
+aipo.IfrGadgetService.prototype.requestCheckMessage = function() {
+    aipo.message.reloadMessageList();
+    aipo.message.reloadRoomList();
 }
 
 aipo.IfrContainer = function() {

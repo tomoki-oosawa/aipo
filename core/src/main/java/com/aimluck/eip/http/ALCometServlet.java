@@ -107,7 +107,26 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       if (user == null) {
         return;
       }
-      enqueue(new Event(event.getEventType(), request, response));
+      switch (event.getEventType()) {
+        case BEGIN:
+          enqueue(new Event(event.getEventType(), request, response));
+          event.setTimeout(10 * 60 * 1000);
+          break;
+        case READ:
+          enqueue(new Event(event.getEventType(), request, response));
+          break;
+        case END:
+          enqueue(new Event(event.getEventType(), request, response));
+
+          event.close();
+          break;
+        case ERROR:
+          enqueue(new Event(event.getEventType(), request, response));
+          event.close();
+          break;
+        default:
+          break;
+      }
     } catch (Throwable t) {
       log(t.getMessage(), t);
     }
@@ -176,7 +195,19 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     }
 
     public void close(HttpServletResponse response) {
-      connections.remove(response);
+      response.setContentType("text/json");
+      response.setCharacterEncoding("UTF-8");
+      try {
+        PrintWriter writer = response.getWriter();
+        writer.write("{}");
+        writer.flush();
+        writer.close();
+        response.flushBuffer();
+      } catch (IOException e) {
+        log(e.getMessage(), e);
+      } finally {
+        connections.remove(response);
+      }
     }
 
     @Override
@@ -275,19 +306,29 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
           if (message != null) {
             Iterator<Entry<HttpServletResponse, String>> iterator =
               connections.entrySet().iterator();
+
             while (iterator.hasNext()) {
               Entry<HttpServletResponse, String> next = iterator.next();
-              HttpServletResponse response = next.getKey();
-              response.setContentType("text/plain");
-              response.setCharacterEncoding("UTF-8");
-              try {
-                PrintWriter writer = response.getWriter();
-                writer.write(next.getValue());
-                writer.flush();
-                writer.close();
-                response.flushBuffer();
-              } catch (IOException e) {
-                log(e.getMessage(), e);
+              if (message.getRecipients().contains(next.getValue())) {
+                HttpServletResponse response = next.getKey();
+                response.setContentType("text/json");
+                response.setCharacterEncoding("UTF-8");
+                try {
+                  PrintWriter writer = response.getWriter();
+                  writer.write(message.getMessage());
+                  writer.flush();
+                  writer.close();
+                  response.flushBuffer();
+                } catch (Throwable t) {
+                  log(t.getMessage(), t);
+                } finally {
+                  try {
+                    connections.remove(response);
+                  } catch (Throwable ignore) {
+                    // ignore
+                  }
+
+                }
               }
             }
           }

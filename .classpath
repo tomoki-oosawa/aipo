@@ -27,7 +27,9 @@
 	<classpathentry kind="src" path="lib/userfacility/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/userfacility/src/test/java"/>
 	<classpathentry kind="src" path="lib/social/src/main/java"/>
-	<classpathentry kind="src" output="target/test-classes" path="lib/social/src/test/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/social/src/test/java"/>>
+	<classpathentry kind="src" path="lib/push/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/push/src/test/java"/>
 	<classpathentry kind="src" path="lib/config/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/config/src/test/java"/>
 	<classpathentry kind="src" path="lib/storage/src/main/java"/>

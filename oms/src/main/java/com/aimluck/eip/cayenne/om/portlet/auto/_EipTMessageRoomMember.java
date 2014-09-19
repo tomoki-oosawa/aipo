@@ -7,12 +7,21 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String TARGET_USER_ID_PROPERTY = "targetUserId";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TMESSAGE_ROOM_PROPERTY = "eipTMessageRoom";
 
     public static final String ID_PK_COLUMN = "ID";
 
+    public void setLoginName(String loginName) {
+        writeProperty("loginName", loginName);
+    }
+    public String getLoginName() {
+        return (String)readProperty("loginName");
+    }
+    
+    
     public void setTargetUserId(Integer targetUserId) {
         writeProperty("targetUserId", targetUserId);
     }

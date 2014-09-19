@@ -195,6 +195,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setEipTMessageRoom(model);
         map.setTargetUserId(1);
         map.setUserId(Integer.valueOf(userid));
+        map.setLoginName(user.getName().getValue());
         if (!isFirst) {
           autoName.append(",");
         }

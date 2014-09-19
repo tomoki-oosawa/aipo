@@ -348,6 +348,7 @@ CREATE TABLE `eip_t_message_room_member` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `room_id` int(11) NOT NULL,
     `user_id` int(11) NOT NULL,
+    `login_name` varchar(32) NOT NULL,
     `target_user_id` int(11),
     FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)

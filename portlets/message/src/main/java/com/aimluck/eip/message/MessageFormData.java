@@ -21,6 +21,7 @@ package com.aimluck.eip.message;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,6 +43,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -177,12 +179,14 @@ public class MessageFormData extends ALAbstractFormData {
           map1.setEipTMessageRoom(room);
           map1.setUserId((int) login_user.getUserId().getValue());
           map1.setTargetUserId((int) targetUser.getUserId().getValue());
+          map1.setLoginName(login_user.getName().getValue());
 
           EipTMessageRoomMember map2 =
             Database.create(EipTMessageRoomMember.class);
           map2.setEipTMessageRoom(room);
           map2.setTargetUserId((int) login_user.getUserId().getValue());
           map2.setUserId((int) targetUser.getUserId().getValue());
+          map2.setLoginName(targetUser.getName().getValue());
 
           room.setAutoName("T");
           room.setRoomType("O");
@@ -205,6 +209,7 @@ public class MessageFormData extends ALAbstractFormData {
       model.setMemberCount(members.size());
       model.setUserId((int) login_user.getUserId().getValue());
 
+      List<String> recipients = new ArrayList<String>();
       for (EipTMessageRoomMember member : members) {
         if (member.getUserId().intValue() != (int) login_user
           .getUserId()
@@ -214,6 +219,7 @@ public class MessageFormData extends ALAbstractFormData {
           record.setIsRead("F");
           record.setUserId(member.getUserId());
           record.setRoomId(room.getRoomId());
+          recipients.add(member.getLoginName());
         }
       }
 
@@ -221,6 +227,8 @@ public class MessageFormData extends ALAbstractFormData {
       room.setLastUpdateDate(now);
 
       Database.commit();
+
+      ALPushService.pushAsync("message", recipients);
 
     } catch (Exception ex) {
       Database.rollback();
