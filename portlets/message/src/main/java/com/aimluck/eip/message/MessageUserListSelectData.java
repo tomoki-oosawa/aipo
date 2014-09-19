@@ -55,12 +55,16 @@ public class MessageUserListSelectData extends
 
   private List<ALEipGroup> myGroupList = null;
 
+  private int userId;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     myGroupList = ALEipUtils.getMyGroups(rundata);
+
+    userId = ALEipUtils.getUserId(rundata);
 
   }
 
@@ -108,20 +112,24 @@ public class MessageUserListSelectData extends
   @Override
   protected Object getResultData(TurbineUser model)
       throws ALPageNotFoundException, ALDBErrorException {
-    MessageUserResultData rd = new MessageUserResultData();
-    rd.initField();
-    rd.setUserId(model.getUserId());
-    rd.setFirstName(model.getFirstName());
-    rd.setLastName(model.getLastName());
-    rd.setFirstNameKana(model.getFirstNameKana());
-    rd.setLastNameKana(model.getLastNameKana());
-    rd.setHasPhoto("T".equals(model.getHasPhoto()));
-    Date photoModified = model.getPhotoModified();
-    if (photoModified != null) {
-      rd.setPhotoModified(photoModified.getTime());
-    }
+    if (model.getUserId().intValue() != userId) {
+      MessageUserResultData rd = new MessageUserResultData();
+      rd.initField();
+      rd.setUserId(model.getUserId());
+      rd.setFirstName(model.getFirstName());
+      rd.setLastName(model.getLastName());
+      rd.setFirstNameKana(model.getFirstNameKana());
+      rd.setLastNameKana(model.getLastNameKana());
+      rd.setHasPhoto("T".equals(model.getHasPhoto()));
+      Date photoModified = model.getPhotoModified();
+      if (photoModified != null) {
+        rd.setPhotoModified(photoModified.getTime());
+      }
 
-    return rd;
+      return rd;
+    } else {
+      return null;
+    }
   }
 
   /**
