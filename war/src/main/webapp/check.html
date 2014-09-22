@@ -63,7 +63,11 @@ function join() {
        cache: false,
        contentType: "application/javascript",
        success: function(data, status) {
-            join();
+           var type = data.type;
+           if("message" == type) {
+               gadgets.rpc.call(null, "requestCheckMessage");
+           }
+           join();
        },
        error: function(data, status) {
            if(retryCount < 10) {
