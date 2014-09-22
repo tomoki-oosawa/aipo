@@ -59,7 +59,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Report')
 #if($result.List.size() == 0)
-<div class="message">$l10n.REPORT_NO_REPORT_YOUR_SELECT</div>
+#AUIEmptyMessage("icon-file-text" "$l10n.REPORT_EMPTY_SHORT_MESSAGE")
 #else
 
 #AUISummaryDiv()

@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">$l10n.REPORT_REPORT$l10n.REPORT_NO_INFO_TO_YOU</div>
+#AUIEmptyMessage("" "$l10n.REPORT_EMPTY_SHORT_MESSAGE")
 #else
 #ALformheaderAction('Report' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
