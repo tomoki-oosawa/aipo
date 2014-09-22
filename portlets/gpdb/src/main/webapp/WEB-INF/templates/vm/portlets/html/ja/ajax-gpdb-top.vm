@@ -24,10 +24,12 @@
 
 #set ($addGpdb = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbFormScreen").addQueryData("entityid","new")))
 #set ($orderGpdb = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbChangeTurnFormScreen"))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
+
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-<div class="message">$l10n.GPDB_NOT_CREATED</div>
+#AUIEmptyMessage("" "$utils.getl10nFormat1('GPDB_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 #else
 <div class="auiSummaryMeta clearfix mt0">
   <div class="filters floatLeft" id="filters_$!{portlet.ID}">
@@ -53,7 +55,7 @@
 	</div>
 </div>
 #if($result.List.size() == 0)
-<div class="message">$l10n.GPDB_NO_DATA</div>
+#AUIEmptyMessage("" "$l10n.GPDB_EMPTY_DATA_MESSAGE")
 #else
 <table class="auiRowTable wide">
 	<tbody>

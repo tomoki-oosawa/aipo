@@ -21,16 +21,18 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set ($adminTab = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbListScreen")))
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-<img src="images/common/dot.gif" width="1" height="1" onload="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbListScreen')', '$!portlet.ID');" style="display:none" />
+
+#AUIEmptyMessage("icon-hdd" $utils.getl10nFormat1("GPDB_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
 
 #elseif(!$result.List)
 	<div class="auiBlankBox">$l10n.GPDB_SELECT_DATABASE</div>
 #elseif($result.List.size() == 0)
-	<div class="auiBlankBox">$l10n.GPDB_NO_DATA</div>
+	#AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_DATA_MESSAGE")
 #else
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")

@@ -29,15 +29,12 @@
 <h2>$l10n.GPDB_MANAGEMENT</h2>
 
 #if($result.getGpdbSum() == 0)
-
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
+#AUISummaryDiv()
 #AUIbuttonAction("$l10n.GPDB_ADD_DATABASE" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
-
+#AUISummaryDivfooter()
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader("$l10n.GPDB_WEB_DATABASE")
+#AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_SHORT_MESSAGE")
 #else
 
 #AUISummaryDiv()
