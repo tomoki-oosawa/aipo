@@ -141,14 +141,6 @@ input[type=password], #timelineOuter #inputField,
   background: #d2d2d2;
 }
 
-@font-face {
-  font-family: 'FontAwesome';
-  src: url("fontawesome-webfont.eot");
-  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
 * {
   font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
 }
@@ -1515,14 +1507,6 @@ button[disabled]:active {
   line-height: 15px !important;
 }
 
-@font-face {
-  font-family: 'FontAwesome';
-  src: url("fontawesome-webfont.eot");
-  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-
 /***************************************************
 	activityField
 --------------------------------------------------*/
@@ -1601,23 +1585,6 @@ button[disabled]:active {
   width: 400px;
   right: 0;
   top: 0;
-}
-
-.auiPopupHead {
-  position: relative;
-  padding-left: 20px;
-  margin-bottom: 10px;
-}
-.auiPopupHead:before {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-family: 'FontAwesome';
-  font-size: 15px;
-  line-height: 24px;
-  content: "\f138";
-  color: #d2d2d2;
 }
 
 .auiPopupHead {
