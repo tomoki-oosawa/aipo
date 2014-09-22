@@ -41,7 +41,7 @@
 </div>
 
 #if($result.List.size() == 0)
-<div class="message">$l10n.BLOG_NOTHING_ENTRY2</div>
+#AUIEmptyMessage("icon-book" "$l10n.BLOG_EMPTY_SHORT_MESSAGE")
 <div id="messageDivList_$!portlet.ID"></div>
 #else
 <div id="auiBlogEntries">
