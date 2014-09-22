@@ -17,9 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 #if($result.List.size() == 0)
-
+<span style="display:none" class="messageLastMessageIdValue"></span>
 #else
 #foreach ($record in $result.List)
+#set($lastMessageId = $!record.MessageId)
 <div id="message$!record.MessageId" class="message">
 	<div class="avatar">
 		#if($!record.isHasPhoto())
@@ -38,4 +39,5 @@
 	</div>
 </div>
 #end
+<span style="display:none" class="messageLastMessageIdValue">$!lastMessageId</span>
 #end

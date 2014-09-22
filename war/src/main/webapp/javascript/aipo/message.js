@@ -24,6 +24,7 @@ aipo.message.currentUserId = null;
 aipo.message.currentGroupName = "all";
 aipo.message.currentRoomSearchKeyword = null;
 aipo.message.currentUserSearchKeyword = null;
+aipo.message.moreMessageLock = false;
 
 aipo.message.init = function() {
     aipo.message.reloadRoomList();
@@ -48,6 +49,37 @@ aipo.message.reloadMessageList = function() {
         screen += "&u=" + aipo.message.currentUserId;
     }
     aipo.message.messagePane.viewPage(screen);
+}
+
+aipo.message.moreMessageList = function(cursor) {
+    aipo.message.moreMessageLock = true;
+    var screen = "?template=MessageListScreen";
+    if (aipo.message.currentRoomId) {
+        screen += "&r=" + aipo.message.currentRoomId;
+    } else if (aipo.message.currentUserId) {
+        screen += "&u=" + aipo.message.currentUserId;
+    }
+    var messageLastMessageIdValues = dojo.query(".messageLastMessageIdValue");
+    var cursor = messageLastMessageIdValues[messageLastMessageIdValues.length - 1].innerHTML;
+    if (cursor) {
+        screen += "&c=" + cursor;
+        dojo.xhrGet({
+            url : screen,
+            timeout : 30000,
+            encoding : "utf-8",
+            handleAs : "text",
+            headers : {
+                X_REQUESTED_WITH : "XMLHttpRequest"
+            },
+            load : function(response, ioArgs) {
+                messagePane.innerHTML += response;
+                aipo.message.moreMessageLock = false;
+            },
+            error : function(error) {
+                aipo.message.moreMessageLock = false;
+            }
+        });
+    }
 }
 
 aipo.message.messageRoomListPane = null;
@@ -117,7 +149,7 @@ aipo.message.reloadUserList = function(group_name) {
     }
 
     var screen = "?template=MessageUserListScreen&target_group_name="
-        + aipo.message.currentGroupName;
+            + aipo.message.currentGroupName;
     if (aipo.message.currentUserSearchKeyword) {
         screen += "&k="
                 + encodeURIComponent(aipo.message.currentUserSearchKeyword);
@@ -130,7 +162,8 @@ aipo.message.searchUserList = function() {
     var messageUserGroupSelect = dojo.byId("messageUserGroupSelect");
     var messageUserSearchForm = dojo.byId("messageUserSearchForm");
     aipo.message.currentUserSearchKeyword = messageUserSearchForm.keyword.value;
-    aipo.message.reloadUserList(messageUserGroupSelect.options[messageUserGroupSelect.selectedIndex].value);
+    aipo.message
+            .reloadUserList(messageUserGroupSelect.options[messageUserGroupSelect.selectedIndex].value);
 }
 
 aipo.message.swapView = function() {
@@ -485,4 +518,16 @@ dojo.addOnLoad(function() {
     dojo.connect(window, "onresize", null, function(e) {
         aipo.message.fixMessageWindow();
     });
+    var messagePane = dojo.byId("messagePane");
+    if (messagePane) {
+        dojo
+                .connect(messagePane, "onscroll", null,
+                        function(e) {
+                            if (e.target.scrollTop + messagePane.clientHeight
+                                    + 100 >= e.target.scrollHeight
+                                    && !aipo.message.moreMessageLock) {
+                                aipo.message.moreMessageList();
+                            }
+                        });
+    }
 });

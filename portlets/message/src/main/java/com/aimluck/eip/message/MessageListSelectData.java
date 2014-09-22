@@ -42,7 +42,7 @@ public class MessageListSelectData extends
 
   public static final int MESSAGE_LIMIT = 50;
 
-  private int page = 1;
+  private int cursor = -1;
 
   private int roomId;
 
@@ -78,12 +78,12 @@ public class MessageListSelectData extends
         0);
     }
     try {
-      page = rundata.getParameters().getInt("p", 1);
+      cursor = rundata.getParameters().getInt("c");
     } catch (Throwable ignore) {
       // ignore
     }
 
-    return MessageUtils.getMessageList(roomId, page, MESSAGE_LIMIT);
+    return MessageUtils.getMessageList(roomId, cursor, MESSAGE_LIMIT);
   }
 
   /**

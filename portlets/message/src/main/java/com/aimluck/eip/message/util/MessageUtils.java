@@ -107,7 +107,7 @@ public class MessageUtils {
     }
   }
 
-  public static ResultList<EipTMessage> getMessageList(int roomId, int page,
+  public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
       int limit) {
     StringBuilder select = new StringBuilder();
 
@@ -132,39 +132,16 @@ public class MessageUtils {
     StringBuilder body = new StringBuilder();
     body
       .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id = #bind($room_id) ");
-
+    if (cursor > 0) {
+      body.append(" and t1.message_id < #bind($cursor) ");
+    }
     StringBuilder last = new StringBuilder();
 
     last.append(" order by t1.create_date desc ");
 
-    SQLTemplate<EipTMessage> countQuery =
-      Database
-        .sql(EipTMessage.class, count.toString() + body.toString())
-        .param("room_id", Integer.valueOf(roomId));
-
-    int countValue = 0;
-    if (page > 0 && limit > 0) {
-      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
-
-      for (DataRow row : fetchCount) {
-        countValue = ((Long) row.get("c")).intValue();
-      }
-
-      int offset = 0;
-      if (limit > 0) {
-        int num = ((int) (Math.ceil(countValue / (double) limit)));
-        if ((num > 0) && (num < page)) {
-          page = num;
-        }
-        offset = limit * (page - 1);
-      } else {
-        page = 1;
-      }
-
-      last.append(" LIMIT ");
+    if (limit > 0) {
+      last.append(" limit ");
       last.append(limit);
-      last.append(" OFFSET ");
-      last.append(offset);
     }
 
     SQLTemplate<EipTMessage> query =
@@ -173,6 +150,9 @@ public class MessageUtils {
         select.toString() + body.toString() + last.toString()).param(
         "room_id",
         Integer.valueOf(roomId));
+    if (cursor > 0) {
+      query.param("cursor", cursor);
+    }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
 
@@ -195,11 +175,7 @@ public class MessageUtils {
       list.add(object);
     }
 
-    if (page > 0 && limit > 0) {
-      return new ResultList<EipTMessage>(list, page, limit, countValue);
-    } else {
-      return new ResultList<EipTMessage>(list, -1, -1, list.size());
-    }
+    return new ResultList<EipTMessage>(list, -1, -1, list.size());
   }
 
   public static ResultList<EipTMessageRoom> getRoomList(int userId,
