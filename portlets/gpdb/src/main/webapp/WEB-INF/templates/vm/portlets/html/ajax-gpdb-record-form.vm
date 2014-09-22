@@ -31,11 +31,12 @@
 #set ($event_submit = "eventSubmit_doGpdb_update")
 #end
 #set ($indicator_id = "indicator-dlg-")
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #if(!$!result.Gpdb)
 	#ALbuttonheader()
-	<div class="message">$l10n.GPDB_SELECT_DATABASE</div>
+	#AUIEmptyMessage("" "$utils.getl10nFormat1('GPDB_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 	#ALajaxbuttonClose()
 #ALbuttonfooter()
 #else

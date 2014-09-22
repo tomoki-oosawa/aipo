@@ -25,6 +25,7 @@ package com.aimluck.eip.modules.actions.gpdb;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -34,6 +35,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.gpdb.GpdbItemSelectData;
 import com.aimluck.eip.gpdb.GpdbRecordSelectData;
+import com.aimluck.eip.gpdb.GpdbSelectData;
 import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -143,11 +145,35 @@ public class GpdbAction extends ALBaseAction {
       Context context, RunData rundata) {
     try {
       if (getMode() == null) {
-        doGpdbRecord_list(rundata, context);
+        String admintab = rundata.getParameters().getString("admintab");
+        if (!StringUtils.isEmpty(admintab)) {
+          doGpdb_all_list(rundata, context);
+        } else {
+          doGpdbRecord_list(rundata, context);
+        }
       }
     } catch (Exception e) {
       logger.error("GpdbAction.buildMaximizedContext", e);
     }
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   */
+  public void doGpdb_all_list(RunData rundata, Context context)
+      throws Exception {
+
+    GpdbSelectData listData = new GpdbSelectData();
+    listData.initField();
+    listData.setRowsNum(Integer.parseInt(ALEipUtils
+      .getPortlet(rundata, context)
+      .getPortletConfig()
+      .getInitParameter("p1c-rows")));
+    listData.doViewList(this, rundata, context);
+
+    setTemplate(rundata, "gpdb");
+
   }
 
   /**

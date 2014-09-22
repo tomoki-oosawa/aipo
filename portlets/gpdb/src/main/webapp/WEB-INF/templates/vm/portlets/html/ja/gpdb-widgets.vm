@@ -30,9 +30,15 @@
 #AUIbuttonAction("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #else
+#if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
+<div class="auiWidget clearfix widgetButton">
+#AUIDisableButton("$l10n.GPDB_ADD_DATA")
+</div>
+#else
 <div class="auiWidget clearfix widgetButton">
 #AUIbutton("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
+#end
 #end
 
 <div id="subNavigation">

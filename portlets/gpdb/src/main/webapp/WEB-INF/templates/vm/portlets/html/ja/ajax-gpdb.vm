@@ -32,6 +32,8 @@
 #AUISummaryDiv()
 #AUIbuttonAction("$l10n.GPDB_ADD_DATABASE" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 #AUISummaryDivfooter()
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader("$l10n.GPDB_WEB_DATABASE")
 #AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_SHORT_MESSAGE")
 #else
 

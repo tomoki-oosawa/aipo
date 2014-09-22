@@ -24,7 +24,7 @@
 
 #set ($addGpdb = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbFormScreen").addQueryData("entityid","new")))
 #set ($orderGpdb = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbChangeTurnFormScreen"))
-#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID)))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
