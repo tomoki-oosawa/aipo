@@ -805,7 +805,7 @@ ul.hdTools .dropdown:before {
 }
 .messageSummary li a, .messageUserlist ul li a {
   display: block;
-  min-height: 40px;
+  height: 40px;
   text-decoration: none;
   color: #999999;
 }
