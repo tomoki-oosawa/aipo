@@ -85,12 +85,12 @@ limitations under the License.
 								<ul class="tabContents">
 									<li class="active" id="messageRoomContents">
 										<div class="scroll" id="messageSideBlock1">
-											<div id="messageRoomListPane"></div>
+											<div id="messageRoomListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
 										</div>
 									</li>
 									<li id="messageUserContents">
 										<div class="scroll" id="messageSideBlock2">
-											<div id="messageUserListPane"></div>
+											<div id="messageUserListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
 										</div>
 									</li>
 								</ul>
@@ -111,9 +111,9 @@ limitations under the License.
 										<div class="floatLeft">
 											<span class="avatar mr5" id="messageRoomAvatar"></span><span id="messageRoomName"></span>
 										</div>
-										<!--div class="floatRight">
-											<a href="javascript:void(0)" title="ルーム設定" onclick="popupToggle(this,'popupMask');popupToggle(this,'modalDialog_roomSetting');"><i class="icon-gear"></i></a>
-										</div -->
+										<div class="floatRight" id="messageRoomSetting">
+											<a href="javascript:void(0)" title="ルーム設定" onclick="aimluck.io.openDialog(this, '?template=MessageRoomFormScreen&entityid=' + aipo.message.currentRoomId, 'Message', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+										</div>
 									</div>
 									<div class="inputField">
 										<form name="messageForm" id="messageForm" action="?template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.submit(this,'indicator-dlg-','message-top',aipo.message.onReceiveMessage);return false;">

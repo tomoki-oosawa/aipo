@@ -39,8 +39,10 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -69,6 +71,18 @@ public class MessageRoomFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
+      // entityid=new を指定することによって明示的にセッション変数を削除することができる。
+      if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID).equals(
+        "new")) {
+        ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      } else {
+        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+          .getParameters()
+          .getString(ALEipConstants.ENTITY_ID));
+      }
+    }
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -167,6 +181,33 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
+      if (room == null || "O".equals(room.getRoomType())) {
+        throw new ALPageNotFoundException();
+      }
+      if ("F".equals(room.getAutoName())) {
+        name.setValue(room.getName());
+      }
+      @SuppressWarnings("unchecked")
+      List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+      List<String> memberNames = new ArrayList<String>();
+      for (EipTMessageRoomMember member : members) {
+        memberNames.add(member.getLoginName());
+      }
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, memberNames);
+      query.setQualifier(exp);
+      memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
+
+    } catch (ALPageNotFoundException e) {
+      throw e;
+    } catch (Throwable t) {
+      logger.error("MessageRoomFormData.loadFormData", t);
+      return false;
+    }
+
     return true;
   }
 
@@ -211,6 +252,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         model.setName(name.getValue());
       }
 
+      model.setRoomType("G");
       model.setLastUpdateDate(now);
       model.setCreateDate(now);
       model.setCreateUserId((int) login_user.getUserId().getValue());
@@ -240,7 +282,55 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+
+    try {
+      EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
+      if (model == null) {
+        return false;
+      }
+
+      Date now = new Date();
+
+      Database.deleteAll(model.getEipTMessageRoomMember());
+
+      boolean isFirst = true;
+      StringBuilder autoName = new StringBuilder();
+      for (ALEipUser user : memberList) {
+        EipTMessageRoomMember map =
+          Database.create(EipTMessageRoomMember.class);
+        int userid = (int) user.getUserId().getValue();
+        map.setEipTMessageRoom(model);
+        map.setTargetUserId(1);
+        map.setUserId(Integer.valueOf(userid));
+        map.setLoginName(user.getName().getValue());
+        if (!isFirst) {
+          autoName.append(",");
+        }
+        autoName.append(user.getAliasName().getValue());
+        isFirst = false;
+      }
+
+      if (StringUtils.isEmpty(name.getValue())) {
+        model.setAutoName("T");
+        model.setName(autoName.toString());
+      } else {
+        model.setAutoName("F");
+        model.setName(name.getValue());
+      }
+
+      model.setRoomType("G");
+      model.setUpdateDate(now);
+
+      Database.commit();
+
+      roomId = model.getRoomId();
+
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("MessageRoomFormData.updateFormData", t);
+      return false;
+    }
+    return true;
   }
 
   /**

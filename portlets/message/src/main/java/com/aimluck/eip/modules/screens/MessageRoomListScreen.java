@@ -24,6 +24,7 @@ import java.util.Date;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
@@ -57,8 +58,14 @@ public class MessageRoomListScreen extends ALVelocityScreen {
       boolean isNewRoom = false;
       EipTMessageRoom room = null;
       ALEipUser targetUser = null;
+      String keyword = null;
       try {
         targetUserId = rundata.getParameters().getInteger("u");
+      } catch (Throwable ignore) {
+        // ignore
+      }
+      try {
+        keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }
@@ -82,6 +89,9 @@ public class MessageRoomListScreen extends ALVelocityScreen {
 
       MessageRoomListSelectData listData = new MessageRoomListSelectData();
       listData.initField();
+      if (!StringUtils.isEmpty(keyword)) {
+        listData.setKeyword(keyword);
+      }
       listData.doViewList(this, rundata, context);
 
       if (isNewRoom) {
@@ -90,10 +100,13 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         rd.setAutoName(true);
         rd.setLastMessage("");
         rd.setName(targetUser.getAliasName().getValue());
+        rd.setHasPhoto("T".equals(targetUser.hasPhoto()));
+        rd.setPhotoModified(targetUser.getPhotoModified());
         rd.setRoomId(0);
         rd.setRoomType("O");
         rd.setUnreadCount(0);
         rd.setUpdateDate(new Date());
+
         listData.getList().add(0, rd);
         context.put("currentRoom", 0);
       }

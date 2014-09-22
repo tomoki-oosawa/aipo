@@ -25,21 +25,27 @@ import java.util.List;
 
 import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -47,6 +53,9 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 public class MessageUtils {
 
   public static final String MESSAGE_PORTLET_NAME = "Message";
+
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MessageUtils.class.getName());
 
   public static void setupContext(RunData rundata, Context context) {
     Portlet portlet = new MessageMockPortlet();
@@ -69,6 +78,31 @@ public class MessageUtils {
     if (model != null) {
       return model.getEipTMessageRoom();
     } else {
+      return null;
+    }
+  }
+
+  public static EipTMessageRoom getRoom(RunData rundata, Context context)
+      throws ALPageNotFoundException {
+    Integer roomId = null;
+    try {
+      try {
+        roomId =
+          Integer.valueOf(ALEipUtils.getTemp(
+            rundata,
+            context,
+            ALEipConstants.ENTITY_ID));
+      } catch (Throwable ignore) {
+        //
+      }
+      if (roomId == null) {
+        throw new ALPageNotFoundException();
+      }
+      return Database.get(EipTMessageRoom.class, roomId);
+    } catch (ALPageNotFoundException e) {
+      throw e;
+    } catch (Throwable t) {
+      logger.error("MessageUtils.getRoom", t);
       return null;
     }
   }
@@ -166,6 +200,11 @@ public class MessageUtils {
     } else {
       return new ResultList<EipTMessage>(list, -1, -1, list.size());
     }
+  }
+
+  public static ResultList<EipTMessageRoom> getRoomList(int userId,
+      String keyword) {
+    return getRoomList(userId, keyword, -1, -1);
   }
 
   public static ResultList<EipTMessageRoom> getRoomList(int userId) {
@@ -294,12 +333,19 @@ public class MessageUtils {
   }
 
   public static ResultList<TurbineUser> getUserList(String groupName,
+      String keyword) {
+    return getUserList(groupName, keyword, -1, -1);
+  }
+
+  public static ResultList<TurbineUser> getUserList(String groupName,
       String keyword, int page, int limit) {
 
     StringBuilder select = new StringBuilder();
 
     boolean isMySQL = Database.isJdbcMySQL();
     boolean isSearch = (keyword != null && keyword.length() > 0);
+
+    String keywordKana = "";
 
     select
       .append("select distinct t2.user_id, t2.login_name, t2.last_name, t2.first_name, t2.last_name_kana, t2.first_name_kana, t2.has_photo, t2.photo_modified, (t2.last_name_kana = '') ");
@@ -311,12 +357,13 @@ public class MessageUtils {
     body
       .append(" from turbine_user_group_role t1, turbine_user t2, turbine_group t3 where t1.user_id = t2.user_id and t1.group_id = t3.group_id and t2.user_id > 3 and t2.disabled = 'F' and t3.group_name = #bind($group_name)");
     if (isSearch) {
+      keywordKana = ALStringUtil.convertHiragana2Katakana(keyword);
       if (isMySQL) {
         body
-          .append(" and ( (CONCAT(t2.last_name,t2.first_name) like #bind($keyword)) or (CONCAT(t2.last_name_kana,t2.first_name_kana) like #bind($keyword)) ) ");
+          .append(" and ( (CONCAT(t2.last_name,t2.first_name) like #bind($keyword)) or (CONCAT(t2.last_name_kana,t2.first_name_kana) like #bind($keywordKana)) ) ");
       } else {
         body
-          .append(" and ( ((t2.last_name || t2.first_name)    like #bind($keyword)) or ((t2.last_name_kana || t2.first_name_kana)    like #bind($keyword)) ) ");
+          .append(" and ( ((t2.last_name || t2.first_name)    like #bind($keyword)) or ((t2.last_name_kana || t2.first_name_kana)    like #bind($keywordKana)) ) ");
       }
     }
 
@@ -331,6 +378,7 @@ public class MessageUtils {
         .param("group_name", groupName);
     if (isSearch) {
       countQuery.param("keyword", "%" + keyword + "%");
+      countQuery.param("keywordKana", "%" + keywordKana + "%");
     }
 
     int countValue = 0;
@@ -366,6 +414,7 @@ public class MessageUtils {
         groupName);
     if (isSearch) {
       query.param("keyword", "%" + keyword + "%");
+      query.param("keywordKana", "%" + keywordKana + "%");
     }
 
     List<TurbineUser> list = query.fetchList();

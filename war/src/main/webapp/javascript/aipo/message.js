@@ -22,6 +22,8 @@ dojo.provide("aipo.message");
 aipo.message.currentRoomId = null;
 aipo.message.currentUserId = null;
 aipo.message.currentGroupName = "all";
+aipo.message.currentRoomSearchKeyword = null;
+aipo.message.currentUserSearchKeyword = null;
 
 aipo.message.init = function() {
     aipo.message.reloadRoomList();
@@ -38,7 +40,7 @@ aipo.message.reloadMessageList = function() {
         }
     }
 
-    dojo.byId("messagePane").innerHTML = "";
+    dojo.byId("messagePane").innerHTML = '<div class="loader"><i class="indicator"></i></div>';
     var screen = "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
@@ -67,7 +69,8 @@ aipo.message.reloadRoomList = function(roomId) {
                 aipo.message.messageRoomListPane.roomId = null;
             }
             if (aipo.message.currentUserId) {
-                var messageCurrentRoomValue = dojo.byId("messageCurrentRoomValue");
+                var messageCurrentRoomValue = dojo
+                        .byId("messageCurrentRoomValue");
                 var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
                 if (currentRoomId != NaN) {
                     aipo.message.selectRoom(currentRoomId);
@@ -88,7 +91,15 @@ aipo.message.reloadRoomList = function(roomId) {
     } else if (aipo.message.currentUserId) {
         screen += "&u=" + aipo.message.currentUserId;
     }
+    if (aipo.message.currentRoomSearchKeyword) {
+        screen += "&k="
+                + encodeURIComponent(aipo.message.currentRoomSearchKeyword);
+    }
     aipo.message.messageRoomListPane.viewPage(screen);
+}
+aipo.message.searchRoomList = function(form) {
+    aipo.message.currentRoomSearchKeyword = form.keyword.value;
+    aipo.message.reloadRoomList();
 }
 
 aipo.message.messageUserListPane = null;
@@ -105,9 +116,21 @@ aipo.message.reloadUserList = function(group_name) {
         aipo.message.currentGroupName = group_name;
     }
 
-    aipo.message.messageUserListPane
-            .viewPage("?template=MessageUserListScreen&target_group_name="
-                    + aipo.message.currentGroupName);
+    var screen = "?template=MessageUserListScreen&target_group_name="
+        + aipo.message.currentGroupName;
+    if (aipo.message.currentUserSearchKeyword) {
+        screen += "&k="
+                + encodeURIComponent(aipo.message.currentUserSearchKeyword);
+    }
+
+    aipo.message.messageUserListPane.viewPage(screen);
+}
+
+aipo.message.searchUserList = function() {
+    var messageUserGroupSelect = dojo.byId("messageUserGroupSelect");
+    var messageUserSearchForm = dojo.byId("messageUserSearchForm");
+    aipo.message.currentUserSearchKeyword = messageUserSearchForm.keyword.value;
+    aipo.message.reloadUserList(messageUserGroupSelect.options[messageUserGroupSelect.selectedIndex].value);
 }
 
 aipo.message.swapView = function() {
@@ -150,8 +173,10 @@ aipo.message.selectRoom = function(room_id) {
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageForm = dojo.byId("messageForm");
     var messageRoom = dojo.byId("messageRoom" + room_id);
+    var messageRoomType = dojo.byId("messageRoomType" + room_id);
     var messageRoomAvatar = dojo.byId("messageRoomAvatar");
     var messageRoomName = dojo.byId("messageRoomName");
+    var messageRoomSetting = dojo.byId("messageRoomSetting");
     if (messageForm && messageRoom) {
         messageMainBlock.style.display = "";
         messageMainBlockEmpty.style.display = "none";
@@ -171,6 +196,9 @@ aipo.message.selectRoom = function(room_id) {
                 + " .avatar")[0].innerHTML;
         messageRoomName.innerHTML = dojo.query("#messageRoom" + room_id
                 + " .name")[0].innerHTML;
+
+        messageRoomSetting.style.display = "G" == messageRoomType.innerHTML ? ""
+                : "none";
 
         if (room_id == 0 && aipo.message.currentUserId) {
             messageForm.roomId.value = 0;
@@ -441,6 +469,16 @@ aipo.message.refreshUnreadCount = function() {
         }
     });
     aipo.menu.message.count(total);
+}
+
+aipo.message.onFocusPlaceholder = function(input) {
+    input.nextSibling.style.display = "none";
+}
+
+aipo.message.onBlurPlaceholder = function(input) {
+    if (!input.value) {
+        input.nextSibling.style.display = "";
+    }
 }
 
 dojo.addOnLoad(function() {

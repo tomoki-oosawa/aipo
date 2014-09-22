@@ -22,6 +22,7 @@ package com.aimluck.eip.modules.screens;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.message.MessageUserListSelectData;
@@ -47,8 +48,17 @@ public class MessageUserListScreen extends ALVelocityScreen {
     try {
       MessageUtils.setupContext(rundata, context);
 
+      String keyword = null;
+      try {
+        keyword = rundata.getParameters().getString("k");
+      } catch (Throwable ignore) {
+        // ignore
+      }
       MessageUserListSelectData listData = new MessageUserListSelectData();
       listData.initField();
+      if (!StringUtils.isEmpty(keyword)) {
+        listData.setKeyword(keyword);
+      }
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-message-user-list.vm";

@@ -22,8 +22,10 @@ package com.aimluck.eip.message;
 import java.util.jar.Attributes;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -43,12 +45,19 @@ public class MessageRoomListSelectData extends
 
   private int totalUnreadCount = 0;
 
+  private ALStringField keyword = null;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
+  }
+
+  @Override
+  public void initField() {
+    keyword = new ALStringField();
   }
 
   /**
@@ -61,7 +70,7 @@ public class MessageRoomListSelectData extends
   @Override
   protected ResultList<EipTMessageRoom> selectList(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
-    return MessageUtils.getRoomList(userId);
+    return MessageUtils.getRoomList(userId, keyword.getValue());
   }
 
   /**
@@ -132,4 +141,22 @@ public class MessageRoomListSelectData extends
     return totalUnreadCount;
   }
 
+  /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
+  }
+
+  /**
+   * @return keyword
+   */
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  public boolean hasKeyword() {
+    return !StringUtils.isEmpty(keyword.getValue());
+  }
 }

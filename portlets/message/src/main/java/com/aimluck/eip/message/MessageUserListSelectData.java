@@ -25,8 +25,10 @@ import java.util.Map;
 import java.util.jar.Attributes;
 
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -45,17 +47,15 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MessageUserListSelectData extends
     ALAbstractSelectData<TurbineUser, TurbineUser> {
 
-  public static final int USER_LIMIT = 50;
-
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
   private String target_group_name;
 
-  private int page = 1;
-
   private List<ALEipGroup> myGroupList = null;
 
   private int userId;
+
+  private ALStringField keyword = null;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -68,6 +68,11 @@ public class MessageUserListSelectData extends
 
   }
 
+  @Override
+  public void initField() {
+    keyword = new ALStringField();
+  }
+
   /**
    * @param rundata
    * @param context
@@ -78,16 +83,11 @@ public class MessageUserListSelectData extends
   @Override
   protected ResultList<TurbineUser> selectList(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    try {
-      page = rundata.getParameters().getInt("p", 1);
-    } catch (Throwable ignore) {
-      // ignore
-    }
     setupLists(rundata, context);
 
     return MessageUtils.getUserList("all".equals(target_group_name)
       ? "LoginUser"
-      : target_group_name, null, page, USER_LIMIT);
+      : target_group_name, keyword.getValue());
   }
 
   /**
@@ -246,5 +246,24 @@ public class MessageUserListSelectData extends
    */
   public List<ALEipGroup> getMyGroupList() {
     return myGroupList;
+  }
+
+  /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
+  }
+
+  /**
+   * @return keyword
+   */
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  public boolean hasKeyword() {
+    return !StringUtils.isEmpty(keyword.getValue());
   }
 }

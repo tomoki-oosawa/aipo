@@ -18,7 +18,7 @@
  *#
 <div class="messageSummaryHead">
 	<div class="inner">
-		<select onchange="aipo.message.reloadUserList(this.options[this.selectedIndex].value);"class="w100">
+		<select id="messageUserGroupSelect" name="group" onchange="aipo.message.searchUserList();"class="w100">
 			<option value="all">$l10n.SCHEDULE_ALL_GROUP</option>
     #if($result.MyGroupList.size() > 0)
 		<option value="all">----------</option>
@@ -35,8 +35,8 @@
 		</select>
 	</div>
 	<div class="inner">
-		<form class="search">
-			<input type="text" id="userSearch" class=""><label class="placeholder" for="userSearch" style="display: block;">ユーザー検索</label>
+		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="?template=MessageUserListScreen" onsubmit="aipo.message.searchUserList(); return false;" method="post">
+			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="userSearch" #if($!result.hasKeyword())style="display:none"#end>ユーザー検索</label>
 			<button class="submit" title="検索"><i class="icon-search"></i></button>
 		</form>
 	</div>
