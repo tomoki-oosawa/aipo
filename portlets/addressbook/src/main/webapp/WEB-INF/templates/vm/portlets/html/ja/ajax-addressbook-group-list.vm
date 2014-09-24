@@ -29,15 +29,13 @@
 #AUIcontentsAreaHeader()
 
 <h2>$l10n.ADDRESSBOOK_GROUP_MANAGEMENT</h2>
-#if($result.List.size() !=0)
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
 </p></div>
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader($l10n.ADDRESSBOOK_GROUP)
-#end
 #if($result.List.size() ==0)
-#AUIbuttonActionInBlankBox($l10n.ADDRESSBOOK_GROUP_ADD  "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookGroupFormScreen').addQueryData('entityid','new')','$!portlet.ID',aipo.addressbook.onLoadAddressbookGroupDialog);")
+#AUIEmptyMessage("icon-compass" "$l10n.ADDRESSBOOK_EMPTY_SHORT_MESSAGE_GROUP")
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "${indicator_str}$l10n.ADDRESSBOOK_PROCESSING_NOW")
 #AUISummaryDiv()
