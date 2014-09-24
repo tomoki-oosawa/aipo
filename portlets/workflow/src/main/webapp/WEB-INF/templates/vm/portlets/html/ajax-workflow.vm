@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU</div>
+#AUIEmptyMessage("" "$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU")
 #else
 #ALformheaderAction('Workflow' $jslink $portlet)
 #AUISummaryDiv()
