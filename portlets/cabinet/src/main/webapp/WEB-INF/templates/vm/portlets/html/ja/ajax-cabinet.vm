@@ -78,7 +78,7 @@
 <div class="message">$l10n.CABINET_NOT_PERMISSION_VIEW</div>
 #else
 #if (!$result.List || $result.List.size() == 0)
-<div class="message">$l10n.CABINET_NOTHING_FILE_IN_FOLDER</div>
+#AUIEmptyMessage("" "$l10n.CABINET_NOTHING_FILE")
 #else
 #if($result.TableColumNum == 4)
 #ALformheaderAction('Cabinet' $jslink $portlet)
