@@ -94,7 +94,7 @@
 
 <div id="listmessageDiv"></div>
 #if($result.List.size() == 0)
-<div class="message">$l10n.SCHEDULE_THERE_IS_NO_SCHEDULE</div>
+#AUIEmptyMessage("icon-calendar" "$l10n.SCHEDULE_THERE_IS_NO_SCHEDULE")
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIsearchresult($!result.targetKeyword.toString())
