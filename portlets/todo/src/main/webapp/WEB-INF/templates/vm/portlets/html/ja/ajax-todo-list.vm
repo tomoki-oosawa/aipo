@@ -65,7 +65,7 @@
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #if($result.List.size() == 0)
-<div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
+#AUIEmptyMessage("icon-list-ul" "$l10n.TODO_NO_TODO")
 #else
 #ALajaxlistformheaderAction('ToDo')
 <div class="auiSummaryMeta clearfix">

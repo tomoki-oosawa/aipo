@@ -26,7 +26,10 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.TODO_MANAGEMENT</h2>
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+<div class="auiSummaryMeta clearfix">
+#AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
+</div>
+#AUIEmptyMessage("icon-list-ul" "$l10n.COMMON_NO_CATEGORY")
 #else
 
 <div class="auiSummaryMeta clearfix"><p>

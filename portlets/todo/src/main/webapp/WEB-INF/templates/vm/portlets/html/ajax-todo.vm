@@ -83,7 +83,7 @@
 </div>
 
 #if ($result.List.size() == 0)
-<div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
+#AUIEmptyMessage("" "$l10n.TODO_NO_TODO")
 #else
 #if($result.TableColumNum == 4)
 #ALformheaderAction('ToDo' $jslink $portlet)
