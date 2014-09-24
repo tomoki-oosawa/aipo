@@ -36,14 +36,14 @@
 	</div>
 	<div class="inner">
 		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="?template=MessageUserListScreen" onsubmit="aipo.message.searchUserList(); return false;" method="post">
-			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="userSearch" #if($!result.hasKeyword())style="display:none"#end>ユーザー検索</label>
-			<button class="submit" title="検索"><i class="icon-search"></i></button>
+			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="userSearch" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_USER_SEARCH</label>
+			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
 		</form>
 	</div>
 </div>
 <div class="messageUserlist">
 #if($result.List.size() == 0)
-
+#AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_USER_EMPTY_MESSAGE")
 #else
 #set ($currentIndex = "")
 #set ($isFirst = true)

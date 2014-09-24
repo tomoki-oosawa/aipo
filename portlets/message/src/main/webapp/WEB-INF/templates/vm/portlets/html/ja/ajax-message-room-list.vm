@@ -18,17 +18,21 @@
  *#
  <div class="messageSummaryHead">
 	<div class="inner">
-		<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">ルームを追加する</a>
+		<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">$l10n.MESSAGE_ADD_ROOM</a>
 	</div>
 	<div class="inner">
 		<form class="search" id="messageRoomSearchForm" name="messageRoomSearchForm" action="?template=MessageRoomListScreen" onsubmit="aipo.message.searchRoomList(this); return false;" method="post">
-			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="roomSearch" #if($!result.hasKeyword())style="display:none"#end>ルーム検索</label>
-			<button class="submit" title="検索"><i class="icon-search"></i></button>
+			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="roomSearch" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_ROOM_SEARCH</label>
+			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
 		</form>
 	</div>
 </div>
 #if($result.List.size() == 0)
-
+#if($!isSearch)
+#AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE")
+#else
+#AUIEmptyMessage("icon-arrow-up" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE_FIRST")
+#end
 #else
 <ul class="messageSummary">
 #foreach ($record in $result.List)

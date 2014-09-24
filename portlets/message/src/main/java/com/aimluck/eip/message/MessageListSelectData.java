@@ -44,6 +44,8 @@ public class MessageListSelectData extends
 
   private int cursor = -1;
 
+  private boolean latest = false;
+
   private int roomId;
 
   private int targetUserId;
@@ -82,8 +84,13 @@ public class MessageListSelectData extends
     } catch (Throwable ignore) {
       // ignore
     }
-
-    return MessageUtils.getMessageList(roomId, cursor, MESSAGE_LIMIT);
+    try {
+      int param = rundata.getParameters().getInt("latest");
+      latest = (param == 1);
+    } catch (Throwable ignore) {
+      // ignore
+    }
+    return MessageUtils.getMessageList(roomId, cursor, MESSAGE_LIMIT, latest);
   }
 
   /**
@@ -123,8 +130,8 @@ public class MessageListSelectData extends
     rd.setCreateDate(model.getCreateDate());
     rd.setOwner(model.getUserId().intValue() == userId);
     if (model.getMessageId().intValue() > lastMessageId) {
-      lastMessageId = model.getMessageId().intValue();
-    }
+        lastMessageId = model.getMessageId().intValue();
+      }
     return rd;
   }
 

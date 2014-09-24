@@ -25,6 +25,7 @@ aipo.message.currentGroupName = "all";
 aipo.message.currentRoomSearchKeyword = null;
 aipo.message.currentUserSearchKeyword = null;
 aipo.message.moreMessageLock = false;
+aipo.message.isActive = true;
 
 aipo.message.init = function() {
     aipo.message.reloadRoomList();
@@ -48,20 +49,20 @@ aipo.message.reloadMessageList = function() {
     } else if (aipo.message.currentUserId) {
         screen += "&u=" + aipo.message.currentUserId;
     }
+    aipo.message.moreMessageLock = false;
     aipo.message.messagePane.viewPage(screen);
 }
 
-aipo.message.moreMessageList = function(cursor) {
-    aipo.message.moreMessageLock = true;
+aipo.message.moreMessageList = function() {
     var screen = "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
     } else if (aipo.message.currentUserId) {
         screen += "&u=" + aipo.message.currentUserId;
     }
-    var messageLastMessageIdValues = dojo.query(".messageLastMessageIdValue");
-    var cursor = messageLastMessageIdValues[messageLastMessageIdValues.length - 1].innerHTML;
+    var cursor = aipo.message.getLastMessageId();
     if (cursor) {
+        aipo.message.moreMessageLock = true;
         screen += "&c=" + cursor;
         dojo.xhrGet({
             url : screen,
@@ -79,6 +80,40 @@ aipo.message.moreMessageList = function(cursor) {
                 aipo.message.moreMessageLock = false;
             }
         });
+    }
+}
+
+aipo.message.latestMessageList = function() {
+    var screen = "?template=MessageListScreen";
+    if (aipo.message.currentRoomId) {
+        screen += "&r=" + aipo.message.currentRoomId;
+    } else if (aipo.message.currentUserId) {
+        screen += "&u=" + aipo.message.currentUserId;
+    }
+    var cursor = aipo.message.getFirstMessageId();
+    if (cursor) {
+        aipo.message.moreMessageLock = true;
+        screen += "&c=" + cursor;
+        screen += "&latest=1";
+        dojo.xhrGet({
+            url : screen,
+            timeout : 30000,
+            encoding : "utf-8",
+            handleAs : "text",
+            headers : {
+                X_REQUESTED_WITH : "XMLHttpRequest"
+            },
+            load : function(response, ioArgs) {
+                messagePane.innerHTML = response + messagePane.innerHTML;
+                aipo.message.moreMessageLock = false;
+                aipo.message.reloadRoomList();
+            },
+            error : function(error) {
+                aipo.message.moreMessageLock = false;
+            }
+        });
+    } else {
+        aipo.message.reloadRoomList();
     }
 }
 
@@ -406,9 +441,9 @@ aipo.message.expandMember = function() {
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg) {
         aimluck.io.disableForm(dojo.byId("messageForm"), false);
-        aipo.message.reloadMessageList();
-        aipo.message.reloadRoomList();
+        aipo.message.latestMessageList();
         aipo.message.clearInput();
+        dojo.byId("messagePane").scrollTop = 0;
     }
 };
 
@@ -514,9 +549,50 @@ aipo.message.onBlurPlaceholder = function(input) {
     }
 }
 
+aipo.message.getFirstMessageId = function() {
+    var messagePane = dojo.byId("messagePane");
+    if(messagePane) {
+        if(messagePane.children.length > 0) {
+            var id = messagePane.children[0].id;
+            if(id) {
+                return id.replace("message", "");
+            }
+        }
+    }
+    return null;
+}
+
+aipo.message.getLastMessageId = function() {
+    var messagePane = dojo.byId("messagePane");
+    if(messagePane) {
+        if(messagePane.children.length > 0) {
+            var id = messagePane.children[messagePane.children.length-1].id;
+            if(id) {
+                return id.replace("message", "");
+            }
+        }
+    }
+    return null;
+}
+
+aipo.message.isOpenWindow = function() {
+    return dojo.hasClass("dd_message", "open");
+}
+
 dojo.addOnLoad(function() {
     dojo.connect(window, "onresize", null, function(e) {
         aipo.message.fixMessageWindow();
+    });
+    dojo.connect(window, "onfocus", null, function(e) {
+        aipo.message.isActive = true;
+        if (aipo.message.isOpenWindow()
+                && aipo.message.currentRoomId) {
+            aipo.message.latestMessageList();
+        }
+    });
+    dojo.connect(window, "onblur", null, function(e) {
+        aipo.message.isActive = false;
+        //
     });
     var messagePane = dojo.byId("messagePane");
     if (messagePane) {

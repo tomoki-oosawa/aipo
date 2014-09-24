@@ -108,7 +108,7 @@ public class MessageUtils {
   }
 
   public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
-      int limit) {
+      int limit, boolean isLatest) {
     StringBuilder select = new StringBuilder();
 
     select.append("select");
@@ -133,7 +133,11 @@ public class MessageUtils {
     body
       .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id = #bind($room_id) ");
     if (cursor > 0) {
-      body.append(" and t1.message_id < #bind($cursor) ");
+      if (isLatest) {
+        body.append(" and t1.message_id > #bind($cursor) ");
+      } else {
+        body.append(" and t1.message_id < #bind($cursor) ");
+      }
     }
     StringBuilder last = new StringBuilder();
 
