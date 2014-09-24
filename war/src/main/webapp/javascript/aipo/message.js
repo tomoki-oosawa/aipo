@@ -129,6 +129,7 @@ aipo.message.reloadRoomList = function(roomId) {
             var count = parseInt(messageTotalUnreadCountValue.innerHTML);
             if (count != NaN) {
                 aipo.menu.message.count(count);
+                aipo.menu.updateTitle();
             }
             if (aipo.message.messageRoomListPane.roomId) {
                 aipo.message
@@ -537,6 +538,7 @@ aipo.message.refreshUnreadCount = function() {
         }
     });
     aipo.menu.message.count(total);
+    aipo.menu.updateTitle();
 }
 
 aipo.message.onFocusPlaceholder = function(input) {
