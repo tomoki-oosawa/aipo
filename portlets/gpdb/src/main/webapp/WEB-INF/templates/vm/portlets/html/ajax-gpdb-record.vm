@@ -89,8 +89,6 @@
 			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
-		#elseif ($dateId.toString() == $record.GpdbItemId.toString()||$createDateId.toString() == $record.GpdbItemId.toString()||$updateDateId.toString()== $record.GpdbItemId.toString())
-			#ALtdcellNowrapAtt($!record.DispValue 'class="mb_hide" nowrap="nowrap"')
 		#else
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end

@@ -162,8 +162,6 @@ $l10n.COMMON_NOT_REFLECT_MSG
 			#ALtdcellfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
-		#elseif ($dateId.toString() == $record.GpdbItemId.toString()||$createDateId.toString() == $record.GpdbItemId.toString()||$updateDateId.toString()== $record.GpdbItemId.toString())
-			#ALtdcellAtt($!record.DispValue 'nowrap="nowrap"')
 		#else
 			#ALtdcell($!record.DispValue)
 		#end
