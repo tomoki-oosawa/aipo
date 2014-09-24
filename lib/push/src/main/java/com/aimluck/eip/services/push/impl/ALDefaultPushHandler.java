@@ -19,7 +19,10 @@
 
 package com.aimluck.eip.services.push.impl;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletContext;
 
@@ -57,11 +60,19 @@ public class ALDefaultPushHandler extends ALPushHandler {
    * @param recipients
    */
   @Override
-  public void pushAsync(String type, List<String> recipients) {
+  public void pushAsync(String type, Map<String, String> params,
+      List<String> recipients) {
     ServletContext servletContext = ServletContextLocator.get();
     if (servletContext != null) {
       JSONObject object = new JSONObject();
       object.put("type", type);
+      if (params != null) {
+        Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
+        while (iterator.hasNext()) {
+          Entry<String, String> next = iterator.next();
+          object.put(next.getKey(), next.getValue());
+        }
+      }
 
       MessageSender messageSender =
         (MessageSender) servletContext

@@ -23,7 +23,9 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -228,7 +230,10 @@ public class MessageFormData extends ALAbstractFormData {
 
       Database.commit();
 
-      ALPushService.pushAsync("message", recipients);
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(room.getRoomId()));
+
+      ALPushService.pushAsync("message", params, recipients);
 
     } catch (Exception ex) {
       Database.rollback();

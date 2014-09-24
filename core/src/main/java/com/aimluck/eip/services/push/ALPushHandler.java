@@ -20,6 +20,7 @@
 package com.aimluck.eip.services.push;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -33,5 +34,6 @@ public abstract class ALPushHandler {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALPushHandler.class.getName());
 
-  public abstract void pushAsync(String type, List<String> recipients);
+  public abstract void pushAsync(String type, Map<String, String> params,
+      List<String> recipients);
 }

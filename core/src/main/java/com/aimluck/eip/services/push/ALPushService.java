@@ -20,6 +20,7 @@
 package com.aimluck.eip.services.push;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -34,7 +35,8 @@ public class ALPushService {
     return ALPushFactoryService.getInstance().getPushHandler();
   }
 
-  public static void pushAsync(String type, List<String> recipients) {
-    getService().pushAsync(type, recipients);
+  public static void pushAsync(String type, Map<String, String> params,
+      List<String> recipients) {
+    getService().pushAsync(type, params, recipients);
   }
 }

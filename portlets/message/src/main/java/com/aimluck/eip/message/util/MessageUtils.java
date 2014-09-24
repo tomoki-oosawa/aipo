@@ -21,7 +21,9 @@ package com.aimluck.eip.message.util;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.portal.Portlet;
@@ -45,6 +47,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -406,13 +409,13 @@ public class MessageUtils {
     }
   }
 
-  public static void read(int roomId, int userId, int lastMessageId) {
+  public static void read(EipTMessageRoom room, int userId, int lastMessageId) {
     SQLTemplate<EipTMessageRead> countQuery =
       Database
         .sql(
           EipTMessageRead.class,
           "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
-        .param("room_id", Integer.valueOf(roomId))
+        .param("room_id", Integer.valueOf(room.getRoomId()))
         .param("user_id", Integer.valueOf(userId))
         .param("message_id", Integer.valueOf(lastMessageId));
 
@@ -425,12 +428,66 @@ public class MessageUtils {
     if (countValue > 0) {
       String sql =
         "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
+      Database.sql(EipTMessageRead.class, sql).param(
+        "room_id",
+        Integer.valueOf(room.getRoomId())).param(
+        "user_id",
+        Integer.valueOf(userId)).param(
+        "message_id",
+        Integer.valueOf(lastMessageId)).execute();
+
+      List<String> recipients = new ArrayList<String>();
+      @SuppressWarnings("unchecked")
+      List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+      for (EipTMessageRoomMember member : members) {
+        if (member.getUserId().intValue() != userId) {
+          recipients.add(member.getLoginName());
+        }
+      }
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(room.getRoomId()));
+
+      ALPushService.pushAsync("message_read", params, recipients);
+    }
+  }
+
+  public static Map<Integer, Long> getReadCountList(int roomId, int userId,
+      int minMessageId, int maxMessageId) {
+    SQLTemplate<EipTMessageRead> query =
       Database
-        .sql(EipTMessageRead.class, sql)
+        .sql(
+          EipTMessageRead.class,
+          "select message_id, is_read, count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id <> #bind($user_id) and message_id >= #bind($min_message_id) and message_id <= #bind($max_message_id) group by message_id, is_read order by message_id desc")
         .param("room_id", Integer.valueOf(roomId))
         .param("user_id", Integer.valueOf(userId))
-        .param("message_id", Integer.valueOf(lastMessageId))
-        .execute();
+        .param("min_message_id", Integer.valueOf(minMessageId))
+        .param("max_message_id", Integer.valueOf(maxMessageId));
+
+    List<DataRow> fetchList = query.fetchListAsDataRow();
+
+    Map<Integer, Long> maps = new HashMap<Integer, Long>();
+    for (DataRow row : fetchList) {
+      Long count = (Long) row.get("c");
+      Integer messageId = (Integer) row.get("message_id");
+      String isRead = (String) row.get("is_read");
+      Long read = maps.get(messageId);
+      if (read == null) {
+        read = count;
+      } else {
+        if ("T".equals(isRead)) {
+          if (read.intValue() == 0) {
+            read = Long.valueOf(-1);
+          } else {
+            read = count;
+          }
+        } else {
+          if (count.intValue() == 0) {
+            read = Long.valueOf(-1);
+          }
+        }
+      }
+      maps.put(messageId, read);
     }
+    return maps;
   }
 }
