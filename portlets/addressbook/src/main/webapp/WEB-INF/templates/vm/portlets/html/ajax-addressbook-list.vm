@@ -35,6 +35,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
+#if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="AddressBookListScreen"/>
@@ -43,14 +44,16 @@
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryDivfooter()
+#end
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #if(!($result.hasAuthorityList))
   $l10n.ADDRESSBOOK_PERMISSION_DENIED
 #else
 #if($result.List.size() == 0)
-$l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
+#AUIEmptyMessage("icon-compass" "$l10n.ADDRESSBOOK_EMPTY_SHORT_MESSAGE")
 #else
+
 #ALajaxlistformheader($l10n.ADDRESSBOOK_ADDRESS)
 #AUISummaryDiv()
 <div class="floatLeft">
@@ -81,7 +84,7 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 <input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-#set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId).addQueryData('tab','$!result.currentTab'))")
+#set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId))")
 #if ($!record.PublicFlag.toString() == 'T')#set($publicFlag=true)#else#set($publicFlag=false)#end
 #AUIlinkList("aipo.common.showDialog('$url');" $!record.Name $publicFlag "title='$l10n.TODO_CLOSE_PUBLIC'")
 #ALtdcellfooter()
