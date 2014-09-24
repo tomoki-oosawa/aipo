@@ -31,15 +31,15 @@ public class WorkflowRouteDetailResultData extends WorkflowRouteResultData {
   /** メモ */
   protected ALStringField note;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALStringField create_date;
 
   /** 更新日 */
   protected ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {

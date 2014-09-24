@@ -64,6 +64,9 @@ public class ProxyScreen extends ALVelocityScreen {
       return;
     }
 
+    // normalize()でエラーが起きないようにurlStringから改行コードを排除する処理
+    urlString = urlString.replaceAll("\\n", "");
+
     URI uri = new URI(urlString).normalize();
     String path =
       uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");

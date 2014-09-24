@@ -273,9 +273,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-	  <groupId>postgresql</groupId>
-	  <artifactId>postgresql</artifactId>
-	  <version>8.4-701.jdbc3</version>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.3-1101-jdbc3</version>
     </dependency>
     <dependency>
 	  <groupId>mysql</groupId>

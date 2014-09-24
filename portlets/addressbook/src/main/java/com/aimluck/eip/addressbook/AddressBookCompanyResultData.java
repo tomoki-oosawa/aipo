@@ -49,7 +49,7 @@ public class AddressBookCompanyResultData implements ALData {
 
   private ALStringField url;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -58,6 +58,7 @@ public class AddressBookCompanyResultData implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
     company_id = new ALNumberField();
     company_name = new ALStringField();

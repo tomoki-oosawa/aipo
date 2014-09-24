@@ -42,7 +42,7 @@ public class WhatsNewBean implements ALData, Comparable<WhatsNewBean> {
   /** 名前 */
   private ALStringField owner_name;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField update_date;
 
   /** パラメータ */

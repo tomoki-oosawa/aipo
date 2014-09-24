@@ -143,8 +143,8 @@ input[type=password], #timelineOuter #inputField,
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url("../font/fontawesome-webfont.eot?v=3.2.0");
-  src: url("../font/fontawesome-webfont.eot?#iefix&v=3.2.0") format("embedded-opentype"), url("../font/fontawesome-webfont.woff?v=3.2.0") format("woff"), url("../font/fontawesome-webfont.ttf?v=3.2.0") format("truetype"), url("../font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.0") format("svg");
+  src: url("fontawesome-webfont.eot");
+  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -719,7 +719,6 @@ ul.hdTools .dropdown:before {
 }
 
 .dropdown_list {
-  min-height: 200px;
   position: relative;
 }
 .dropdown_list ul {
@@ -956,21 +955,27 @@ ul.hdTools .dropdown:before {
 	emptyMessage
 --------------------------------------------------*/
 .emptyMessage {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  width: 17em;
-  height: 160px;
   margin: auto;
   text-align: center;
   color: #999999;
+  margin: 120px 0 170px;
 }
 .emptyMessage [class*=icon-] {
   font-size: 10em;
   color: #d2d2d2;
   text-shadow: 0 -1px 0 #b8b8b8;
+}
+.dropdown_list .emptyMessage, .tableWrapper .emptyMessage, .auiPopup .emptyMessage {
+  margin: 15px 0;
+}
+#dd_message .emptyMessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 160px;
+  margin: auto;
 }
 
 /***************************************************
@@ -1506,8 +1511,8 @@ button[disabled]:active {
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url("../font/fontawesome-webfont.eot?v=3.2.0");
-  src: url("../font/fontawesome-webfont.eot?#iefix&v=3.2.0") format("embedded-opentype"), url("../font/fontawesome-webfont.woff?v=3.2.0") format("woff"), url("../font/fontawesome-webfont.ttf?v=3.2.0") format("truetype"), url("../font/fontawesome-webfont.svg#fontawesomeregular?v=3.2.0") format("svg");
+  src: url("fontawesome-webfont.eot");
+  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -3260,7 +3265,6 @@ ul.attachments {
 }
 #timelineOuter .message,
 .timelineOuter .message {
-  position: relative;
   margin: 0;
   padding: 10px 0 0;
   clear: both;

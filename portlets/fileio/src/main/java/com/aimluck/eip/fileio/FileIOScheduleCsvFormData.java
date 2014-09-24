@@ -560,7 +560,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
   }
 
   /**
-   * 作成日時を取得します <BR>
+   * 作成日を取得します <BR>
    * 
    * @return
    */

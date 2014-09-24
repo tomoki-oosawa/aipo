@@ -67,10 +67,10 @@ public class BlogEntryResultData implements ALData {
   /** タイトル月日 */
   private ALDateTimeField title_date;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
-  /** 登録日(DATA型) */
+  /** 作成日(DATA型) */
   private ALDateTimeField create_date_alternative;
 
   /** 更新日 */

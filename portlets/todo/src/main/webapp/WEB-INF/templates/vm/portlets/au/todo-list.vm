@@ -43,7 +43,7 @@
 #ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.TodoId)"><font color="$color">$!record.TodoName</font></a>
 #if(! ${record.isPublic()})
 （非公開）
-##AUIiconSecretAtt("title='非公開'")
+##AUIiconSecretAtt("title='非公開'" "")
 #end
 #ALcell_li_footer($career)
 #end

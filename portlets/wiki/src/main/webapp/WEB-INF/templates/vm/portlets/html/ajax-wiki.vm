@@ -21,7 +21,7 @@
 #set ($categoryEtc = false)
 ## ---------------------------------------------------------------------------
 #if(!$!result.Detail)
-<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+#AUIEmptyMessage("" "$l10n.WIKI_EMPTY_MESSAGE")
 #else
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiScreen")' />

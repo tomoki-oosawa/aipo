@@ -270,6 +270,14 @@ $theLink
       <td $option>$text</td>
 #end
 
+#macro(ALtdcellNowrap $text)
+      <td><div>$text</div></td>
+#end
+
+#macro(ALtdcellNowrapAtt $text $option)
+      <td $option><div>$text</div></td>
+#end
+
 #macro(ALtdheadheader)
     <th>
 #end
@@ -305,6 +313,18 @@ $theLink
 
 #macro(ALtdcellfooter)
     </td>
+#end
+
+#macro(ALtdcellNowrapheader)
+    <td><div>
+#end
+
+#macro(ALtdcellNowrapheaderAtt $option)
+    <td $option><div>
+#end
+
+#macro(ALtdcellNowrapfooter)
+    </div></td>
 #end
 
 #macro(ALspacebothheader)
@@ -374,12 +394,12 @@ $theLink
 <select name="$name" id="$name" style="width:$width;" onchange="$onchange">
 #end
 
-#macro(ALselectpdheaderw100 $name $onchange)
-#ALselectpdheaderclass($name $onchange 'w100')
-#end
-
 #macro(ALselectpdheaderclass $name $onchange $class)
 <select name="$name" id="$name" class="$class" onchange="$onchange">
+#end
+
+#macro(ALselectpdheaderw100 $name $onchange)
+#ALselectpdheaderclass($name $onchange 'w100')
 #end
 
 #macro(ALselectfooter)
@@ -668,9 +688,9 @@ $item.get(0)
 			#ALMessage()
 			#if($data.User.getUserName() != "admin")
 			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");aipo.menu.activity.reload();' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
+				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"></div>
+					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"></div></div>
 				</div>
 			</li>
 			#end
@@ -705,22 +725,33 @@ $item.get(0)
 #end
 
 #* D I A L O G *#
-#macro(ALdialogheader $title)
-#ALdialogheaderPrint($title "" "" "")
+
+#macro(ALdialogCloseButton $onclick)
+<a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="$onclick"><span><i class="icon-remove"></i></span></a>
 #end
 
 #macro(ALdialogCloseButtonCommon)
 #ALdialogCloseButton("aipo.common.hideDialog();")
 #end
 
-#macro(ALdialogCloseButton $onclick)
-<a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onClick="$onclick"><span><i class="icon-remove"></i></span></a>
-#end
-
 #macro(AUIPrintWindowCloseIcon)
 <div class="buttons">
 <a href="javascript:window.close();" class="auiButtonIcon" title="$l10n.COMMON_CLOSE"><i class="icon-remove"></i></a>
 </div>
+#end
+
+#macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick $link)
+	<div class="auiPopup clearfix">
+		<div class="auiPopupHead clearfix">
+	    	<div class="auiPopupTool">
+	    		#if(($portlet_id!=""))
+	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="icon-print"></i></span></a></div>
+	        	#end
+	        	<div>#ALdialogCloseButton($onclick)</div>
+	    	</div>
+	    		<div class="auiPopupTitle">$title</div>
+		</div>
+		<div class="roundBlockContent">
 #end
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
@@ -744,19 +775,10 @@ $item.get(0)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.timeline.hideDialog();" "$link")
 #end
 
-#macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick $link)
-	<div class="auiPopup clearfix">
-		<div class="auiPopupHead clearfix">
-	    	<div class="auiPopupTool">
-	    		#if(($portlet_id!=""))
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="icon-print"></i></span></a></div>
-	        	#end
-	        	<div>#ALdialogCloseButton($onclick)</div>
-	    	</div>
-	    		<div class="auiPopupTitle">$title</div>
-		</div>
-		<div class="roundBlockContent">
+#macro(ALdialogheader $title)
+#ALdialogheaderPrint($title "" "" "")
 #end
+
 
 #macro(ALdialogheaderCloseJS $title $js)
 <div class="auiPopup clearfix">
@@ -766,6 +788,17 @@ $item.get(0)
 		</div>
 		<div class="auiPopupTitle">$title</div>
 	</div>
+	<div class="roundBlockContent">
+#end
+#macro(ALdialogheaderDetailSmartPhoneAbstract $title $onclick)
+	<!-- Smartphone  Header -->
+	<div class="auiPopup clearfix">
+		<div class="auiPopupHead clearfix">
+	    	<div class="auiPopupTool">
+	        	<div>#ALdialogCloseButton($onclick)</div>
+	    	</div>
+    			<div class="auiPopupTitle">$title</div>
+		</div>
 	<div class="roundBlockContent">
 #end
 
@@ -779,17 +812,6 @@ $item.get(0)
 #ALdialogheaderDetailSmartPhoneAbstract($title "aipo.note.hideDialog();")
 #end
 
-#macro(ALdialogheaderDetailSmartPhoneAbstract $title $onclick)
-	<!-- Smartphone  Header -->
-	<div class="auiPopup clearfix">
-		<div class="auiPopupHead clearfix">
-	    	<div class="auiPopupTool">
-	        	<div>#ALdialogCloseButton($onclick)</div>
-	    	</div>
-    			<div class="auiPopupTitle">$title</div>
-		</div>
-	<div class="roundBlockContent">
-#end
 
 #macro(ALdialogfooter)
 		</div>
@@ -1078,6 +1100,13 @@ $currentPage/$pages
 #end
 #end
 
+#macro(ALcell_pagetitle $career $title)
+<div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;">${alias}</div>
+<div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">$title</div>
+<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${external_resources_url}/images/dot.gif" width="1" height="1" /></div>
+<hr style="border:solid 1px #ffffff; color:#ffffff" />
+#end
+
 #macro(ALcell_menulist $career $title $list)
 #set($index = 0)
 #ALcell_pagetitle($career $title)
@@ -1127,45 +1156,6 @@ $menu.get(0)
 #end
 #end
 
-
-#macro(ALcell_menulist_i $career $title $list)
-#set($index = 0)
-#ALcell_pagetitle($career $title)
-#ALcell_contents_header($career)
-#ALcell_radius_header($career)
-#foreach($menulist in $list)
-#set($menulistlen = $menulist.size() - 1)
-#set($index = 0)
-#foreach($menu in $menulist)
-#if($index == 0)
-#if ($menu.get(1) == "")
-##$menu.get(0)
-#else
-##ALcell_radius_header($career)
-<a href="$menu.get(1)">$menu.get(0)</a><br>
-##ALcell_radius_footer($career)
-#end
-##ALcell_ul_header($career)
-#else
-#ALcell_li_header($career)
-<a href="$menu.get(1)"><img src="$menu.get(2)" width="32" height="32" align="absmiddle" />$menu.get(0)</a>
-#ALcell_li_footer($career)
-#end
-#set($index = $index + 1)
-#end
-##ALcell_ul_footer($career)
-#end
-#ALcell_radius_footer($career)
-#ALcell_contents_footer($career)
-#end
-##ALcell_radius_footer($career)
-
-#macro(ALcell_pagetitle $career $title)
-<div style="background:$config.getString("aipo.color.cell.vm.logo"); color:#ffffff; text-align:center;">${alias}</div>
-<div style="background:$config.getString("aipo.color.cell.vm.title"); text-align:center;">$title</div>
-<div style="background:$config.getString("aipo.color.cell.vm.logo");"><img src="${external_resources_url}/images/dot.gif" width="1" height="1" /></div>
-<hr style="border:solid 1px #ffffff; color:#ffffff" />
-#end
 
 #macro(ALcell_linklist $career $list)
 #foreach($link in $list)
@@ -1379,6 +1369,39 @@ $link.get(0)
 </ul>
 #end
 
+#macro(ALcell_menulist_i $career $title $list)
+#set($index = 0)
+#ALcell_pagetitle($career $title)
+#ALcell_contents_header($career)
+#ALcell_radius_header($career)
+#foreach($menulist in $list)
+#set($menulistlen = $menulist.size() - 1)
+#set($index = 0)
+#foreach($menu in $menulist)
+#if($index == 0)
+#if ($menu.get(1) == "")
+##$menu.get(0)
+#else
+##ALcell_radius_header($career)
+<a href="$menu.get(1)">$menu.get(0)</a><br>
+##ALcell_radius_footer($career)
+#end
+##ALcell_ul_header($career)
+#else
+#ALcell_li_header($career)
+<a href="$menu.get(1)"><img src="$menu.get(2)" width="32" height="32" align="absmiddle" />$menu.get(0)</a>
+#ALcell_li_footer($career)
+#end
+#set($index = $index + 1)
+#end
+##ALcell_ul_footer($career)
+#end
+#ALcell_radius_footer($career)
+#ALcell_contents_footer($career)
+#end
+##ALcell_radius_footer($career)
+
+
 #macro(ALcell_msgboard_detail $career $detail)
 <h3 class="mt5 mb5">$!{detail.TopicName}</h3>
 <p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!{detail.CreateDate.Year}/$!{detail.CreateDate.Month}/$!{detail.CreateDate.Day}&nbsp;$!{detail.CreateDate.Hour}:$!{detail.CreateDate.Minute}<br />
@@ -1519,6 +1542,10 @@ $link.get(0)
 
 #macro(AUIDisableArrowbutton $aclass)
 <span class="auiButtonDisabled">&nbsp;<i class="$aclass"></i>&nbsp;</span>
+#end
+
+#macro(AUIDisableButton $text)
+<span class="auiButton auiButtonDisabled">$text</span>
 #end
 
 #macro(AUIbutton $text $url)
@@ -1770,15 +1797,15 @@ $!{text}
 #end
 #end
 
-#macro(AUIiconSecretAtt $option)
-	<i class="auiIcon auiIconSecret" $option></i>
+#macro(AUIiconSecretAtt $option $class)
+<i class="auiIcon auiIconSecret $!{class}" $option></i>
 #end
 
-
-
-
-
-
+#macro(AUIlinkList $onclick $text $public_flag $option)
+<div>
+<a href="javascript:void(0);" onclick="$onclick">#if(!$public_flag)#AUIiconSecretAtt($!option "mr5")#end$text</a>
+</div>
+#end
 
 #macro(AUISearchHeader $id $name $action $onsubmit)
 <form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
@@ -1811,4 +1838,11 @@ $!{text}
 		<div class="indicator">$l10n.WAR_ASYNCLOAD_LOADING</div>
 		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', '',  true);"/>
 	</div>
+#end
+
+#macro(AUIEmptyMessage $class $text)
+<div class="emptyMessage">
+#if($class != '')<i class="$class"></i>#end
+<p>$text</p>
+</div>
 #end

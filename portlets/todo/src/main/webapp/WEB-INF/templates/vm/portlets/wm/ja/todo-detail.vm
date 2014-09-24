@@ -38,7 +38,7 @@
 <dd>$!{result.Detail.StateString}</dd>
 <dt>優先度</dt>
 <dd>$!{result.Detail.PriorityString}</dd>
-<dt>登録日</dt>
+<dt>作成日</dt>
 <dd>$!{result.Detail.CreateDate}</dd>
 <dt>更新日</dt>
 <dd>$!{result.Detail.UpdateDate}</dd>

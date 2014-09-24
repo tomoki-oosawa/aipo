@@ -33,7 +33,7 @@
 #ALtditemheader()
 $!result.Detail.Name
 #if($!result.Detail.PublicFlag.toString() == 'F')
-#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")
+#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'" "")
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.ADDRESSBOOK_NAME_KANA)
@@ -95,7 +95,7 @@ $!record.Name <br />
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
-#ALtdcaption($l10n.COMMON_UPDATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem("$!result.Detail.UpdatedUser （$!result.Detail.UpdateDate）")
 #end
 #ALtablefooter()

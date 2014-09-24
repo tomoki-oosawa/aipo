@@ -226,7 +226,7 @@ public class WikiFormData extends ALAbstractFormData {
       msgList.add(getl10n("WIKI_PARENT_ERROR"));
     }
 
-    if (update_date != null) {
+    if (update_date != null && entityId != null) {
       EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
       if (eipTWiki != null) {
         if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
@@ -528,6 +528,11 @@ public class WikiFormData extends ALAbstractFormData {
           setParentWiki(WikiUtils.getEipTWiki(Integer.parseInt(wikiId)));
         }
       }
+    }
+
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      ALEipUtils.removeTemp(rundata, context, "update_date");
+      update_date = null;
     }
 
     return res;

@@ -60,7 +60,7 @@ public class AccessControlResultData implements ALData {
   /** ユーザー名一覧 */
   private List<String> unamelist;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -70,6 +70,7 @@ public class AccessControlResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     acl_role_id = new ALNumberField();
     acl_role_name = new ALStringField();

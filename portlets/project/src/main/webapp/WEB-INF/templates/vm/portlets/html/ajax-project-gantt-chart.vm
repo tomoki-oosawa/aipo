@@ -126,7 +126,7 @@
 		#end
 	</div>
 	#if($result.List.size() == 0)
-		<div class="message">$l10n.PROJECT_NO_RECORD</div>
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
 	#else
 
 		##スタイル設定

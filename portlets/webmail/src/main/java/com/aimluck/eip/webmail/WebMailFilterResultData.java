@@ -47,16 +47,17 @@ public class WebMailFilterResultData implements ALData {
   /** 振り分け先フォルダ名 */
   private ALStringField dst_folder_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
   private ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     filter_id = new ALNumberField();
     sort_order = new ALNumberField();

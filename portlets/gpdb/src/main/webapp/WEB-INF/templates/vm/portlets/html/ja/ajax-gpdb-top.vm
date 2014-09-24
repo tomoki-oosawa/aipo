@@ -24,10 +24,12 @@
 
 #set ($addGpdb = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbFormScreen").addQueryData("entityid","new")))
 #set ($orderGpdb = $!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbChangeTurnFormScreen"))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
+
 ## ---------------------------------------------------------------------------
 #AUIwideAreaHeader()
 #if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
-<div class="message">$l10n.GPDB_NOT_CREATED</div>
+#AUIEmptyMessage("" "$utils.getl10nFormat1('GPDB_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 #else
 <div class="auiSummaryMeta clearfix mt0">
   <div class="filters floatLeft" id="filters_$!{portlet.ID}">
@@ -53,7 +55,7 @@
 	</div>
 </div>
 #if($result.List.size() == 0)
-<div class="message">$l10n.GPDB_NO_DATA</div>
+#AUIEmptyMessage("" "$l10n.GPDB_EMPTY_DATA_MESSAGE")
 #else
 <table class="auiRowTable wide">
 	<tbody>
@@ -73,13 +75,13 @@
 			#set($recordNo = $record.RecordNo.toString())
 		#end
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
-			<td class="auiMTCaption">
+			#ALtdcellNowrapheaderAtt('class="auiMTCaption"')
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
-			</td>
+			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
-			#ALtdcellAtt($!record.WbrDispValue 'class="auiMTCaption"')
+			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else
-			#ALtdcellAtt($!record.WbrDispValue 'class="mb_hide"')
+			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end
 		#if($velocityCount == $result.List.size())
 			##最終行の場合

@@ -34,16 +34,17 @@ public class AccountPositionResultData implements ALData {
   /** 役職名 */
   private ALStringField position_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
   private ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     position_id = new ALNumberField();
     position_name = new ALStringField();

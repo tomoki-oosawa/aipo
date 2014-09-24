@@ -49,7 +49,7 @@ public class BlogThemaResultData implements ALData {
   /** 更新ユーザーID */
   private ALStringField update_user_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */

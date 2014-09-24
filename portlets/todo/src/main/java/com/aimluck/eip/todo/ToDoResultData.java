@@ -85,7 +85,7 @@ public class ToDoResultData implements ALData {
   /** 状態（文字列） */
   private ALStringField state_string;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */

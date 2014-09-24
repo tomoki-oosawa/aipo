@@ -383,3 +383,18 @@ CREATE TABLE `eip_t_message_read` (
 create index eip_t_message_read_index1 ON eip_t_message_read(`room_id`, `user_id`, `is_read`);
 create index eip_t_message_read_index2 ON eip_t_message_read(`room_id`, `message_id`,`is_read`);
 -- 20140901
+
+-- 20140911
+CREATE INDEX eip_t_ext_timecard_user_id_index ON eip_t_ext_timecard(user_id);
+CREATE INDEX eip_t_note_map_user_id_index ON eip_t_note_map(user_id);
+CREATE INDEX eip_t_eventlog_event_type_index ON eip_t_eventlog(event_type);
+CREATE INDEX eip_t_eventlog_user_id_index ON eip_t_eventlog(user_id);
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON eip_t_msgboard_topic(category_id);
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON eip_t_acl_user_role_map(role_id);
+CREATE INDEX eip_t_acl_role_acl_type_index ON eip_t_acl_role(acl_type);
+CREATE INDEX eip_m_user_position_index ON eip_m_user_position(position);
+ALTER TABLE `eip_m_position` ADD `sort` int(11) DEFAULT NULL AFTER `position_name`;
+ALTER TABLE `eip_m_post` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
+ALTER TABLE `eip_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_id`;
+ALTER TABLE `eip_m_facility_group` ADD `sort` int(11) DEFAULT NULL AFTER `group_name`;
+ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`gpdb_id`);

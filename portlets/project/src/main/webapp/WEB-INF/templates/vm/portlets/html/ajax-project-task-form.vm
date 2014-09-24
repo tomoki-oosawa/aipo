@@ -32,11 +32,12 @@
 #end
 #set ($indicator_id = "indicator-dlg-")
 #set ($projectMemberJsonUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectMemberJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #if(!$!result.isProjectExists())
 	#ALbuttonheader()
-	<div class="message">$l10n.PROJECT_NOT_FOUND</div>
+	#AUIEmptyMessage("" "$utils.getl10nFormat1('PROJECT_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 	#ALajaxbuttonClose()
 #else
     #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

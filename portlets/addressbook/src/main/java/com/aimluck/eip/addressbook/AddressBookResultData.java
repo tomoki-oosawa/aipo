@@ -102,7 +102,7 @@ public class AddressBookResultData implements ALData {
   /** グループ名 */
   // private ALStringField group_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */

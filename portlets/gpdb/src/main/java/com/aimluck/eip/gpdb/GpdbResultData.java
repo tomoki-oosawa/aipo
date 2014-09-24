@@ -48,7 +48,7 @@ public class GpdbResultData implements ALData {
   /** メール配信フラグ */
   protected ALStringField mail_flg;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField create_date;
 
   /** 更新日 */

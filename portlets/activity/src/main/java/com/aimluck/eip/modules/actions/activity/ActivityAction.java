@@ -66,6 +66,9 @@ public class ActivityAction extends ALBaseAction {
       .getPortlet(rundata, context)
       .getPortletConfig()
       .getInitParameter("p1a-rows")));
+    listData.setTableColumNum(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p2e-rows")));
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "activity");
   }
@@ -111,6 +114,9 @@ public class ActivityAction extends ALBaseAction {
     list.add("tab");
     // 選択しているタブ情報の削除2
     list.add("category");
+
+    list.add("com.aimluck.eip.activity.ActivityAllSelectDatafiltertype");
+    list.add("com.aimluck.eip.activity.ActivityAllSelectDatafilter");
     ALEipUtils.removeTemp(rundata, context, list);
   }
 

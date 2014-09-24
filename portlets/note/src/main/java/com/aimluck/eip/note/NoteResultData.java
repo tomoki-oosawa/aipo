@@ -97,7 +97,7 @@ public class NoteResultData implements ALData {
   /** 確認日時 */
   private ALDateTimeField confirm_date;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日時 */

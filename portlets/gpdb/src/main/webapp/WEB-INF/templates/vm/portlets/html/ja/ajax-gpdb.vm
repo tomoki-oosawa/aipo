@@ -29,15 +29,12 @@
 <h2>$l10n.GPDB_MANAGEMENT</h2>
 
 #if($result.getGpdbSum() == 0)
-
-#AUIrowTableWide()
-<tr><td colspan="4" class="auiNoData">
-<p class="mh10">
+#AUISummaryDiv()
 #AUIbuttonAction("$l10n.GPDB_ADD_DATABASE" "javascript:aipo.common.showDialog('$addGpdb','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
-</p>
-</td></tr>
-#AUItablefooter()
-
+#AUISummaryDivfooter()
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader("$l10n.GPDB_WEB_DATABASE")
+#AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_SHORT_MESSAGE")
 #else
 
 #AUISummaryDiv()
@@ -66,8 +63,8 @@
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('gpdb_name' $l10n.GPDB_DATABASE_NAME $result 'GpdbListScreen')")
-#ALtdheadAtt("$l10n.GPDB_AUTHOR" "class='wName mb_hide'")
-#ALtdheadAtt("$l10n.GPDB_CREATION_DATE" "class='w10 mb_hide'")
+#ALtdheadAtt("$l10n.COMMON_CREATE_USER" "class='wName mb_hide'")
+#ALtdheadAtt("$l10n.COMMON_CREATE_DATE" "class='w10 mb_hide'")
 #ALtdheadAtt("$l10n.GPDB_NUMBER_OF_DATA" "class='w10 mb_hide'")
 </tr>
 #foreach ($record in $result.List)

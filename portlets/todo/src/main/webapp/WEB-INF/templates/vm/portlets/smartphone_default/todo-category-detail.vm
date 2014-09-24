@@ -24,7 +24,7 @@
 #ALcell_contents_header($career)
 #ALtableheaderBorder("1")
 #ALthtd('カテゴリ名' "$!{result.Detail.CategoryName}")
-#ALthtd('登録日' "$!{result.Detail.CreateDate}")
+#ALthtd('作成日' "$!{result.Detail.CreateDate}")
 #ALthtd('更新日' "$!{result.Detail.UpdateDate}")
 #ALtablefooterBorder()
 

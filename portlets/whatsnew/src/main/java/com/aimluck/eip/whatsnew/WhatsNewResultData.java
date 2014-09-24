@@ -41,7 +41,7 @@ public class WhatsNewResultData implements ALData {
   /** ポートレット名 */
   private ALStringField portlet_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */
@@ -54,9 +54,10 @@ public class WhatsNewResultData implements ALData {
   private ALNumberField parent_id;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
 
     /** Type */
@@ -65,13 +66,13 @@ public class WhatsNewResultData implements ALData {
     /** ポートレット名 */
     portlet_name = new ALStringField();
 
-    /** 登録日 */
+    /** 作成日 */
     create_date = new ALDateTimeField();
 
     /** 更新日 */
     update_date = new ALDateTimeField();
 
-    /** タイトルと作成日時 */
+    /** タイトルと作成日 */
     beans = new ArrayList<WhatsNewBean>();
 
     /** 親ID */

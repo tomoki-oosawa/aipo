@@ -40,7 +40,7 @@ public class AddressBookGroupResultData implements ALData {
   /** 公開フラグ */
   private ALStringField public_flag;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -49,6 +49,7 @@ public class AddressBookGroupResultData implements ALData {
   /**
    *
    */
+  @Override
   public void initField() {
     group_id = new ALNumberField();
     group_name = new ALStringField();

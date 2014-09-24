@@ -171,7 +171,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
-        parent.getNote());
+        TimelineUtils.compressString(parent.getNote()));
 
     } catch (Exception e) {
       Database.rollback();

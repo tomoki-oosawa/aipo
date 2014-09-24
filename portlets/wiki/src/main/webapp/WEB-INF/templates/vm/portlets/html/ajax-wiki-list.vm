@@ -25,6 +25,12 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>$l10n.WIKI_MANAGEMENT</h2>
+#if($result.TopWikiList.size() <=0)
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-edit-sign" "$l10n.WIKI_EMPTY_MESSAGE")
+#else
 #AUISummaryFilterDivHeader()
 <form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
@@ -48,7 +54,7 @@
 #AUISummaryFilterDivFooter()
 #ALajaxlistformheaderAction('Wiki')
 #if($result.List.size() <= 0)
-<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+#AUIEmptyMessage("icon-edit-sign" "$l10n.WIKI_EMPTY_MESSAGE")
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
@@ -77,7 +83,7 @@
 					<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen").addQueryData("entityid",$record.Id))', '$!portlet.ID');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
-			#if($!record.getParentId().getValue() == 0)
+			#if($!record.getParentId().getValueWithInt() == 0)
 				<td></td>
 			#else
 				<td><div>$!record.ParentName</div></td>
@@ -89,6 +95,7 @@
 	</tbody>
 </table>
 #ALformfooter()
+#end
 #end
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />

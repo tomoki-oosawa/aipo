@@ -35,6 +35,7 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 
+#if($result.List.size() != 0 || ($result.SearchWord && $result.SearchWord.toString() != ""))
 #AUISummaryDiv()
 #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!{portlet.ID}', 'search-${indicator_id}'); return false;")
 <input type="hidden" name="template" value="AddressBookListScreen"/>
@@ -43,13 +44,14 @@
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryDivfooter()
+#end
 
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #if(!($result.hasAuthorityList))
   $l10n.ADDRESSBOOK_PERMISSION_DENIED
 #else
 #if($result.List.size() == 0)
-$l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
+#AUIEmptyMessage("icon-compass" "$l10n.ADDRESSBOOK_EMPTY_SHORT_MESSAGE")
 #else
 
 #ALajaxlistformheader($l10n.ADDRESSBOOK_ADDRESS)
@@ -82,17 +84,14 @@ $l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
 <input name="check$!record.AddressId" type="checkbox" value="$!record.AddressId" />
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="auiMTCaption"')
-<div>
-#if($!record.PublicFlag.toString() == 'F')
-#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")&nbsp;
-#end
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookDetailScreen").addQueryData("entityid",$record.AddressId))');" >$!record.Name</a>
-</div>
+#set ($url = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookDetailScreen').addQueryData('entityid',$record.AddressId))")
+#if ($!record.PublicFlag.toString() == 'T')#set($publicFlag=true)#else#set($publicFlag=false)#end
+#AUIlinkList("aipo.common.showDialog('$url');" $!record.Name $publicFlag "title='$l10n.TODO_CLOSE_PUBLIC'")
 #ALtdcellfooter()
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AddressBookCompanyDetailScreen").addQueryData("entityid",$record.CompanyId))');">$result.getStringCR($!record.CompanyName)</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt("<div>$result.getStringCR($!record.Email)</div>" 'nowrap="nowrap" class="mb_hide"')
+#ALtdcellNowrapAtt($result.getStringCR($!record.Email) 'class="mb_hide"')
 #ALtdcellAtt($!record.Telephone 'nowrap="nowrap" class="mb_hide"')
 #ALtdcellAtt($!record.CellularPhone 'nowrap="nowrap" class="mb_hide"')
 </tr>

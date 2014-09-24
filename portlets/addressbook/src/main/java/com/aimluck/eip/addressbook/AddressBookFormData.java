@@ -236,13 +236,11 @@ public class AddressBookFormData extends ALAbstractFormData {
     public_flag.setTrim(true);
     create_user = new ALStringField();
     create_user.setFieldName(ALLocalizationUtils
-      .getl10n("ADDRESSBOOK_SETFIELDNAME_CREATE_USER"));
+      .getl10n("COMMON_CREATE_USER"));
     update_user = new ALStringField();
-    update_user.setFieldName(ALLocalizationUtils
-      .getl10n("COMMON_UPDATE_USER"));
+    update_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_USER"));
     create_date = new ALDateField();
-    create_date.setFieldName(ALLocalizationUtils
-      .getl10n("ADDRESSBOOK_SETFIELDNAME_CREATE_DATE"));
+    create_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_DATE"));
     update_date = new ALDateField();
     update_date.setFieldName(ALLocalizationUtils
       .getl10n("ADDRESSBOOK_SETFIELDNAME_LAST_UPDATE_DATE"));

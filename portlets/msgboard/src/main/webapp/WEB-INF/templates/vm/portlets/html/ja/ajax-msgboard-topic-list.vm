@@ -75,7 +75,7 @@
 <tr>
 #ALtdhead("#ALajaxsort('topic_name' $l10n.MSGBOARD_TITLE $result 'MsgboardTopicListScreen')")
 #ALtdheadAtt("#ALajaxsort('category_name' $l10n.MSGBOARD_PORTLET_CATEGORY $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:10em"')
-#ALtdheadAtt("#ALajaxsort('owner_name' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardTopicListScreen')" 'class="mb_hide wName"')
+#ALtdheadAtt("#ALajaxsort('owner_name' $l10n.COMMON_CREATE_USER $result 'MsgboardTopicListScreen')" 'class="mb_hide wName"')
 #ALtdheadAtt("#ALajaxsort('update_date' $l10n.COMMON_UPDATE_DATE $result 'MsgboardTopicListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
@@ -88,7 +88,7 @@
 #ALtdcellheaderAtt('class="mb_hide"')
 <div>
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
+#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'" "")
 #end
 $!record.CategoryName
 </div>

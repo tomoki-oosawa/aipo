@@ -543,4 +543,17 @@ create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_
 create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
 -- 20140901
 
-
+-- 20140911
+CREATE INDEX eip_t_ext_timecard_user_id_index ON EIP_T_EXT_TIMECARD(USER_ID);
+CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
+CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
+CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON EIP_T_MSGBOARD_TOPIC(CATEGORY_ID);
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON EIP_T_ACL_USER_ROLE_MAP(ROLE_ID);
+CREATE INDEX eip_t_acl_role_acl_type_index ON EIP_T_ACL_ROLE(ACL_TYPE);
+CREATE INDEX eip_m_user_position_index ON EIP_M_USER_POSITION(POSITION);
+ALTER TABLE EIP_M_POSITION ADD SORT INTEGER ;
+ALTER TABLE EIP_M_POST ADD SORT INTEGER ;
+ALTER TABLE EIP_FACILITY_GROUP ADD SORT INTEGER ;
+ALTER TABLE EIP_M_FACILITY_GROUP ADD SORT INTEGER ;
+CREATE INDEX eip_t_gpdb_record_gpdb_id_index ON EIP_T_GPDB_RECORD (GPDB_ID);

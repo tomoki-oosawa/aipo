@@ -246,7 +246,7 @@ public class ProjectUtils {
       data.setAdminUserName(adminUser.getAliasName().getValue()); // 管理者名
       data.setProgressFlg(model.getProgressFlg()); // 進捗率入力フラグ
       data.setProgressRate(model.getProgressRate()); // 進捗率
-      data.setCreateDate(model.getCreateDate()); // 登録日
+      data.setCreateDate(model.getCreateDate()); // 作成日
       data.setUpdateDate(model.getUpdateDate()); // 更新日
       data.setTaskUpdateDate(model.getUpdateDate()); // タスク更新日（初期値）
       return data;
@@ -785,7 +785,7 @@ public class ProjectUtils {
     }
     data.setPlanWorkload(new BigDecimal(df.format(model.getPlanWorkload()))); // 計画工数
     data.setProgressRate(model.getProgressRate()); // 進捗率
-    data.setCreateDate(model.getCreateDate());// 登録日
+    data.setCreateDate(model.getCreateDate());// 作成日
     data.setUpdateDate(model.getUpdateDate());// 更新日
 
     // 担当者

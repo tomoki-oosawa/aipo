@@ -59,7 +59,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Report')
 #if($result.List.size() == 0)
-<div class="message">$l10n.REPORT_NO_REPORT_YOUR_SELECT</div>
+#AUIEmptyMessage("icon-file-text" "$l10n.REPORT_EMPTY_SHORT_MESSAGE")
 #else
 
 #AUISummaryDiv()
@@ -70,11 +70,11 @@
 <tr>
 #ALtdhead("#ALajaxsort('report_name' $l10n.REPORT_SETFIELDNAME_REPORT_NAME $result 'ReportListScreen')")
 #ALtdhead("#ALajaxsort('start_date' $l10n.REPORT_SETFIELDNAME_CREATEDATE $result 'ReportListScreen')")
-#ALtdheadAtt("#ALajaxsort('user_id' $l10n.REPORT_CREATER $result 'ReportListScreen')" 'class="wName"')
+#ALtdheadAtt("#ALajaxsort('user_id' $l10n.COMMON_CREATE_USER $result 'ReportListScreen')" 'class="wName"')
 #if($!isCreated)
 #ALtdheadAtt($l10n.REPORT_SITUATION 'class="mb_hide" style="width:5%"')
 #end
-#ALtdhead("#ALajaxsort('create_date' $l10n.REPORT_CREATE_DATE $result 'ReportListScreen')")
+#ALtdhead("#ALajaxsort('create_date' $l10n.COMMON_CREATE_DATE $result 'ReportListScreen')")
 </tr>
 #foreach ($record in $result.List)
 <tr #if($record.getStatus($result.LoginUser.UserId.Value) && $record.getStatus($result.LoginUser.UserId.Value) == "U") class="unread" #end>

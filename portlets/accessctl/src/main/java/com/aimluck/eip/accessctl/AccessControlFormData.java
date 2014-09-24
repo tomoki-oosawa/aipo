@@ -501,7 +501,7 @@ public class AccessControlFormData extends ALAbstractFormData {
           .valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
-      // 登録日
+      // 作成日
       aclrole.setCreateDate(now);
       // 更新日
       aclrole.setUpdateDate(now);

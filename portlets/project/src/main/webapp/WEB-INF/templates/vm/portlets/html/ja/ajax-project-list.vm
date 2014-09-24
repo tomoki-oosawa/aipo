@@ -27,23 +27,13 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.PROJECT_PROJECT_MANAGEMENT</h2>
 #AUISummaryDiv()
-#if($result.ProjectCount != 0)
 	#AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
-#end
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("$l10n.PROJECT_PROJECT")
 #if($result.ProjectCount == 0)
-    #AUIrowTableWide()
-    <tr>
-	<td colspan="4" class="auiNoData">
-    <p class="mh10">
-    #AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
-    </p>
-    </td>
-	</tr>
-    #AUItablefooter()
+#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_EMPTY_SHORT_MESSAGE")
 #else
     #AUISummaryDiv()
     #AUIajaxpageview('ProjectListScreen' $result)

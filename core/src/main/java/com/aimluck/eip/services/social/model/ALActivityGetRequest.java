@@ -44,6 +44,8 @@ public class ALActivityGetRequest {
 
   private float priority = -1f;
 
+  private String postId;
+
   // 自分宛のお知らせかどうかのフラグ
   private boolean targetLoginNameLimit = false;
 
@@ -243,4 +245,25 @@ public class ALActivityGetRequest {
   public boolean isTargetLoginNameLimit() {
     return targetLoginNameLimit;
   }
+
+  /**
+   * @return postId
+   */
+  public String getPostId() {
+    return postId;
+  }
+
+  /**
+   * @param postId
+   *          セットする postId
+   */
+  public void setPostId(String postId) {
+    this.postId = postId;
+  }
+
+  public ALActivityGetRequest withPostId(String postId) {
+    setPostId(postId);
+    return this;
+  }
+
 }

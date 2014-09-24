@@ -25,6 +25,7 @@ package com.aimluck.eip.modules.actions.project;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -95,9 +96,9 @@ public class ProjectAction extends ALBaseAction {
     listData.setRowsNum(Integer.parseInt(ALEipUtils
       .getPortlet(rundata, context)
       .getPortletConfig()
-      .getInitParameter("p1a-rows")));
+      .getInitParameter("p1b-rows")));
     listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "project");
+    setTemplate(rundata, "project-list");
   }
 
   /**
@@ -115,11 +116,16 @@ public class ProjectAction extends ALBaseAction {
       Context context, RunData rundata) {
     try {
       if (getMode() == null) {
-        String gantt = rundata.getParameters().getString("gantt");
-        if (ProjectUtils.FLG_ON.equals(gantt)) {
-          doGantt_chart(rundata, context);
+        String admintab = rundata.getParameters().getString("admintab");
+        if (!StringUtils.isEmpty(admintab)) {
+          doProject_list(rundata, context);
         } else {
-          doTask_list(rundata, context);
+          String gantt = rundata.getParameters().getString("gantt");
+          if (ProjectUtils.FLG_ON.equals(gantt)) {
+            doGantt_chart(rundata, context);
+          } else {
+            doTask_list(rundata, context);
+          }
         }
       }
     } catch (Exception ex) {

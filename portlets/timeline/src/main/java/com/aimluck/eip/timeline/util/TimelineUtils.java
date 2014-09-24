@@ -72,6 +72,7 @@ import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.TimelineUrlBeans;
 import com.aimluck.eip.timeline.TimelineUserResultData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALURLConnectionUtils;
 
@@ -957,7 +958,14 @@ public class TimelineUtils {
       NodeList nodeListTitle = document.getElementsByTagName("title");
       for (int i = 0; i < nodeListTitle.getLength(); i++) {
         Element element = (Element) nodeListTitle.item(i);
-        String title = element.getFirstChild().getNodeValue();
+
+        String title;
+        if (element.getFirstChild() != null) {
+          title = element.getFirstChild().getNodeValue();
+        } else {
+          title = url_str;
+        }
+
         if (title != null) {
           tub.setTitle(title);
           break;
@@ -1235,7 +1243,7 @@ public class TimelineUtils {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
-        parent.getNote());
+        compressString(parent.getNote()));
     } catch (ALFileNotRemovedException e) {
       // ALFileNotRemovedException
       Database.rollback();
@@ -1299,5 +1307,16 @@ public class TimelineUtils {
       Database.deleteAll(tParent);
       Database.commit();
     }
+  }
+
+  /**
+   * 50文字に引数の文字列を丸める。
+   * 
+   * @param src
+   *          元の文字列
+   * @return 処理後の文字列
+   */
+  public static String compressString(String src) {
+    return ALCommonUtils.compressString(src, 50);
   }
 }

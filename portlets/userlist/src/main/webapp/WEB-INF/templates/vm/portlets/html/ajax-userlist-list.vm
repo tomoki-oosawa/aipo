@@ -70,7 +70,7 @@ $post
 #ALtdcellheader()
 <div>$result.getStringCR($!record.PositionName)</div>
 #ALtdcellfooter()
-#ALtdcellAtt("$!record.Email" "class='mb_hide'")
+#ALtdcellNowrapAtt("$!record.Email" "class='mb_hide'")
 #ALtdcellAtt("$!record.OutTelephone" "class='mb_hide' nowrap='nowrap'")
 #ALtdcellAtt("$!record.InTelephone" "class='mb_hide' nowrap='nowrap'")
 

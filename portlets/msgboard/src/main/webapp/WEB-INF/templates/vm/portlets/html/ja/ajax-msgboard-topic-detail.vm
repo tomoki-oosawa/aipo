@@ -30,7 +30,7 @@
 #ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
 	<caption>
-	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryNameHtml#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")#end</span>$!{result.ParentTopic.TopicNameHtml}
+	<span class="floatRight" style="font-weight:normal">$!result.ParentTopic.CategoryNameHtml&nbsp;#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'" "")#end</span>$!{result.ParentTopic.TopicNameHtml}
 	</caption>
 		<tbody>
 			<tr>

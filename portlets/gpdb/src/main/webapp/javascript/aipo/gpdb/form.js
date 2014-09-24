@@ -54,7 +54,7 @@ aipo.gpdb.ITEM_TYPE_MAIL = "09";
 /** 項目定義形式：日付 */
 aipo.gpdb.ITEM_TYPE_DATE = "10";
 
-/** 項目定義形式：登録日時 */
+/** 項目定義形式：作成日 */
 aipo.gpdb.ITEM_TYPE_CREATE_DATE = "11";
 
 /** 項目定義形式：更新日時 */

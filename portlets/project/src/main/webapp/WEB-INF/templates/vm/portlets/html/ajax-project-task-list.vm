@@ -24,12 +24,12 @@
 #set ($orderProjectTask = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskChangeTurnFormScreen").addQueryData("projectid","$result.SelectedProjectId"))
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')")
 #set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectListScreen")))
 
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-
-#if(!$result.AllProject)
-	<div class="message">$l10n.PROJECT_NOT_FOUND</div>
+#if(!$result.AllProject || $result.AllProject.size() == 0)
+#AUIEmptyMessage("icon-tasks" $utils.getl10nFormat1("PROJECT_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
 #elseif(!$result.List)
 	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
 #else
@@ -104,7 +104,7 @@
     #end
 	#AUISummaryDivfooter()
     #if($result.List.size() == 0)
-		<div class="message">$l10n.PROJECT_NO_RECORD</div>
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
     #else
         #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
         <div id="messageDiv-$!portlet.ID"></div>
@@ -164,9 +164,10 @@
     	#AUISummaryDivfooter()
 		#end
     #end
-#end
 </div>
+#end
 #AUIcontentsAreaFooter()
+#if($result.AllProject && $result.AllProject.size() > 0)
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
   <div>
@@ -206,6 +207,6 @@
     </ul>
   </div>
 </div>
-
+#end
 #parse("/portlets/html/ja/project-widgets.vm")
 

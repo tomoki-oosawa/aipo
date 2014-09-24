@@ -56,7 +56,7 @@ public class CabinetFolderResultData implements ALData {
   /** 閲覧/返信フラグ */
   private ALNumberField access_flag;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
