@@ -32,7 +32,7 @@
 #ALdialogheader($l10n.WEBMAIL_CREATE_EMAIL)
 #if(!$!result.isExistsAccount())
 #ALbuttonheader()
-#AUIEmptyMessage("" "$utils.getl10nFormat1('PROJECT_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
+#AUIEmptyMessage("" "$utils.getl10nFormat1('WEBMAIL_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #elseif($!result.AccountId == 0)
