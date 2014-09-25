@@ -110,7 +110,8 @@ aipo.IfrGadgetService = function() {
     gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
     gadgets.rpc.register('requestCheckTimeline', this.requestCheckTimeline);
     gadgets.rpc.register('requestCheckMessage', this.requestCheckMessage);
-    gadgets.rpc.register('requestCheckMessageRead', this.requestCheckMessageRead);
+    gadgets.rpc.register('requestCheckMessageRead',
+            this.requestCheckMessageRead);
     // gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
@@ -360,8 +361,9 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function() {
 }
 
 aipo.IfrGadgetService.prototype.requestCheckMessageRead = function(params) {
-
-
+    if (params.roomId) {
+        aipo.message.updateReadCount(params.roomId);
+    }
 }
 
 aipo.IfrContainer = function() {

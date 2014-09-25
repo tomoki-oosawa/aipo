@@ -33,7 +33,7 @@
 		<div class="body">$!record.MessageHtml</div>
 		<div class="time">
 			$!record.CreateDate&nbsp;
-			#if($!record.isOwner())<a href="javascript:void(0)">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!record.ReadCount人が既読#end</a>#end
+			#if($!record.isOwner())<a href="javascript:void(0)" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!record.ReadCount人が既読#end</a>#end
 		</div>
 	</div>
 </div>

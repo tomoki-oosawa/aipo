@@ -22,8 +22,10 @@ package com.aimluck.eip.message.util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.portal.Portlet;
@@ -465,29 +467,59 @@ public class MessageUtils {
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
 
-    Map<Integer, Long> maps = new HashMap<Integer, Long>();
+    Map<Integer, MessageReadEntry> maps =
+      new HashMap<Integer, MessageReadEntry>();
+    Map<Integer, Long> result = new HashMap<Integer, Long>();
     for (DataRow row : fetchList) {
       Long count = (Long) row.get("c");
       Integer messageId = (Integer) row.get("message_id");
       String isRead = (String) row.get("is_read");
-      Long read = maps.get(messageId);
+      MessageReadEntry read = maps.get(messageId);
       if (read == null) {
-        read = count;
+        read = new MessageReadEntry();
+      }
+      if ("T".equals(isRead)) {
+        read.setRead(count);
       } else {
-        if ("T".equals(isRead)) {
-          if (read.intValue() == 0) {
-            read = Long.valueOf(-1);
-          } else {
-            read = count;
-          }
-        } else {
-          if (count.intValue() == 0) {
-            read = Long.valueOf(-1);
-          }
-        }
+        read.setUnread(count);
       }
       maps.put(messageId, read);
     }
-    return maps;
+    Iterator<Entry<Integer, MessageReadEntry>> iterator =
+      maps.entrySet().iterator();
+    while (iterator.hasNext()) {
+      Entry<Integer, MessageReadEntry> next = iterator.next();
+      MessageReadEntry value = next.getValue();
+      if (value.getUnread() == null) {
+        result.put(next.getKey(), Long.valueOf(-1));
+      } else {
+        result.put(next.getKey(), (value.getRead() == null
+          ? Long.valueOf(0)
+          : value.getRead()));
+      }
+    }
+    return result;
+  }
+
+  public static class MessageReadEntry {
+    private Long read;
+
+    private Long unread;
+
+    public Long getRead() {
+      return read;
+    }
+
+    public void setRead(Long read) {
+      this.read = read;
+    }
+
+    public Long getUnread() {
+      return unread;
+    }
+
+    public void setUnread(Long unread) {
+      this.unread = unread;
+    }
   }
 }

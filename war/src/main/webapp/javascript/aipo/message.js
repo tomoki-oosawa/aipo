@@ -202,6 +202,39 @@ aipo.message.searchUserList = function() {
             .reloadUserList(messageUserGroupSelect.options[messageUserGroupSelect.selectedIndex].value);
 }
 
+aipo.message.updateReadCount = function(roomId) {
+    if(roomId == aipo.message.currentRoomId) {
+        var url = "?template=MessageReadCountListJSONScreen";
+        url += "&r=" + roomId;
+        url += "&max=" + aipo.message.getFirstMessageId();
+        url += "&min=" + aipo.message.getLastMessageId();
+        dojo.xhrGet({
+            url : url,
+            timeout : 30000,
+            encoding: "utf-8",
+            handleAs: "json-comment-filtered",
+            headers : {
+                X_REQUESTED_WITH : "XMLHttpRequest"
+            },
+            load : function(response, ioArgs) {
+                for(read in response) {
+                    var messageReadCount = dojo.byId("messageReadCount" + read);
+                    if(messageReadCount) {
+                        if(response[read] == -1 || response[read] == "-1") {
+                            messageReadCount.innerHTML = aimluck.io.escapeText("message_val_all_read");
+                        } else {
+                            messageReadCount.innerHTML = response[read] + aimluck.io.escapeText("message_val_read");
+                        }
+                    }
+                }
+            },
+            error : function(error) {
+
+            }
+        });
+    }
+}
+
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
