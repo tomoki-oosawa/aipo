@@ -618,6 +618,10 @@ aipo.message.isOpenWindow = function() {
     return dojo.hasClass("dd_message", "open");
 }
 
+aipo.message.onLoadMessageReadUserList = function() {
+
+}
+
 dojo.addOnLoad(function() {
     dojo.connect(window, "onresize", null, function(e) {
         aipo.message.fixMessageWindow();

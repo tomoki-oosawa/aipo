@@ -69,6 +69,10 @@ public class MessageUtils {
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
+  public static EipTMessage getMessage(int messageId) {
+    return Database.get(EipTMessage.class, messageId);
+  }
+
   public static EipTMessageRoom getRoom(int roomId) {
     return Database.get(EipTMessageRoom.class, roomId);
   }
@@ -409,6 +413,20 @@ public class MessageUtils {
     } else {
       return new ResultList<TurbineUser>(list, -1, -1, list.size());
     }
+  }
+
+  public static ResultList<TurbineUser> getReadUserList(int messageId) {
+    StringBuilder sql = new StringBuilder();
+    sql
+      .append("select t1.user_id, t1.last_name, t1.first_name, t1.has_photo, t1.photo_modified from turbine_user t1, eip_t_message_read t2 where t1.user_id = t2.user_id and t2.message_id = #bind($message_id) and t2.is_read = 'T';");
+
+    SQLTemplate<TurbineUser> query =
+      Database.sql(TurbineUser.class, sql.toString()).param(
+        "message_id",
+        messageId);
+
+    List<TurbineUser> list = query.fetchList();
+    return new ResultList<TurbineUser>(list, -1, -1, list.size());
   }
 
   public static void read(EipTMessageRoom room, int userId, int lastMessageId) {

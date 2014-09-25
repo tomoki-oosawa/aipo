@@ -74,7 +74,7 @@ limitations under the License.
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
-					<div class="title">メッセージ</div>
+					<div class="title">$l10n.MESSAGE_MESSAGE</div>
 					<div class="body">
 						<div class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
@@ -136,7 +136,7 @@ limitations under the License.
 							</div>
 						</div>
 					</div>
-					<span id="message_val_read" style="display:none">人が既読</span>
+					<span id="message_val_read" style="display:none">$l10n.MESSAGE_READ_COUNT</span>
 					<span id="message_val_all_read" style="display:none">$l10n.MESSAGE_ALL_READ</span>
 				</div>
 			</li>
