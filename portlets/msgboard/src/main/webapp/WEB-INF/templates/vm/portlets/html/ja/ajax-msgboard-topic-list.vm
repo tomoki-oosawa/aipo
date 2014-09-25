@@ -65,7 +65,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Msgboard')
 #if($result.List.size() == 0)
-<div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
+#AUIEmptyMessage("icon-picture" "$l10n.MSGBOARD_NOTHING_TOPIC")
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIsearchresult($!result.targetKeyword.toString())
