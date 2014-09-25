@@ -91,30 +91,29 @@ aipo.message.latestMessageList = function() {
         screen += "&u=" + aipo.message.currentUserId;
     }
     var cursor = aipo.message.getFirstMessageId();
-    if (cursor) {
-        aipo.message.moreMessageLock = true;
-        screen += "&c=" + cursor;
-        screen += "&latest=1";
-        dojo.xhrGet({
-            url : screen,
-            timeout : 30000,
-            encoding : "utf-8",
-            handleAs : "text",
-            headers : {
-                X_REQUESTED_WITH : "XMLHttpRequest"
-            },
-            load : function(response, ioArgs) {
-                messagePane.innerHTML = response + messagePane.innerHTML;
-                aipo.message.moreMessageLock = false;
-                aipo.message.reloadRoomList();
-            },
-            error : function(error) {
-                aipo.message.moreMessageLock = false;
-            }
-        });
-    } else {
-        aipo.message.reloadRoomList();
+    if(!cursor) {
+        cursor = 0;
     }
+    aipo.message.moreMessageLock = true;
+    screen += "&c=" + cursor;
+    screen += "&latest=1";
+    dojo.xhrGet({
+        url : screen,
+        timeout : 30000,
+        encoding : "utf-8",
+        handleAs : "text",
+        headers : {
+            X_REQUESTED_WITH : "XMLHttpRequest"
+        },
+        load : function(response, ioArgs) {
+            messagePane.innerHTML = response + messagePane.innerHTML;
+            aipo.message.moreMessageLock = false;
+            aipo.message.reloadRoomList();
+        },
+        error : function(error) {
+            aipo.message.moreMessageLock = false;
+        }
+    });
 }
 
 aipo.message.messageRoomListPane = null;
