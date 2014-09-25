@@ -51,7 +51,7 @@
 ## 検索フォーム挿入場所
 ## ---------------------------------------------------------------------------
 #if($result.List.size() == 0)
-<div class="message">$l10n.ACTIVITY_ALERT_NO_YOUR_SELECT</div>
+#AUIEmptyMessage("icon-volume-up" "$l10n.ACTIVITY_NO_DATA")
 #else
 #AUISummaryDiv()
 #AUIsearchresult($!result.targetKeyword.toString())
