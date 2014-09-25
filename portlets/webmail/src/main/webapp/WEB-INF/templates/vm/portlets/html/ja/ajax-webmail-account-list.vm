@@ -25,7 +25,10 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.WEBMAIL_MANAGEMENT_ACCOUNT</h2>
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-envelope" "$l10n.WEBMAIL_EMPTY_SHORT_MESSAGE")
 #else
 <div class="auiSummaryMeta clearfix"><p>
 #AUIbuttonAction($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new')');")

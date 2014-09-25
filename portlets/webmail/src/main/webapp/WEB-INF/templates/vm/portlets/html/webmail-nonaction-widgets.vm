@@ -29,13 +29,17 @@
 
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
     <div class="auiWidget clearfix">
+    #if($!result.MailAccountList && $!result.MailAccountList.size() > 0)
         #if("${client}" != "IPHONE")
         <a title="$l10n.WEBMAIL_DO_CREATE_EMAIL" href="javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);" class="auiButtonBold">$l10n.WEBMAIL_DO_CREATE_EMAIL</a>
         #else
         #AUIbuttonAction($l10n.WEBMAIL_DO_CREATE_EMAIL "javascript:aipo.common.showDialog('$newUrl_mailmaking','$!portlet.ID',aipo.webmail.onLoadMailDialog);")
         #end
+     #else
+       #AUIDisableButton("$l10n.WEBMAIL_DO_CREATE_EMAIL")
+   #end
     </div>
-    
+
 	#if($!result.MailAccountList && $!result.MailAccountList.size() > 0)
 	<div class="auiWidget clearfix" style="border-bottom:none; padding: 0;">
 		<div class="auiWidget clearfix">
@@ -91,5 +95,15 @@
         </div>
     	#end
 	</div>
+	#else
+
+	<div class="auiWidget clearfix" style="border-bottom:none; padding: 0;"  id="subNavigation">
+	<div class="auiWidget clearfix">
+        <div style="margin:0.5em 0;">
+        <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_account_list','1')">$l10n.WEBMAIL_MANAGEMENT_ACCOUNT</a>
+        </div>
+        </div>
+        </div>
+
 	#end
 </div>
