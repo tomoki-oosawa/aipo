@@ -20,27 +20,26 @@
 package com.aimluck.eip.http;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometEvent.EventType;
 import org.apache.catalina.CometProcessor;
 
 import com.aimluck.eip.common.ALBaseUser;
+import com.aimluck.eip.common.ALEipConstants;
 
 /**
  *
@@ -52,32 +51,19 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
   public static final String KEY_MESSAGE_SENDER =
     "com.aimluck.eip.http.ALCometServlet.MessageSender";
 
-  public static final String KEY_EVENT_WORKER =
-    "com.aimluck.eip.http.ALCometServlet.EventWorker";
-
-  protected transient ConcurrentLinkedQueue<Event> events = null;
-
   protected transient ConcurrentHashMap<HttpServletResponse, String> connections =
     null;
 
   protected transient MessageSender sender = null;
 
-  protected transient EventWorker worker = null;
-
   @Override
   public void init() {
-    events = new ConcurrentLinkedQueue<Event>();
     connections = new ConcurrentHashMap<HttpServletResponse, String>();
 
     this.sender = new MessageSender();
     this.sender.setDaemon(true);
     this.sender.start();
 
-    this.worker = new EventWorker();
-    this.worker.setDaemon(true);
-    this.worker.start();
-
-    getServletContext().setAttribute(KEY_EVENT_WORKER, worker);
     getServletContext().setAttribute(KEY_MESSAGE_SENDER, sender);
 
   }
@@ -86,9 +72,6 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
   public void destroy() {
     sender.quit();
     sender = null;
-    worker.quit();
-    worker = null;
-    events.clear();
     connections.clear();
   }
 
@@ -109,19 +92,19 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       }
       switch (event.getEventType()) {
         case BEGIN:
-          enqueue(new Event(event.getEventType(), request, response));
-          event.setTimeout(10 * 60 * 1000);
+          open(request, response);
+          event.setTimeout(60 * 60 * 1000);
           break;
         case READ:
-          enqueue(new Event(event.getEventType(), request, response));
+          open(request, response);
+          event.setTimeout(60 * 60 * 1000);
           break;
         case END:
-          enqueue(new Event(event.getEventType(), request, response));
-
+          close(response);
           event.close();
           break;
         case ERROR:
-          enqueue(new Event(event.getEventType(), request, response));
+          close(response);
           event.close();
           break;
         default:
@@ -132,8 +115,32 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     }
   }
 
-  protected void enqueue(Event event) {
-    events.add(event);
+  protected void open(HttpServletRequest request, HttpServletResponse response) {
+    ALBaseUser user = getUser(request);
+    if (user != null) {
+      connections.put(response, user.getUserName());
+    }
+  }
+
+  protected void close(HttpServletResponse response) {
+    try {
+      if (!response.isCommitted()) {
+        response.setContentType("text/json");
+        response.setCharacterEncoding("UTF-8");
+        ServletOutputStream os = response.getOutputStream();
+        os.write("{}".getBytes(ALEipConstants.DEF_CONTENT_ENCODING));
+        os.flush();
+        os.close();
+      }
+    } catch (Throwable t) {
+      log(t.getMessage(), t);
+    } finally {
+      try {
+        connections.remove(response);
+      } catch (Throwable ignore) {
+        //
+      }
+    }
   }
 
   protected ALBaseUser getUser(HttpServletRequest httpServletRequest) {
@@ -148,106 +155,6 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       // ignore
     }
     return null;
-  }
-
-  public class Event {
-
-    private final EventType eventType;
-
-    private final HttpServletRequest request;
-
-    private final HttpServletResponse response;
-
-    public Event(EventType eventType, HttpServletRequest request,
-        HttpServletResponse response) {
-      this.eventType = eventType;
-      this.request = request;
-      this.response = response;
-    }
-
-    public EventType getEventType() {
-      return eventType;
-    }
-
-    public HttpServletRequest getRequest() {
-      return request;
-    }
-
-    public HttpServletResponse getResponse() {
-      return response;
-    }
-  }
-
-  public class EventWorker extends Thread {
-
-    protected boolean running = true;
-
-    public EventWorker() {
-    }
-
-    public void quit() {
-      running = false;
-      this.interrupt();
-    }
-
-    public void open(String name, HttpServletResponse response) {
-      connections.put(response, name);
-    }
-
-    public void close(HttpServletResponse response) {
-      response.setContentType("text/json");
-      response.setCharacterEncoding("UTF-8");
-      try {
-        PrintWriter writer = response.getWriter();
-        writer.write("{}");
-        writer.flush();
-        writer.close();
-        response.flushBuffer();
-      } catch (IOException e) {
-        log(e.getMessage(), e);
-      } finally {
-        connections.remove(response);
-      }
-    }
-
-    @Override
-    public void run() {
-      while (running) {
-        try {
-          Event event = events.poll();
-          if (event != null) {
-            EventType type = event.getEventType();
-            ALBaseUser user = getUser(event.getRequest());
-            if (user != null) {
-              String name = user.getUserName();
-              switch (type) {
-                case BEGIN:
-                  open(name, event.getResponse());
-                  break;
-                case READ:
-                  open(name, event.getResponse());
-                  break;
-                case END:
-                  close(event.getResponse());
-                  break;
-                case ERROR:
-                  close(event.getResponse());
-                  break;
-                default:
-                  break;
-              }
-            }
-          }
-          try {
-            Thread.sleep(100);
-          } catch (Throwable ignore) {
-            //
-          }
-        } catch (Throwable t) {
-          log(t.getMessage(), t);
-        }
-      }
-    }
   }
 
   public class Message {
@@ -311,23 +218,24 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
               Entry<HttpServletResponse, String> next = iterator.next();
               if (message.getRecipients().contains(next.getValue())) {
                 HttpServletResponse response = next.getKey();
-                response.setContentType("text/json");
-                response.setCharacterEncoding("UTF-8");
                 try {
-                  PrintWriter writer = response.getWriter();
-                  writer.write(message.getMessage());
-                  writer.flush();
-                  writer.close();
-                  response.flushBuffer();
+                  if (!response.isCommitted()) {
+                    response.setContentType("text/json");
+                    response.setCharacterEncoding("UTF-8");
+                    ServletOutputStream os = response.getOutputStream();
+                    os.write(message.getMessage().getBytes(
+                      ALEipConstants.DEF_CONTENT_ENCODING));
+                    os.flush();
+                    os.close();
+                  }
                 } catch (Throwable t) {
                   log(t.getMessage(), t);
                 } finally {
                   try {
                     connections.remove(response);
                   } catch (Throwable ignore) {
-                    // ignore
+                    //
                   }
-
                 }
               }
             }

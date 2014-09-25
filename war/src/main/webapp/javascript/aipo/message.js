@@ -118,7 +118,7 @@ aipo.message.latestMessageList = function() {
 }
 
 aipo.message.messageRoomListPane = null;
-aipo.message.reloadRoomList = function(roomId) {
+aipo.message.reloadRoomList = function(roomId, userId) {
     if (!aipo.message.messageRoomListPane) {
         aipo.message.messageRoomListPane = dijit.byId("messageRoomListPane");
         aipo.message.messageRoomListPane = new aimluck.widget.Contentpane({},
@@ -136,7 +136,7 @@ aipo.message.reloadRoomList = function(roomId) {
                         .selectRoom(aipo.message.messageRoomListPane.roomId);
                 aipo.message.messageRoomListPane.roomId = null;
             }
-            if (aipo.message.currentUserId) {
+            if (aipo.message.messageRoomListPane.userId) {
                 var messageCurrentRoomValue = dojo
                         .byId("messageCurrentRoomValue");
                 var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
@@ -145,12 +145,16 @@ aipo.message.reloadRoomList = function(roomId) {
                 } else {
                     aipo.message.selectRoom(0);
                 }
+                aipo.message.messageRoomListPane.userId = null;
             }
         }
     }
 
     if (roomId) {
         aipo.message.messageRoomListPane.roomId = roomId;
+    }
+    if (userId) {
+        aipo.message.messageRoomListPane.userId = userId;
     }
 
     var screen = "?template=MessageRoomListScreen";
@@ -321,7 +325,7 @@ aipo.message.selectUser = function(user_id) {
         aipo.message.currentUserId = user_id;
         aipo.message.inputHistory[aipo.message.currentRoomId] = messageForm.message.value;
         aipo.message.inputHistory[0] = "";
-        aipo.message.reloadRoomList();
+        aipo.message.reloadRoomList(null, user_id);
         aipo.message.selectTab("room");
     }
 }
