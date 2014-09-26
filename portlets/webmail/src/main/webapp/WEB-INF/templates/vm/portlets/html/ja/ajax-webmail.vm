@@ -19,7 +19,6 @@
 
 ## ---------------------------------------------------------------------------
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
-#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 ## ---------------------------------------------------------------------------
 #if($!result.AccountId && $!result.AccountId != 0)
 	<div class="auiSummaryMeta auiFilter clearfix">
@@ -63,7 +62,7 @@
 		<div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
 	#end
 	#if($!result.List && $!result.List.size() <= 0)
-		#AUIEmptyMessage("" "$l10n.WEBMAIL_MAIL_EMPTY_MESSAGE")
+		<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
 	#else
 		<table class="auiRowTable wide">
 			<colgroup style="width:10em;" />
@@ -108,5 +107,5 @@
 	#end
 
 #else
-		#AUIEmptyMessage("" "$utils.getl10nFormat1('WEBMAIL_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
+	#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
 #end

@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.modules.actions.webmail;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -87,12 +86,7 @@ public class WebMailAction extends ALBaseAction {
 
     try {
       if (ALEipConstants.MODE_LIST.equals(mode) || getMode() == null) {
-        String admintab = rundata.getParameters().getString("admintab");
-        if (!StringUtils.isEmpty(admintab)) {
-          doWebmail_account_list(rundata, context);
-        } else {
-          doWebmail_list(rundata, context);
-        }
+        doWebmail_list(rundata, context);
       }
 
     } catch (Exception e) {
