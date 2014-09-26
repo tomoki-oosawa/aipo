@@ -65,7 +65,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALtditemfooter()
 #ALtablefooter()
 #if($result.List.size() == 0)
-#AUIEmptyMessage("icon-folder-open" "$l10n.CABINET_NOTHING_FILE")
+<div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
 #else
 #ALajaxpageview('CabinetFileSearchListScreen' $result)
 #ALtableheader("100%")
