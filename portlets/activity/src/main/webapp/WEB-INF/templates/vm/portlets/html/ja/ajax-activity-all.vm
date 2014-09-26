@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-#AUIEmptyMessage("" "$l10n.ACTIVITY_NO_DATA")
+<div class="message">$l10n.ACTIVITY_NO_DATA</div>
 #else
 #if($result.TableColumNum == 4)
 #ALformheader('Activity' $jslink $portlet)
