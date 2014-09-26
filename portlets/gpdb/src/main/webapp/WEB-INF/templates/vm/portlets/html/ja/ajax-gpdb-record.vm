@@ -57,7 +57,7 @@
 	#set($updateDateId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
-			<th class="#if ("$!item.TitleFlg.toString()" != "t") mb_hide #end #if ("$!item.Type.toString()" == "08") thin #end ">
+			<th class="#if ("$!item.TitleFlg.toString()" != "t") mb_hide #end #if ("$!item.Type.toString()" == "08") thin #end #if ("$!item.Type.toString()" == ("10")||"$!item.Type.toString()" == ("11")||"$!item.Type.toString()" == ("12")) thin #end">
 				#ALajaxsort($!item.GpdbItemId $!item.GpdbItemName $result 'GpdbRecordListScreen')
 			</th>
 		#end
@@ -89,6 +89,8 @@
 			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
+		#elseif ($dateId.toString() == $record.GpdbItemId.toString()||$createDateId.toString() == $record.GpdbItemId.toString()||$updateDateId.toString()== $record.GpdbItemId.toString())
+			#ALtdcellNowrapAtt($!record.DispValue 'class="mb_hide" nowrap="nowrap"')
 		#else
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end
