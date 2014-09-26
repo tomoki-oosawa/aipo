@@ -21,7 +21,7 @@
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-#AUIEmptyMessage("" "$l10n.NOTE_NO_NOTE")
+<div class="message">$l10n.NOTE_NO_NOTE</div>
 #else
 #ALformheaderAction('noteForm' $jslink $portlet)
 #AUISummaryDiv()

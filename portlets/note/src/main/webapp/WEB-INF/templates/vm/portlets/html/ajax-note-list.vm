@@ -65,7 +65,9 @@
 
 #ALajaxlistformheaderAction($l10n.NOTE_NOTE)
 #if($result.List.size()<=0)
-#AUIEmptyMessage("icon-phone" "$l10n.NOTE_NO_NOTE")
+<div class="message">
+#if($!result.targetKeyword.toString()!="")$l10n.NOTE_ALERT_NO_NOTE_IN_YOUR_SELECT #elseif($isReceive) $l10n.NOTE_ALERT_NO_RECIEVED_NOTE#else $l10n.NOTE_ALERT_NO_SENT_NOTE #end
+</div>
 #else
 
 #AUISummaryDiv()
