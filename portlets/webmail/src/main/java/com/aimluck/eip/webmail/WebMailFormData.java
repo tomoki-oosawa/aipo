@@ -61,7 +61,6 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
-import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -125,9 +124,6 @@ public class WebMailFormData extends ALAbstractFormData {
   /**  */
   private int accountId = -1;
 
-  /** メールアカウント一覧 */
-  private List<WebmailAccountLiteBean> mailAccountList = null;
-
   private String orgId;
 
   @Override
@@ -149,8 +145,6 @@ public class WebMailFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     orgId = Database.getDomainName();
-
-    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
   }
 
   /**
@@ -767,11 +761,4 @@ public class WebMailFormData extends ALAbstractFormData {
     return addrbuf.toString();
   }
 
-  public boolean isExistsAccount() {
-    if (mailAccountList != null && mailAccountList.size() > 0) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 }
