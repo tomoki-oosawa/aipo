@@ -69,7 +69,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログエントリー・コメントのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class BlogEntryCommentFormData extends ALAbstractFormData {
 
@@ -94,12 +94,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   private String aclPortletFeature = null;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -145,8 +145,8 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -155,13 +155,12 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
     comment.setFieldName(ALLocalizationUtils.getl10n("BLOG_COMMENT"));
     comment.setTrim(false);
 
-
   }
 
   /**
    * 掲示板の各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -173,10 +172,10 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -187,7 +186,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -201,7 +200,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * コメントをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -235,7 +234,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * コメントをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -340,7 +339,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 当該ブログの更新通知ユーザーを習得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -390,7 +389,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   private String createMsgForPc(RunData rundata) {
@@ -471,7 +470,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   *
+   * 
    * @return
    */
   private String createMsgForCellPhone(RunData rundata, int destUserID) {
@@ -550,7 +549,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているコメントを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -564,7 +563,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * エントリー詳細表示ページからデータを新規登録します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -585,11 +584,17 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
       ArrayList<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
-          rundata,
-          context,
-          msgList));
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());
@@ -619,7 +624,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * エントリー詳細表示ページにフォームを表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -661,7 +666,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -679,7 +684,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getComment() {
@@ -689,7 +694,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override

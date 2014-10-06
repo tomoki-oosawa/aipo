@@ -543,11 +543,17 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       action.setMode(ALEipConstants.MODE_INSERT);
       List<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
-          rundata,
-          context,
-          msgList));
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());
