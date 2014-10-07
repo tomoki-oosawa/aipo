@@ -37,7 +37,7 @@ $!result.LoginName
 #ALtditemheader()
 #ALpasswdfield('new_password' $!result.NewPassword '50%' '' 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired($!result.NewPasswordConfirm.FieldName)" "")
+#ALtdcaptionAtt("#ALrequired($l10n.ACCOUNT_PASSWORDCONFIRMMSG)" "")
 #ALtditemheader()
 #ALpasswdfield('new_password_confirm' $!result.NewPasswordConfirm '50%' '' 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)
 #ALtditemfooter()
