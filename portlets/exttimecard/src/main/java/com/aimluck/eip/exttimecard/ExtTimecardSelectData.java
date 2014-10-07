@@ -415,6 +415,11 @@ public class ExtTimecardSelectData extends
         viewMonth_add_month.getValue());
     query.andQualifier(exp11.andExp(exp12));
 
+    if (ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR) != null
+      && !"".equals(ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR))) {
+      ALEipUtils.removeTemp(rundata, context, LIST_FILTER_TYPE_STR);
+    }
+
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
