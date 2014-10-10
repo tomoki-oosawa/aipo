@@ -203,7 +203,7 @@ public class GpdbRecordSelectData extends
       searchWord.setValue(GpdbUtils.getSearchword(rundata, context));
       String searchValue;
       if ((searchWord != null) && (!searchWord.getValue().equals(""))) {
-        searchValue = "   AND value LIKE '%" + searchWord + "%'";
+        searchValue = "   AND r4.value LIKE '%" + searchWord + "%'";
       } else {
         searchValue = "";
       }
@@ -214,11 +214,14 @@ public class GpdbRecordSelectData extends
         ascDesc = current_sort_type;
       }
 
+      StringBuilder sql = new StringBuilder();
       // -----------------------
       // レコード情報を取得
       // -----------------------
-      StringBuilder sql =
-        new StringBuilder()
+
+      if (searchValue != "") {
+
+        sql
           .append("SELECT r.* FROM eip_t_gpdb_record r")
           .append(" INNER JOIN eip_t_gpdb_item i")
           .append("    ON i.gpdb_item_id = r.gpdb_item_id")
@@ -226,7 +229,15 @@ public class GpdbRecordSelectData extends
           .append("    ON g.gpdb_id = r.gpdb_id")
           .append(" WHERE r.gpdb_id = #bind($gpdb_id)")
           .append("   AND i.list_flg = #bind($list_flg)")
+          .append("   AND r.record_no IN (")
+          .append(" SELECT DISTINCT r4.record_no FROM eip_t_gpdb_record r4")
+          .append(" INNER JOIN eip_t_gpdb_item i2")
+          .append("    ON i2.gpdb_item_id = r4.gpdb_item_id")
+          .append(" WHERE r4.gpdb_id = #bind($gpdb_id)")
           .append(searchValue)
+          .append(
+            "    AND i2.type IN (#bind($type1),#bind($type2),#bind($type3),#bind($type4))")
+          .append(" ) ")
           .append(" ORDER BY (SELECT " + sortValue)
           .append("             FROM eip_t_gpdb_record r2")
           .append("            WHERE r2.record_no = r.record_no")
@@ -240,6 +251,30 @@ public class GpdbRecordSelectData extends
           .append("        , r.record_no")
           .append("        , i.order_no");
 
+      } else {
+
+        sql
+          .append("SELECT r.* FROM eip_t_gpdb_record r")
+          .append(" INNER JOIN eip_t_gpdb_item i")
+          .append("    ON i.gpdb_item_id = r.gpdb_item_id")
+          .append(" INNER JOIN eip_t_gpdb g")
+          .append("    ON g.gpdb_id = r.gpdb_id")
+          .append(" WHERE r.gpdb_id = #bind($gpdb_id)")
+          .append("   AND i.list_flg = #bind($list_flg)")
+          .append(" ORDER BY (SELECT " + sortValue)
+          .append("             FROM eip_t_gpdb_record r2")
+          .append("            WHERE r2.record_no = r.record_no")
+          .append(sortWhere)
+          .append("          ) " + nullSort + ascDesc)
+          .append("        , (SELECT " + sortValue)
+          .append("             FROM eip_t_gpdb_record r2")
+          .append("            WHERE r2.record_no = r.record_no")
+          .append(sortWhere)
+          .append("          ) " + ascDesc)
+          .append("        , r.record_no")
+          .append("        , i.order_no");
+      }
+
       SQLTemplate<EipTGpdbRecord> sqltemp =
         Database.sql(EipTGpdbRecord.class, String.valueOf(sql));
       sqltemp.param("gpdb_id", Integer.valueOf(gpdbId));
@@ -247,6 +282,12 @@ public class GpdbRecordSelectData extends
       if (sort != null) {
         sqltemp.param("sort", sort);
         sqltemp.param("sort", sort);
+      }
+      if (searchValue != "") {
+        sqltemp.param("type1", GpdbUtils.ITEM_TYPE_TEXTAREA);
+        sqltemp.param("type2", GpdbUtils.ITEM_TYPE_TEXT);
+        sqltemp.param("type3", GpdbUtils.ITEM_TYPE_LINK);
+        sqltemp.param("type4", GpdbUtils.ITEM_TYPE_MAIL);
       }
 
       ResultList<EipTGpdbRecord> list =
