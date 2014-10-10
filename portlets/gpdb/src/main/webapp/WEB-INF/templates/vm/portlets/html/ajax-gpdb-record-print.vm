@@ -131,7 +131,7 @@ $l10n.COMMON_NOT_REFLECT_MSG
 	#set($updateDateId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
-			<th class="#if("$!item.TitleFlg.toString()" == "t")thTitle #end #if ("$!item.Type.toString()" == "08") thin #end #if ("$!item.Type.toString()" == ("10")||"$!item.Type.toString()" == ("11")||"$!item.Type.toString()" == ("12")) thin #end">
+			<th class="#if("$!item.TitleFlg.toString()" == "t")thTitle #end #if ("$!item.Type.toString()" == "08") thin #end">
 				$!item.GpdbItemName
 			</th>
 		#end
@@ -162,8 +162,6 @@ $l10n.COMMON_NOT_REFLECT_MSG
 			#ALtdcellfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellAtt($!record.DispValue 'class="auiMTCaption"')
-		#elseif ($dateId.toString() == $record.GpdbItemId.toString()||$createDateId.toString() == $record.GpdbItemId.toString()||$updateDateId.toString()== $record.GpdbItemId.toString())
-			#ALtdcellAtt($!record.DispValue 'nowrap="nowrap"')
 		#else
 			#ALtdcell($!record.DispValue)
 		#end
