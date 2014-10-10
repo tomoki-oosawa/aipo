@@ -32,6 +32,7 @@
 #set ($indicator_id = "indicator-list-")
 #set ($StatStr = $!{result.StatStr})
 #set ($type = "mail")
+#set ($adminTab = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailAccountListScreen")))
 ## ---------------------------------------------------------------------------
 ##ALsubmenubar($submenulist "")
 
@@ -41,7 +42,7 @@
 #else
 
 #if($!result.AccountId == 0)
-#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
+#AUIEmptyMessage("icon-envelope" $utils.getl10nFormat1("WEBMAIL_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 #ALajaxlistformheader($l10n.WEBMAIL_WEBMAIL)
@@ -73,7 +74,9 @@
 #AUIajaxpageview('WebMailListScreen' $result)
 #end
 </div>
-
+#if($!result.List && $!result.List.size() <= 0)
+#AUIEmptyMessage("icon-envelope" "$l10n.WEBMAIL_MAIL_EMPTY_MESSAGE")
+#else
 #AUIrowMTableWide()
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
@@ -85,9 +88,6 @@
 ##ALtdheadThin(' ')
 ##ALtdheadThin(' ')
 </tr>
-#if($!result.List && $!result.List.size() <= 0)
-<tr><td colspan="4" class="auiNoData"><p>$l10n.WEBMAIL_NO_MAIL_THIS_FOLDER</p></td></tr>
-#else
 #foreach ($record in $result.List)
 <tr>
 
@@ -114,7 +114,6 @@ $!record.Person
 #ALtdcellfooter()
 </tr>
 #end
-#end
 #AUItablefooter()
 
 <div class="auiSummaryMeta clearfix">
@@ -133,6 +132,7 @@ $!record.Person
 #end
 #ALselectfooter()
 #end
+
 <a class="auiButton" title="$l10n.WEBMAIL_RECEIVE_MAIL" href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailListScreen').addQueryData('mode','recieve'))', '$!portlet.ID');aipo.webmail.onProcessingTimer();">
 <span>#AUIajaxbuttonReload()</span>
 </a>
@@ -150,6 +150,7 @@ $!record.Person
 #set ($mailScreenUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailListScreen")))
 <input type="hidden" id="receiving" name="receiving" value="$mailScreenUrl" />
 <input type="hidden" id="receivingPid" name="receivingPid" value="$!portlet.ID" />
+#end
 #end
 #ALformfooter()
 #end
