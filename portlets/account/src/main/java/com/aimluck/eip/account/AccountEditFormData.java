@@ -200,7 +200,7 @@ public class AccountEditFormData extends ALAbstractFormData {
     // 新しいパスワード（確認用）
     new_password_confirm = new ALStringField();
     new_password_confirm.setFieldName(ALLocalizationUtils
-      .getl10nFormat("ACCOUNT_PASSWORDCONFIRMMSG"));
+      .getl10nFormat("ACCOUNT_PASSWORDCONFIRMMSG_NOT_INDENTION"));
     new_password_confirm.setTrim(true);
 
     // メールアドレス
