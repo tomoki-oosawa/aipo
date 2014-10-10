@@ -41,8 +41,15 @@
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!jslink.getPortletById($!portlet.ID).addQueryData('template','ToDoCategoryListScreen')', '$!portlet.ID');">$l10n.TODO_MANAGEMENT</a>
 </div>
+#if("${client}" != "IPHONE")
 </div>
 <div class="auiWidget clearfix">
+#else
+<div style="margin:0.5em 0;">
+#end
 #AUIwidgetViewPageMenuList($menues3 $!result.currentTab)
+#if("${client}" == "IPHONE")
+</div>
+#end
 </div>
 </div>
