@@ -81,7 +81,7 @@
 </div>
 
 #if("$result.List.size()" == "0")
-<div class="message">$l10n.MSGBOARD_NOTHING_TOPIC</div>
+#AUIEmptyMessage("" "$l10n.MSGBOARD_NOTHING_TOPIC")
 #else
 #if($result.TableColumNum == 4)
 #ALformheaderAction('Msgboard' $jslink $portlet)
