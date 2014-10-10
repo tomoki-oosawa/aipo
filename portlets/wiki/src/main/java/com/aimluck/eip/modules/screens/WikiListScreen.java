@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -50,10 +51,14 @@ public class WikiListScreen extends ALVelocityScreen {
       if (WikiUtils.hasResetFlag(rundata, context)) {
         WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
       }
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
       listData.loadTopWikiList(rundata, context);
       listData.setIsTop(true);
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
       String layout_template = "portlets/html/ja/ajax-wiki-list.vm";
