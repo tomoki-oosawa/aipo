@@ -22,6 +22,7 @@ package com.aimluck.eip.util;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.Date;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -474,4 +475,9 @@ public class ALCommonUtils {
       return "";
     }
   }
+
+  public static long getCurrentTime() {
+    return new Date().getTime();
+  }
+
 }
