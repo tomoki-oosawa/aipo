@@ -36,7 +36,10 @@
 
 #else
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+#AUISummaryDiv()
+#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-envelope" "$l10n.WEBMAIL_FILTER_EMPTY_MESSAGE")
 #else
 #ALajaxlistformheader($l10n.WEBMAIL_FILTER)
 #AUISummaryDiv()
