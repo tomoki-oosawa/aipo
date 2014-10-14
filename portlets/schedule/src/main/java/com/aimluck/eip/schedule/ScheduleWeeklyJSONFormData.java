@@ -55,6 +55,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.quota.ALQuotaService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -284,6 +285,10 @@ public class ScheduleWeeklyJSONFormData {
     }
   }
 
+  protected boolean isOverQuota() {
+    return ALQuotaService.isOverQuota(Database.getDomainName());
+  }
+
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
     if (!ScheduleUtils.hasRelation(rundata)) {
       aclPortletFeature =
@@ -297,12 +302,17 @@ public class ScheduleWeeklyJSONFormData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
-          rundata,
-          context,
-          msgList));
-
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
+            rundata,
+            context,
+            msgList));
+      }
       return res;
 
     } catch (ALPermissionException e) {
@@ -329,12 +339,17 @@ public class ScheduleWeeklyJSONFormData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
-          rundata,
-          context,
-          msgList));
-
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
+      }
       return res;
 
     } catch (ALPermissionException e) {

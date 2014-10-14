@@ -526,11 +526,17 @@ public class ReportReplyFormData extends ALAbstractFormData {
       action.setMode(ALEipConstants.MODE_INSERT);
       List<String> reportList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, reportList) && validate(reportList) && insertFormData(
-          rundata,
-          context,
-          reportList));
+      boolean res = false;
+      if (isOverQuota()) {
+        reportList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, reportList) && validate(reportList) && insertFormData(
+            rundata,
+            context,
+            reportList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());
