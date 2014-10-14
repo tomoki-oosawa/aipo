@@ -190,6 +190,10 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
         .getInitParameter("p1b-rows");
     endHour = endHourInit != null ? Integer.parseInt(endHourInit) : 13;
     endHour = endHour > 24 ? 13 : endHour;
+    if (startHour > endHour) {
+      startHour = 0;
+      endHour = 13;
+    }
     // ToDo 表示設定
     String todoInit =
       ALEipUtils
