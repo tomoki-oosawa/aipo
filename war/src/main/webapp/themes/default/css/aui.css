@@ -4796,7 +4796,7 @@ html > body .auiLoadWrapper .loader {
 	errorbox
 --------------------------------------------------*/
 .errorbox {
-  max-width: 650px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 20px;
   text-align: center;
