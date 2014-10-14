@@ -34,18 +34,12 @@
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen")' />
 <div class="filters" id="filters_$!portlet.ID">#*
 *##if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")#*
-	*#<span class="filterTip">#*
 	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))#*
-		*#<span>$!result.SelectedPostAliasName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeGroup("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.SelectedPostAliasName "aipo.cabinet.onChangeGroup('$url','$!portlet.ID','');")#*
 *##end#*
 *##if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")#*
-	*#<span class="filterTip">#*
 	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("folder_id","0")))#*
-		*#<span>$!result.SelectedFolderInfo.FolderName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeFolder("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.SelectedFolderInfo.FolderName "aipo.cabinet.onChangeGroup('$url','$!portlet.ID','');")#*
 *##end#*
 *#</div>
 

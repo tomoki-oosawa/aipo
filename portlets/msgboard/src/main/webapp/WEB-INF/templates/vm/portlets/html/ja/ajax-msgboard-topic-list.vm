@@ -39,16 +39,10 @@
 
 <div class="filters" id="filters_$!portlet.ID">#*
 *##if("$!result.PostName"!="")#*
-	*#<span class="filterTip">#*
-		*#<span>$!result.PostName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.msgboard.filterSetDefault("$!portlet.ID","post");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.PostName "aipo.msgboard.filterSetDefault('$!portlet.ID','post');")#*
 *##end#*
 *##if("$!result.CategoryName"!="")#*
-	*#<span class="filterTip">#*
-		*#<span>$!result.CategoryName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.msgboard.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.CategoryName "aipo.msgboard.filterSetDefault('$!portlet.ID','category');")#*
 *##end#*
 *#</div>
 

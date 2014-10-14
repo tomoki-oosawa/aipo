@@ -42,10 +42,7 @@
 <div class="filters" id="filters_$!portlet.ID">#*
 *##foreach($record in $result.CategoryList)#*
 *##if("$!result.CurrentFilter"=="$!record.CategoryId")#*
-	*#<span class="filterTip">#*
-		*#<span>$!{record.CategoryName}</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.workflow.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!{record.CategoryName} "aipo.workflow.filterSetDefault('$!portlet.ID','category');")#*
 *##end#end#*
 *#</div>
 

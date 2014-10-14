@@ -32,26 +32,17 @@
 
 *##foreach($record in $result.postList)#*
 *##if($!result.issetFilter("post",$!{record.Name}))#*
-*#<span class="filterTip">#*
-*#<span>$!record.AliasName</span>#*
-*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>#*
-*#</span>#*
+*##ALfilterTip($!record.AliasName "aipo.todo.filterSetDefault('$!portlet.ID','post')")#*
 *##end#end#*
 
 *##foreach($record in $result.PostMap)#*
 *##if($!result.issetFilter("post",$!{record.GroupName}))#*
-*#<span class="filterTip">#*
-*#<span>$!record.PostName</span>#*
-*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','post')"><i class="auiIcon auiIconDelete"></i></a>#*
-*#</span>#*
+*##ALfilterTip($!record.PostName "aipo.todo.filterSetDefault('$!portlet.ID','post')")#*
 *##end#end#*
 
 *##foreach($record in $result.CategoryList)#*
 *##if($!result.issetFilter("category",$!{record.CategoryId}))#*
-*#<span class="filterTip">#*
-*#<span>$!record.CategoryName</span>#*
-*#<a href="javascript:void(0)" onclick="aipo.todo.filterSetDefault('$!portlet.ID','category')"><i class="auiIcon auiIconDelete"></i></a>#*
-*#</span>#*
+*##ALfilterTip($!record.CategoryName "aipo.todo.filterSetDefault('$!portlet.ID','category')")#*
 *##end#end#*
 *#</div>
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
