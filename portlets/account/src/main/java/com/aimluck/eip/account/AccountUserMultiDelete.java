@@ -238,45 +238,48 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
           Database.query(EipTTimeline.class).andQualifier(
             exp01.andExp(exp02.andExp(exp03)));
         List<EipTTimeline> timelineList = EipTTimelineSQL.fetchList();
-        List<Integer> timelineIdList = new ArrayList<Integer>();
-        for (EipTTimeline timeline : timelineList) {
-          timelineIdList.add(timeline.getTimelineId());
-        }
-        if (!timelineIdList.isEmpty()) {
-          SelectQuery<EipTTimeline> EipTTimelineSQL2 =
-            Database.query(EipTTimeline.class).andQualifier(
-              ExpressionFactory.inDbExp(
-                EipTTimeline.PARENT_ID_COLUMN,
-                timelineIdList));
-          List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
-          if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
-            timelineList.addAll(timelineCommentList);
+        if (!timelineList.isEmpty()) {
+          List<Integer> timelineIdList = new ArrayList<Integer>();
+          for (EipTTimeline timeline : timelineList) {
+            timelineIdList.add(timeline.getTimelineId());
           }
-
-          for (EipTTimeline entry : timelineList) {
-            List<String> fpaths = new ArrayList<String>();
-            List<?> files = entry.getEipTTimelineFile();
-            if (files != null && files.size() > 0) {
-              int fileSize = files.size();
-              for (int j = 0; j < fileSize; j++) {
-                fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
-              }
-
-              ALDeleteFileUtil.deleteFiles(
-                entry.getTimelineId(),
-                EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
-                AccountUtils.getSaveDirPath(
-                  orgId,
-                  entry.getOwnerId(),
-                  "timeline"),
-                fpaths,
-                EipTTimelineFile.class);
-
+          if (!timelineIdList.isEmpty()) {
+            SelectQuery<EipTTimeline> EipTTimelineSQL2 =
+              Database.query(EipTTimeline.class).andQualifier(
+                ExpressionFactory.inDbExp(
+                  EipTTimeline.PARENT_ID_COLUMN,
+                  timelineIdList));
+            List<EipTTimeline> timelineCommentList =
+              EipTTimelineSQL2.fetchList();
+            if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
+              timelineList.addAll(timelineCommentList);
             }
-          }
 
-          EipTTimelineSQL2.deleteAll();
-          EipTTimelineSQL.deleteAll();
+            for (EipTTimeline entry : timelineList) {
+              List<String> fpaths = new ArrayList<String>();
+              List<?> files = entry.getEipTTimelineFile();
+              if (files != null && files.size() > 0) {
+                int fileSize = files.size();
+                for (int j = 0; j < fileSize; j++) {
+                  fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+                }
+
+                ALDeleteFileUtil.deleteFiles(
+                  entry.getTimelineId(),
+                  EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
+                  AccountUtils.getSaveDirPath(
+                    orgId,
+                    entry.getOwnerId(),
+                    "timeline"),
+                  fpaths,
+                  EipTTimelineFile.class);
+
+              }
+            }
+
+            EipTTimelineSQL2.deleteAll();
+            EipTTimelineSQL.deleteAll();
+          }
         }
         Database.commit();
 
