@@ -62,7 +62,7 @@ function showErrorMessage(msg){
 		div.appendChild(ul);
 	}
 	var li = document.createElement("li");
-	li.innerHTML = msg;
+	li.innerHTML = "<span class='caution'>" + msg + "</span>";
 	ul.appendChild(li);
 }
 
