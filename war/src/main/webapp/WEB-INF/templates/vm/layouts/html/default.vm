@@ -162,6 +162,8 @@ var dispChanger = false;
 	dispChanger = true;
 #end
 #if ("$!{client}" != "IPAD")
+#if($!hasAuthorityCustomize)
+
 dojo.require("dojo.dnd.Source");
 dojo.require("aipo.customize.form");
 
@@ -262,6 +264,15 @@ dojo.addOnLoad(function() {
     });
     underlay.show();
 });
+#else
+dojo.require("dojo.dnd.Source");
+dojo.require("aipo.customize.form");
+
+dojo.addOnLoad(function() {
+
+	aipo.customize.addAutoHideMenuTrigger();
+	});
+#end
 #end
 function activitySwitch(){
     var wrapper = document.getElementById('wrapper');
