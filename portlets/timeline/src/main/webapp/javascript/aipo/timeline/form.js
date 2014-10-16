@@ -252,24 +252,6 @@ aipo.timeline.getUrl = function(url, pid) {
 	}
 
 }
-if (!aipo.timeline.onloadCountlist) {
-	aipo.timeline.onloadCountlist = [];
-}
-aipo.timeline.onloadImage =function(pid){
-	count =0;
-	if (aipo.timeline.onloadCountlist.hasOwnProperty(pid)) {
-		count= aipo.timeline.onloadCountlist[pid];
-	}
-	count++;
-	 aipo.timeline.onloadCountlist[pid]=count;
-	var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
-	if(count == max){
-		for(var r = 1 ; r <= max ; r++){
-			aipo.timeline.refreshImageList(pid,r);
-		}
-
-	}
-}
 
 aipo.timeline.setScrollTop = function(pid, scrollTop) {
 	dojo.byId("timeline_" + pid).scrollTop = scrollTop;
