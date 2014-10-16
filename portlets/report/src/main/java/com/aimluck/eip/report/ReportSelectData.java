@@ -225,6 +225,11 @@ public class ReportSelectData extends
       } else {
         target_keyword.setValue(ReportUtils.getTargetKeyword(rundata, context));
       }
+      if (ALEipUtils.getTemp(rundata, context, LIST_FILTER_TYPE_STR) != null
+        && !"".equals(ALEipUtils
+          .getTemp(rundata, context, LIST_FILTER_TYPE_STR))) {
+        ALEipUtils.removeTemp(rundata, context, LIST_FILTER_TYPE_STR);
+      }
       SelectQuery<EipTReport> query = getSelectQuery(rundata, context);
       buildSelectQueryForFilter(query, rundata, context);
       buildSelectQueryForListView(query);
