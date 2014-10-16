@@ -179,7 +179,13 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
       ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
-        .getInitParameter("p1a-rows");
+        .getInitParameter("p1a-rows") != null
+        ? ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1a-rows")
+          .toString()
+        : String.valueOf(0);
     startHour = startHourInit != null ? Integer.parseInt(startHourInit) : 0;
     startHour = startHour > 24 ? 0 : startHour;
     // 表示終了時間の設定
@@ -187,7 +193,13 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
       ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
-        .getInitParameter("p1b-rows");
+        .getInitParameter("p1b-rows") != null
+        ? ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1b-rows")
+          .toString()
+        : String.valueOf(13);
     endHour = endHourInit != null ? Integer.parseInt(endHourInit) : 13;
     endHour = endHour > 24 ? 13 : endHour;
     if (startHour > endHour) {
