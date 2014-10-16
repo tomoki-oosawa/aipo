@@ -442,6 +442,29 @@ public class ToDoUtils {
     return target_keyword;
   }
 
+  public static int getViewId(RunData rundata, Context context, int uid)
+      throws ALDBErrorException, ALPageNotFoundException {
+    int view_uid = -1;
+    EipTTodo record;
+    try {
+      record = ToDoUtils.getEipTTodo(rundata, context, false);
+    } catch (ALPageNotFoundException ex) {
+      record = null;
+    }
+    if (record != null) {
+      view_uid = record.getUserId();
+    } else {
+      if (rundata.getParameters().containsKey("view_uid")) {
+        view_uid =
+          Integer.parseInt(rundata.getParameters().getString("view_uid"));
+      } else {
+        view_uid = uid;
+      }
+    }
+    ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
+    return view_uid;
+  }
+
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
    * 

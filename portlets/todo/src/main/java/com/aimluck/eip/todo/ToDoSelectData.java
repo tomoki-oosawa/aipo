@@ -53,6 +53,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -98,6 +99,12 @@ public class ToDoSelectData extends
 
   private int login_user_id;
 
+  private String aclPortletFeature;
+
+  private boolean hasAclListTodoOther;
+
+  private boolean hasAclDetailTodoOther;
+
   private boolean hasAclEditTodoOther;
 
   private boolean hasAclDeleteTodoOther;
@@ -126,6 +133,13 @@ public class ToDoSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+
+    if (rundata.getParameters().getString("entityid") != null) {
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+        .getParameters()
+        .getString("entityid"));
+    }
+
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(
         rundata,
@@ -155,6 +169,31 @@ public class ToDoSelectData extends
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    int view_uid = ToDoUtils.getViewId(rundata, context, login_user_id);
+
+    // アクセス権
+    if (view_uid == login_user_id) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+    }
+
+    // アクセス権(他人のToDo一覧表示)
+    hasAclListTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    // アクセス権(他人のToDo詳細表示)
+    hasAclDetailTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
 
     // アクセス権(他人のToDo編集)
     hasAclEditTodoOther =
@@ -337,6 +376,13 @@ public class ToDoSelectData extends
       query.andQualifier(exp5);
     }
 
+    // 他人のToDoの一覧表示権限がない場合にはユーザーIDが一致していれば閲覧可能
+    if (!hasAclListTodoOther) {
+      Expression exp8 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, login_user_id);
+      query.andQualifier(exp8);
+    }
+
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -493,6 +539,11 @@ public class ToDoSelectData extends
       // 期限状態を設定する．
       rd.setLimitState(ToDoUtils.getLimitState(record.getEndDate()));
 
+      // 自身のToDoかを設定する
+      rd.setIsSelfTodo(record.getUserId() == login_user_id);
+
+      rd.setAclListTodoOther(hasAclListTodoOther);
+      rd.setAclDetailTodoOther(hasAclDetailTodoOther);
       rd.setAclEditTodoOther(hasAclEditTodoOther);
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
@@ -585,8 +636,16 @@ public class ToDoSelectData extends
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);
 
+      rd.setAclListTodoOther(hasAclListTodoOther);
+      rd.setAclDetailTodoOther(hasAclDetailTodoOther);
       rd.setAclEditTodoOther(hasAclEditTodoOther);
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
+
+      // もし自分のToDoではない場合に、他人のToDoの詳細表示権限がないときはエラー
+      if (record.getUserId() != login_user_id && !hasAclDetailTodoOther) {
+        throw new ALPermissionException();
+      }
+
       return rd;
     } catch (Exception ex) {
       logger.error("todo", ex);
@@ -697,6 +756,42 @@ public class ToDoSelectData extends
   }
 
   /**
+   * アクセス権限をチェックします。
+   * 
+   * @return
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    String pfeature = getAclPortletFeature();
+    if (pfeature == null || "".equals(pfeature)) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
+
+    if (!hasAuthority) {
+      throw new ALPermissionException();
+    }
+
+    return true;
+  }
+
+  /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
    * 
@@ -704,7 +799,7 @@ public class ToDoSelectData extends
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    return aclPortletFeature;
   }
 
   public void setMyGroupList(List<ALEipGroup> myGroupList) {
