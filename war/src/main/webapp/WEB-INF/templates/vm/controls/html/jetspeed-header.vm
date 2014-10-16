@@ -113,18 +113,28 @@ limitations under the License.
 										</div>
 									</div>
 									<div class="inputField">
-										<form name="messageForm" id="messageForm" action="?template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.submit(this,'indicator-dlg-','message-top',aipo.message.onReceiveMessage);return false;">
+										<form name="messageForm" id="messageForm" action="?template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'Message');aimluck.io.submit(this,'indicator-dlg-','Message',aipo.message.onReceiveMessage);return false;">
 											<input type="hidden" name="_name" value="formMessage">
 											<input type="hidden" name="secid" value="$secid">
 											<input type="hidden" name="roomId" value="">
 											<input type="hidden" name="userId" value="">
+ 											 <input type="hidden" id="folderName_Message" name="folderName" value="message" />
 											<div class="tlInputMention relative">
 												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea>
 											</div>
+
+											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
+  												<p class="tlInputAttachmentTitle">添付ファイル</p>
+												<ul id="attachments_Message" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
+												</ul>
+											</div>
+
 											<div class="tlInputControls clearfix">
-												<div class="floatLeft"><a href="javascript:void(0)" class="auiButton">$l10n.FILEUPLOAD_DO_ADD_FILE</a></div>
+												<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
+												<iframe name="if_fileupload_Message" id="if_fileupload_Message" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById('Message').addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+												</div>
 												<div class="floatRight">
-													<i class="indicator" id="indicator-dlg-message-top" style="display:none"></i>
+													<i class="indicator" id="indicator-dlg-Message" style="display:none"></i>
 													<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
 												</div>
 											</div>

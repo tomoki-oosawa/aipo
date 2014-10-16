@@ -21,11 +21,15 @@ package com.aimluck.eip.message;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -35,6 +39,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
@@ -42,10 +47,14 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.push.ALPushService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -56,6 +65,8 @@ public class MessageFormData extends ALAbstractFormData {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MessageFormData.class.getName());
+
+  private String orgId;
 
   private ALNumberField roomId;
 
@@ -69,12 +80,20 @@ public class MessageFormData extends ALAbstractFormData {
 
   private ALEipUser targetUser;
 
+  /** ファイルアップロードリスト */
+  private List<FileuploadLiteBean> fileuploadList;
+
+  /** 添付フォルダ名 */
+  private String folderName = null;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     login_user = ALEipUtils.getALEipUser(rundata);
+    orgId = Database.getDomainName();
+    folderName = rundata.getParameters().getString("folderName");
 
   }
 
@@ -88,6 +107,8 @@ public class MessageFormData extends ALAbstractFormData {
     message.setTrim(false);
     roomId = new ALNumberField();
     userId = new ALNumberField();
+    // ファイルリスト
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
 
   }
 
@@ -103,7 +124,13 @@ public class MessageFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     boolean res = super.setFormData(rundata, context, msgList);
-
+    if (res) {
+      try {
+        fileuploadList = MessageUtils.getFileuploadList(rundata);
+      } catch (Exception ex) {
+        logger.error("message", ex);
+      }
+    }
     return res;
   }
 
@@ -228,6 +255,11 @@ public class MessageFormData extends ALAbstractFormData {
       room.setLastMessage(message.getValue());
       room.setLastUpdateDate(now);
 
+      // 添付ファイルを登録する．
+      insertAttachmentFiles(fileuploadList, folderName, (int) login_user
+        .getUserId()
+        .getValue(), model, msgList);
+
       Database.commit();
 
       Map<String, String> params = new HashMap<String, String>();
@@ -274,5 +306,100 @@ public class MessageFormData extends ALAbstractFormData {
 
   public ALStringField getMessage() {
     return message;
+  }
+
+  private boolean insertAttachmentFiles(
+      List<FileuploadLiteBean> fileuploadList, String folderName, int uid,
+      EipTMessage entry, List<String> msgList) {
+
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      return true;
+    }
+
+    try {
+      int length = fileuploadList.size();
+      ArrayList<FileuploadLiteBean> newfilebeans =
+        new ArrayList<FileuploadLiteBean>();
+      FileuploadLiteBean filebean = null;
+      for (int i = 0; i < length; i++) {
+        filebean = fileuploadList.get(i);
+        if (filebean.isNewFile()) {
+          newfilebeans.add(filebean);
+        }
+      }
+      int newfilebeansSize = newfilebeans.size();
+      if (newfilebeansSize > 0) {
+        FileuploadLiteBean newfilebean = null;
+        for (int j = 0; j < length; j++) {
+          newfilebean = newfilebeans.get(j);
+          // サムネイル処理
+          String[] acceptExts = ImageIO.getWriterFormatNames();
+          ShrinkImageSet shrinkImageSet =
+            FileuploadUtils.getBytesShrinkFilebean(
+              orgId,
+              folderName,
+              uid,
+              newfilebean,
+              acceptExts,
+              FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+              FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+              msgList,
+              true);
+
+          String filename = j + "_" + String.valueOf(System.nanoTime());
+
+          // 新規オブジェクトモデル
+          EipTMessageFile file = Database.create(EipTMessageFile.class);
+          file.setOwnerId(Integer.valueOf(uid));
+          file.setFileName(newfilebean.getFileName());
+          file.setFilePath(MessageUtils.getRelativePath(filename));
+          if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
+            file.setFileThumbnail(shrinkImageSet.getShrinkImage());
+          }
+          file.setEipTMessage(entry);
+          file.setCreateDate(Calendar.getInstance().getTime());
+          file.setUpdateDate(Calendar.getInstance().getTime());
+
+          ALStorageService.copyTmpFile(
+            uid,
+            folderName,
+            String.valueOf(newfilebean.getFileId()),
+            MessageUtils.FOLDER_FILEDIR_MESSAGE,
+            MessageUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+            filename);
+
+          if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
+            // ファイルの作成
+            ALStorageService.createNewFile(
+              new ByteArrayInputStream(shrinkImageSet.getFixImage()),
+              MessageUtils.FOLDER_FILEDIR_MESSAGE
+                + ALStorageService.separator()
+                + Database.getDomainName()
+                + ALStorageService.separator()
+                + MessageUtils.CATEGORY_KEY
+                + ALStorageService.separator()
+                + uid
+                + ALStorageService.separator()
+                + filename);
+          } else {
+            // ファイルの移動
+            ALStorageService.copyTmpFile(
+              uid,
+              folderName,
+              String.valueOf(newfilebean.getFileId()),
+              MessageUtils.FOLDER_FILEDIR_MESSAGE,
+              MessageUtils.CATEGORY_KEY + ALStorageService.separator() + uid,
+              filename);
+          }
+        }
+
+        // 添付ファイル保存先のフォルダを削除
+        ALStorageService.deleteTmpFolder(uid, folderName);
+      }
+
+    } catch (Exception e) {
+      logger.error(e);
+    }
+    return true;
   }
 }

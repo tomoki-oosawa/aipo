@@ -474,4 +474,8 @@ public class ALCommonUtils {
       return "";
     }
   }
+
+  public static boolean isFileUploadable(RunData rundata) {
+    return ALEipUtils.isFileUploadable(rundata);
+  }
 }

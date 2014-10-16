@@ -20,18 +20,30 @@
 package com.aimluck.eip.message;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.Attributes;
+
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -130,9 +142,71 @@ public class MessageListSelectData extends
     rd.setCreateDate(model.getCreateDate());
     rd.setOwner(model.getUserId().intValue() == userId);
     if (model.getMessageId().intValue() > lastMessageId) {
-        lastMessageId = model.getMessageId().intValue();
-      }
+      lastMessageId = model.getMessageId().intValue();
+    }
     return rd;
+  }
+
+  @Override
+  public boolean doViewList(ALAction action, RunData rundata, Context context) {
+    boolean res = super.doViewList(action, rundata, context);
+
+    List<Object> result = getList();
+    List<Integer> parentIds = new ArrayList<Integer>(result.size());
+    for (Object obj : result) {
+      MessageResultData rd = (MessageResultData) obj;
+      parentIds.add((int) rd.getMessageId().getValue());
+    }
+
+    Map<Integer, List<FileuploadBean>> filesMap = getFiles(parentIds);
+
+    for (Object obj : result) {
+      MessageResultData rd = (MessageResultData) obj;
+      List<FileuploadBean> list =
+        filesMap.get((int) rd.getMessageId().getValue());
+      if (list != null) {
+        rd.setAttachmentFileList(list);
+      }
+    }
+
+    return res;
+  }
+
+  protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
+    if (parentIds == null || parentIds.size() == 0) {
+      return new HashMap<Integer, List<FileuploadBean>>();
+    }
+    SelectQuery<EipTMessageFile> query = Database.query(EipTMessageFile.class);
+    query.where(Operations.in(EipTMessageFile.MESSAGE_ID_PROPERTY, parentIds));
+
+    query.orderAscending(EipTMessageFile.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTMessageFile.FILE_PATH_PROPERTY);
+
+    List<EipTMessageFile> list = query.fetchList();
+    Map<Integer, List<FileuploadBean>> result =
+      new HashMap<Integer, List<FileuploadBean>>(parentIds.size());
+    for (EipTMessageFile model : list) {
+      Integer id = model.getMessageId();
+      List<FileuploadBean> rdList = result.get(id);
+      if (rdList == null) {
+        rdList = new ArrayList<FileuploadBean>();
+      }
+
+      String realname = model.getFileName();
+      DataHandler hData = new DataHandler(new FileDataSource(realname));
+
+      FileuploadBean filebean = new FileuploadBean();
+      filebean.setFileId(model.getFileId().intValue());
+      filebean.setFileName(realname);
+      if (hData != null) {
+        filebean.setContentType(hData.getContentType());
+      }
+      filebean.setIsImage(FileuploadUtils.isImage(realname));
+      rdList.add(filebean);
+      result.put(id, rdList);
+    }
+
+    return result;
   }
 
   /**

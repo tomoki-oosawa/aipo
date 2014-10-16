@@ -139,6 +139,10 @@ dojo.addOnLoad(function() {
                                 var isHideDropdown = false;
                                 break;
                             }
+                            if (node[i].className.indexOf('imgPopup') >= 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
                         }
                     }
                     if (isHideDropdown) {

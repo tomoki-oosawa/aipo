@@ -20,12 +20,15 @@
 package com.aimluck.eip.message;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -59,6 +62,8 @@ public class MessageResultData implements ALData, Serializable {
 
   private boolean isOwner = false;
 
+  private List<FileuploadBean> attachmentFileList;
+
   /**
    *
    */
@@ -73,6 +78,7 @@ public class MessageResultData implements ALData, Serializable {
     memberCount = new ALNumberField();
     message = new ALStringField();
     createDate = new ALDateTimeField("yyyy年M月d日 H:mm");
+    attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
   /**
@@ -239,7 +245,8 @@ public class MessageResultData implements ALData, Serializable {
   }
 
   /**
-   * @param photoModified セットする photoModified
+   * @param photoModified
+   *          セットする photoModified
    */
   public void setPhotoModified(Long photoModified) {
     this.photoModified = photoModified;
@@ -252,4 +259,18 @@ public class MessageResultData implements ALData, Serializable {
     return photoModified;
   }
 
+  public List<FileuploadBean> getAttachmentFileList() {
+    return attachmentFileList;
+  }
+
+  /**
+   * @param attachmentFileList
+   *          セットする attachmentFileList
+   */
+  public void setAttachmentFileList(List<FileuploadBean> attachmentFileList) {
+    this.attachmentFileList =
+      attachmentFileList == null
+        ? new ArrayList<FileuploadBean>(0)
+        : attachmentFileList;
+  }
 }

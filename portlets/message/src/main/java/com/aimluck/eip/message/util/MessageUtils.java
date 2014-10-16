@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.message.util;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,9 +30,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.cayenne.DataRow;
+import org.apache.cayenne.exp.Expression;
+import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.turbine.util.RunData;
@@ -38,18 +43,25 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.push.ALPushService;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -61,6 +73,17 @@ public class MessageUtils {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MessageUtils.class.getName());
+
+  public static final String FOLDER_FILEDIR_MESSAGE = JetspeedResources
+    .getString("aipo.filedir", "");
+
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.message.categorykey",
+    "");
+
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   public static void setupContext(RunData rundata, Context context) {
     Portlet portlet = new MessageMockPortlet();
@@ -469,6 +492,169 @@ public class MessageUtils {
 
       ALPushService.pushAsync("message_read", params, recipients);
     }
+  }
+
+  public static EipTMessageFile getEipTMessageFile(RunData rundata)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int attachmentIndex =
+        rundata.getParameters().getInt("attachmentIndex", -1);
+      if (attachmentIndex < 0) {
+        // ID が空の場合
+        logger.debug("[MessageUtils] Empty ID...");
+        throw new ALPageNotFoundException();
+
+      }
+
+      SelectQuery<EipTMessageFile> query =
+        Database.query(EipTMessageFile.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTMessageFile.FILE_ID_PK_COLUMN, Integer
+          .valueOf(attachmentIndex));
+      query.andQualifier(exp);
+
+      List<EipTMessageFile> files = query.fetchList();
+      if (files == null || files.size() == 0) {
+        // 指定した ID のレコードが見つからない場合
+        logger.debug("[MessageUtils] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return files.get(0);
+    } catch (Exception ex) {
+      logger.error("[MessageUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  public static String getRelativePath(String fileName) {
+    return new StringBuffer().append("/").append(fileName).toString();
+  }
+
+  public static String getSaveDirPath(String orgId, int uid) {
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_MESSAGE,
+      CATEGORY_KEY + ALStorageService.separator() + uid);
+  }
+
+  public static List<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
+      return null;
+    }
+
+    List<String> hadfileids = new ArrayList<String>();
+    List<String> newfileids = new ArrayList<String>();
+
+    for (int j = 0; j < fileids.length; j++) {
+      if (fileids[j].trim().startsWith("s")) {
+        hadfileids.add(fileids[j].trim().substring(1));
+      } else {
+        newfileids.add(fileids[j].trim());
+      }
+    }
+
+    List<FileuploadLiteBean> fileNameList = new ArrayList<FileuploadLiteBean>();
+    FileuploadLiteBean filebean = null;
+    int fileid = 0;
+
+    // 新規にアップロードされたファイルの処理
+    if (newfileids.size() > 0) {
+      String folderName =
+        rundata.getParameters().getString(
+          FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
+      if (folderName == null || folderName.equals("")) {
+        return null;
+      }
+
+      int length = newfileids.size();
+      for (int i = 0; i < length; i++) {
+        if (newfileids.get(i) == null || newfileids.get(i).equals("")) {
+          continue;
+        }
+
+        try {
+          fileid = Integer.parseInt(newfileids.get(i));
+        } catch (Exception e) {
+          continue;
+        }
+
+        if (fileid == 0) {
+          filebean = new FileuploadLiteBean();
+          filebean.initField();
+          filebean.setFolderName("photo");
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
+        } else {
+          BufferedReader reader = null;
+          try {
+            reader =
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getTmpFile(ALEipUtils.getUserId(rundata), folderName, fileid
+                  + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            String line = reader.readLine();
+            if (line == null || line.length() <= 0) {
+              continue;
+            }
+
+            filebean = new FileuploadLiteBean();
+            filebean.initField();
+            filebean.setFolderName(fileids[i]);
+            filebean.setFileId(fileid);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
+          } catch (Exception e) {
+            logger.error("message", e);
+          } finally {
+            try {
+              reader.close();
+            } catch (Exception e) {
+              logger.error("message", e);
+            }
+          }
+        }
+
+      }
+    }
+
+    if (hadfileids.size() > 0) {
+      // すでにあるファイルの処理
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
+      for (int k = 0; k < hadfileids.size(); k++) {
+        try {
+          fileid = Integer.parseInt(hadfileids.get(k));
+          hadfileidsValue.add(fileid);
+        } catch (Exception e) {
+          continue;
+        }
+      }
+
+      try {
+        SelectQuery<EipTMessageFile> reqquery =
+          Database.query(EipTMessageFile.class);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTMessageFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
+        reqquery.setQualifier(reqexp1);
+        List<EipTMessageFile> requests = reqquery.fetchList();
+        int requestssize = requests.size();
+        for (int i = 0; i < requestssize; i++) {
+          EipTMessageFile file = requests.get(i);
+          filebean = new FileuploadBean();
+          filebean.initField();
+          filebean.setFileId(file.getFileId());
+          filebean.setFileName(file.getFileName());
+          filebean.setFlagNewFile(false);
+          fileNameList.add(filebean);
+        }
+      } catch (Exception ex) {
+        logger.error("[BlogUtils] Exception.", ex);
+      }
+    }
+    return fileNameList;
   }
 
   public static Map<Integer, Long> getReadCountList(int roomId, int userId,

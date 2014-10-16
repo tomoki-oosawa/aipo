@@ -481,6 +481,8 @@ aipo.message.onReceiveMessage = function(msg) {
         aipo.message.latestMessageList();
         aipo.message.clearInput();
         dojo.byId("messagePane").scrollTop = 0;
+        dojo.style(dojo.byId("messageInputAttachment"), "display", "none");
+        dojo.byId("attachments_Message").innerHTML="";
     }
 };
 
