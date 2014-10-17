@@ -28,7 +28,10 @@
 #AUIcontentsAreaHeader()
 #end
 #if($result.List.size() == 0)
-#AUIbuttonActionInBlankBox($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-tag" "$l10n.ACCOUNT_POSITION_EMPTY_MESSAGE")
 #else
 #AUIwideAreaHeader()
 #AUISummaryDiv()
