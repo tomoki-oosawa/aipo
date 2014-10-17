@@ -260,6 +260,9 @@ public class ToDoSelectData extends
       setPageParam(list.getTotalCount());
       todoSum = list.getTotalCount();
       return list;
+    } catch (RuntimeException ex) {
+      logger.error("todo", ex);
+      return null;
     } catch (Exception ex) {
       logger.error("todo", ex);
       return null;
