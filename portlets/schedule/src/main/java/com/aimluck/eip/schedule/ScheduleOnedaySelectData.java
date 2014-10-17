@@ -186,7 +186,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
           .getInitParameter("p1a-rows")
           .toString()
         : String.valueOf(0);
-    startHour = startHourInit != null ? Integer.parseInt(startHourInit) : 0;
+    startHour = Integer.parseInt(startHourInit);
     startHour = startHour > 24 ? 0 : startHour;
     // 表示終了時間の設定
     String endHourInit =
@@ -200,7 +200,7 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
           .getInitParameter("p1b-rows")
           .toString()
         : String.valueOf(13);
-    endHour = endHourInit != null ? Integer.parseInt(endHourInit) : 13;
+    endHour = Integer.parseInt(endHourInit);
     endHour = endHour > 24 ? 13 : endHour;
     if (startHour > endHour) {
       startHour = 0;
