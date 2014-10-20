@@ -32,7 +32,7 @@ import com.aimluck.eip.message.util.MessageUtils;
  */
 public class MessageFileuploadFormScreen extends FileuploadFormScreen {
 
-  /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MessageFileuploadFormScreen.class.getName());
 

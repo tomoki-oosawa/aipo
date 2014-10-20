@@ -68,15 +68,17 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
       if (message == null) {
         return json.toString();
       }
-      Integer userId = message.getUserId();
-      ALEipUser user = ALEipUtils.getALEipUser(userId);
-      json.put("messageId", messageId);
-      json.put("userId", userId);
-      json.put("displayName", user.getAliasName().getValue());
-      json.put("text", ALCommonUtils.compressString(message.getMessage(), 100));
-      json.put("hasPhoto", user.hasPhoto());
-      json.put("photoModified", user.getPhotoModified());
-
+      if (MessageUtils.isJoinRoom(message, ALEipUtils.getUserId(rundata))) {
+        Integer userId = message.getUserId();
+        ALEipUser user = ALEipUtils.getALEipUser(userId);
+        json.put("messageId", messageId);
+        json.put("userId", userId);
+        json.put("displayName", user.getAliasName().getValue());
+        json.put("text", ALCommonUtils
+          .compressString(message.getMessage(), 100));
+        json.put("hasPhoto", user.hasPhoto());
+        json.put("photoModified", user.getPhotoModified());
+      }
       result = json.toString();
     } catch (Exception e) {
       logger.error("MessageCheckJSONScreen.getJSONString", e);

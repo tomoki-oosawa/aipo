@@ -59,8 +59,8 @@ public class MessageListScreen extends ALVelocityScreen {
       } catch (Throwable ignore) {
         // ignore
       }
+      int userId = ALEipUtils.getUserId(rundata);
       if (targetUserId != null && targetUserId > 0) {
-        int userId = ALEipUtils.getUserId(rundata);
         room = MessageUtils.getRoom(userId, targetUserId);
         if (room != null) {
           roomId = room.getRoomId();
@@ -85,11 +85,17 @@ public class MessageListScreen extends ALVelocityScreen {
           return;
         }
       }
+      if (!isNewRoom) {
+        if (!MessageUtils.isJoinRoom(room, userId)) {
+          ALEipUtils.redirectPageNotFound(rundata);
+          return;
+        }
+      }
       MessageListSelectData listData = new MessageListSelectData();
       if (isNewRoom) {
         listData.setTargetUserId((int) targetUser.getUserId().getValue());
       } else {
-        listData.setRoomId(roomId);
+        listData.setRoom(room);
       }
       listData.initField();
       listData.doViewList(this, rundata, context);

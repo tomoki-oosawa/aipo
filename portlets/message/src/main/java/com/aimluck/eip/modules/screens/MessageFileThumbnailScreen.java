@@ -19,12 +19,15 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.io.FileNotFoundException;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.message.util.MessageUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -44,7 +47,9 @@ public class MessageFileThumbnailScreen extends FileuploadThumbnailScreen {
   protected void doOutput(RunData rundata) throws Exception {
     try {
       EipTMessageFile file = MessageUtils.getEipTMessageFile(rundata);
-
+      if (!MessageUtils.isJoinRoom(file, ALEipUtils.getUserId(rundata))) {
+        throw new FileNotFoundException();
+      }
       super.setFile(file.getFileThumbnail());
       super.setFileName(file.getFileName());
       super.setLastModified(file.getCreateDate());

@@ -28,6 +28,7 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -55,6 +56,10 @@ public class MessageFileuploadRoomPhotoScreen extends FileuploadThumbnailScreen 
 
       EipTMessageRoom room = MessageUtils.getRoom(rid);
       if (room == null) {
+        return;
+      }
+
+      if (!MessageUtils.isJoinRoom(room, ALEipUtils.getUserId(rundata))) {
         return;
       }
 

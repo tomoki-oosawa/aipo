@@ -64,6 +64,10 @@ public class MessageReadUserListScreen extends ALVelocityScreen {
         ALEipUtils.redirectPageNotFound(rundata);
         return;
       }
+      if (!MessageUtils.isJoinRoom(message, ALEipUtils.getUserId(rundata))) {
+        ALEipUtils.redirectPermissionError(rundata);
+        return;
+      }
 
       MessageReadUserListSelectData listData =
         new MessageReadUserListSelectData();

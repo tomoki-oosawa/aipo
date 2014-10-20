@@ -33,6 +33,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -58,13 +59,13 @@ public class MessageListSelectData extends
 
   private boolean latest = false;
 
-  private int roomId;
-
   private int targetUserId;
 
   private int userId;
 
   private int lastMessageId;
+
+  private EipTMessageRoom room;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -102,7 +103,11 @@ public class MessageListSelectData extends
     } catch (Throwable ignore) {
       // ignore
     }
-    return MessageUtils.getMessageList(roomId, cursor, MESSAGE_LIMIT, latest);
+    return MessageUtils.getMessageList(
+      room.getRoomId(),
+      cursor,
+      MESSAGE_LIMIT,
+      latest);
   }
 
   /**
@@ -130,7 +135,7 @@ public class MessageListSelectData extends
     MessageResultData rd = new MessageResultData();
     rd.initField();
     rd.setMessageId(model.getMessageId());
-    rd.setRoomId(roomId);
+    rd.setRoomId(room.getRoomId());
     rd.setUserId(model.getUserId());
     rd.setFirstName(model.getFirstName());
     rd.setLastName(model.getLastName());
@@ -229,12 +234,16 @@ public class MessageListSelectData extends
     return null;
   }
 
-  public int getRoomId() {
-    return roomId;
+  /**
+   * 
+   * @param room
+   */
+  public void setRoom(EipTMessageRoom room) {
+    this.room = room;
   }
 
-  public void setRoomId(int roomId) {
-    this.roomId = roomId;
+  public int getRoomId() {
+    return room.getRoomId();
   }
 
   public int getUserId() {

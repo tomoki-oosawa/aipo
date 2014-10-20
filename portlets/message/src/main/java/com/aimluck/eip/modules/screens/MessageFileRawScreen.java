@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.modules.screens;
 
+import java.io.FileNotFoundException;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -27,6 +29,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -46,6 +49,9 @@ public class MessageFileRawScreen extends FileuploadRawScreen {
   protected void doOutput(RunData rundata) throws Exception {
     try {
       EipTMessageFile file = MessageUtils.getEipTMessageFile(rundata);
+      if (!MessageUtils.isJoinRoom(file, ALEipUtils.getUserId(rundata))) {
+        throw new FileNotFoundException();
+      }
 
       super.setFilePath(MessageUtils.getSaveDirPath(
         Database.getDomainName(),

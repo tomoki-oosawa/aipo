@@ -44,6 +44,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
@@ -242,6 +243,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
+      if (!MessageUtils.isJoinRoom(room, (int) login_user
+        .getUserId()
+        .getValue())) {
+        throw new ALPermissionException();
+      }
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
@@ -365,6 +371,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
     try {
       EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
       if (model == null) {
+        return false;
+      }
+      if (!MessageUtils.isJoinRoom(model, (int) login_user
+        .getUserId()
+        .getValue())) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_ACCESS_DENIED"));
         return false;
       }
 

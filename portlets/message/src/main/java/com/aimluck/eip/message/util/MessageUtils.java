@@ -147,6 +147,41 @@ public class MessageUtils {
     }
   }
 
+  public static boolean isJoinRoom(int roomId, int userId) {
+    EipTMessageRoom room = getRoom(roomId);
+    if (room == null) {
+      return false;
+    }
+    return isJoinRoom(room, userId);
+  }
+
+  public static boolean isJoinRoom(EipTMessageRoom room, int userId) {
+    @SuppressWarnings("unchecked")
+    List<EipTMessageRoomMember> list = room.getEipTMessageRoomMember();
+    for (EipTMessageRoomMember member : list) {
+      if (member.getUserId().intValue() == userId) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static boolean isJoinRoom(EipTMessageFile file, int userId) {
+    EipTMessage message = file.getEipTMessage();
+    if (message == null) {
+      return false;
+    }
+    return isJoinRoom(message, userId);
+  }
+
+  public static boolean isJoinRoom(EipTMessage message, int userId) {
+    EipTMessageRoom room = message.getEipTMessageRoom();
+    if (room == null) {
+      return false;
+    }
+    return isJoinRoom(room, userId);
+  }
+
   public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
       int limit, boolean isLatest) {
     StringBuilder select = new StringBuilder();
