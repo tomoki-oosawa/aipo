@@ -87,7 +87,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
-      // entityid=new を指定することによって明示的にセッション変数を削除することができる。
       if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID).equals(
         "new")) {
         ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
@@ -151,7 +150,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         if (fileBeanList != null && fileBeanList.size() > 0) {
           filebean = fileBeanList.get(0);
           if (filebean.getFileId() != 0) {
-            // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto = null;
             ShrinkImageSet bytesShrinkFilebean =
@@ -264,9 +262,14 @@ public class MessageRoomFormData extends ALAbstractFormData {
         filebean.initField();
         filebean.setFolderName("");
         filebean.setFileId(0);
+        filebean.setPhotoModified(String.valueOf(room
+          .getPhotoModified()
+          .getTime()));
         filebean.setFileName(ALLocalizationUtils
-          .getl10nFormat("ACCOUNT_OLD_PHOTO"));
+          .getl10nFormat("MESSAGE_ROOM_OLD_PHOTO"));
       }
+
+      roomId = room.getRoomId();
 
     } catch (ALPageNotFoundException e) {
       throw e;
@@ -326,7 +329,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       model.setUpdateDate(now);
 
       if (filebean != null && filebean.getFileId() != 0) {
-        // 顔写真を登録する．
         model.setPhotoSmartphone(facePhoto_smartphone);
         model.setPhoto(facePhoto);
         model.setPhotoModified(new Date());
@@ -399,7 +401,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       model.setUpdateDate(now);
 
       if (filebean != null && filebean.getFileId() != 0) {
-        // 顔写真を登録する．
         model.setPhotoSmartphone(facePhoto_smartphone);
         model.setPhoto(facePhoto);
         model.setPhotoModified(new Date());

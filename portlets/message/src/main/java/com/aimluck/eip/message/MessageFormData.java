@@ -80,10 +80,8 @@ public class MessageFormData extends ALAbstractFormData {
 
   private ALEipUser targetUser;
 
-  /** ファイルアップロードリスト */
   private List<FileuploadLiteBean> fileuploadList;
 
-  /** 添付フォルダ名 */
   private String folderName = null;
 
   @Override
@@ -107,7 +105,6 @@ public class MessageFormData extends ALAbstractFormData {
     message.setTrim(false);
     roomId = new ALNumberField();
     userId = new ALNumberField();
-    // ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();
 
   }
@@ -255,7 +252,6 @@ public class MessageFormData extends ALAbstractFormData {
       room.setLastMessage(message.getValue());
       room.setLastUpdateDate(now);
 
-      // 添付ファイルを登録する．
       insertAttachmentFiles(fileuploadList, folderName, (int) login_user
         .getUserId()
         .getValue(), model, msgList);
@@ -332,7 +328,6 @@ public class MessageFormData extends ALAbstractFormData {
         FileuploadLiteBean newfilebean = null;
         for (int j = 0; j < length; j++) {
           newfilebean = newfilebeans.get(j);
-          // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();
           ShrinkImageSet shrinkImageSet =
             FileuploadUtils.getBytesShrinkFilebean(
@@ -348,7 +343,6 @@ public class MessageFormData extends ALAbstractFormData {
 
           String filename = j + "_" + String.valueOf(System.nanoTime());
 
-          // 新規オブジェクトモデル
           EipTMessageFile file = Database.create(EipTMessageFile.class);
           file.setOwnerId(Integer.valueOf(uid));
           file.setFileName(newfilebean.getFileName());
@@ -369,7 +363,6 @@ public class MessageFormData extends ALAbstractFormData {
             filename);
 
           if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
-            // ファイルの作成
             ALStorageService.createNewFile(
               new ByteArrayInputStream(shrinkImageSet.getFixImage()),
               MessageUtils.FOLDER_FILEDIR_MESSAGE
@@ -382,7 +375,6 @@ public class MessageFormData extends ALAbstractFormData {
                 + ALStorageService.separator()
                 + filename);
           } else {
-            // ファイルの移動
             ALStorageService.copyTmpFile(
               uid,
               folderName,
@@ -393,7 +385,6 @@ public class MessageFormData extends ALAbstractFormData {
           }
         }
 
-        // 添付ファイル保存先のフォルダを削除
         ALStorageService.deleteTmpFolder(uid, folderName);
       }
 

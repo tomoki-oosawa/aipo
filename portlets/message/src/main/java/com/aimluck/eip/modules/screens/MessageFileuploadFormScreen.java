@@ -28,8 +28,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.eip.message.util.MessageUtils;
 
 /**
- * ファイルのアップロードを処理するクラスです。 <br />
- * 
+ *
  */
 public class MessageFileuploadFormScreen extends FileuploadFormScreen {
 

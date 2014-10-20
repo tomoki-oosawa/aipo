@@ -304,6 +304,8 @@ aipo.message.selectRoom = function(room_id) {
 
         messageRoomSetting.style.display = "G" == messageRoomType.innerHTML ? ""
                 : "none";
+        dojo.style(dojo.byId("messageInputAttachment"), "display", "none");
+        dojo.byId("attachments_Message").innerHTML="";
 
         if (room_id == 0 && aipo.message.currentUserId) {
             messageForm.roomId.value = 0;

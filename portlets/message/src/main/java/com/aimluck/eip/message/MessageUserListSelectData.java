@@ -153,11 +153,9 @@ public class MessageUserListSelectData extends
   }
 
   /**
-   * 指定グループや指定ユーザをセッションに設定する．
    * 
    * @param rundata
    * @param context
-   * @throws ALDBErrorException
    */
   protected void setupLists(RunData rundata, Context context) {
 
@@ -187,7 +185,6 @@ public class MessageUserListSelectData extends
   }
 
   /**
-   * 表示切り替えで指定したグループ ID を取得する．
    * 
    * @param rundata
    * @param context
@@ -198,11 +195,10 @@ public class MessageUserListSelectData extends
   }
 
   /**
-   * 表示切り替えで指定したグループ ID を取得する．
    * 
    * @param rundata
-   * @param target_key
    * @param context
+   * @param target_key
    * @return
    */
   protected String getTargetGroupName(RunData rundata, Context context,
@@ -223,7 +219,6 @@ public class MessageUserListSelectData extends
   }
 
   /**
-   * 表示切り替え時に指定するグループ名
    * 
    * @return
    */
@@ -240,7 +235,6 @@ public class MessageUserListSelectData extends
   }
 
   /**
-   * Myグループの一覧を取得する．
    * 
    * @return
    */

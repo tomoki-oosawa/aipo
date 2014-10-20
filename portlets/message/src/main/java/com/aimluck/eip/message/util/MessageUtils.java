@@ -510,7 +510,6 @@ public class MessageUtils {
       int attachmentIndex =
         rundata.getParameters().getInt("attachmentIndex", -1);
       if (attachmentIndex < 0) {
-        // ID が空の場合
         logger.debug("[MessageUtils] Empty ID...");
         throw new ALPageNotFoundException();
 
@@ -525,7 +524,6 @@ public class MessageUtils {
 
       List<EipTMessageFile> files = query.fetchList();
       if (files == null || files.size() == 0) {
-        // 指定した ID のレコードが見つからない場合
         logger.debug("[MessageUtils] Not found ID...");
         throw new ALPageNotFoundException();
       }
@@ -570,7 +568,6 @@ public class MessageUtils {
     FileuploadLiteBean filebean = null;
     int fileid = 0;
 
-    // 新規にアップロードされたファイルの処理
     if (newfileids.size() > 0) {
       String folderName =
         rundata.getParameters().getString(
@@ -595,7 +592,7 @@ public class MessageUtils {
           filebean = new FileuploadLiteBean();
           filebean.initField();
           filebean.setFolderName("photo");
-          filebean.setFileName("以前の写真ファイル");
+          filebean.setFileName("");
           fileNameList.add(filebean);
         } else {
           BufferedReader reader = null;
@@ -630,7 +627,6 @@ public class MessageUtils {
     }
 
     if (hadfileids.size() > 0) {
-      // すでにあるファイルの処理
       ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
       for (int k = 0; k < hadfileids.size(); k++) {
         try {
@@ -661,7 +657,7 @@ public class MessageUtils {
           fileNameList.add(filebean);
         }
       } catch (Exception ex) {
-        logger.error("[BlogUtils] Exception.", ex);
+        logger.error("[MessageUtils] Exception.", ex);
       }
     }
     return fileNameList;

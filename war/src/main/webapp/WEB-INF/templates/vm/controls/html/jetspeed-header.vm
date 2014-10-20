@@ -124,7 +124,7 @@ limitations under the License.
 											</div>
 
 											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
-  												<p class="tlInputAttachmentTitle">添付ファイル</p>
+  												<p class="tlInputAttachmentTitle">$l10n.MESSAGE_ATTACHMENT</p>
 												<ul id="attachments_Message" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
 												</ul>
 											</div>
