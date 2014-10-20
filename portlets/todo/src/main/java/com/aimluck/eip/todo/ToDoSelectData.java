@@ -647,6 +647,10 @@ public class ToDoSelectData extends
       }
 
       return rd;
+
+    } catch (RuntimeException ex) {
+      logger.error("todo", ex);
+      return null;
     } catch (Exception ex) {
       logger.error("todo", ex);
       return null;
