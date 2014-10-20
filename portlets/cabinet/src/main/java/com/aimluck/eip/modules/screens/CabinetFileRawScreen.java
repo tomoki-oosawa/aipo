@@ -78,22 +78,24 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
       EipTCabinetFile cabinetfile =
         Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
 
-      doFileCheckView(rundata, cabinetfile);
+      if (cabinetfile != null) {
+        doFileCheckView(rundata, cabinetfile);
 
-      super.setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
-        + cabinetfile.getFilePath());
-      super.setFileName(cabinetfile.getFileName());
-      super.doOutput(rundata);
+        super.setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
+          + cabinetfile.getFilePath());
+        super.setFileName(cabinetfile.getFileName());
+        super.doOutput(rundata);
 
-      cabinetfile.setCounter(cabinetfile.getCounter() + 1);
-      Database.commit();
+        cabinetfile.setCounter(cabinetfile.getCounter() + 1);
+        Database.commit();
 
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        cabinetfile.getFileId(),
-        ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
-        cabinetfile.getFileTitle() + "  (" + cabinetfile.getFileName() + ")",
-        ALActionEventlogConstants.EVENT_MODE_DOWNLOAD);
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          cabinetfile.getFileId(),
+          ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
+          cabinetfile.getFileTitle() + "  (" + cabinetfile.getFileName() + ")",
+          ALActionEventlogConstants.EVENT_MODE_DOWNLOAD);
+      }
 
     } catch (ALPermissionException e) {
       throw new Exception();
