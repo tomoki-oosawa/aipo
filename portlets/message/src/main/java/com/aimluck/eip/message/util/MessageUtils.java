@@ -92,6 +92,14 @@ public class MessageUtils {
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
+  public static void setupContext(RunData rundata, Context context,
+      String portletId) {
+    Portlet portlet = new MessageMockPortlet(portletId);
+    context.put("portlet", portlet);
+    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("clink", new ContentTemplateLink(rundata));
+  }
+
   public static EipTMessage getMessage(int messageId) {
     return Database.get(EipTMessage.class, messageId);
   }
@@ -233,11 +241,13 @@ public class MessageUtils {
     select.append("select");
     select.append(" t2.room_id, ");
     select.append(" t2.name, ");
+    select.append(" t2.has_photo, ");
+    select.append(" t2.photo_modified, ");
     select.append(" t4.user_id, ");
     select.append(" t4.last_name, ");
     select.append(" t4.first_name, ");
-    select.append(" t4.has_photo, ");
-    select.append(" t4.photo_modified, ");
+    select.append(" t4.has_photo as user_has_photo, ");
+    select.append(" t4.photo_modified as user_photo_modified, ");
     select.append(" t2.auto_name, ");
     select.append(" t2.room_type, ");
 
@@ -317,8 +327,8 @@ public class MessageUtils {
       Integer tUserId = (Integer) row.get("user_id");
       String lastName = (String) row.get("last_name");
       String firstName = (String) row.get("first_name");
-      String hasPhoto = (String) row.get("has_photo");
-      Date photoModified = (Date) row.get("photo_modified");
+      String hasPhoto = (String) row.get("user_has_photo");
+      Date photoModified = (Date) row.get("user_photo_modified");
 
       EipTMessageRoom object =
         Database.objectFromRowData(row, EipTMessageRoom.class);
@@ -326,9 +336,9 @@ public class MessageUtils {
       object.setUserId(tUserId);
       object.setFirstName(firstName);
       object.setLastName(lastName);
-      object.setHasPhoto(hasPhoto);
+      object.setUserHasPhoto(hasPhoto);
       if (photoModified != null) {
-        object.setPhotoModified(photoModified.getTime());
+        object.setUserPhotoModified(photoModified.getTime());
       }
       list.add(object);
     }

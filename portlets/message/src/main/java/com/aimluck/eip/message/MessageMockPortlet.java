@@ -32,4 +32,9 @@ public class MessageMockPortlet extends VelocityPortlet {
     super();
     setID("Message");
   }
+
+  public MessageMockPortlet(String portletId) {
+    super();
+    setID(portletId);
+  }
 }

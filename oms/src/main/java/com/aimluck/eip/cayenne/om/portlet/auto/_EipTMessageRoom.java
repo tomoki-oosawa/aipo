@@ -12,9 +12,13 @@ public class _EipTMessageRoom extends org.apache.cayenne.CayenneDataObject {
     public static final String AUTO_NAME_PROPERTY = "autoName";
     public static final String CREATE_DATE_PROPERTY = "createDate";
     public static final String CREATE_USER_ID_PROPERTY = "createUserId";
+    public static final String HAS_PHOTO_PROPERTY = "hasPhoto";
     public static final String LAST_MESSAGE_PROPERTY = "lastMessage";
     public static final String LAST_UPDATE_DATE_PROPERTY = "lastUpdateDate";
     public static final String NAME_PROPERTY = "name";
+    public static final String PHOTO_PROPERTY = "photo";
+    public static final String PHOTO_MODIFIED_PROPERTY = "photoModified";
+    public static final String PHOTO_SMARTPHONE_PROPERTY = "photoSmartphone";
     public static final String ROOM_TYPE_PROPERTY = "roomType";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TMESSAGE_ROOM_MEMBER_PROPERTY = "eipTMessageRoomMember";
@@ -46,6 +50,14 @@ public class _EipTMessageRoom extends org.apache.cayenne.CayenneDataObject {
     }
     
     
+    public void setHasPhoto(String hasPhoto) {
+        writeProperty("hasPhoto", hasPhoto);
+    }
+    public String getHasPhoto() {
+        return (String)readProperty("hasPhoto");
+    }
+    
+    
     public void setLastMessage(String lastMessage) {
         writeProperty("lastMessage", lastMessage);
     }
@@ -67,6 +79,30 @@ public class _EipTMessageRoom extends org.apache.cayenne.CayenneDataObject {
     }
     public String getName() {
         return (String)readProperty("name");
+    }
+    
+    
+    public void setPhoto(byte[] photo) {
+        writeProperty("photo", photo);
+    }
+    public byte[] getPhoto() {
+        return (byte[])readProperty("photo");
+    }
+    
+    
+    public void setPhotoModified(java.util.Date photoModified) {
+        writeProperty("photoModified", photoModified);
+    }
+    public java.util.Date getPhotoModified() {
+        return (java.util.Date)readProperty("photoModified");
+    }
+    
+    
+    public void setPhotoSmartphone(byte[] photoSmartphone) {
+        writeProperty("photoSmartphone", photoSmartphone);
+    }
+    public byte[] getPhotoSmartphone() {
+        return (byte[])readProperty("photoSmartphone");
     }
     
     

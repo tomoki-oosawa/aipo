@@ -105,8 +105,13 @@ public class MessageRoomListSelectData extends
     rd.setName(isDirect
       ? model.getLastName() + " " + model.getFirstName()
       : model.getName());
-    rd.setHasPhoto("T".equals(model.getHasPhoto()));
-    rd.setPhotoModified(model.getPhotoModified());
+    rd.setHasPhoto(isDirect ? "T".equals(model.getUserHasPhoto()) : "T"
+      .equals(model.getHasPhoto()));
+    if (rd.isHasPhoto()) {
+      rd.setPhotoModified(isDirect ? model.getUserPhotoModified() : model
+        .getPhotoModified()
+        .getTime());
+    }
     rd.setRoomId(model.getRoomId());
     rd.setRoomType(model.getRoomType());
     rd.setUnreadCount(model.getUnreadCount());

@@ -40,7 +40,7 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("messageRoomForm" $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#ALajaxscreenformheader("messageRoomForm" $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, 'MessageRoom');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
 <input type="hidden" name="mode" value="$!modesrv" />
 
 #ALtableheaderWide()
@@ -92,7 +92,18 @@
 #ALtditemheader()
 #ALtextfieldw100('name' $!result.Name 50 'active')
 #ALtditemfooter()
-
+#if($result.isFileUploadable())
+#ALtdcaption("ルームアイコン")
+#ALtditemheader()
+  <iframe name="if_fileupload_$!{portlet.ID}" id="if_fileupload_$!{portlet.ID}" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById($!{portlet.ID}).addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+	#foreach($record in $!result.AttachmentFileNameList )
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.ACCOUNT_DELETION</span></li>
+	#end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+#ALtditemfooter()
+#end
 #ALtablefooter()
 
 #ALbuttonheader()

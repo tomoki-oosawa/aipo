@@ -1321,6 +1321,10 @@ CREATE TABLE `eip_t_message_room` (
     `last_message` TEXT COLLATE utf8_unicode_ci,
     `last_update_date` datetime DEFAULT NULL,
     `create_user_id` int(11) NOT NULL,
+    `photo` blob,
+    `photo_smartphone` blob,
+    `photo_modified` datetime DEFAULT NULL,
+    `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
     `create_date` datetime DEFAULT NULL,
     `update_date` datetime DEFAULT NULL,
     PRIMARY KEY (`room_id`)

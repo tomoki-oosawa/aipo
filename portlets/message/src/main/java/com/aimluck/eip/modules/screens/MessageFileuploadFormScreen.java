@@ -21,6 +21,7 @@ package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -45,7 +46,9 @@ public class MessageFileuploadFormScreen extends FileuploadFormScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
-    MessageUtils.setupContext(rundata, context);
+    MessageUtils.setupContext(rundata, context, rundata
+      .getParameters()
+      .getString(JetspeedResources.PATH_PORTLETID_KEY));
 
     super.doOutput(rundata, context);
   }

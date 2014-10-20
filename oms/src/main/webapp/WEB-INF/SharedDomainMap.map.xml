@@ -410,9 +410,13 @@
 		<db-attribute name="AUTO_NAME" type="VARCHAR" length="1"/>
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="HAS_PHOTO" type="CHAR" length="1"/>
 		<db-attribute name="LAST_MESSAGE" type="CLOB"/>
 		<db-attribute name="LAST_UPDATE_DATE" type="TIMESTAMP"/>
 		<db-attribute name="NAME" type="VARCHAR" length="255"/>
+		<db-attribute name="PHOTO" type="LONGVARBINARY"/>
+		<db-attribute name="PHOTO_MODIFIED" type="TIMESTAMP"/>
+		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
 		<db-attribute name="ROOM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="ROOM_TYPE" type="VARCHAR" length="1"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
@@ -1165,9 +1169,13 @@
 		<obj-attribute name="autoName" type="java.lang.String" db-attribute-path="AUTO_NAME"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
+		<obj-attribute name="hasPhoto" type="java.lang.String" db-attribute-path="HAS_PHOTO"/>
 		<obj-attribute name="lastMessage" type="java.lang.String" db-attribute-path="LAST_MESSAGE"/>
 		<obj-attribute name="lastUpdateDate" type="java.util.Date" db-attribute-path="LAST_UPDATE_DATE"/>
 		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="photo" type="byte[]" db-attribute-path="PHOTO"/>
+		<obj-attribute name="photoModified" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED"/>
+		<obj-attribute name="photoSmartphone" type="byte[]" db-attribute-path="PHOTO_SMARTPHONE"/>
 		<obj-attribute name="roomType" type="java.lang.String" db-attribute-path="ROOM_TYPE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>

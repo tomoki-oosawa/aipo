@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
@@ -42,11 +44,15 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -64,6 +70,16 @@ public class MessageRoomFormData extends ALAbstractFormData {
   private List<ALEipUser> memberList;
 
   private ALEipUser login_user;
+
+  private final ALStringField photo = null;
+
+  private FileuploadLiteBean filebean = null;
+
+  private String folderName = null;
+
+  private byte[] facePhoto;
+
+  private byte[] facePhoto_smartphone;
 
   private int roomId;
 
@@ -83,6 +99,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getString(ALEipConstants.ENTITY_ID));
       }
     }
+
+    folderName = rundata.getParameters().getString("folderName");
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
@@ -130,6 +148,48 @@ public class MessageRoomFormData extends ALAbstractFormData {
           memberList.add(login_user);
         }
 
+        List<FileuploadLiteBean> fileBeanList =
+          FileuploadUtils.getFileuploadList(rundata);
+        if (fileBeanList != null && fileBeanList.size() > 0) {
+          filebean = fileBeanList.get(0);
+          if (filebean.getFileId() != 0) {
+            // 顔写真をセットする．
+            String[] acceptExts = ImageIO.getWriterFormatNames();
+            facePhoto = null;
+            ShrinkImageSet bytesShrinkFilebean =
+              FileuploadUtils.getBytesShrinkFilebean(
+                Database.getDomainName(),
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                msgList,
+                false);
+            if (bytesShrinkFilebean != null) {
+              facePhoto = bytesShrinkFilebean.getShrinkImage();
+            }
+            facePhoto_smartphone = null;
+            ShrinkImageSet bytesShrinkFilebean2 =
+              FileuploadUtils.getBytesShrinkFilebean(
+                Database.getDomainName(),
+                folderName,
+                ALEipUtils.getUserId(rundata),
+                filebean,
+                acceptExts,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                msgList,
+                false);
+            if (bytesShrinkFilebean2 != null) {
+              facePhoto_smartphone = bytesShrinkFilebean2.getShrinkImage();
+            }
+          } else {
+            facePhoto = null;
+            facePhoto_smartphone = null;
+          }
+        }
       } catch (Exception ex) {
         logger.error("MessageRoomFormData.setFormData", ex);
       }
@@ -201,6 +261,15 @@ public class MessageRoomFormData extends ALAbstractFormData {
       query.setQualifier(exp);
       memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
+      if (room.getPhoto() != null) {
+        filebean = new FileuploadLiteBean();
+        filebean.initField();
+        filebean.setFolderName("");
+        filebean.setFileId(0);
+        filebean.setFileName(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_OLD_PHOTO"));
+      }
+
     } catch (ALPageNotFoundException e) {
       throw e;
     } catch (Throwable t) {
@@ -257,6 +326,16 @@ public class MessageRoomFormData extends ALAbstractFormData {
       model.setCreateDate(now);
       model.setCreateUserId((int) login_user.getUserId().getValue());
       model.setUpdateDate(now);
+
+      if (filebean != null && filebean.getFileId() != 0) {
+        // 顔写真を登録する．
+        model.setPhotoSmartphone(facePhoto_smartphone);
+        model.setPhoto(facePhoto);
+        model.setPhotoModified(new Date());
+        model.setHasPhoto("T");
+      } else {
+        model.setHasPhoto("F");
+      }
 
       Database.commit();
 
@@ -321,6 +400,28 @@ public class MessageRoomFormData extends ALAbstractFormData {
       model.setRoomType("G");
       model.setUpdateDate(now);
 
+      if (filebean != null && filebean.getFileId() != 0) {
+        // 顔写真を登録する．
+        model.setPhotoSmartphone(facePhoto_smartphone);
+        model.setPhoto(facePhoto);
+        model.setPhotoModified(new Date());
+        model.setHasPhoto("T");
+      }
+
+      if (filebean != null) {
+        if (filebean.getFileId() != 0) {
+          model.setPhoto(facePhoto);
+          model.setPhotoSmartphone(facePhoto_smartphone);
+          model.setPhotoModified(new Date());
+          model.setHasPhoto("T");
+        }
+      } else {
+        model.setPhoto(null);
+        model.setPhotoSmartphone(null);
+        model.setPhotoModified(null);
+        model.setHasPhoto("F");
+      }
+
       Database.commit();
 
       roomId = model.getRoomId();
@@ -358,4 +459,18 @@ public class MessageRoomFormData extends ALAbstractFormData {
   public int getRoomId() {
     return roomId;
   }
+
+  public FileuploadLiteBean getFileBean() {
+    return filebean;
+  }
+
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    if (filebean == null) {
+      return null;
+    }
+    ArrayList<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
+    list.add(filebean);
+    return list;
+  }
+
 }

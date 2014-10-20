@@ -47,7 +47,7 @@
 			#end
 			#else
 			#if($!record.isHasPhoto())
-				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_s"/>
+				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
 			#else
 				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_s"/>
 			#end

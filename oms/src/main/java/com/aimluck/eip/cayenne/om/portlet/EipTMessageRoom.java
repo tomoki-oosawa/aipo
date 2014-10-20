@@ -82,14 +82,14 @@ public class EipTMessageRoom extends _EipTMessageRoom {
    * @param hasPhoto
    *          セットする hasPhoto
    */
-  public void setHasPhoto(String hasPhoto) {
+  public void setUserHasPhoto(String hasPhoto) {
     this.hasPhoto = hasPhoto;
   }
 
   /**
    * @return hasPhoto
    */
-  public String getHasPhoto() {
+  public String getUserHasPhoto() {
     return hasPhoto;
   }
 
@@ -97,14 +97,14 @@ public class EipTMessageRoom extends _EipTMessageRoom {
    * @param photoModified
    *          セットする photoModified
    */
-  public void setPhotoModified(Long photoModified) {
+  public void setUserPhotoModified(Long photoModified) {
     this.photoModified = photoModified;
   }
 
   /**
    * @return photoModified
    */
-  public Long getPhotoModified() {
+  public Long getUserPhotoModified() {
     return photoModified;
   }
 
