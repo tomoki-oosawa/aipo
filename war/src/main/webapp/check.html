@@ -65,7 +65,7 @@ function join() {
        success: function(data, status) {
            var type = data.type;
            if("message" == type) {
-               gadgets.rpc.call(null, "requestCheckMessage");
+               gadgets.rpc.call(null, "requestCheckMessage", null, data);
            }
            if("message_read" == type) {
                gadgets.rpc.call(null, "requestCheckMessageRead", null, data);

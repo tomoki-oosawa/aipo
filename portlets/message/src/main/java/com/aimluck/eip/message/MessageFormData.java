@@ -55,6 +55,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -249,7 +250,8 @@ public class MessageFormData extends ALAbstractFormData {
         }
       }
 
-      room.setLastMessage(message.getValue());
+      room
+        .setLastMessage(ALCommonUtils.compressString(message.getValue(), 100));
       room.setLastUpdateDate(now);
 
       insertAttachmentFiles(fileuploadList, folderName, (int) login_user
@@ -260,6 +262,7 @@ public class MessageFormData extends ALAbstractFormData {
 
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
+      params.put("messageId", String.valueOf(model.getMessageId()));
 
       ALPushService.pushAsync("message", params, recipients);
 

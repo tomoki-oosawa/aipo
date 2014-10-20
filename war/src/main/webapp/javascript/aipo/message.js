@@ -370,7 +370,7 @@ aipo.message.focusInput = function() {
     }
 }
 
-aipo.message.fixHeight = -31;
+aipo.message.fixHeight = 0; // -31;
 aipo.message.fixMessageWindow = function() {
     if (dojo.byId("dd_message") != null) {
         var minusH = 55 + 40 + 45;
@@ -579,6 +579,9 @@ aipo.message.resizeInput = function(input) {
 
     if (shadowHeight < 18) {
         shadowHeight = 18;
+    }
+    if (shadowHeight > 18*20) {
+        shadowHeight = 18*20;
     }
     input.style.height = shadowHeight * 1.2 + 21 + "px";
     objBody.removeChild(shadowDiv);
