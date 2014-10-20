@@ -71,8 +71,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private ALEipUser login_user;
 
-  private final ALStringField photo = null;
-
   private FileuploadLiteBean filebean = null;
 
   private String folderName = null;
@@ -445,7 +443,20 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
+      if (model == null) {
+        return false;
+      }
+      Database.delete(model);
+
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("MessageRoomFormData.deleteFormData", t);
+      return false;
+    }
+    return true;
   }
 
   public ALStringField getName() {

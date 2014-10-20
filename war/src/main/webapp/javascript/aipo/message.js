@@ -317,6 +317,20 @@ aipo.message.selectRoom = function(room_id) {
     }
 }
 
+aipo.message.unselectRoom = function() {
+    var messageMainBlock = dojo.byId("messageMainBlock");
+    var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
+    var messageForm = dojo.byId("messageForm");
+    if (messageForm) {
+        aipo.message.clearInput();
+        messageMainBlockEmpty.style.display = "";
+        messageMainBlock.style.display = "none";
+        aipo.message.currentRoomId = null;
+        aipo.message.currentUserId = null;
+
+    }
+}
+
 aipo.message.selectUser = function(user_id) {
     var messageForm = dojo.byId("messageForm");
     if (messageForm) {
@@ -502,6 +516,20 @@ aipo.message.onReceiveMessageRoom = function(msg) {
     }
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML = msg["error"];
+    }
+};
+
+aipo.message.onReceiveMessageRoomDelete = function(msg) {
+    if (!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if (arrDialog) {
+            arrDialog.hide();
+            aipo.message.unselectRoom();
+            aipo.message.reloadRoomList();
+        }
+    }
+    if (dojo.byId('messageDiv')) {
+        dojo.byId('messageDiv').innerHTML =msg;
     }
 };
 

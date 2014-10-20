@@ -40,7 +40,11 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#ALajaxscreenformheader("messageRoomForm" $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, 'MessageRoom');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#if($mode=="new_form")
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#else
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, 'MessageRoom');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#end
 <input type="hidden" name="mode" value="$!modesrv" />
 
 #ALtableheaderWide()
@@ -92,6 +96,8 @@
 #ALtditemheader()
 #ALtextfieldw100('name' $!result.Name 50 'active')
 #ALtditemfooter()
+
+#if($mode!="new_form")
 #if($result.isFileUploadable())
 #ALtdcaption("ルームアイコン")
 #ALtditemheader()
@@ -104,10 +110,15 @@
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 #ALtditemfooter()
 #end
+#end
+
 #ALtablefooter()
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
+#if($mode!="new_form")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
