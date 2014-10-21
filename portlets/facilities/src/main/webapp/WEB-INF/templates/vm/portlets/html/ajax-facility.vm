@@ -63,7 +63,7 @@
 #AUISummaryDivFooter()
 #AUIEmptyMessage("icon-building" "$l10n.FACILITIES_NO_FACILITIES")
 #elseif($result.List.size() == 0)
-$l10n.FACILITIES_MSG_NO_FACILITIES<br />
+#AUIEmptyMessage("icon-building" "$l10n.FACILITIES_NO_FACILITIES")
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
