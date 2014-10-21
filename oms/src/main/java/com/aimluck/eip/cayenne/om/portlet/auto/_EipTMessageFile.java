@@ -13,6 +13,7 @@ public class _EipTMessageFile extends org.apache.cayenne.CayenneDataObject {
     public static final String FILE_THUMBNAIL_PROPERTY = "fileThumbnail";
     public static final String MESSAGE_ID_PROPERTY = "messageId";
     public static final String OWNER_ID_PROPERTY = "ownerId";
+    public static final String ROOM_ID_PROPERTY = "roomId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TMESSAGE_PROPERTY = "eipTMessage";
 
@@ -63,6 +64,14 @@ public class _EipTMessageFile extends org.apache.cayenne.CayenneDataObject {
     }
     public Integer getOwnerId() {
         return (Integer)readProperty("ownerId");
+    }
+    
+    
+    public void setRoomId(Integer roomId) {
+        writeProperty("roomId", roomId);
+    }
+    public Integer getRoomId() {
+        return (Integer)readProperty("roomId");
     }
     
     

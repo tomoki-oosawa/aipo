@@ -1354,6 +1354,7 @@ CREATE TABLE `eip_t_message_file` (
     `file_id` int(11) NOT NULL AUTO_INCREMENT,
     `owner_id` int(11),
     `message_id` int(11),
+    `room_id` int(11),
     `file_name` varchar(128) NOT NULL,
     `file_path` text NOT NULL,
     `file_thumbnail` blob,

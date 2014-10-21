@@ -23,12 +23,14 @@ import java.util.List;
 
 import org.apache.cayenne.exp.ExpressionFactory;
 
+import com.aimluck.eip.cayenne.om.portlet.IEipTFile;
 import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.storage.ALStorageService;
 
 public abstract class ALDeleteFileUtil {
+
   public static <T> void deleteFiles(int id, String property, String base,
       List<String> fpaths, Class<T> clazz) throws ALFileNotRemovedException {
     SelectQuery<T> query = Database.query(clazz);
@@ -51,5 +53,52 @@ public abstract class ALDeleteFileUtil {
       }
     }
     Database.commit();
+  }
+
+  public static void deleteFiles(String savePath, List<?> files)
+      throws ALFileNotRemovedException {
+    try {
+      for (Object file : files) {
+        if (file instanceof IEipTFile) {
+          IEipTFile ifile = (IEipTFile) file;
+          ALStorageService.deleteFile(savePath + ifile.getFilePath());
+        } else {
+          throw new ALFileNotRemovedException();
+        }
+      }
+      Database.deleteAll(files);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      ALFileNotRemovedException fe = new ALFileNotRemovedException();
+      fe.initCause(t);
+      throw fe;
+    }
+  }
+
+  public static void deleteFiles(String rootPath, String categoryKey,
+      List<?> files) throws ALFileNotRemovedException {
+    try {
+      for (Object file : files) {
+        if (file instanceof IEipTFile) {
+          IEipTFile ifile = (IEipTFile) file;
+          ALStorageService.deleteFile(ALStorageService.getDocumentPath(
+            rootPath,
+            categoryKey
+              + ALStorageService.separator()
+              + ifile.getOwnerId().intValue())
+            + ifile.getFilePath());
+        } else {
+          throw new ALFileNotRemovedException();
+        }
+      }
+      Database.deleteAll(files);
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      ALFileNotRemovedException fe = new ALFileNotRemovedException();
+      fe.initCause(t);
+      throw fe;
+    }
   }
 }

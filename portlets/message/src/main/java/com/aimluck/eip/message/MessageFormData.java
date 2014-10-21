@@ -359,6 +359,7 @@ public class MessageFormData extends ALAbstractFormData {
             file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTMessage(entry);
+          file.setRoomId(room.getRoomId());
           file.setCreateDate(Calendar.getInstance().getTime());
           file.setUpdateDate(Calendar.getInstance().getTime());
 

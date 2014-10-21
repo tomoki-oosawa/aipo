@@ -4,7 +4,9 @@ import org.apache.cayenne.ObjectId;
 
 import com.aimluck.eip.cayenne.om.portlet.auto._EipTMessageFile;
 
-public class EipTMessageFile extends _EipTMessageFile {
+public class EipTMessageFile extends _EipTMessageFile implements IEipTFile {
+
+  private static final long serialVersionUID = -6108923614938110317L;
 
   public Integer getFileId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {

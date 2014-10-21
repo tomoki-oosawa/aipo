@@ -36,6 +36,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -461,6 +463,14 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (model == null) {
         return false;
       }
+      List<EipTMessageFile> files =
+        MessageUtils.getEipTMessageFilesByRoom(model.getRoomId());
+
+      ALDeleteFileUtil.deleteFiles(
+        MessageUtils.FOLDER_FILEDIR_MESSAGE,
+        MessageUtils.CATEGORY_KEY,
+        files);
+
       Database.delete(model);
 
       Database.commit();

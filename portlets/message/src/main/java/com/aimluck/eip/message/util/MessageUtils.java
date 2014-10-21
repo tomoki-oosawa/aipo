@@ -167,11 +167,7 @@ public class MessageUtils {
   }
 
   public static boolean isJoinRoom(EipTMessageFile file, int userId) {
-    EipTMessage message = file.getEipTMessage();
-    if (message == null) {
-      return false;
-    }
-    return isJoinRoom(message, userId);
+    return isJoinRoom(file.getRoomId(), userId);
   }
 
   public static boolean isJoinRoom(EipTMessage message, int userId) {
@@ -537,6 +533,16 @@ public class MessageUtils {
 
       ALPushService.pushAsync("message_read", params, recipients);
     }
+  }
+
+  public static List<EipTMessageFile> getEipTMessageFilesByRoom(int roomId) {
+    return Database.query(EipTMessageFile.class).where(
+      Operations.eq(EipTMessageFile.ROOM_ID_PROPERTY, roomId)).fetchList();
+  }
+
+  public static List<EipTMessageFile> getEipTMessageFilesByOwner(int userId) {
+    return Database.query(EipTMessageFile.class).where(
+      Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, userId)).fetchList();
   }
 
   public static EipTMessageFile getEipTMessageFile(RunData rundata)
