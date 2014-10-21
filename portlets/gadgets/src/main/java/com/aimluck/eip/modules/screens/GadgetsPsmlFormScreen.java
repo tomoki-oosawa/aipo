@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -41,6 +42,18 @@ public class GadgetsPsmlFormScreen extends ALVelocityScreen {
     AdvancedGagetsPsmlFormData formData = new AdvancedGagetsPsmlFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
+
+    boolean maximized = false;
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    String jspeid = (String) jdata.getUser().getTemp("js_peid");
+    if (jspeid != null) {
+      maximized = true;
+    }
+    if (maximized) {
+      context.put("maximized", "true");
+    } else {
+      context.put("maximized", "false");
+    }
 
     String template = "portlets/html/ja/gadgets-psml.vm";
     setTemplate(rundata, context, template);
