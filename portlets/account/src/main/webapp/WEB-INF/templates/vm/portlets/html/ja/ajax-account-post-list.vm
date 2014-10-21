@@ -28,9 +28,9 @@
 #AUIcontentsAreaHeader()
 #end
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta clearfix">
+#AUISummaryDivHeader()
 #AUIbuttonAction($l10n.ACCOUNT_POST_ADD "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',$newAfterFunction1);")
-</div>
+#AUISummaryDivFooter()
 #AUIEmptyMessage("icon-flag" "$l10n.ACCOUNT_NO_POST")
 #else
 #AUIwideAreaHeader()
