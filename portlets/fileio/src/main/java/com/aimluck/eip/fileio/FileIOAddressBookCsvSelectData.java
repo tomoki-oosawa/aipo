@@ -449,7 +449,7 @@ public class FileIOAddressBookCsvSelectData extends
 
   public String getLineCount3() {
     return ALLocalizationUtils.getl10nFormat(
-      "FILEIO_REGISTER_NUMBER_ADDRESSBOOK",
+      "FILEIO_REGISTER_NUMBER",
       getLineCount(),
       getNotErrorCount());
   }
