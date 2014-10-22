@@ -654,18 +654,20 @@ aipo.message.onLoadMessageReadUserList = function() {
 
 }
 
-aipo.message.switchDesktopNotify = function(enable) {
-    if(window.webkitNotifications || window.Notification) {
-        var messageDesktopNotifySwitch = dojo.byId("messageDesktopNotifySwitch");
-        if (messageDesktopNotifySwitch) {
-            if(enable) {;
-                messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_off");
-                messageDesktopNotifySwitch.style.display=""
-            } else {;
-                messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
-                messageDesktopNotifySwitch.style.display="";
-            }
+aipo.message.switchDesktopNotify = function() {
+    var messageDesktopNotifySwitch = dojo.byId("messageDesktopNotifySwitch");
+    if (messageDesktopNotifySwitch) {
+        if (window.webkitNotifications
+                && (!aipo.activityDesktopNotifyEnable || window.webkitNotifications
+                        .checkPermission() != 0)) {
+            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
+        } else if (window.Notification
+                && (!aipo.activityDesktopNotifyEnable || window.Notification.permission != "granted")) {
+            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
+        } else {
+            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_off");
         }
+        messageDesktopNotifySwitch.style.display="";
     }
 }
 
