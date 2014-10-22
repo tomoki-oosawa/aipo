@@ -108,7 +108,8 @@
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
     changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowUserLiteJSONScreen').addQueryData('mode','group')">
 </div>
-<select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+#set($workflowRecordIndex = 1)
+<select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!{workflowRecordIndex}. $!record.AliasName</option>#set($workflowRecordIndex = ${workflowRecordIndex}+1)#end</select>
 </div>
 </div>
 <div id="workflowRouteSelectField" #if(!$!{result.isSavedRoute})style="display:none"#end>
