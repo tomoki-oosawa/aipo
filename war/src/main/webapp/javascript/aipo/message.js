@@ -163,8 +163,7 @@ aipo.message.reloadRoomList = function(roomId, userId) {
         screen += "&u=" + aipo.message.currentUserId;
     }
     if (aipo.message.currentRoomSearchKeyword) {
-        screen += "&k="
-                + encodeURIComponent(aipo.message.currentRoomSearchKeyword);
+        aipo.message.messageRoomListPane.setParam("k", aipo.message.currentRoomSearchKeyword);
     }
     aipo.message.messageRoomListPane.viewPage(screen);
 }
@@ -190,8 +189,7 @@ aipo.message.reloadUserList = function(group_name) {
     var screen = "?template=MessageUserListScreen&target_group_name="
             + aipo.message.currentGroupName;
     if (aipo.message.currentUserSearchKeyword) {
-        screen += "&k="
-                + encodeURIComponent(aipo.message.currentUserSearchKeyword);
+        aipo.message.messageUserListPane.setParam("k", aipo.message.currentUserSearchKeyword);
     }
 
     aipo.message.messageUserListPane.viewPage(screen);
@@ -596,7 +594,7 @@ aipo.message.onPaste = function(input) {
 aipo.message.read = function(room_id) {
     var messageRoomUnreadCount = dojo.byId("messageRoomUnreadCount" + room_id);
     if (messageRoomUnreadCount) {
-        messageRoomUnreadCount.remove();
+        messageRoomUnreadCount.parentNode.removeChild(messageRoomUnreadCount);
     }
     aipo.message.refreshUnreadCount();
 }
@@ -654,6 +652,21 @@ aipo.message.isOpenWindow = function() {
 
 aipo.message.onLoadMessageReadUserList = function() {
 
+}
+
+aipo.message.switchDesktopNotify = function(enable) {
+    if(window.webkitNotifications || window.Notification) {
+        var messageDesktopNotifySwitch = dojo.byId("messageDesktopNotifySwitch");
+        if (messageDesktopNotifySwitch) {
+            if(enable) {;
+                messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_off");
+                messageDesktopNotifySwitch.style.display=""
+            } else {;
+                messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
+                messageDesktopNotifySwitch.style.display="";
+            }
+        }
+    }
 }
 
 dojo.addOnLoad(function() {
