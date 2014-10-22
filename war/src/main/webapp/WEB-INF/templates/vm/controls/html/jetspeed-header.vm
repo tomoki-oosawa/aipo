@@ -130,12 +130,12 @@ limitations under the License.
 											</div>
 
 											<div class="tlInputControls clearfix">
-												<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
-												<iframe name="if_fileupload_Message" id="if_fileupload_Message" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById('Message').addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
-												</div>
 												<div class="floatRight">
 													<i class="indicator" id="indicator-dlg-Message" style="display:none"></i>
 													<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
+												</div>
+												<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
+													<iframe name="if_fileupload_Message" id="if_fileupload_Message" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById('Message').addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 												</div>
 											</div>
 										</form>

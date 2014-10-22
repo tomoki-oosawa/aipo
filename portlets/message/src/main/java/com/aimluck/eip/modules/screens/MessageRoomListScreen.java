@@ -102,8 +102,9 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         rd.initField();
         rd.setAutoName(true);
         rd.setLastMessage("");
+        rd.setUserId(targetUser.getUserId().getValue());
         rd.setName(targetUser.getAliasName().getValue());
-        rd.setHasPhoto("T".equals(targetUser.hasPhoto()));
+        rd.setHasPhoto(targetUser.hasPhoto());
         rd.setPhotoModified(targetUser.getPhotoModified());
         rd.setRoomId(0);
         rd.setRoomType("O");
