@@ -38,6 +38,7 @@ limitations under the License.
 	<div class="hdPages">
 		<ul>
 #foreach ( $tab in $tabs )
+#set($hasAuthority = $!tab.Authority)
 #set($selected = $tab.Link && ($tab.isSelected() == true))
 			<li #if ($tab.isSelected() == true)class="current"#end><a href="$tab.Link" class="name" title="$tab.Title">$tab.Title</a>#if ($!tab.Authority)<a href="javascript:void(0)" id="menubar_button_tab_$!{tab.Id}" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" class="setting toggle" title="ページ設定"><i class="icon-cog"></i></a>
 #foreach ($action in $tab.Actions)
@@ -63,7 +64,7 @@ limitations under the License.
 			</li>
 #end
 #set($beforeselected =$selected)
-#if ($data.User.getUserName()!="admin")
+#if ($data.User.getUserName()!="admin" && $hasAuthority)
 			<li><a href="javascript:void(0)" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" class="plus" title="$l10n.WAR_ADD_MENU_TUB" ><i class="icon-plus"></i></a></li>
 #end
 		</ul>
