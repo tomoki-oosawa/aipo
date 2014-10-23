@@ -236,7 +236,7 @@ public class ALMailUtils {
       EipMMailAccount account =
         query.andQualifier(exp1).andQualifier(exp2).fetchSingle();
       if (account == null) {
-        logger.debug("[WebMail] Not found AccountID...");
+        logger.error("[WebMail] Not found AccountID...");
         return null;
       }
       return account;
@@ -928,6 +928,7 @@ public class ALMailUtils {
       rcontext.setAuthReceiveFlag(account.getAuthReceiveFlg().intValue());
       rcontext.setEncryptionFlag(account.getPop3EncryptionFlg());
     } catch (Exception e) {
+      logger.error("ALMailUtils.getALPop3MailReceiverContext", e);
       return null;
     }
 
