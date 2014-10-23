@@ -531,7 +531,7 @@ public class MessageUtils {
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
 
-      ALPushService.pushAsync("message_read", params, recipients);
+      ALPushService.pushAsync("messagev2_read", params, recipients);
     }
   }
 

@@ -64,10 +64,10 @@ function join() {
        contentType: "application/javascript",
        success: function(data, status) {
            var type = data.type;
-           if("message" == type) {
+           if("messagev2" == type) {
                gadgets.rpc.call(null, "requestCheckMessage", null, data);
            }
-           if("message_read" == type) {
+           if("messagev2_read" == type) {
                gadgets.rpc.call(null, "requestCheckMessageRead", null, data);
            }
            join();

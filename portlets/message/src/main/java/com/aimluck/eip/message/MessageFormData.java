@@ -269,7 +269,7 @@ public class MessageFormData extends ALAbstractFormData {
       params.put("roomId", String.valueOf(room.getRoomId()));
       params.put("messageId", String.valueOf(model.getMessageId()));
 
-      ALPushService.pushAsync("message", params, recipients);
+      ALPushService.pushAsync("messagev2", params, recipients);
 
     } catch (Exception ex) {
       Database.rollback();

@@ -28,6 +28,32 @@ aipo.message.moreMessageLock = false;
 aipo.message.isActive = true;
 
 aipo.message.init = function() {
+    dojo.connect(window, "onresize", null, function(e) {
+        aipo.message.fixMessageWindow();
+    });
+    dojo.connect(window, "onfocus", null, function(e) {
+        aipo.message.isActive = true;
+        if (aipo.message.isOpenWindow()
+                && aipo.message.currentRoomId) {
+            aipo.message.latestMessageList();
+        }
+    });
+    dojo.connect(window, "onblur", null, function(e) {
+        aipo.message.isActive = false;
+        //
+    });
+    var messagePane = dojo.byId("messagePane");
+    if (messagePane) {
+        dojo
+                .connect(messagePane, "onscroll", null,
+                        function(e) {
+                            if (e.target.scrollTop + messagePane.clientHeight
+                                    + 100 >= e.target.scrollHeight
+                                    && !aipo.message.moreMessageLock) {
+                                aipo.message.moreMessageList();
+                            }
+                        });
+    }
     aipo.message.reloadRoomList();
 }
 
@@ -671,31 +697,3 @@ aipo.message.switchDesktopNotify = function() {
     }
 }
 
-dojo.addOnLoad(function() {
-    dojo.connect(window, "onresize", null, function(e) {
-        aipo.message.fixMessageWindow();
-    });
-    dojo.connect(window, "onfocus", null, function(e) {
-        aipo.message.isActive = true;
-        if (aipo.message.isOpenWindow()
-                && aipo.message.currentRoomId) {
-            aipo.message.latestMessageList();
-        }
-    });
-    dojo.connect(window, "onblur", null, function(e) {
-        aipo.message.isActive = false;
-        //
-    });
-    var messagePane = dojo.byId("messagePane");
-    if (messagePane) {
-        dojo
-                .connect(messagePane, "onscroll", null,
-                        function(e) {
-                            if (e.target.scrollTop + messagePane.clientHeight
-                                    + 100 >= e.target.scrollHeight
-                                    && !aipo.message.moreMessageLock) {
-                                aipo.message.moreMessageList();
-                            }
-                        });
-    }
-});
