@@ -20,7 +20,6 @@
 package com.aimluck.eip.timeline;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
@@ -264,14 +263,17 @@ public class TimelineFormData extends ALAbstractFormData {
         EipTTimelineUrl url = Database.create(EipTTimelineUrl.class);
 
         if (ALEipUtils.getParameter(rundata, context, "tlClipImage") != null) {
-          String str = ALEipUtils.getParameter(rundata, context, "tlClipImage");
-          URI uri = new URI(str).normalize();
-          String path =
-            uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
-          URL u =
-            new URL(String.format("%s://%s%s", uri.getScheme(), uri
-              .getAuthority(), path));
           try {
+            String str =
+              ALEipUtils.getParameter(rundata, context, "tlClipImage");
+            str = str.replaceAll("\\n", "");
+            URI uri = new URI(str).normalize();
+            String path =
+              uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
+            URL u =
+              new URL(String.format("%s://%s%s", uri.getScheme(), uri
+                .getAuthority(), path));
+
             URLConnection uc = u.openConnection();
             uc.setRequestProperty("Referer", str); // Refererを記述
             uc
@@ -285,7 +287,7 @@ public class TimelineFormData extends ALAbstractFormData {
               FileuploadUtils.DEF_THUMBNAIL_WIDTH,
               FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
               msgList));
-          } catch (IOException e) { // サムネイルの取得に失敗した場合、サムネイルなしで投稿
+          } catch (Exception e) { // サムネイルの取得に失敗した場合、サムネイルなしで投稿
             logger.error("timeline", e);
           }
         }
