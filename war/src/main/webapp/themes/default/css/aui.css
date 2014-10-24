@@ -4927,3 +4927,68 @@ iframe.iframe_messagelist {
   border-radius: 4px 4px 0 0;
   overflow: hidden;
 }
+
+/***************************************************
+	guideList
+--------------------------------------------------*/
+.guideList{
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	letter-spacing: -1em;
+	word-spacing: -1em;
+}
+:root .guideList{
+	font-size: 1px;
+	letter-spacing: -1px;
+	word-spacing: -1px;
+}
+.guideList li{
+	@extend .border-box;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	background: none;
+	width: 24.75%;
+	min-width: 109px;
+	vertical-align: top;
+	font-size: 12px;
+	letter-spacing: normal;
+	word-spacing: normal;
+}
+.guideList li > a{
+	@extend .bRadius4;
+	display: block;
+	text-align: center;
+	padding: 10px 5px;
+	text-decoration: none;
+}
+.guideList li > a p{
+	text-decoration: underline;
+}
+.guideList li > a:hover{
+	background: $grayHightLight;
+}
+.guideList li > a:hover p{
+	text-decoration: none;
+}
+.guideList i{
+	font-size: 50px;
+}
+.guideList.wide li{
+	width: 100%;
+	padding: 10px 0 0 120px;
+	margin-bottom: 20px;
+	position: relative;
+}
+.guideList.wide .iconBox{
+	position: absolute;
+	display: inline-block;
+	width: 110px;
+	top: 15px;
+	left: 0px;
+	text-align: center;
+}
+.guideList .iconBox i{
+	font-size: 70px;
+}
