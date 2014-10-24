@@ -221,7 +221,7 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         if(dropDown.focus){
             dropDown.focus();
         }
-
+        dropDown.focus();
         //For google chrome and Firefox 3.6 or higher
         var userAgent = window.navigator.userAgent.toLowerCase();
         if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
@@ -229,6 +229,9 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             var top = pNode.style.top.replace("px","");
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
+            var focusNode =  document.activeElement;
+            document.activeElement.blur();
+             focusNode.focus();
         }
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
     },

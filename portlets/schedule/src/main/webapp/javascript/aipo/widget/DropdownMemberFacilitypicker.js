@@ -228,6 +228,9 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             var top = pNode.style.top.replace("px","");
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
+            var focusNode =  document.activeElement;
+            document.activeElement.blur();
+             focusNode.focus();
         }
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
     },
