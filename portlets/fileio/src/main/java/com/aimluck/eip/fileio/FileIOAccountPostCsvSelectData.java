@@ -121,13 +121,13 @@ public class FileIOAccountPostCsvSelectData extends
     int i, j, k;
     int line = 0;
     String ErrorCode = "";
-    StringBuffer e_line = new StringBuffer();
 
     List<FileIOAccountPostCsvData> collectList =
       new ArrayList<FileIOAccountPostCsvData>();
 
     while (reader.eof != -1) {
       line++;
+      StringBuffer e_line = new StringBuffer();
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
       FileIOAccountPostCsvFormData formData =
