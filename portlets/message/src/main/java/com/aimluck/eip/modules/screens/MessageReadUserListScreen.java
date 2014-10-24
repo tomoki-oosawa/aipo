@@ -46,7 +46,6 @@ public class MessageReadUserListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      MessageUtils.setupContext(rundata, context);
 
       Integer messageId = null;
       EipTMessage message = null;

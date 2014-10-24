@@ -52,6 +52,8 @@ public class ALSessionUtils {
     imageScreenList.add("TimelineUrlThumbnailScreen");
     imageScreenList.add("BlogFileThumbnailScreen");
     imageScreenList.add("MsgboardTopicFileThumbnailScreen");
+    imageScreenList.add("MessageFileThumbnailScreen");
+    imageScreenList.add("MessageFileuploadRoomPhotoScreen");
   };
 
   public static List<String> getImageScreenList() {

@@ -43,7 +43,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -88,17 +87,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    if (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID)) {
-      if (rundata.getParameters().getString(ALEipConstants.ENTITY_ID).equals(
-        "new")) {
-        ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
-      } else {
-        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
-          .getParameters()
-          .getString(ALEipConstants.ENTITY_ID));
-      }
-    }
 
     folderName = rundata.getParameters().getString("folderName");
 

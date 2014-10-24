@@ -106,11 +106,11 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * This action implements the default portletset behavior customizer
- * 
+ *
  * <p>
  * Don't call it from the URL, the Portlet and the Action are automatically
  * associated through the registry PortletName
- * 
+ *
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
  */
 public class ALCustomizeSetAction extends VelocityPortletAction {
@@ -417,6 +417,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     }
     context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
     context.put("mypageId", mypageId);
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     context.put("pageTitle", pageTitle);
 
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
@@ -818,7 +819,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
   /**
    * Get the security reference from the outer portlet set
-   * 
+   *
    * @param path
    *          the psml locator path
    * @return the security reference of the referenced resource
@@ -836,7 +837,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
            * There is no way to do a check on a Portlets element, only a Entry
            * element. This can easily be added, but Im just under a release
            * right now and it could be perceived as too destabilizing -- david
-           * 
+           *
            * if (JetspeedSecurity.checkPermission((JetspeedUser)
            * rundata.getUser(), rootSet, JetspeedSecurity.PERMISSION_VIEW)) {
            */
@@ -935,14 +936,14 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
    * Set the skin in the PSML and the current PortletConfig using the HTML
    * parameter "skin". If the parmeter is missing or 'blank', then the skin is
    * set to null.
-   * 
+   *
    */
 
   /**
    * Set the skin in the PSML and the current PortletConfig using the HTML
    * parameter "skin". If the parmeter is missing or 'blank', then the skin is
    * set to null.
-   * 
+   *
    */
   @SuppressWarnings("deprecation")
   public void doSkin(RunData rundata, Context context) {
@@ -1021,7 +1022,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
    * Set the SecuirtyRef in the PSML and the current PortletConfig using the
    * HTML parameter "securityRef". If the parmeter is missing or 'blank', then
    * the SecuriyReference is set to null.
-   * 
+   *
    */
   public void doSecurity(RunData rundata, Context context) {
     // we should first retrieve the portlet to customize and its parameters
@@ -1067,7 +1068,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))
+          .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")
         && ALPortalApplicationService.isActive(entry.getName())) {
         list.add(entry);
@@ -1219,7 +1220,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
   /**
    * Builds a list of all portlet categories
-   * 
+   *
    * @param RunData
    *          current requests RunData object
    * @param List
@@ -1240,7 +1241,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-              .hasMediaType(mediaType))) {
+            .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();
@@ -1643,7 +1644,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
    * Add an element to the "table" or "work" objects. If the element is
    * unconstrained, and the position is within the number of columns, then the
    * element is added to "table". Othewise the element is added to "work"
-   * 
+   *
    * @param element
    *          to add
    * @param table

@@ -17,54 +17,47 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aimluck.eip.modules.screens;
+package com.aimluck.eip.modules.actions.message;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.message.MessageRoomFormData;
-import com.aimluck.eip.message.util.MessageUtils;
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.modules.actions.common.ALBaseAction;
 
 /**
  *
  */
-public class MessageRoomFormScreen extends ALVelocityScreen {
+public class MessageAction extends ALBaseAction {
 
   /** logger */
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageRoomFormScreen.class.getName());
+    .getLogger(MessageAction.class.getName());
 
   /**
    * 
-   * @param rundata
+   * @param portlet
    * @param context
+   * @param rundata
    * @throws Exception
    */
   @Override
-  protected void doOutput(RunData rundata, Context context) throws Exception {
-
-    try {
-
-      MessageRoomFormData formData = new MessageRoomFormData();
-      formData.initField();
-      formData.doViewForm(this, rundata, context);
-
-      String layout_template = "portlets/html/ja/ajax-message-room-form.vm";
-      setTemplate(rundata, context, layout_template);
-    } catch (Exception e) {
-      logger.error("MessageRoomFormScreen.doOutput", e);
-      ALEipUtils.redirectDBError(rundata);
-    }
+  protected void buildNormalContext(VelocityPortlet portlet, Context context,
+      RunData rundata) throws Exception {
   }
 
   /**
-   * @return
+   * 
+   * @param portlet
+   * @param context
+   * @param rundata
    */
   @Override
-  protected String getPortletName() {
-    return MessageUtils.MESSAGE_PORTLET_NAME;
+  protected void buildMaximizedContext(VelocityPortlet portlet,
+      Context context, RunData rundata) {
   }
+
 }

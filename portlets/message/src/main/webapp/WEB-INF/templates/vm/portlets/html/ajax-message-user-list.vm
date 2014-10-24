@@ -35,7 +35,7 @@
 		</select>
 	</div>
 	<div class="inner">
-		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="?template=MessageUserListScreen" onsubmit="aipo.message.searchUserList(); return false;" method="post">
+		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageUserListScreen')" onsubmit="aipo.message.searchUserList(); return false;" method="post">
 			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="userSearch" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_USER_SEARCH</label>
 			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
 		</form>

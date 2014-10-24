@@ -47,7 +47,6 @@ import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
@@ -64,8 +63,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
-import com.aimluck.eip.services.preexecute.ALPreExecuteFactoryService;
-import com.aimluck.eip.services.preexecute.ALPreExecuteHandler;
+import com.aimluck.eip.services.preexecute.ALPreExecuteService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -481,11 +479,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         // ignore
       }
 
-      ALPreExecuteFactoryService pxservice =
-        (ALPreExecuteFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALPreExecuteFactoryService.SERVICE_NAME);
-      ALPreExecuteHandler preexecutehandler = pxservice.getPreExecuteHandler();
-      preexecutehandler.migratePsml(data, context);
+      ALPreExecuteService.migratePsml(data, context);
     }
   }
 

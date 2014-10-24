@@ -51,7 +51,6 @@ public class MessageRoomListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      MessageUtils.setupContext(rundata, context);
 
       Integer targetUserId = null;
       Integer roomId = null;

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This file is part of the com.aipo.saas package.
+    Copyright (C) 2004-2011 Aimluck,Inc.
+    http://www.aipo.com
+
+    For the full copyright and license information, please view the LICENSE
+    file that was distributed with this source code.
+
+-->
+
+<registry>
+    <portlet-entry name="Message" hidden="true" type="ref" parent="Velocity" application="false">
+        <security-ref parent="owner-view"/>
+        <meta-info>
+            <title>メッセージ</title>
+            <description>メッセージ</description>
+        </meta-info>
+        <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
+        <parameter name="template" value="message" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="action" value="message.MessageAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <media-type ref="html"/>
+        <url cachedOnURL="true"/>
+    </portlet-entry>
+</registry>

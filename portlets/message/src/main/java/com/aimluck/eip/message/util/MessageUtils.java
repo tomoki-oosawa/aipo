@@ -127,11 +127,7 @@ public class MessageUtils {
     Integer roomId = null;
     try {
       try {
-        roomId =
-          Integer.valueOf(ALEipUtils.getTemp(
-            rundata,
-            context,
-            ALEipConstants.ENTITY_ID));
+        roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
       } catch (Throwable ignore) {
         //
       }

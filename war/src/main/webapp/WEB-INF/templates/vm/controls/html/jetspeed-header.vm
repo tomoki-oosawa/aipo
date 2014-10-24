@@ -71,6 +71,7 @@ limitations under the License.
 	<div class="hdNavigation">
 #if ("$!data.User.getUserName()" != "admin")
 		<ul class="hdCommunications">
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
@@ -109,33 +110,33 @@ limitations under the License.
 											<span class="avatar mr5" id="messageRoomAvatar"></span><span id="messageRoomName"></span>
 										</div>
 										<div class="floatRight" id="messageRoomSetting">
-											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '?template=MessageRoomFormScreen&entityid=' + aipo.message.currentRoomId, 'Message', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
 										</div>
 									</div>
 									<div class="inputField">
-										<form name="messageForm" id="messageForm" action="?template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'Message');aimluck.io.submit(this,'indicator-dlg-','Message',aipo.message.onReceiveMessage);return false;">
+										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
 											<input type="hidden" name="_name" value="formMessage">
 											<input type="hidden" name="secid" value="$secid">
 											<input type="hidden" name="roomId" value="">
 											<input type="hidden" name="userId" value="">
- 											 <input type="hidden" id="folderName_Message" name="folderName" value="message" />
+ 											 <input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
 											<div class="tlInputMention relative">
 												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea>
 											</div>
 
 											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
   												<p class="tlInputAttachmentTitle">$l10n.MESSAGE_ATTACHMENT</p>
-												<ul id="attachments_Message" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
+												<ul id="attachments_global-$messagePortletId" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
 												</ul>
 											</div>
 
 											<div class="tlInputControls clearfix">
 												<div class="floatRight">
-													<i class="indicator" id="indicator-dlg-Message" style="display:none"></i>
+													<i class="indicator" id="indicator-dlg-global-$messagePortletId" style="display:none"></i>
 													<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
 												</div>
 												<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
-													<iframe name="if_fileupload_Message" id="if_fileupload_Message" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById('Message').addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+													<iframe name="if_fileupload_$messagePortletId" id="if_fileupload_$messagePortletId" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById("global-${messagePortletId}").addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
 												</div>
 											</div>
 										</form>
@@ -203,7 +204,7 @@ dojo.addOnLoad(function() {
     aipo.menu.register("settings");
     aipo.menu.updateTitle();
     aipo.message.fixMessageWindow();
-    aipo.message.init();
+    aipo.message.init("$messagePortletId");
 });
 
 

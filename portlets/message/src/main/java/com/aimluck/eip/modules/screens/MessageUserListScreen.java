@@ -46,7 +46,6 @@ public class MessageUserListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      MessageUtils.setupContext(rundata, context);
 
       String keyword = null;
       try {

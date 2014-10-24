@@ -18,10 +18,10 @@
  *#
  <div class="messageSummaryHead">
 	<div class="inner">
-		<a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=MessageRoomFormScreen&entityid=new','Message',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">$l10n.MESSAGE_ADD_ROOM</a>
+		<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageRoomFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">$l10n.MESSAGE_ADD_ROOM</a>
 	</div>
 	<div class="inner">
-		<form class="search" id="messageRoomSearchForm" name="messageRoomSearchForm" action="?template=MessageRoomListScreen" onsubmit="aipo.message.searchRoomList(this); return false;" method="post">
+		<form class="search" id="messageRoomSearchForm" name="messageRoomSearchForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomListScreen')" onsubmit="aipo.message.searchRoomList(this); return false;" method="post">
 			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="roomSearch" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_ROOM_SEARCH</label>
 			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
 		</form>

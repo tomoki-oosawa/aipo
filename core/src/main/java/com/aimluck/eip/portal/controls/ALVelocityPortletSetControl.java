@@ -108,6 +108,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         }
       }
       context.put("mypageId", mypageId);
+      context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     }
   }
 
@@ -158,7 +159,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements();) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
-      if ("Activity".equals(p.getName())
+      if (("Activity".equals(p.getName()) || "Message".equals(p.getName()))
         && !portlets.getController().getConfig().getName().equals(
           "MenuController")) {
         continue;
