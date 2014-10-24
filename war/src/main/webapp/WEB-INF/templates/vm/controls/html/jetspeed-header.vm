@@ -204,7 +204,7 @@ dojo.addOnLoad(function() {
     aipo.menu.register("settings");
     aipo.menu.updateTitle();
     aipo.message.fixMessageWindow();
-    aipo.message.init("$messagePortletId");
+    aipo.message.init("$messagePortletId", "$!jslink.getPortletById($messagePortletId)");
 });
 
 

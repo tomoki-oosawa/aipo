@@ -12,7 +12,7 @@
 
 <registry>
     <portlet-entry name="Message" hidden="true" type="ref" parent="Velocity" application="false">
-        <security-ref parent="owner-view"/>
+        <security-ref parent="user-view"/>
         <meta-info>
             <title>メッセージ</title>
             <description>メッセージ</description>

@@ -27,9 +27,11 @@ aipo.message.currentUserSearchKeyword = null;
 aipo.message.moreMessageLock = false;
 aipo.message.isActive = true;
 aipo.message.portletId = null;
+aipo.message.jslink = null;
 
-aipo.message.init = function(portletId) {
+aipo.message.init = function(portletId, jslink) {
     aipo.message.portletId = portletId;
+    aipo.message.jslink = jslink;
     dojo.connect(window, "onresize", null, function(e) {
         aipo.message.fixMessageWindow();
     });
@@ -71,19 +73,18 @@ aipo.message.reloadMessageList = function() {
     }
 
     dojo.byId("messagePane").innerHTML = '<div class="loader"><i class="indicator"></i></div>';
-    var screen = "?template=MessageListScreen";
+    var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
     } else if (aipo.message.currentUserId) {
         screen += "&u=" + aipo.message.currentUserId;
     }
     aipo.message.moreMessageLock = false;
-    aipo.message.messagePane.setParam("js_peid", aipo.message.portletId);
     aipo.message.messagePane.viewPage(screen);
 }
 
 aipo.message.moreMessageList = function() {
-    var screen = "?template=MessageListScreen";
+    var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
     } else if (aipo.message.currentUserId) {
@@ -114,7 +115,7 @@ aipo.message.moreMessageList = function() {
 }
 
 aipo.message.latestMessageList = function() {
-    var screen = "?template=MessageListScreen";
+    var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
     } else if (aipo.message.currentUserId) {
@@ -187,7 +188,7 @@ aipo.message.reloadRoomList = function(roomId, userId) {
         aipo.message.messageRoomListPane.userId = userId;
     }
 
-    var screen = "?template=MessageRoomListScreen";
+    var screen = aipo.message.jslink + "?template=MessageRoomListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
     } else if (aipo.message.currentUserId) {
@@ -196,12 +197,19 @@ aipo.message.reloadRoomList = function(roomId, userId) {
     if (aipo.message.currentRoomSearchKeyword) {
         aipo.message.messageRoomListPane.setParam("k", aipo.message.currentRoomSearchKeyword);
     }
-    aipo.message.messageRoomListPane.setParam("js_peid", aipo.message.portletId);
     aipo.message.messageRoomListPane.viewPage(screen);
 }
 aipo.message.searchRoomList = function(form) {
     aipo.message.currentRoomSearchKeyword = form.keyword.value;
     aipo.message.reloadRoomList();
+}
+
+aipo.message.clearSearchRoomList = function() {
+    var messageRoomSearchForm = dojo.byId("messageRoomSearchForm");
+    if(messageRoomSearchForm) {
+        messageRoomSearchForm.keyword.value = "";
+        aipo.message.searchRoomList(messageRoomSearchForm);
+    }
 }
 
 aipo.message.messageUserListPane = null;
@@ -218,13 +226,12 @@ aipo.message.reloadUserList = function(group_name) {
         aipo.message.currentGroupName = group_name;
     }
 
-    var screen = "?template=MessageUserListScreen&target_group_name="
+    var screen = aipo.message.jslink + "?template=MessageUserListScreen&target_group_name="
             + aipo.message.currentGroupName;
     if (aipo.message.currentUserSearchKeyword) {
         aipo.message.messageUserListPane.setParam("k", aipo.message.currentUserSearchKeyword);
     }
 
-    aipo.message.messageUserListPane.setParam("js_peid", aipo.message.portletId);
     aipo.message.messageUserListPane.viewPage(screen);
 }
 
@@ -236,9 +243,17 @@ aipo.message.searchUserList = function() {
             .reloadUserList(messageUserGroupSelect.options[messageUserGroupSelect.selectedIndex].value);
 }
 
+aipo.message.clearSearchUserList = function() {
+    var messageUserSearchForm = dojo.byId("messageUserSearchForm");
+    if(messageUserSearchForm) {
+        messageUserSearchForm.keyword.value = "";
+        aipo.message.searchUserList();
+    }
+}
+
 aipo.message.updateReadCount = function(roomId) {
     if(roomId == aipo.message.currentRoomId) {
-        var url = "?template=MessageReadCountListJSONScreen";
+        var url = aipo.message.jslink + "?template=MessageReadCountListJSONScreen";
         url += "&r=" + roomId;
         url += "&max=" + aipo.message.getFirstMessageId();
         url += "&min=" + aipo.message.getLastMessageId();

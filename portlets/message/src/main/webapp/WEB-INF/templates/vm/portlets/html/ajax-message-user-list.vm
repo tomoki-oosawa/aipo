@@ -43,6 +43,11 @@
 </div>
 <div class="messageUserlist">
 #if($result.List.size() == 0)
+#if($!isSearch)
+<ul class="messageSummary">
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
+#end
 #AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_USER_EMPTY_MESSAGE")
 #else
 #set ($currentIndex = "")
@@ -51,10 +56,16 @@
 #if($currentIndex != $!record.getIndex().getValue())
 #if(!$isFirst)</ul>#end
 <div class="index">$!record.Index</div><ul>
+#if($!isSearch)
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+#end
 #set ($isFirst = false)
 #end
 #if($isFirst)
 <ul>
+#if($!isSearch)
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+#end
 #set ($isFirst = false)
 #end
 #set ($currentIndex = $!record.getIndex().getValue())

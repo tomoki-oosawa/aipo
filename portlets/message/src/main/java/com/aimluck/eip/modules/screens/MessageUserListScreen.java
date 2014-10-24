@@ -57,6 +57,9 @@ public class MessageUserListScreen extends ALVelocityScreen {
       listData.initField();
       if (!StringUtils.isEmpty(keyword)) {
         listData.setKeyword(keyword);
+        context.put("isSearch", true);
+      } else {
+        context.put("isSearch", false);
       }
       listData.doViewList(this, rundata, context);
 

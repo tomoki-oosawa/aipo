@@ -29,12 +29,18 @@
 </div>
 #if($result.List.size() == 0)
 #if($!isSearch)
+<ul class="messageSummary">
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
 #AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE")
 #else
 #AUIEmptyMessage("icon-arrow-up" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE_FIRST")
 #end
 #else
 <ul class="messageSummary">
+#if($!isSearch)
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+#end
 #foreach ($record in $result.List)
 	<li id="messageRoom$!record.RoomId" #if("$!currentRoom" == "$!record.RoomId")class="active"#end>
 		<a href="javascript:void(0)" onclick="aipo.message.selectRoom($!record.RoomId);">
