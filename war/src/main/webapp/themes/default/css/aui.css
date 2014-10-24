@@ -867,6 +867,23 @@ ul.hdTools .dropdown:before {
   background: #222222;
 }
 
+.searchClear {
+  padding: 0 !important;
+  line-height: 40px;
+  text-align: center;
+  color: white !important;
+}
+.searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
+  color: white;
+  margin-right: 5px;
+}
+.searchClear:hover {
+  color: #ff9900 !important;
+}
+.searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
+  color: #ff9900;
+}
+
 .messageSummaryHead div {
   border-bottom: solid 1px black;
 }
