@@ -175,6 +175,8 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
       }
     }
 
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
+
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));

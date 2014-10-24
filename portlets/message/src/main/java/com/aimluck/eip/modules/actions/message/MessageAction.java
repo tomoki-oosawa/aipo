@@ -47,6 +47,7 @@ public class MessageAction extends ALBaseAction {
   @Override
   protected void buildNormalContext(VelocityPortlet portlet, Context context,
       RunData rundata) throws Exception {
+    buildMaximizedContext(portlet, context, rundata);
   }
 
   /**
@@ -58,6 +59,7 @@ public class MessageAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
+    setTemplate(rundata, "message");
   }
 
 }

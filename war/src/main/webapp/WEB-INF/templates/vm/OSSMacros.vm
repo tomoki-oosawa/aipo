@@ -5,7 +5,10 @@
 ##
 #end
 #macro(ALMessage)
-##
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+<li>
+	<a href="$!utils.escapeXML($!jslink.getPortletById($messagePortletId).addQueryData("action","controls.Maximize"))" class="valid" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
+</li>
 #end
 #macro(ALMaintenance)
 ##
