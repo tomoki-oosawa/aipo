@@ -917,6 +917,7 @@ ul.hdTools .dropdown:before {
 }
 .sideBlock .search input[type=text] {
   background-color: #666666;
+  color: #ffffff;
 }
 .sideBlock .search button {
   text-shadow: none;
