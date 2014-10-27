@@ -29,6 +29,7 @@ aipo.message.isActive = true;
 aipo.message.portletId = null;
 aipo.message.jslink = null;
 aipo.message.isMobile = false;
+aipo.message.isInit = false;
 
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
@@ -69,6 +70,7 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                         });
     }
     aipo.message.reloadRoomList();
+    aipo.message.isInit = true;
 }
 
 aipo.message.messagePane = null;

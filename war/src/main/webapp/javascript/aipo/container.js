@@ -357,7 +357,11 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
             && aipo.message.currentRoomId) {
         aipo.message.latestMessageList();
     } else {
-        aipo.message.reloadRoomList();
+        if(aipo.message.isInit) {
+            aipo.message.reloadRoomList();
+        } else {
+            aipo.message.updateUnreadCount();
+        }
     }
     var request = {};
 
