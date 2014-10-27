@@ -310,9 +310,11 @@ public class GpdbRecordSelectData extends
    * @param context
    *          Context
    * @return 項目定義オブジェクト
+   * @throws ALPageNotFoundException
    */
   @Override
-  protected EipTGpdbRecord selectDetail(RunData rundata, Context context) {
+  protected EipTGpdbRecord selectDetail(RunData rundata, Context context)
+      throws ALPageNotFoundException {
     // セッション情報を設定
     setCurrentFilterAndSort(rundata, context);
 
