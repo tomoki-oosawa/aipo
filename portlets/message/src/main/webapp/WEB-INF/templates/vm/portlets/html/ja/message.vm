@@ -89,7 +89,7 @@
 //<![CDATA[
 
 dojo.addOnLoad(function() {
-    aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)");
+    aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
 });
 
 

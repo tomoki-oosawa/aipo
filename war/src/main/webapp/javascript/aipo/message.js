@@ -28,13 +28,17 @@ aipo.message.moreMessageLock = false;
 aipo.message.isActive = true;
 aipo.message.portletId = null;
 aipo.message.jslink = null;
+aipo.message.isMobile = false;
 
-aipo.message.init = function(portletId, jslink) {
+aipo.message.init = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
-    dojo.connect(window, "onresize", null, function(e) {
-        aipo.message.fixMessageWindow();
-    });
+    aipo.message.isMobile = isMobile;
+    if(!aipo.message.isMobile) {
+       dojo.connect(window, "onresize", null, function(e) {
+           aipo.message.fixMessageWindow();
+       });
+    }
     dojo.connect(window, "onfocus", null, function(e) {
         aipo.message.isActive = true;
         if (aipo.message.isOpenWindow()
@@ -49,7 +53,7 @@ aipo.message.init = function(portletId, jslink) {
     var messagePane = dojo.byId("messagePane");
     if (messagePane) {
         dojo
-                .connect(messagePane, "onscroll", null,
+                .connect(aipo.message.isMobile ? window : messagePane, "onscroll", null,
                         function(e) {
                             if (e.target.scrollTop + messagePane.clientHeight
                                     + 100 >= e.target.scrollHeight
@@ -417,7 +421,7 @@ aipo.message.clearInput = function() {
 
 aipo.message.focusInput = function() {
     var messageForm = dojo.byId("messageForm");
-    if (messageForm) {
+    if (messageForm && !aipo.message.isMobile) {
         messageForm.message.focus();
     }
 }
@@ -701,7 +705,7 @@ aipo.message.getLastMessageId = function() {
 }
 
 aipo.message.isOpenWindow = function() {
-    return dojo.hasClass("dd_message", "open");
+    return aipo.message.isMobile ? true : dojo.hasClass("dd_message", "open");
 }
 
 aipo.message.onLoadMessageReadUserList = function() {
