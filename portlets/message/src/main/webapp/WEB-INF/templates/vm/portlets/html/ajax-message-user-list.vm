@@ -56,7 +56,7 @@
 #if($currentIndex != $!record.getIndex().getValue())
 #if(!$isFirst)</ul>#end
 <div class="index">$!record.Index</div><ul>
-#if($!isSearch)
+#if($!isSearch && $isFirst)
 	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
 #end
 #set ($isFirst = false)

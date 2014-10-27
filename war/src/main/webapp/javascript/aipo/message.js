@@ -30,6 +30,12 @@ aipo.message.portletId = null;
 aipo.message.jslink = null;
 aipo.message.isMobile = false;
 
+aipo.message.setup = function(portletId, jslink, isMobile) {
+    aipo.message.portletId = portletId;
+    aipo.message.jslink = jslink;
+    aipo.message.isMobile = isMobile;
+}
+
 aipo.message.init = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
@@ -289,6 +295,29 @@ aipo.message.updateReadCount = function(roomId) {
     }
 }
 
+aipo.message.updateUnreadCount = function() {
+    var url = aipo.message.jslink + "?template=MessageUnreadCountJSONScreen";
+    dojo.xhrGet({
+        url : url,
+        timeout : 30000,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        headers : {
+            X_REQUESTED_WITH : "XMLHttpRequest"
+        },
+        load : function(response, ioArgs) {
+            var unreadCount = response.unreadCount;
+            if(!isNaN(unreadCount)) {
+                aipo.menu.message.count(unreadCount);
+                aipo.menu.updateTitle();
+            }
+        },
+        error : function(error) {
+
+        }
+    });
+}
+
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
@@ -380,8 +409,15 @@ aipo.message.unselectRoom = function() {
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageForm = dojo.byId("messageForm");
     if (messageForm) {
+        dojo.query(".messageSummary li").forEach(function(item) {
+            dojo.removeClass(item, "active")
+        });
         aipo.message.clearInput();
-        messageMainBlockEmpty.style.display = "";
+        if(messageMainBlockEmpty) {
+            messageMainBlockEmpty.style.display = "";
+        } else {
+            messageSideBlock.style.display = "";
+        }
         messageMainBlock.style.display = "none";
         aipo.message.currentRoomId = null;
         aipo.message.currentUserId = null;
