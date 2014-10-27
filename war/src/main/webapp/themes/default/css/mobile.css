@@ -2165,6 +2165,21 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	message
+--------------------------------------------------*/
+.sideBlock {
+  margin: -5px;
+}
+
+.messageOuter .inputField {
+  margin-bottom: 0;
+}
+
+.roomHeader {
+  margin: 0 0 5px 0;
+}
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none !important;}
