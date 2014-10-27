@@ -55,10 +55,12 @@
 #foreach ($record in $result.List)
 #if($currentIndex != $!record.getIndex().getValue())
 #if(!$isFirst)</ul>#end
-<div class="index">$!record.Index</div><ul>
 #if($!isSearch && $isFirst)
+<ul>
 	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
 #end
+<div class="index">$!record.Index</div><ul>
 #set ($isFirst = false)
 #end
 #if($isFirst)
