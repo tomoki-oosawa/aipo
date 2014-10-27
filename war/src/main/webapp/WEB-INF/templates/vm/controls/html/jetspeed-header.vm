@@ -43,6 +43,7 @@ limitations under the License.
 			<li #if ($tab.isSelected() == true)class="current"#end><a href="$tab.Link" class="name" title="$tab.Title">$tab.Title</a>#if ($!tab.Authority)<a href="javascript:void(0)" id="menubar_button_tab_$!{tab.Id}" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" class="setting toggle" title="ページ設定"><i class="icon-cog"></i></a>
 #foreach ($action in $tab.Actions)
 #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
+#if ($tab.isSelected() == true)#set($activeurlselected=$clink)#end
 #set($sgclink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=StartGuideCustomizeFormScreen") )
 											<div class="menubar z-upper body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
 											<ul>
