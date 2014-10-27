@@ -77,7 +77,7 @@ limitations under the License.
 				<div class="dropdown" id="dd_message">
 					<div class="title">$l10n.MESSAGE_MESSAGE<input id="messageDesktopNotifySwitch" style="display:none" type="button" class="auiButtonSmall floatRight" onclick="aipo.container.gadgetService.requestDesktopNotifyEnable();" value=""/><span id="message_val_desktop_notify_on" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_VALID}</span><span id="message_val_desktop_notify_off" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_INVALID}</span></div>
 					<div class="body">
-						<div class="sideBlock">
+						<div id="messageSideBlock" class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
 								<ul class="tab">
 									<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">$l10n.MESSAGE_ROOM</a></li>

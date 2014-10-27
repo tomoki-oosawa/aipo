@@ -321,6 +321,7 @@ aipo.message.selectTab = function(tab) {
 
 aipo.message.inputHistory = {};
 aipo.message.selectRoom = function(room_id) {
+    var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageForm = dojo.byId("messageForm");
@@ -331,7 +332,11 @@ aipo.message.selectRoom = function(room_id) {
     var messageRoomSetting = dojo.byId("messageRoomSetting");
     if (messageForm && messageRoom) {
         messageMainBlock.style.display = "";
-        messageMainBlockEmpty.style.display = "none";
+        if(messageMainBlockEmpty) {
+            messageMainBlockEmpty.style.display = "none";
+        } else {
+            messageSideBlock.style.display = "none";
+        }
         aipo.message.inputHistory[aipo.message.currentRoomId] = messageForm.message.value;
         aipo.message.currentRoomId = room_id;
         dojo.query(".messageSummary li").forEach(function(item) {
