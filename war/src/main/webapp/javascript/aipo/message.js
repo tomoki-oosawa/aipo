@@ -116,7 +116,16 @@ aipo.message.moreMessageList = function() {
                 X_REQUESTED_WITH : "XMLHttpRequest"
             },
             load : function(response, ioArgs) {
-                messagePane.innerHTML += response;
+                var messagePane = dojo.byId("messagePane");
+                if(messagePane) {
+                    messagePane.innerHTML += response;
+                    if(messagePane.children.length > 1) {
+                        var emptyMessage = dojo.query("#messagePane .emptyMessage");
+                        if(emptyMessage.length == 1) {
+                            emptyMessage[0].parentNode.removeChild(emptyMessage[0]);
+                        }
+                    }
+                }
                 aipo.message.moreMessageLock = false;
             },
             error : function(error) {
@@ -150,7 +159,16 @@ aipo.message.latestMessageList = function() {
             X_REQUESTED_WITH : "XMLHttpRequest"
         },
         load : function(response, ioArgs) {
-            messagePane.innerHTML = response + messagePane.innerHTML;
+            var messagePane = dojo.byId("messagePane");
+            if(messagePane) {
+                messagePane.innerHTML = response + messagePane.innerHTML;
+                if(messagePane.children.length > 1) {
+                    var emptyMessage = dojo.query("#messagePane .emptyMessage");
+                    if(emptyMessage.length == 1) {
+                        emptyMessage[0].parentNode.removeChild(emptyMessage[0]);
+                    }
+                }
+            }
             aipo.message.moreMessageLock = false;
             aipo.message.reloadRoomList();
         },

@@ -17,7 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 #if($result.List.size() == 0)
-
+#if($result.isFirstView())
+#AUIEmptyMessage("icon-comment-alt" "$l10n.MESSAGE_EMPTY_MESSAGE")
+#end
 #else
 #foreach ($record in $result.List)
 <div id="message$!record.MessageId" class="message">

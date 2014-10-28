@@ -55,7 +55,7 @@ public class MessageListSelectData extends
 
   public static final int MESSAGE_LIMIT = 50;
 
-  private int cursor = -1;
+  private int cursor = 0;
 
   private boolean latest = false;
 
@@ -270,6 +270,10 @@ public class MessageListSelectData extends
    */
   public int getTargetUserId() {
     return targetUserId;
+  }
+
+  public boolean isFirstView() {
+    return cursor == 0 && !latest;
   }
 
 }
