@@ -105,7 +105,6 @@
 #if($result.TableColumNum == 4)
 #ALformheader('Activity' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllScreen' $result)
 </div>
 <table class="auiRowTable wide">
 <colgroup />
@@ -132,7 +131,6 @@
 #else
 #ALformheader('Activity' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllScreen' $result)
 </div>
 <table class="auiRowTable wide">
 <colgroup />
