@@ -473,9 +473,6 @@ aipo.message.fixMessageWindow = function() {
                 + aipo.message.fixHeight;
         var tabh = document.documentElement.clientHeight - minusH;
         dojo.byId("dd_message").style.width = w + "px";
-        if (dojo.byId("messageSideBlock") != null) {
-            dojo.byId("messageSideBlock").style.height = h + "px";
-        }
         if (dojo.byId("messageSideBlock1") != null) {
             dojo.byId("messageSideBlock1").style.height = h + "px";
         }
