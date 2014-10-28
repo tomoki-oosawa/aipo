@@ -40,6 +40,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * Velocity Portlet を扱う際の抽象クラスです。 <br />
@@ -189,7 +190,8 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
 
-      if (ALPortalApplicationService.isActive(portlet.getName())) {
+      if (ALPortalApplicationService.isActive(portlet.getName())
+        && CustomizeUtils.isAdminUserView(portlet.getName(), rundata)) {
         super.doPerform(rundata, context);
       } else {
         rundata.getRequest().setAttribute("redirectTemplate", "Inactive.vm");

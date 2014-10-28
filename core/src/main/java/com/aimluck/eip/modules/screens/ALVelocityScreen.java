@@ -44,6 +44,7 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
@@ -110,7 +111,8 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       String portletName = getPortletName();
       if (portletName == null
         || "".equals(portletName)
-        || ALPortalApplicationService.isActive(portletName)) {
+        || (ALPortalApplicationService.isActive(portletName) && CustomizeUtils
+          .isAdminUserView(portletName, rundata))) {
         this.doOutput(rundata, context);
       } else {
         context.put("l10n", ALLocalizationUtils.createLocalization(rundata));

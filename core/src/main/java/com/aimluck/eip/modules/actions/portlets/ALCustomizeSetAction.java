@@ -103,6 +103,7 @@ import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * This action implements the default portletset behavior customizer
@@ -1069,6 +1070,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
             .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")
+        && CustomizeUtils.isAdminUserView(entry, data)
         && ALPortalApplicationService.isActive(entry.getName())) {
         list.add(entry);
       }

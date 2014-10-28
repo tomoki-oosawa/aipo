@@ -38,6 +38,7 @@ import org.apache.jetspeed.services.portaltoolkit.JetspeedPortalToolkitService;
 import org.apache.jetspeed.util.JetspeedException;
 
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  *
@@ -108,7 +109,8 @@ public class ALPortalToolkitService extends JetspeedPortalToolkitService {
 
             PortletControl control = getControl(psmlEntry.getControl(), entry);
 
-            if (ALPortalApplicationService.isActive(p.getName())) {
+            if (ALPortalApplicationService.isActive(p.getName())
+              && CustomizeUtils.isAdminUserView(entry)) {
               set.addPortlet(initControl(control, p), controller
                 .getConstraints(constraints), position);
             }
