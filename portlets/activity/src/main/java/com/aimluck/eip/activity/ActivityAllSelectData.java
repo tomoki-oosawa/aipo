@@ -27,7 +27,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 
-import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -43,7 +42,6 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.util.ALEipUtils;
@@ -76,6 +74,15 @@ public class ActivityAllSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    String tabParam = rundata.getParameters().getString("category");
+    currentCategory = ALEipUtils.getTemp(rundata, context, "category");
+    if (tabParam == null && currentCategory == null) {
+      ALEipUtils.setTemp(rundata, context, "category", "all");
+      currentCategory = "all";
+    } else if (tabParam != null) {
+      ALEipUtils.setTemp(rundata, context, "category", tabParam);
+      currentCategory = tabParam;
+    }
     target_keyword = new ALStringField();
     postList = ALEipUtils.getMyGroups(rundata);
     super.init(action, rundata, context);
@@ -146,14 +153,6 @@ public class ActivityAllSelectData extends
       target_keyword.setValue(ActivityUtils.getTargetKeyword(rundata, context));
     }
 
-    if (current_filterMap.containsKey("category")) {
-      List<String> category = current_filterMap.get("category");
-      currentCategory = category.get(0).toString();
-      if (!"all".equals(currentCategory)
-        && !ALPortalApplicationService.isActive(currentCategory)) {
-        currentCategory = "all";
-      }
-    }
     if (current_filterMap.containsKey("post")) {
 
       List<String> postIds = current_filterMap.get("post");
@@ -283,16 +282,6 @@ public class ActivityAllSelectData extends
    */
   public void setTableColumNum(int table_colum_num) {
     this.table_colum_num = table_colum_num;
-  }
-
-  public void setFiltersFromPSML(VelocityPortlet portlet, Context context,
-      RunData rundata) {
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
-      .getPortletConfig()
-      .getInitParameter("p12f-filters"));
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
-      .getPortletConfig()
-      .getInitParameter("p12g-filtertypes"));
   }
 
   @Override

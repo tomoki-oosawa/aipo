@@ -69,7 +69,6 @@ public class ActivityAction extends ALBaseAction {
     listData.setTableColumNum(Integer.parseInt(ALEipUtils.getPortlet(
       rundata,
       context).getPortletConfig().getInitParameter("p2e-rows")));
-    listData.setFiltersFromPSML(portlet, context, rundata);
     listData.doViewList(this, rundata, context);
     setTemplate(rundata, "activity");
   }
