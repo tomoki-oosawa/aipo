@@ -891,6 +891,12 @@ ul.hdTools .dropdown:before {
 .roomHeader {
   margin-bottom: 10px;
 }
+.roomHeader .floatLeft {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
 .roomHeader .floatRight a {
   display: inline-block;
 }
