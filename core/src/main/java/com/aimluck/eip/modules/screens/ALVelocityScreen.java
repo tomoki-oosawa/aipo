@@ -27,8 +27,6 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.jetspeed.om.registry.PortletEntry;
-import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -111,12 +109,10 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     try {
       ALEipUtils.setupContext(rundata, context);
       String portletName = getPortletName();
-      PortletEntry entry =
-        (PortletEntry) Registry.getEntry(Registry.PORTLET, portletName);
       if (portletName == null
         || "".equals(portletName)
         || (ALPortalApplicationService.isActive(portletName) && CustomizeUtils
-          .isAdminUserView(entry, rundata))) {
+          .isAdminUserView(portletName, rundata))) {
         this.doOutput(rundata, context);
       } else {
         context.put("l10n", ALLocalizationUtils.createLocalization(rundata));

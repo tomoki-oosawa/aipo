@@ -45,8 +45,11 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
 import org.apache.jetspeed.services.security.PortalResource;
 import org.apache.jetspeed.util.PortletSessionState;
+import org.apache.jetspeed.util.ServiceUtil;
+import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALApplication;
@@ -619,5 +622,42 @@ public class CustomizeUtils {
       }
     }
     return true;
+  }
+
+  /**
+   * 管理者ユーザーのみ表示可能アプリ
+   * 
+   * @param entry
+   * @param data
+   * @return
+   */
+  public static boolean isAdminUserView(String portletName, RunData data) {
+    PortletEntry entry = null;
+    try {
+      entry = (PortletEntry) Registry.getEntry(Registry.PORTLET, portletName);
+    } catch (Exception e) {
+      logger.error("CustomizeUtils.isAdminUserView", e);
+    }
+    return isAdminUserView(entry, data);
+  }
+
+  /**
+   * 管理者ユーザーのみ表示可能アプリ
+   * 
+   * @param entry
+   * @param data
+   * @return
+   */
+  public static boolean isAdminUserView(PortletEntry entry) {
+    JetspeedRunData jData = null;
+    try {
+      JetspeedRunDataService jrds =
+        (JetspeedRunDataService) ServiceUtil
+          .getServiceByName(RunDataService.SERVICE_NAME);
+      jData = jrds.getCurrentRunData();
+    } catch (Exception e) {
+      logger.error("CustomizeUtils.isAdminUserView", e);
+    }
+    return isAdminUserView(entry, jData);
   }
 }

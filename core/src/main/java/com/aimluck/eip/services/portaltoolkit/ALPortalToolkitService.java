@@ -35,11 +35,7 @@ import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.portaltoolkit.JetspeedPortalToolkitService;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.rundata.JetspeedRunDataService;
 import org.apache.jetspeed.util.JetspeedException;
-import org.apache.jetspeed.util.ServiceUtil;
-import org.apache.turbine.services.rundata.RunDataService;
 
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.CustomizeUtils;
@@ -113,13 +109,8 @@ public class ALPortalToolkitService extends JetspeedPortalToolkitService {
 
             PortletControl control = getControl(psmlEntry.getControl(), entry);
 
-            JetspeedRunDataService jrds =
-              (JetspeedRunDataService) ServiceUtil
-                .getServiceByName(RunDataService.SERVICE_NAME);
-            JetspeedRunData jData = jrds.getCurrentRunData();
-
             if (ALPortalApplicationService.isActive(p.getName())
-              && CustomizeUtils.isAdminUserView(entry, jData)) {
+              && CustomizeUtils.isAdminUserView(entry)) {
               set.addPortlet(initControl(control, p), controller
                 .getConstraints(constraints), position);
             }
