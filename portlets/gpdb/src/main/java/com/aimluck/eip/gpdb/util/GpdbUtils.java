@@ -860,13 +860,20 @@ public class GpdbUtils {
    * @param recordNo
    *          レコードNo
    * @return Webデータベースレコードのマップ
+   * @throws ALPageNotFoundException
    */
   public static Map<String, GpdbRecordResultData> getGpdbRecordMap(
-      String gpdbId, String recordNo) {
+      String gpdbId, String recordNo) throws ALPageNotFoundException {
     Map<String, GpdbRecordResultData> map =
       new HashMap<String, GpdbRecordResultData>();
 
     List<EipTGpdbRecord> recordList = getEipTGpdbRecord(gpdbId, recordNo);
+
+    // 指定したgpdbIDのレコードが見つからない場合
+    if (recordList == null || recordList.size() == 0) {
+      logger.error("[GpdbUtils] Not found record.");
+      throw new ALPageNotFoundException();
+    }
 
     List<GpdbRecordResultData> list = new ArrayList<GpdbRecordResultData>();
     for (EipTGpdbRecord rec : recordList) {
