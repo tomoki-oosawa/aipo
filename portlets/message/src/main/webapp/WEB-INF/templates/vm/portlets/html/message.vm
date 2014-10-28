@@ -84,6 +84,8 @@
 		</div>
 	</div>
 </div>
+<span id="message_val_read" style="display:none">$l10n.MESSAGE_READ_COUNT</span>
+<span id="message_val_all_read" style="display:none">$l10n.MESSAGE_ALL_READ</span>
 
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
