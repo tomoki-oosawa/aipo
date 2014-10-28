@@ -159,3 +159,17 @@ aipo.activity.filteredSearch = function(portlet_id) {
 			[ "filtertype", types.join(",") ], [ "keyword", q ? q.value : "" ] ];
 	aipo.viewPage(baseuri, portlet_id, qs);
 }
+
+/**
+ * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.activity.filterClick=function(portlet_id,thisnode,event){
+	var li=thisnode.parentNode;
+	var ul=li.parentNode;
+	var param=li.getAttribute("data-param");//liのdata-param
+	aipo.activity.filterSelect(ul,li);
+	aipo.activity.filteredSearch(portlet_id);
+};
