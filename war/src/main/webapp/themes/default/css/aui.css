@@ -1970,7 +1970,7 @@ button[disabled]:active {
   border-left: solid 1px #d2d2d2;
   border-right: solid 1px #d2d2d2;
 }
-.auiPortlet .auiPortletBody .inner {
+.auiPortlet .auiPortletBody > .inner {
   padding: 10px 10px 0 10px;
 }
 .auiPortlet .auiPortletBody .inner:after {

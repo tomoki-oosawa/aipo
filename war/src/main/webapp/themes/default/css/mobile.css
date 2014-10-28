@@ -206,7 +206,7 @@ input[type=password] {
   margin-top: 6px;
   border: none;
 }
-.auiPortlet .auiPortletBody .inner {
+.auiPortlet .auiPortletBody > .inner {
   padding: 0 5px;
 }
 
