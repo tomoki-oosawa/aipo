@@ -27,6 +27,8 @@ import java.util.List;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jetspeed.om.registry.PortletEntry;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -44,6 +46,7 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
@@ -108,9 +111,12 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     try {
       ALEipUtils.setupContext(rundata, context);
       String portletName = getPortletName();
+      PortletEntry entry =
+        (PortletEntry) Registry.getEntry(Registry.PORTLET, portletName);
       if (portletName == null
         || "".equals(portletName)
-        || ALPortalApplicationService.isActive(portletName)) {
+        || (ALPortalApplicationService.isActive(portletName) && CustomizeUtils
+          .isAdminUserView(entry, rundata))) {
         this.doOutput(rundata, context);
       } else {
         context.put("l10n", ALLocalizationUtils.createLocalization(rundata));

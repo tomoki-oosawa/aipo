@@ -44,6 +44,7 @@ import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.PortalResource;
 import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.turbine.util.RunData;
@@ -123,6 +124,7 @@ public class CustomizeUtils {
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
             .hasMediaType(mediaType))
         && ALPortalApplicationService.isActive(entry.getName())
+        && isAdminUserView(entry, data)
         && !entry.getSecurityRef().getParent().equals("admin-view")) {
         list.add(entry);
       }
@@ -194,6 +196,7 @@ public class CustomizeUtils {
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
             .hasMediaType(mediaType))
         && ALPortalApplicationService.isActive(entry.getName())
+        && isAdminUserView(entry, data)
         && !entry.getSecurityRef().getParent().equals("admin-view")
         && !status.equals(ALApplicationGetRequest.Status.INACTIVE)) {
         list.add(entry);
@@ -593,5 +596,28 @@ public class CustomizeUtils {
       }
       work.add(element);
     }
+  }
+
+  /**
+   * 管理者ユーザーのみ表示可能アプリ
+   * 
+   * @param entry
+   * @param data
+   * @return
+   */
+  public static boolean isAdminUserView(PortletEntry entry, RunData data) {
+
+    if (data != null) {
+      JetspeedRunData jdata = (JetspeedRunData) data;
+      if (jdata != null
+        && jdata.getUserId() != null
+        && entry != null
+        && entry.getSecurityRef() != null
+        && entry.getSecurityRef().getParent() != null
+        && entry.getSecurityRef().getParent().equals("admin-user-view")) {
+        return ALEipUtils.isAdmin(data) ? true : false;
+      }
+    }
+    return true;
   }
 }

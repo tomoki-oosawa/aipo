@@ -120,4 +120,25 @@
             <allow-if role="user"/>
         </access>
     </security-entry>
+    <security-entry name="admin-user-view">
+        <meta-info>
+            <title>管理者ユーザー（表示）</title>
+            <description>管理者権限を持つユーザーは表示できます</description>
+        </meta-info>
+        <access action="view">
+            <allow-if role="admin"/>
+        </access>
+        <access action="view">
+            <allow-if-owner/>
+        </access>
+        <access action="view">
+            <allow-if role="user"/>
+        </access>
+        <access action="customize">
+            <allow-if-owner/>
+        </access>
+        <access action="customize">
+            <allow-if role="user"/>
+        </access>
+    </security-entry>
 </registry>

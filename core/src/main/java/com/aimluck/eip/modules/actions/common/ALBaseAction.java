@@ -25,8 +25,10 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction;
+import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.jetspeed.portal.PortletInstance;
 import org.apache.jetspeed.portal.portlets.GenericMVCPortlet;
+import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.persistence.PersistenceManager;
@@ -40,6 +42,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * Velocity Portlet を扱う際の抽象クラスです。 <br />
@@ -189,7 +192,10 @@ public abstract class ALBaseAction extends VelocityPortletAction implements
     if (context != null) {
       portlet = (GenericMVCPortlet) context.get("portlet");
 
-      if (ALPortalApplicationService.isActive(portlet.getName())) {
+      PortletEntry entry =
+        (PortletEntry) Registry.getEntry(Registry.PORTLET, portlet.getName());
+      if (ALPortalApplicationService.isActive(portlet.getName())
+        && CustomizeUtils.isAdminUserView(entry, rundata)) {
         super.doPerform(rundata, context);
       } else {
         rundata.getRequest().setAttribute("redirectTemplate", "Inactive.vm");
