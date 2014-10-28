@@ -263,8 +263,6 @@ CREATE TABLE EIP_T_SCHEDULE
 
 CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE(START_DATE, END_DATE, UPDATE_DATE);
 
-CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
-
 -----------------------------------------------------------------------------
 -- EIP_T_SCHEDULE_MAP
 -----------------------------------------------------------------------------
