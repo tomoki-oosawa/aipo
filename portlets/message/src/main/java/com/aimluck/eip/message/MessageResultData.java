@@ -77,6 +77,7 @@ public class MessageResultData implements ALData, Serializable {
     unreadCount = new ALNumberField();
     memberCount = new ALNumberField();
     message = new ALStringField();
+    message.setTrim(false);
     createDate = new ALDateTimeField("yyyy年M月d日 H:mm");
     attachmentFileList = new ArrayList<FileuploadBean>();
   }
