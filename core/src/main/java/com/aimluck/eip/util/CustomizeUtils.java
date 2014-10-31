@@ -612,8 +612,7 @@ public class CustomizeUtils {
 
     if (data != null) {
       JetspeedRunData jdata = (JetspeedRunData) data;
-      if (jdata != null
-        && jdata.getUserId() != null
+      if (jdata.getUserId() != null
         && entry != null
         && entry.getSecurityRef() != null
         && entry.getSecurityRef().getParent() != null
