@@ -353,9 +353,11 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 }
 
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
+    var notify = true;
     if (aipo.message.isActive && aipo.message.isOpenWindow()
             && aipo.message.currentRoomId) {
         aipo.message.latestMessageList();
+        notify = !(params.roomId == aipo.message.currentRoomId);
     } else {
         if(aipo.message.isInit) {
             aipo.message.reloadRoomList();
@@ -363,68 +365,70 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
             aipo.message.updateUnreadCount();
         }
     }
-    var request = {};
+    if(notify) {
+        var request = {};
 
-    var makeRequestParams = {
-        "CONTENT_TYPE" : "JSON",
-        "METHOD" : "POST",
-        "POST_DATA" : gadgets.json.stringify(request)
-    };
+        var makeRequestParams = {
+                "CONTENT_TYPE" : "JSON",
+                "METHOD" : "POST",
+                "POST_DATA" : gadgets.json.stringify(request)
+        };
 
-    var url = "?template=MessageCheckJSONScreen&messageId=" + params.messageId;
+        var url = "?template=MessageCheckJSONScreen&messageId=" + params.messageId;
 
-    gadgets.io.makeNonProxiedRequest(url, handleJSONResponse,
-            makeRequestParams, "application/javascript");
+        gadgets.io.makeNonProxiedRequest(url, handleJSONResponse,
+                makeRequestParams, "application/javascript");
 
-    function handleJSONResponse(obj) {
-        if (obj.rc == 200) {
-            var data = obj.data;
-            if (aipo.activityDesktopNotifyEnable && data.displayName) {
-                if (window.webkitNotifications
-                        && window.webkitNotifications.checkPermission() == 0) {
-                    var popups = new Array();
-                    var displayName = data.displayName;
-                    var userId = data.userId;
-                    var text = data.text;
-                    var photoModified = data.photoModified;
-                    var icon = 'images/common/avatar_default3.png';
-                    if(data.hasPhoto) {
-                        icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
+        function handleJSONResponse(obj) {
+            if (obj.rc == 200) {
+                var data = obj.data;
+                if (aipo.activityDesktopNotifyEnable && data.displayName) {
+                    if (window.webkitNotifications
+                            && window.webkitNotifications.checkPermission() == 0) {
+                        var popups = new Array();
+                        var displayName = data.displayName;
+                        var userId = data.userId;
+                        var text = data.text;
+                        var photoModified = data.photoModified;
+                        var icon = 'images/common/avatar_default3.png';
+                        if(data.hasPhoto) {
+                            icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
+                        }
+                        var popup = window.webkitNotifications
+                        .createNotification(icon,
+                                displayName, text);
+                        popup.show();
+                        popup.ondisplay = function(event) {
+                            setTimeout(function() {
+                                event.currentTarget.cancel();
+                            }, 7 * 1000);
+                        }
+                        popups.push(popup);
+                    } else if (window.Notification
+                            && window.Notification.permission == "granted") {
+                        var popups = new Array();
+                        var displayName = data.displayName;
+                        var userId = data.userId;
+                        var text = data.text;
+                        var photoModified = data.photoModified;
+                        var icon = 'images/common/avatar_default3.png';
+                        if(data.hasPhoto) {
+                            icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
+                        }
+                        var popup = new window.Notification(
+                                displayName, {
+                                    icon : icon,
+                                    body :text
+                                });
+                        popup.onshow = function(event) {
+                            setTimeout(function() {
+                                if (event.currentTarget) {
+                                    event.currentTarget.close();
+                                }
+                            }, 7 * 1000);
+                        }
+                        popups.push(popup);
                     }
-                    var popup = window.webkitNotifications
-                    .createNotification(icon,
-                            displayName, text);
-                    popup.show();
-                    popup.ondisplay = function(event) {
-                        setTimeout(function() {
-                            event.currentTarget.cancel();
-                        }, 7 * 1000);
-                    }
-                    popups.push(popup);
-                } else if (window.Notification
-                        && window.Notification.permission == "granted") {
-                    var popups = new Array();
-                    var displayName = data.displayName;
-                    var userId = data.userId;
-                    var text = data.text;
-                    var photoModified = data.photoModified;
-                    var icon = 'images/common/avatar_default3.png';
-                    if(data.hasPhoto) {
-                        icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
-                    }
-                    var popup = new window.Notification(
-                            displayName, {
-                                icon : icon,
-                                body :text
-                            });
-                    popup.onshow = function(event) {
-                        setTimeout(function() {
-                            if (event.currentTarget) {
-                                event.currentTarget.close();
-                            }
-                        }, 7 * 1000);
-                    }
-                    popups.push(popup);
                 }
             }
         }
