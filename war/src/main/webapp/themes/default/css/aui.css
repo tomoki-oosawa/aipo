@@ -2784,6 +2784,7 @@ button[disabled]:active {
 .auiDirectoryList a {
   display: block;
   width: 100%;
+  min-height: 26px;
   text-decoration: none;
   overflow: hidden;
 }
@@ -2794,10 +2795,19 @@ button[disabled]:active {
   background: #f6f6f6;
 }
 .auiDirectoryList a:hover span {
+  position: absolute;
+  padding-right: 5px;
   color: #000;
+  background: #f6f6f6;
 }
-.auiDirectoryList .active a {
+.auiDirectoryList .active {
   font-weight: bold;
+  background: #f0f0f0;
+}
+.auiDirectoryList .active a:hover {
+  background: #f0f0f0;
+}
+.auiDirectoryList .active a:hover span {
   background: #f0f0f0;
 }
 .auiDirectoryList .directory {
