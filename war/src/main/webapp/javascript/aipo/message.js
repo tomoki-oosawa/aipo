@@ -49,7 +49,7 @@ aipo.message.init = function(portletId, jslink, isMobile) {
     dojo.connect(window, "onfocus", null, function(e) {
         aipo.message.isActive = true;
         if (aipo.message.isOpenWindow()
-                && aipo.message.currentRoomId) {
+                && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
             aipo.message.latestMessageList();
         }
     });
