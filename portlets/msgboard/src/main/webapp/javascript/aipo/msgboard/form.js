@@ -175,10 +175,6 @@ aipo.msgboard.filterClick=function(portlet_id,thisnode,event){
 };
 aipo.msgboard.onLoadMsgboardDetail = function(portlet_id){
   aipo.portletReload('whatsnew');
-  if(modalDialog) {
-    var wrapper = document.getElementById('wrapper');
-    wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-  }
 }
 
 aipo.msgboard.onLoadMsgboardDialog = function(portlet_id){
