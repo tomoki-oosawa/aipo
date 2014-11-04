@@ -175,7 +175,6 @@ aipo.msgboard.filterClick=function(portlet_id,thisnode,event){
 };
 aipo.msgboard.onLoadMsgboardDetail = function(portlet_id){
   aipo.portletReload('whatsnew');
-  var modalDialog = document.getElementById('modalDialog');
   if(modalDialog) {
     var wrapper = document.getElementById('wrapper');
     wrapper.style.minHeight = modalDialog.clientHeight + 'px';
@@ -183,11 +182,6 @@ aipo.msgboard.onLoadMsgboardDetail = function(portlet_id){
 }
 
 aipo.msgboard.onLoadMsgboardDialog = function(portlet_id){
-  var modalDialog = document.getElementById('modalDialog');
-  if(modalDialog) {
-    var wrapper = document.getElementById('wrapper');
-    wrapper.style.minHeight = modalDialog.clientHeight + 'px';
-  }
   var obj = dojo.byId("topic_name");
   if(obj){
      obj.focus();
