@@ -276,6 +276,14 @@ function doUpOptions10(select) {
 			continue;
 		up_option(select, i, 10);
 	}
+	var firstSelected=select.options[0];
+	for (i = 0; i < s_o.length; i++) {
+		if (s_o[i].selected){
+			firstSelected=s_o[i];
+			break;
+		}
+	}
+	if(firstSelected.offsetTop<select.scrollTop)firstSelected.scrollIntoView(true);
 }
 
 function doUpOptions(select) {
@@ -289,6 +297,14 @@ function doUpOptions(select) {
 			continue;
 		up_option(select, i, 1);
 	}
+	var firstSelected=select.options[0];
+	for (i = 0; i < s_o.length; i++) {
+		if (s_o[i].selected){
+			firstSelected=s_o[i];
+			break;
+		}
+	}
+	if(firstSelected.offsetTop<select.scrollTop)firstSelected.scrollIntoView(true);
 }
 
 function doDownOptions10(select) {
@@ -302,6 +318,14 @@ function doDownOptions10(select) {
 			continue;
 		down_option(select, i, 10);
 	}
+	var firstSelected=select.options[0];
+	for (i = 0; i < s_o.length; i++) {
+		if (s_o[i].selected){
+			firstSelected=s_o[i];
+			break;
+		}
+	}
+	if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)firstSelected.scrollIntoView(false);
 }
 
 function doDownOptions(select) {
@@ -315,6 +339,14 @@ function doDownOptions(select) {
 			continue;
 		down_option(select, i, 1);
 	}
+	var firstSelected=select.options[0];
+	for (i = 0; i < s_o.length; i++) {
+		if (s_o[i].selected){
+			firstSelected=s_o[i];
+			break;
+		}
+	}
+	if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)firstSelected.scrollIntoView(false);
 }
 
 function up_option(select, index, rate) {
