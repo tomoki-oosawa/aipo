@@ -1,6 +1,6 @@
 <html>
 <head>
-<script type="text/javascript" src="/gadgets/js/core:rpc.js?c=0"></script>
+<script type="text/javascript" src="/gadgets/js/core:rpc:jquery.js?c=0"></script>
 <script type="text/javascript">
 
 function CronTask(task, interval, isDecay) {
@@ -55,6 +55,32 @@ CronTask.prototype = {
   }
 };
 
+var retryCount = 0;
+function join() {
+    var params = {
+       url: "push/",
+       timeout: 10 * 60 * 1000,
+       cache: false,
+       contentType: "application/javascript",
+       success: function(data, status) {
+           var type = data.type;
+           if("messagev2" == type) {
+               gadgets.rpc.call(null, "requestCheckMessage", null, data);
+           }
+           if("messagev2_read" == type) {
+               gadgets.rpc.call(null, "requestCheckMessageRead", null, data);
+           }
+           join();
+       },
+       error: function(data, status) {
+           if(retryCount < 10) {
+               retryCount++;
+               join();
+           }
+       }
+    }
+    jQuery.ajax(params);
+}
 function update(decay) {
   gadgets.rpc.call(null, "requestCheckActivity");
   decay();
@@ -68,6 +94,7 @@ function init() {
     } else {
         gadgets.rpc.call(null, "requestCheckActivity");
     }
+    join();
     return false;
 }
 
@@ -76,5 +103,6 @@ gadgets.util.registerOnLoadHandler(init);
 </script>
 </head>
 <body>
-<script type="text/javascript">gadgets.util.runOnLoadHandlers();</script></body>
+	<script type="text/javascript">gadgets.util.runOnLoadHandlers();</script>
+</body>
 </html>

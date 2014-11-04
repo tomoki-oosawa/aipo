@@ -91,7 +91,9 @@ aipo.IfrGadgetService = function() {
     gadgets.rpc.register('requestNavigateTo', this.requestNavigateTo);
     gadgets.rpc.register('requestCheckActivity', this.requestCheckActivity);
     gadgets.rpc.register('requestCheckTimeline', this.requestCheckTimeline);
-    //gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
+    gadgets.rpc.register('requestCheckMessage', this.requestCheckMessage);
+    gadgets.rpc.register('requestCheckMessageRead', this.requestCheckMessageRead);
+    // gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
 aipo.IfrGadgetService.inherits(shindig.IfrGadgetService);
@@ -166,6 +168,7 @@ aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
             if(data){
                 aipo.activityDesktopNotifyEnable = data.enable;
                 aipo.menu.activity.isLoad = false;
+                aipo.message.switchDesktopNotify();
             }
         }
     }
@@ -328,6 +331,95 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 	} else {
 		dojo.query(".newMessage").style('display', '');
 	}
+}
+
+aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
+    var notify = true;
+    if (aipo.message.isActive && aipo.message.isOpenWindow()
+            && aipo.message.currentRoomId) {
+        aipo.message.latestMessageList();
+        notify = !(params.roomId == aipo.message.currentRoomId);
+    } else {
+        if(aipo.message.isInit) {
+            aipo.message.reloadRoomList();
+        } else {
+            aipo.message.updateUnreadCount();
+        }
+    }
+    if(notify) {
+        var request = {};
+
+        var makeRequestParams = {
+                "CONTENT_TYPE" : "JSON",
+                "METHOD" : "POST",
+                "POST_DATA" : gadgets.json.stringify(request)
+        };
+
+        var url = "?template=MessageCheckJSONScreen&messageId=" + params.messageId;
+
+        gadgets.io.makeNonProxiedRequest(url, handleJSONResponse,
+                makeRequestParams, "application/javascript");
+
+        function handleJSONResponse(obj) {
+            if (obj.rc == 200) {
+                var data = obj.data;
+                if (aipo.activityDesktopNotifyEnable && data.displayName) {
+                    if (window.webkitNotifications
+                            && window.webkitNotifications.checkPermission() == 0) {
+                        var popups = new Array();
+                        var displayName = data.displayName;
+                        var userId = data.userId;
+                        var text = data.text;
+                        var photoModified = data.photoModified;
+                        var icon = 'images/common/avatar_default3.png';
+                        if(data.hasPhoto) {
+                            icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
+                        }
+                        var popup = window.webkitNotifications
+                        .createNotification(icon,
+                                displayName, text);
+                        popup.show();
+                        popup.ondisplay = function(event) {
+                            setTimeout(function() {
+                                event.currentTarget.cancel();
+                            }, 7 * 1000);
+                        }
+                        popups.push(popup);
+                    } else if (window.Notification
+                            && window.Notification.permission == "granted") {
+                        var popups = new Array();
+                        var displayName = data.displayName;
+                        var userId = data.userId;
+                        var text = data.text;
+                        var photoModified = data.photoModified;
+                        var icon = 'images/common/avatar_default3.png';
+                        if(data.hasPhoto) {
+                            icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
+                        }
+                        var popup = new window.Notification(
+                                displayName, {
+                                    icon : icon,
+                                    body :text
+                                });
+                        popup.onshow = function(event) {
+                            setTimeout(function() {
+                                if (event.currentTarget) {
+                                    event.currentTarget.close();
+                                }
+                            }, 7 * 1000);
+                        }
+                        popups.push(popup);
+                    }
+                }
+            }
+        }
+    }
+}
+
+aipo.IfrGadgetService.prototype.requestCheckMessageRead = function(params) {
+    if (params.roomId) {
+        aipo.message.updateReadCount(params.roomId);
+    }
 }
 
 aipo.IfrContainer = function() {

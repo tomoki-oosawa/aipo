@@ -5,7 +5,16 @@
 ##
 #end
 #macro(ALMessage)
-##
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+#if("Message" == $!portlet.Name)
+<li>
+	<a href="javascript:void(0)" onclick="aipo.menu.hideDropdownAll();aipo.message.unselectRoom();aipo.message.reloadRoomList();" class="valid" title="$l10n.MESSAGE_MESSAGE"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
+</li>
+#else
+<li>
+	<a href="$!utils.escapeXML($!jslink.getPortletById($messagePortletId).addQueryData("action","controls.Maximize"))" class="valid" title="$l10n.MESSAGE_MESSAGE"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
+</li>
+#end
 #end
 #macro(ALMaintenance)
 ##

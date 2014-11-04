@@ -73,6 +73,86 @@ limitations under the License.
 	<div class="hdNavigation">
 #if ("$!data.User.getUserName()" != "admin")
 		<ul class="hdCommunications">
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+			<li>
+				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
+				<div class="dropdown" id="dd_message">
+					<div class="title">$l10n.MESSAGE_MESSAGE<input id="messageDesktopNotifySwitch" style="display:none" type="button" class="auiButtonSmall floatRight" onclick="aipo.container.gadgetService.requestDesktopNotifyEnable();" value=""/><span id="message_val_desktop_notify_on" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_VALID}</span><span id="message_val_desktop_notify_off" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_INVALID}</span></div>
+					<div class="body">
+						<div id="messageSideBlock" class="sideBlock">
+							<div class="auiTabs" id="messageSideBlockTab">
+								<ul class="tab">
+									<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">$l10n.MESSAGE_ROOM</a></li>
+									<li class="w50" id="messageUserTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('user');">$l10n.MESSAGE_USER</a></li>
+								</ul>
+								<ul class="tabContents">
+									<li class="active" id="messageRoomContents">
+										<div class="scroll" id="messageSideBlock1">
+											<div id="messageRoomListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+										</div>
+									</li>
+									<li id="messageUserContents">
+										<div class="scroll" id="messageSideBlock2">
+											<div id="messageUserListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div id="messageMainBlockEmpty" class="mainBlock">
+							<div class="contents">
+								#AUIEmptyMessage("icon-comment-alt" "$l10n.MESSAGE_ROOM_NO_SELECT")
+							</div>
+						</div>
+						<div id="messageMainBlock" class="mainBlock" style="display:none">
+							<div class="contents clearfix">
+								<div class="timelineOuter">
+									<div class="roomHeader clearfix">
+										<div class="floatLeft">
+											<span class="avatar mr5" id="messageRoomAvatar"></span><span id="messageRoomName"></span>
+										</div>
+										<div class="floatRight" id="messageRoomSetting">
+											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+										</div>
+									</div>
+									<div class="inputField">
+										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
+											<input type="hidden" name="_name" value="formMessage" />
+											<input type="hidden" name="secid" value="$secid" />
+											<input type="hidden" name="roomId" value="" />
+											<input type="hidden" name="userId" value="" />
+ 											<input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
+											<div class="tlInputMention relative">
+												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea>
+											</div>
+
+											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
+  												<p class="tlInputAttachmentTitle">$l10n.MESSAGE_ATTACHMENT</p>
+												<ul id="attachments_global-$messagePortletId" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
+												</ul>
+											</div>
+
+											<div class="tlInputControls clearfix">
+												<div class="floatRight">
+													<i class="indicator" id="indicator-dlg-global-$messagePortletId" style="display:none"></i>
+													<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
+												</div>
+												<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
+													<iframe name="if_fileupload_$messagePortletId" id="if_fileupload_$messagePortletId" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById("global-${messagePortletId}").addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+												</div>
+											</div>
+										</form>
+									</div>
+									<div id="messagePane" class="timeline scroll">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<span id="message_val_read" style="display:none">$l10n.MESSAGE_READ_COUNT</span>
+					<span id="message_val_all_read" style="display:none">$l10n.MESSAGE_ALL_READ</span>
+				</div>
+			</li>
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
@@ -121,9 +201,12 @@ limitations under the License.
 //<![CDATA[
 
 dojo.addOnLoad(function() {
+    aipo.menu.register("message");
     aipo.menu.register("activity");
     aipo.menu.register("settings");
     aipo.menu.updateTitle();
+    aipo.message.fixMessageWindow();
+    aipo.message.init("$messagePortletId", "$!jslink.getPortletById($messagePortletId)");
 });
 
 

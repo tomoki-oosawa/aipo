@@ -93,8 +93,10 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     String layout_template;
     if (mode.equals(ALEipConstants.MODE_FORM)) {
       layout_template = "layouts/html/ja/fileupload.vm";
+      context.put("contentTemplate", getContentTemplate());
     } else {
       layout_template = "layouts/html/ja/fileupload-mini.vm";
+      context.put("contentTemplate", getContentTemplateMini());
     }
     setTemplate(rundata, context, layout_template);
   }
@@ -130,8 +132,10 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     String layout_template;
     if (mode.equals(ALEipConstants.MODE_UPDATE)) {
       layout_template = "layouts/html/ja/fileupload.vm";
+      context.put("contentTemplate", getContentTemplate());
     } else {
       layout_template = "layouts/html/ja/fileupload-mini.vm";
+      context.put("contentTemplate", getContentTemplateMini());
     }
     setTemplate(rundata, context, layout_template);
 
@@ -143,6 +147,14 @@ public class FileuploadFormScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     return null;
+  }
+
+  protected String getContentTemplate() {
+    return "portlets/html/ja/fileupload.vm";
+  }
+
+  protected String getContentTemplateMini() {
+    return "portlets/html/ja/fileupload-mini.vm";
   }
 
 }

@@ -50,7 +50,14 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
+    <servlet>
+        <servlet-name>
+           push
+        </servlet-name>
+        <servlet-class>
+            com.aimluck.eip.http.ALCometServlet
+        </servlet-class>
+    </servlet>
     <filter>
       <filter-name>migrateFilter</filter-name>
       <filter-class>com.aimluck.eip.filter.ALMigrateFilter</filter-class>
@@ -81,6 +88,15 @@
        </url-pattern>
     </servlet-mapping>
 
+    <servlet-mapping>
+       <servlet-name>
+          push
+       </servlet-name>
+       <url-pattern>
+         /push/*
+       </url-pattern>
+    </servlet-mapping>
+
    <filter-mapping>
      <filter-name>migrateFilter</filter-name>
      <url-pattern>/portal/*</url-pattern>
@@ -93,6 +109,7 @@
      <filter-name>baseFilter</filter-name>
      <url-pattern>/portal/*</url-pattern>
      <url-pattern>/ical/*</url-pattern>
+     <url-pattern>/push/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
      <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

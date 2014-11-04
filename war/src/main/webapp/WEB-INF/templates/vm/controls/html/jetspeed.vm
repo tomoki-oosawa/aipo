@@ -20,6 +20,7 @@
 
 ## ---------------------------------------------------------------------------
 #set($beforeselected =false)
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
 #if( ! $portlet.isClosed($data) )
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
@@ -66,6 +67,8 @@ aipo.onloadSmartPhone = function(){
 dojo.addOnLoad(function(){
 	aipo.onloadSmartPhone();
     aipo.menu.register("activity");
+    aipo.message.setup("$messagePortletId", "$!jslink.getPortletById($messagePortletId)", true);
+    aipo.message.updateUnreadCount();
 });
 function widgetMenuSwitch() {
         var subNavi = document.getElementById('subNavigation');

@@ -14,6 +14,7 @@
 body {
   position: absolute;
   background: #ffffff;
+  -webkit-text-size-adjust: 100%;
 }
 
 #auiHeader, .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
@@ -205,7 +206,7 @@ input[type=password] {
   margin-top: 6px;
   border: none;
 }
-.auiPortlet .auiPortletBody .inner {
+.auiPortlet .auiPortletBody > .inner {
   padding: 0 5px;
 }
 
@@ -2164,6 +2165,21 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	message
+--------------------------------------------------*/
+.sideBlock {
+  margin: -5px;
+}
+
+.messageOuter .inputField {
+  margin-bottom: 0;
+}
+
+.roomHeader {
+  margin: 0 0 5px 0;
+}
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none !important;}
@@ -2232,6 +2248,9 @@ div.weeklyTermRights div.weeklyTermRightR {
   background-size: 20px;
 }
 
+.auiMbIconTimecard {
+  background-position: 0px -180px;
+}
 #appsNavigation li .auiMbIcon {
     margin:8px 10px 12px 10px;
 }

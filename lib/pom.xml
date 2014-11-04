@@ -31,6 +31,7 @@
     <module>storage</module>
     <module>portal</module>
     <module>preexecute</module>
+    <module>push</module>
   </modules>
 
   <dependencies>

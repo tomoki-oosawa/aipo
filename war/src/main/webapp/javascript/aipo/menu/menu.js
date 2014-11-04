@@ -46,6 +46,8 @@ aipo.menu.toggleDropdown = function(key) {
             aipo.menu.hideDropdown(aipo.menu.list[i]);
         }
     }
+
+    aipo.message.swapView();
 }
 
 aipo.menu.hideDropdown = function(key) {
@@ -70,6 +72,8 @@ aipo.menu.hideDropdownAll = function(key) {
     for ( var i in aipo.menu.list) {
         aipo.menu.hideDropdown(aipo.menu.list[i]);
     }
+
+    aipo.message.swapView();
 }
 
 aipo.menu.updateTitle = function() {
@@ -94,7 +98,7 @@ aipo.menu.updateTitle = function() {
 
 var bodyHandle = bodyHandle || {};
 dojo.addOnLoad(function() {
-    bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null,
+    bodyHandle = dojo.connect(dojo.query('body')[0], 'onmousedown', null,
             function(e) {
                 if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
                     var srcElement;
@@ -119,11 +123,23 @@ dojo.addOnLoad(function() {
                     var isHideDropdown = true;
                     for ( var i = 0; i < node.length; i++) {
                         if (node[i].className) {
-                            if (node[i].className.indexOf('open') > 0) {
+                            if (node[i].className.indexOf('open') >= 0) {
                                 var isHideDropdown = false;
                                 break;
                             }
-                            if (node[i].className.indexOf('hdNavigation') > 0) {
+                            if (node[i].className.indexOf('hdNavigation') >= 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
+                            if (node[i].className.indexOf('modalDialogUnderlayWrapper') > 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
+                            if (node[i].className.indexOf('modalDialog') >= 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
+                            if (node[i].className.indexOf('imgPopup') >= 0) {
                                 var isHideDropdown = false;
                                 break;
                             }

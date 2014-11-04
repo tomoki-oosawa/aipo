@@ -122,19 +122,18 @@ aimluck.io.submit_callbackparams = function (form, indicator_id, portlet_id, cal
           X_REQUESTED_WITH: "XMLHttpRequest"
         },
         load: function (response, ioArgs) {
-          var params = [];
+          var result = {};
           var html = "";
           if (response.err) {
             html = createErrorHTML(response.err);
           }
-          params.push(html);
-
-          if (dojo.isArray(response.params)) {
-            dojo.forEach(response.params, function (param) {
-              params.push(param);
-            });
+          result["error"] = html;
+          var params = "";
+          if (response.params) {
+              params = response.params;
           }
-          callback.apply(callback, params);
+          result["params"] = params;
+          callback.call(callback, result);
 
           obj_indicator = dojo.byId(indicator_id + portlet_id);
           if (obj_indicator) {

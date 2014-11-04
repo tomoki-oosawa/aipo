@@ -117,6 +117,19 @@ public class ALStringUtil {
     return buf.toString();
   }
 
+  public static String convertKatakana2Hiragana(String str) {
+    StringBuffer buf = new StringBuffer();
+    for (int i = 0; i < str.length(); i++) {
+      char code = str.charAt(i);
+      if ((code >= 0x30a1) && (code <= 0x30f3)) {
+        buf.append((char) (code - 0x60));
+      } else {
+        buf.append(code);
+      }
+    }
+    return buf.toString();
+  }
+
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
    * 

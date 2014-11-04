@@ -48,6 +48,7 @@ import org.apache.jetspeed.capability.CapabilityMap;
 import org.apache.jetspeed.capability.CapabilityMapFactory;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Layout;
+import org.apache.jetspeed.om.profile.PSMLDocument;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
@@ -2414,5 +2415,22 @@ public class ALEipUtils {
     }
 
     return "";
+  }
+
+  public static Map<String, Entry> getGlobalPortlets(RunData rundata) {
+    Map<String, Entry> maps = new HashMap<String, Entry>();
+    Profile profile = ((JetspeedRunData) rundata).getProfile();
+    if (profile != null) {
+      PSMLDocument doc = profile.getDocument();
+      if (doc != null) {
+        @SuppressWarnings("unchecked")
+        Iterator<Entry> iterator = doc.getPortlets().getEntriesIterator();
+        while (iterator.hasNext()) {
+          Entry next = iterator.next();
+          maps.put(next.getParent(), next);
+        }
+      }
+    }
+    return maps;
   }
 }

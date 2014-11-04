@@ -99,12 +99,12 @@ function androidLocale(){
 <div id="wrapper" class="mb30">
 #elseif (${start_guide_popup})
 #if($data.User.isAdmin())
-<div id="wrapper"  style="margin-bottom : 156px">
+<div id="wrapper">
 #else
-<div id="wrapper"  style="margin-bottom : 26px">
+<div id="wrapper">
 #end
 #else
-<div id="wrapper"  style="margin-bottom : 26px">
+<div id="wrapper">
 #end
 
 ##if("$!{client}" != "IPHONE")

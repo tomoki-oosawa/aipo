@@ -316,6 +316,79 @@ INSERT INTO eip_m_project_kubun_value(project_kubun_value_id, project_kubun_id, 
 CREATE INDEX eip_t_schedule_date_index ON eip_t_schedule(`start_date`, `end_date`, `update_date`);
 -- 20140801
 
+-- 20140901
+CREATE TABLE `eip_t_message_room` (
+    `room_id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255) COLLATE utf8_unicode_ci,
+    `room_type` varchar(1) DEFAULT 'G',
+    `auto_name` varchar(1) DEFAULT 'F',
+    `last_message` TEXT COLLATE utf8_unicode_ci,
+    `last_update_date` datetime DEFAULT NULL,
+    `create_user_id` int(11) NOT NULL,
+    `photo` blob,
+    `photo_smartphone` blob,
+    `photo_modified` datetime DEFAULT NULL,
+    `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
+    `create_date` datetime DEFAULT NOW(),
+    `update_date` datetime DEFAULT NOW(),
+    PRIMARY KEY (`room_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message` (
+    `message_id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `message` TEXT COLLATE utf8_unicode_ci,
+    `member_count` int(11) NOT NULL,
+    `create_date` datetime DEFAULT NOW(),
+    `update_date` datetime DEFAULT NOW(),
+    FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+create index eip_t_message_room_id_create_date ON eip_t_message(`room_id`, `create_date`);
+
+CREATE TABLE `eip_t_message_room_member` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `login_name` varchar(32) NOT NULL,
+    `target_user_id` int(11),
+    FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+create index eip_t_message_room_member_target_user_id ON eip_t_message_room_member(`target_user_id`);
+create index eip_t_message_room_member_user_id_target_user_id ON eip_t_message_room_member(`user_id`, `target_user_id`);
+
+CREATE TABLE `eip_t_message_file` (
+    `file_id` int(11) NOT NULL AUTO_INCREMENT,
+    `owner_id` int(11),
+    `message_id` int(11),
+    `room_id` int(11),
+    `file_name` varchar(128) NOT NULL,
+    `file_path` text NOT NULL,
+    `file_thumbnail` blob,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_read` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `message_id` int(11) NOT NULL,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `is_read` varchar(1) DEFAULT 'F',
+    FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+create index eip_t_message_read_index1 ON eip_t_message_read(`room_id`, `user_id`, `is_read`);
+create index eip_t_message_read_index2 ON eip_t_message_read(`room_id`, `message_id`,`is_read`);
+-- 20140901
+
 -- 20140911
 CREATE INDEX eip_t_ext_timecard_user_id_index ON eip_t_ext_timecard(user_id);
 CREATE INDEX eip_t_note_map_user_id_index ON eip_t_note_map(user_id);

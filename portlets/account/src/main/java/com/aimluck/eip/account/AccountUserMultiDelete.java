@@ -40,6 +40,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
@@ -281,6 +284,31 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
             EipTTimelineSQL.deleteAll();
           }
         }
+
+        // メッセージ
+        List<EipTMessageFile> messageFileList =
+          Database
+            .query(EipTMessageFile.class)
+            .where(
+              Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, record
+                .getUserId()))
+            .fetchList();
+
+        ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, record
+          .getUserId(), "message"), messageFileList);
+
+        String messageDeleteSql1 =
+          "delete from eip_t_message where user_id = #bind($user_id)";
+        String messageDeleteSql2 =
+          "delete from eip_t_message_room_member where user_id = #bind($user_id)";
+
+        Database.sql(EipTMessage.class, messageDeleteSql1).param(
+          "user_id",
+          record.getUserId()).execute();
+        Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
+          "user_id",
+          record.getUserId()).execute();
+
         Database.commit();
 
         // イベントログに保存

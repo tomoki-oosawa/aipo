@@ -19,6 +19,16 @@
 
 package com.aimluck.eip.services.preexecute.impl;
 
+import java.util.Iterator;
+
+import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileException;
+import org.apache.jetspeed.om.profile.psml.PsmlEntry;
+import org.apache.jetspeed.services.Profiler;
+import org.apache.jetspeed.services.PsmlManager;
+import org.apache.jetspeed.services.idgenerator.JetspeedIdGenerator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -36,6 +46,33 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
 
   @Override
   public void migratePsml(RunData rundata, Context context) {
+    try {
+      Profile profile = Profiler.getProfile(rundata);
+
+      Portlets portlets = profile.getDocument().getPortlets();
+      @SuppressWarnings("unchecked")
+      Iterator<Entry> iterator = portlets.getEntriesIterator();
+
+      boolean hasMressageEntry = false;
+      while (iterator.hasNext()) {
+        Entry next = iterator.next();
+        String parent = next.getParent();
+        if ("Message".equals(parent)) {
+          hasMressageEntry = true;
+        }
+      }
+
+      if (!hasMressageEntry) {
+        PsmlEntry entry = new PsmlEntry();
+        entry.setId(JetspeedIdGenerator.getNextPeid());
+        entry.setParent("Message");
+        portlets.addEntry(entry);
+        PsmlManager.store(profile);
+      }
+
+    } catch (ProfileException e) {
+      logger.error(e.getMessage(), e);
+    }
   }
 
 }

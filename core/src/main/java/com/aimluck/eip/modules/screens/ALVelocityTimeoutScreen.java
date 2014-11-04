@@ -48,9 +48,13 @@ public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
     if ("".equals(externalLoginUrl)) {
       BaseJetspeedLink jslink = (BaseJetspeedLink) context.get("jslink");
       Portlet portlet = (Portlet) context.get("portlet");
-      context.put("redirectUrl", jslink
-        .getPortletById(portlet.getID())
-        .toString());
+      if (jslink == null || portlet == null) {
+        context.put("redirectUrl", "./");
+      } else {
+        context.put("redirectUrl", jslink
+          .getPortletById(portlet.getID())
+          .toString());
+      }
     } else {
       context.put("redirectUrl", externalLoginUrl);
     }

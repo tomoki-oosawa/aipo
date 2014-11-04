@@ -130,6 +130,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
 
     context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
     context.put("mypageId", mypageId);
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     context.put("pageTitle", pageTitle);
 
     int start = rundata.getParameters().getInt("start", -1);

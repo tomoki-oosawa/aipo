@@ -1313,6 +1313,65 @@ CREATE TABLE `eip_m_project_kubun_value` (
 
 INSERT INTO eip_m_project_kubun_value  VALUES(1,1,'1','機能',1, now(), now()),(2,1,'2','バグ',2, now(), now()),(3,1,'3','サポート',3, now(), now()),(4,2,'1','新規',1, now(), now()),(5,2,'2','進行中',2, now(), now()),(6,2,'3','フィードバック',3, now(), now()),(7,2,'4','完了',4, now(), now()),(8,2,'5','却下',5, now(), now()),(9,2,'6','停止',6, now(), now()),(10,3,'1','高',1, now(), now()),(11,3,'2','中',2, now(), now()),(12,3,'3','低',3, now(), now());
 
+CREATE TABLE `eip_t_message_room` (
+    `room_id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255),
+    `room_type` varchar(1) DEFAULT 'G',
+    `auto_name` varchar(1) DEFAULT 'F',
+    `last_message` TEXT COLLATE utf8_unicode_ci,
+    `last_update_date` datetime DEFAULT NULL,
+    `create_user_id` int(11) NOT NULL,
+    `photo` blob,
+    `photo_smartphone` blob,
+    `photo_modified` datetime DEFAULT NULL,
+    `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
+    `create_date` datetime DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`room_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message` (
+    `message_id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `message` TEXT COLLATE utf8_unicode_ci,
+    `member_count` int(11) NOT NULL,
+    `create_date` datetime DEFAULT NOW(),
+    `update_date` datetime DEFAULT NOW(),
+    PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_room_member` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `login_name` varchar(32) NOT NULL,
+    `target_user_id` int(11),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_file` (
+    `file_id` int(11) NOT NULL AUTO_INCREMENT,
+    `owner_id` int(11),
+    `message_id` int(11),
+    `room_id` int(11),
+    `file_name` varchar(128) NOT NULL,
+    `file_path` text NOT NULL,
+    `file_thumbnail` blob,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_read` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `message_id` int(11) NOT NULL,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `is_read` varchar(1) DEFAULT 'F',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1408,3 +1467,21 @@ ALTER TABLE `eip_t_project_file` ADD INDEX (`project_id`);
 ALTER TABLE `eip_t_project_task_file` ADD INDEX (`task_id`);
 
 ALTER TABLE `eip_t_project_task_comment_file` ADD INDEX (`comment_id`);
+
+ALTER TABLE `eip_t_message` ADD FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message` ADD INDEX (`room_id`, `create_date`);
+
+ALTER TABLE `eip_t_message_room_member` ADD FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_room_member` ADD INDEX (`target_user_id`);
+
+ALTER TABLE `eip_t_message_room_member` ADD INDEX (`user_id`, `target_user_id`);
+
+ALTER TABLE `eip_t_message_file` ADD FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_read` ADD FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `user_id`, `is_read`);
+
+ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `is_read`);

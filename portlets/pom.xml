@@ -58,6 +58,7 @@
     <module>fileuploadadv</module>
     <module>wiki</module>
     <module>project</module>
+    <module>message</module>
   </modules>
 
   <dependencies>

@@ -27,7 +27,9 @@
 	<classpathentry kind="src" path="lib/userfacility/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/userfacility/src/test/java"/>
 	<classpathentry kind="src" path="lib/social/src/main/java"/>
-	<classpathentry kind="src" output="target/test-classes" path="lib/social/src/test/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/social/src/test/java"/>>
+	<classpathentry kind="src" path="lib/push/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="lib/push/src/test/java"/>
 	<classpathentry kind="src" path="lib/config/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="lib/config/src/test/java"/>
 	<classpathentry kind="src" path="lib/storage/src/main/java"/>
@@ -110,6 +112,8 @@
 	<classpathentry kind="src" output="target/test-classes" path="portlets/wiki/src/test/java"/>
 	<classpathentry kind="src" path="portlets/project/src/main/java"/>
 	<classpathentry kind="src" output="target/test-classes" path="portlets/project/src/test/java"/>
+	<classpathentry kind="src" path="portlets/message/src/main/java"/>
+	<classpathentry kind="src" output="target/test-classes" path="portlets/message/src/test/java"/>
 	<classpathentry kind="var" path="M2_REPO/javax/activation/activation/1.1.1/activation-1.1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp-api/2.0/jsp-api-2.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4/mail-1.4.jar" sourcepath="M2_REPO/javax/mail/mail/1.4/mail-1.4-sources.jar"/>
@@ -191,5 +195,6 @@
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/catalina.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
