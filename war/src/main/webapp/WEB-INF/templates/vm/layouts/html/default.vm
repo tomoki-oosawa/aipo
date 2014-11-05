@@ -128,13 +128,9 @@ dojo.addOnLoad(function() {
     aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
     #end
 #if ($data.User.hasLoggedIn() && "$!checkUrl" != "" && "$!relayUrl" != "" && "$!rpctoken" != "")
-#if("${client}" != "IPHONE" || $!isMessageAction)
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
-#else
-    aipo.container.gadgetService.requestCheckActivity();
-#end
     if(window.webkitNotifications || window.Notification) {
       aipo.container.gadgetService.requestDesktopNotifyEnable();
     }

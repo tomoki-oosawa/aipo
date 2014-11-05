@@ -421,6 +421,21 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     if (isLogin(loginuser)) {
+
+      ALPreExecuteService.migratePsml(data, context);
+
+      boolean hasMessage = false;
+      Map<String, Entry> portlets = ALEipUtils.getGlobalPortlets(data);
+      Entry entry = portlets.get("Message");
+      if (entry != null) {
+        if (entry.getId().equals(jdata.getJs_peid())) {
+          hasMessage = true;
+        }
+      }
+      String client = ALEipUtils.getClient(data);
+
+      boolean push = (!"IPHONE".equals(client)) || hasMessage;
+
       HttpServletRequest request = ((JetspeedRunData) data).getRequest();
       String requestUrl = request.getRequestURL().toString();
 
@@ -442,10 +457,19 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       String checkUrl =
         new StringBuilder("".equals(checkActivityUrl)
           ? "check.html"
-          : checkActivityUrl).append("?").append("st=").append(
-          gadgetContext.getSecureToken()).append("&parent=").append(
-          URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
-          interval).append("#rpctoken=").append(rpctoken).toString();
+          : checkActivityUrl)
+          .append("?")
+          .append("st=")
+          .append(gadgetContext.getSecureToken())
+          .append("&parent=")
+          .append(URLEncoder.encode(requestUrl, "utf-8"))
+          .append("&interval=")
+          .append(interval)
+          .append("&push=")
+          .append(push ? 1 : 0)
+          .append("#rpctoken=")
+          .append(rpctoken)
+          .toString();
       if (data.getSession() != null
         && Boolean.parseBoolean((String) data.getSession().getAttribute(
           "changeToPc"))) { // PC表示切り替え用
@@ -465,7 +489,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       try {
         context.put("tutorialForbid", false);
-        String client = ALEipUtils.getClient(data);
         if ("IPHONE".equals(client)) {
           context.put("tutorialForbid", true);
         } else {
@@ -484,17 +507,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         }
       } catch (Throwable ignore) {
         // ignore
-      }
-
-      ALPreExecuteService.migratePsml(data, context);
-
-      Map<String, Entry> portlets = ALEipUtils.getGlobalPortlets(data);
-      Entry entry = portlets.get("Message");
-      context.put("isMessageAction", false);
-      if (entry != null) {
-        if (entry.getId().equals(jdata.getJs_peid())) {
-          context.put("isMessageAction", true);
-        }
       }
 
     }

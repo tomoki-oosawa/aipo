@@ -94,7 +94,10 @@ function init() {
     } else {
         gadgets.rpc.call(null, "requestCheckActivity");
     }
-    join();
+	var push = gadgets.util.getUrlParameters()['push'];
+	if(push == 1) {
+        join();
+	}
     return false;
 }
 
