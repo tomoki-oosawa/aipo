@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
@@ -485,6 +487,16 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       }
 
       ALPreExecuteService.migratePsml(data, context);
+
+      Map<String, Entry> portlets = ALEipUtils.getGlobalPortlets(data);
+      Entry entry = portlets.get("Message");
+      context.put("isMessageAction", false);
+      if (entry != null) {
+        if (entry.getId().equals(jdata.getJs_peid())) {
+          context.put("isMessageAction", true);
+        }
+      }
+
     }
   }
 
