@@ -52,11 +52,6 @@
     </servlet>
 
     <filter>
-      <filter-name>migrateFilter</filter-name>
-      <filter-class>com.aimluck.eip.filter.ALMigrateFilter</filter-class>
-    </filter>
-
-    <filter>
       <filter-name>baseFilter</filter-name>
       <filter-class>com.aimluck.eip.filter.ALBaseFilter</filter-class>
     </filter>
@@ -80,14 +75,6 @@
          /ical/*
        </url-pattern>
     </servlet-mapping>
-
-   <filter-mapping>
-     <filter-name>migrateFilter</filter-name>
-     <url-pattern>/portal/*</url-pattern>
-     <url-pattern>/ical/*</url-pattern>
-     <dispatcher>REQUEST</dispatcher>
-     <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
 
    <filter-mapping>
      <filter-name>baseFilter</filter-name>
