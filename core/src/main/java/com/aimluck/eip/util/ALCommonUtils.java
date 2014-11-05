@@ -480,4 +480,8 @@ public class ALCommonUtils {
     return new Date().getTime();
   }
 
+  public static boolean isFileUploadable(RunData rundata) {
+    return ALEipUtils.isFileUploadable(rundata);
+  }
+
 }
