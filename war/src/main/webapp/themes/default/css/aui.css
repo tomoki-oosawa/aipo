@@ -2827,6 +2827,7 @@ button[disabled]:active {
   line-height: 26px;
   height: 26px;
   padding-left: 5px;
+  overflow: hidden;
 }
 .auiDirectoryList .directory [class^="icon-"], .auiDirectoryList .directory [class*=" icon-"] {
   color: #d2d2d2;
