@@ -40,9 +40,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
@@ -286,6 +283,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         }
 
         // メッセージ
+        /*-
         List<EipTMessageFile> messageFileList =
           Database
             .query(EipTMessageFile.class)
@@ -308,6 +306,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
           "user_id",
           record.getUserId()).execute();
+         */
 
         Database.commit();
 

@@ -55,9 +55,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
@@ -1517,6 +1514,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       }
 
       // メッセージ
+      /*-
       List<EipTMessageFile> messageFileList =
         Database.query(EipTMessageFile.class).where(
           Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, deleteuser
@@ -1538,6 +1536,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
         "user_id",
         deleteuser.getUserId()).execute();
+       */
 
       Database.commit();
 
