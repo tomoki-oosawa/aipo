@@ -52,6 +52,7 @@ import org.apache.jetspeed.om.profile.PSMLDocument;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileException;
 import org.apache.jetspeed.om.profile.ProfileLocator;
 import org.apache.jetspeed.om.profile.psml.PsmlLayout;
 import org.apache.jetspeed.om.profile.psml.PsmlParameter;
@@ -79,6 +80,7 @@ import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
@@ -2420,6 +2422,19 @@ public class ALEipUtils {
   public static Map<String, Entry> getGlobalPortlets(RunData rundata) {
     Map<String, Entry> maps = new HashMap<String, Entry>();
     Profile profile = ((JetspeedRunData) rundata).getProfile();
+    if (profile == null) {
+      User user = rundata.getUser();
+      if (user != null) {
+        ProfileLocator locator = Profiler.createLocator();
+        locator.createFromPath(String.format("user/%s/media-type/html", user
+          .getUserName()));
+        try {
+          profile = Profiler.getProfile(locator);
+        } catch (ProfileException ignore) {
+          // ignore
+        }
+      }
+    }
     if (profile != null) {
       PSMLDocument doc = profile.getDocument();
       if (doc != null) {

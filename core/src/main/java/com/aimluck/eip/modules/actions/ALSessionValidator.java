@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +34,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
@@ -419,6 +421,21 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     if (isLogin(loginuser)) {
+
+      ALPreExecuteService.migratePsml(data, context);
+
+      boolean hasMessage = false;
+      Map<String, Entry> portlets = ALEipUtils.getGlobalPortlets(data);
+      Entry entry = portlets.get("Message");
+      if (entry != null) {
+        if (entry.getId().equals(jdata.getJs_peid())) {
+          hasMessage = true;
+        }
+      }
+      String client = ALEipUtils.getClient(data);
+
+      boolean push = (!"IPHONE".equals(client)) || hasMessage;
+
       HttpServletRequest request = ((JetspeedRunData) data).getRequest();
       String requestUrl = request.getRequestURL().toString();
 
@@ -440,10 +457,19 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       String checkUrl =
         new StringBuilder("".equals(checkActivityUrl)
           ? "check.html"
-          : checkActivityUrl).append("?").append("st=").append(
-          gadgetContext.getSecureToken()).append("&parent=").append(
-          URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
-          interval).append("#rpctoken=").append(rpctoken).toString();
+          : checkActivityUrl)
+          .append("?")
+          .append("st=")
+          .append(gadgetContext.getSecureToken())
+          .append("&parent=")
+          .append(URLEncoder.encode(requestUrl, "utf-8"))
+          .append("&interval=")
+          .append(interval)
+          .append("&push=")
+          .append(push ? 1 : 0)
+          .append("#rpctoken=")
+          .append(rpctoken)
+          .toString();
       if (data.getSession() != null
         && Boolean.parseBoolean((String) data.getSession().getAttribute(
           "changeToPc"))) { // PC表示切り替え用
@@ -463,7 +489,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
       try {
         context.put("tutorialForbid", false);
-        String client = ALEipUtils.getClient(data);
         if ("IPHONE".equals(client)) {
           context.put("tutorialForbid", true);
         } else {
@@ -484,7 +509,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         // ignore
       }
 
-      ALPreExecuteService.migratePsml(data, context);
     }
   }
 
