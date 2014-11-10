@@ -39,6 +39,12 @@ public class ALStringUtil {
   /** 半角カナの終了コード */
   public static final int HANKAKU_KANA_LAST = 0xff9f;
 
+  /** 濁音 */
+  private static final String DAKUON = "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ";
+
+  /** 清音 */
+  private static final String SEION = "かきくけこさしすせそたちつてとはひふへほはひふへほ";
+
   /**
    * メールアドレス形式であるかを判定します。
    * 
@@ -367,4 +373,14 @@ public class ALStringUtil {
     return "";
   }
 
+  public static String convertDakuon2Seion(String str) {
+    int size = DAKUON.length();
+    String result = str;
+    for (int i = 0; i < size; i++) {
+      String s1 = DAKUON.substring(i, i + 1);
+      String s2 = SEION.substring(i, i + 1);
+      result = result.replaceAll(s1, s2);
+    }
+    return result;
+  }
 }

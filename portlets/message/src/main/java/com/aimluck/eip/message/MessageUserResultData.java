@@ -172,7 +172,10 @@ public class MessageUserResultData implements ALData, Serializable {
         .convertH2ZKana(lastNameKana.getValue()));
     ALStringField field = new ALStringField();
     if (value.length() > 0) {
-      field.setValue(new StringBuilder().append(value.charAt(0)).toString());
+      field.setValue(new StringBuilder()
+        .append(
+          ALStringUtil.convertDakuon2Seion(String.valueOf(value.charAt(0))))
+        .toString());
     } else {
       field.setValue("#");
     }
