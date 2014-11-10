@@ -22,7 +22,7 @@
 	</div>
 	<div class="inner">
 		<form class="search" id="messageRoomSearchForm" name="messageRoomSearchForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomListScreen')" onsubmit="aipo.message.searchRoomList(this); return false;" method="post">
-			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" /><label class="placeholder" for="roomSearch" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_ROOM_SEARCH</label>
+			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" id="messageRoomKeywordInput" /><label class="placeholder" for="messageRoomKeywordInput" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_ROOM_SEARCH</label>
 			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
 		</form>
 	</div>
