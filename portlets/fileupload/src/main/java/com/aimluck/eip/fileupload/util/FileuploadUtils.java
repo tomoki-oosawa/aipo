@@ -358,6 +358,10 @@ public class FileuploadUtils {
               : bufferdImage.getHeight());
         fixed = isFixOrgImage;
       }
+      if (bufferdImage == null) {
+        // ファイルからbufferdImageを生成できなかった場合には,nullを返す.
+        return null;
+      }
 
       BufferedImage shrinkImage =
         FileuploadUtils.shrinkAndTrimImage(bufferdImage, width, height);
