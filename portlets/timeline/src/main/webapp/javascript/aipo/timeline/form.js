@@ -215,7 +215,7 @@ aipo.timeline.refreshImageList = function(pid, i) {
 
 		divNode.appendChild(imgNode);
 		info.parentNode.insertBefore(divNode, info);
-		var delay = 0;
+		var delay = 200;
 		setTimeout(function() {
 			showImageList(pid);
 		}, delay);
@@ -253,6 +253,23 @@ aipo.timeline.getUrl = function(url, pid) {
 
 }
 
+if (!aipo.timeline.onloadCountlist) {
+	aipo.timeline.onloadCountlist = [];
+}
+aipo.timeline.onloadImage =function(pid){
+	count =0;
+	if (aipo.timeline.onloadCountlist.hasOwnProperty(pid)) {
+		count= aipo.timeline.onloadCountlist[pid];
+	}
+	count++;
+	aipo.timeline.onloadCountlist[pid]=count;
+	var max = dojo.byId("TimelinePage_" + pid + "_imagesMaxCount").value;
+	if(count == max){
+		for(var r = 1 ; r <= max ; r++){
+			aipo.timeline.refreshImageList(pid,r);
+		}
+	}
+}
 aipo.timeline.setScrollTop = function(pid, scrollTop) {
 	dojo.byId("timeline_" + pid).scrollTop = scrollTop;
 }
@@ -276,6 +293,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
 						aipo.timeline.getUrl(spritval[i], pid);
 						aipo.timeline.revmaxlist[pid] = 0;
+						aipo.timeline.onloadCountlist[pid] = 0;
 					}
 				}
 			}
