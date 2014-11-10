@@ -62,7 +62,7 @@ public class MessageResultData implements ALData, Serializable {
 
   private boolean isOwner = false;
 
-  private List<FileuploadBean> attachmentFileList;
+  private transient List<FileuploadBean> attachmentFileList;
 
   /**
    *

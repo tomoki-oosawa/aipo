@@ -100,7 +100,9 @@ public class MessageRoomListSelectData extends
     rd.setAutoName("T".equals(model.getAutoName()));
     rd.setLastMessage(model.getLastMessage());
     Integer userId = model.getUserId();
-    rd.setUserId(userId != null ? userId.longValue() : null);
+    if (userId != null) {
+      rd.setUserId(userId.longValue());
+    }
     boolean isDirect = "O".equals(model.getRoomType());
     rd.setName(isDirect
       ? model.getLastName() + " " + model.getFirstName()
