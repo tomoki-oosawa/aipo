@@ -357,10 +357,7 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
 
         var url = "?template=MessageCheckJSONScreen&messageId=" + params.messageId;
 
-        gadgets.io.makeNonProxiedRequest(url, handleJSONResponse,
-                makeRequestParams, "application/javascript");
-
-        function handleJSONResponse(obj) {
+        var handleJSONResponse = function(obj) {
             if (obj.rc == 200) {
                 var data = obj.data;
                 if (aipo.activityDesktopNotifyEnable && data.displayName) {
@@ -413,6 +410,9 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
                 }
             }
         }
+
+        gadgets.io.makeNonProxiedRequest(url, handleJSONResponse,
+                makeRequestParams, "application/javascript");
     }
 }
 
