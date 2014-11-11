@@ -241,7 +241,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         if (!timelineList.isEmpty()) {
           List<Integer> timelineIdList = new ArrayList<Integer>();
           for (EipTTimeline timeline : timelineList) {
-            timelineIdList.add(timeline.getTimelineId());
+            Integer timelineId = timeline.getTimelineId();
+            if (timelineId != null) {
+              timelineIdList.add(timelineId);
+            }
           }
           if (!timelineIdList.isEmpty()) {
             SelectQuery<EipTTimeline> EipTTimelineSQL2 =
@@ -264,16 +267,18 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
                   fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
                 }
 
-                ALDeleteFileUtil.deleteFiles(
-                  entry.getTimelineId(),
-                  EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
-                  AccountUtils.getSaveDirPath(
-                    orgId,
-                    entry.getOwnerId(),
-                    "timeline"),
-                  fpaths,
-                  EipTTimelineFile.class);
-
+                Integer timelineId = entry.getTimelineId();
+                if (timelineId != null) {
+                  ALDeleteFileUtil.deleteFiles(
+                    timelineId,
+                    EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
+                    AccountUtils.getSaveDirPath(
+                      orgId,
+                      entry.getOwnerId(),
+                      "timeline"),
+                    fpaths,
+                    EipTTimelineFile.class);
+                }
               }
             }
 
