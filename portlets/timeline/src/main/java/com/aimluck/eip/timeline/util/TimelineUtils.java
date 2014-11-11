@@ -949,6 +949,7 @@ public class TimelineUtils {
         } else if (!src.startsWith("http")) {
           src = (new StringBuilder()).append(pagePath).append(src).toString();
         }
+        src = src.replaceAll("\n", "");
         src = src.replaceAll("\t", "");
         if (src != null) {
           images.add(src);
