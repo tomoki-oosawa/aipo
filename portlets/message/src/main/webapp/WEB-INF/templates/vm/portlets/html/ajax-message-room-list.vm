@@ -29,7 +29,7 @@
 </div>
 #if($result.List.size() == 0)
 #if($!isSearch)
-<ul class="messageSummary">
+<ul class="messageSummary scroll" id="messageSummary">
 	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
 </ul>
 #AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE")
@@ -37,7 +37,7 @@
 #AUIEmptyMessage("icon-arrow-up" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE_FIRST")
 #end
 #else
-<ul class="messageSummary">
+<ul class="messageSummary scroll" id="messageSummary">
 #if($!isSearch)
 	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
 #end
@@ -47,15 +47,15 @@
 			<span class="avatar">
 			#if($!record.getRoomType().getValue() == "O")
 			#if($!record.isHasPhoto())
-				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_m"/>
 			#else
-				<img src="images/common/avatar_default3.png" alt="$!record.Name" class="avatar_s"/>
+				<img src="images/common/avatar_default3.png" alt="$!record.Name" class="avatar_m"/>
 			#end
 			#else
 			#if($!record.isHasPhoto())
-				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_m"/>
 			#else
-				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_s"/>
+				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_m"/>
 			#end
 			#end
 			</span>
