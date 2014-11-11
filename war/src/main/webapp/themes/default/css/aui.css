@@ -785,6 +785,9 @@ ul.hdTools .dropdown:before {
   margin-left: 280px;
   border-left: solid 1px #d2d2d2;
 }
+#dd_message .mainBlock > .contents {
+  padding: 10px 10px 0 10px;
+}
 #dd_message .mainBlock .body {
   font-size: 13px;
 }
