@@ -32,7 +32,7 @@
 #AUISummaryDivfooter()
 #if($result.List)
 #if($result.List.size() == 0)
-$l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT<br />
+#AUIEmptyMessage("" "$l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT")
 #else
 #AUISummaryDiv()
 #AUIsearchresult($result.SearchWord.toString())
