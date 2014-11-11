@@ -298,6 +298,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
         rundata,
         mapHandler.getSendMailMaps(),
         request,
+        comment.getValue(),
         mapHandler.getFlowStatus());
 
     } catch (ALPageNotFoundException ex) {
