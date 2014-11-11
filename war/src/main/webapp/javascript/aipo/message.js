@@ -343,6 +343,10 @@ aipo.message.swapView = function() {
         if (dojo.hasClass("dd_message", "open")) {
             dojo.byId("portletsBody").style.display = "none";
             aipo.message.fixMessageWindow();
+            if (aipo.message.isOpenWindow()
+                    && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
+                aipo.message.latestMessageList();
+            }
         } else {
             dojo.byId("portletsBody").style.display = "";
         }
