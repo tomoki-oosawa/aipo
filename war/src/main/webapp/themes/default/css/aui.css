@@ -776,6 +776,11 @@ ul.hdTools .dropdown:before {
 #dd_message {
   width: 100%;
 }
+#dd_message > .body {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAABCAYAAAAFILFrAAAAFUlEQVR42mMwNjb+P4pH8SgexbTAAPnyvlAL+gbgAAAAAElFTkSuQmCC);
+  background-repeat: repeat-y;
+  background-position: left;
+}
 #dd_message .mainBlock {
   margin-left: 280px;
   border-left: solid 1px #d2d2d2;
