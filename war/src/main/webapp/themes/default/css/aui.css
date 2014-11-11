@@ -780,6 +780,12 @@ ul.hdTools .dropdown:before {
   margin-left: 280px;
   border-left: solid 1px #d2d2d2;
 }
+#dd_message .mainBlock .body {
+  font-size: 13px;
+}
+#dd_message .timelineOuter .message:first-child {
+  padding-top: 0 !important;
+}
 #dd_message .subContents {
   float: right;
   width: 280px;
@@ -804,7 +810,7 @@ ul.hdTools .dropdown:before {
 }
 .messageSummary li a, .messageUserlist ul li a {
   display: block;
-  height: 40px;
+  height: 44px;
   text-decoration: none;
   color: #999999;
 }
@@ -825,11 +831,11 @@ ul.hdTools .dropdown:before {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 8px;
+  padding: 6px;
 }
 
 .messageSummary li a {
-  padding: 5px 5px 5px 40px;
+  padding: 6px 10px 6px 45px;
 }
 .messageSummary .date {
   float: right;
@@ -851,15 +857,15 @@ ul.hdTools .dropdown:before {
   background-color: white;
 }
 .messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest {
-  color: #999999 !important;
+  color: #666666 !important;
 }
 .messageSummary .active a .name, .messageSummary .active a:hover .name {
-  color: #333333;
+  color: #000000;
 }
 
 .messageUserlist ul li a {
-  line-height: 40px;
-  padding-left: 40px;
+  line-height: 45px;
+  padding-left: 45px;
 }
 .messageUserlist .index {
   line-height: 20px;
@@ -891,11 +897,22 @@ ul.hdTools .dropdown:before {
 .roomHeader {
   margin-bottom: 10px;
 }
+.roomHeader .userListIcon {
+  padding-right: 30px;
+  height: 24px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
 .roomHeader .floatLeft {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 90%;
+}
+.roomHeader .floatRight {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .roomHeader .floatRight a {
   display: inline-block;
@@ -951,9 +968,9 @@ ul.hdTools .dropdown:before {
 }
 .sideBlock .auiTabs .tab li a, .sideBlock .auiTabs .tab li:first-child a {
   margin: 0;
-  background-color: #222222;
-  height: 45px;
-  line-height: 45px;
+  background-color: #000000;
+  height: 35px;
+  line-height: 35px;
   border: none;
   color: #d2d2d2;
 }
