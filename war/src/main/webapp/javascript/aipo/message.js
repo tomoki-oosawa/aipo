@@ -84,7 +84,7 @@ aipo.message.reloadMessageList = function() {
         }
     }
 
-    dojo.byId("messagePane").innerHTML = '<div class="loader"><i class="indicator"></i></div>';
+    dojo.byId("messagePane").innerHTML = '<div class="loader"></div>';
     var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
@@ -518,7 +518,7 @@ aipo.message.fixMessageWindow = function() {
         }
     }
     if (dojo.byId("messagePane") != null) {
-        var minusH = 55 + 40 + 45 + 90 + 10 + 10 + 12;
+        var minusH = 55 + 40 + 45 + 90 + 10 + 10 + 4;
         var h = document.documentElement.clientHeight - minusH;
         dojo.byId("messagePane").style.height = h + "px";
     }
