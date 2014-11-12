@@ -2167,8 +2167,15 @@ div.weeklyTermRights div.weeklyTermRightR {
 /***************************************************
 	message
 --------------------------------------------------*/
+body.messageRoomList {
+  background-color: #333;
+}
+body.messageRoomList .roundMainWrapper {
+  background-color: #333 !important;
+}
+
 .sideBlock {
-  margin: -5px;
+  margin: -5px -5px -20px -5px;
 }
 
 .messageOuter .inputField {

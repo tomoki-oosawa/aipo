@@ -41,7 +41,7 @@
 		</form>
 	</div>
 </div>
-<div class="messageUserlist">
+<div class="messageUserlist scroll" id="messageUserlist">
 #if($result.List.size() == 0)
 #if($!isSearch)
 <ul class="messageSummary">
@@ -75,9 +75,9 @@
 	<a href="javascript:void(0)" onclick="aipo.message.selectUser($!record.UserId)">
 		<span class="avatar">
 		#if($!record.isHasPhoto())
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_m"/>
 		#else
-			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_m"/>
 		#end
 		</span>
 		<span class="name">$!record.LastName $!record.FirstName</span>
