@@ -32,7 +32,7 @@
 #AUISummaryDivFooter()
 
 #if($result.List.size() == 0)
-#AUIEmptyMessage("icon-user" "$l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT")
+#AUIEmptyMessage("icon-group" "$l10n.USERLIST_ALERT_NO_ADDRESS_YOUR_SELECT")
 #else
 #ALajaxlistformheaderAction('AddressBook')
 #AUISummaryDiv()
