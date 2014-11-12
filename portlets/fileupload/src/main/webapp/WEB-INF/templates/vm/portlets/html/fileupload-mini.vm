@@ -57,6 +57,9 @@ function showErrorMessage(msg){
 	var ul = window.parent.document.getElementById("error_$!portlet.ID");
 	if(!ul){
 		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		if(!div){
+			var div = window.parent.document.getElementById("messageDiv");
+		}
 		ul = document.createElement("ul");
 		ul.id = "error_$!portlet.ID";
 		div.appendChild(ul);
@@ -70,6 +73,9 @@ function hideErrorMessage(){
 	var ul = window.parent.document.getElementById("error_$!portlet.ID");
 	if(ul){
 		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		if(!div){
+			var div = window.parent.document.getElementById("messageDiv");
+		}
 		div.removeChild(ul);
 	}
 }
