@@ -329,8 +329,8 @@ CREATE TABLE `eip_t_message_room` (
     `photo_smartphone` blob,
     `photo_modified` datetime DEFAULT NULL,
     `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
-    `create_date` datetime DEFAULT NOW(),
-    `update_date` datetime DEFAULT NOW(),
+    `create_date` datetime DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
     PRIMARY KEY (`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -340,8 +340,8 @@ CREATE TABLE `eip_t_message` (
     `user_id` int(11) NOT NULL,
     `message` TEXT COLLATE utf8_unicode_ci,
     `member_count` int(11) NOT NULL,
-    `create_date` datetime DEFAULT NOW(),
-    `update_date` datetime DEFAULT NOW(),
+    `create_date` datetime DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
     FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
     PRIMARY KEY (`message_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
