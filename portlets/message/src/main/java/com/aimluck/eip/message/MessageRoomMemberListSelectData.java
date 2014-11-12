@@ -133,24 +133,20 @@ public class MessageRoomMemberListSelectData extends
   @Override
   protected Object getResultData(TurbineUser model)
       throws ALPageNotFoundException, ALDBErrorException {
-    if (model.getUserId().intValue() != userId) {
-      MessageUserResultData rd = new MessageUserResultData();
-      rd.initField();
-      rd.setUserId(model.getUserId());
-      rd.setFirstName(model.getFirstName());
-      rd.setLastName(model.getLastName());
-      rd.setFirstNameKana(model.getFirstNameKana());
-      rd.setLastNameKana(model.getLastNameKana());
-      rd.setHasPhoto("T".equals(model.getHasPhoto()));
-      Date photoModified = model.getPhotoModified();
-      if (photoModified != null) {
-        rd.setPhotoModified(photoModified.getTime());
-      }
-
-      return rd;
-    } else {
-      return null;
+    MessageUserResultData rd = new MessageUserResultData();
+    rd.initField();
+    rd.setUserId(model.getUserId());
+    rd.setFirstName(model.getFirstName());
+    rd.setLastName(model.getLastName());
+    rd.setFirstNameKana(model.getFirstNameKana());
+    rd.setLastNameKana(model.getLastNameKana());
+    rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    Date photoModified = model.getPhotoModified();
+    if (photoModified != null) {
+      rd.setPhotoModified(photoModified.getTime());
     }
+
+    return rd;
   }
 
   /**
