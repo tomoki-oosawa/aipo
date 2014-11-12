@@ -510,15 +510,22 @@ aipo.message.fixMessageWindow = function() {
         return;
     }
     if (dojo.byId("dd_message") != null) {
-        var minusH = 55 + 40 + 35 + 106 + 10;
+        var minusH = 55 + 40 + 35 + 10;
         var w = document.documentElement.clientWidth - 20;
         var h = document.documentElement.clientHeight - minusH;
+        var tabh = document.documentElement.clientHeight - (minusH + 106);
         dojo.byId("dd_message").style.width = w + "px";
-        if (dojo.byId("messageSummary") != null) {
-            dojo.byId("messageSummary").style.height = h + "px";
+        if(dojo.byId("messageSideBlock1") != null) {
+            dojo.byId("messageSideBlock1").style.height = h + "px";
         }
-        if (dojo.byId("messageUserlist") != null) {
-            dojo.byId("messageUserlist").style.height = h + "px";
+        if(dojo.byId("messageSideBlock2") != null) {
+            dojo.byId("messageSideBlock2").style.height = h + "px";
+        }
+        if(dojo.byId("messageSummary") != null) {
+            dojo.byId("messageSummary").style.height = tabh + "px";
+        }
+        if(dojo.byId("messageUserlist") != null) {
+            dojo.byId("messageUserlist").style.height = tabh + "px";
         }
     }
     if (dojo.byId("messagePane") != null) {
