@@ -619,6 +619,7 @@ aimluck.io.addFileToList = function(ul, fileid, filename) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   if (ul.parentNode.style.display == "none") {
     ul.parentNode.style.display = "";
+    dojo.addClass( ul.parentNode, 'displayChangedFromNone' );
   }
   if (document.all) {
     var li = document.createElement("li");
@@ -671,6 +672,10 @@ aimluck.io.replaceFileToList = function(ul, fileid, filename) {
 
 aimluck.io.removeFileFromList = function(ul, li) {
   ul.removeChild(li);
+  if(ul.children.length==0&&ul.parentNode.className.indexOf("displayChangedFromNone")!=-1){
+    ul.parentNode.style.display = "none";
+    dojo.removeClass( ul.parentNode, 'displayChangedFromNone' );
+  }
   var modalDialog = document.getElementById('modalDialog');
   if (modalDialog) {
     var wrapper = document.getElementById('wrapper');
