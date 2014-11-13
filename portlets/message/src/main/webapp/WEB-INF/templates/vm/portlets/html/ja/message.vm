@@ -89,6 +89,7 @@
 <script language="JavaScript" type="text/javascript">
 //<![CDATA[
 
+document.body.className = "messageRoomList";
 dojo.addOnLoad(function() {
     aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
 });
