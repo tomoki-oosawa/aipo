@@ -58,7 +58,7 @@
   $l10n.ADDRESSBOOK_PERMISSION_DENIED
 #else
 #if($result.List.size() == 0)
-$l10n.ADDRESSBOOK_NO_ADDRESS_YOUR_SELECT<br />
+$l10n.ADDRESSBOOK_EMPTY_SHORT_MESSAGE<br />
 #else
 #AUISummaryDiv()
 #AUIajaxpageview(${pageviewscreen} $result)
