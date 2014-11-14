@@ -157,7 +157,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     return null;
   }
 
-  public class Message {
+  public static class Message {
 
     private final List<String> recipients;
 

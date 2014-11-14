@@ -159,9 +159,10 @@ public class MessageFormData extends ALAbstractFormData {
       if (room == null) {
         msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_NOT_FOUND"));
       }
-      if (!MessageUtils.isJoinRoom(room, (int) login_user
-        .getUserId()
-        .getValue())) {
+      if (room != null
+        && !MessageUtils.isJoinRoom(room, (int) login_user
+          .getUserId()
+          .getValue())) {
         msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_ACCESS_DENIED"));
       }
     }
@@ -229,6 +230,9 @@ public class MessageFormData extends ALAbstractFormData {
 
           Database.commit();
         }
+      }
+      if (room == null) {
+        throw new IllegalArgumentException("room may not be null. ");
       }
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
