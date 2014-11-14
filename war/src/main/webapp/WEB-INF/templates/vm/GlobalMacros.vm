@@ -671,7 +671,7 @@ $item.get(0)
 ##                                                               </div>
 ## #end
 <!-- PORTLET OUTER -->
-<div class="dojoDndItem auiPortlet">
+<div class="dojoDndItem auiPortlet" id="portletsBody">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
 		<div id="mobileHeader_v3">
