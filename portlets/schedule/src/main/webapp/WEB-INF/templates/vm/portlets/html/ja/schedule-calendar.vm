@@ -90,7 +90,7 @@
 </div>
 #end
 
-<div class="center loader" id="indicator-$!portlet.ID"></div>
+<div class="center loader" id="indicator-$!portlet.ID"><i class="indicator"></i></div>
 <!-- WRAPPER -->
     <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
         <tbody>
