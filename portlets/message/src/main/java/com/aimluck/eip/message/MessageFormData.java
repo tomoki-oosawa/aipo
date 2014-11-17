@@ -269,6 +269,8 @@ public class MessageFormData extends ALAbstractFormData {
 
       Database.commit();
 
+      roomId.setValue(room.getRoomId());
+
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
       params.put("messageId", String.valueOf(model.getMessageId()));
@@ -405,5 +407,9 @@ public class MessageFormData extends ALAbstractFormData {
       logger.error(e);
     }
     return true;
+  }
+
+  public int getRoomId() {
+    return (int) roomId.getValue();
   }
 }
