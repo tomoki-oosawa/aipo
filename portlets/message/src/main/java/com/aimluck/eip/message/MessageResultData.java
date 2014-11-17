@@ -78,7 +78,7 @@ public class MessageResultData implements ALData, Serializable {
     memberCount = new ALNumberField();
     message = new ALStringField();
     message.setTrim(false);
-    createDate = new ALDateTimeField("yyyy年M月d日 H:mm");
+    createDate = new ALDateTimeField();
     attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
@@ -125,7 +125,7 @@ public class MessageResultData implements ALData, Serializable {
   }
 
   public ALDateTimeField getCreateDate() {
-    return createDate;
+    return ALEipUtils.getFormattedTimeDetail(createDate);
   }
 
   /**

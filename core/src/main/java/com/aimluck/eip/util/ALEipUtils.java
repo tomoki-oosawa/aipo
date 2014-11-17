@@ -2053,6 +2053,28 @@ public class ALEipUtils {
     return getFormattedTime(timeField.getValue());
   }
 
+  public static ALDateTimeField getFormattedTimeDetail(Date date) {
+    Calendar Now = new GregorianCalendar();
+    Now.setTime(new Date());
+    Calendar Time = new GregorianCalendar();
+    Time.setTime(date);
+    ALDateTimeField rtn;
+
+    rtn =
+      (Now.get(Calendar.YEAR) == Time.get(Calendar.YEAR))
+        ? new ALDateTimeField("M月d日 H:mm")
+        : new ALDateTimeField("yyyy年M月d日 H:mm");
+    rtn.setValue(date);
+    return rtn;
+  }
+
+  public static ALDateTimeField getFormattedTimeDetail(ALDateTimeField timeField) {
+    if (!timeField.isNotNullValue()) {
+      return null;
+    }
+    return getFormattedTimeDetail(timeField.getValue());
+  }
+
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
    * 
