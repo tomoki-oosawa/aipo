@@ -410,6 +410,9 @@ aipo.message.selectRoom = function(room_id) {
     var messageRoomName = dojo.byId("messageRoomName");
     var messageRoomSetting = dojo.byId("messageRoomSetting");
     if (messageForm && messageRoom) {
+        if(aipo.message.isMobile) {
+            dojo.removeClass(document.body, "messageRoomList");
+        }
         messageMainBlock.style.display = "";
         if(messageMainBlockEmpty) {
             messageMainBlockEmpty.style.display = "none";
@@ -452,6 +455,9 @@ aipo.message.unselectRoom = function() {
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageForm = dojo.byId("messageForm");
     if (messageForm) {
+        if(aipo.message.isMobile) {
+            dojo.addClass(document.body, "messageRoomList");
+        }
         dojo.query(".messageSummary li").forEach(function(item) {
             dojo.removeClass(item, "active")
         });
