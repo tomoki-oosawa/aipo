@@ -115,7 +115,7 @@ limitations under the License.
 										</div>
 									</div>
 									<div class="inputField">
-										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
+										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit_callbackparams(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
 											<input type="hidden" name="_name" value="formMessage" />
 											<input type="hidden" name="secid" value="$secid" />
 											<input type="hidden" name="roomId" value="" />

@@ -71,7 +71,7 @@
 #set ($isFirst = false)
 #end
 #set ($currentIndex = $!record.getIndex().getValue())
-<li>
+<li id="messageUser$!record.UserId">
 	<a href="javascript:void(0)" onclick="aipo.message.selectUser($!record.UserId)">
 		<span class="avatar">
 		#if($!record.isHasPhoto())
