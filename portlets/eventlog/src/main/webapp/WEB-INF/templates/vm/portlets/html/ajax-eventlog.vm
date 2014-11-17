@@ -64,7 +64,7 @@
 </div>
 
 #if($result.List.size() == 0)
-<div class="auiSummaryMeta clearfix">$l10n.EVENTLOG_NO_YOU_SELECT</div>
+#AUIEmptyMessage("icon-eye-open" "$l10n.EVENTLOG_NO_YOU_SELECT")
 #ALformfooter()
 #else
 #AUISummaryDiv()
