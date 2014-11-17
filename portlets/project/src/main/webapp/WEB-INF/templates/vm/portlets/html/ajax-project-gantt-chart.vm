@@ -67,7 +67,7 @@
 		</div>
 	</div>
 	</div>
-<div class="center loader" id="indicator-$!portlet.ID" style="display:none"></div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 	<div class="auiSummaryMeta clearfix">
 		<select id="target_progress_rate_from" name="target_progress_rate_from" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')" >

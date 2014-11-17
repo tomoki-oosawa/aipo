@@ -84,7 +84,7 @@ aipo.message.reloadMessageList = function() {
         }
     }
 
-    dojo.byId("messagePane").innerHTML = '<div class="loader"></div>';
+    dojo.byId("messagePane").innerHTML = '<div class="loader"><i class="indicator"></i></div>';
     var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;

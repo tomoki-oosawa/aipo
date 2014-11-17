@@ -73,7 +73,7 @@
 </div>
 
 </div>
-<div class="center loader" id="indicator-$!portlet.ID" style="display:none"></div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 
 <div class="auiSummaryMeta">
 #if(${client}!="IPHONE")

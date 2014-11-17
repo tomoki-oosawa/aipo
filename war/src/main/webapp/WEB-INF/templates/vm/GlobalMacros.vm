@@ -690,7 +690,7 @@ $item.get(0)
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"></div></div>
+					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"><i class="indicator"></i></div></div>
 				</div>
 			</li>
 			#end

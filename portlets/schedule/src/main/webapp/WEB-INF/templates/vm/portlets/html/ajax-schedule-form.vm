@@ -183,7 +183,6 @@
 			#foreach ( $num in [0..23] )
             <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num") selected="selected" #end >$num</option>
             #end
-
             </select>
             :
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">
