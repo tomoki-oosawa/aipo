@@ -477,6 +477,9 @@ aipo.message.unselectRoom = function() {
         dojo.query(".messageSummary li").forEach(function(item) {
             dojo.removeClass(item, "active")
         });
+        dojo.query(".messageUserlist li").forEach(function(item) {
+            dojo.removeClass(item, "active")
+        });
         aipo.message.clearInput();
         if(messageMainBlockEmpty) {
             messageMainBlockEmpty.style.display = "";
