@@ -284,6 +284,9 @@ aipo.message.reloadUserList = function(group_name) {
     if (aipo.message.currentUserSearchKeyword) {
         aipo.message.messageUserListPane.setParam("k", aipo.message.currentUserSearchKeyword);
     }
+    if (aipo.message.currentUserId) {
+        screen += "&u=" + aipo.message.currentUserId;
+    }
 
     aipo.message.messageUserListPane.viewPage(screen);
 }

@@ -48,11 +48,19 @@ public class MessageUserListScreen extends ALVelocityScreen {
     try {
 
       String keyword = null;
+      Integer userId = null;
       try {
         keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }
+      try {
+        userId = rundata.getParameters().getInteger("u");
+      } catch (Throwable ignore) {
+        // ignore
+      }
+      context.put("currentUser", userId);
+
       MessageUserListSelectData listData = new MessageUserListSelectData();
       listData.initField();
       if (!StringUtils.isEmpty(keyword)) {
