@@ -535,6 +535,7 @@ aipo.message.onLoadMessageRoomDialog = function() {
             aipo.message.changeMember();
         });
     }
+    aipo.message.changeMember();
 };
 
 aipo.message.changeMember = function() {
