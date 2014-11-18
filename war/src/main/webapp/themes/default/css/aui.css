@@ -150,7 +150,7 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+  font-family: "メイリオ","Helvetica Neue","Helvetica","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","Meiryo","ＭＳ Ｐゴシック","Arial","Verdana","sans-serif";
 }
 
 html, body {
@@ -528,11 +528,11 @@ ul.hdCommunications .num {
   top: 8px;
   right: 8px;
   width: auto;
-  height: 13px;
-  min-width: 13px;
-  line-height: 13px;
+  height: 14px;
+  min-width: 12px;
+  line-height: 15px;
   padding: 0 3px;
-  font-size: 10px;
+  font-size: 11px;
   text-align: center;
   background-color: #ff3333;
   color: white;
@@ -3471,7 +3471,7 @@ ul.attachments {
 }
 .timeline .messageContents {
   margin-left: 60px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 .timeline .messageContents .tlClipBoard {
   border: solid 1px #ededed;
@@ -3535,6 +3535,9 @@ ul.attachments {
 .messageContents .body {
   padding: 5px 0;
   line-height: 1.5;
+}
+.messageContents .body .more {
+  margin: 0;
 }
 .messageContents .time {
   font-size: 80%;
