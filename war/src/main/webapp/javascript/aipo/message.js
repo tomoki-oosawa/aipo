@@ -522,7 +522,45 @@ aipo.message.onLoadMessageRoomDialog = function() {
             mpicker.addOptionSync(s_o[i].value, s_o[i].text, true);
         }
     }
+    var btn_ma = dojo.byId("button_member_add");
+    if (btn_ma) {
+        dojo.connect(btn_ma, "onclick", function() {
+            aipo.message.changeMember();
+        });
+    }
+
+    var btn_mr = dojo.byId("button_member_remove");
+    if (btn_mr) {
+        dojo.connect(btn_mr, "onclick", function() {
+            aipo.message.changeMember();
+        });
+    }
 };
+
+aipo.message.changeMember = function() {
+    var node = dojo.byId("memberFieldDisplay");
+    if (node) {
+        var HTML = "";
+        HTML += "<table class=\"w100\"><tbody><tr><td style=\"border:none;\">";
+        var m_t = dojo.byId("member_to");
+        if (m_t) {
+            var t_o = m_t.options;
+            to_size = t_o.length;
+            for (i = 0; i < to_size; i++) {
+                var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g,
+                        "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                HTML += "<span>" + text + "</span>";
+                if (i < to_size - 1) {
+                    HTML += ",<wbr/>";
+                }
+            }
+        }
+        HTML += "</td></tr></tbody></table>";
+        node.innerHTML = HTML;
+    }
+
+    aipo.message.setWrapperHeight();
+}
 
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg) {

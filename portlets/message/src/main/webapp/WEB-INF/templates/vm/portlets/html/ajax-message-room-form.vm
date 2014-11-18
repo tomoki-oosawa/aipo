@@ -50,7 +50,15 @@
 
 #ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
 #ALtditemheader()
-
+<div id="memberFieldDisplay">
+	<table class="w100">
+		<tbody>
+			<tr class="member">
+				<td style="border:none;"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 <div id="memberField">
 <table class="none">
   <tr><td>
