@@ -62,7 +62,7 @@ public class MessageRoomMemberListScreen extends ALVelocityScreen {
       if (targetUserId != null && targetUserId > 0) {
         room = MessageUtils.getRoom(userId, targetUserId);
         if (room != null) {
-          roomId = room.getRoomId();
+          // roomId = room.getRoomId();
         } else {
           targetUser = ALEipUtils.getALEipUser(targetUserId);
           isNewRoom = true;
