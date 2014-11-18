@@ -31,11 +31,9 @@
 #AUIwideAreaHeader()
 #end
 #AUISummaryDiv()
-#if($result.List.size() > 0)
 <div class="floatLeft">
 #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 </div>
-#end
 <div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
@@ -49,7 +47,7 @@
 #AUISummaryDivfooter()
 
 #if($result.List.size() <= 0)
- #AUIbuttonActionInBlankBox("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUIEmptyMessage("icon-inbox" "あああ")
 #else
   <div id="listMessageDiv"></div>
   #ALajaxlistformheaderAction("$l10n.WORKFLOW_APPLICATION_ROUTE")
