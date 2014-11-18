@@ -98,7 +98,8 @@ aipo.fileupload.hideImageDialog = function() {
       arrDialog.hide();
       var _dialog = dojo.byId("imageDialog");
       if(_dialog){
-    	  _dialog.removeAttribute("style");
+          _dialog.style.height = "";
+          _dialog.style.width = "";
       }
     }
 };
