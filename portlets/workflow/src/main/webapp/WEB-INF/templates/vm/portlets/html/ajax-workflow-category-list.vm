@@ -48,7 +48,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheaderAction("$l10n.WORKFLOW_CLASSIFICATION")
 #if($result.List.size() <= 0)
-#AUIEmptyMessage("icon-inbox" "ああああ")
+#AUIEmptyMessage("icon-inbox" "$l10n.WORKFLOW_NO_CATEGORY_YOU_SELECT")
 #else
 
 #AUISummaryDiv()
