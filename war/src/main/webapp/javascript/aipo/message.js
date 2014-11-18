@@ -588,24 +588,24 @@ aipo.message.onLoadMessageRoomDialog = function() {
     var btn_ma = dojo.byId("button_member_add");
     if (btn_ma) {
         dojo.connect(btn_ma, "onclick", function() {
-            aipo.message.expandMember();
+            aipo.message.changeMember();
         });
     }
 
     var btn_mr = dojo.byId("button_member_remove");
     if (btn_mr) {
         dojo.connect(btn_mr, "onclick", function() {
-            aipo.message.expandMember();
+            aipo.message.changeMember();
         });
     }
-    aipo.message.shrinkMember();
+    aipo.message.changeMember();
 };
 
-aipo.message.shrinkMember = function() {
-    var node = dojo.byId("memberFieldButton");
+aipo.message.changeMember = function() {
+    var node = dojo.byId("memberFieldDisplay");
     if (node) {
         var HTML = "";
-        HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none;\">";
+        HTML += "<table class=\"w100\"><tbody><tr><td style=\"border:none;\">";
         var m_t = dojo.byId("member_to");
         if (m_t) {
             var t_o = m_t.options;
@@ -619,51 +619,10 @@ aipo.message.shrinkMember = function() {
                 }
             }
         }
-        HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'
-                + aimluck.io.escapeText("message_val_member1")
-                + '\" onclick=\"aipo.message.expandMember();\" />'
         HTML += "</td></tr></tbody></table>";
         node.innerHTML = HTML;
     }
 
-    var _node = dojo.byId("memberField");
-    if (_node) {
-        dojo.style(_node, "display", "none")
-    }
-    aipo.message.setWrapperHeight();
-}
-
-aipo.message.expandMember = function() {
-    var node = dojo.byId("memberFieldButton");
-    if (node) {
-        var HTML = "";
-        HTML += "<table class=\"w100\"><tbody><tr><td style=\"width:80%; border:none\">";
-        var m_t = dojo.byId("member_to");
-        if (m_t) {
-            var t_o = m_t.options;
-            to_size = t_o.length;
-            for (i = 0; i < to_size; i++) {
-                var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g,
-                        "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                HTML += "<span>" + text + "</span>";
-                if (i < to_size - 1) {
-                    HTML += ",<wbr/>";
-                }
-            }
-        }
-        HTML += "</td><td style=\"border:none;\">";
-        HTML += '<input type=\"button\" class=\"alignright\" value=\"'
-                + aimluck.io.escapeText("message_val_member2")
-                + '\" onclick=\"aipo.message.shrinkMember();\" />'
-        HTML += "</td></tr></tbody></table>";
-        node.innerHTML = HTML;
-    }
-
-    var _node = dojo.byId("memberField");
-    if (_node) {
-        dojo.style(_node, "display", "block");
-    }
     aipo.message.setWrapperHeight();
 }
 
