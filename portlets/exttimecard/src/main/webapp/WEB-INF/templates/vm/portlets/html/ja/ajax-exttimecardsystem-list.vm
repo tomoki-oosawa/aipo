@@ -41,7 +41,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS)
 #if($result.List.size() == 0)
-$l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS<br />
+#AUIEmptyMessage("icon-time" "$l10n.EXTTIMECARD_ALERT_WORKING_ARRANGEMENTS")
 #else
 #AUISummaryDiv()
 <div class="floatLeft">

@@ -48,7 +48,7 @@
 <input type="hidden" name="_name" value="$l10n.EXTTIMECARD_USER" />
 <input type="hidden" name="secid" value="$secid" />
 #if($result.List.size() == 0)
-$l10n.EXTTIMECARD_ALERT_NO_USER<br />
+#AUIEmptyMessage("icon-time" "$l10n.EXTTIMECARD_ALERT_NO_USER")
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)
