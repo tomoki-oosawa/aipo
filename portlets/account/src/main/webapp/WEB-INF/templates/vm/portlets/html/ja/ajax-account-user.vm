@@ -104,7 +104,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader($l10n.ACCOUNT_USER)
 #if($result.List.size() == 0)
-$l10n.ACCOUNT_ALERT_NO_USER_SELECTED<br />
+#AUIEmptyMessage("icon-user" "$l10n.ACCOUNT_ALERT_NO_USER_SELECTED")
 #ALformfooter()
 #else
 #AUISummaryDiv()
