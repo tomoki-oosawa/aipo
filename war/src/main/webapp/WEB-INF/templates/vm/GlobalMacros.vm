@@ -676,7 +676,7 @@ $item.get(0)
 	<!-- Smartphone  Header -->
 		<div id="mobileHeader_v3">
 		<div class="inner">
-		<h1><span>#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
+		<h1><span id="portletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
 		<div class="mhLeft">
 			<a href="javascript:void(0)" class="auiMbBtnNavi" onClick="appsNaviSwitch()">
 				<i class="icon-reorder"></i>
