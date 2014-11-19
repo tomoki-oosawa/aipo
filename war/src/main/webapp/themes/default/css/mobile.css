@@ -1447,7 +1447,11 @@ ul.hdCommunications .num {
 /***************************************************
 	loader
 --------------------------------------------------*/
-.loader {
+.loader .indicatorBlack {
+  background: url(../images/common/loading_smp.gif) no-repeat center center;
+  background-size: 16px;
+}
+.loader .indicator {
   background: url(../images/common/loading_smp_white.gif) no-repeat center center;
   background-size: 16px;
 }
