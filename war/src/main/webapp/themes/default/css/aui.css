@@ -3253,6 +3253,10 @@ ul.attachments {
   width: 130px;
 }
 
+#uploadContainer .auiButtonBold {
+  width: 130px;
+}
+
 .uploadText {
   position: absolute\9;
   top: 0\9;
