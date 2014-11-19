@@ -633,10 +633,9 @@ ul.hdTools .dropdown:before {
   display: none;
   position: absolute;
   z-index: 120;
-  border: solid 1px silver;
-  background-color: white;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
   line-height: 2;
-  filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=0, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=90, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=180, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=270, strength=3, enabled=true);
 }
 .dropdown.open,
 .activityPopup.open, .supportPopup.open {
