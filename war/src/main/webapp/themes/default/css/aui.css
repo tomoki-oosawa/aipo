@@ -123,24 +123,6 @@ input[type=password], #timelineOuter #inputField,
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.scrollDecoration, .scroll, .auiCheckList {
-  scrollbar-face-color: #d2d2d2;
-  scrollbar-track-color: #f6f6f6;
-  scrollbar-arrow-color: #d2d2d2;
-  scrollbar-shadow-color: #d2d2d2;
-}
-.scrollDecoration::-webkit-scrollbar, .scroll::-webkit-scrollbar, .auiCheckList::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background: #f6f6f6;
-}
-.scrollDecoration::-webkit-scrollbar-piece, .scroll::-webkit-scrollbar-piece, .auiCheckList::-webkit-scrollbar-piece {
-  background: #f0f0f0;
-}
-.scrollDecoration::-webkit-scrollbar-thumb, .scroll::-webkit-scrollbar-thumb, .auiCheckList::-webkit-scrollbar-thumb {
-  background: #d2d2d2;
-}
-
 @font-face {
   font-family: 'FontAwesome';
   src: url("fontawesome-webfont.eot");
