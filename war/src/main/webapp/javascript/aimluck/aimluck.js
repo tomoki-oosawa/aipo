@@ -276,14 +276,7 @@ function doUpOptions10(select) {
 			continue;
 		up_option(select, i, 10);
 	}
-	var firstSelected=select.options[0];
-	for (i = 0; i < s_o.length; i++) {
-		if (s_o[i].selected){
-			firstSelected=s_o[i];
-			break;
-		}
-	}
-	if(firstSelected.offsetTop<select.scrollTop)firstSelected.scrollIntoView(true);
+	selectedOptionIntoView(select);
 }
 
 function doUpOptions(select) {
@@ -297,14 +290,7 @@ function doUpOptions(select) {
 			continue;
 		up_option(select, i, 1);
 	}
-	var firstSelected=select.options[0];
-	for (i = 0; i < s_o.length; i++) {
-		if (s_o[i].selected){
-			firstSelected=s_o[i];
-			break;
-		}
-	}
-	if(firstSelected.offsetTop<select.scrollTop)firstSelected.scrollIntoView(true);
+	selectedOptionIntoView(select);
 }
 
 function doDownOptions10(select) {
@@ -318,14 +304,7 @@ function doDownOptions10(select) {
 			continue;
 		down_option(select, i, 10);
 	}
-	var firstSelected=select.options[0];
-	for (i = 0; i < s_o.length; i++) {
-		if (s_o[i].selected){
-			firstSelected=s_o[i];
-			break;
-		}
-	}
-	if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)firstSelected.scrollIntoView(false);
+	selectedOptionIntoView(select);
 }
 
 function doDownOptions(select) {
@@ -339,14 +318,26 @@ function doDownOptions(select) {
 			continue;
 		down_option(select, i, 1);
 	}
+	selectedOptionIntoView(select);
+}
+
+function selectedOptionIntoView(select){
+	var s_o = select.options;
 	var firstSelected=select.options[0];
+	var i=0;
 	for (i = 0; i < s_o.length; i++) {
 		if (s_o[i].selected){
 			firstSelected=s_o[i];
 			break;
 		}
 	}
-	if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)firstSelected.scrollIntoView(false);
+	if(dojo.isIE==8){
+		if(select.scrollTop>16+18*(i-1))select.scrollTop=16+18*(i-1);
+		if(select.scrollTop<16+18*(i-20))select.scrollTop=16+18*(i-20);
+	}else{
+		if(firstSelected.offsetTop<select.scrollTop)select.scrollTop=firstSelected.offsetTop-firstSelected.offsetHeight/2;
+		if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)select.scrollTop=firstSelected.offsetTop-select.offsetHeight+firstSelected.offsetHeight/2;
+	}
 }
 
 function up_option(select, index, rate) {
