@@ -163,6 +163,10 @@ html, body {
   background-color: #f0f0f0;
 }
 
+body {
+  overflow-y: scroll;
+}
+
 body#login {
   position: relative;
   background: #eeeeee url(../images/body.png) left top repeat-x;
