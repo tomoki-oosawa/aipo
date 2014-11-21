@@ -717,8 +717,14 @@ ul.hdTools .dropdown:before {
 }
 .dropdown_list li {
   padding: 0;
-  border-bottom: solid 1px #ededed;
+  border-top: solid 1px #ededed;
   background-image: none;
+}
+.dropdown_list li:first-child {
+  border-top: none;
+}
+.dropdown_list li > a {
+  position: relative;
 }
 .dropdown_list li > a > .avatar {
   position: absolute;
