@@ -1494,6 +1494,9 @@ ul.hdCommunications .num {
 .timeline .comments {
   margin-left: 42px;
 }
+.timeline .comments .body {
+  padding-top: 0;
+}
 
 .timeline .message > .more {
   margin-left: 42px;
