@@ -236,6 +236,15 @@ dojo.declare(
             		}
             	});
         	}
+        	//android時、長い詳細画面を最後までスクロールできない問題の対策
+        	if(aipo.userAgent.isAndroid()){
+        		var modalDialog = document.getElementById('modalDialog');
+        		if(modalDialog) {
+        			var wrapper = document.getElementById('wrapper');
+        			wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+        		}
+
+        	}
 
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
