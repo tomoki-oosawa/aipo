@@ -807,6 +807,7 @@ public class NoteUtils {
         new StringBuilder("?template=NoteDetailScreen")
           .append("&entityid=")
           .append(note.getNoteId())
+          .append("&tab=received_notes")
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Note")
