@@ -667,6 +667,7 @@ ul.hdTools .dropdown:before {
 .dropdown .foot,
 .activityPopup .foot, .supportPopup .foot {
   padding: 8px 10px;
+  border-top: solid 1px #d2d2d2;
 }
 .dropdown .foot .count,
 .activityPopup .foot .count, .supportPopup .foot .count {
