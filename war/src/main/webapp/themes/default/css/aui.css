@@ -633,10 +633,9 @@ ul.hdTools .dropdown:before {
   display: none;
   position: absolute;
   z-index: 120;
-  border: solid 1px silver;
-  background-color: white;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
   line-height: 2;
-  filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=0, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=90, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=180, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=270, strength=3, enabled=true);
 }
 .dropdown.open,
 .activityPopup.open, .supportPopup.open {
@@ -686,6 +685,12 @@ ul.hdTools .dropdown:before {
 .dropdown .foot .count,
 .activityPopup .foot .count, .supportPopup .foot .count {
   line-height: 24px;
+}
+.dropdown a, .dropdown input, .dropdown button,
+.activityPopup a,
+.activityPopup input,
+.activityPopup button, .supportPopup a, .supportPopup input, .supportPopup button {
+  filter: none !important;
 }
 
 .activityPopup, .supportPopup {
