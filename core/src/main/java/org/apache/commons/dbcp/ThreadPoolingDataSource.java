@@ -25,10 +25,12 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.sql.SQLWarning;
 import java.sql.Statement;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
@@ -534,5 +536,14 @@ public class ThreadPoolingDataSource implements DataSource {
         return null;
       }
     }
+  }
+
+  /**
+   * @return
+   * @throws SQLFeatureNotSupportedException
+   */
+  @Override
+  public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    return null;
   }
 }
