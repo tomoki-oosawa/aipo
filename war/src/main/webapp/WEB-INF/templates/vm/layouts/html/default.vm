@@ -38,6 +38,9 @@
 #end
 <link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link type="image/x-icon" rel="icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+#if("${client}" == "PCIPHONE")
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-for-desktop-page.css?$!{utils.CacheBust}" />
+#end
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" />
 #else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" />
 #end
