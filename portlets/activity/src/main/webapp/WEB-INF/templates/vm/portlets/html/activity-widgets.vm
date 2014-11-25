@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #macro(ALsetCategoryList $category $title)
 <li #if ($!result.CurrentCategory == $category) class="active"#end>
-#if($utils.isActive($category)||$category=='all')<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllListScreen").addQueryData("filter",$!{category}).addQueryData("filtertype","category").addQueryData("reset_params","true"))', '$!portlet.ID');">$!{title}</a>#end
+#if($utils.isActive($category)||$category=='all')<a href="javascript:void(0);" onclick="aipo.activity.setPostFilter('$!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllListScreen")','$!{category}','category','$!portlet.ID');">$!{title}</a>#end
 </li>
 #end
 ## ---------------------------------------------------------------------------
