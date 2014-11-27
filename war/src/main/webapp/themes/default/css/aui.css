@@ -1879,8 +1879,8 @@ button[disabled]:active {
 }
 .imgPopup .meta {
   position: absolute;
-  right: 0px;
-  top: -30px;
+  right: -10px;
+  top: -40px;
 }
 .imgPopup .meta a {
   display: inline-block;
