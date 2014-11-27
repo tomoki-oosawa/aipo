@@ -688,6 +688,7 @@ CREATE TABLE `eip_t_timeline_like` (
   `timeline_id` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
   `create_date` datetime DEFAULT NULL,
+    FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
   PRIMARY KEY (`timeline_like_id`),
   UNIQUE KEY `eip_t_timeline_timelineid_ownerid_key` (`timeline_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

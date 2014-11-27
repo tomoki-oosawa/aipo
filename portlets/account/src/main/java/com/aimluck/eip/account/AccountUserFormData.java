@@ -57,6 +57,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -1486,9 +1487,24 @@ public class AccountUserFormData extends ALAbstractFormData {
               EipTTimeline.PARENT_ID_COLUMN,
               timelineIdList));
         List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
+        List<Integer> timelineAllIdList =
+          new ArrayList<Integer>(timelineIdList);
         if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
           timelineList.addAll(timelineCommentList);
+          for (EipTTimeline timeline : timelineCommentList) {
+            Integer timelineId = timeline.getTimelineId();
+            if (timelineId != null) {
+              timelineAllIdList.add(timelineId);
+            }
+          }
         }
+        SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL =
+          Database.query(EipTTimelineLike.class);
+        EipTTimelineLikeSQL.andQualifier(ExpressionFactory.inDbExp(
+          EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+          timelineAllIdList));
+        List<EipTTimelineLike> likes = EipTTimelineLikeSQL.fetchList();
+        Database.deleteAll(likes);
 
         for (EipTTimeline entry : timelineList) {
           List<String> fpaths = new ArrayList<String>();
