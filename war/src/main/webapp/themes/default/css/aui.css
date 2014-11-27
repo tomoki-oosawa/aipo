@@ -3478,6 +3478,9 @@ ul.attachments {
   margin: 10px 0 5px;
   padding: 10px;
 }
+.timeline .messageContents .time {
+  margin-bottom: 10px;
+}
 .timeline .commentsBorder, .timeline .comments .message, .timeline .commentCaption, .timeline .commentInputDummy, .timeline .commentField {
   border-top: solid 1px #fff !important;
 }
@@ -3488,6 +3491,9 @@ ul.attachments {
 }
 .timeline .comments .messageContents {
   margin-left: 42px;
+}
+.timeline .comments .messageContents .time {
+  margin-bottom: 0;
 }
 .timeline .comments .message {
   margin: 0;
