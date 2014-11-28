@@ -113,12 +113,16 @@ public class CabinetFileFormData extends ALAbstractFormData {
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
-      if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-        ALEipUtils.setTemp(
-          rundata,
-          context,
-          CabinetUtils.KEY_FOLDER_ID,
-          rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+      // TEMP?
+      if (rundata.getParameters().containsKey(
+        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+        ALEipUtils
+          .setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_CURRENT_FOLDER_ID,
+            rundata.getParameters().getString(
+              CabinetUtils.KEY_CURRENT_FOLDER_ID));
       }
     }
 
@@ -126,7 +130,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     this.rundata = rundata;
 
     String tmpfid =
-      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
@@ -200,7 +204,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
     boolean res = super.setFormData(rundata, context, msgList);
 
     if (res) {
-      if (!rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
+      // TEMP?
+      if (!rundata.getParameters().containsKey(
+        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
         try {
           folder_id.setValue(selected_folderinfo.getFolderId());
         } catch (Exception e) {

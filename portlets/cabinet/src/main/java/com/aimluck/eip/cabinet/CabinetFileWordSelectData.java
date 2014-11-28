@@ -87,8 +87,9 @@ public class CabinetFileWordSelectData extends
     }
 
     int fid = CabinetUtils.ROOT_FODLER_ID;
+    // TEMP?
     String tmpfid =
-      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
         fid = Integer.parseInt(tmpfid);

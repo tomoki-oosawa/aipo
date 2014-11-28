@@ -25,6 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cabinet.CabinetFolderSelectData;
+import com.aimluck.eip.cabinet.CabinetTargetFolderSelectData;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -47,7 +48,8 @@ public class CabinetFolderDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      CabinetFolderSelectData detailData = new CabinetFolderSelectData();
+      // CabinetFolderSelectData detailData = new CabinetFolderSelectData();
+      CabinetFolderSelectData detailData = new CabinetTargetFolderSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 

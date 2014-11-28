@@ -56,8 +56,12 @@ public class CabinetFileFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
           FolderInfo info = formData.getSelectedFolderInfo();
-          ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID, ""
-            + info.getFolderId());
+          // TEMP?
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_TARGET_FOLDER_ID,
+            "" + info.getFolderId());
 
         } else {
           JSONArray json =
@@ -83,8 +87,12 @@ public class CabinetFileFormJSONScreen extends ALJSONScreen {
         formData.initField();
         if (formData.doDelete(this, rundata, context)) {
           FolderInfo info = formData.getSelectedFolderInfo();
-          ALEipUtils.setTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID, ""
-            + info.getFolderId());
+          // TEMP?
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_TARGET_FOLDER_ID,
+            "" + info.getFolderId());
 
         } else {
           JSONArray json =

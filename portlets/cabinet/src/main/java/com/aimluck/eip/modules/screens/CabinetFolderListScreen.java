@@ -24,6 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cabinet.CabinetCurrentFolderSelectData;
 import com.aimluck.eip.cabinet.CabinetFolderSelectData;
 import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -47,7 +48,8 @@ public class CabinetFolderListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      CabinetFolderSelectData listData = new CabinetFolderSelectData();
+      // CabinetFolderSelectData listData = new CabinetFolderSelectData();
+      CabinetFolderSelectData listData = new CabinetCurrentFolderSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,

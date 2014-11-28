@@ -116,14 +116,27 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
+    // TODO currentで良いか確認する。以下同じ。
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
-      if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-        ALEipUtils.setTemp(
-          rundata,
-          context,
-          CabinetUtils.KEY_FOLDER_ID,
-          rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
+      if (rundata.getParameters().containsKey(
+        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+        ALEipUtils
+          .setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_CURRENT_FOLDER_ID,
+            rundata.getParameters().getString(
+              CabinetUtils.KEY_CURRENT_FOLDER_ID));
+      } else if (rundata.getParameters().containsKey(
+        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+        ALEipUtils
+          .setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_CURRENT_FOLDER_ID,
+            rundata.getParameters().getString(
+              CabinetUtils.KEY_CURRENT_FOLDER_ID));
       }
     }
 
@@ -132,7 +145,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
 
     String tmpfid =
-      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
@@ -194,7 +207,10 @@ public class CabinetFolderFormData extends ALAbstractFormData {
 
       if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         folderid =
-          ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+          ALEipUtils.getTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_CURRENT_FOLDER_ID);
       }
 
       /** メンバーリストの処理 */
@@ -368,9 +384,10 @@ public class CabinetFolderFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+      // Edit
       // オブジェクトモデルを取得
       EipTCabinetFolder folder =
-        CabinetUtils.getEipTCabinetFolder(rundata, context);
+        CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
       if (folder == null) {
         return false;
       }
@@ -486,7 +503,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       String folderid =
-        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
       int delete_id = Integer.parseInt(folderid);
       if (delete_id <= CabinetUtils.ROOT_FODLER_ID) {
         // フォルダ『ルートフォルダ』は削除不可にする．
@@ -683,7 +700,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     try {
       // オブジェクトモデルを取得
       EipTCabinetFolder folder =
-        CabinetUtils.getEipTCabinetFolder(rundata, context);
+        CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
       if (folder == null) {
         return false;
       }

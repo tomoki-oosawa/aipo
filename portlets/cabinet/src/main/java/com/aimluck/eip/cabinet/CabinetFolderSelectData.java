@@ -50,7 +50,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 /**
  * 共有フォルダのフォルダ検索データを管理するためのクラスです。 <br />
  */
-public class CabinetFolderSelectData extends
+public abstract class CabinetFolderSelectData extends
     ALAbstractSelectData<EipTCabinetFolder, EipTCabinetFolder> {
 
   /** logger */
@@ -82,6 +82,45 @@ public class CabinetFolderSelectData extends
     isNormalContext = flg;
   }
 
+  public abstract void setSessionFolderId(RunData rundata, Context context);
+
+  // {
+  // if (rundata.getParameters().containsKey(CabinetUtils.KEY_TARGET_FOLDER_ID))
+  // {
+  // ALEipUtils.setTemp(
+  // rundata,
+  // context,
+  // CabinetUtils.KEY_TARGET_FOLDER_ID,
+  // rundata.getParameters().getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
+  // } else if (rundata.getParameters().containsKey(
+  // CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+  // ALEipUtils.setTemp(
+  // rundata,
+  // context,
+  // CabinetUtils.KEY_CURRENT_FOLDER_ID,
+  // rundata.getParameters().getString(CabinetUtils.KEY_CURRENT_FOLDER_ID));
+  // ALEipUtils.setTemp(
+  // rundata,
+  // context,
+  // CabinetUtils.KEY_TARGET_FOLDER_ID,
+  // null);
+  // }
+  //
+  // }
+
+  public abstract String getFolderIdFromSession(RunData rundata, Context context);
+
+  // {
+  // String tmpfid =
+  // ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
+  // String targetId =
+  // ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
+  // if (targetId != null) {
+  // tmpfid = targetId;
+  // }
+  // return tmpfid;
+  // }
+
   /**
    * 
    * @param action
@@ -112,17 +151,10 @@ public class CabinetFolderSelectData extends
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
-        if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-          ALEipUtils.setTemp(
-            rundata,
-            context,
-            CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
-        }
+        // 実際にはCurrenctFolderの場合とTargetFolderの場合で処理を分ける
+        setSessionFolderId(rundata, context);
       }
-      String tmpfid =
-        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
-
+      String tmpfid = getFolderIdFromSession(rundata, context);
       if (tmpfid != null && !"".equals(tmpfid)) {
         try {
           fid = Integer.parseInt(tmpfid);
@@ -149,16 +181,21 @@ public class CabinetFolderSelectData extends
       // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
-        if (rundata.getParameters().containsKey(CabinetUtils.KEY_FOLDER_ID)) {
-          ALEipUtils.setTemp(
-            rundata,
-            context,
-            CabinetUtils.KEY_FOLDER_ID,
-            rundata.getParameters().getString(CabinetUtils.KEY_FOLDER_ID));
-        }
+        setSessionFolderId(rundata, context);
+        // if (rundata.getParameters().containsKey(
+        // CabinetUtils.KEY_TARGET_FOLDER_ID)) {
+        // ALEipUtils.setTemp(
+        // rundata,
+        // context,
+        // CabinetUtils.KEY_TARGET_FOLDER_ID,
+        // rundata
+        // .getParameters()
+        // .getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
+        // }
       }
-      String tmpfid =
-        ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_FOLDER_ID);
+      String tmpfid = getFolderIdFromSession(rundata, context);
+      // ALEipUtils.getTemp(rundata, context,
+      // CabinetUtils.KEY_TARGET_FOLDER_ID);
       if (tmpfid != null && !"".equals(tmpfid)) {
         try {
           fid = Integer.parseInt(tmpfid);
@@ -231,7 +268,8 @@ public class CabinetFolderSelectData extends
   protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
-    return CabinetUtils.getEipTCabinetFolder(rundata, context);
+    // return CabinetUtils.getEipTCabinetFolder(rundata, context);
+    return CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
   }
 
   /**
