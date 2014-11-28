@@ -132,7 +132,7 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: "メイリオ","Helvetica Neue","Helvetica","Hiragino Kaku Gothic Pro","ヒラギノ角ゴ Pro W3","Meiryo","ＭＳ Ｐゴシック","Arial","Verdana","sans-serif";
+  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
 }
 
 html, body {
