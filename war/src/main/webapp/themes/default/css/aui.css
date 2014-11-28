@@ -1942,9 +1942,6 @@ button[disabled]:active {
   position: relative;
   overflow: hidden;
 }
-.auiPortlet .auiPortletBody .auiPortletHead .inner {
-  padding: 0 !important;
-}
 .auiPortlet .auiPortletTitle {
   float: left;
   white-space: nowrap;
