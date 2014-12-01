@@ -223,7 +223,7 @@ public class WebMailFormData extends ALAbstractFormData {
    */
   @Override
   public boolean validate(List<String> msgList) {
-    String delim = ",";
+    String delim = ",;";
     if (to.validate(msgList)
       && !WebMailUtils.checkAddress(to.getValue(), delim)) {
       msgList.add("『 <span class='em'>宛先</span> 』を正しく入力してください。");
