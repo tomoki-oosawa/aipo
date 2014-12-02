@@ -22,7 +22,6 @@
 ## ---------------------------------------------------------------------------
 #ALprintformheader()
 #ALprintoptionheader()
-<input type="button" value="$l10n.WEBMAIL_DO_PRINT" onclick="javascript:print();"/>
 #ALprintoptionfooter()
 
 <script type="text/javascript" language="JavaScript">

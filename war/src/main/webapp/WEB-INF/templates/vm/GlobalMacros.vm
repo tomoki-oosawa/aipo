@@ -379,14 +379,9 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 </select>
 </td>
 </tr>
-<tr>
-<th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
-<td>
 #end
 
 #macro(ALprintoptionfooter)
-</td>
-</tr>
 </table>
 <input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/>
 </div>
