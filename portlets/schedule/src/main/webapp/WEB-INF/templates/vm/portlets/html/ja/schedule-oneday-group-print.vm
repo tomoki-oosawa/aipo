@@ -19,9 +19,14 @@
 
 ## ---------------------------------------------------------------------------
 #ALprintoptionheader()
+<tr>
+<th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
+<td>
 <label><input id=print_icon type="checkbox" checked="checked" onclick="change_print_form()"/> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
 <label><input id=print_term type="checkbox" checked="checked" onclick="change_print_form()"/> $l10n.SCHEDULE_DISPLAY_SPAN_SCHEDULE</label><br />
 <label><input id=print_todo type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
+</td>
+</tr>
 #ALprintoptionfooter()
 
 <script type="text/javascript" language="JavaScript">
