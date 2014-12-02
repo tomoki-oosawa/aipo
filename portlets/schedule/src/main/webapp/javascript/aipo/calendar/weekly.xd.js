@@ -296,7 +296,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	            }
 
 	            termTableHtml += "<table id=\"termTable_" + this.portletId + "\" style=\"width:100%;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>";
-
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
 	            var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
 	//            if(Element.clientWidth == Element.offsetWidth){
 	//              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
@@ -803,6 +803,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                ptConfig[_portletId].isScroll = true;
 	            }
 	            ptConfig[_portletId].isTooltipEnable = true;
+	            
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "");
 	        }
 	    });
     }
