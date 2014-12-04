@@ -60,7 +60,9 @@ $!pageTitle
 </tbody>
 </table>
 <br/>
-
+#if (${client} == "IPAD")
+<div class="auiSummaryMeta clearfix center"><a href="$!jslink.getPortletById($!{js_peid}).addQueryData('action', 'controls.Customize')" title="カスタマイズ" class="auiButton">アプリの配置を変える</a></div>
+#end
 <h3>$l10n.WAR_SELECT_APPLICATION</h3>
 <div style="height:300px;overflow:scroll;overflow-x:hidden;">
 <table class="listTable" style="margin-top:0">

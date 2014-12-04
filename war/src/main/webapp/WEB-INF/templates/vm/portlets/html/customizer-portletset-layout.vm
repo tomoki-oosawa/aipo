@@ -22,41 +22,15 @@
 #set($tabs = [["$l10n.WAR_SET_UP_LAYOUT", "",""]])
 ## ---------------------------------------------------------------------------
 #ALspacebothheader()
-<h3>$l10n.WAR_PAGE_NAME</h3>
-<p style="margin-bottom:10px">
-#if($isMypage)
-$!pageTitle
-#else
-<form name="form$!{js_peid}" id="form$!{js_peid}" action="$!jslink.getPortletById($!{js_peid}).addQueryData('template', 'CustomizeFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;">
-<input type="hidden" name="_name" value="form$!{js_peid}" />
-<input type="hidden" name="secid" value="$secid" />
-<input type="hidden" name="portlet_id" value="$!{js_peid}" />
-<input type="hidden" name="mode" value="page_title" />
-#ALbuttonheader()
-#ALtextfield('pageTitle' $!pageTitle '40%' 10 'active')
-#ALsubmit('setPageTitle' $l10n.WAR_PAGE_NAME_DO_EDIT)
-#ALbuttonfooter()
-</form>
-#end
-</p>
+
 #if($portletsum <= 0)
 <div class="message">$l10n.WAR_ADD_APPLICATION_BUTTON</div>
 #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize&template=CustomizeFormScreen") )
 <div class="auiSummaryMeta clearfix center"><input class="auiButtonAction" type="button" value="アプリを追加する" onclick="aipo.common.showDialog('$clink')"></div>
 #else
-<h3>$l10n.WAR_SELECT_POSITION</h3>
-<ul class="auiRowList layoutList">
- <li #if($!currentController == 'OneColumn') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=OneColumn"><img src="images/layout/layout_100.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 100% ]" width="70"></a></li>
- <li #if($!currentController == 'TwoColumns') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumns"><img src="images/layout/layout_50-50.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 50% | 50% ]" width="70"></a></li>
- <li #if($!currentController == 'TwoColumnsRight') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsRight"><img src="images/layout/layout_25-75.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 75% ]" width="70"></a></li>
- <li #if($!currentController == 'TwoColumnsLeft') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=TwoColumnsLeft"><img src="images/layout/layout_75-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 75% | 25% ]" width="70"></a></li>
- <li #if($!currentController == 'ThreeColumnsSymetric') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumnsSymetric"><img src="images/layout/layout_33-33-33.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 33% | 33% | 33% ]" width="70"></a></li>
- <li #if($!currentController == 'ThreeColumns') class="selected" #end><a href="#ALpsmlLink($jslink.Template $!{js_peid})&amp;eventSubmit_doLayout=layout&amp;controller=ThreeColumns"><img src="images/layout/layout_25-50-25.png" alt="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" title="$l10n.CUSTOMIZER_LAYOUT [ 25% | 50% | 25% ]" width="70"></a></li>
-</ul>
-<br />
+
 <h3>$l10n.WAR_ARRANGE_APP</h3>
 #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize&template=CustomizeFormScreen") )
-<div class="auiSummaryMeta clearfix center"><input class="auiButtonAction" type="button" value="アプリを追加する" onclick="aipo.common.showDialog('$clink')"></div>
 <table class="tableWrapper">
 <tbody>
 $data.User.setTemp("customizer",$customizer)
