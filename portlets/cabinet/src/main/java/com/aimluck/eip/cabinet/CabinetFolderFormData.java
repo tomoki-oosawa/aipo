@@ -120,23 +120,20 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
       if (rundata.getParameters().containsKey(
-        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
-        ALEipUtils
-          .setTemp(
-            rundata,
-            context,
-            CabinetUtils.KEY_CURRENT_FOLDER_ID,
-            rundata.getParameters().getString(
-              CabinetUtils.KEY_CURRENT_FOLDER_ID));
+      // CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+        CabinetUtils.KEY_TARGET_FOLDER_ID)) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          CabinetUtils.KEY_TARGET_FOLDER_ID,
+          rundata.getParameters().getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
       } else if (rundata.getParameters().containsKey(
-        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
-        ALEipUtils
-          .setTemp(
-            rundata,
-            context,
-            CabinetUtils.KEY_CURRENT_FOLDER_ID,
-            rundata.getParameters().getString(
-              CabinetUtils.KEY_CURRENT_FOLDER_ID));
+        CabinetUtils.KEY_TARGET_FOLDER_ID)) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          CabinetUtils.KEY_TARGET_FOLDER_ID,
+          rundata.getParameters().getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
       }
     }
 
@@ -145,7 +142,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
 
     String tmpfid =
-      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
@@ -210,7 +207,7 @@ public class CabinetFolderFormData extends ALAbstractFormData {
           ALEipUtils.getTemp(
             rundata,
             context,
-            CabinetUtils.KEY_CURRENT_FOLDER_ID);
+            CabinetUtils.KEY_TARGET_FOLDER_ID);
       }
 
       /** メンバーリストの処理 */
