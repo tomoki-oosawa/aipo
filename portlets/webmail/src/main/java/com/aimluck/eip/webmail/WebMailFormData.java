@@ -356,7 +356,7 @@ public class WebMailFormData extends ALAbstractFormData {
         map = null;
       }
 
-      String delim = ",";
+      String delim = ",;";
 
       // オブジェクトモデルを取得
       EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
