@@ -256,21 +256,25 @@ public abstract class CabinetFolderSelectData extends
     return null;
   }
 
-  /**
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   * @throws ALPageNotFoundException
-   * @throws ALDBErrorException
-   */
+  // /**
+  // *
+  // * @param rundata
+  // * @param context
+  // * @return
+  // * @throws ALPageNotFoundException
+  // * @throws ALDBErrorException
+  // */
+  // @Override
+  // protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
+  // throws ALPageNotFoundException, ALDBErrorException {
+  // // オブジェクトモデルを取得
+  // // return CabinetUtils.getEipTCabinetFolder(rundata, context);
+  // return CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
+  // }
+  //
   @Override
-  protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
-      throws ALPageNotFoundException, ALDBErrorException {
-    // オブジェクトモデルを取得
-    // return CabinetUtils.getEipTCabinetFolder(rundata, context);
-    return CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
-  }
+  protected abstract EipTCabinetFolder selectDetail(RunData rundata,
+      Context context) throws ALPageNotFoundException, ALDBErrorException;
 
   /**
    * 

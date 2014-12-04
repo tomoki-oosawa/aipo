@@ -4,6 +4,9 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cabinet.util.CabinetUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -29,6 +32,23 @@ public class CabinetCurrentFolderSelectData extends CabinetFolderSelectData {
       rundata,
       context,
       CabinetUtils.KEY_CURRENT_FOLDER_ID);
+  }
+
+  /**
+   * 現在いるフォルダの詳細データを取得します。
+   * 
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALPageNotFoundException
+   * @throws ALDBErrorException
+   */
+  @Override
+  protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    // オブジェクトモデルを取得
+    // return CabinetUtils.getEipTCabinetFolder(rundata, context);
+    return CabinetUtils.getEipTCabinetCurrentFolder(rundata, context);
   }
 
 }
