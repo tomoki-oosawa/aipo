@@ -2169,7 +2169,7 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 .dropdown_list {
-  max-height: 280px;
+  max-height: 250px;
   overflow-y: auto;
 }
 
