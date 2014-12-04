@@ -63,7 +63,7 @@
 </tr>
 #ALtdcaption("$l10n.CABINET_POSISHION")
 #ALtditemheader()
-#ALselectpdheaderw100("folder_id" "")
+#ALselectpdheaderw100("target_folder_id" "")
 #foreach($record in $!result.FolderHierarchyList)
 #if($record.isAuthorizedVisible())
 #set($space = '')

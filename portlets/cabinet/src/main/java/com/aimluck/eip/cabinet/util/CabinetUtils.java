@@ -632,7 +632,7 @@ public class CabinetUtils {
    */
   public static boolean isEditableFolder(int folder_id, RunData rundata) {
     int current_user_id = ALEipUtils.getUserId(rundata);
-    EipTCabinetFolder folder = CabinetUtils.getFolderByPK(folder_id);
+    EipTCabinetFolder folder = CabinetUtils.getFolderByPK(folder_id); // error
     int public_flag = Integer.valueOf(folder.getPublicFlag());
     if (folder.getParentId() == CabinetUtils.ROOT_FODLER_ID
       || folder.getFolderId() == CabinetUtils.ROOT_FODLER_ID) {
@@ -820,7 +820,7 @@ public class CabinetUtils {
         folder_id);
     query.setQualifier(pk_exp);
     List<EipTCabinetFolder> list = query.fetchList();
-    EipTCabinetFolder folder = list.get(0);
+    EipTCabinetFolder folder = list.get(0); // TODO
     return folder;
   }
 

@@ -29,7 +29,7 @@
 <div id="subNavigation" class="auiWidget clearfix">
 <div class="auiDirectoryList">
 <div class="d0 #if(!$result.SelectedFolderInfo) open active #end">
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,'0').addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">$l10n.CABINET_ALL_FOLDER</span></a></div>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,'0').addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">$l10n.CABINET_ALL_FOLDER</span></a></div>
 #foreach($record in $!result.FolderHierarchyList)
 #set($index = $record.HierarchyIndex + 1)
 #if($record.HierarchyIndex <= 0)
@@ -39,7 +39,7 @@
 #end
 #else <div class="d1">
 #end
-##<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId").addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+##<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,"$record.FolderId").addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory">#if($record.isOpened())<i class="icon-folder-open"></i>#else<i class="icon-folder-close"></i>#end${record.FolderName}</span></a></div>
 #else
 #if($record.visible() && $record.isAuthorizedVisible())
@@ -49,7 +49,7 @@
 #end
 #else <div class="d$index">
 #end
-##<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('folder_id' ,"$record.FolderId").addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
+##<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,"$record.FolderId").addQueryData("reset_params","true"))', '$!portlet.ID');" ><span class="directory">${record.FolderName}</span></a></div>
 #if($record.isOpened())<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory"><i class="icon-folder-open"></i>${record.FolderName}</span></a></div>
 #else<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData('eventSubmit_doCabinet_list','1').addQueryData('current_folder_id' ,"$record.FolderId"))', '$!portlet.ID');" ><span class="directory"><i class="icon-folder-close"></i>${record.FolderName}</span></a></div>
 #end

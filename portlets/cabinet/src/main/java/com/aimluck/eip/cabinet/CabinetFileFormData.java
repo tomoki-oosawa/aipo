@@ -61,8 +61,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileFormData.class.getName());
 
-  /** フォルダ ID */
-  private ALNumberField folder_id;
+  // /** フォルダ ID */
+  // private ALNumberField folder_id;
+
+  /** 対象フォルダ ID */
+  private ALNumberField target_folder_id;
 
   /** ファイルタイトル */
   private ALStringField file_title;
@@ -113,16 +116,28 @@ public class CabinetFileFormData extends ALAbstractFormData {
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
-      // TEMP?
-      if (rundata.getParameters().containsKey(
-        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
-        ALEipUtils
-          .setTemp(
+      // TARGETがパラメーターで設定されていればTARGET、なければCURRENTを読み出す
+      if (rundata
+        .getParameters()
+        .containsKey(CabinetUtils.KEY_TARGET_FOLDER_ID)) {
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          CabinetUtils.KEY_TARGET_FOLDER_ID,
+          rundata.getParameters().getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
+      } else {
+        String currentFid =
+          ALEipUtils.getTemp(
             rundata,
             context,
-            CabinetUtils.KEY_CURRENT_FOLDER_ID,
-            rundata.getParameters().getString(
-              CabinetUtils.KEY_CURRENT_FOLDER_ID));
+            CabinetUtils.KEY_CURRENT_FOLDER_ID);
+        if (currentFid != null && !currentFid.isEmpty()) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            CabinetUtils.KEY_TARGET_FOLDER_ID,
+            currentFid);
+        }
       }
     }
 
@@ -130,7 +145,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
     this.rundata = rundata;
 
     String tmpfid =
-      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
+      ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
     int fid = CabinetUtils.ROOT_FODLER_ID;
     if (tmpfid != null && !"".equals(tmpfid)) {
       try {
@@ -164,10 +179,16 @@ public class CabinetFileFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     // フォルダ ID
-    folder_id = new ALNumberField();
-    folder_id.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_ADD_TOPIC"));
-    folder_id.setNotNull(true);
-    folder_id.setValue(0);
+    // folder_id = new ALNumberField();
+    // folder_id.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_ADD_TOPIC"));
+    // folder_id.setNotNull(true);
+    // folder_id.setValue(0);
+    // targetフォルダ ID
+    target_folder_id = new ALNumberField();
+    target_folder_id.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_ADD_TOPIC"));
+    target_folder_id.setNotNull(true);
+    target_folder_id.setValue(0);
     // ファイルタイトル
     file_title = new ALStringField();
     file_title.setFieldName(ALLocalizationUtils.getl10n("CABINET_TITLE"));
@@ -206,11 +227,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
     if (res) {
       // TEMP?
       if (!rundata.getParameters().containsKey(
-        CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
+        CabinetUtils.KEY_TARGET_FOLDER_ID)) {
         try {
-          folder_id.setValue(selected_folderinfo.getFolderId());
+          target_folder_id.setValue(selected_folderinfo.getFolderId());
+          // folder_id.setValue(selected_folderinfo.getFolderId());
         } catch (Exception e) {
-          folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
+          // folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
+          target_folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
         }
       }
 
@@ -289,7 +312,13 @@ public class CabinetFileFormData extends ALAbstractFormData {
     note.validate(msgList);
 
     /** 編集アクセス制限 */
-    if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(), rundata)) {
+    // test--
+    int id = (int) target_folder_id.getValue();
+    // int id = (int) folder_id.getValue();
+    // --/test
+    if (!CabinetUtils.isEditableFolder(id, rundata)) {
+      // if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(),
+      // rundata)) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_AUTHORITY"));
     }
     return (msgList.size() == 0);
@@ -314,7 +343,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
       // 親フォルダ
-      folder_id.setValue(file.getFolderId().intValue());
+      target_folder_id.setValue(file.getFolderId().intValue());
+      // folder_id.setValue(file.getFolderId().intValue());
       // ファイルタイトル
       file_title.setValue(file.getFileTitle());
       // ファイル名
@@ -421,8 +451,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
           filename);
 
       EipTCabinetFolder folder =
-        Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
-          .getValue()));
+      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
+        Database.get(EipTCabinetFolder.class, Integer
+          .valueOf((int) target_folder_id.getValue()));
 
       // 新規オブジェクトモデル
       EipTCabinetFile file = Database.create(EipTCabinetFile.class);
@@ -587,8 +618,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       EipTCabinetFolder folder =
-        Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
-          .getValue()));
+      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
+        Database.get(EipTCabinetFolder.class, Integer
+          .valueOf((int) target_folder_id.getValue()));
       file.setEipTCabinetFolder(folder);
 
       // ファイルタイトル
@@ -658,7 +690,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
    * @return
    */
   public ALNumberField getFolderId() {
-    return folder_id;
+    // return folder_id;
+    return target_folder_id;
   }
 
   /**
