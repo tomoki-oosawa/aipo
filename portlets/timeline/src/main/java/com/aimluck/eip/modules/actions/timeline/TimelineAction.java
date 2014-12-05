@@ -38,7 +38,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムラインのアクションクラス <BR>
- * 
+ *
  */
 public class TimelineAction extends ALBaseAction {
 
@@ -48,7 +48,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -79,7 +79,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -98,7 +98,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -119,7 +119,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * トピックを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,7 +136,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * タイムラインで使用したセッション情報を消去する．
-   * 
+   *
    */
   public void clearTimelineSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
@@ -164,5 +164,8 @@ public class TimelineAction extends ALBaseAction {
 
     context.put("token", token);
     context.put("jsapiUrl", timelinehandler.getApiUrl());
+    if (rundata.getUserAgent().trim().indexOf("Mac") != -1) {
+      context.put("isMacOS", "true");
+    }
   }
 }
