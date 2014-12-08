@@ -24,20 +24,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLHandshakeException;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
@@ -807,11 +797,6 @@ public class TimelineUtils {
         "Accept-Encoding",
         ALURLConnectionUtils.ACCEPT_ENCODING);
 
-      try {
-        con.getResponseMessage();
-      } catch (SSLHandshakeException ex) {
-        throw ex;
-      }
       // HTTPヘッダのcontentTypeのcharsetを読み込む
       String contentType = con.getContentType();
       if (contentType == null) {
@@ -873,107 +858,9 @@ public class TimelineUtils {
         return getDocument(string, "UTF-8");
       }
       return null;
-    } catch (SSLHandshakeException e) {
-      try {
-        HttpURLConnection con = getHttpsConnection(string);
-
-        // HTTPヘッダのcontentTypeのcharsetを読み込む
-        String contentType = con.getContentType();
-        if (contentType == null) {
-          return null;
-        }
-        String charsetSearch =
-          contentType.replaceFirst("(?i).*charset=(.*)", "$1");
-        String contentTypeCharset = con.getContentEncoding();
-        BufferedReader reader = null;
-        if (!contentType.equals(charsetSearch)) {
-          contentTypeCharset = charsetSearch;
-        }
-        if (contentTypeCharset == null) {
-          reader =
-            new BufferedReader(new InputStreamReader(
-              con.getInputStream(),
-              defaultCharset));
-        } else {
-          reader =
-            new BufferedReader(new InputStreamReader(
-              con.getInputStream(),
-              contentTypeCharset));
-        }
-
-        InputSource source = new InputSource(reader);
-        parser.setFeature("http://xml.org/sax/features/namespaces", false);
-        parser.parse(source);
-
-        // documentからmetaタグのcharsetを読み込む
-        Document document = parser.getDocument();
-
-        return document;
-      } catch (Exception ex) {
-        return null;
-      }
     } catch (Exception ex) {
-      logger.error("[TimelineUtils]", ex);
       return null;
     }
-  }
-
-  private static HttpURLConnection getHttpsConnection(String url)
-      throws Exception {
-
-    HttpURLConnection urlconn = null;
-
-    URL connectURL = new URL(url);
-
-    // https接続の場合
-    if ("https".equals(connectURL.getProtocol())) {
-
-      // 証明書情報　全て空を返す
-      TrustManager[] tm = { new X509TrustManager() {
-        @Override
-        public X509Certificate[] getAcceptedIssuers() {
-          return null;
-        }
-
-        @Override
-        public void checkClientTrusted(X509Certificate[] chain, String authType)
-            throws CertificateException {
-        }
-
-        @Override
-        public void checkServerTrusted(X509Certificate[] chain, String authType)
-            throws CertificateException {
-        }
-      } };
-      SSLContext sslcontext = SSLContext.getInstance("SSL");
-      sslcontext.init(null, tm, null);
-      // ホスト名の検証ルール何が来てもtrueを返す
-      HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-        @Override
-        public boolean verify(String hostname, SSLSession session) {
-          return true;
-        }
-      });
-
-      urlconn = (HttpsURLConnection) connectURL.openConnection();
-
-      ((HttpsURLConnection) urlconn).setSSLSocketFactory(sslcontext
-        .getSocketFactory());
-
-      // http接続の場合
-    } else {
-
-      urlconn = (HttpURLConnection) connectURL.openConnection();
-
-    }
-
-    // http,https共通
-
-    urlconn.setRequestMethod("GET");
-    // 接続
-    urlconn.connect();
-
-    return urlconn;
   }
 
   /**
