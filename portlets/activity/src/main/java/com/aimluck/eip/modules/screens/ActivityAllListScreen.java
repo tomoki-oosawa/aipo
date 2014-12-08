@@ -21,11 +21,13 @@ package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.activity.ActivityAllSelectData;
 import com.aimluck.eip.activity.util.ActivityUtils;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -45,7 +47,12 @@ public class ActivityAllListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
+      ParameterParser parser = rundata.getParameters();
 
+      ActivityUtils.passPSML(rundata, context, "p12f-filters", parser
+        .getString(ALEipConstants.LIST_FILTER));
+      ActivityUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+        .getString(ALEipConstants.LIST_FILTER_TYPE));
       ActivityAllSelectData listData = new ActivityAllSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(

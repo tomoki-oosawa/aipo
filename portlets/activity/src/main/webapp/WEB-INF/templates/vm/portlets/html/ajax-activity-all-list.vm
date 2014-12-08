@@ -20,6 +20,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 ## ---------------------------------------------------------------------------
+#macro(ALsetCategoryFilterList $category $title)
+#if($category=='all'||  $utils.isActive($category))
+<li #if($!result.CurrentCategory == $category) class="selected" #end data-param=$!{category}><a href="javascript:void(0)"  #if($!result.CurrentCategory == $!{category}) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$title</a></li>
+#end
+#end
 <!-- Start Contents Area -->
 #AUIcontentsAreaHeader()
 
@@ -100,19 +105,32 @@ $l10n.COMMON_UPDATE_DATE
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
- <div>
-    <p class="caption">$l10n.COMMON_GROUP</p>
-    <ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
-      <li data-param="0" #if("$!result.postId"==""||"$!result.postId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"==""||"$!result.postId"=="0") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$l10n.ACTIVITY_ALL_GROUP</a></li>
-    #foreach($record in $result.postList)
-      <li data-param="$!record.Name" #if("$!result.postId"=="$!record.Name") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"=="$!record.Name") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
-    #end
-    #foreach($record in $result.PostMap)
-      <li data-param="$!record.GroupName" #if("$!result.postId"=="$!record.GroupName") class="selected" #end><a href="javascript:void(0);" #if("$!result.postId"=="$!record.GroupName") class="selected" #end onclick='aipo.msgboard.filterClick("$!portlet.ID",this,event)'>$!{record.PostName}</a></li>
-    #end
-    </ul>
-  </div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+		<p class="caption">$l10n.COMMON_GROUP</p>
+		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$l10n.ACTIVITY_ALL_GROUP</a></li>
+
+			#foreach($record in $result.postList)
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">$l10n.ACTIVITY_APP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
+			#ALsetCategoryFilterList('all' $l10n.ACTIVITY_ALL_APP)
+			#ALsetCategoryFilterList('Schedule' $l10n.ACTIVITY_SCHEDULE)
+			#ALsetCategoryFilterList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
+			#ALsetCategoryFilterList('Blog' $l10n.ACTIVITY_BLOG)
+			#ALsetCategoryFilterList('ToDo' $l10n.ACTIVITY_TODO)
+			#ALsetCategoryFilterList('Cabinet' $l10n.ACTIVITY_CABINET)
+			#ALsetCategoryFilterList('Gadget' $l10n.ACTIVITY_AIPO_APP)
+		</ul>
+	</div>
 </div>
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/activity-widgets.vm")
