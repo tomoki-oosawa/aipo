@@ -2255,8 +2255,6 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(31, '報告書（自分の報告書）管理�
 INSERT INTO EIP_T_ACL_ROLE VALUES(32,'報告書（他ユーザーの報告書）管理者',212,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(33,'報告書（報告書への返信）管理者',213,20,NULL);
 
-SELECT setval('pk_eip_t_acl_role',10000);
-
 INSERT INTO EIP_T_BLOG_THEMA VALUES(1,'未分類','',0,0,NULL ,NULL);
 SELECT setval('pk_eip_t_blog_thema',1);
 
