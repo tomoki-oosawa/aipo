@@ -58,6 +58,9 @@ public class TimelineScreen extends ALVelocityScreen {
       if (rundata.getParameters().containsKey("scrollTop")) {
         scrollTop = rundata.getParameters().getInt("scrollTop");
       }
+      if (rundata.getUserAgent().trim().indexOf("Mac") != -1) {
+        context.put("isMacOS", "true");
+      }
       TimelineSelectData listData = new TimelineSelectData();
       listData.initField();
       listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
