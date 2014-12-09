@@ -223,7 +223,7 @@ public class WebMailFormData extends ALAbstractFormData {
    */
   @Override
   public boolean validate(List<String> msgList) {
-    String delim = ",";
+    String delim = ",;";
     if (to.validate(msgList)
       && !WebMailUtils.checkAddress(to.getValue(), delim)) {
       msgList.add("『 <span class='em'>宛先</span> 』を正しく入力してください。");
@@ -356,7 +356,7 @@ public class WebMailFormData extends ALAbstractFormData {
         map = null;
       }
 
-      String delim = ",";
+      String delim = ",;";
 
       // オブジェクトモデルを取得
       EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
