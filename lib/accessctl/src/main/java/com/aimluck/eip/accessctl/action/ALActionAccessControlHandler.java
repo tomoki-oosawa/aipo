@@ -23,9 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,7 +35,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SQLTemplate;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
@@ -253,26 +249,17 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
    */
   @Override
   public void insertDefaultRole(int uid) throws Exception {
-    int role = ALAccessControlConstants.ROLE_NUM;
     TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
 
-    ObjectId oidg =
-      new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, 1);
-    Expression exp1 =
-      ExpressionFactory.matchAllDbExp(
-        oidg.getIdSnapshot(),
-        Expression.GREATER_THAN_EQUAL_TO);
+    // デフォルトロールはcreat_dateがない
+    StringBuilder sql =
+      new StringBuilder().append("SELECT * FROM eip_t_acl_role ").append(
+        " WHERE create_date IS NULL");
 
-    ObjectId oidl =
-      new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, role);
-    Expression exp2 =
-      ExpressionFactory.matchAllDbExp(
-        oidl.getIdSnapshot(),
-        Expression.LESS_THAN_EQUAL_TO);
+    SQLTemplate<EipTAclRole> sqltemp =
+      Database.sql(EipTAclRole.class, String.valueOf(sql));
 
-    SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
-    query.setQualifier(exp1.andExp(exp2));
-    List<EipTAclRole> list = query.fetchList();
+    List<EipTAclRole> list = sqltemp.fetchList();
 
     for (EipTAclRole role2 : list) {
       EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
