@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -259,7 +260,52 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
     SQLTemplate<EipTAclRole> sqltemp =
       Database.sql(EipTAclRole.class, String.valueOf(sql));
 
+    /*-
     List<EipTAclRole> list = sqltemp.fetchList();
+    for(EipTAclRole role : list) {
+      EipTAclPortletFeature feature =
+          Database.get(EipTAclPortletFeature.class, role.getFeatureId());
+      role.setEipTAclPortletFeature(feature); 
+    }
+     */
+
+    List<DataRow> fetchList = sqltemp.fetchListAsDataRow();
+    List<EipTAclRole> list = new ArrayList<EipTAclRole>();
+    for (DataRow row : fetchList) {
+      EipTAclRole object = Database.objectFromRowData(row, EipTAclRole.class);
+
+      EipTAclPortletFeature feature =
+        Database.get(EipTAclPortletFeature.class, row.get("feature_id"));
+      object.setEipTAclPortletFeature(feature);
+
+      list.add(object);
+    }
+
+    // // original ////
+    // ObjectId oidg =
+    // new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, 1);
+    // Expression exp1 =
+    // ExpressionFactory.matchAllDbExp(
+    // oidg.getIdSnapshot(),
+    // Expression.GREATER_THAN_EQUAL_TO);
+    //
+    // ObjectId oidl =
+    // new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, 10000);
+    // Expression exp2 =
+    // ExpressionFactory.matchAllDbExp(
+    // oidl.getIdSnapshot(),
+    // Expression.LESS_THAN_EQUAL_TO);
+    //
+    // SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
+    // query.setQualifier(exp1.andExp(exp2));
+    // List<EipTAclRole> list = query.fetchList();
+    // // ?original ////
+
+    for (EipTAclRole role2 : list) {
+      EipTAclPortletFeature eipTAclPortletFeature =
+        role2.getEipTAclPortletFeature();
+      eipTAclPortletFeature.equals(null);
+    }
 
     for (EipTAclRole role2 : list) {
       EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
