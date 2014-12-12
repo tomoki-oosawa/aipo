@@ -23,7 +23,9 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -53,6 +55,7 @@ import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -451,6 +454,15 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (model == null) {
         return false;
       }
+      List<String> recipients = new ArrayList<String>();
+      @SuppressWarnings("unchecked")
+      List<EipTMessageRoomMember> list = model.getEipTMessageRoomMember();
+      for (EipTMessageRoomMember member : list) {
+        recipients.add(member.getLoginName());
+      }
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(model.getRoomId()));
+
       List<EipTMessageFile> files =
         MessageUtils.getEipTMessageFilesByRoom(model.getRoomId());
 
@@ -462,6 +474,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.delete(model);
 
       Database.commit();
+
+      ALPushService.pushAsync("messagev2_delete", params, recipients);
     } catch (Throwable t) {
       Database.rollback();
       logger.error("MessageRoomFormData.deleteFormData", t);
