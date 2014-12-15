@@ -815,6 +815,9 @@ ul.hdTools .dropdown:before {
   height: 44px;
   text-decoration: none;
   color: #999999;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .messageSummary li a .name, .messageUserlist li a .name {
   color: white;
