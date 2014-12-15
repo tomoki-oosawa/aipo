@@ -109,7 +109,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -375,6 +375,25 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       Date now = new Date();
 
+      List<Integer> userIdsBefore = new ArrayList<Integer>();
+      @SuppressWarnings("unchecked")
+      List<EipTMessageRoomMember> list = model.getEipTMessageRoomMember();
+      for (EipTMessageRoomMember member : list) {
+        userIdsBefore.add(member.getUserId());
+      }
+      List<Integer> userIdsAfter = new ArrayList<Integer>();
+      for (ALEipUser user : memberList) {
+        userIdsAfter.add((int) user.getUserId().getValue());
+      }
+      userIdsBefore.removeAll(userIdsAfter);
+
+      List<String> recipients = new ArrayList<String>();
+      for (EipTMessageRoomMember member : list) {
+        if (userIdsBefore.contains(member.getUserId())) {
+          recipients.add(member.getLoginName());
+        }
+      }
+
       Database.deleteAll(model.getEipTMessageRoomMember());
 
       boolean isFirst = true;
@@ -429,6 +448,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
+
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(roomId));
+      ALPushService.pushAsync("messagev2_delete", params, recipients);
 
     } catch (Throwable t) {
       Database.rollback();
