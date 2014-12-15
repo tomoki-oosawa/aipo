@@ -667,6 +667,7 @@ ul.hdTools .dropdown:before {
 .dropdown .foot,
 .activityPopup .foot, .supportPopup .foot {
   padding: 8px 10px;
+  border-top: solid 1px #d2d2d2;
 }
 .dropdown a, .dropdown input, .dropdown button,
 .activityPopup a,
@@ -713,8 +714,14 @@ ul.hdTools .dropdown:before {
 }
 .dropdown_list li {
   padding: 0;
-  border-bottom: solid 1px #ededed;
+  border-top: solid 1px #ededed;
   background-image: none;
+}
+.dropdown_list li:first-child {
+  border-top: none;
+}
+.dropdown_list li > a {
+  position: relative;
 }
 .dropdown_list li > a > .avatar {
   position: absolute;
