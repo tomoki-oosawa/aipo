@@ -92,14 +92,14 @@ $!record.TitleText</div>
 <div class="foot">
   <div class="floatLeft">
 #if($!notifySupport)
-    <input type="button" class="auiButtonSmall" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.container.gadgetService.requestDesktopNotifyEnable();" value="$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end">
+    <input type="button" class="auiButton" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.container.gadgetService.requestDesktopNotifyEnable();" value="$l10n.ACTIVITY_DESKTOP#if($!desktopNotification && $!notifyPermission)$l10n.ACTIVITY_INVALID#else$l10n.ACTIVITY_VALID#end">
 #end
   </div>
 #if($result.List.size() > 0)
 <div class="floatRight">
 <div class="count">$from - $to / $count</div>
 #if ($pages > 1)
-<div class="auiSelectButtonSmall floatLeft">
+<div class="auiSelectButton floatLeft">
 <ul class="floatLeft">
 #if($currentPage > 1) #set($pre = $currentPage - 1)
 <li title="$l10n.ACTIVITY_PREVIOUS"><a href="javascript:void(0);" onclick="dijit.byId('activityListPane').viewPage('?template=ActivityListScreen&start=$pre');" title="$l10n.ACTIVITY_PREVIOUS" class="first arrow"><i class="icon-caret-left"></i></a></li>
