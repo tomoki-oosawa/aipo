@@ -18,9 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 ## ---------------------------------------------------------------------------
- <div class="meta">
-        <a href="javascript:void(0)" onclick="aipo.fileupload.hideImageDialog()"><i class="icon-remove"></i></a>
-    </div>
+
  <div class="imgBody">
 	<div class="indicatorDialog center"><i class="auiIcon auiIconIndicator"></i> $l10n.FILEUPLOAD_READING</div></div>
  	<a href="javascript:void(0)">

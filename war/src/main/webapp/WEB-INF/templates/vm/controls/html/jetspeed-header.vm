@@ -122,7 +122,7 @@ limitations under the License.
 											<input type="hidden" name="userId" value="" />
  											<input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
 											<div class="tlInputMention relative">
-												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
+												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea>
 											</div>
 
 											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
