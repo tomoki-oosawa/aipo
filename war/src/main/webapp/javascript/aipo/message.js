@@ -756,17 +756,6 @@ aipo.message.onPaste = function(input) {
     }, 100);
 }
 
-aipo.message.inputHandle = null;
-aipo.message.onFocus = function(input) {
-    if(!aipo.message.inputHandle) {
-        aipo.message.inputHandle = dojo.connect(input, "onkeydown", null, function(e) {
-            if (e.ctrlKey && e.keyCode == 13) {
-                this.form.onsubmit();
-            }
-        });
-	}
-}
-
 aipo.message.read = function(room_id) {
     var messageRoomUnreadCount = dojo.byId("messageRoomUnreadCount" + room_id);
     if (messageRoomUnreadCount) {

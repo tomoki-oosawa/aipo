@@ -827,9 +827,6 @@ public class TimelineUtils {
 
       // documentからmetaタグのcharsetを読み込む
       Document document = parser.getDocument();
-      if (document == null) {
-        logger.error("[TimelineUtils] parser.getDocument() is Null");
-      }
       String metaTagCharset = getMetaTagCharset(document);
       if (metaTagCharset != null && !metaTagCharset.equals(contentTypeCharset)) {
         // デフォルトのcharsetと異なっていた場合、新しいcharsetで再読み込み
@@ -852,9 +849,6 @@ public class TimelineUtils {
         parser.setFeature("http://xml.org/sax/features/namespaces", false);
         parser.parse(source);
         document = parser.getDocument();
-        if (document == null) {
-          logger.error("[TimelineUtils] parser.getDocument() is Null");
-        }
       }
 
       reader.close();
@@ -863,10 +857,8 @@ public class TimelineUtils {
       if (!"UTF-8".equals(defaultCharset)) {
         return getDocument(string, "UTF-8");
       }
-      logger.error("[TimelineUtils]", e);
       return null;
     } catch (Exception ex) {
-      logger.error("[TimelineUtils]", ex);
       return null;
     }
   }
