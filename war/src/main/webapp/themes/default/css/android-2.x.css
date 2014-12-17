@@ -44,3 +44,10 @@
 #gantt_area .gantt_area_day td {
   height: 20px;
 }
+
+/***************************************************
+	message
+--------------------------------------------------*/
+.messageSummary .nrCount {
+  line-height: 15px;
+}
