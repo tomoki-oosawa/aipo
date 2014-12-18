@@ -1299,7 +1299,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         var hour = (startHour > 9)? startHour : "0" + startHour;
         var minute = (startMinute > 1) ? startMinute*(60/12): "0" + startMinute*(60/12);
         var id = this.dragSource.count;
-        dojo.byId('scheduleDivStartTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
         this.dragSource.schedule.startDateHour = hour;
         this.dragSource.schedule.startDateMinute = minute;
         this.dragSource.schedule.startDate = hour + ':'+ minute;
@@ -1311,17 +1310,22 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         hour = (endHour > 9)? endHour : "0" + endHour;
         minute = (endMinute > 1) ? endMinute*(60/12): "0" + endMinute*(60/12);
 
-        dojo.byId('scheduleDivEndTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
         this.dragSource.schedule.endDateHour = hour;
         this.dragSource.schedule.endDateMinute = minute;
         this.dragSource.schedule.endDate = hour + ':'+ minute;
-        dojo.byId('scheduleDivSepalater-'+ id + '-' + this.portletId).innerHTML = '-';
+
         if(!this.isMoved && (
                 this.startStart_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + startHour + '-' + startMinute*(60/12)
                 || this.startEnd_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + endHour + '-' +  endMinute*(60/12))){
             this.isMoved=true;
             dojo.style(this.node, "opacity", 0.5);
             this.node.style.zIndex = 999;
+        }
+
+        if(this.isMoved) {
+            dojo.byId('scheduleDivStartTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
+            dojo.byId('scheduleDivEndTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
+            dojo.byId('scheduleDivSepalater-'+ id + '-' + this.portletId).innerHTML = '-';
         }
         return;
     },
