@@ -567,7 +567,7 @@ aipo.message.fixMessageWindow = function() {
     }
     if (dojo.byId("dd_message") != null) {
         var minusH = 55 + 40 + 35 + 10;
-        var w = document.documentElement.clientWidth - 20;
+        var w = dojo.byId("wrapper").clientWidth - 20;
         var h = document.documentElement.clientHeight - minusH;
         var tabh = document.documentElement.clientHeight - (minusH + 106);
         dojo.byId("dd_message").style.width = w + "px";
