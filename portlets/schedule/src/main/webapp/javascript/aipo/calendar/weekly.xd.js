@@ -1213,8 +1213,6 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
 
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
-        dojo.style(this.node, "opacity", 0.5);
-        this.node.style.zIndex = 999;
         this.startY = this._pageY;
         this.startAbsoluteY = dojo._abs(dojo.byId(this.node), true).y;
 
@@ -1240,7 +1238,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         lastScroll = dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;
     },
     onKeyPress: function(e){
-        if(e.ctrlKey) {
+        if(e.ctrlKey && this.isMoved) {
             dojo.style(this.tmpDraggable, "opacity", 0.3);
         } else {
             dojo.style(this.tmpDraggable, "opacity", 0.0);
@@ -1318,9 +1316,12 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         this.dragSource.schedule.endDateMinute = minute;
         this.dragSource.schedule.endDate = hour + ':'+ minute;
         dojo.byId('scheduleDivSepalater-'+ id + '-' + this.portletId).innerHTML = '-';
-        if(this.startStart_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + startHour + '-' + startMinute*(60/12)
-                || this.startEnd_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + endHour + '-' +  endMinute*(60/12)){
+        if(!this.isMoved && (
+                this.startStart_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + startHour + '-' + startMinute*(60/12)
+                || this.startEnd_date != ptConfig[this.portletId].jsonData.date[this.dragSource.schedule.index].substring(0, 11) + endHour + '-' +  endMinute*(60/12))){
             this.isMoved=true;
+            dojo.style(this.node, "opacity", 0.5);
+            this.node.style.zIndex = 999;
         }
         return;
     },
