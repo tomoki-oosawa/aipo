@@ -1291,6 +1291,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         var hour = (startHour > 9)? startHour : "0" + startHour;
         var minute = (startMinute > 1) ? startMinute*(60/12): "0" + startMinute*(60/12);
         var id = this.dragSource.count;
+        var startTime =hour + ':'+ minute;
         this.dragSource.schedule.startDateHour = hour;
         this.dragSource.schedule.startDateMinute = minute;
         this.dragSource.schedule.startDate = hour + ':'+ minute;
@@ -1315,7 +1316,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
 
         if(this.isMoved) {
-            dojo.byId('scheduleDivStartTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
+            dojo.byId('scheduleDivStartTime-'+ id + '-' + this.portletId).innerHTML = startTime;
             dojo.byId('scheduleDivEndTime-'+ id + '-' + this.portletId).innerHTML = hour + ':'+ minute;
             dojo.byId('scheduleDivSepalater-'+ id + '-' + this.portletId).innerHTML = '-';
         }
