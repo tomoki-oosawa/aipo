@@ -39,10 +39,6 @@ $!set.Controller.getContent($data)
 </table>
 #end
 
-#if(!$!isMypage)
-<h3>$l10n.WAR_PAGE_DELETE</h3>
-<div align="center"><input name="eventSubmit_doCancel" class="auiButtonAction" type="button" value="$l10n.WAR_PAGE_DO_DELETE" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{js_peid}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})"></div>
-#end
 #ALspacebothfooter()
 
 <script language="JavaScript" type="text/javascript">
