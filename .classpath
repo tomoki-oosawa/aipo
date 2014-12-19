@@ -185,8 +185,6 @@
 	<classpathentry kind="var" path="M2_REPO/info/bliki/wiki/bliki-core/3.0.19/bliki-core-3.0.19.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/jetspeed/aipo-jetspeed/7.0.2/aipo-jetspeed-7.0.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/gnu/inet/libidn/1.15/libidn-1.15.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/postgresql/postgresql/9.3-1101-jdbc3/postgresql-9.3-1101-jdbc3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.29/mysql-connector-java-5.1.29.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easymock/easymock/3.2/easymock-3.2.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
