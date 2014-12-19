@@ -271,8 +271,12 @@ table.center {
   padding: 2px;
 }
 
+.sentence {
+  font-size: 14px;
+}
+
 .small {
-  font-size: .9em;
+  font-size: 11px;
   line-height: 1.2;
 }
 
@@ -288,7 +292,7 @@ table.center {
 
 .caution {
   color: #DC0033;
-  font-size: .96em;
+  font-size: 1em;
 }
 
 .caution .em {
@@ -1641,7 +1645,8 @@ span.dispUser {
   display: inline-block;
   padding: 2px 4px;
   margin-top: 3px;
-  font-size: 0.9em;
+  font-size: 11px;
+  line-height: 15px;
   color: #ffffff;
 }
 

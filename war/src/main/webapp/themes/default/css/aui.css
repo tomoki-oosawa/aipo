@@ -140,7 +140,7 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   background-color: #f0f0f0;
 }
@@ -868,7 +868,7 @@ ul.hdTools .dropdown:before {
   line-height: 13px;
   margin: 0 3px 0 0;
   padding: 0 2px;
-  font-size: 9px;
+  font-size: 10px;
   text-align: center;
   text-decoration: none;
   background-color: #ff3333;
@@ -1016,7 +1016,7 @@ ul.hdTools .dropdown:before {
   margin: 120px 0 170px;
 }
 .emptyMessage [class*=icon-] {
-  font-size: 10em;
+  font-size: 120px;
   color: #d2d2d2;
   text-shadow: 0 -1px 0 #b8b8b8;
 }
@@ -1285,7 +1285,7 @@ button {
   padding: 0 5px;
   height: 24px !important;
   line-height: 24px !important;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 input[type=submit].auiButtonSmall,
@@ -1610,7 +1610,7 @@ button[disabled]:active {
 
 .counter {
   float: left !important;
-  font-size: 9px;
+  font-size: 10px;
   height: 13px;
   min-width: 11px;
   line-height: 13px !important;
@@ -1863,7 +1863,7 @@ button[disabled]:active {
 .rightBtn {
   text-align: right;
   margin: 0;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* imgPopup */
@@ -2301,7 +2301,7 @@ button[disabled]:active {
   height: 43px;
   padding: 0;
   color: #fff;
-  font-size: 1.2em;
+  font-size: 14px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   border: none;
   background: url(../images/login_btn_back.png) 0px 0px no-repeat;
@@ -2536,7 +2536,7 @@ button[disabled]:active {
 
 #auiContentsArea h2, h2.caption {
   margin: 0;
-  font-size: 1.2em;
+  font-size: 16px;
 }
 
 #auiThreeClumns {
@@ -3110,6 +3110,9 @@ button[disabled]:active {
   margin-left: 60px;
   word-break: break-all;
 }
+#auiContentsArea .entryText {
+  font-size: 14px;
+}
 
 .entryHeader {
   padding: 0 0 10px 0;
@@ -3507,6 +3510,9 @@ ul.attachments {
 .timeline .comments .messageContents .time {
   margin-bottom: 0;
 }
+.timeline .comments .messageContents .body {
+  font-size: 13px;
+}
 .timeline .comments .message {
   margin: 0;
   padding: 5px !important;
@@ -3521,7 +3527,7 @@ ul.attachments {
 }
 .timeline .commentCaption {
   padding: 3px 5px;
-  font-size: smaller;
+  font-size: 11px;
 }
 .timeline .commentInputDummy {
   padding: 5px;
@@ -3552,14 +3558,13 @@ ul.attachments {
 }
 .messageContents .body {
   padding: 5px 0;
-  line-height: 1.5;
+  font-size: 14px;
 }
 .messageContents .body .more {
   margin: 0;
 }
 .messageContents .time {
-  font-size: 80%;
-  *font-size: 75%;
+  font-size: 11px;
   color: #434343;
 }
 .messageContents .time [class^="icon-"] {
@@ -3610,6 +3615,10 @@ ul.attachments {
 }
 
 /* clipBloard */
+.tlClipBoard {
+  font-size: 13px;
+}
+
 .tlClipImage {
   float: left;
   max-width: 90px;
@@ -3630,12 +3639,8 @@ ul.attachments {
   display: table-cell;
 }
 
-.tlClipTitle {
-  font-size: 12px;
-}
-
 .tlClipUrl {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .tlClipBody {
@@ -4278,6 +4283,9 @@ ul.attachments {
 /***************************************************
 	auiWikiContent
 --------------------------------------------------*/
+.auiWikiContent {
+  font-size: 14px;
+}
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
   margin: 1em 0 !important;
 }
@@ -4932,7 +4940,7 @@ html > body .auiLoadWrapper .loader {
   text-align: center;
 }
 .errorbox h1 {
-  font-size: 1.2em;
+  font-size: 16px;
   margin: 1em 0;
 }
 .errorbox ul, .errorbox ol {
