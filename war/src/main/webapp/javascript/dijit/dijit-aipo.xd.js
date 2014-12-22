@@ -6209,7 +6209,12 @@ if(!dojo._hasResource["dijit.form.Button"]){ //_hasResource checks added by buil
 
 		_onBlur: function(){
 			// summary: called magically when focus has shifted away from this widget and it's dropdown
-			this._closeDropDown();
+			var userAgent = window.navigator.userAgent.toLowerCase();
+			if(userAgent.indexOf("android") == -1 && userAgent.indexOf("iphone") == -1){
+				this._closeDropDown();
+			} else if(document.activeElement.toString().indexOf("HTMLSelectElement") == -1) {
+				this._closeDropDown();
+			}
 			// don't focus on button.  the user has explicitly focused on something else.
 		},
 
