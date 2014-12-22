@@ -2001,7 +2001,7 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  padding: 4px 11px !important;
+  padding: 5px 10px !important;
   margin: 0;
   text-decoration: none;
   text-overflow: ellipsis;

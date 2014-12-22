@@ -1953,14 +1953,20 @@ button[disabled]:active {
 }
 .auiPortlet .auiPortletHead .inner {
   background: url("../images/common/portlet_20140718.png") no-repeat left -100px;
+  height: 35px;
   padding: 10px;
   position: relative;
   overflow: hidden;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.auiPortlet .auiPortletBody .auiPortletHead > .inner {
+  padding: 0 !important;
 }
 .auiPortlet .auiPortletTitle {
   float: left;
   white-space: nowrap;
-  line-height: 15px;
 }
 .auiPortlet .auiPortletTool {
   background: url("../images/common/portlet_20140718.png") no-repeat right -200px;
@@ -1975,9 +1981,9 @@ button[disabled]:active {
   float: left;
   padding: 0 5px;
   background: #ffffff;
-  -webkit-box-shadow: -5px 0 3px white;
-  -moz-box-shadow: -5px 0 3px white;
-  box-shadow: -5px 0 3px white;
+  -moz-box-shadow: -5px 0 3px #ffffff;
+  -webkit-box-shadow: -5px 0 3px #ffffff;
+  box-shadow: -5px 0 3px #ffffff;
   white-space: nowrap;
 }
 .auiPortlet .auiPortletSetting {
@@ -3131,7 +3137,7 @@ button[disabled]:active {
 }
 
 .dojoDndItem .entryFooter {
-  font-size: 8pt;
+  font-size: 11px;
 }
 
 /***************************************************
@@ -3765,7 +3771,6 @@ ul.attachments {
   height: 32px !important;
   line-height: 33px !important;
   white-space: nowrap;
-  font-size: 11px;
   cursor: pointer;
 }
 
