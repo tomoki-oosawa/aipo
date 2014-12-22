@@ -447,6 +447,10 @@ public class ALCommonUtils {
     return ALEipUtils.isAndroid2Browser(rundata);
   }
 
+  public static boolean isOldiPhoneBrowser(RunData rundata) {
+    return ALEipUtils.isOldiPhoneBrowser(rundata);
+  }
+
   /**
    * 指定したポートレットが利用可能かどうかを返す
    * 

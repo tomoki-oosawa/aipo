@@ -2246,6 +2246,26 @@ public class ALEipUtils {
     }
   }
 
+  /***
+   * アクセスしてきたユーザが利用するブラウザ名がiPhoneでバージョンが7未満
+   * 
+   * @param rundata
+   * @return iPhoneでバージョンが7未満の場合はtrue
+   */
+  public static boolean isOldiPhoneBrowser(RunData rundata) {
+    if (isMatchUserAgent("iPhone", rundata)) {
+      String iOSver = getIOSVersion(rundata.getUserAgent().trim());
+      if (iOSver.length() > 1) {
+        Integer num = Integer.parseInt(iOSver.substring(0, 1));
+        if (num.intValue() < 7) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
   public static String getClientVersion(RunData rundata) {
     return getClientVersion(rundata.getUserAgent().trim());
   }
