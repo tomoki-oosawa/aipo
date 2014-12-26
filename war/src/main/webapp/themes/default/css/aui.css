@@ -797,57 +797,51 @@ ul.hdTools .dropdown:before {
   margin-bottom: 10px;
 }
 
-.messageSummary, .messageUserlist {
-  font-size: 11px;
-}
-.messageSummary li, .messageUserlist li {
+.messageSummary li, .messageUserlist ul li {
   position: relative;
   padding: 0;
   background-image: none;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px #000;
 }
-.messageSummary li a, .messageUserlist li a {
+.messageSummary li a, .messageUserlist ul li a {
   display: block;
   height: 44px;
   text-decoration: none;
-  color: #999999;
+  color: #999;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.messageSummary li a .name, .messageUserlist li a .name {
-  color: white;
+.messageSummary li a .name, .messageUserlist ul li a .name {
+  color: #ffffff;
 }
-.messageSummary li a:hover, .messageUserlist li a:hover {
+.messageSummary li a:hover, .messageUserlist ul li a:hover {
   color: #ff9900;
-  background-color: #222222;
+  background-color: #222;
+  text-decoration: none;
 }
-.messageSummary li a:hover .name, .messageUserlist li a:hover .name {
+.messageSummary li a:hover span, .messageUserlist ul li a:hover span {
+  text-decoration: none;
+}
+.messageSummary li a:hover .name, .messageUserlist ul li a:hover .name {
   color: #ff9900;
 }
-.messageSummary li span, .messageUserlist li span {
+.messageSummary li span, .messageUserlist ul li span {
   display: block;
 }
-.messageSummary .avatar, .messageUserlist .avatar {
+.messageSummary li .latest, .messageSummary li .date, .messageUserlist ul li .latest, .messageUserlist ul li .date {
+  font-size: 11px;
+}
+.messageSummary .avatar, .messageUserlist ul .avatar {
   position: absolute;
   top: 0;
   left: 0;
   padding: 6px;
 }
-.messageSummary .active, .messageUserlist .active {
-  background-color: #ffffff;
-}
-.messageSummary .active a, .messageSummary .active a:hover, .messageUserlist .active a, .messageUserlist .active a:hover {
-  color: #999 !important;
-  background-color: #ffffff;
-}
-.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest, .messageUserlist .active a .date, .messageUserlist .active a .latest, .messageUserlist .active a:hover .date, .messageUserlist .active a:hover .latest {
-  color: #666 !important;
-}
-.messageSummary .active a .name, .messageSummary .active a:hover .name, .messageUserlist .active a .name, .messageUserlist .active a:hover .name {
-  color: #000;
-}
 
+.messageSummary {
+  position: relative;
+}
 .messageSummary li a {
   padding: 6px 10px 6px 45px;
 }
@@ -877,6 +871,21 @@ ul.hdTools .dropdown:before {
   -webkit-border-radius: 3px;
   border-radius: 3px;
 }
+
+.messageSummary .active, .messageUserlist .active {
+  background-color: #ffffff;
+}
+.messageSummary .active a, .messageSummary .active a:hover, .messageUserlist .active a, .messageUserlist .active a:hover {
+  color: #999 !important;
+  background-color: #ffffff;
+}
+.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest, .messageUserlist .active a .date, .messageUserlist .active a .latest, .messageUserlist .active a:hover .date, .messageUserlist .active a:hover .latest {
+  color: #666 !important;
+}
+.messageSummary .active a .name, .messageSummary .active a:hover .name, .messageUserlist .active a .name, .messageUserlist .active a:hover .name {
+  color: #000;
+}
+
 .messageUserlist ul li a {
   line-height: 45px;
   padding-left: 45px;
