@@ -179,8 +179,8 @@ aipo.customize.refixMenuSchedule = function(portlet_id){
     	dojo.query("#tableWrapper_" + portlet_id).style("z-index","1");
     	current_portlet_id = portlet_id;
     } else {
-    	left = html.getBoundingClientRect().left;
-    	top = html.getBoundingClientRect().top;
+    	left = html.getBoundingClientRect().left+window.scrollX;
+    	top = html.getBoundingClientRect().top+window.scrollY;
     }
     menuNode.style('left', left + "px");
     menuNode.style('top', top + html.offsetHeight + "px");

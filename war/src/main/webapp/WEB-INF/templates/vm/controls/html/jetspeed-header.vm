@@ -48,11 +48,7 @@ limitations under the License.
 											<div class="menubar z-upper body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
 											<ul>
 												<li>
-												#if (${client} == "IPAD")
-													<a href="${action.Link}" title="${action.Alt}">設定</a>
-												#else
-													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
-					    						#end
+													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink');#if (${client} == 'IPAD')aipo.customize.hideMenu();#end">設定</a>
 												</li>
 												#if($!tab.Title.Value != "マイページ")
 												<li class="last">

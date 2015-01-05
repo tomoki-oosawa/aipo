@@ -183,7 +183,7 @@
 	<classpathentry kind="var" path="M2_REPO/net/sourceforge/nekohtml/nekohtml/1.9.15/nekohtml-1.9.15.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/drewnoakes/metadata-extractor/2.6.2/metadata-extractor-2.6.2.jar"/>
 	<classpathentry kind="var" path="M2_REPO/info/bliki/wiki/bliki-core/3.0.19/bliki-core-3.0.19.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/jetspeed/aipo-jetspeed/7.0.2/aipo-jetspeed-7.0.2.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/jetspeed/aipo-jetspeed/8.0.0/aipo-jetspeed-8.0.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/gnu/inet/libidn/1.15/libidn-1.15.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easymock/easymock/3.2/easymock-3.2.jar"/>
 	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
