@@ -3851,7 +3851,6 @@ public class ScheduleUtils {
       }
       if (viewStart != null && viewEnd != null) {
         body.append(" AND ( ");
-        body.append(" ( ");
         body.append(" t4.start_date <= '");
         body
           .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
@@ -3860,8 +3859,6 @@ public class ScheduleUtils {
         body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
           .format(viewStart));
         body.append("' ");
-        body.append(" ) ");
-        body.append(" OR  t4.repeat_pattern NOT IN ('N', 'S') ");
         body.append(" ) ");
       }
     }
