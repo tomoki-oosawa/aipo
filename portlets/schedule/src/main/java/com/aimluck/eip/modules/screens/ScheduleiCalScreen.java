@@ -184,11 +184,30 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
-          recur.setUntil(new DateTime(cEnd.getTime()));
-          cEnd.set(Calendar.YEAR, cStart.get(Calendar.YEAR));
-          cEnd.set(Calendar.MONTH, cStart.get(Calendar.MONTH));
-          cEnd.set(Calendar.DATE, cStart.get(Calendar.DATE));
-          dEnd = new DateTime(cEnd.getTime());
+          if (endDate.compareTo(cEnd.getTime()) < 0) {
+            recur.setUntil(new DateTime(endDate));
+          } else {
+            recur.setUntil(new DateTime(cEnd.getTime()));
+          }
+          if (cStart.getTime().compareTo(startDate) < 0) {
+            int hour = cStart.get(Calendar.HOUR_OF_DAY);
+            int min = cStart.get(Calendar.MINUTE);
+            cStart.setTime(currentStartDate);
+            cStart.set(Calendar.HOUR_OF_DAY, hour);
+            cStart.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(currentStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
+            dEnd = new DateTime(cEnd.getTime());
+          } else {
+            cEnd.set(Calendar.YEAR, cStart.get(Calendar.YEAR));
+            cEnd.set(Calendar.MONTH, cStart.get(Calendar.MONTH));
+            cEnd.set(Calendar.DATE, cStart.get(Calendar.DATE));
+            dEnd = new DateTime(cEnd.getTime());
+          }
         } else {
           recur.setUntil(new DateTime(endDate.getTime()));
           int hour = cStart.get(Calendar.HOUR_OF_DAY);
