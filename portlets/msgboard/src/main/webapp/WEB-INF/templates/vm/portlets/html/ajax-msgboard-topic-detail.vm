@@ -56,7 +56,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="border-bottom:none;">
+				<td style="border-bottom:none;" class="sentence">
 							$!{result.ParentTopic.Note}
 							#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
 								<div style="padding-top:15px;">
