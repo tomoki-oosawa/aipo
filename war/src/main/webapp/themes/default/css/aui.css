@@ -782,9 +782,6 @@ ul.hdTools .dropdown:before {
 #dd_message .mainBlock > .contents {
   padding: 10px 10px 0 10px;
 }
-#dd_message .mainBlock .body {
-  font-size: 13px;
-}
 #dd_message .timelineOuter .message:first-child {
   padding-top: 0 !important;
 }
