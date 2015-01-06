@@ -24,7 +24,7 @@
 #ALprintoptionheader()
 #ALprintoptionfooter()
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;

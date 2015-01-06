@@ -23,7 +23,7 @@
 #set($enable_userlist = false)
 #end
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 //<![CDATA[
 
 var tmpUsername = "";
@@ -286,7 +286,7 @@ $l10n.WAR_CANNOT_LOGIN_COMMON_USER
 </form>
 </div></div>
 <!-- /auiLoginBox -->
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
     <!--
 init();
 

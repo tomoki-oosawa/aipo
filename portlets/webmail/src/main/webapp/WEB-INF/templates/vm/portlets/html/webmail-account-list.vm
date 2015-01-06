@@ -23,7 +23,7 @@
 
 #ALjavascript("javascript/aipo/webmail/form.js")
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.widget.AddressbookDialog");

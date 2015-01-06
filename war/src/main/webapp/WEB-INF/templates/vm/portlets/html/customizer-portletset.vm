@@ -25,7 +25,7 @@
 #set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["$l10n.WAR_SET_UP_LAYOUT", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["$l10n.WAR_ADD_APP", ""]])
 #end
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 dojo.provide("aipo.portletset");
 //]]>

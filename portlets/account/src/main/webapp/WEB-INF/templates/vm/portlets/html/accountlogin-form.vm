@@ -22,7 +22,7 @@
 #if($config.getString("action.login.enable.select.userlist") != "true")
 #set($enable_userlist = false)
 #end
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 var tmpUsername = "";
@@ -285,7 +285,7 @@ $!data.Message
 </div></div>
 <!-- /auiLoginBox -->
 
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 init();
 

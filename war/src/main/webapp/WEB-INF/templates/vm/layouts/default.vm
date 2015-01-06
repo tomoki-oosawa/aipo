@@ -117,7 +117,7 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 
 </div>
 <!-- /WRAPPER -->
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 dojo.require("aimluck.widget.Dialog");

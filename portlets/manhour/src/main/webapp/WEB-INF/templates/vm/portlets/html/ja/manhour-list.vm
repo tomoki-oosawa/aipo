@@ -22,7 +22,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/manhour/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"manhour", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ManHourListScreen"))', reloadFunction:aipo.reloadPage };
     aipo.manhour.menuSelected = 0;

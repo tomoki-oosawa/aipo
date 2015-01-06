@@ -33,7 +33,7 @@
 
 
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
@@ -414,7 +414,7 @@ ToDo：$!{record.ToDoResultData.TodoName}
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');
