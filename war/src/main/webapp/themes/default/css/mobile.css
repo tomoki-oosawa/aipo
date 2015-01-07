@@ -1212,7 +1212,9 @@ ul.hdCommunications .num {
 #appsNavigation_v2 .anFooter .copyright {
   padding: 0 10px;
   line-height: 43px;
-  color: white;
+  font-size: inherit;
+  text-align: inherit;
+  color: #ffffff;
 }
 
 #appsNavigation_v2.anOpen {
