@@ -2179,6 +2179,13 @@ body.messageRoomList {
 body.messageRoomList .roundMainWrapper {
   background-color: #333 !important;
 }
+body.messageRoomList .auiPortlet {
+	overflow:hidden;
+}
+body.messageRoomList .auiPortlet,
+body.messageRoomList .auiPortletBody {
+  background-color: transparent !important;
+}
 
 .sideBlock {
   margin: -5px -5px -20px -5px;
