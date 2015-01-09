@@ -40,7 +40,6 @@
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css?$!{utils.CacheBust}" />
-<!--[if IE 7]><link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome-ie7.min.css" /><![endif]-->
 <style>
 .p10 td{
 padding:10px;
