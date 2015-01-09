@@ -132,7 +132,7 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: Helvetica, Arial, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
+  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
 }
 
 html, body {
@@ -141,7 +141,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 13px;
-  line-height: 1.38;
+  line-height: 1.4;
   background-color: #f0f0f0;
 }
 
