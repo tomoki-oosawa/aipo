@@ -38,6 +38,14 @@
       </plugins>
     </pluginManagement>
     <plugins>
+    <plugin>
+      <groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
+      <artifactId>htmlcompressor-maven-plugin</artifactId>
+      <version>1.0</version>
+      <configuration>
+        <goalPrefix>htmlcompressor</goalPrefix>
+      </configuration>
+    </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>

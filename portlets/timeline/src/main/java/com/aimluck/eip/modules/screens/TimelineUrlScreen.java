@@ -37,7 +37,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムライントピックの一覧を処理するクラスです。
- * 
+ *
  */
 public class TimelineUrlScreen extends ALVelocityScreen {
 
@@ -46,7 +46,7 @@ public class TimelineUrlScreen extends ALVelocityScreen {
     .getLogger(TimelineUrlScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
