@@ -404,7 +404,6 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />

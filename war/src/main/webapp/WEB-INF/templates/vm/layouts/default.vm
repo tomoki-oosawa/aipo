@@ -37,7 +37,6 @@
 	<meta name="format-detection" content="telephone=no"/>
 #end
 <link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link type="image/x-icon" rel="icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" />
 #else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" />
 #end
