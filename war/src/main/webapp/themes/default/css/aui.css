@@ -785,6 +785,9 @@ ul.hdTools .dropdown:before {
 #dd_message .timelineOuter .message:first-child {
   padding-top: 0 !important;
 }
+#dd_message .timelineOuter .timeline .messageContents {
+  margin-right: 60px;
+}
 #dd_message .subContents {
   float: right;
   width: 280px;
