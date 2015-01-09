@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/cabinet/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"cabinet", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetScreen"))', reloadFunction:aipo.reloadPage };

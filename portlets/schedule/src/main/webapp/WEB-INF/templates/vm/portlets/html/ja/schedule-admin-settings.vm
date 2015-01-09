@@ -23,7 +23,7 @@
 
 #ALjavascript("javascript/aipo/schedule_admin/form.js")
 #ALjavascript("javascript/aipo/widget/MemberAclSelectList.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.widget.MemberAclSelectList");

@@ -21,7 +21,7 @@
 #set ($navilist = [["$l10n.WORKFLOW_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.WORKFLOW_WORKFLOW_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"workflow", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowListScreen"))', reloadFunction:aipo.reloadPage };

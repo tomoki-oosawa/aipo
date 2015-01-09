@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/workflow_category/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"workflow_category", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowCategoryListScreen"))', reloadFunction:aipo.reloadPage };

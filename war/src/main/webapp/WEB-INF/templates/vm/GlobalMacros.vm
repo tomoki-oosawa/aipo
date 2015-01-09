@@ -27,14 +27,14 @@
 
 #* G L O B A L *#
 #macro(ALjavascriptCache $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file"></script>
+<script type="text/javascript" src="${external_resources_url}/$file"></script>
 #end
 #macro(ALjavascript $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
+<script type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
 #end
 
 #macro(ALjavascriptdefer $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}" defer="defer"></script>
+<script type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}" defer="defer"></script>
 #end
 
 
@@ -413,11 +413,11 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
     xDomainBasePath: '${external_resources_url}/javascript'
   };
 </script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
 #else
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
