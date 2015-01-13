@@ -1272,6 +1272,25 @@ button span,
   button {
     padding: 0 6px !important;
   }
+   input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button,
+  .auiButton,
+  .auiButtonAction,
+  .auiButtonBold,
+  .auiButtonSearch,
+  .auiButtonSmall,
+  .auiButtonDisabled,
+  .auiButtonIcon,
+  .auiButtonDummy,
+  .auiButtonIconDummy,
+  .auiSelectButton a,
+  .auiSelectButtonSmall a,
+  .auiWidget .auiSelectButton a,
+  .auiWidget .auiSelectButtonSmall a {
+    line-height: -moz-block-height;
+  }
 }
 
 *:first-child + html input[type=submit],
