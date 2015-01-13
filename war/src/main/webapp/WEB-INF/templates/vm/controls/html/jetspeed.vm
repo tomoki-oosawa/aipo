@@ -286,7 +286,7 @@ function setWrapperHeight() {
 				</ul>
         </div>
         <div class="anFooter">
-                <div class="copyright"> ${copyright_short} ${version} </div>
+                <div class="copyright"> ${copyright_short}&nbsp;·&nbsp;${version} </div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->
