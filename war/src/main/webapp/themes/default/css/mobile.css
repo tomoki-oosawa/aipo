@@ -2301,3 +2301,34 @@ body.messageRoomList .auiPortletBody {
 .hdSetting {
   display:none;
 }
+
+/***************************************************
+	row & col
+--------------------------------------------------*/
+.row {
+  display: block;
+  margin-right: -5px;
+}
+
+[class*=col-] {
+  display: block;
+  position: relative;
+  float: left;
+  padding-right: 5px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+[class*=col-] input[type=text],
+[class*=col-] input[type=password],
+[class*=col-] select {
+  width: 100%;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-3 {
+  width: 33.3%;
+}
