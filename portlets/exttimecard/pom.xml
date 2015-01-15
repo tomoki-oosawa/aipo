@@ -46,6 +46,31 @@
           </execution>
         </executions>
       </plugin>
+         <plugin>
+      <groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
+      <artifactId>htmlcompressor-maven-plugin</artifactId>
+      <version>1.3</version>
+      <executions>
+       <execution>
+       <phase>install</phase>
+        <goals>
+         <goal>html</goal>
+        </goals>
+       </execution>
+      </executions>
+      <configuration>
+        <goalPrefix>htmlcompressor</goalPrefix>
+         <enabled>true</enabled>
+         <removeComments>true</removeComments>
+         <removeMultiSpaces>true</removeMultiSpaces>
+         <javascriptHtmlSprite>false</javascriptHtmlSprite>
+           <srcFolder>${basedir}/src/main/webapp/WEB-INF/templates/vm</srcFolder>
+         <targetFolder>${basedir}/../../target/aipo/WEB-INF/templates/vm</targetFolder>
+         <fileExt>
+          <fileExt>vm</fileExt>
+         </fileExt>
+      </configuration>
+    </plugin>
       <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
