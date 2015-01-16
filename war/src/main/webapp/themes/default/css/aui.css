@@ -5087,3 +5087,13 @@ iframe.iframe_messagelist {
 .guideList .iconBox i{
 	font-size: 70px;
 }
+
+/***************************************************
+	copyright
+--------------------------------------------------*/
+.copyright {
+  padding: 10px;
+  text-align: right;
+  font-size: 11px;
+  color: #999;
+}
