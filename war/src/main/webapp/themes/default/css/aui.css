@@ -3142,22 +3142,23 @@ button[disabled]:active {
 }
 
 .entryHeader {
-  padding: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .entryFooter {
-  padding: 1em 0;
+  margin: 1em 0;
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+}
+
+.dojoDndItem .entryFooter .entryText {
+  margin: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 10px 0;
-}
-
-.dojoDndItem .entryFooter {
+  margin: 10px 0;
   font-size: 11px;
 }
 
