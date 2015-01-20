@@ -3217,9 +3217,16 @@ html > body input[type=password] {
 }
 
 select {
-  min-height: 32px;
+  height: 32px;
   padding: 5px;
   max-width: 100%;
+}
+
+select[multiple="multiple"] {
+  height: 8em;
+}
+select[multiple="multiple"] option {
+  padding-bottom: 1px;
 }
 
 form textarea {
