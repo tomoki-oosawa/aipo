@@ -36,10 +36,8 @@
 			<tr>
 				<td>
 					<div class="alignright">
-						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
-						#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
-						#end
 						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
+						#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
 						#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 						#end
 					</div>
@@ -95,6 +93,7 @@
 			<div class="clearfix">
 				<div class="alignright">
 					#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+					#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicDetailScreen').addQueryData('entityid',$entityid).addQueryData('topic_reply_id',${record.TopicId})" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
 					#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 					#end
 				</div>
