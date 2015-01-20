@@ -32,8 +32,8 @@ import com.aimluck.eip.msgboard.MsgboardTopicMultiDelete;
 import com.aimluck.eip.msgboard.MsgboardTopicReplyFormData;
 
 /**
- * 掲示板トピックをJSONデータとして出力するクラスです。 
- * 
+ * 掲示板トピックをJSONデータとして出力するクラスです。
+ *
  */
 public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
 
@@ -98,6 +98,16 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
         MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
         formData.initField();
         if (formData.doInsert(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if ("edit_reply".equals(mode)) {
+        MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
+        formData.initField();
+        if (formData.doUpdate(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray
