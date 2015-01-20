@@ -73,7 +73,8 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
       detailData.doViewDetail(this, rundata, context);
       if (detailData.showReplyForm()) {
         MsgboardTopicReplyFormData formData = new MsgboardTopicReplyFormData();
-        formData.setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY);
+        formData
+          .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC_REPLY);
         formData.initField();
         formData.doViewForm(this, rundata, context);
       }
