@@ -28,20 +28,16 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 #if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
 <title>${alias}</title>
-<meta name="description" content="" />
-<meta name="keywords" content="" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 <link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link type="image/x-icon" rel="icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css?$!{utils.CacheBust}" />
-<!--[if IE 7]><link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome-ie7.min.css" /><![endif]-->
 <style>
 .p10 td{
 padding:10px;
@@ -55,11 +51,11 @@ line-height:140%;
     xDomainBasePath: '${external_resources_url}/javascript'
   };
 </script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
 #else
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
@@ -113,7 +109,7 @@ $l10n.COMMON_NOT_REFLECT_MSG
 </tr>
 </table>
 </div>
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;

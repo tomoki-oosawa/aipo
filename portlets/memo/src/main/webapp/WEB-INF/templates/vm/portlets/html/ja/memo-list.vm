@@ -22,7 +22,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/memo/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"memo", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MemoListScreen"))', reloadFunction:aipo.reloadPage };

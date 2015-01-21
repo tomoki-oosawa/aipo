@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/exttimecardsystem/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"exttimecardsystem", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemMapListScreen"))', reloadFunction:aipo.reloadPage };

@@ -51,7 +51,7 @@
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
-<script language="JavaScript" type="text/JavaScript" defer="true">
+<script type="text/JavaScript" defer="true">
 //<![CDATA[
 
 dojo.byId("company_name").focus();

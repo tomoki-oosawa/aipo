@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 function onClick_Select(button){

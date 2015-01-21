@@ -21,7 +21,7 @@
 #set ($navilist = [["$l10n.SCHEDULE_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.SCHEDULE_SCHEDULE_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');
 
@@ -35,7 +35,7 @@
 //]]>
 </script>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     var portletId = '$!portlet.ID';
