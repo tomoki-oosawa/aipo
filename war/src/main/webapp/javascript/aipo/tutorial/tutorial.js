@@ -1,4 +1,4 @@
-dojo.provide('aipo.tutorial');
+/*dojo.provide('aipo.tutorial');
 
 aipo.tutorial.showDialog = function(url, portlet_id, callback) {
 	var dialog = dijit.byId("imageDialog");
@@ -19,6 +19,7 @@ aipo.tutorial.showDialog = function(url, portlet_id, callback) {
 		dialog.show();
 	}
 };
+
 
 aipo.tutorial.hideDialog = function() {
 	var dialog = dijit.byId("imageDialog");
@@ -99,14 +100,14 @@ dojo.provide("aipo.widget.TutorialDialogUnderlay");
 dojo.require("aimluck.widget.Dialog");
 
 dojo
-		.declare(
-				"aipo.widget.TutorialDialogUnderlay",
-				[ aimluck.widget.DialogUnderlay ],
-				{
-					templateString : "<div class='tutorialDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='tutorialDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
-				}
 
-		);
+.declare(
+		"aipo.widget.TutorialDialogUnderlay",
+		[ aimluck.widget.DialogUnderlay ],
+		{
+			templateString : "<div class='tutorialDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='tutorialDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
+		}
+);
 
 dojo
 		.declare(
@@ -159,3 +160,4 @@ dojo
 						aimluck.widget.Dialog.superclass.onLoad.call(this);
 					}
 				});
+*/

@@ -27,8 +27,9 @@ import org.apache.velocity.context.Context;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
- * 
+ *
  */
+
 public class TutorialScreen extends ALVelocityScreen {
 
   /** logger */
@@ -36,7 +37,7 @@ public class TutorialScreen extends ALVelocityScreen {
     .getLogger(TutorialScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

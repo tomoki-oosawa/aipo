@@ -35,16 +35,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
- * 
+ *
  */
 public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TutorialScreen.class.getName());
+    .getLogger(FileuploadYoutubeViewScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
