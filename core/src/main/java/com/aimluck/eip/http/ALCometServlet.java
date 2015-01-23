@@ -35,8 +35,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometProcessor;
+import org.apache.catalina.comet.CometEvent;
+import org.apache.catalina.comet.CometProcessor;
 
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
