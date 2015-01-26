@@ -53,21 +53,23 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
       @SuppressWarnings("unchecked")
       Iterator<Entry> iterator = portlets.getEntriesIterator();
 
-      boolean hasMressageEntry = false;
-      while (iterator.hasNext()) {
-        Entry next = iterator.next();
-        String parent = next.getParent();
-        if ("Message".equals(parent)) {
-          hasMressageEntry = true;
+      if (profile.getMediaType() == "html") {
+        boolean hasMressageEntry = false;
+        while (iterator.hasNext()) {
+          Entry next = iterator.next();
+          String parent = next.getParent();
+          if ("Message".equals(parent)) {
+            hasMressageEntry = true;
+          }
         }
-      }
 
-      if (!hasMressageEntry) {
-        PsmlEntry entry = new PsmlEntry();
-        entry.setId(JetspeedIdGenerator.getNextPeid());
-        entry.setParent("Message");
-        portlets.addEntry(entry);
-        PsmlManager.store(profile);
+        if (!hasMressageEntry) {
+          PsmlEntry entry = new PsmlEntry();
+          entry.setId(JetspeedIdGenerator.getNextPeid());
+          entry.setParent("Message");
+          portlets.addEntry(entry);
+          PsmlManager.store(profile);
+        }
       }
 
     } catch (ProfileException e) {
