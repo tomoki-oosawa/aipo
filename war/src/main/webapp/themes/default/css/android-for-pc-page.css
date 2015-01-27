@@ -1,0 +1,11 @@
+/* CSS Document */
+/***************************************************
+	mobileHeader
+--------------------------------------------------*/
+
+#auiHeader {
+  position: static !important;
+}
+.roundMainWrapper {
+  padding-top: 0 !important;
+}
