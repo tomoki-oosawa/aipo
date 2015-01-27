@@ -3244,6 +3244,11 @@ select {
 select[multiple="multiple"] {
   height: 8em;
 }
+
+*:first-child + html select {
+  height: auto;
+ }
+
 select[multiple="multiple"] option {
   padding-bottom: 1px;
 }
