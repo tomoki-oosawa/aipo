@@ -788,7 +788,7 @@ public class TimelineUtils {
     DOMParser parser = new DOMParser();
     try {
       URL url = new URL(string);
-      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      HttpURLConnection con = ALURLConnectionUtils.openUrlConnection(url);
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
@@ -834,7 +834,7 @@ public class TimelineUtils {
       if (metaTagCharset != null && !metaTagCharset.equals(contentTypeCharset)) {
         // デフォルトのcharsetと異なっていた場合、新しいcharsetで再読み込み
         HttpURLConnection reconnection =
-          (HttpURLConnection) url.openConnection();
+          ALURLConnectionUtils.openUrlConnection(url);
         reconnection.setConnectTimeout(10000);
         reconnection.setUseCaches(false);
         reconnection.addRequestProperty("_", UUID.randomUUID().toString());
