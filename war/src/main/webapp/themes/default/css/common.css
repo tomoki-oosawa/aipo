@@ -2110,6 +2110,16 @@ ul.blockList li a.selected {
   color: #4862a3;
 }
 
+.menubar .caption {
+  color: #999999;
+  font-weight: bold;
+  margin: 0;
+  padding: 4px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* menubar.multi **********/
 .menubar.multi {
   padding: 5px 5px 5px 0;
@@ -2120,16 +2130,6 @@ ul.blockList li a.selected {
   float: left;
   padding-left: 5px;
   overflow: hidden;
-}
-
-.menubar.multi .caption {
-  color: #999999;
-  font-weight: bold;
-  margin: 0;
-  padding: 4px 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .menubar.multi ul li {
