@@ -48,12 +48,12 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
   public void migratePsml(RunData rundata, Context context) {
     try {
       Profile profile = Profiler.getProfile(rundata);
-
+      String mediaType = profile.getMediaType();
       Portlets portlets = profile.getDocument().getPortlets();
       @SuppressWarnings("unchecked")
       Iterator<Entry> iterator = portlets.getEntriesIterator();
 
-      if (profile.getMediaType() == "html") {
+      if (mediaType.equals("html")) {
         boolean hasMressageEntry = false;
         while (iterator.hasNext()) {
           Entry next = iterator.next();
