@@ -320,9 +320,10 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	if (shadowHeight < 18)
-		shadowHeight = 18;
-	dojo.byId(objId).style.height = shadowHeight * 1.0 + 21 + "px";
+	// 13pxに変更したことにより、"あ"の高さが18→20に変更になった。
+	if (shadowHeight < 20)
+		shadowHeight = 20;
+	dojo.byId(objId).style.height = shadowHeight * 1.0 + 19 + "px";
 	objBody.removeChild(shadow);
 }
 
