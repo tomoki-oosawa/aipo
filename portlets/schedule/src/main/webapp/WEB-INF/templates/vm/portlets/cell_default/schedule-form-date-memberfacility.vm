@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 #set($membersize = $!{result.FormData.MemberList.size()})
 #if($membersize > 1)
-参加ﾕｰｻﾞｰ：#ALcell_br($career)
+$l10n.SCHEDULE_MEMBERS：#ALcell_br($career)
 <ul>
 #foreach($record in $!{result.FormData.MemberList})
 #if ( ! ($!result.LoginUser.Name.toString() == $!record.Name.toString()) )
