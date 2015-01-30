@@ -1357,6 +1357,9 @@ div.termScheduleDiv {
   margin-left: 1px;
   color: #ffffff;
 }
+div.termScheduleDiv .auiIcon {
+  margin: 0 0 0 2px;
+}
 
 div.termScheduleDiv div.termScheduleDivNameDiv {
   color: #FFF;
