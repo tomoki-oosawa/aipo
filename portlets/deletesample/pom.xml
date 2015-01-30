@@ -14,7 +14,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-deletesample</artifactId>
-  <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
   <name>Aipo Delete Sample Data Portlet</name>

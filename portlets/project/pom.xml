@@ -17,7 +17,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-project</artifactId>
-  <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
   <name>Aipo Project Management Portlet</name>

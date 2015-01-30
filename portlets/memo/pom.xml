@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-memo</artifactId>
-  <version>${aipo.version}</version>
 
   <name>Aipo Memo Portlet</name>
 
