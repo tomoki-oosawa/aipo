@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-workflow</artifactId>
-  <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
   <name>Aipo Workflow Portlet</name>
@@ -49,6 +48,7 @@
       <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
+        <version>0.7.1</version>
         <executions>
           <execution>
             <goals>

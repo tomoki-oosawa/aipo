@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-oms</artifactId>
-  <version>${aipo.version}</version>
 
   <name>Aipo ORM</name>
 

@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-lib-addressbookuser</artifactId>
-  <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
   <name>Aipo Addressbook User Library</name>

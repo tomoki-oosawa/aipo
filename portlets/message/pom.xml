@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-message</artifactId>
-  <version>${aipo.version}</version>
 
   <name>Aipo Message Portlet</name>
 
@@ -48,6 +47,7 @@
       <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
+        <version>0.7.1</version>
         <executions>
           <execution>
             <goals>
