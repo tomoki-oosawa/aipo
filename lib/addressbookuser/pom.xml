@@ -28,12 +28,12 @@
             <id>copy</id>
             <phase>package</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="../../war/target/aipo/WEB-INF/lib"
                   verbose="false" overwrite="true">
                   <fileset dir="./target" includes="*-${aipo.version}.jar" />
                 </copy>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
