@@ -3243,7 +3243,11 @@ select {
 }
 
 select[multiple="multiple"] {
-  height: 8em;
+  height: auto;
+}
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
+	height: 8em;
 }
 
 *:first-child + html select {
