@@ -26,7 +26,7 @@
 #ALcell_hr($career '1')
 
 #ALcell_formheader($career $jslink $portlet)
-##ALcell_center_header($career)参加ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
+##ALcell_center_header($career)$l10n.SCHEDULE_SELECT_MENBERS　#ALcell_center_footer($career)
 ##ALcell_hr($career '1')
 
 ##set($memberlist = $!result.getUsers($!result.SelectedGroup.Value))
