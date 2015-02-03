@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.idgenerator.JetspeedIdGenerator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -53,22 +54,28 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
       @SuppressWarnings("unchecked")
       Iterator<Entry> iterator = portlets.getEntriesIterator();
 
-      if (mediaType.equals("html")) {
-        boolean hasMressageEntry = false;
-        while (iterator.hasNext()) {
-          Entry next = iterator.next();
-          String parent = next.getParent();
-          if ("Message".equals(parent)) {
-            hasMressageEntry = true;
-          }
-        }
+      User user = rundata.getUser();
 
-        if (!hasMressageEntry) {
-          PsmlEntry entry = new PsmlEntry();
-          entry.setId(JetspeedIdGenerator.getNextPeid());
-          entry.setParent("Message");
-          portlets.addEntry(entry);
-          PsmlManager.store(profile);
+      if (!"admin".equals(user.getUserName())
+        && !"anon".equals(user.getUserName())
+        && !"template".equals(user.getUserName())) {
+        if (mediaType.equals("html")) {
+          boolean hasMressageEntry = false;
+          while (iterator.hasNext()) {
+            Entry next = iterator.next();
+            String parent = next.getParent();
+            if ("Message".equals(parent)) {
+              hasMressageEntry = true;
+            }
+          }
+
+          if (!hasMressageEntry) {
+            PsmlEntry entry = new PsmlEntry();
+            entry.setId(JetspeedIdGenerator.getNextPeid());
+            entry.setParent("Message");
+            portlets.addEntry(entry);
+            PsmlManager.store(profile);
+          }
         }
       }
 
@@ -76,5 +83,4 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
       logger.error(e.getMessage(), e);
     }
   }
-
 }
