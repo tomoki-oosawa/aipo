@@ -81,8 +81,7 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
-  <div class="single">
+<div class="menubar" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
     <p class="caption">$l10n.WORKFLOW_CLASSIFICATION</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$l10n.WORKFLOW_ALL_CATEGORY</a></li>
@@ -90,7 +89,6 @@
       <li data-param="$!record.CategoryId" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
     #end
     </ul>
-  </div>
 </div>
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/workflow-widgets.vm")
