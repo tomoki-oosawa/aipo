@@ -103,6 +103,7 @@ INSERT INTO eip_m_mail_notify_conf VALUES(null,1,26,3,NULL,now(),now());
 ALTER TABLE `eip_t_report_file` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_member_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
 ALTER TABLE `eip_t_report_map` ADD FOREIGN KEY (  `report_id` ) REFERENCES  `eip_t_report` (`report_id`) ON DELETE CASCADE ;
+--ALTER TABLE eip_t_acl_role AUTO_INCREMENT = 10000;
 -- 20111216
 
 -- 20111219
@@ -118,12 +119,18 @@ UPDATE `eip_t_report` SET `parent_id`=0;
 -- 20111219
 
 -- 20120113
+UPDATE `eip_t_acl_user_role_map` SET `role_id` = `role_id` + 10000
+ WHERE `role_id` IN (SELECT `role_id` FROM `eip_t_acl_role` WHERE `create_date` IS NOT NULL AND `role_id` < 10000);
+UPDATE `eip_t_acl_role` SET `role_id` = `role_id` + 10000
+ WHERE `create_date` IS NOT NULL AND `role_id` < 10000;
+
 INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_self','報告書（自分の報告書）操作', 31);
 INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（自分の報告書）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_self' LIMIT 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', NULL, NULL);
 INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_other','報告書（他ユーザーの報告書）操作',3);
 INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（他ユーザーの報告書）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_other' LIMIT 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', NULL, NULL);
 INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_reply','報告書（返信）操作',3);
 INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（返信）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_reply' LIMIT 1),3 ,NULL, NULL, NULL);
+ALTER TABLE `eip_t_acl_role` AUTO_INCREMENT = 10000;
 
 UPDATE `eip_t_schedule` SET `mail_flag` = 'N' WHERE `mail_flag` = 'I';
 -- 20120113
