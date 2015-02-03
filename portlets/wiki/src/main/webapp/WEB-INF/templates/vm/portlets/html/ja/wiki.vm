@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"wiki", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiScreen"))', reloadFunction:aipo.reloadPage };

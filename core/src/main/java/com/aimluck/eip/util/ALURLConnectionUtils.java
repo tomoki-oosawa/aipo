@@ -19,6 +19,22 @@
 
 package com.aimluck.eip.util;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+
 /**
  *
  */
@@ -29,4 +45,66 @@ public class ALURLConnectionUtils {
 
   /** Accept-Encoding */
   public static final String ACCEPT_ENCODING = "identity";
+
+  /**
+   * HttpURLConnectionまたはHttpsURLConnectionを返す
+   * 
+   * @param url
+   * @return　HttpURLConnectionまたはHttpsURLConnection
+   * @throws NoSuchAlgorithmException
+   * @throws KeyManagementException
+   * @throws IOException
+   */
+  public static HttpURLConnection openUrlConnection(URL connectURL)
+      throws NoSuchAlgorithmException, KeyManagementException, IOException {
+
+    HttpURLConnection urlconnection = null;
+
+    // SSLHandshakeExceptionが発生しないか調べる
+    urlconnection = (HttpURLConnection) connectURL.openConnection();
+    try {
+      urlconnection.getResponseMessage();
+    } catch (SSLHandshakeException ex) {
+      // SSLHandshakeExceptionの場合には証明書をチェックしないhttps接続に切り替える
+      if ("https".equals(connectURL.getProtocol())) {
+        TrustManager[] tm = { new X509TrustManager() {
+          @Override
+          public X509Certificate[] getAcceptedIssuers() {
+            return null;
+          }
+
+          @Override
+          public void checkClientTrusted(X509Certificate[] chain,
+              String authType) throws CertificateException {
+          }
+
+          @Override
+          public void checkServerTrusted(X509Certificate[] chain,
+              String authType) throws CertificateException {
+          }
+        } };
+        SSLContext sslcontext = SSLContext.getInstance("SSL");
+        sslcontext.init(null, tm, null);
+
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+          @Override
+          public boolean verify(String hostname, SSLSession session) {
+            return true;
+          }
+        });
+
+        urlconnection = (HttpsURLConnection) connectURL.openConnection();
+
+        ((HttpsURLConnection) urlconnection).setSSLSocketFactory(sslcontext
+          .getSocketFactory());
+
+        return urlconnection;
+      }
+    }
+
+    // http接続の場合
+    urlconnection = (HttpURLConnection) connectURL.openConnection();
+
+    return urlconnection;
+  }
 }

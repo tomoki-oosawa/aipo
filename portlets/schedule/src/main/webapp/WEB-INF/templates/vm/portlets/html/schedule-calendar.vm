@@ -282,7 +282,7 @@
 						</td>
 						#if(${client} == "IPAD" && ($!top_form && $!top_form == 'simple')||(${isMac} && ${isMac} == 1))
 						#else
-						<td class="weeklyTermTailTd_$!portlet.ID" style="display: none" width="18">
+						<td class="weeklyTermTailTd_$!portlet.ID" style="display:none" width="18">
               <div class="weeklyTermTail">&nbsp;</div>
             </td>
 						#end
@@ -727,7 +727,7 @@
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="#if($client == 'IPHONE') aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID'); #end initCalendar['$!{portlet.ID}'](true);" />
 #else
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 dojo.require("aipo.calendar.weekly");

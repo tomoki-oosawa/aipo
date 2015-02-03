@@ -77,3 +77,12 @@ body {
 #gantt_area .gantt_area_day td {
   height: 19px;
 }
+
+/***************************************************
+	dropdown
+--------------------------------------------------*/
+.dropdown_list {
+  max-height: none;
+}
+
+

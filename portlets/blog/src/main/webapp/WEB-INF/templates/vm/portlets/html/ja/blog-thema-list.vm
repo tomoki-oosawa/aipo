@@ -21,7 +21,7 @@
 #set ($navilist = [["$l10n.BLOG_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.BLOG_THEME_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"blog", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogThemaListScreen"))', reloadFunction:aipo.reloadPage };
 //]]>

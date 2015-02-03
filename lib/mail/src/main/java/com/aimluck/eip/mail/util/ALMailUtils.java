@@ -501,7 +501,15 @@ public class ALMailUtils {
       return null;
     }
     if (line.indexOf(delim) < 0) {
-      return new String[] { line };
+
+      if (delim.length() > 1 && !"\r\n".equals(delim)) {
+        String regex = "^.*[" + delim + "].*";
+        if (!line.matches(regex)) {
+          return new String[] { line };
+        }
+      } else {
+        return new String[] { line };
+      }
     }
 
     StringTokenizer st = new StringTokenizer(line, delim);

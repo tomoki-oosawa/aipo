@@ -274,7 +274,7 @@ public class TimelineFormData extends ALAbstractFormData {
               new URL(String.format("%s://%s%s", uri.getScheme(), uri
                 .getAuthority(), path));
 
-            URLConnection uc = u.openConnection();
+            URLConnection uc = ALURLConnectionUtils.openUrlConnection(u);
             uc.setRequestProperty("Referer", str); // Refererを記述
             uc
               .addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);

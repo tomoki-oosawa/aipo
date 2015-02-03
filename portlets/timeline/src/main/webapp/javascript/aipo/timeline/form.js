@@ -320,9 +320,10 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	if (shadowHeight < 18)
-		shadowHeight = 18;
-	dojo.byId(objId).style.height = shadowHeight * 1.2 + 21 + "px";
+	// 13pxに変更したことにより、"あ"の高さが18→20に変更になった。
+	if (shadowHeight < 20)
+		shadowHeight = 20;
+	dojo.byId(objId).style.height = shadowHeight * 1.0 + 19 + "px";
 	objBody.removeChild(shadow);
 }
 
@@ -332,6 +333,16 @@ aipo.timeline.onPaste = function(pid, tid, e) {
 	}, 100);
 }
 
+aipo.timeline.onkeydown =function(pid){
+	if(dojo.isSafari){
+		var keycode = window.event.keyCode;
+		if(keycode== dojo.keys.TAB){
+		var	submit =dojo.byId("al_submit_"+pid);
+		dojo.stopEvent(window.event);
+		 submit.focus();
+		}
+	}
+}
 aipo.timeline.lock = false;
 aipo.timeline.onReceiveMessage = function(msg) {
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;

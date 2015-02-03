@@ -78,7 +78,7 @@ import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * タイムラインのユーティリティクラス <BR>
- * 
+ *
  */
 public class TimelineUtils {
 
@@ -137,7 +137,7 @@ public class TimelineUtils {
 
   /**
    * トピックに対する返信数を返します
-   * 
+   *
    * @param timeline_id
    * @return
    */
@@ -156,7 +156,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -195,7 +195,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -273,7 +273,7 @@ public class TimelineUtils {
 
   /**
    * いいねオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -343,7 +343,7 @@ public class TimelineUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   * 
+   *
    * @param org_id
    * @param groupname
    * @return
@@ -468,7 +468,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -514,7 +514,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -524,7 +524,7 @@ public class TimelineUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -651,7 +651,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -691,7 +691,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -730,7 +730,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -742,7 +742,7 @@ public class TimelineUtils {
 
   /**
    * ファイル検索のクエリを返します
-   * 
+   *
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -788,7 +788,7 @@ public class TimelineUtils {
     DOMParser parser = new DOMParser();
     try {
       URL url = new URL(string);
-      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      HttpURLConnection con = ALURLConnectionUtils.openUrlConnection(url);
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
@@ -834,7 +834,7 @@ public class TimelineUtils {
       if (metaTagCharset != null && !metaTagCharset.equals(contentTypeCharset)) {
         // デフォルトのcharsetと異なっていた場合、新しいcharsetで再読み込み
         HttpURLConnection reconnection =
-          (HttpURLConnection) url.openConnection();
+          ALURLConnectionUtils.openUrlConnection(url);
         reconnection.setConnectTimeout(10000);
         reconnection.setUseCaches(false);
         reconnection.addRequestProperty("_", UUID.randomUUID().toString());
@@ -873,7 +873,7 @@ public class TimelineUtils {
 
   /**
    * 読み込んだdocumentからmetaタグ内のcharset属性を読み取るメソッド
-   * 
+   *
    * @param document
    * @return
    */
@@ -911,7 +911,7 @@ public class TimelineUtils {
   }
 
   /**
-   * 
+   *
    * @param url_str
    * @return
    * @throws Exception
@@ -1321,7 +1321,7 @@ public class TimelineUtils {
 
   /**
    * 50文字に引数の文字列を丸める。
-   * 
+   *
    * @param src
    *          元の文字列
    * @return 処理後の文字列

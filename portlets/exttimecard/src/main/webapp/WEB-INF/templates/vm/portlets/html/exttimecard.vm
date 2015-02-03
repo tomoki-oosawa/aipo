@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"exttimecard", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardScreen"))', reloadFunction:aipo.reloadPage };

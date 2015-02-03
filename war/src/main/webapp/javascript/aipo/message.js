@@ -567,7 +567,7 @@ aipo.message.fixMessageWindow = function() {
     }
     if (dojo.byId("dd_message") != null) {
         var minusH = 55 + 40 + 35 + 10;
-        var w = document.documentElement.clientWidth - 20;
+        var w = dojo.byId("wrapper").clientWidth - 20;
         var h = document.documentElement.clientHeight - minusH;
         var tabh = document.documentElement.clientHeight - (minusH + 106);
         dojo.byId("dd_message").style.width = w + "px";
@@ -739,14 +739,15 @@ aipo.message.resizeInput = function(input) {
     objShadow.style.width = input.offsetWidth + "px";
 
     var shadowHeight = objShadow.offsetHeight;
-
-    if (shadowHeight < 18) {
-        shadowHeight = 18;
+    // 文字サイズを13ptに設定したため、高さが18→20に変更
+    if (shadowHeight < 20) {
+        shadowHeight = 20;
     }
-    if (shadowHeight > 18*20) {
-        shadowHeight = 18*20;
+    if (shadowHeight > 20*20) {
+        shadowHeight = 20*20;
     }
-    input.style.height = shadowHeight * 1.2 + 21 + "px";
+    // shadowHeight = 20より、入力欄の初期の高さ = 42.6pxになるように調整
+    input.style.height = shadowHeight * 1.0 + 22.6 + "px";
     objBody.removeChild(shadowDiv);
 }
 
@@ -754,6 +755,17 @@ aipo.message.onPaste = function(input) {
     setTimeout(function() {
         aipo.message.resizeInput(input);
     }, 100);
+}
+
+aipo.message.inputHandle = null;
+aipo.message.onFocus = function(input) {
+    if(!aipo.message.inputHandle) {
+        aipo.message.inputHandle = dojo.connect(input, "onkeydown", null, function(e) {
+            if (e.ctrlKey && e.keyCode == 13) {
+                this.form.onsubmit();
+            }
+        });
+	}
 }
 
 aipo.message.read = function(room_id) {

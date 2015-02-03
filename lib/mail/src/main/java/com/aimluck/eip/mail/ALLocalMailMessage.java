@@ -493,7 +493,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       return super.getRecipients(recipienttype);
     }
 
-    StringTokenizer st = new StringTokenizer(recipients, ",");
+    StringTokenizer st = new StringTokenizer(recipients, ",;");
     String token = null;
     boolean found = false;
     while (st.hasMoreTokens()) {
@@ -527,7 +527,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
     if (found) {
       int index = 0;
-      st = new StringTokenizer(recipients, ",");
+      st = new StringTokenizer(recipients, ",;");
       Address[] addresses = new InternetAddress[st.countTokens()];
       while (st.hasMoreTokens()) {
         token = st.nextToken();
@@ -574,7 +574,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         }
         int index = 0;
         String token = null;
-        StringTokenizer st = new StringTokenizer(recipients, ",");
+        StringTokenizer st = new StringTokenizer(recipients, ",;");
         addresses = new InternetAddress[st.countTokens()];
         while (st.hasMoreTokens()) {
           token = st.nextToken();

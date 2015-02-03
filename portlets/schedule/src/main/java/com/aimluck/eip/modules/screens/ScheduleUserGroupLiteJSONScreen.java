@@ -104,7 +104,7 @@ public class ScheduleUserGroupLiteJSONScreen extends UserGroupLiteJSONScreen {
               rundata,
               false,
               false,
-              false));
+              true));
         }
       }
 
