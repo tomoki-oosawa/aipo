@@ -132,7 +132,7 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+  font-family: Helvetica, Arial, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
 }
 
 html, body {
@@ -141,7 +141,7 @@ html, body {
   margin: 0;
   padding: 0;
   font-size: 13px;
-  line-height: 1.4;
+  line-height: 1.38;
   background-color: #f0f0f0;
 }
 
@@ -163,7 +163,7 @@ h1, h2, h3, h4, h5, h6, p, span {
 }
 
 div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
-  line-height: 1.4;
+  line-height: 1.38;
 }
 
 input[type=submit], input[type=button], input[type=reset] {
@@ -1022,7 +1022,7 @@ ul.hdTools .dropdown:before {
   margin: 120px 0 170px;
 }
 .emptyMessage [class*=icon-] {
-  font-size: 120px;
+  font-size: 120px !important;
   color: #d2d2d2;
   text-shadow: 0 -1px 0 #b8b8b8;
 }
@@ -1037,6 +1037,13 @@ ul.hdTools .dropdown:before {
   left: 0;
   height: 160px;
   margin: auto;
+}
+
+/***************************************************
+	row & col
+--------------------------------------------------*/
+.row, .col-2, .col-3 {
+  display: inline-block;
 }
 
 /***************************************************
@@ -1271,6 +1278,25 @@ button span,
   input[type=reset],
   button {
     padding: 0 6px !important;
+  }
+   input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button,
+  .auiButton,
+  .auiButtonAction,
+  .auiButtonBold,
+  .auiButtonSearch,
+  .auiButtonSmall,
+  .auiButtonDisabled,
+  .auiButtonIcon,
+  .auiButtonDummy,
+  .auiButtonIconDummy,
+  .auiSelectButton a,
+  .auiSelectButtonSmall a,
+  .auiWidget .auiSelectButton a,
+  .auiWidget .auiSelectButtonSmall a {
+    line-height: -moz-block-height;
   }
 }
 
@@ -3135,22 +3161,23 @@ button[disabled]:active {
 }
 
 .entryHeader {
-  padding: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .entryFooter {
-  padding: 1em 0;
+  margin: 1em 0;
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+}
+
+.dojoDndItem .entryFooter .entryText {
+  margin: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 10px 0;
-}
-
-.dojoDndItem .entryFooter {
+  margin: 10px 0;
   font-size: 11px;
 }
 
@@ -3210,9 +3237,21 @@ html > body input[type=password] {
 }
 
 select {
-  min-height: 32px;
+  height: 32px;
   padding: 5px;
   max-width: 100%;
+}
+
+select[multiple="multiple"] {
+  height: 8em;
+}
+
+*:first-child + html select {
+  height: auto;
+ }
+
+select[multiple="multiple"] option {
+  padding-bottom: 1px;
 }
 
 form textarea {
@@ -5029,7 +5068,6 @@ iframe.iframe_messagelist {
 	word-spacing: -1em;
 }
 :root .guideList{
-	font-size: 1px;
 	letter-spacing: -1px;
 	word-spacing: -1px;
 }
@@ -5080,4 +5118,14 @@ iframe.iframe_messagelist {
 }
 .guideList .iconBox i{
 	font-size: 70px;
+}
+
+/***************************************************
+	copyright
+--------------------------------------------------*/
+.copyright {
+  padding: 10px;
+  text-align: right;
+  font-size: 11px;
+  color: #999;
 }

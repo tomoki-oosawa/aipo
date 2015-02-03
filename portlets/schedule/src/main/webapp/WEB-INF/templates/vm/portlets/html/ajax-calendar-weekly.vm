@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     dojo.require("aipo.calendar.weekly");
@@ -593,7 +593,7 @@
     </table>
 ##</div>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
   aipo.schedule.login_id = "$current_user_id";
@@ -716,7 +716,7 @@ dojo.addOnLoad(function () {
 //]]>
 </script>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     onCheckShowAll = function(chk){
 	   if(chk.checked == true){

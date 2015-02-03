@@ -22,7 +22,7 @@
 ## ---------------------------------------------------------------------------
 
 #ALjavascript("javascript/aipo/userlist/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     ptConfig['$!portlet.ID'] = { group:"userlist", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","UserListListScreen"))', reloadFunction:aipo.reloadPage };
 //]]>

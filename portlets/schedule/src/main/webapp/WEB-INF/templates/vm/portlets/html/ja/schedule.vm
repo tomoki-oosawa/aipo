@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');
 
@@ -34,7 +34,7 @@
 </script>
 #ALjavascript("javascript/aipo/schedule/form.js")
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     var portletId = '$!portlet.ID';

@@ -113,9 +113,7 @@
 		</div><div id="messageDivList_$!portlet.ID"></div>
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
-			<div id="" class="message">
-			<p class="mt10">$l10n.TIMELINE_NO_MESSAGE</p>
-			</div>
+			#AUIEmptyMessage("" "$l10n.TIMELINE_NO_MESSAGE")
 		</div>
 	</div>
 #else

@@ -25,7 +25,7 @@
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
 <!-- appsNavigation_v2 -->
-<script language="javascript">
+<script type="text/javascript">
 // ウィジェットメニュー用
 aipo.onloadSmartPhone = function(){
 	var widgets_area = dojo.byId('auiWidgetsArea');
@@ -286,7 +286,7 @@ function setWrapperHeight() {
 				</ul>
         </div>
         <div class="anFooter">
-                <div class="copyright">&copy; Aimluck</div>
+                <div class="copyright"> ${copyright_short}&nbsp;·&nbsp;${version} </div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->

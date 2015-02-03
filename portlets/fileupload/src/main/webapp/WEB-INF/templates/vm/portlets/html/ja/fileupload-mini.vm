@@ -27,7 +27,7 @@
 #set ($upload_str = $l10n.FILEUPLOAD_DO_ADD_FILE)
 #end
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 function get_data(pid){

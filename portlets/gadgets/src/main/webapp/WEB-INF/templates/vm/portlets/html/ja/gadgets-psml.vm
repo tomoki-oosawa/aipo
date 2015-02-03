@@ -20,7 +20,7 @@
 ## ---------------------------------------------------------------------------
 
 ##ALjavascript("javascript/aipo/psml/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"gadgets_admin", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsPsmlFormScreen"))', reloadFunction:aipo.reloadPage };
