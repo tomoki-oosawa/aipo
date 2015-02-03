@@ -12,7 +12,6 @@
   </parent>
   <groupId>com.aimluck.eip</groupId>
   <artifactId>war</artifactId>
-  <version>${aipo.version}</version>
   <packaging>war</packaging>
 
   <name>Aipo Webapp</name>
@@ -41,7 +40,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.5</version>
+        <version>1.8</version>
         <executions>
             <execution>
                 <id>copy-resources</id>
@@ -75,6 +74,7 @@
       <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
+        <version>0.7.1</version>
         <executions>
           <execution>
             <goals>
