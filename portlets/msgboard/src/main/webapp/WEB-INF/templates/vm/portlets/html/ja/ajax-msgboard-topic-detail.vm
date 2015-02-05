@@ -116,13 +116,11 @@
 			<div><br>
 				#if( $!result.topicReplyId && ($result.isMatch($!{result.topicReplyId},$!{record.TopicId.Value})) )
 					##コメント編集モード
-				    <input type="hidden" name="mode" value="edit_reply"/>
-					<input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}"/>
 					<table class="listTable wide mt0">
 						<tbody>
 							<tr>
 								<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
-								<td>#ALtextarea('note' $!{record.Note} 5 40)</td>
+								<td>#ALtextarea('note' ${record.Note} 5 40)</td>
 							</tr>
 							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
 								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
@@ -140,9 +138,12 @@
 							<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 						</tbody>
 					</table>
+  					##<input type="hidden" name="mode" value="edit_reply"/>
+  					##<input type="hidden" name="topic_reply_id" value="${record.TopicId}"/>
+					##<input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}"/>
 					#ALbuttonheader()
-					##<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.MSGBOARD_COMMENT_DO" onclick="aimluck.io.setHiddenValue(this);" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen')">
-					#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen')" $portlet_id "return false;")
+					#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode','edit_reply')" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
+					##<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="編集する" onclick="aimluck.io.setHiddenValue(this);">
 					#ALbuttonfooter()
 
 				#else

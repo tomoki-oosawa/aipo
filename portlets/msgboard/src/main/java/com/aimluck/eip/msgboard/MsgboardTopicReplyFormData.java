@@ -503,8 +503,11 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       Date updateDate = Calendar.getInstance().getTime();
 
-      // メモ
+      // メモ fixme
       edittopic.setNote(note.getValue());
+      edittopic.setNote(String.valueOf(rundata
+        .getParameters()
+        .getString("note")));
       // 更新日
       edittopic.setUpdateDate(updateDate);
 
@@ -754,16 +757,16 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
     List<String> msgList = new ArrayList<String>();
     try {
-      if (!doCheckSecurity(rundata, context)) {
-        return false;
-      }
+      // if (!doCheckSecurity(rundata, context)) {
+      // return false;
+      // }
 
       init(action, rundata, context);
 
-      doCheckAclPermission(
-        rundata,
-        context,
-        ALAccessControlConstants.VALUE_ACL_UPDATE);
+      // doCheckAclPermission(
+      // rundata,
+      // context,
+      // ALAccessControlConstants.VALUE_ACL_UPDATE);
 
       action.setMode(ALEipConstants.MODE_UPDATE);
       mode = action.getMode();
@@ -771,6 +774,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         ALEipConstants.MODE,
         ALEipConstants.MODE_UPDATE);
       setValidator();
+
+      setNote(String.valueOf(rundata.getParameters().getString("note")));
 
       boolean res = false;
       if (isOverQuota()) {
@@ -798,10 +803,10 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       action.putData(rundata, context);
 
       return res;
-    } catch (ALPermissionException e) {
-      ALEipUtils.redirectPermissionError(rundata);
-      return false;
-    } catch (ALPageNotFoundException e) {
+    } /*
+       * catch (ALPermissionException e) {
+       * ALEipUtils.redirectPermissionError(rundata); return false; }
+       */catch (ALPageNotFoundException e) {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
     } catch (ALDBErrorException e) {
@@ -892,6 +897,15 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
    */
   public ALStringField getNote() {
     return note;
+  }
+
+  /**
+   * メモを編集します。 <BR>
+   *
+   * @return
+   */
+  public void setNote(String string) {
+    note.setValue(string);
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
