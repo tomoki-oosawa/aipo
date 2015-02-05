@@ -99,19 +99,17 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" alt="" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0){dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
-	<div class="single">
-		<p class="caption">$l10n.COMMON_GROUP</p>
-		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
-			<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$l10n.REPORT_ALL_GROUP</a></li>
-		#foreach($record in $result.postList)
-			<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
-		#end
-		#foreach($record in $result.PostMap)
-			<li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
-		#end
-		</ul>
-	</div>
+<div class="menubar" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
+	<p class="caption">$l10n.COMMON_GROUP</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
+		<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$l10n.REPORT_ALL_GROUP</a></li>
+	#foreach($record in $result.postList)
+		<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
+	#end
+	#foreach($record in $result.PostMap)
+		<li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
+	#end
+	</ul>
 </div>
 <!-- END Contents Area -->
 #parse("/portlets/html/ja/report-widgets.vm")
