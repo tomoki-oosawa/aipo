@@ -488,9 +488,9 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         ALAccessControlConstants.VALUE_ACL_UPDATE));
 
       try {
-        context.put("tutorialForbid", false);
+        // context.put("tutorialForbid", false);
         if ("IPHONE".equals(client)) {
-          context.put("tutorialForbid", true);
+          // context.put("tutorialForbid", true);
         } else {
           SelectQuery<TurbineUser> userQuery =
             Database.query(TurbineUser.class);
@@ -552,7 +552,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     Context context =
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
     setOrgParameters(data, context);
-    context.put("tutorialForbid", true);
+    // context.put("tutorialForbid", true);
     context.put("isError", "true");
   }
 
