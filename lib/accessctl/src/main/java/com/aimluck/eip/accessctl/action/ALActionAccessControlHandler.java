@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.ObjectId;
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -38,7 +36,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SQLTemplate;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
@@ -253,30 +250,33 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
    */
   @Override
   public void insertDefaultRole(int uid) throws Exception {
-    int role = ALAccessControlConstants.ROLE_NUM;
     TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
 
-    ObjectId oidg =
-      new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, 1);
-    Expression exp1 =
-      ExpressionFactory.matchAllDbExp(
-        oidg.getIdSnapshot(),
-        Expression.GREATER_THAN_EQUAL_TO);
+    // デフォルトロールはcreat_dateがない
+    StringBuilder sql =
+      new StringBuilder().append("SELECT * FROM eip_t_acl_role ").append(
+        " WHERE create_date IS NULL");
+    SQLTemplate<EipTAclRole> sqltemp =
+      Database.sql(EipTAclRole.class, String.valueOf(sql));
 
-    ObjectId oidl =
-      new ObjectId("EipTAclRole", EipTAclRole.ROLE_ID_PK_COLUMN, role);
-    Expression exp2 =
-      ExpressionFactory.matchAllDbExp(
-        oidl.getIdSnapshot(),
-        Expression.LESS_THAN_EQUAL_TO);
+    // リレーションを行う
+    List<DataRow> fetchList = sqltemp.fetchListAsDataRow();
+    List<EipTAclRole> list = new ArrayList<EipTAclRole>();
+    for (DataRow row : fetchList) {
+      EipTAclRole object = Database.objectFromRowData(row, EipTAclRole.class);
+      // objectIDを同期する一手間
+      EipTAclRole eipTAclRole =
+        Database.get(EipTAclRole.class, object.getRoleId());
+      // EipTAclPortletFeatureのデータをeipTAclRoleにマージ
+      EipTAclPortletFeature feature =
+        Database.get(EipTAclPortletFeature.class, row.get("feature_id"));
+      eipTAclRole.setEipTAclPortletFeature(feature);
+      list.add(eipTAclRole);
+    }
 
-    SelectQuery<EipTAclRole> query = Database.query(EipTAclRole.class);
-    query.setQualifier(exp1.andExp(exp2));
-    List<EipTAclRole> list = query.fetchList();
-
-    for (EipTAclRole role2 : list) {
+    for (EipTAclRole role : list) {
       EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
-      map.setEipTAclRole(role2);
+      map.setEipTAclRole(role);
       map.setTurbineUser(tuser);
     }
   }
