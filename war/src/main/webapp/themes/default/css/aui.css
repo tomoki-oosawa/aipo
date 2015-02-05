@@ -132,7 +132,7 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: Helvetica, Arial, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
+  font-family: Arial, Helvetica, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
 }
 
 html, body {
@@ -365,7 +365,7 @@ input[type=submit], input[type=button], input[type=reset] {
   top: 0;
   right: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   background: none;
   filter: none;
   cursor: pointer;
@@ -375,6 +375,10 @@ input[type=submit], input[type=button], input[type=reset] {
   -moz-border-radius-bottomleft: 0;
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+.search button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
 }
 .search .submit [class^="icon-"], .search .submit [class*=" icon-"] {
   display: block;
@@ -784,6 +788,9 @@ ul.hdTools .dropdown:before {
 }
 #dd_message .timelineOuter .message:first-child {
   padding-top: 0 !important;
+}
+#dd_message .timelineOuter .timeline .messageContents {
+  margin-right: 60px;
 }
 #dd_message .subContents {
   float: right;
@@ -3161,22 +3168,23 @@ button[disabled]:active {
 }
 
 .entryHeader {
-  padding: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .entryFooter {
-  padding: 1em 0;
+  margin: 1em 0;
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+}
+
+.dojoDndItem .entryFooter .entryText {
+  margin: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 10px 0;
-}
-
-.dojoDndItem .entryFooter {
+  margin: 10px 0;
   font-size: 11px;
 }
 
@@ -3242,8 +3250,17 @@ select {
 }
 
 select[multiple="multiple"] {
-  height: 8em;
+  height: auto;
 }
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
+	height: 8em;
+}
+
+*:first-child + html select {
+  height: auto;
+ }
+
 select[multiple="multiple"] option {
   padding-bottom: 1px;
 }
