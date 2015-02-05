@@ -34,7 +34,7 @@ import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSVファイルの内容を管理するための抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALCsvAbstractSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
@@ -65,7 +65,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
   protected String folderIndex;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -85,7 +85,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * エラーが残った行のみをファイル出力します。 <br />
-   * 
+   *
    * @param rundata
    * @param str
    * @param filepath
@@ -99,7 +99,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * Shift_JISコードで'\"'を正常に出力するための関数です。 <br />
-   * 
+   *
    * @param str
    * @return
    */
@@ -120,17 +120,17 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
    *
    */
   @Override
-  protected Object getResultData(Object obj) {
+  protected Object getResultData(M1 obj) {
     return obj;
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
   @Override
-  protected Object getResultDataDetail(Object obj) {
+  protected Object getResultDataDetail(M2 obj) {
     return null;
   }
 
@@ -145,7 +145,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * ページ数を設定します。 <br />
-   * 
+   *
    * @param i
    */
   public void setPageCount(int i) {
@@ -154,7 +154,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * ページ数を取得します。 <br />
-   * 
+   *
    * @return
    */
   public int getPageCount() {
@@ -163,7 +163,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * ライン総数を設定します。 <br />
-   * 
+   *
    * @param i
    */
   public void setLineCount(int i) {
@@ -172,7 +172,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * ライン総数を取得します。 <br />
-   * 
+   *
    * @return
    */
   public int getLineCount() {
@@ -181,7 +181,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * 正しく入力されたデータの総数を入力します。 <br />
-   * 
+   *
    * @param i
    */
   public void setNotErrorCount(int i) {
@@ -190,7 +190,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * 正しく入力されたデータの総数を取得します。 <br />
-   * 
+   *
    * @return
    */
   public int getNotErrorCount() {
@@ -199,7 +199,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * エラーの数を入力します。 <br />
-   * 
+   *
    * @param i
    */
   public void setErrorCount(int i) {
@@ -208,7 +208,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * エラーの数を取得します。 <br />
-   * 
+   *
    * @return
    */
   public int getErrorCount() {
@@ -226,7 +226,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * 表示モードを取得します。 <br />
-   * 
+   *
    * @return
    */
   public int getState() {
@@ -235,7 +235,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * データがエラーかどうかを返します。 <br />
-   * 
+   *
    * @return
    */
   public boolean isError() {
@@ -248,7 +248,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * CSVファイルの読み込み順序を設定します。 <br />
-   * 
+   *
    * @param s
    */
   public void setSequency(List<?> s) {
@@ -257,7 +257,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * CSVファイルの読み込み順序を取得します。 <br />
-   * 
+   *
    * @return
    */
   public List<?> getSequency() {
@@ -266,7 +266,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * 一時フォルダの番号を指定します。 <br />
-   * 
+   *
    * @param folderIndex
    */
   public void setTempFolderIndex(String folderIndex) {
@@ -275,7 +275,7 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /**
    * 一時フォルダの番号を取得します。 <br />
-   * 
+   *
    * @return
    */
   public String getTempFolderIndex() {
