@@ -28,7 +28,7 @@ dojo.declare(
     "aipo.fileupload.widget.FileuploadViewDialogUnderlay",
     [aimluck.widget.DialogUnderlay],
     {
-       templateString: "<div class='fileuploadViewDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
+       templateString: "<div class='fileuploadViewDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay' onclick='aipo.fileupload.hideImageDialog()'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
     }
 
 );
@@ -40,7 +40,7 @@ dojo.declare(
     	loadingMessage:"<div class='indicatorDialog center'><i class='auiIcon auiIconIndicator'></i> "+nlsStrings.LOADING_STR+"</div>",
     	errorMessage: "<div class='indicatorDialog center'>${errorState}</div>",
         templateCssString:"auiPopup imgPopup fileuploadViewDialog",
-        templateString:"<div id='imageDialog' class='${templateCssString}' dojoattachpoint='wrapper' onclick='aipo.fileupload.hideImageDialog()'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
+        templateString:"<div id='imageDialog' class='${templateCssString}' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
         _setup: function(){
 
             this._modalconnects = [];
