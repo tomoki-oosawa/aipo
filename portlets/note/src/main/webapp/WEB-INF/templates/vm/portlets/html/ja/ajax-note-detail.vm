@@ -60,7 +60,7 @@ $!record.AliasName
 #ALtdcaption($l10n.NOTE_CLIENT_CAMPANY)
 #ALtditem($!result.Detail.CompanyName)
 #ALtdcaption($l10n.NOTE_CLIENT_CELLILAR_PHONE)
-#ALtditem($!result.Detail.Telephone)
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #ALtdcaption($l10n.NOTE_CLIENT_EMAIL)
 #ALtditem($!result.Detail.EmailAddress)
 #set($count = 0)
