@@ -77,7 +77,7 @@ public class ProxyScreen extends ALVelocityScreen {
         uri.getAuthority(),
         path));
 
-    URLConnection urlCon = url.openConnection();
+    URLConnection urlCon = ALURLConnectionUtils.openUrlConnection(url);
     urlCon.addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
     urlCon.addRequestProperty(
       "Accept-Encoding",

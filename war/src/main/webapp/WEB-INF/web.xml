@@ -57,6 +57,7 @@
         <servlet-class>
             com.aimluck.eip.http.ALCometServlet
         </servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <filter>
       <filter-name>baseFilter</filter-name>

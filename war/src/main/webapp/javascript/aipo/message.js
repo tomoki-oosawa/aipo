@@ -739,14 +739,15 @@ aipo.message.resizeInput = function(input) {
     objShadow.style.width = input.offsetWidth + "px";
 
     var shadowHeight = objShadow.offsetHeight;
-
-    if (shadowHeight < 18) {
-        shadowHeight = 18;
+    // 文字サイズを13ptに設定したため、高さが18→20に変更
+    if (shadowHeight < 20) {
+        shadowHeight = 20;
     }
-    if (shadowHeight > 18*20) {
-        shadowHeight = 18*20;
+    if (shadowHeight > 20*20) {
+        shadowHeight = 20*20;
     }
-    input.style.height = shadowHeight * 1.2 + 21 + "px";
+    // shadowHeight = 20より、入力欄の初期の高さ = 42.6pxになるように調整
+    input.style.height = shadowHeight * 1.0 + 22.6 + "px";
     objBody.removeChild(shadowDiv);
 }
 

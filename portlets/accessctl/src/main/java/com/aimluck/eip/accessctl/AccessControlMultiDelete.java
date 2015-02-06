@@ -29,6 +29,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.account.EipTAclRole;
+import com.aimluck.eip.cayenne.om.account.EipTAclUserRoleMap;
 import com.aimluck.eip.common.ALAbstractCheckList;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -68,7 +69,16 @@ public class AccessControlMultiDelete extends ALAbstractCheckList {
         return false;
       }
 
+      SelectQuery<EipTAclUserRoleMap> EipTAclUserRoleMapSQL =
+        Database.query(EipTAclUserRoleMap.class);
+      EipTAclUserRoleMapSQL.andQualifier(ExpressionFactory.inDbExp(
+        EipTAclUserRoleMap.ROLE_ID_COLUMN,
+        values));
+      List<EipTAclUserRoleMap> userRoleMaps = EipTAclUserRoleMapSQL.fetchList();
+
+      Database.deleteAll(userRoleMaps);
       Database.deleteAll(roles);
+
       Database.commit();
 
       // イベントログに保存

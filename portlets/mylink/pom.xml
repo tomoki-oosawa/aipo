@@ -13,7 +13,6 @@
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo-portlet-mylink</artifactId>
-  <version>${aipo.version}</version>
   <packaging>jar</packaging>
 
   <name>Aipo MyLink Portlet</name>
@@ -23,13 +22,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.4</version>
+        <version>1.8</version>
         <executions>
           <execution>
             <id>copy</id>
             <phase>package</phase>
             <configuration>
-              <tasks>
+              <target>
                 <copy todir="../../war/target/aipo" verbose="false"
                   overwrite="true">
                   <fileset dir="./src/main/webapp" includes="**/*" excludes="**/*.js" />
@@ -38,7 +37,7 @@
                   verbose="false" overwrite="true">
                   <fileset dir="./target" includes="*-${aipo.version}.jar" />
                 </copy>
-              </tasks>
+              </target>
             </configuration>
             <goals>
               <goal>run</goal>
@@ -49,6 +48,7 @@
       <plugin>
         <groupId>net.sf.alchim</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
+        <version>0.7.1</version>
         <executions>
           <execution>
             <goals>

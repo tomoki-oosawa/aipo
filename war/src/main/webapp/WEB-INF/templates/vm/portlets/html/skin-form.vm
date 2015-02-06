@@ -33,9 +33,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 *#
 
-<SCRIPT LANGUAGE="Javascript" SRC="$clink.setURI("javascript/ColorPicker.js")"></SCRIPT>
-<SCRIPT LANGUAGE="Javascript" SRC="$clink.setURI("javascript/ColorSwatch.js")"></SCRIPT>
-<SCRIPT LANGUAGE="JavaScript">
+<SCRIPT TYPE="text/javascript" SRC="$clink.setURI("javascript/ColorPicker.js")"></SCRIPT>
+<SCRIPT TYPE="text/javascript" SRC="$clink.setURI("javascript/ColorSwatch.js")"></SCRIPT>
+<SCRIPT TYPE="text/javascript">
 <!--
 var cp = new ColorPicker('window');
 //var cp2 = new ColorPicker();
@@ -90,7 +90,7 @@ function showColorChooser(anchorname, anchorid) {
             <input type="hidden" name="skinname" value="$!entry.Name"/>
         </tr>
       #elseif ($mode == "insert")
-      
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_NAME</font></b>
@@ -107,19 +107,19 @@ function showColorChooser(anchorname, anchorid) {
           </td>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <font face="$ui.sansSerifFonts">
-              <input type="text" name="parameter.text-color" size="20" value="$!data.user.getTemp("parameter.text-color")"/> 
+              <input type="text" name="parameter.text-color" size="20" value="$!data.user.getTemp("parameter.text-color")"/>
               <a href="#" onClick="showColorChooser('parameter.text-color', 'text_color'); return false;" id="text_color">$l10n.REGISTRY_EDITOR_SKIN_PICK</a>
             </font>
           </td>
         </tr>
-        
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_BACKGROUND_COLOR</font></b>
           </td>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <font face="$ui.sansSerifFonts">
-              <input type="text" name="parameter.background-color" size="20" value="$!data.user.getTemp("parameter.background-color")"/> 
+              <input type="text" name="parameter.background-color" size="20" value="$!data.user.getTemp("parameter.background-color")"/>
               <a href="#" onClick="showColorChooser('parameter.background-color', 'background_color'); return false;" id="background_color">$l10n.REGISTRY_EDITOR_SKIN_PICK</a>
             </font>
           </td>
@@ -168,7 +168,7 @@ function showColorChooser(anchorname, anchorid) {
             </font>
           </td>
         </tr>
-        
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_PORTLET_STYLE_CLASS</font></b>
@@ -178,8 +178,8 @@ function showColorChooser(anchorname, anchorid) {
               <input type="text" name="parameter.portlet-style-class" size="20" value="$!data.user.getTemp("parameter.portlet-style-class")"/>
             </font>
           </td>
-        </tr>  
-        
+        </tr>
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_TITLE_STYLE_CLASS</font></b>
@@ -266,7 +266,7 @@ function showColorChooser(anchorname, anchorid) {
             </font>
           </td>
         </tr>
-        
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_BACKGROUND_COLOR</font></b>
@@ -322,7 +322,7 @@ function showColorChooser(anchorname, anchorid) {
             </font>
           </td>
         </tr>
-        
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_PORTLET_STYLE_CLASS</font></b>
@@ -332,8 +332,8 @@ function showColorChooser(anchorname, anchorid) {
               <input type="text" name="parameter.portlet-style-class" size="20" value="$!entry.getParameter("portlet-style-class").value"/>
             </font>
           </td>
-        </tr>  
-        
+        </tr>
+
         <tr>
           <td bgcolor="$!{skin.TitleBackgroundColor}">
             <b><font face="$ui.sansSerifFonts">$l10n.REGISTRY_EDITOR_SKIN_TITLE_STYLE_CLASS</font></b>
@@ -404,8 +404,8 @@ function showColorChooser(anchorname, anchorid) {
             </font>
           </td>
         </tr>
-	
-	
+
+
       #end
 </table>
 <table border="0"  cellspacing="0" cellpadding="5" width="30%">
@@ -426,4 +426,4 @@ function showColorChooser(anchorname, anchorid) {
 </table>
 </form>
 
-<SCRIPT LANGUAGE="JavaScript">cp.writeDiv()</SCRIPT>
+<SCRIPT TYPE="text/javascript">cp.writeDiv()</SCRIPT>
