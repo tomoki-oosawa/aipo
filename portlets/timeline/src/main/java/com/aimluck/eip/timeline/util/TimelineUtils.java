@@ -420,6 +420,32 @@ public class TimelineUtils {
     return list;
   }
 
+  /**
+   * コメントした投稿に対してこれまでコメントしていたユーザーを取得する
+   *
+   * @param parent_id
+   * @return List
+   */
+  public static List<Integer> getTimelineOtherCommentUserList(int parent_id) {
+    List<Integer> resultList = new ArrayList<Integer>();
+    try {
+      List<EipTTimeline> list = new ArrayList<EipTTimeline>();
+      String query =
+        "SELECT DISTINCT ON (OWNER_ID) OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = "
+          + parent_id;
+      list = Database.sql(EipTTimeline.class, query).fetchList();
+      int recordNum = list.size();
+      for (int i = 0; i < recordNum; i++) {
+        Integer ownerId;
+        ownerId = list.get(i).getOwnerId();
+        resultList.add(ownerId);
+      }
+    } catch (Exception ex) {
+      logger.error("[timelineUtils]", ex);
+    }
+    return resultList;
+  }
+
   public static void createNewCommentActivity(EipTTimeline timeline,
       String loginName, String targetLoginName) {
     if (loginName.equals(targetLoginName)) {
@@ -428,6 +454,30 @@ public class TimelineUtils {
     List<String> recipients = new ArrayList<String>();
     recipients.add(targetLoginName);
     String title = new StringBuilder("あなたの投稿にコメントしました。").toString();
+    String portletParams =
+      new StringBuilder("?template=TimelineDetailScreen")
+        .append("&entityid=")
+        .append(timeline.getTimelineId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("timeline")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTitle(title)
+      .withPriority(1f)
+      .withExternalId(String.valueOf(timeline.getTimelineId())));
+  }
+
+  public static void createNewOtherCommentActivity(EipTTimeline timeline,
+      String loginName, String otherLoginName, String targetUserName) {
+    if (loginName.equals(otherLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(otherLoginName);
+    String title =
+      new StringBuilder(targetUserName + "さんの投稿にコメントしました。").toString();
     String portletParams =
       new StringBuilder("?template=TimelineDetailScreen")
         .append("&entityid=")
