@@ -213,11 +213,12 @@ public abstract class ALSocialApplicationHandler {
       HttpServletRequest request = HttpServletRequestLocator.get();
       Integer port = request.getServerPort();
       String scheme = request.getScheme();
+      String continerPath = JetspeedResources.getString("aipo.container.path");
       baseUrl =
         scheme
           + "://127.0.0.1:"
           + port
-          + JetspeedResources.getString("aipo.container.path");
+          + (continerPath == null ? "" : continerPath);
     }
     return baseUrl + "/gadgets/metadata";
   }
