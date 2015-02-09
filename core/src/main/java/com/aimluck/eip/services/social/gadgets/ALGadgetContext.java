@@ -132,10 +132,10 @@ public class ALGadgetContext {
         builder.append(":").append(serverPort);
       }
     }
-    return builder
-      .append(JetspeedResources.getString("aipo.container.path"))
-      .append("/gadgets/")
-      .toString();
+    String containerPath = JetspeedResources.getString("aipo.container.path");
+
+    return builder.append(containerPath == null ? "" : containerPath).append(
+      "/gadgets/").toString();
   }
 
   protected boolean isLockedDomainRequired() {
