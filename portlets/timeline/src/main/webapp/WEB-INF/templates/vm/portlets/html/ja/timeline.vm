@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"timeline", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("rows","20").addQueryData("scrollTop","0"))', reloadFunction:aipo.reloadPage };

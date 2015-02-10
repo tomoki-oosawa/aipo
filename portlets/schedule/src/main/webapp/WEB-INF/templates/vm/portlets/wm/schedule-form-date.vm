@@ -428,7 +428,7 @@ function onChangeEndDate(form) {
 #end
 #end
 
-<h3>参加ユーザー</h3>
+<h3>参加者</h3>
 <ul>
 #foreach($record in $!{result.FormData.MemberList})
 #if ( ! ($!result.LoginUser.Name.toString() == $!record.Name.toString()) )

@@ -23,7 +23,7 @@
 #set($enable_userlist = false)
 #end
 #set($uri = "portal/")
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 var tmpUsername = "";
@@ -145,7 +145,7 @@ $!data.Message
 </p>
 </form>
 #ALcell_contents_footer($career)
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 init();
 //-->

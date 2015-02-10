@@ -451,8 +451,15 @@ public class AccessControlFormData extends ALAbstractFormData {
         logger.debug("[AccessControlUtils] Not found ID...");
         return false;
       }
+      SelectQuery<EipTAclUserRoleMap> EipTAclUserRoleMapSQL =
+        Database.query(EipTAclUserRoleMap.class);
+      EipTAclUserRoleMapSQL.andQualifier(ExpressionFactory.matchDbExp(
+        EipTAclUserRoleMap.ROLE_ID_COLUMN,
+        aclroleid));
+      List<EipTAclUserRoleMap> userRoleMaps = EipTAclUserRoleMapSQL.fetchList();
 
-      // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
+      // オブジェクトを削除
+      Database.deleteAll(userRoleMaps);
       Database.delete(aclroles.get(0));
 
       Database.commit();

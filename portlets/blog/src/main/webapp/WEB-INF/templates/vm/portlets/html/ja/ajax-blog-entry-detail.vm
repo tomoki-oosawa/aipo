@@ -61,7 +61,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 </tr>
 
 <tr>
-<td style="border-bottom:none;">
+<td style="border-bottom:none;" class="sentence">
 <div class="clearfix">
   <div>
   $!{result.Detail.Note}

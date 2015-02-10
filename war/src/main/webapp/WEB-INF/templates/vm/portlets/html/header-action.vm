@@ -33,8 +33,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 *#
 
-<script language="JavaScript" src="javascript/ColorPicker.js"></script>
-<SCRIPT language=JavaScript>
+<script type="text/javascript" src="javascript/ColorPicker.js"></script>
+<SCRIPT TYPE="text/javascript">
 var cp = new ColorPicker('window'); // Popup window
 var cp2 = new ColorPicker(); // DIV style
 
@@ -48,7 +48,7 @@ function refreshHeader()
 function enableBgImage(val)
 {
    if (fieldname = "setBgImage")
-   {	
+   {
      if (val == 'true')
      {
         document.myForm2.bgImage.disabled = false;
@@ -75,7 +75,7 @@ function enableBgColor(val)
      if (val == 'false')
      {
        document.myForm2.bgColor.disabled = true;
-       document.getElementById('pick4').style.visibility="hidden";	
+       document.getElementById('pick4').style.visibility="hidden";
      }
    }
 }
@@ -142,11 +142,11 @@ function enableFontColor(val)
 
 #else
    <table width="100%" cellspacing="2" cellpadding="1">
-     <tr class="rowheader"> 
-        <td colspan=2> 
+     <tr class="rowheader">
+        <td colspan=2>
            <b>${l10n.HEADER_ACTION_HEADER_SETTINGS_VM}</b>
         </td>
-     </tr>  
+     </tr>
 
 
      <tr class="evenrow">
@@ -225,7 +225,7 @@ function enableFontColor(val)
 
     </tr>
 
-   </table>#end<script language="JavaScript">cp.writeDiv()</script>
+   </table>#end<script type="text/javascript">cp.writeDiv()</script>
 </form>
 
 </body>

@@ -22,7 +22,7 @@
 #if($config.getString("action.login.enable.select.userlist") != "true")
 #set($enable_userlist = false)
 #end
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 var tmpUsername = "";
@@ -152,9 +152,9 @@ function get_cookie(strName) {
     if (document.cookie.substring(nLoop, nLength) == strNameEx) {
       strTemp = document.cookie.indexOf(";", nLength);
       if (strTemp == -1) {
-        strReturn = document.cookie.substring(nLength, document.cookie.length);
+        strReturn = decodeURIComponent(document.cookie.substring(nLength, document.cookie.length));
       } else {
-        strReturn = document.cookie.substring(nLength, strTemp);
+        strReturn = decodeURIComponent(document.cookie.substring(nLength, strTemp));
       }
       break;
    }
@@ -169,7 +169,7 @@ function get_cookie(strName) {
 function set_cookie(strName, strValue) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() + 10*24*60*60*1000);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+  document.cookie = strName + "=" + encodeURIComponent(strValue) + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
 }
 
 function remove_cookie(strName) {
@@ -177,7 +177,7 @@ function remove_cookie(strName) {
   var dtExpire = new Date();
   dtExpire.setTime(dtExpire.getTime() - 1);
   strValue = get_cookie(strName);
-  document.cookie = strName + "=" + strValue + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
+  document.cookie = strName + "=" + encodeURIComponent(strValue) + "; expires=" + dtExpire.toGMTString() + "; path=${context_path}/";
 }
 
 #if($enable_userlist)
@@ -285,7 +285,7 @@ $!data.Message
 </div></div>
 <!-- /auiLoginBox -->
 
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 init();
 

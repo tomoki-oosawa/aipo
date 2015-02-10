@@ -74,7 +74,7 @@
 #ALspacebothfooter()
 ##ALtabfooter()
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     aipo.portletset.menuSelected = 1;
 //]]>

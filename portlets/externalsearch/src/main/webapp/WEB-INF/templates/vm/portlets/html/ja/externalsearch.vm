@@ -18,7 +18,7 @@
  *#
 
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 //<![CDATA[
 
 function select_yahoo(form) {
@@ -91,7 +91,7 @@ function setSearchEngineValue(button) {
 </tr>
 </table>
 </form>
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 //<![CDATA[
 
 #if($def_searchengine)
