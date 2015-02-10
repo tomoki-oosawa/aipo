@@ -36,10 +36,8 @@
 			<tr>
 				<td>
 					<div class="alignright">
-						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclUpdateTopicOthers()})
-						#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
-						#end
 						#if($!result.isMatch($!{result.UserId} , $!{result.ParentTopic.OwnerId.Value}) || $!{result.hasAclDeleteTopicOthers()})
+						#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
 						#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 						#end
 					</div>
@@ -95,6 +93,12 @@
 			<div class="clearfix">
 				<div class="alignright">
 					#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+						#if( $!result.topicReplyId && ($result.isMatch($!{result.topicReplyId},$!{record.TopicId.Value})) )
+							##コメント編集表示
+							コメント編集中
+						#else
+							#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicDetailScreen').addQueryData('entityid',$entityid).addQueryData('topic_reply_id',${record.TopicId})" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
+						#end
 					#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 					#end
 				</div>
@@ -110,23 +114,53 @@
 				</div>
 			</div>
 			<div><br>
-				${record.Note}
-				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
-					<div style="padding-top:15px;">
-						<ul>
-						#foreach( $attachmentFile in $!record.AttachmentFileList )
-						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
-							#if($attachmentFile.isImage())
-								<div id='popc' style='position:absolute'></div>
-								<div class="thumbBlock">
-									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-								</div>
+				#if( $!result.topicReplyId && ($result.isMatch($!{result.topicReplyId},$!{record.TopicId.Value})) )
+					##コメント編集表示
+					<table class="listTable wide mt0">
+						<tbody>
+							<tr>
+								<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
+								<td>#ALtextarea('note' $!record.rawNote 5 40)</td>
+							</tr>
+							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
+								<td>
+									<div class="clearfix">
+									<div>#IFFileUpload()</div>
+									<ul id="attachments_$!{portlet.ID}" class="attachments">
+										#foreach($record2 in $!record.AttachmentFileNameList )
+											<li data-fileid="s${record2.FileId}" data-filename="$!{record2.FileName}"><span>$!record2.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
+										#end
+									</ul>
+									</div>
+								</td>
+							</tr>
+							<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+						</tbody>
+					</table>
+					#ALbuttonheader()
+					#ALajaxbuttonEditSubmit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode','edit_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
+					#ALbuttonfooter()
+
+				#else
+					${record.Note}
+					#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+						<div style="padding-top:15px;">
+							<ul>
+							#foreach( $attachmentFile in $!record.AttachmentFileList )
+							<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+								#if($attachmentFile.isImage())
+									<div id='popc' style='position:absolute'></div>
+									<div class="thumbBlock">
+										<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','MsgboardTopicFileRawScreen').addPathInfo("ownerid", $!{record.OwnerId}).addPathInfo("entityid", $!record.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+										<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+									</div>
+								#end
+							</li>
 							#end
-						</li>
-						#end
-						</ul>
-					</div>
+							</ul>
+						</div>
+					#end
 				#end
 			</div>
     	</td>

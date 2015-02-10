@@ -759,6 +759,7 @@ public class MsgboardTopicSelectData extends
         rd.setOwnerHasPhoto(user.hasPhoto());
       }
       rd.setNote(record.getNote());
+      rd.setRawNote(record.getNote());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 

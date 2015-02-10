@@ -178,6 +178,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
     note.setNotNull(true);
     // メモの文字数制限
     note.limitMaxLength(10000);
+    //
   }
 
   /**
@@ -504,9 +505,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       Date updateDate = Calendar.getInstance().getTime();
 
       // メモ
-      edittopic.setNote(String.valueOf(rundata
-        .getParameters()
-        .getString("note")));
+      edittopic.setNote(note.getValue());
       // 更新日
       edittopic.setUpdateDate(updateDate);
 
@@ -830,7 +829,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       // ALAccessControlConstants.VALUE_ACL_INSERT);
 
       action.setMode("reply");
-      // mode = action.getMode();
+      mode = action.getMode();
       List<String> msgList = new ArrayList<String>();
       boolean res = setFormData(rundata, context, msgList);
       if (action instanceof MsgboardTopicDetailScreen) {

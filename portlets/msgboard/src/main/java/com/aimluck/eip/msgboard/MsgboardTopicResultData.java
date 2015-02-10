@@ -33,7 +33,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class MsgboardTopicResultData implements ALData {
 
@@ -66,6 +66,9 @@ public class MsgboardTopicResultData implements ALData {
 
   /** メモ */
   private ALStringField note;
+
+  /** タグ無しメモ **/
+  private ALStringField rawNote;
 
   /** 返信数 */
   private ALNumberField reply_count;
@@ -230,6 +233,13 @@ public class MsgboardTopicResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public String getRawNote() {
+    return note.getValue();
+  }
+
+  /**
    * @param string
    */
   public void setNote(String string) {
@@ -293,7 +303,7 @@ public class MsgboardTopicResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -335,6 +345,13 @@ public class MsgboardTopicResultData implements ALData {
    */
   public void setOwnerHasPhoto(boolean hasPhoto) {
     this.has_photo = hasPhoto;
+  }
+
+  /**
+   * @param rawNote
+   */
+  public void setRawNote(String string) {
+    this.rawNote.setValue(string);
   }
 
 }

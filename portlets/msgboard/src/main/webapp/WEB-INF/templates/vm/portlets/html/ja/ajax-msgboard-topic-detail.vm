@@ -94,7 +94,7 @@
 				<div class="alignright">
 					#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
 						#if( $!result.topicReplyId && ($result.isMatch($!{result.topicReplyId},$!{record.TopicId.Value})) )
-							##コメント編集モード
+							##コメント編集表示
 							コメント編集中
 						#else
 							#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicDetailScreen').addQueryData('entityid',$entityid).addQueryData('topic_reply_id',${record.TopicId})" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
@@ -115,12 +115,12 @@
 			</div>
 			<div><br>
 				#if( $!result.topicReplyId && ($result.isMatch($!{result.topicReplyId},$!{record.TopicId.Value})) )
-					##コメント編集モード
+					##コメント編集表示
 					<table class="listTable wide mt0">
 						<tbody>
 							<tr>
 								<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
-								<td>#ALtextarea('note' ${record.Note} 5 40)</td>
+								<td>#ALtextarea('note' $!record.rawNote 5 40)</td>
 							</tr>
 							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
 								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
@@ -128,8 +128,8 @@
 									<div class="clearfix">
 									<div>#IFFileUpload()</div>
 									<ul id="attachments_$!{portlet.ID}" class="attachments">
-										#foreach($record in $!result.AttachmentFileNameList )
-											<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
+										#foreach($record2 in $!record.AttachmentFileNameList )
+											<li data-fileid="s${record2.FileId}" data-filename="$!{record2.FileName}"><span>$!record2.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
 										#end
 									</ul>
 									</div>
