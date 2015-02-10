@@ -107,7 +107,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- * 
+ *
  */
 public class ScheduleUtils {
 
@@ -189,7 +189,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -203,7 +203,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -283,7 +283,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -386,7 +386,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールへのアクセス権限があるかどうかを調べます。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -437,7 +437,7 @@ public class ScheduleUtils {
 
   /**
    * ツールチップ表示用の Scheudle オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -489,7 +489,7 @@ public class ScheduleUtils {
 
   /**
    * 詳細表示用の Scheudle オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -558,7 +558,7 @@ public class ScheduleUtils {
 
   /**
    * ScheudleMap オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -653,7 +653,7 @@ public class ScheduleUtils {
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @param includeLoginUser
@@ -745,7 +745,7 @@ public class ScheduleUtils {
 
   /**
    * 設備メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -774,7 +774,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した繰り返しパターンにマッチするかどうかを返します。
-   * 
+   *
    * @param date
    * @param ptn
    * @param startDate
@@ -860,7 +860,7 @@ public class ScheduleUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -1072,7 +1072,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -1113,7 +1113,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1156,7 +1156,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの時刻のみを比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1190,7 +1190,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1272,7 +1272,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する（携帯電話対応時には上記のメソッドに変更する）．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1409,7 +1409,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールを時刻でソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -1458,7 +1458,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールが上にくるようにソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -1497,7 +1497,7 @@ public class ScheduleUtils {
 
   /**
    * 現在選択しているタブ名を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1527,7 +1527,7 @@ public class ScheduleUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   * 
+   *
    * @param date
    * @param dateFormat
    * @return
@@ -1545,7 +1545,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した曜日が，選択範囲に入っているかを検証する．
-   * 
+   *
    * @param selectedWeek
    *          指定曜日
    * @param startWeek
@@ -1572,7 +1572,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1591,7 +1591,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1849,7 +1849,7 @@ public class ScheduleUtils {
 
   /**
    * パラメータを読み込みます。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -1934,7 +1934,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールの時刻系要素バリデーション処理移譲メソッド
-   * 
+   *
    * @param start_date
    * @param end_date
    * @param repeat_type
@@ -2203,7 +2203,7 @@ public class ScheduleUtils {
 
   /**
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   * 
+   *
    * @param weekSpanConList
    *          複数の期間スケジュールを保持するリスト
    * @param viewStartDate
@@ -2564,7 +2564,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static Date getEmptyDate() {
@@ -2718,7 +2718,7 @@ public class ScheduleUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
@@ -2823,7 +2823,7 @@ public class ScheduleUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -3655,7 +3655,7 @@ public class ScheduleUtils {
 
   /**
    * 他人のスケジュールに対する権限があるかどうかを調べます。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -3851,6 +3851,7 @@ public class ScheduleUtils {
       }
       if (viewStart != null && viewEnd != null) {
         body.append(" AND ( ");
+        body.append(" ( ");
         body.append(" t4.start_date <= '");
         body
           .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
@@ -3859,6 +3860,8 @@ public class ScheduleUtils {
         body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
           .format(viewStart));
         body.append("' ");
+        body.append(" ) ");
+        body.append(" OR  t4.repeat_pattern NOT IN ('N', 'S') ");
         body.append(" ) ");
       }
     }
@@ -4032,7 +4035,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -4078,7 +4081,7 @@ public class ScheduleUtils {
 
   /**
    * 入力フィールド値が数字かどうかを判定します。
-   * 
+   *
    * @return
    */
   public static boolean isNumberValue(String string) {

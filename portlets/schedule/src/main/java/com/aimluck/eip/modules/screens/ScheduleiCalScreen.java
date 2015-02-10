@@ -184,6 +184,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
+          if (endDate.compareTo(cStart.getTime()) < 0
+            || cEnd.getTime().compareTo(startDate) < 0) {
+            // 期間指定の繰り返しスケジュールで、前後３ヶ月の範囲外のスケジュールは表示しない
+            continue;
+          }
           if (endDate.compareTo(cEnd.getTime()) < 0) {
             recur.setUntil(new DateTime(endDate));
           } else {
