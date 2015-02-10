@@ -122,20 +122,20 @@
 								<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
 								<td>#ALtextarea('note' $!record.rawNote 5 40)</td>
 							</tr>
-							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
-								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
-								<td>
-									<div class="clearfix">
-									<div>#IFFileUpload()</div>
-									<ul id="attachments_$!{portlet.ID}" class="attachments">
-										#foreach($record2 in $!record.AttachmentFileNameList )
-											<li data-fileid="s${record2.FileId}" data-filename="$!{record2.FileName}"><span>$!record2.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
-										#end
-									</ul>
-									</div>
-								</td>
-							</tr>
-							<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+##							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+##								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
+##								<td>
+##									<div class="clearfix">
+##									<div>#IFFileUpload()</div>
+##									<ul id="attachments_$!{portlet.ID}" class="attachments">
+##										#foreach($record2 in $!record.AttachmentFileNameList )
+##											<li data-fileid="s${record2.FileId}" data-filename="$!{record2.FileName}"><span>$!record2.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
+##										#end
+##									</ul>
+##									</div>
+##								</td>
+##							</tr>
+##							<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 						</tbody>
 					</table>
 					#ALbuttonheader()

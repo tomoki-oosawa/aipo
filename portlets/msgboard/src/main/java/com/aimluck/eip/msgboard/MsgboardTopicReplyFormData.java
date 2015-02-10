@@ -514,15 +514,15 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       parenttopic.setUpdateDate(updateDate);
 
       // ファイルをデータベースに登録する．
-      if (!MsgboardUtils.insertFileDataDelegate(
-        rundata,
-        context,
-        edittopic,
-        fileuploadList,
-        folderName,
-        msgList)) {
-        return false;
-      }
+      // if (!MsgboardUtils.insertFileDataDelegate(
+      // rundata,
+      // context,
+      // edittopic,
+      // fileuploadList,
+      // folderName,
+      // msgList)) {
+      // return false;
+      // }
 
       Database.commit();
 
@@ -586,7 +586,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         }
       }
       // 添付ファイル保存先のフォルダを削除
-      ALStorageService.deleteTmpFolder(uid, folderName);
+      // ALStorageService.deleteTmpFolder(uid, folderName);
 
       // メール送信
       try {
