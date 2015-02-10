@@ -862,6 +862,10 @@ aipo.message.openDirect = function(user_id) {
 	    if(aipo.message.isDirect) {
 		    return;
 	    }
+        var dialog = dijit.byId("modalDialog");
+	    if(dialog) {
+	    	dialog.hide();
+	    }
 	    aipo.message.isDirect = true;
 	    aipo.message.currentUserId = user_id;
 	    aipo.menu.toggleDropdown("message");
