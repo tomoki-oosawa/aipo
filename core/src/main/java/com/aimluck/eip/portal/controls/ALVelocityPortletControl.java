@@ -82,24 +82,24 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet control which implements all PortletState action
- * 
+ *
  * <p>
  * To use this control you need to define in your registry the following entry
  * or similar:
  * </p>
- * 
+ *
  * <pre>
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  *              &lt;portlet-control-entry name=&quot;TitlePortletControl&quot;&gt;
  *                &lt;classname&gt;org.apache.jetspeed.portal.controls.VelocityPortletControl&lt;/classname&gt;
  *                &lt;parameter name=&quot;theme&quot; value=&quot;default.vm&quot;/&gt;
@@ -110,26 +110,26 @@ import com.aimluck.eip.util.ALEipUtils;
  *                &lt;/meta-info&gt;
  *                &lt;media-type ref=&quot;html&quot;/&gt;
  *              &lt;/portlet-control-entry&gt;
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ *
  * </pre>
- * 
- * 
+ *
+ *
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco </a>
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta </a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch </a>
- * 
- * 
+ *
+ *
  */
 public class ALVelocityPortletControl extends AbstractPortletControl {
 
@@ -216,7 +216,10 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
     }
     context.put("accessControl", showDelete);
 
-    context.put("client", ALEipUtils.getClient(rundata));
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
     context.put("clientVer", ALEipUtils.getClientVersion(rundata));
 
     // Put the request and session based contexts
@@ -351,7 +354,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * This method allows subclasses of the VelocityPortletControl to populate the
    * context of this control before rendering by the template engine.
-   * 
+   *
    * @param rundata
    *          the RunData object for this request
    * @param context
@@ -364,7 +367,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   /**
    * Builds a list of possible window actions for this portlet instance. For
    * best results, the portlet should also implement the PortletState interface.
-   * 
+   *
    * @param rundata
    *          the request RunData
    * @param the
@@ -487,7 +490,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
   // 修正 ：ノーマル表示時のポートレットの右上にメニューを配置できるように，
   // メソッド buildFunctionList を追加した．
   /**
-   * 
+   *
    * @param rundata
    * @param portlet
    * @return
@@ -555,7 +558,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
     /**
      * Constructor
-     * 
+     *
      * @param name
      *          Name of the action
      * @param alt
@@ -630,7 +633,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
   /**
    * スマートフォン用：ユーザー情報タブのメニュー
-   * 
+   *
    * @param tabs
    * @return
    */
@@ -649,7 +652,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
   /**
    * iphoneメニュー用にすべてのポートレットのリストを取り出す。
-   * 
+   *
    * @param portlets
    * @param rundata
    * @param context
@@ -744,7 +747,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * 修正：ポートレットの最大化画面時にタブを表示するために， <br />
    * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
    * のメソッドを元に修正を加えた．
-   * 
+   *
    * @param portlets
    * @param rundata
    * @param context
@@ -920,7 +923,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
   /**
    * 修正 ：第二引数の PortletSet に第三引数のポートレットが含まれるかを検証する．
-   * 
+   *
    * @param rundata
    * @param portlets
    *          タブ内に配置された Portlet 群
@@ -950,7 +953,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
 
   /**
    * 修正 ：第二引数で指定したポートレットの ID がタブの ID かどうかを検証する．
-   * 
+   *
    * @param rundata
    * @param peid
    * @return
@@ -975,7 +978,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
    * 修正 ：ポートレットの最大化画面時にタブを表示するために， <br />
    * クラス org.apache.jetspeed.portal.controls.VelocityPortletSetControl <br />
    * のメソッドをコピーした．
-   * 
+   *
    * @param rundata
    * @param portlets
    * @return
@@ -1121,7 +1124,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       Serializable {
 
     /**
-     * 
+     *
      * @param o1
      * @param o2
      * @return
