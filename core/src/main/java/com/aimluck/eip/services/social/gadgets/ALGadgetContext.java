@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.shindig.common.crypto.BasicBlobCrypter;
 import org.apache.shindig.common.crypto.BlobCrypter;
@@ -131,7 +132,10 @@ public class ALGadgetContext {
         builder.append(":").append(serverPort);
       }
     }
-    return builder.append("/gadgets/").toString();
+    String containerPath = JetspeedResources.getString("aipo.container.path");
+
+    return builder.append(containerPath == null ? "" : containerPath).append(
+      "/gadgets/").toString();
   }
 
   protected boolean isLockedDomainRequired() {
