@@ -867,6 +867,10 @@ aipo.message.openDirect = function(user_id) {
 	    	dialog.hide();
 	    }
 	    aipo.message.isDirect = true;
+	    aipo.message.currentRoomId = null;
+	    aipo.message.currentRoomSearchKeyword = null;
+	    aipo.message.currentUserSearchKeyword = null;
+	    aipo.message.currentGroupName = "all";
 	    aipo.message.currentUserId = user_id;
 	    aipo.menu.toggleDropdown("message");
 	    aipo.message.selectTab("user");
