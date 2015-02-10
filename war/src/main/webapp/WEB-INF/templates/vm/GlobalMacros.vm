@@ -603,6 +603,10 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <input name="ajaxbuttonEdit" class="button" type="button" value='$name' onclick="aimluck.io.openDialog(this, '$!utils.escapeXML($url)', '$portlet_id', $callback);" />
 #end
 
+#macro(ALajaxbuttonEditSubmit $url $indicator_id $portlet_id $receive)
+<input name="ajaxbuttonEdit" class="button" type="button" value="$l10n.COMMON_EDIT" onclick="aimluck.io.ajaxActionSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+
 #macro(ALajaxbuttonDelete $url $indicator_id $portlet_id $receive)
 	<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end

@@ -49,7 +49,7 @@ public class MsgboardTopicFormJSONScreen extends ALJSONScreen {
     try {
 
       if (ALEipConstants.MODE_INSERT.equals(mode)) {
-        //
+
         MsgboardTopicFormData formData = new MsgboardTopicFormData();
         formData.initField();
         formData.loadCategoryList(rundata, context);

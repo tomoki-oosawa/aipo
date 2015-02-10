@@ -503,8 +503,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       Date updateDate = Calendar.getInstance().getTime();
 
-      // メモ fixme
-      edittopic.setNote(note.getValue());
+      // メモ
       edittopic.setNote(String.valueOf(rundata
         .getParameters()
         .getString("note")));
@@ -775,8 +774,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         ALEipConstants.MODE_UPDATE);
       setValidator();
 
-      setNote(String.valueOf(rundata.getParameters().getString("note")));
-
       boolean res = false;
       if (isOverQuota()) {
         msgList.add(ALLocalizationUtils
@@ -803,10 +800,9 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       action.putData(rundata, context);
 
       return res;
-    } /*
-       * catch (ALPermissionException e) {
-       * ALEipUtils.redirectPermissionError(rundata); return false; }
-       */catch (ALPageNotFoundException e) {
+      // } catch (ALPermissionException e) {
+      // ALEipUtils.redirectPermissionError(rundata); return false;
+    } catch (ALPageNotFoundException e) {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
     } catch (ALDBErrorException e) {

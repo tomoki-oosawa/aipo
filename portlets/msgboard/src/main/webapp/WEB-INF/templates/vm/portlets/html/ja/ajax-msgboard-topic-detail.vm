@@ -138,12 +138,8 @@
 							<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 						</tbody>
 					</table>
-  					##<input type="hidden" name="mode" value="edit_reply"/>
-  					##<input type="hidden" name="topic_reply_id" value="${record.TopicId}"/>
-					##<input type="hidden" name="entityid" value="${result.ParentTopic.TopicId}"/>
 					#ALbuttonheader()
-					#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode','edit_reply')" "$!portlet.ID" "aipo.msgboard.onLoadMsgboardDialog")
-					##<input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="編集する" onclick="aimluck.io.setHiddenValue(this);">
+					#ALajaxbuttonEditSubmit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MsgboardTopicFormJSONScreen').addQueryData('topic_reply_id',${record.TopicId}).addQueryData('mode','edit_reply')" "$indicator_id" "$!portlet.ID" "aipo.msgboard.onReceiveMessage")
 					#ALbuttonfooter()
 
 				#else
