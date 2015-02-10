@@ -32,6 +32,7 @@ aipo.message.portletId = null;
 aipo.message.jslink = null;
 aipo.message.isMobile = false;
 aipo.message.isInit = false;
+aipo.message.isDirect = false;
 
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
@@ -273,6 +274,11 @@ aipo.message.reloadUserList = function(group_name) {
                 'messageUserListPane');
         aipo.message.messageUserListPane.onLoad = function() {
             aipo.message.fixMessageWindow();
+            if(aipo.message.isDirect) {
+            	aipo.message.isDirect = false;
+            	aipo.message.selectUser(aipo.message.currentUserId);
+            	dojo.byId("messageUserlist").scrollTop = dojo.byId("messageUser" + aipo.message.currentUserId).offsetTop - dojo.byId("messageUserlist").offsetTop
+            }
         }
     }
 
@@ -370,6 +376,7 @@ aipo.message.swapView = function() {
         if (dojo.hasClass("dd_message", "open")) {
             dojo.byId("portletsBody").style.display = "none";
             aipo.message.fixMessageWindow();
+            aipo.message.focusInput();
             if (aipo.message.isOpenWindow()
                     && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
                 aipo.message.latestMessageList();
@@ -848,3 +855,16 @@ aipo.message.switchDesktopNotify = function() {
     }
 }
 
+aipo.message.openDirect = function(user_id) {
+	if(aipo.message.isMobile) {
+		location.href = aipo.message.jslink +"?action=controls.Maximize&u=" + user_id
+	} else {
+	    if(aipo.message.isDirect) {
+		    return;
+	    }
+	    aipo.message.isDirect = true;
+	    aipo.message.currentUserId = user_id;
+	    aipo.menu.toggleDropdown("message");
+	    aipo.message.selectTab("user");
+	}
+}
