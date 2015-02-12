@@ -107,6 +107,8 @@ public class MsgboardTopicResultData implements ALData {
 
     note = new ALStringField();
     note.setTrim(false);
+    rawNote = new ALStringField();
+    rawNote.setTrim(false);
     reply_count = new ALNumberField();
     create_user = new ALStringField();
     update_user = new ALStringField();
