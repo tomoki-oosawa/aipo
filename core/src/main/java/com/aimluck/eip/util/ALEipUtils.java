@@ -1747,13 +1747,10 @@ public class ALEipUtils {
           }
         }
       }
-      String trimSpaceMsg =
-        msg
-          .replaceAll(
-            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)\\s+",
-            "$1\\:$2");
+
+      msg = msg.replaceAll("&nbsp;", " ");
       String newMsg =
-        trimSpaceMsg
+        msg
           .replaceAll(
             "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
             "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
