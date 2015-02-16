@@ -79,7 +79,9 @@ select {
   max-width: 100%;
 }
 
-select[multiple] {
+select[multiple],
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
   height:auto;
 }
 
