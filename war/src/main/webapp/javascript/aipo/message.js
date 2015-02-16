@@ -564,7 +564,12 @@ aipo.message.clearInput = function() {
 aipo.message.focusInput = function() {
     var messageForm = dojo.byId("messageForm");
     if (messageForm && !aipo.message.isMobile) {
-        messageForm.message.focus();
+    	try{
+    		messageForm.message.focus();
+    	}catch(e){
+    		//ignore
+    	}
+
     }
 }
 
