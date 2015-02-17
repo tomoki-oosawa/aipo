@@ -68,7 +68,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板返信のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
@@ -106,12 +106,12 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   private boolean hasAclDeleteTopicOthers;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -149,8 +149,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -169,8 +169,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * 掲示板の各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -182,10 +182,10 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -196,7 +196,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -210,7 +210,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * 返信記事をデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -284,7 +284,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -462,186 +462,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   }
 
   /**
-   * データを更新する抽象メソッドです。
-   *
-   * @param rundata
-   * @param context
-   * @param msgList
-   *          エラーメッセージのリスト
-   * @return TRUE 成功 FALSE 失敗
-   */
-  @Override
-  protected boolean updateFormData(RunData rundata, Context context,
-      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    try {
-      // オブジェクトモデルを取得
-      String topicid =
-        String.valueOf(rundata.getParameters().getInt("topic_reply_id"));
-
-      EipTMsgboardTopic edittopic =
-        MsgboardUtils.getEipTMsgboardTopicReply(
-          rundata,
-          context,
-          topicid,
-          false);
-
-      EipTMsgboardTopic parenttopic =
-        MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
-
-      if (parenttopic == null || edittopic == null) {
-        // 指定した トピック ID のレコードが見つからない場合
-        logger.debug("[MsgboardTopicReplyFormData] Not found ID...");
-        throw new ALPageNotFoundException();
-      }
-
-      if (!MsgboardUtils.hasAuthorityToReply(uid, parenttopic
-        .getEipTMsgboardCategory())) {
-        // 返信権限がない場合弾く
-        msgList.add(" このトピックに返信する権限がありません。 ");
-        return false;
-      }
-
-      Date updateDate = Calendar.getInstance().getTime();
-
-      // メモ fixme
-      edittopic.setNote(note.getValue());
-      edittopic.setNote(String.valueOf(rundata
-        .getParameters()
-        .getString("note")));
-      // 更新日
-      edittopic.setUpdateDate(updateDate);
-
-      // 親トピックの更新情報を更新する．
-      parenttopic.setUpdateUserId(Integer.valueOf(uid));
-      parenttopic.setUpdateDate(updateDate);
-
-      // ファイルをデータベースに登録する．
-      if (!MsgboardUtils.insertFileDataDelegate(
-        rundata,
-        context,
-        edittopic,
-        fileuploadList,
-        folderName,
-        msgList)) {
-        return false;
-      }
-
-      Database.commit();
-
-      List<ALEipUser> memberList = selectMsgMember(rundata, context);
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        edittopic.getTopicId(),
-        ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
-        parenttopic.getTopicName(),
-        "insert");
-
-      /* 自分以外の全員に新着ポートレット登録 */
-      if ("T".equals(edittopic.getEipTMsgboardCategory().getPublicFlag())) {
-        // アクティビティ
-        ALEipUser user = ALEipUtils.getALEipUser(uid);
-        // 更新情報
-        MsgboardUtils.createNewCommentActivity(parenttopic, user
-          .getName()
-          .getValue(), edittopic);
-        // あなた宛のお知らせ
-        List<String> recipient = new ArrayList<String>();
-        for (int i = 0; i < memberList.size(); i++) {
-          recipient.add(memberList.get(i).getName().toString());
-        }
-        MsgboardUtils.createNewTopicActivity(parenttopic, user
-          .getName()
-          .toString(), recipient, edittopic);
-      } else {
-        List<Integer> userIds =
-          MsgboardUtils.getWhatsNewInsertList(rundata, edittopic
-            .getEipTMsgboardCategory()
-            .getCategoryId()
-            .intValue(), edittopic.getEipTMsgboardCategory().getPublicFlag());
-
-        List<String> recipients = new ArrayList<String>();
-        int u_size = userIds.size();
-        for (int i = 0; i < u_size; i++) {
-          Integer _id = userIds.get(i);
-          ALEipUser user = ALEipUtils.getALEipUser(_id);
-          if (user != null) {
-            recipients.add(user.getName().getValue());
-          }
-        }
-
-        // アクティビティ
-        if (recipients.size() > 0) {
-          ALEipUser user = ALEipUtils.getALEipUser(uid);
-          // 更新情報
-          MsgboardUtils.createNewCommentActivity(parenttopic, user
-            .getName()
-            .getValue(), recipients, edittopic);
-          // あなた宛のお知らせ
-          List<String> recipient = new ArrayList<String>();
-          for (int i = 0; i < memberList.size(); i++) {
-            recipient.add(memberList.get(i).getName().toString());
-          }
-          MsgboardUtils.createNewTopicActivity(parenttopic, user
-            .getName()
-            .toString(), recipient, edittopic);
-        }
-      }
-      // 添付ファイル保存先のフォルダを削除
-      ALStorageService.deleteTmpFolder(uid, folderName);
-
-      // メール送信
-      try {
-        int msgType =
-          ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD);
-        if (msgType > 0) {
-          // パソコンへメールを送信
-          List<ALEipUserAddr> destMemberList =
-            ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
-              .getUserId(rundata), false);
-          String subject = "[" + ALOrgUtilsService.getAlias() + "]掲示板";
-          String orgId = Database.getDomainName();
-
-          List<ALAdminMailMessage> messageList =
-            new ArrayList<ALAdminMailMessage>();
-          for (ALEipUserAddr destMember : destMemberList) {
-            ALAdminMailMessage message = new ALAdminMailMessage(destMember);
-            message.setPcSubject(subject);
-            message.setCellularSubject(subject);
-            message.setPcBody(MsgboardUtils.createReplyMsgForPc(
-              rundata,
-              parenttopic,
-              edittopic,
-              memberList));
-            message.setCellularBody(MsgboardUtils.createReplyMsgForCellPhone(
-              rundata,
-              parenttopic,
-              edittopic,
-              memberList));
-            messageList.add(message);
-          }
-          ALMailService.sendAdminMailAsync(new ALAdminMailContext(
-            orgId,
-            ALEipUtils.getUserId(rundata),
-            messageList,
-            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD)));
-        }
-      } catch (Exception ex) {
-        msgList.add("メールを送信できませんでした。");
-        logger.error("msgboard", ex);
-        return false;
-      }
-    } catch (Exception e) {
-      Database.rollback();
-      logger.error("[MsgboardTopicReplyFormData]", e);
-      throw new ALDBErrorException();
-    }
-    return true;
-  }
-
-  /**
    * 自分以外のトピック関係者のuser_idのListを習得します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @return
@@ -684,8 +506,22 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   }
 
   /**
+   * データベースに格納されているトピックを更新します。 <BR>
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return TRUE 成功 FALSE 失敗
+   */
+  @Override
+  protected boolean updateFormData(RunData rundata, Context context,
+      List<String> msgList) {
+    return false;
+  }
+
+  /**
    * トピック詳細表示ページからデータを新規登録します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -746,80 +582,8 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   }
 
   /**
-   * データを更新します。
-   *
-   * @param action
-   * @param rundata
-   * @param context
-   * @return TRUE 成功 FALSE 失敗
-   */
-  @Override
-  public boolean doUpdate(ALAction action, RunData rundata, Context context) {
-    List<String> msgList = new ArrayList<String>();
-    try {
-      // if (!doCheckSecurity(rundata, context)) {
-      // return false;
-      // }
-
-      init(action, rundata, context);
-
-      // doCheckAclPermission(
-      // rundata,
-      // context,
-      // ALAccessControlConstants.VALUE_ACL_UPDATE);
-
-      action.setMode(ALEipConstants.MODE_UPDATE);
-      mode = action.getMode();
-      rundata.getParameters().add(
-        ALEipConstants.MODE,
-        ALEipConstants.MODE_UPDATE);
-      setValidator();
-
-      setNote(String.valueOf(rundata.getParameters().getString("note")));
-
-      boolean res = false;
-      if (isOverQuota()) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
-      } else {
-        res =
-          (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
-            rundata,
-            context,
-            msgList));
-      }
-
-      if (!res) {
-        action.setMode(ALEipConstants.MODE_EDIT_FORM);
-        mode = action.getMode();
-      }
-      action.setResultData(this);
-      if (!msgList.isEmpty()) {
-        action.addErrorMessages(msgList);
-      } else if (!res) {
-        msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
-        action.addErrorMessages(msgList);
-      }
-      action.putData(rundata, context);
-
-      return res;
-    } /*
-       * catch (ALPermissionException e) {
-       * ALEipUtils.redirectPermissionError(rundata); return false; }
-       */catch (ALPageNotFoundException e) {
-      ALEipUtils.redirectPageNotFound(rundata);
-      return false;
-    } catch (ALDBErrorException e) {
-      msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
-      action.addErrorMessages(msgList);
-      action.putData(rundata, context);
-      return false;
-    }
-  }
-
-  /**
    * トピック詳細表示ページにフォームを表示します。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -863,7 +627,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -892,20 +656,11 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
     return note;
-  }
-
-  /**
-   * メモを編集します。 <BR>
-   *
-   * @return
-   */
-  public void setNote(String string) {
-    note.setValue(string);
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
@@ -918,7 +673,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override
@@ -932,7 +687,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   *
+   * 
    * @return
    */
 
@@ -942,7 +697,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   *
+   * 
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {
