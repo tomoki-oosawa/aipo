@@ -20,7 +20,7 @@
  #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-<div id="messageSideBlock" class="sideBlock">
+<div id="messageSideBlock" class="sideBlock" #if($isMessageUser)style="display:none"#end>
 	<div class="auiTabs" id="messageSideBlockTab">
 		<ul class="tab">
 			<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">$l10n.MESSAGE_ROOM</a></li>
@@ -40,7 +40,7 @@
 		</ul>
 	</div>
 </div>
-<div id="messageMainBlock" class="mainBlock" style="display:none">
+<div id="messageMainBlock" class="mainBlock" #if(!$isMessageUser)style="display:none"#end>
 	<div class="contents clearfix">
 		<div class="timelineOuter">
 			<div class="roomHeader clearfix">
@@ -89,9 +89,16 @@
 <script type="text/javascript">
 //<![CDATA[
 
-document.body.className = "messageRoomList";
+#if(!$isMessageUser)document.body.className = "messageRoomList";#end
 dojo.addOnLoad(function() {
     aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
+
+    #if($isMessageUser)
+    aipo.message.isDirect = true;
+	aipo.message.currentUserId = ${messageUserId};
+	aipo.menu.toggleDropdown("message");
+	aipo.message.selectTab("user");
+	#end
 });
 
 
