@@ -38,7 +38,7 @@ public class MessageAction extends ALBaseAction {
     .getLogger(MessageAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -51,7 +51,7 @@ public class MessageAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -59,6 +59,16 @@ public class MessageAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
+    int userId = 0;
+    try {
+      userId = rundata.getParameters().getInt("u");
+    } catch (Throwable ignore) {
+      //
+    }
+    if (userId > 0) {
+      context.put("messageUserId", userId);
+    }
+    context.put("isMessageUser", userId > 0);
     setTemplate(rundata, "message");
   }
 

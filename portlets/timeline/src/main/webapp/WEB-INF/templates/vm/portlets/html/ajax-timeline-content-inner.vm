@@ -24,15 +24,17 @@
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message $!{firstCss}">
 	#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 	<div class="avatar mr10">
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">#end
 		#if(${record.hasPhoto()})
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="$!{record.OwnerName}" width="50" height="50" />
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!{record.OwnerName}" width="50" height="50" />
 		#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))</a>#end
 	</div>
 #if($!{record.isNotActivityParent()})
 	<div class="messageContents">
-		<div class="name">$!record.OwnerName</div>
+		<div class="name">#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))$!{record.OwnerName}#else<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a>#end</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
 				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
@@ -118,14 +120,16 @@
 		<div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message">
 			#end
 			<div class="avatar mr10">
+				#if(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record2.OwnerId})">#end
 				#if(${record2.hasPhoto()})
 					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}).addQueryData("t", ${record2.PhotoModified}))" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#else
 					<img src="images/common/avatar_default3.png" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#end
+				#if(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}))</a>#end
 			</div>
 			<div class="messageContents">
-				<div class="name">$!record2.OwnerName</div>
+				<div class="name">#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}))$!{record2.OwnerName}#else<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record2.OwnerId})">$!record2.OwnerName</a>#end</div>
 				<div class="body">$!record2.Note</div>
 				<div class="time">$!{record2.CreateDate}
 					&nbsp;
@@ -200,7 +204,7 @@
 		#set($existcomment = $existcomment + 1)
 	#end
 	#if($velocityCount==1)
-	<div class="name">$!record.OwnerName</div>
+	<div class="name">#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))$!{record.OwnerName}#else<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a>#end</div>
 	#end
 	<div class="body">
 		<a href="javascript:void(0);" onclick="aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
@@ -251,14 +255,16 @@
 	<div id="message_$!{portlet.ID}_$!{record3.TimelineId}" class="message">
 		#end
 		<div class="avatar mr10">
+			#if(!$!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record3.OwnerId})">#end
 			#if(${record3.hasPhoto()})
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record3.OwnerId}).addQueryData("t", ${record3.PhotoModified}))" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#else
 				<img src="images/common/avatar_default3.png" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#end
+			#if(!$!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}))</a>#end
 		</div>
 		<div class="messageContents">
-			<div class="name">$!record3.OwnerName</div>
+			<div class="name">#if($!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}))$!{record3.OwnerName}#else<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record3.OwnerId})">$!record3.OwnerName</a>#end</div>
 			<div class="body">$!record3.Note</div>
 			<div class="time">$!{record3.CreateDate}
 				&nbsp;
