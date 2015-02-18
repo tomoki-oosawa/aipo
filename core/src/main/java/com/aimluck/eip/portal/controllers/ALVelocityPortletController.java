@@ -38,10 +38,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet controller implementation
- * 
+ *
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
- * 
+ *
  * @version $Id: VelocityPortletController.java,v 1.12 2004/02/23 03:25:06 jford
  *          Exp $
  */
@@ -82,6 +82,11 @@ public class ALVelocityPortletController extends AbstractPortletController {
     context.put("accessControl", showDelete);
 
     ALOrgUtilsService.assignCommonContext(context);
+
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
 
     // Put the request and session based contexts
     TurbinePull.populateContext(context, rundata);

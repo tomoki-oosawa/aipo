@@ -56,9 +56,9 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet control designed for handling a PortletSet child
- * 
+ *
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
- * 
+ *
  */
 public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
@@ -72,7 +72,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
   /**
    * This method adds the control specific objects to the context
-   * 
+   *
    * @param rundata
    *          the RunData object for this request
    * @param context
@@ -81,6 +81,10 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   @Override
   public void buildContext(RunData rundata, Context context) {
     ALOrgUtilsService.assignCommonContext(context);
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
     if (getPortlet() instanceof PortletSet) {
 
       PortletSet set = (PortletSet) getPortlet();
@@ -115,10 +119,10 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
   /**
    * Populate a list of tabs that should be displayed by this control. Each tab
    * represents a child portlet.
-   * 
+   *
    * This method works best if the child of this control is a PortletSet whose
    * controller implements the PanedPortletController interface.
-   * 
+   *
    * @param portlet
    *          the base portlet to explore for children @
    */
@@ -325,7 +329,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       Serializable {
 
     /**
-     * 
+     *
      * @param o1
      * @param o2
      * @return
