@@ -53,7 +53,6 @@
 		<db-attribute name="PHOTO_MODIFIED_SMARTPHONE" type="TIMESTAMP"/>
 		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
-		<db-attribute name="TUTORIAL_FORBID" type="CHAR" length="64"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 	</db-entity>
@@ -120,7 +119,6 @@
 		<obj-attribute name="photoModifiedSmartphone" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED_SMARTPHONE"/>
 		<obj-attribute name="photoSmartphone" type="byte[]" db-attribute-path="PHOTO_SMARTPHONE"/>
 		<obj-attribute name="positionId" type="java.lang.Integer" db-attribute-path="POSITION_ID"/>
-		<obj-attribute name="tutorialForbid" type="java.lang.String" db-attribute-path="TUTORIAL_FORBID"/>
 		<obj-attribute name="updatedUserId" type="java.lang.Integer" db-attribute-path="UPDATED_USER_ID"/>
 	</obj-entity>
 	<obj-entity name="TurbineUserGroupRole" className="com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole" dbEntityName="turbine_user_group_role">

@@ -993,7 +993,6 @@ CREATE TABLE `turbine_user` (
   `photo_smartphone` blob,
   `has_photo_smartphone` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
   `photo_modified_smartphone` datetime DEFAULT NULL,
-  `tutorial_forbid` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
   `migrate_version` int(11) NOT NULL DEFAULT 0,
   `created_user_id` int(11) DEFAULT NULL,
   `updated_user_id` int(11) DEFAULT NULL,

@@ -107,15 +107,6 @@ public class ALMigrateFilter implements javax.servlet.Filter {
         columns.close();
 
         boolean hasBatch = false;
-        /**
-         * 7000to7010
-         */
-        if (!columnsTurbineUser.contains("TUTORIAL_FORBID")) {
-          stmt
-            .addBatch("ALTER TABLE TURBINE_USER ADD COLUMN TUTORIAL_FORBID VARCHAR (1) DEFAULT 'F';");
-          stmt.addBatch("UPDATE TURBINE_USER SET TUTORIAL_FORBID = 'T' ;");
-          hasBatch = true;
-        }
 
         /**
          * 7010to7020
