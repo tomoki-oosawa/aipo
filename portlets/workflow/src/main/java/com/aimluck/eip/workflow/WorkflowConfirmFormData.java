@@ -204,87 +204,87 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       WorkflowRequestMapHandler mapHandler =
         new WorkflowRequestMapHandler(maps);
       EipTWorkflowRequestMap currentMap = mapHandler.getCurrentMap();
-      // if(currentMap.getUserId() == login_user_id){ を入れる。
       Date now = Calendar.getInstance().getTime();
+      if (currentMap.getUserId() == login_user_id) {
 
-      if (accept_flg) {
-        // accept case
-        currentMap.setStatus(WorkflowUtils.DB_STATUS_ACCEPT);
-        currentMap.setNote(comment.getValue());
-        currentMap.setUpdateDate(now);
+        if (accept_flg) {
+          // accept case
+          currentMap.setStatus(WorkflowUtils.DB_STATUS_ACCEPT);
+          currentMap.setNote(comment.getValue());
+          currentMap.setUpdateDate(now);
 
-        mapHandler.changeStatusForNextUser();
+          mapHandler.changeStatusForNextUser();
 
-        if (mapHandler.isApprovalForAll()) {
-          // all accept case
-          request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
-          mapHandler.setFlowStatus(Type.ACCEPT);
-
-          List<Integer> excludeUserList = new ArrayList<Integer>();
-          excludeUserList.add(login_user_id);
-
-          // mail,activity to all users except last approver
-          mapHandler.setSendMailMapsForAll(excludeUserList);
-          mapHandler.setRecipientsForAll(excludeUserList);
-        } else {
-          mapHandler.setFlowStatus(Type.REQUEST);
-          // mail,activity to next user
-          EipTWorkflowRequestMap nextRequestMap =
-            maps.get(mapHandler.getLatestOrderIndex());
-          mapHandler.addSendMailMaps(nextRequestMap);
-          mapHandler.addRecipients(nextRequestMap);
-        }
-
-      } else {
-        // pass back case
-        currentMap.setStatus(WorkflowUtils.DB_STATUS_DENIAL);
-        currentMap.setNote(comment.getValue());
-        currentMap.setUpdateDate(now);
-
-        int passback_user_order = (int) passback_order.getValue();
-
-        // pass back user is applicant user case
-        if (mapHandler.isApplicantUser(passback_user_order)
-          && !WorkflowUtils.isDisabledOrDeleted(mapHandler
-            .getApplicantUserMap()
-            .getUserId())) {
-          request.setProgress(WorkflowUtils.DB_PROGRESS_DENAIL);
-          mapHandler.setFlowStatus(Type.DENAIL);
-
-          // mail to applicant user and approver
-          mapHandler.addSendMailMapsForApplicantAndApprover(login_user_id);
-          // activity to applicant user only
-          mapHandler.addRecipientsApplicantOnly();
-        } else {
-          // pass back user is approver or unable user
-          boolean result =
-            mapHandler.passbackToApprover(passback_user_order, login_user_id);
-
-          if (!result) {
-            // passback user and next users all unable case
-            // all accept
+          if (mapHandler.isApprovalForAll()) {
+            // all accept case
             request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
             mapHandler.setFlowStatus(Type.ACCEPT);
 
-            List<Integer> noList = new ArrayList<Integer>();
-            // mail, activity to all user
-            mapHandler.setSendMailMapsForAll(noList);
-            mapHandler.setRecipientsForAll(noList);
+            List<Integer> excludeUserList = new ArrayList<Integer>();
+            excludeUserList.add(login_user_id);
+
+            // mail,activity to all users except last approver
+            mapHandler.setSendMailMapsForAll(excludeUserList);
+            mapHandler.setRecipientsForAll(excludeUserList);
+          } else {
+            mapHandler.setFlowStatus(Type.REQUEST);
+            // mail,activity to next user
+            EipTWorkflowRequestMap nextRequestMap =
+              maps.get(mapHandler.getLatestOrderIndex());
+            mapHandler.addSendMailMaps(nextRequestMap);
+            mapHandler.addRecipients(nextRequestMap);
+          }
+
+        } else {
+          // pass back case
+          currentMap.setStatus(WorkflowUtils.DB_STATUS_DENIAL);
+          currentMap.setNote(comment.getValue());
+          currentMap.setUpdateDate(now);
+
+          int passback_user_order = (int) passback_order.getValue();
+
+          // pass back user is applicant user case
+          if (mapHandler.isApplicantUser(passback_user_order)
+            && !WorkflowUtils.isDisabledOrDeleted(mapHandler
+              .getApplicantUserMap()
+              .getUserId())) {
+            request.setProgress(WorkflowUtils.DB_PROGRESS_DENAIL);
+            mapHandler.setFlowStatus(Type.DENAIL);
+
+            // mail to applicant user and approver
+            mapHandler.addSendMailMapsForApplicantAndApprover(login_user_id);
+            // activity to applicant user only
+            mapHandler.addRecipientsApplicantOnly();
+          } else {
+            // pass back user is approver or unable user
+            boolean result =
+              mapHandler.passbackToApprover(passback_user_order, login_user_id);
+
+            if (!result) {
+              // passback user and next users all unable case
+              // all accept
+              request.setProgress(WorkflowUtils.DB_PROGRESS_ACCEPT);
+              mapHandler.setFlowStatus(Type.ACCEPT);
+
+              List<Integer> noList = new ArrayList<Integer>();
+              // mail, activity to all user
+              mapHandler.setSendMailMapsForAll(noList);
+              mapHandler.setRecipientsForAll(noList);
+            }
           }
         }
+
+        request.setUpdateDate(now);
+        Database.commit();
+
+        // save to eventlog
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          request.getRequestId(),
+          ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+          request.getEipTWorkflowCategory().getCategoryName()
+            + " "
+            + request.getRequestName());
       }
-
-      request.setUpdateDate(now);
-      Database.commit();
-
-      // save to eventlog
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        request.getRequestId(),
-        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-        request.getEipTWorkflowCategory().getCategoryName()
-          + " "
-          + request.getRequestName());
-
       // activity
       if (mapHandler.isRecipientsNotEmpty()) {
         ALEipUser user = ALEipUtils.getALEipUser(login_user_id);
@@ -292,7 +292,6 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           .getName()
           .getValue(), mapHandler.getRecipients(), mapHandler.getFlowStatus());
       }
-
       // send mail
       WorkflowUtils.sendMailForUpdate(
         rundata,
