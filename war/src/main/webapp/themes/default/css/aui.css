@@ -1928,21 +1928,6 @@ button[disabled]:active {
   font-size: 24px;
 }
 
-/* imgPopupTutorial */
-.imgPopupTutorial {
-  position: absolute;
-  overflow: hidden;
-}
-
-.imgPopupTutorial .imgBody {
-  text-align: center;
-}
-
-.imgPopupTutorial img {
-  max-width: 1000px;
-  max-height: 1000px;
-}
-
 .startPopup {
   width: 600px;
   padding: 45px 50px 30px;
