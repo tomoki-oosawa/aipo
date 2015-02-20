@@ -59,7 +59,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class AccountUserSelectData extends
     ALAbstractSelectData<TurbineUser, ALBaseUser> {
@@ -87,7 +87,7 @@ public class AccountUserSelectData extends
 
   /**
    * 初期化します。
-   * 
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -110,7 +110,7 @@ public class AccountUserSelectData extends
 
   /**
    * アカウント一覧を取得します。 ただし、論理削除されているアカウントは取得しません。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -137,7 +137,7 @@ public class AccountUserSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -321,7 +321,7 @@ public class AccountUserSelectData extends
 
   /**
    * フィルタ用の <code>Criteria</code> を構築します。
-   * 
+   *
    * @param crt
    * @param rundata
    * @param context
@@ -364,7 +364,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -382,7 +382,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -409,7 +409,7 @@ public class AccountUserSelectData extends
   /**
    * @param obj
    * @return
-   * 
+   *
    */
   @Override
   protected Object getResultData(TurbineUser record) {
@@ -447,7 +447,7 @@ public class AccountUserSelectData extends
   @Override
   protected Object getResultDataDetail(ALBaseUser record) {
     try {
-      Integer id = new Integer(record.getUserId());
+      Integer id = Integer.valueOf(record.getUserId());
 
       AccountResultData rd = new AccountResultData();
       rd.initField();
@@ -484,7 +484,7 @@ public class AccountUserSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -499,7 +499,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentPost() {
@@ -507,7 +507,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -515,7 +515,7 @@ public class AccountUserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, FilterRole> getRoleMap() {
@@ -524,7 +524,7 @@ public class AccountUserSelectData extends
 
   /**
    * 登録ユーザー数を取得する．
-   * 
+   *
    * @return
    */
   public int getRegisteredUserNum() {
