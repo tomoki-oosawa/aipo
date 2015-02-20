@@ -232,6 +232,9 @@ aipo.message.reloadRoomList = function(roomId, userId) {
                 }
                 aipo.message.messageRoomListPane.userId = null;
             }
+            if(aipo.message.isDirect) {
+            	aipo.message.reloadUserList();
+            }
         }
     }
 
