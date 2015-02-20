@@ -91,14 +91,12 @@
 
 #if(!$isMessageUser)document.body.className = "messageRoomList";#end
 dojo.addOnLoad(function() {
-    aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
-
     #if($isMessageUser)
     aipo.message.isDirect = true;
 	aipo.message.currentUserId = ${messageUserId};
 	aipo.menu.toggleDropdown("message");
-	aipo.message.selectTab("user");
 	#end
+    aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
 });
 
 
