@@ -275,18 +275,19 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
             mapHandler.setRecipientsForAll(noList);
           }
         }
-
-        request.setUpdateDate(now);
-        Database.commit();
-
-        // save to eventlog
-        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-          request.getRequestId(),
-          ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
-          request.getEipTWorkflowCategory().getCategoryName()
-            + " "
-            + request.getRequestName());
       }
+
+      request.setUpdateDate(now);
+      Database.commit();
+
+      // save to eventlog
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        request.getRequestId(),
+        ALEventlogConstants.PORTLET_TYPE_WORKFLOW,
+        request.getEipTWorkflowCategory().getCategoryName()
+          + " "
+          + request.getRequestName());
+
       // activity
       if (mapHandler.isRecipientsNotEmpty()) {
         ALEipUser user = ALEipUtils.getALEipUser(login_user_id);
