@@ -36,7 +36,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローをJSONデータとして出力するクラスです。 <br />
- * 
+ *
  */
 public class WorkflowFormJSONScreen extends ALJSONScreen {
 
@@ -77,6 +77,7 @@ public class WorkflowFormJSONScreen extends ALJSONScreen {
           result = json.toString();
         }
       } else if ("accept".equals(mode)) {
+        // 現在のステータスが "A"でないなら下の走らせないないようにする。
         WorkflowConfirmFormData formData = new WorkflowConfirmFormData();
         formData.initField();
         formData.setAcceptFlg(true);

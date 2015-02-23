@@ -49,7 +49,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
 /**
  * ワークフローの承認／否認のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowConfirmFormData extends ALAbstractFormData {
 
@@ -67,12 +67,12 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   private ALNumberField passback_order;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -82,8 +82,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -101,8 +101,8 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -117,10 +117,10 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -136,7 +136,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -150,7 +150,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -164,7 +164,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -178,7 +178,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているリクエストを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -204,8 +204,11 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
       WorkflowRequestMapHandler mapHandler =
         new WorkflowRequestMapHandler(maps);
       EipTWorkflowRequestMap currentMap = mapHandler.getCurrentMap();
-
       Date now = Calendar.getInstance().getTime();
+
+      if (currentMap.getUserId() != login_user_id) {
+        return false;
+      }
 
       if (accept_flg) {
         // accept case
@@ -292,7 +295,6 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
           .getName()
           .getValue(), mapHandler.getRecipients(), mapHandler.getFlowStatus());
       }
-
       // send mail
       WorkflowUtils.sendMailForUpdate(
         rundata,
@@ -322,7 +324,7 @@ public class WorkflowConfirmFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
