@@ -881,3 +881,24 @@ aipo.message.openDirect = function(user_id) {
 	    aipo.message.selectTab("user");
 	}
 }
+
+aipo.message.openDirectMessage = function(user_id) {
+	if(aipo.message.isMobile) {
+		location.href = aipo.message.jslink +"?action=controls.Maximize&u=" + user_id
+	} else {
+	    if(aipo.message.isDirect) {
+		    return;
+	    }
+        var dialog = dijit.byId("modalDialog");
+	    if(dialog) {
+	    	dialog.hide();
+	    }
+	    aipo.message.isDirect = true;
+	    aipo.message.currentRoomId = null;
+	    aipo.message.currentRoomSearchKeyword = null;
+	    aipo.message.currentUserSearchKeyword = null;
+	    aipo.message.currentGroupName = "all";
+	    aipo.message.currentUserId = user_id;
+	    aipo.message.selectTab("user");
+	}
+}

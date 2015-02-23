@@ -24,17 +24,17 @@
 #foreach ($record in $result.List)
 <div id="message$!record.MessageId" class="message">
 	<div class="avatar">
-		#if(!$!record.isOwner())<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UserId.Value})">#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">#end
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" width="50" height="50"/>
 		#end
-		#if(!$!record.isOwner())</a>#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))</a>#end
 	</div>
 	<div class="messageContents">
-		#if(!$!record.isOwner())
-		<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UserId.Value})">
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))
+			<a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">
 		<div class="name">$!record.LastName $!record.FirstName</div>
 		</a>
 		#else
