@@ -454,7 +454,9 @@ aipo.message.selectRoom = function(room_id) {
         dojo.query(".messageSummary li").forEach(function(item) {
             dojo.removeClass(item, "active")
         });
-        dojo.addClass(messageRoom, "active");
+        if(!aipo.message.isMobile) {
+            dojo.addClass(messageRoom, "active");
+        }
         if (aipo.message.inputHistory[aipo.message.currentRoomId]) {
             aipo.message
                     .changeInput(aipo.message.inputHistory[aipo.message.currentRoomId]);
@@ -538,7 +540,9 @@ aipo.message.selectUser = function(user_id) {
         dojo.query(".messageUserlist li").forEach(function(item) {
             dojo.removeClass(item, "active")
         });
-        dojo.addClass(messageUser, "active");
+        if(!aipo.message.isMobile) {
+            dojo.addClass(messageUser, "active");
+        }
         aipo.message.reloadRoomList(null, user_id);
     }
 }
@@ -896,5 +900,9 @@ aipo.message.openDirectMessage = function(user_id) {
 	    aipo.message.currentUserSearchKeyword = null;
 	    aipo.message.currentGroupName = "all";
 	    aipo.message.currentUserId = user_id;
-	    aipo.message.selectTab("user");
+		if(aipo.message.isMobile) {
+			aipo.message.reloadUserList();
+		} else {
+		    aipo.message.selectTab("user");
+		}
 }
