@@ -883,9 +883,6 @@ aipo.message.openDirect = function(user_id) {
 }
 
 aipo.message.openDirectMessage = function(user_id) {
-	if(aipo.message.isMobile) {
-		location.href = aipo.message.jslink +"?action=controls.Maximize&u=" + user_id
-	} else {
 	    if(aipo.message.isDirect) {
 		    return;
 	    }
@@ -900,5 +897,4 @@ aipo.message.openDirectMessage = function(user_id) {
 	    aipo.message.currentGroupName = "all";
 	    aipo.message.currentUserId = user_id;
 	    aipo.message.selectTab("user");
-	}
 }
