@@ -114,7 +114,11 @@ unread
 
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #if (!$isReceive)
-#ALtdcellheaderAtt('class="mb_hide"')<div>$!record.DestUserFullName.Value</div>#ALtdcellfooter()
+#ALtdcellheaderAtt('class="mb_hide"')<div>
+#foreach ($destUser in $record.MemberList)
+aa<a href="javascript: void(0)" onclick="aipo.message.openDirect(${destUser.UserId.Value})">$!destUser.AliasName</a>
+#end
+</div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.ReadNote.Value/$!record.SentNote.Value</div>#ALtdcellfooter()
 #end
 #ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"')

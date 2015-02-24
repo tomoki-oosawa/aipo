@@ -19,12 +19,15 @@
 
 package com.aimluck.eip.note;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -48,6 +51,9 @@ public class NoteResultData implements ALData {
 
   /** 宛先ユーザ名 */
   private ALStringField dest_user_fullname;
+
+  /** <code>members</code> 送信先メンバー */
+  private List<ALEipUser> dest_users_list = null;
 
   /** 依頼者名 */
   private ALStringField client_name;
@@ -122,6 +128,7 @@ public class NoteResultData implements ALData {
     dest_user_id = new ALStringField();
     src_user_fullname = new ALStringField();
     dest_user_fullname = new ALStringField();
+    dest_users_list = new ArrayList<ALEipUser>();
     client_name = new ALStringField();
     company_name = new ALStringField();
     telephone = new ALStringField();
