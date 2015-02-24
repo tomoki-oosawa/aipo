@@ -18,5 +18,9 @@
  *#
 ## ---------------------------------------------------------------------------
 #foreach ($record in $result.List)
-<li><span class="avatar"><img #if($!record.isHasPhoto())src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))"#else src="images/common/avatar_default3.png"#end title="$!record.LastName $!record.FirstName" width="24" height="24" class="avatar_s"></span></li>
+<li>
+#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">#end
+<span class="avatar"><img #if($!record.isHasPhoto())src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))"#else src="images/common/avatar_default3.png"#end title="$!record.LastName $!record.FirstName" width="24" height="24" class="avatar_s"></span>
+#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))</a>#end
+</li>
 #end

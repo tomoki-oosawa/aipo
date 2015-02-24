@@ -235,7 +235,7 @@ public class MessageListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param room
    */
   public void setRoom(EipTMessageRoom room) {
@@ -274,6 +274,10 @@ public class MessageListSelectData extends
 
   public boolean isFirstView() {
     return cursor == 0 && !latest;
+  }
+
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
   }
 
 }

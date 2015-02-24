@@ -170,7 +170,7 @@ public class MessageRoomMemberListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param room
    */
   public void setRoom(EipTMessageRoom room) {
@@ -198,5 +198,9 @@ public class MessageRoomMemberListSelectData extends
    */
   public int getTargetUserId() {
     return targetUserId;
+  }
+
+  public boolean isMatch(int id1, long id2) {
+    return id1 == (int) id2;
   }
 }
