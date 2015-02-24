@@ -49,7 +49,7 @@
 #if(!($!result.isActivity() || $!ignore_viewdate == "true"))
 #ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditemheader()
-#if($result.Detail.isOwner())
+#if($!result.Detail.isMatch("$!result.Detail.User.UserId.Value"))
 $!{result.Detail.User.AliasNameHtml}
 #else
 <a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.User.UserId})">$!{result.Detail.User.AliasNameHtml}</a>
@@ -110,7 +110,9 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
     #if($!result.isActivity() || $!ignore_viewdate == "true" || !($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
-    $!record.AliasName
+    #if($!result.Detail.isMatch("$!{record.UserId.Value}"))$!record.AliasName
+    #else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{record.UserId.Value})">$!record.AliasName</a>
+    #end
         #if($result.getStatus($record.UserId.Value) == "T")
         <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
@@ -151,9 +153,19 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 
 #ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
+#ALtditemheader()
+#if($!result.Detail.isMatch("$!{result.Detail.CreateUser.UserId.Value}"))$!{result.Detail.CreateUser.AliasName}
+#else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.CreateUser.UserId.Value})">$!{result.Detail.CreateUser.AliasName}</a>
+#end
+ （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
+#ALtditemfooter()
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）")
+#ALtditemheader()
+#if($!result.Detail.isMatch("$!{result.Detail.UpdateUser.UserId.Value}"))$!{result.Detail.UpdateUser.AliasName}
+#else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.UpdateUser.UserId.Value})">$!{result.Detail.UpdateUser.AliasName}</a>
+#end
+ （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
+#ALtditemfooter()
 #ALtablefooter()
 
 #ALbuttonheader()
