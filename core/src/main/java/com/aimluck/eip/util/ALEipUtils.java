@@ -1344,7 +1344,8 @@ public class ALEipUtils {
       field = new ALStringField();
       field.setTrim(false);
       field.setValue(msgline);
-      return ALCommonUtils.replaceToAutoCR(replaceStrToLink(field.toString()));
+      return ALCommonUtils
+        .replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field.toString())));
     }
 
     String token = null;
@@ -1391,11 +1392,13 @@ public class ALEipUtils {
     char[] val = str.toCharArray();
 
     StringBuffer sb = new StringBuffer();
+    boolean left = true;
     while ((st < len)) {
-      if (val[st] == ' ') {
+      if (val[st] == ' ' && left) {
         sb.append("&nbsp;");
       } else {
         sb.append(val[st]);
+        left = false;
       }
       st++;
     }
@@ -1749,6 +1752,7 @@ public class ALEipUtils {
           }
         }
       }
+
       String newMsg =
         msg
           .replaceAll(
