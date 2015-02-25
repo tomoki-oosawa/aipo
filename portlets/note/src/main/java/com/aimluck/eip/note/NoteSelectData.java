@@ -91,7 +91,7 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
   private Map<Integer, String> statusList;
 
   /** <code>members</code> 送信先メンバー */
-  private List<ALEipUser> members;
+  private List<ALEipUser> members = null;
 
   /** <code>mailAccountURI</code> ポートレット WebMailAccountEdit のへのリンク */
   private String mailAccountURI;
@@ -338,7 +338,6 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
         if (userId.equals(notemap.getUserId())) {
           map = notemap;
         }
-
         if ("T".equals(notemap.getDelFlg())) {
           statusList.put(
             Integer.valueOf(notemap.getUserId()),
@@ -349,13 +348,12 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
         }
         users.add(Integer.valueOf(notemap.getUserId()));
       }
-
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
       query.setQualifier(exp);
-
       members = ALEipUtils.getUsersFromSelectQuery(query);
+      rd.setDestUsers(members);
 
       if (NoteUtils.NOTE_STAT_NEW.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_NEW);
