@@ -513,17 +513,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       parenttopic.setUpdateUserId(Integer.valueOf(uid));
       parenttopic.setUpdateDate(updateDate);
 
-      // ファイルをデータベースに登録する．
-      // if (!MsgboardUtils.insertFileDataDelegate(
-      // rundata,
-      // context,
-      // edittopic,
-      // fileuploadList,
-      // folderName,
-      // msgList)) {
-      // return false;
-      // }
-
       Database.commit();
 
       List<ALEipUser> memberList = selectMsgMember(rundata, context);
@@ -585,8 +574,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
             .toString(), recipient, edittopic);
         }
       }
-      // 添付ファイル保存先のフォルダを削除
-      // ALStorageService.deleteTmpFolder(uid, folderName);
 
       // メール送信
       try {
@@ -799,8 +786,6 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       action.putData(rundata, context);
 
       return res;
-      // } catch (ALPermissionException e) {
-      // ALEipUtils.redirectPermissionError(rundata); return false;
     } catch (ALPageNotFoundException e) {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;

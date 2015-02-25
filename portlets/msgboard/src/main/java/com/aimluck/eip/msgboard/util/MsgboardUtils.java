@@ -250,11 +250,10 @@ public class MsgboardUtils {
           Integer.valueOf(topicid));
       query.setQualifier(exp1);
 
-      if (!isSuperUser) {
-        Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTMsgboardTopic.OWNER_ID_PROPERTY,
-            Integer.valueOf(ALEipUtils.getUserId(rundata)));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
+      if (isSuperUser) {
         query.andQualifier(exp2);
       }
 
