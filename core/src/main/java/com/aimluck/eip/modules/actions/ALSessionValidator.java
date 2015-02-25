@@ -30,8 +30,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
 import org.apache.jetspeed.om.profile.Entry;
@@ -54,14 +52,12 @@ import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
@@ -76,7 +72,7 @@ import com.aimluck.eip.util.ALSessionUtils;
 
 /**
  * セッションを制御するクラスです。 <br />
- * 
+ *
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
@@ -84,7 +80,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     .getLogger(ALSessionValidator.class.getName());
 
   /**
-   * 
+   *
    * @param data
    * @throws Exception
    */
@@ -486,29 +482,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         data,
         context,
         ALAccessControlConstants.VALUE_ACL_UPDATE));
-
-      try {
-        context.put("tutorialForbid", false);
-        if ("IPHONE".equals(client)) {
-          context.put("tutorialForbid", true);
-        } else {
-          SelectQuery<TurbineUser> userQuery =
-            Database.query(TurbineUser.class);
-          Expression exp1 =
-            ExpressionFactory.matchDbExp(
-              TurbineUser.USER_ID_PK_COLUMN,
-              loginuser.getPerm("USER_ID").toString());
-          userQuery.setQualifier(exp1);
-          TurbineUser tUser = userQuery.fetchSingle();
-          if (tUser.getTutorialForbid() != null
-            && tUser.getTutorialForbid().equals("T")) {
-            context.put("tutorialForbid", true);
-          }
-        }
-      } catch (Throwable ignore) {
-        // ignore
-      }
-
     }
   }
 
@@ -552,7 +525,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     Context context =
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
     setOrgParameters(data, context);
-    context.put("tutorialForbid", true);
     context.put("isError", "true");
   }
 
