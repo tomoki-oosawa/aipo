@@ -253,7 +253,7 @@ public class MsgboardUtils {
       Expression exp2 =
         ExpressionFactory.matchExp(EipTMsgboardTopic.OWNER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
-      if (isSuperUser) {
+      if (!isSuperUser) {
         query.andQualifier(exp2);
       }
 
@@ -1304,6 +1304,49 @@ public class MsgboardUtils {
     } else {
       ALActivityService.create(new ALActivityPutRequest()
         .withUserId(childTopic.getOwnerId())
+        .withAppId("Msgboard")
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTitle(title)
+        .withPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    }
+  }
+
+  /**
+   * 掲示板のコメントを編集した場合のアクティビティを作成する
+   */
+  public static void createEditCommentActivity(EipTMsgboardTopic topic,
+      Integer userid, String loginName, EipTMsgboardTopic childTopic) {
+    createEditCommentActivity(topic, userid, loginName, null, childTopic);
+  }
+
+  public static void createEditCommentActivity(EipTMsgboardTopic topic,
+      Integer userid, String loginName, List<String> recipients,
+      EipTMsgboardTopic childTopic) {
+    String title =
+      new StringBuilder("掲示板「")
+        .append(ALCommonUtils.compressString(topic.getTopicName(), 30))
+        .append("」の")
+        .append("コメントを編集しました。")
+        .toString();
+    String portletParams =
+      new StringBuilder("?template=MsgboardTopicDetailScreen").append(
+        "&entityid=").append(topic.getTopicId()).toString();
+
+    if (recipients != null && recipients.size() > 0) {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Msgboard")
+        .withUserId(userid)
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withRecipients(recipients)
+        .withTitle(title)
+        .withPriority(0f)
+        .withExternalId(String.valueOf(topic.getTopicId())));
+    } else {
+      ALActivityService.create(new ALActivityPutRequest()
+        .withUserId(userid)
         .withAppId("Msgboard")
         .withLoginName(loginName)
         .withPortletParams(portletParams)

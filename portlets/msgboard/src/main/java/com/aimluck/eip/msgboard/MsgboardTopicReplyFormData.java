@@ -479,13 +479,23 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       String topicid =
         String.valueOf(rundata.getParameters().getInt("topic_reply_id"));
 
-      EipTMsgboardTopic edittopic =
-        MsgboardUtils.getEipTMsgboardTopicReply(
-          rundata,
-          context,
-          topicid,
-          false);
+      EipTMsgboardTopic edittopic;
 
+      if (this.hasAclDeleteTopicOthers) {
+        edittopic =
+          MsgboardUtils.getEipTMsgboardTopicReply(
+            rundata,
+            context,
+            topicid,
+            true);
+      } else {
+        edittopic =
+          MsgboardUtils.getEipTMsgboardTopicReply(
+            rundata,
+            context,
+            topicid,
+            false);
+      }
       EipTMsgboardTopic parenttopic =
         MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
 
@@ -528,8 +538,9 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
       if ("T".equals(edittopic.getEipTMsgboardCategory().getPublicFlag())) {
         // アクティビティ
         ALEipUser user = ALEipUtils.getALEipUser(uid);
+        Integer userid = Integer.valueOf(uid);
         // 更新情報
-        MsgboardUtils.createNewCommentActivity(parenttopic, user
+        MsgboardUtils.createEditCommentActivity(parenttopic, userid, user
           .getName()
           .getValue(), edittopic);
         // あなた宛のお知らせ
@@ -560,8 +571,9 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         // アクティビティ
         if (recipients.size() > 0) {
           ALEipUser user = ALEipUtils.getALEipUser(uid);
+          Integer userid = Integer.valueOf(uid);
           // 更新情報
-          MsgboardUtils.createNewCommentActivity(parenttopic, user
+          MsgboardUtils.createEditCommentActivity(parenttopic, userid, user
             .getName()
             .getValue(), recipients, edittopic);
           // あなた宛のお知らせ
