@@ -21,8 +21,6 @@ package com.aimluck.eip.modules.screens;
 
 import java.util.List;
 
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -35,16 +33,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
- * 
+ *
  */
 public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
 
-  /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TutorialScreen.class.getName());
+  // /** logger */
+  // private static final JetspeedLogger logger = JetspeedLogFactoryService
+  // .getLogger(TutorialScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
