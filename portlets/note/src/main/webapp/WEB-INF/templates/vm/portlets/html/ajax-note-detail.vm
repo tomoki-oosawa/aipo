@@ -38,7 +38,7 @@
 #ALtdcaption($person_key)
 #ALtditemheader()
 #if($!result.currentTab == "received_notes")
-$person_value
+<a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.Detail.SrcUserId.Value})">$person_value</a>
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
