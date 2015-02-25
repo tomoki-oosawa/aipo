@@ -34,7 +34,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- * 
+ *
  */
 public class WorkflowResultData implements ALData {
 
@@ -86,8 +86,14 @@ public class WorkflowResultData implements ALData {
   /** 最終閲覧者名 */
   protected ALStringField last_update_user;
 
+  /** 最終閲覧者名id */
+  protected ALNumberField last_update_user_id;
+
   /** 申請者名 */
   protected ALStringField client_name;
+
+  /** 申請者名id */
+  protected ALNumberField client_id;
 
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
@@ -326,10 +332,24 @@ public class WorkflowResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALNumberField getClientId() {
+    return client_id;
+  }
+
+  /**
    * @param string
    */
   public void setClientName(String string) {
     client_name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setClientId(int num) {
+    client_id.setValue(num);
   }
 
   /**
