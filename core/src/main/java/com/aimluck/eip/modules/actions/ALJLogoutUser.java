@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログアウト処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALJLogoutUser extends ActionEvent {
 
@@ -125,6 +125,10 @@ public class ALJLogoutUser extends ActionEvent {
           .addQueryData("logout", "T")
           .toString());
       } else {
+        // data.setRedirectURIの引数にportalを含まないものを入れる;
+        // String redirecturl = jsLink.getHomePage().toString();
+        // redirecturl = "http://localhost:8080/";
+        // data.setRedirectURI(redirecturl);
         data.setRedirectURI(jsLink.getHomePage().toString());
       }
     } else {
@@ -143,5 +147,4 @@ public class ALJLogoutUser extends ActionEvent {
       }
     }
   }
-
 }

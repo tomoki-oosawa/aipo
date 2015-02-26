@@ -76,7 +76,7 @@ import com.aimluck.eip.util.ALSessionUtils;
 
 /**
  * セッションを制御するクラスです。 <br />
- * 
+ *
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
@@ -84,7 +84,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     .getLogger(ALSessionValidator.class.getName());
 
   /**
-   * 
+   *
    * @param data
    * @throws Exception
    */
