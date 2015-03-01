@@ -34,9 +34,7 @@
 	</div>
 	<div class="messageContents">
 		#if(!$!result.isMatch($!{result.UserId} , $!{record.UserId.Value}))
-			<a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">
-		<div class="name">$!record.LastName $!record.FirstName</div>
-		</a>
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">$!record.LastName $!record.FirstName</a></div>
 		#else
 		<div class="name">$!record.LastName $!record.FirstName</div>
 		#end
