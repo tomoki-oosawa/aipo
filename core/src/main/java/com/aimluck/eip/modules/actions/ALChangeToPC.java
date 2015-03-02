@@ -8,11 +8,9 @@ import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.eip.util.ALCommonUtils;
-
 /**
  * PC表示切り替え処理用のクラスです。 <br />
- *
+ * 
  */
 public class ALChangeToPC extends ActionEvent {
 
@@ -37,8 +35,6 @@ public class ALChangeToPC extends ActionEvent {
         logger.error("Error getting jsLink", e);
       }
       data.setRedirectURI(jsLink.getHomePage().addQueryData(
-        "js_pane",
-        ALCommonUtils.getPortletIDPane(data, "マイページ")).addQueryData(
         "action",
         "controls.Restore").toString());
       data.getResponse().sendRedirect(data.getRedirectURI());
