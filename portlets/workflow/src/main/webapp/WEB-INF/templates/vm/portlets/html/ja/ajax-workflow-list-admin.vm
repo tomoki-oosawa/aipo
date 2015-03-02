@@ -68,8 +68,16 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("$!record.StateString" 'class="center" nowrap="nowrap"')
-#ALtdcellAtt("$!record.ClientName" 'class="left" nowrap="nowrap"')
-#ALtdcellAtt("$!record.LastUpdateUser" 'class="left mb_hide" nowrap="nowrap"')
+#if($result.LoginUser.UserId.Value != $!record.ClientUser.UserId.Value)
+<td class="left mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.ClientUser.UserId)">$!record.ClientUser.AliasName</a></td>
+#else
+#ALtdcellAtt("$!record.ClientUser.AliasName" 'class="left mb_hide" nowrap="nowrap"')
+#end
+#if($result.LoginUser.UserId.Value != $!record.LastUpdateUser1.UserId.Value)
+<td class="left mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.LastUpdateUser1.UserId)">$!record.LastUpdateUser1.AliasName</a></td>
+#else
+#ALtdcellAtt("$!record.LastUpdateUser1.AliasName" 'class="left mb_hide" nowrap="nowrap"')
+#end
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end

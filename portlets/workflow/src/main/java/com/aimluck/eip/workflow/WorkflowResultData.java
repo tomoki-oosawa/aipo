@@ -27,6 +27,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -83,11 +84,17 @@ public class WorkflowResultData implements ALData {
   /** 作成日 */
   protected ALDateTimeField createDateTime;
 
+  /** 最終閲覧者 */
+  protected ALEipUser last_update_user_1;
+
   /** 最終閲覧者名 */
   protected ALStringField last_update_user;
 
   /** 最終閲覧者名id */
   protected ALNumberField last_update_user_id;
+
+  /** 申請者 */
+  protected ALEipUser client_user;
 
   /** 申請者名 */
   protected ALStringField client_name;
@@ -126,7 +133,11 @@ public class WorkflowResultData implements ALData {
     create_date = new ALStringField();
 
     last_update_user = new ALStringField();
+    last_update_user_1 = new ALEipUser();
+    last_update_user_id = new ALNumberField();
+    client_user = new ALEipUser();
     client_name = new ALStringField();
+    client_id = new ALNumberField();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
     updateDate =
@@ -415,4 +426,51 @@ public class WorkflowResultData implements ALData {
       return createDateYear;
     }
   }
+
+  /**
+   * @param last_update_user_id
+   *          セットする last_update_user_id
+   */
+  public void setLastUpdateUserId(ALNumberField last_update_user_id) {
+    this.last_update_user_id = last_update_user_id;
+  }
+
+  /**
+   *
+   * @return last_update_user_id
+   */
+  public ALNumberField getLastUpdateUserId() {
+    return last_update_user_id;
+  }
+
+  /**
+   * @return last_update_user_1
+   */
+  public ALEipUser getLastUpdateUser1() {
+    return last_update_user_1;
+  }
+
+  /**
+   * @param last_update_user_1
+   *          セットする last_update_user_1
+   */
+  public void setLastUpdateUser1(ALEipUser last_update_user_1) {
+    this.last_update_user_1 = last_update_user_1;
+  }
+
+  /**
+   * @return client_user
+   */
+  public ALEipUser getClientUser() {
+    return client_user;
+  }
+
+  /**
+   * @param client_user
+   *          セットする client_user
+   */
+  public void setClientUser(ALEipUser client_user) {
+    this.client_user = client_user;
+  }
+
 }
