@@ -80,7 +80,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   private int userid;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -234,7 +234,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -320,7 +320,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -330,7 +330,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -340,7 +340,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -350,7 +350,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 前の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevDate() {
@@ -359,7 +359,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 前の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevWeek() {
@@ -368,7 +368,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 次の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextDate() {
@@ -377,7 +377,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 次の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextWeek() {
@@ -402,6 +402,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       getViewEnd().getYear(),
       getViewEnd().getMonth(),
       getViewEnd().getDay());
+  }
+
+  public boolean isLoginUserID(Long id) {
+    return id == userid;
   }
 
 }

@@ -61,7 +61,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private ALStringField description;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -97,7 +97,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -149,7 +149,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -238,7 +238,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -255,11 +255,15 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 内容を設定します。
-   * 
+   *
    * @param string
    */
   public void setDescription(String string) {
     description.setValue(string);
+  }
+
+  public boolean isLoginUserID(Long id) {
+    return id == userid;
   }
 
 }
