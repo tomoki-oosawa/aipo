@@ -90,17 +90,11 @@ public class WorkflowResultData implements ALData {
   /** 最終閲覧者名 */
   protected ALStringField last_update_user;
 
-  /** 最終閲覧者名id */
-  protected ALNumberField last_update_user_id;
-
   /** 申請者 */
   protected ALEipUser client_user;
 
   /** 申請者名 */
   protected ALStringField client_name;
-
-  /** 申請者名id */
-  protected ALNumberField client_id;
 
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
@@ -134,10 +128,8 @@ public class WorkflowResultData implements ALData {
 
     last_update_user = new ALStringField();
     last_update_user_1 = new ALEipUser();
-    last_update_user_id = new ALNumberField();
     client_user = new ALEipUser();
     client_name = new ALStringField();
-    client_id = new ALNumberField();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
     updateDate =
@@ -343,24 +335,10 @@ public class WorkflowResultData implements ALData {
   }
 
   /**
-   * @return
-   */
-  public ALNumberField getClientId() {
-    return client_id;
-  }
-
-  /**
    * @param string
    */
   public void setClientName(String string) {
     client_name.setValue(string);
-  }
-
-  /**
-   * @param string
-   */
-  public void setClientId(int num) {
-    client_id.setValue(num);
   }
 
   /**
@@ -425,22 +403,6 @@ public class WorkflowResultData implements ALData {
     } else {
       return createDateYear;
     }
-  }
-
-  /**
-   * @param last_update_user_id
-   *          セットする last_update_user_id
-   */
-  public void setLastUpdateUserId(ALNumberField last_update_user_id) {
-    this.last_update_user_id = last_update_user_id;
-  }
-
-  /**
-   *
-   * @return last_update_user_id
-   */
-  public ALNumberField getLastUpdateUserId() {
-    return last_update_user_id;
   }
 
   /**
