@@ -134,7 +134,15 @@
 <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end</div></td>
 <td class="mb_hide"><div>$!{record.NoteShort}</div></td>
-<td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
+<td class="mb_hide">
+	<div>
+		#if($!result.isLoginUserID($record.CreateUser.UserId.Value))
+		$!{record.CreateUser.AliasName}
+		#else
+		<a href="javascript: void(0)" onclick="aipo.message.openDirect($record.CreateUser.UserId)">$!{record.CreateUser.AliasName}</a>
+     	#end
+    </div>
+</td>
 </tr>
 #end
 #AUItablefooter()
