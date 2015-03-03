@@ -83,9 +83,11 @@
 </td>
 #ALtdcellAtt("$!record.StateString" 'nowrap="nowrap"')
 #if($result.LoginUser.UserId.Value != $user.UserId.Value)
-<td><a href="javascript: void(0)" onclick="aipo.message.openDirect($user.UserId)">$user.AliasName</a></td>
+#ALtdcellheader()
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($user.UserId)">$!user.AliasName</a>
+#ALtdcellfooter()
 #else
-#ALtdcellAtt("<div>$user.AliasName</div>" '')
+#ALtdcellAtt("<div>$!user.AliasName</div>" '')
 #end
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
