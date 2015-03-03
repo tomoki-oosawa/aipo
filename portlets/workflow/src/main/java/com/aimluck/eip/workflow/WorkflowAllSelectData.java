@@ -408,8 +408,7 @@ public class WorkflowAllSelectData extends
         rd.setActivityId(activity.getId());
       }
 
-      String lastUpdateUser = null;
-      ALEipUser lastUpdateUser1 = new ALEipUser();
+      ALEipUser LastUpdateUser = new ALEipUser();
       EipTWorkflowRequestMap map = null;
       List<EipTWorkflowRequestMap> maps =
         WorkflowUtils.getEipTWorkflowRequestMap(record);
@@ -418,16 +417,14 @@ public class WorkflowAllSelectData extends
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         // すべて承認済みの場合、最終承認者をセットする
         map = maps.get(size - 1);
-        lastUpdateUser1 = ALEipUtils.getALEipUser(map.getUserId().intValue());
-        lastUpdateUser = lastUpdateUser1.getAliasName().getValue();
+        LastUpdateUser = ALEipUtils.getALEipUser(map.getUserId().intValue());
       } else {
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
           if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
             // 最終閲覧者を取得する
-            lastUpdateUser1 =
+            LastUpdateUser =
               ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = lastUpdateUser1.getAliasName().getValue();
             break;
           }
         }
@@ -435,7 +432,6 @@ public class WorkflowAllSelectData extends
 
       ALEipUser clientUser = ALEipUtils.getALEipUser(record.getTurbineUser());
       rd.setClientUser(clientUser);
-      rd.setClientName(clientUser.getAliasName().getValue());
 
       String state = "";
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
@@ -447,8 +443,7 @@ public class WorkflowAllSelectData extends
       }
       rd.setStateString(state);
 
-      rd.setLastUpdateUser1(lastUpdateUser1);
-      rd.setLastUpdateUser(lastUpdateUser);
+      rd.setLastUpdateUser(LastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),

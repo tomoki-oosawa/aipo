@@ -42,9 +42,9 @@
 #ALcell_ul_header($career)
 #foreach ($record in $result.List)
 #if($result.currentSubMenu=="requested")
-#set ($user = $!record.ClientName)
+#set ($user = $!record.ClientUser.AliasName)
 #else
-#set ($user = $!record.LastUpdateUser)
+#set ($user = $!record.LastUpdateUser.AliasName)
 #end
 #ALcell_li_header($career)
 <span class="caution">#if($record.Progress.Value == "D") $l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK #elseif($record.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end</span>

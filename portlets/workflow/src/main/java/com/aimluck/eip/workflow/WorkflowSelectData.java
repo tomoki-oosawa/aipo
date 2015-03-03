@@ -521,8 +521,7 @@ public class WorkflowSelectData extends
         rd.setActivityId(activity.getId());
       }
 
-      String lastUpdateUser = null;
-      ALEipUser lastUpdateUser1 = new ALEipUser();
+      ALEipUser LastUpdateUser = new ALEipUser();
       EipTWorkflowRequestMap map = null;
       List<EipTWorkflowRequestMap> maps =
         WorkflowUtils.getEipTWorkflowRequestMap(record);
@@ -532,8 +531,7 @@ public class WorkflowSelectData extends
         // すべて承認済みの場合、最終承認者をセットする
         map = maps.get(size - 1);
         ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
-        lastUpdateUser1 = user;
-        lastUpdateUser = lastUpdateUser1.getAliasName().getValue();
+        LastUpdateUser = user;
       } else {
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
@@ -541,8 +539,7 @@ public class WorkflowSelectData extends
             // 最終閲覧者を取得する
             ALEipUser user =
               ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser1 = user;
-            lastUpdateUser = lastUpdateUser1.getAliasName().getValue();
+            LastUpdateUser = user;
             break;
           }
         }
@@ -550,7 +547,6 @@ public class WorkflowSelectData extends
 
       ALEipUser clientUser = ALEipUtils.getALEipUser(record.getTurbineUser());
       rd.setClientUser(clientUser);
-      rd.setClientName(clientUser.getAliasName().getValue());
       rd.setUpdateDateTime(record.getUpdateDate());
 
       String state = "";
@@ -562,9 +558,7 @@ public class WorkflowSelectData extends
         state = ALLocalizationUtils.getl10n("WORKFLOW_DENIAL");
       }
       rd.setStateString(state);
-
-      rd.setLastUpdateUser(lastUpdateUser);
-      rd.setLastUpdateUser1(lastUpdateUser1);
+      rd.setLastUpdateUser(LastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),

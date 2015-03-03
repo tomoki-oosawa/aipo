@@ -85,16 +85,10 @@ public class WorkflowResultData implements ALData {
   protected ALDateTimeField createDateTime;
 
   /** 最終閲覧者 */
-  protected ALEipUser last_update_user_1;
-
-  /** 最終閲覧者名 */
-  protected ALStringField last_update_user;
+  protected ALEipUser last_update_user;
 
   /** 申請者 */
   protected ALEipUser client_user;
-
-  /** 申請者名 */
-  protected ALStringField client_name;
 
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
@@ -126,10 +120,8 @@ public class WorkflowResultData implements ALData {
     price = new ALNumberField();
     create_date = new ALStringField();
 
-    last_update_user = new ALStringField();
-    last_update_user_1 = new ALEipUser();
+    last_update_user = new ALEipUser();
     client_user = new ALEipUser();
-    client_name = new ALStringField();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
     updateDate =
@@ -213,13 +205,6 @@ public class WorkflowResultData implements ALData {
 
   public String getPriceStr() {
     return WorkflowUtils.translateMoneyStr(price.toString());
-  }
-
-  /**
-   * @return
-   */
-  public ALStringField getLastUpdateUser() {
-    return last_update_user;
   }
 
   /**
@@ -307,13 +292,6 @@ public class WorkflowResultData implements ALData {
   }
 
   /**
-   * @param string
-   */
-  public void setLastUpdateUser(String string) {
-    last_update_user.setValue(string);
-  }
-
-  /**
    * @return list
    */
   public List<FileuploadBean> getAttachmentFileList() {
@@ -325,20 +303,6 @@ public class WorkflowResultData implements ALData {
    */
   public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
-  }
-
-  /**
-   * @return
-   */
-  public ALStringField getClientName() {
-    return client_name;
-  }
-
-  /**
-   * @param string
-   */
-  public void setClientName(String string) {
-    client_name.setValue(string);
   }
 
   /**
@@ -406,18 +370,18 @@ public class WorkflowResultData implements ALData {
   }
 
   /**
-   * @return last_update_user_1
+   * @return last_update_user
    */
-  public ALEipUser getLastUpdateUser1() {
-    return last_update_user_1;
+  public ALEipUser getLastUpdateUser() {
+    return last_update_user;
   }
 
   /**
-   * @param last_update_user_1
-   *          セットする last_update_user_1
+   * @param last_update_user
+   *          セットする last_update_user
    */
-  public void setLastUpdateUser1(ALEipUser last_update_user_1) {
-    this.last_update_user_1 = last_update_user_1;
+  public void setLastUpdateUser(ALEipUser last_update_user) {
+    this.last_update_user = last_update_user;
   }
 
   /**

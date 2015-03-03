@@ -73,7 +73,7 @@
 #if($result.CurrentSubMenu == "requested")
 #set ($user = $!record.ClientUser)
 #else
-#set ($user = $!record.LastUpdateUser1)
+#set ($user = $!record.LastUpdateUser)
 #end
 <tr>
 <td class="auiMTCaption">

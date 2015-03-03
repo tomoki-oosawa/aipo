@@ -43,9 +43,9 @@
 #ALcell_radius_header($career)
 #foreach ($record in $result.List)
 #if($result.currentSubMenu=="requested")
-#set ($user = $!record.ClientName)
+#set ($user = $!record.ClientUser.AliasName)
 #else
-#set ($user = $!record.LastUpdateUser)
+#set ($user = $!record.LastUpdateUser.AliasName)
 #end
 #ALcell_li_header($career)
 <a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))"><strong>【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </strong><br>
