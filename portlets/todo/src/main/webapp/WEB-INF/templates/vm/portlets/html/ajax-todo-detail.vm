@@ -41,7 +41,15 @@ $!result.Detail.TodoName
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.TODO_PREPARED)
+#if($!result.Detail.UserId.value != $!result.Detail.LoginUserId.value)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.UserId.value)">
+$!result.Detail.UserName
+</a>
+#ALtditemfooter()
+#else
 #ALtditem($!result.Detail.UserName)
+#end
 #ALtdcaption($l10n.TODO_START_DATE)
 #ALtditem($!result.Detail.StartDate)
 #ALtdcaption($l10n.TODO_END_DATE)
@@ -55,7 +63,15 @@ $!result.Detail.TodoName
 #ALtdcaption($l10n.COMMON_UPDATE_DATE)
 #ALtditem($!result.Detail.UpdateDate)
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
+#if($!result.Detail.CreateUserId.value != $!result.Detail.LoginUserId.value)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.CreateUserId.value)">
+$!result.Detail.CreateUserName
+</a>
+#ALtditemfooter()
+#else
 #ALtditem($!result.Detail.CreateUserName)
+#end
 #ALtdcaption($l10n.TODO_MEMO)
 #ALtditem($!result.Detail.Note)
 #ALtdcaption($l10n.TODO_PUBLIC)

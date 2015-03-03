@@ -30,7 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのResultDataです。 <BR>
- * 
+ *
  */
 public class ToDoResultData implements ALData {
 
@@ -46,8 +46,14 @@ public class ToDoResultData implements ALData {
   /** 優先度 */
   private ALNumberField priority;
 
+  /** 担当者ID */
+  private ALNumberField user_id;
+
   /** 担当者 */
   private ALStringField user_name;
+
+  /** 作成者(更新者)ID */
+  private ALNumberField create_user_id;
 
   /** 作成者 */
   private ALStringField create_user_name;
@@ -91,6 +97,9 @@ public class ToDoResultData implements ALData {
   /** 更新日 */
   private ALDateTimeField update_date;
 
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
+
   /**
    * 期限状態（期限前/期限当日/期限後）． <br>
    * クラス ToDoUtils の変数 LIMIT_STATE_BEFORE，LIMIT_STATE_TODAY，LIMIT_STATE_AFTER
@@ -118,6 +127,7 @@ public class ToDoResultData implements ALData {
     category_id = new ALNumberField();
     state = new ALNumberField();
     priority = new ALNumberField();
+    user_id = new ALNumberField();
     user_name = new ALStringField();
     todo_name = new ALStringField();
     category_name = new ALStringField();
@@ -131,7 +141,9 @@ public class ToDoResultData implements ALData {
     state_string = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALDateTimeField();
+    login_user_id = new ALNumberField();
     limit_state = new ALNumberField();
+    create_user_id = new ALNumberField();
     create_user_name = new ALStringField();
     is_public = true;
     addon_schedule_flg = true;
@@ -263,7 +275,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -341,7 +353,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getStateImage() {
@@ -380,7 +392,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getLimitState() {
@@ -388,7 +400,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param value
    */
   public void setLimitState(int value) {
@@ -403,6 +415,14 @@ public class ToDoResultData implements ALData {
     return addon_schedule_flg;
   }
 
+  public void setUserId(long i) {
+    user_id.setValue(i);
+  }
+
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
   public void setUserName(String user_name) {
     this.user_name.setValue(user_name);
   }
@@ -415,12 +435,28 @@ public class ToDoResultData implements ALData {
     return ALCommonUtils.replaceToAutoCR(user_name.toString());
   }
 
+  public void setCreateUserId(long i) {
+    create_user_id.setValue(i);
+  }
+
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
   public void setCreateUserName(String create_user_name) {
     this.create_user_name.setValue(create_user_name);
   }
 
   public ALStringField getCreateUserName() {
     return create_user_name;
+  }
+
+  public void setLoginUserId(int i) {
+    login_user_id.setValue(i);
+  }
+
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
   }
 
   public boolean isSelfTodo() {
@@ -433,7 +469,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclListTodoOtherを取得します。
-   * 
+   *
    * @return hasAclListTodoOther
    */
   public boolean hasAclListTodoOther() {
@@ -442,7 +478,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclListTodoOtherを設定します。
-   * 
+   *
    * @param hasAclListTodoOther
    *          hasAclListTodoOther
    */
@@ -452,7 +488,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDetailTodoOtherを取得します。
-   * 
+   *
    * @return hasAclDetailTodoOther
    */
   public boolean hasAclDetailTodoOther() {
@@ -461,7 +497,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDetailTodoOtherを設定します。
-   * 
+   *
    * @param hasAclDetailTodoOther
    *          hasAclDetailTodoOther
    */
@@ -471,7 +507,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclEditTodoOtherを取得します。
-   * 
+   *
    * @return hasAclEditTodoOther
    */
   public boolean hasAclEditTodoOther() {
@@ -480,7 +516,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclEditTodoOtherを設定します。
-   * 
+   *
    * @param hasAclEditTodoOther
    *          hasAclEditTodoOther
    */
@@ -490,7 +526,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDeleteTodoOtherを取得します。
-   * 
+   *
    * @return hasAclDeleteTodoOther
    */
   public boolean hasAclDeleteTodoOther() {
@@ -499,7 +535,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDeleteTodoOtherを設定します。
-   * 
+   *
    * @param hasAclDeleteTodoOther
    *          hasAclDeleteTodoOther
    */
