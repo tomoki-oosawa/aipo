@@ -191,7 +191,6 @@
                 <include>../../../../target/aipo/javascript/aipo/wiki/form.js</include>
                 <include>../../../../target/aipo/javascript/aipo/project/raphael-min.js</include>
                 <include>../../../../target/aipo/javascript/aipo/project/form.js</include>
-                <include>../../../../target/aipo/javascript/retina.js</include>
               </includes>
             </aggregation>
             <aggregation>
