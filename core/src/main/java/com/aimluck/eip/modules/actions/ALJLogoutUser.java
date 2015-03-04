@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.modules.actions;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -33,6 +34,7 @@ import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -41,7 +43,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログアウト処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALJLogoutUser extends ActionEvent {
 
@@ -125,7 +127,15 @@ public class ALJLogoutUser extends ActionEvent {
           .addQueryData("logout", "T")
           .toString());
       } else {
-        data.setRedirectURI(jsLink.getHomePage().toString());
+        // contextPathの取得
+        ServletContext servletContext = ServletContextLocator.get();
+        String contextPath = servletContext.getContextPath(); // "" "/"
+        // contextPath = "" なら contextPath = "/"にする。
+        if ("".equals(contextPath)) {
+          contextPath = "/";
+        }
+        // contextPathをsetする。
+        data.setRedirectURI(contextPath);
       }
     } else {
       data.setRedirectURI(externalLoginUrl);
@@ -143,5 +153,4 @@ public class ALJLogoutUser extends ActionEvent {
       }
     }
   }
-
 }
