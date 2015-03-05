@@ -53,13 +53,16 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイルフォームデータを管理するクラス <BR>
- *
+ * 
  */
 public class CabinetFileFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileFormData.class.getName());
+
+  // /** フォルダ ID */
+  // private ALNumberField folder_id;
 
   /** 対象フォルダ ID */
   private ALNumberField target_folder_id;
@@ -98,12 +101,12 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private RunData rundata;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -170,11 +173,16 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
+    // フォルダ ID
+    // folder_id = new ALNumberField();
+    // folder_id.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_ADD_TOPIC"));
+    // folder_id.setNotNull(true);
+    // folder_id.setValue(0);
     // targetフォルダ ID
     target_folder_id = new ALNumberField();
     target_folder_id.setFieldName(ALLocalizationUtils
@@ -202,7 +210,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -222,7 +230,9 @@ public class CabinetFileFormData extends ALAbstractFormData {
         CabinetUtils.KEY_TARGET_FOLDER_ID)) {
         try {
           target_folder_id.setValue(selected_folderinfo.getFolderId());
+          // folder_id.setValue(selected_folderinfo.getFolderId());
         } catch (Exception e) {
+          // folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
           target_folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
         }
       }
@@ -249,8 +259,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -268,10 +278,10 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -304,8 +314,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
     /** 編集アクセス制限 */
     // test--
     int id = (int) target_folder_id.getValue();
+    // int id = (int) folder_id.getValue();
     // --/test
     if (!CabinetUtils.isEditableFolder(id, rundata)) {
+      // if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(),
+      // rundata)) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_AUTHORITY"));
     }
     return (msgList.size() == 0);
@@ -313,7 +326,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -331,6 +344,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       target_folder_id.setValue(file.getFolderId().intValue());
+      // folder_id.setValue(file.getFolderId().intValue());
       // ファイルタイトル
       file_title.setValue(file.getFileTitle());
       // ファイル名
@@ -351,7 +365,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -405,7 +419,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルをデータベースとファイルシステムに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -437,6 +451,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
           filename);
 
       EipTCabinetFolder folder =
+      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
         Database.get(EipTCabinetFolder.class, Integer
           .valueOf((int) target_folder_id.getValue()));
 
@@ -532,7 +547,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * データベースとファイルシステムに格納されているファイルを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -603,6 +618,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       EipTCabinetFolder folder =
+      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
         Database.get(EipTCabinetFolder.class, Integer
           .valueOf((int) target_folder_id.getValue()));
       file.setEipTCabinetFolder(folder);
@@ -669,17 +685,18 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
-   *
+   * 
+   * 
    * @return
    */
   public ALNumberField getFolderId() {
+    // return folder_id;
     return target_folder_id;
   }
 
   /**
    * ファイルタイトルを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileTitle() {
@@ -688,7 +705,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイル名を取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getFileName() {
@@ -697,7 +714,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイル名を取得する(長い名前は折り返す)． <BR>
-   *
+   * 
    * @return
    */
   public String getFileNameHtml() {
@@ -706,7 +723,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * ファイルサイズを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getFileSize() {
@@ -715,7 +732,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * メモを取得する． <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -731,7 +748,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param id
    * @return
    */
@@ -746,7 +763,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override
