@@ -31,6 +31,8 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.channels.FileChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Calendar;
 
 import org.apache.commons.io.IOUtils;
@@ -61,7 +63,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
   @Override
   public void saveFile(InputStream is, String folderPath, String filename) {
-    File path = new File(folderPath);
+    File path = new File(getAbsolutePath(folderPath));
 
     if (!path.exists()) {
       try {
@@ -105,7 +107,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
    */
   @Override
   public void createNewFile(InputStream is, String filepath) {
-    File file = new File(filepath);
+    File file = new File(getAbsolutePath(filepath));
 
     if (!file.exists()) {
       try {
@@ -128,7 +130,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
     FileOutputStream os = null;
     try {
-      os = new FileOutputStream(filepath);
+      os = new FileOutputStream(getAbsolutePath(filepath));
       int c;
       while ((c = is.read()) != -1) {
         os.write(c);
@@ -154,7 +156,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
    */
   @Override
   public void createNewFile(InputStream is, String folderPath, String filename) {
-    File path = new File(folderPath);
+    File path = new File(getAbsolutePath(folderPath));
 
     if (!path.exists()) {
       try {
@@ -200,7 +202,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       String fileName, String realFileName) {
 
     File path =
-      new File(FOLDER_TMP_FOR_ATTACHMENT_FILES
+      new File(getAbsolutePath(FOLDER_TMP_FOR_ATTACHMENT_FILES)
         + separator()
         + Database.getDomainName()
         + separator()
@@ -274,7 +276,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       String destFileName) {
 
     File srcPath =
-      new File(srcRootPath
+      new File(getAbsolutePath(srcRootPath)
         + separator()
         + Database.getDomainName()
         + separator()
@@ -290,7 +292,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
     }
 
     File destPath =
-      new File(destRootPath
+      new File(getAbsolutePath(destRootPath)
         + separator()
         + Database.getDomainName()
         + separator()
@@ -359,7 +361,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       return 0;
     }
 
-    File folder = new File(folderPath);
+    File folder = new File(getAbsolutePath(folderPath));
     if (!folder.exists()) {
       return 0;
     }
@@ -371,7 +373,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
     String[] files = folder.list();
     int length = files.length;
     for (int i = 0; i < length; i++) {
-      file = new File(folderPath + separator() + files[i]);
+      file = new File(getAbsolutePath(folderPath) + separator() + files[i]);
       if (file.isFile()) {
         fileSizeSum += getFileSize(file);
       } else if (file.isDirectory()) {
@@ -383,7 +385,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
   @Override
   public long getFileSize(String rootPath, String dir, String filename) {
-    return getFileSize(new File(rootPath
+    return getFileSize(new File(getAbsolutePath(rootPath)
       + separator()
       + Database.getDomainName()
       + separator()
@@ -426,7 +428,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   @Override
   public boolean deleteFolder(String rootPath, String dir) {
     File file =
-      new File(rootPath
+      new File(getAbsolutePath(rootPath)
         + separator()
         + Database.getDomainName()
         + separator()
@@ -495,12 +497,12 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
   @Override
   public InputStream getFile(String filePath) throws FileNotFoundException {
-    return new FileInputStream(filePath);
+    return new FileInputStream(getAbsolutePath(filePath));
   }
 
   @Override
   public String getDocumentPath(String rootPath, String categoryKey) {
-    File rootDir = new File(rootPath);
+    File rootDir = new File(getAbsolutePath(rootPath));
     String org_name = Database.getDomainName();
     if (!rootDir.exists()) {
       try {
@@ -568,7 +570,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   @Override
   public boolean deleteFile(String filePath) {
 
-    File file = new File(filePath);
+    File file = new File(getAbsolutePath(filePath));
 
     if (file != null && file.exists()) {
       if (!file.delete()) {
@@ -583,7 +585,7 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   public boolean deleteOldFolder(String folderPath, Calendar cal) {
     Calendar mod = Calendar.getInstance();
     boolean flag = true;
-    File parent_folder = new File(folderPath);
+    File parent_folder = new File(getAbsolutePath(folderPath));
     try {
       if (!parent_folder.exists()) {
         return false;
@@ -629,4 +631,23 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
     return flag;
   }
 
+  protected String getAbsolutePath(String folderPath) {
+    try {
+      Path path = Paths.get(folderPath);
+      if (path == null) {
+        return folderPath;
+      }
+      if (path.isAbsolute()) {
+        return folderPath;
+      }
+      String root = System.getProperty("catalina.home");
+      if (root == null) {
+        return folderPath;
+      }
+      return root + separator() + folderPath;
+    } catch (Throwable ignore) {
+      //
+    }
+    return folderPath;
+  }
 }
