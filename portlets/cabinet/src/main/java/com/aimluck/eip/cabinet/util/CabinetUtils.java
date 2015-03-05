@@ -68,8 +68,6 @@ public class CabinetUtils {
   public static final int ROOT_FODLER_ID = 1;
 
   /** セッションの識別子 */
-  // public static final String KEY_FOLDER_ID = "folder_id";
-
   public static final String KEY_CURRENT_FOLDER_ID = "current_folder_id";
 
   public static final String KEY_TARGET_FOLDER_ID = "target_folder_id";
@@ -118,46 +116,8 @@ public class CabinetUtils {
   public static final String TARGET_KEYWORD = "keyword";
 
   /**
-   * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
-   * @param rundata
-   * @param context
-   * @return
-   */
-  // public static EipTCabinetFolder getEipTCabinetFolder(RunData rundata,
-  // Context context) {
-  // String folderid = ALEipUtils.getTemp(rundata, context, KEY_FOLDER_ID);
-  //
-  // try {
-  // if (folderid == null || Integer.valueOf(folderid) == null) {
-  // // ファイル IDが空の場合
-  // logger.debug("[Cabinet Folder] Empty ID...");
-  // return null;
-  // }
-  //
-  // SelectQuery<EipTCabinetFolder> query =
-  // Database.query(EipTCabinetFolder.class);
-  // Expression exp =
-  // ExpressionFactory.matchDbExp(
-  // EipTCabinetFolder.FOLDER_ID_PK_COLUMN,
-  // folderid);
-  // query.setQualifier(exp);
-  // List<EipTCabinetFolder> folders = query.fetchList();
-  // if (folders == null || folders.size() == 0) {
-  // // 指定したフォルダ IDのレコードが見つからない場合
-  // logger.debug("[Cabinet Folder] Not found ID...");
-  // return null;
-  // }
-  // return folders.get(0);
-  // } catch (Exception ex) {
-  // logger.error("cabinet", ex);
-  // return null;
-  // }
-  // }
-
-  /**
    * 対象フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return

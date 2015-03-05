@@ -61,9 +61,6 @@ public class CabinetFileFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(CabinetFileFormData.class.getName());
 
-  // /** フォルダ ID */
-  // private ALNumberField folder_id;
-
   /** 対象フォルダ ID */
   private ALNumberField target_folder_id;
 
@@ -173,16 +170,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
-    // フォルダ ID
-    // folder_id = new ALNumberField();
-    // folder_id.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_ADD_TOPIC"));
-    // folder_id.setNotNull(true);
-    // folder_id.setValue(0);
     // targetフォルダ ID
     target_folder_id = new ALNumberField();
     target_folder_id.setFieldName(ALLocalizationUtils
@@ -230,9 +222,7 @@ public class CabinetFileFormData extends ALAbstractFormData {
         CabinetUtils.KEY_TARGET_FOLDER_ID)) {
         try {
           target_folder_id.setValue(selected_folderinfo.getFolderId());
-          // folder_id.setValue(selected_folderinfo.getFolderId());
         } catch (Exception e) {
-          // folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
           target_folder_id.setValue(CabinetUtils.ROOT_FODLER_ID);
         }
       }
@@ -314,11 +304,8 @@ public class CabinetFileFormData extends ALAbstractFormData {
     /** 編集アクセス制限 */
     // test--
     int id = (int) target_folder_id.getValue();
-    // int id = (int) folder_id.getValue();
     // --/test
     if (!CabinetUtils.isEditableFolder(id, rundata)) {
-      // if (!CabinetUtils.isEditableFolder((int) folder_id.getValue(),
-      // rundata)) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_AUTHORITY"));
     }
     return (msgList.size() == 0);
@@ -344,7 +331,6 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       target_folder_id.setValue(file.getFolderId().intValue());
-      // folder_id.setValue(file.getFolderId().intValue());
       // ファイルタイトル
       file_title.setValue(file.getFileTitle());
       // ファイル名
@@ -451,7 +437,6 @@ public class CabinetFileFormData extends ALAbstractFormData {
           filename);
 
       EipTCabinetFolder folder =
-      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
         Database.get(EipTCabinetFolder.class, Integer
           .valueOf((int) target_folder_id.getValue()));
 
@@ -618,7 +603,6 @@ public class CabinetFileFormData extends ALAbstractFormData {
 
       // 親フォルダ
       EipTCabinetFolder folder =
-      // Database.get(EipTCabinetFolder.class, Integer.valueOf((int) folder_id
         Database.get(EipTCabinetFolder.class, Integer
           .valueOf((int) target_folder_id.getValue()));
       file.setEipTCabinetFolder(folder);

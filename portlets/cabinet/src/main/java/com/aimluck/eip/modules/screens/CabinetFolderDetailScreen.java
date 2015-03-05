@@ -48,7 +48,6 @@ public class CabinetFolderDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      // CabinetFolderSelectData detailData = new CabinetFolderSelectData();
       CabinetFolderSelectData detailData = new CabinetTargetFolderSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);

@@ -48,7 +48,6 @@ public class CabinetFolderListScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      // CabinetFolderSelectData listData = new CabinetFolderSelectData();
       CabinetFolderSelectData listData = new CabinetCurrentFolderSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(

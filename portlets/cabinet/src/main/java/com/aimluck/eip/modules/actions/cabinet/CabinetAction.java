@@ -151,7 +151,6 @@ public class CabinetAction extends ALBaseAction {
   private void clearCabinetSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
     list.add("entityid");
-    // list.add("folder_id");
     list.add("target_folder_id");
     list.add("temp_folder_id");
     list.add("CabinetFileWord");

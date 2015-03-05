@@ -45,7 +45,6 @@ public class CabinetTargetFolderSelectData extends CabinetFolderSelectData {
   protected EipTCabinetFolder selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     // オブジェクトモデルを取得
-    // return CabinetUtils.getEipTCabinetFolder(rundata, context);
     return CabinetUtils.getEipTCabinetTargetFolder(rundata, context);
   }
 

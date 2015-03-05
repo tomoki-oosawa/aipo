@@ -119,9 +119,9 @@ public class CabinetFolderFormData extends ALAbstractFormData {
     // TODO currentで良いか確認する。以下同じ。
     if (ALEipUtils.isMatch(rundata, context)) {
       // ENTITY ID
-      if (rundata.getParameters().containsKey(
-      // CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
-        CabinetUtils.KEY_TARGET_FOLDER_ID)) {
+      if (rundata
+        .getParameters()
+        .containsKey(CabinetUtils.KEY_TARGET_FOLDER_ID)) {
         ALEipUtils.setTemp(
           rundata,
           context,

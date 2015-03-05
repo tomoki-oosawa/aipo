@@ -84,45 +84,10 @@ public abstract class CabinetFolderSelectData extends
 
   public abstract void setSessionFolderId(RunData rundata, Context context);
 
-  // {
-  // if (rundata.getParameters().containsKey(CabinetUtils.KEY_TARGET_FOLDER_ID))
-  // {
-  // ALEipUtils.setTemp(
-  // rundata,
-  // context,
-  // CabinetUtils.KEY_TARGET_FOLDER_ID,
-  // rundata.getParameters().getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
-  // } else if (rundata.getParameters().containsKey(
-  // CabinetUtils.KEY_CURRENT_FOLDER_ID)) {
-  // ALEipUtils.setTemp(
-  // rundata,
-  // context,
-  // CabinetUtils.KEY_CURRENT_FOLDER_ID,
-  // rundata.getParameters().getString(CabinetUtils.KEY_CURRENT_FOLDER_ID));
-  // ALEipUtils.setTemp(
-  // rundata,
-  // context,
-  // CabinetUtils.KEY_TARGET_FOLDER_ID,
-  // null);
-  // }
-  //
-  // }
-
   public abstract String getFolderIdFromSession(RunData rundata, Context context);
 
-  // {
-  // String tmpfid =
-  // ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_CURRENT_FOLDER_ID);
-  // String targetId =
-  // ALEipUtils.getTemp(rundata, context, CabinetUtils.KEY_TARGET_FOLDER_ID);
-  // if (targetId != null) {
-  // tmpfid = targetId;
-  // }
-  // return tmpfid;
-  // }
-
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -182,20 +147,8 @@ public abstract class CabinetFolderSelectData extends
       if (ALEipUtils.isMatch(rundata, context)) {
         // ENTITY ID
         setSessionFolderId(rundata, context);
-        // if (rundata.getParameters().containsKey(
-        // CabinetUtils.KEY_TARGET_FOLDER_ID)) {
-        // ALEipUtils.setTemp(
-        // rundata,
-        // context,
-        // CabinetUtils.KEY_TARGET_FOLDER_ID,
-        // rundata
-        // .getParameters()
-        // .getString(CabinetUtils.KEY_TARGET_FOLDER_ID));
-        // }
       }
       String tmpfid = getFolderIdFromSession(rundata, context);
-      // ALEipUtils.getTemp(rundata, context,
-      // CabinetUtils.KEY_TARGET_FOLDER_ID);
       if (tmpfid != null && !"".equals(tmpfid)) {
         try {
           fid = Integer.parseInt(tmpfid);
