@@ -41,9 +41,23 @@
 #ALtdcaption("$l10n.CABINET_FILE_SIZE")
 #ALtditem("$!{result.Detail.FileSize} KB")
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
-#ALtditem("$!{result.Detail.CreateUser} （$!{result.Detail.CreateDate}）")
+#ALtditemheader()
+#if($!result.Detail.CreateUserId.value != $!result.Detail.LoginUserId.value)
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.CreateUserId.value)">$!{result.Detail.CreateUser}</a>
+#else
+$!{result.Detail.CreateUser}$!{result.Detail.CreateUserId}$!{result.Detail.UpdateUserId}$!{result.Detail.LoginUserId}
+#end
+#if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
+#ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
-#ALtditem("$!{result.Detail.UpdateUser} （$!{result.Detail.UpdateDate}）")
+#ALtditemheader()
+#if($!result.Detail.UpdateUserId.value != $!result.Detail.LoginUserId.value)
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.UpdateUserId.value)">$!{result.Detail.UpdateUser}</a>
+#else
+$!{result.Detail.UpdateUser}
+#end
+#if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #if($!result.Detail.isEditable())
