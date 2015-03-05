@@ -655,16 +655,6 @@ table.simpleTable .caption {
   display: inline;
 }
 
-.modalDialog input[type=checkbox],
-.modalDialog input[type=radio] {
-  vertical-align: -0.2em;
-}
-
-*:first-child + html .modalDialog input[type=checkbox],
-*:first-child + html .modalDialog input[type=radio] {
-  vertical-align: 0em;
-}
-
 .modalDialog#imageDialog {
   z-index: 999;
 }

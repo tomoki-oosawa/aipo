@@ -3215,7 +3215,12 @@ select {
 
 input[type=radio],
 input[type=checkbox] {
-  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.dj_ie input[type=radio],
+.dj_ie input[type=checkbox] {
+  top: 2px;
 }
 
 textarea,
