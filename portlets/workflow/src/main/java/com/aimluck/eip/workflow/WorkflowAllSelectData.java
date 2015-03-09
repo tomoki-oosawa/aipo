@@ -56,7 +56,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowAllSelectData extends
     ALAbstractSelectData<EipTWorkflowRequest, EipTWorkflowRequest> implements
@@ -99,7 +99,7 @@ public class WorkflowAllSelectData extends
   private ALStringField target_keyword;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -194,7 +194,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -203,7 +203,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -213,7 +213,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -245,7 +245,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -366,7 +366,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -408,7 +408,7 @@ public class WorkflowAllSelectData extends
         rd.setActivityId(activity.getId());
       }
 
-      String lastUpdateUser = null;
+      ALEipUser LastUpdateUser = new ALEipUser();
       EipTWorkflowRequestMap map = null;
       List<EipTWorkflowRequestMap> maps =
         WorkflowUtils.getEipTWorkflowRequestMap(record);
@@ -417,25 +417,21 @@ public class WorkflowAllSelectData extends
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
         // すべて承認済みの場合、最終承認者をセットする
         map = maps.get(size - 1);
-        ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
-        lastUpdateUser = user.getAliasName().getValue();
+        LastUpdateUser = ALEipUtils.getALEipUser(map.getUserId().intValue());
       } else {
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
           if (WorkflowUtils.DB_STATUS_CONFIRM.equals(map.getStatus())) {
             // 最終閲覧者を取得する
-            ALEipUser user =
+            LastUpdateUser =
               ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = user.getAliasName().getValue();
             break;
           }
         }
       }
 
-      rd.setClientName(ALEipUtils
-        .getALEipUser(record.getTurbineUser())
-        .getAliasName()
-        .getValue());
+      ALEipUser clientUser = ALEipUtils.getALEipUser(record.getTurbineUser());
+      rd.setClientUser(clientUser);
 
       String state = "";
       if (WorkflowUtils.DB_PROGRESS_ACCEPT.equals(record.getProgress())) {
@@ -447,7 +443,7 @@ public class WorkflowAllSelectData extends
       }
       rd.setStateString(state);
 
-      rd.setLastUpdateUser(lastUpdateUser);
+      rd.setLastUpdateUser(LastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),
@@ -476,7 +472,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -488,7 +484,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -498,7 +494,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<WorkflowCategoryResultData> getCategoryList() {
@@ -511,7 +507,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -520,7 +516,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * リクエストの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getRequestSum() {
@@ -529,7 +525,7 @@ public class WorkflowAllSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -551,7 +547,7 @@ public class WorkflowAllSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -566,7 +562,7 @@ public class WorkflowAllSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -577,7 +573,7 @@ public class WorkflowAllSelectData extends
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   * 
+   *
    * @return
    */
   public boolean hasAuthorityOther() {

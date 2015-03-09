@@ -71,7 +71,7 @@
 </tr>
 #foreach ($record in $result.List)
 #if($result.CurrentSubMenu == "requested")
-#set ($user = $!record.ClientName)
+#set ($user = $!record.ClientUser)
 #else
 #set ($user = $!record.LastUpdateUser)
 #end
@@ -82,7 +82,13 @@
 	</div>
 </td>
 #ALtdcellAtt("$!record.StateString" 'nowrap="nowrap"')
-#ALtdcellAtt("<div>$user</div>" '')
+#if($result.LoginUser.UserId.Value != $user.UserId.Value)
+#ALtdcellheader()
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($user.UserId)">$!user.AliasName</a>
+#ALtdcellfooter()
+#else
+#ALtdcellAtt("<div>$!user.AliasName</div>" '')
+#end
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end

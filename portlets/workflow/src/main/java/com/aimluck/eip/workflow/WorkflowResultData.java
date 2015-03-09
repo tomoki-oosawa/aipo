@@ -27,6 +27,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -34,7 +35,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- * 
+ *
  */
 public class WorkflowResultData implements ALData {
 
@@ -83,11 +84,11 @@ public class WorkflowResultData implements ALData {
   /** 作成日 */
   protected ALDateTimeField createDateTime;
 
-  /** 最終閲覧者名 */
-  protected ALStringField last_update_user;
+  /** 最終閲覧者 */
+  protected ALEipUser last_update_user;
 
-  /** 申請者名 */
-  protected ALStringField client_name;
+  /** 申請者 */
+  protected ALEipUser client_user;
 
   /** 添付ファイルリスト */
   private List<FileuploadBean> attachmentFileList = null;
@@ -119,8 +120,8 @@ public class WorkflowResultData implements ALData {
     price = new ALNumberField();
     create_date = new ALStringField();
 
-    last_update_user = new ALStringField();
-    client_name = new ALStringField();
+    last_update_user = new ALEipUser();
+    client_user = new ALEipUser();
     attachmentFileList = new ArrayList<FileuploadBean>();
 
     updateDate =
@@ -204,13 +205,6 @@ public class WorkflowResultData implements ALData {
 
   public String getPriceStr() {
     return WorkflowUtils.translateMoneyStr(price.toString());
-  }
-
-  /**
-   * @return
-   */
-  public ALStringField getLastUpdateUser() {
-    return last_update_user;
   }
 
   /**
@@ -298,13 +292,6 @@ public class WorkflowResultData implements ALData {
   }
 
   /**
-   * @param string
-   */
-  public void setLastUpdateUser(String string) {
-    last_update_user.setValue(string);
-  }
-
-  /**
    * @return list
    */
   public List<FileuploadBean> getAttachmentFileList() {
@@ -316,20 +303,6 @@ public class WorkflowResultData implements ALData {
    */
   public void setAttachmentFiles(List<FileuploadBean> list) {
     attachmentFileList = list;
-  }
-
-  /**
-   * @return
-   */
-  public ALStringField getClientName() {
-    return client_name;
-  }
-
-  /**
-   * @param string
-   */
-  public void setClientName(String string) {
-    client_name.setValue(string);
   }
 
   /**
@@ -395,4 +368,35 @@ public class WorkflowResultData implements ALData {
       return createDateYear;
     }
   }
+
+  /**
+   * @return last_update_user
+   */
+  public ALEipUser getLastUpdateUser() {
+    return last_update_user;
+  }
+
+  /**
+   * @param last_update_user
+   *          セットする last_update_user
+   */
+  public void setLastUpdateUser(ALEipUser last_update_user) {
+    this.last_update_user = last_update_user;
+  }
+
+  /**
+   * @return client_user
+   */
+  public ALEipUser getClientUser() {
+    return client_user;
+  }
+
+  /**
+   * @param client_user
+   *          セットする client_user
+   */
+  public void setClientUser(ALEipUser client_user) {
+    this.client_user = client_user;
+  }
+
 }

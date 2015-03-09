@@ -44,7 +44,7 @@
 <p><a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))"><strong>【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </strong><br>
 <small>
 ##[$!{record.PriceStr}&nbsp;円]/
-[作成：$!record.CreateDate]/[最終更新：$!record.LastUpdateUser]/[進捗：$!record.StateString]</small></a></p>
+[作成：$!record.CreateDate]/[最終更新：$!record.LastUpdateUser.AliasName]/[進捗：$!record.StateString]</small></a></p>
 #end
 #ALcell_radius_footer($career)
 #if($result.PagesNum > 1)
