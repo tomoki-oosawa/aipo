@@ -119,9 +119,11 @@ $!{record.StatusString}
 $!{record.UpdateDate}
 #end
 </span>
-#if($result.LoginUser.UserId.Value != $record.UserId.Value)<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UserId.Value})">#end
+#if($result.LoginUser.UserId.Value != $record.UserId.Value)
+<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UserId.Value})" class="floatLeft">$!{record.UserAliasName}</a>
+#else
 <span class="floatLeft">$!{record.UserAliasName}</span>
-#if($result.LoginUser.UserId.Value != $record.UserId.Value)</a>#end
+#end
 </div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
