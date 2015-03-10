@@ -10,7 +10,7 @@ import org.apache.turbine.util.RunData;
 
 /**
  * PC表示切り替え処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALChangeToPC extends ActionEvent {
 
@@ -34,9 +34,12 @@ public class ALChangeToPC extends ActionEvent {
       } catch (Exception e) {
         logger.error("Error getting jsLink", e);
       }
-      data.setRedirectURI(jsLink.getHomePage().addQueryData(
-        "action",
-        "controls.Restore").toString());
+      String mypageId = data.getParameters().getString("mypageId");
+      data.setRedirectURI(jsLink
+        .getHomePage()
+        .addQueryData("js_pane", mypageId)
+        .addQueryData("action", "controls.Restore")
+        .toString());
       data.getResponse().sendRedirect(data.getRedirectURI());
       JetspeedLinkFactory.putInstance(jsLink);
       jsLink = null;
