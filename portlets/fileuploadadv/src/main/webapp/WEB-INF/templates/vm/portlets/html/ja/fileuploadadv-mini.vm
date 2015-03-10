@@ -158,7 +158,7 @@ function getNsize(keyid) {
 <input type="hidden" name="keyid" value="$!keyid" />
 <div id="uploadContainer">
 <span id="inputField">
-<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block;">
+<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
 <span class="uploadText">ファイルを追加する</span>
 <input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px;" onchange="submitMini(this.form, '$!portlet.ID', '$!keyid');">
 </div>
