@@ -75,7 +75,6 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatRight">
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new").addQueryData("view_month",$!{result.ViewMonth.toString()}))
-	<input id=checkbox_onoff type="checkbox" checked="checked" onclick="change_print_form()"><label>繰り返し・共有・仮登録などのアイコンを表示させる</label>
 </div>
 #end
 
@@ -113,7 +112,7 @@
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}").addQueryData("view_month",$!{result.ViewMonth.toString()}))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
     </select>
-   	<input id="checkbox_onoff" type="checkbox" checked="checked"><label>"繰り返し・共有・仮登録などのアイコンを表示させる"</label>
+   	<input id="checkbox_onoff" type="checkbox" checked="checked"><label>繰り返し・共有・仮登録などのアイコンを表示させる</label>
 </div>
 #if (${client} != "IPHONE")
 	</div>
