@@ -75,7 +75,7 @@ public class ToDoCategoryResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     user_name = new ALStringField();
-    user_id = (new ALNumberField());
+    user_id = new ALNumberField();
     update_user_name = new ALStringField();
     update_user_id = new ALNumberField();
     is_self_category = false;
