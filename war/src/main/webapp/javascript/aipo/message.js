@@ -879,7 +879,10 @@ aipo.message.openDirect = function(user_id) {
 	    	dialog.hide();
 	    }
 	    aipo.message.isDirect = true;
-	    aipo.message.currentRoomId = null;
+	    if(aipo.message.currentRoomId) {
+            aipo.message.tmpRoomId = aipo.message.currentRoomId;
+        }
+        aipo.message.currentRoomId = null;
 	    aipo.message.currentRoomSearchKeyword = null;
 	    aipo.message.currentUserSearchKeyword = null;
 	    aipo.message.currentGroupName = "all";
@@ -898,7 +901,10 @@ aipo.message.openDirectMessage = function(user_id) {
 	    	dialog.hide();
 	    }
 	    aipo.message.isDirect = true;
-	    aipo.message.currentRoomId = null;
+	    if(aipo.message.currentRoomId) {
+            aipo.message.tmpRoomId = aipo.message.currentRoomId;
+        }
+        aipo.message.currentRoomId = null;
 	    aipo.message.currentRoomSearchKeyword = null;
 	    aipo.message.currentUserSearchKeyword = null;
 	    aipo.message.currentGroupName = "all";
