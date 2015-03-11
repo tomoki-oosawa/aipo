@@ -34,17 +34,6 @@
 <input name="lockedDomainRequired" type="checkbox" value="1" id="lockedDomainRequired_for" #if ($result.LockedDomainRequired.toString() == "1") checked="checked" #end/>
 <label for="lockedDomainRequired_for">${l10n.GADGETS_ENABLE}</label>&nbsp;<input class="text" type="text" name="lockedDomainSuffix" value="$result.LockedDomainSuffix" />
 #ALtditemfooter()
-#ALtdcaption($l10n.GADGETS_CHECK_ACTIVITY_INTERVAL)
-#ALtditemheader()
-<select name="checkActivityInterval">
-<option value="0" #if($result.CheckActivityInterval.toString() == "0") selected="selected"#end>$l10n.GADGETS_DONOT_CHECK_ACTIVITY</option>
-<option value="60" #if($result.CheckActivityInterval.toString() == "60") selected="selected"#end>$l10n.GADGETS_PER1</option>
-<option value="300" #if($result.CheckActivityInterval.toString() == "300") selected="selected"#end>$l10n.GADGETS_PER5</option>
-<option value="600" #if($result.CheckActivityInterval.toString() == "600") selected="selected"#end>$l10n.GADGETS_PER10</option>
-<option value="1800" #if($result.CheckActivityInterval.toString() == "1800") selected="selected"#end>$l10n.GADGETS_PER30</option>
-<option value="3600" #if($result.CheckActivityInterval.toString() == "3600") selected="selected"#end>$l10n.GADGETS_PER60</option>
-</select>
-#ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_ACTIVITY_SAVE_LIMIT)
 #ALtditemheader()
 <select name="activitySaveLimit">

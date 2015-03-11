@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationConstants;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
@@ -291,7 +293,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appId
    * @param request
    */
@@ -312,7 +314,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -332,7 +334,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -341,7 +343,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -361,7 +363,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -370,7 +372,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -448,7 +450,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param property
    * @return
    */
@@ -481,7 +483,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param property
    * @param value
    */
@@ -858,6 +860,10 @@ public class ALDefaultSocialApplicationHanlder extends
           activityMap.setLoginName(recipient);
           activityMap.setActivity(activity);
           activityMap.setIsRead(priority == 1f ? 0 : 1);
+        }
+        if (priority == 1f) {
+          Map<String, String> params = new HashMap<String, String>();
+          ALPushService.pushAsync("activity", params, recipients);
         }
       } else {
         ActivityMap activityMap = Database.create(ActivityMap.class);

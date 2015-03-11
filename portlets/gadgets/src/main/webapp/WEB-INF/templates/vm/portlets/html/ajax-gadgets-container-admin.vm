@@ -30,25 +30,6 @@ ${l10n.GADGETS_ENABLE}（$result.Detail.LockedDomainSuffix）
 ${l10n.GADGETS_DISABLE}
 #end
 </td>
-#ALtdcaption($l10n.GADGETS_CHECK_ACTIVITY_INTERVAL)
-<td class="item">
-#if($result.Detail.CheckActivityInterval.toString() == "0")
-$l10n.GADGETS_DONOT_CHECK_ACTIVITY
-#elseif($result.Detail.CheckActivityInterval.toString() == "60")
-$l10n.GADGETS_PER1
-#elseif($result.Detail.CheckActivityInterval.toString() == "300")
-$l10n.GADGETS_PER5
-#elseif($result.Detail.CheckActivityInterval.toString() == "600")
-$l10n.GADGETS_PER10
-#elseif($result.Detail.CheckActivityInterval.toString() == "1800")
-$l10n.GADGETS_PER30
-#elseif($result.Detail.CheckActivityInterval.toString() == "3600")
-$l10n.GADGETS_PER60
-#else
-
-#end
-
-</td>
 #ALtdcaption($l10n.GADGETS_ACTIVITY_SAVE_LIMIT)
 <td class="item">
 #if($result.Detail.ActivitySaveLimit.toString() == "7")
