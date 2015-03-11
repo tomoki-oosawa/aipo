@@ -26,7 +26,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ToDoカテゴリのResultDataです。<BR>
- * 
+ *
  */
 public class ToDoCategoryResultData implements ALData {
 
@@ -39,8 +39,14 @@ public class ToDoCategoryResultData implements ALData {
   /** ユーザー名 */
   private ALStringField user_name;
 
+  /** ユーザー名id */
+  private ALNumberField user_id;
+
   /** 更新ユーザー名 */
   private ALStringField update_user_name;
+
+  /** 更新ユーザー名id */
+  private ALNumberField update_user_id;
 
   /** メモ */
   private ALStringField note;
@@ -69,7 +75,9 @@ public class ToDoCategoryResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     user_name = new ALStringField();
+    user_id = (new ALNumberField());
     update_user_name = new ALStringField();
+    update_user_id = new ALNumberField();
     is_self_category = false;
   }
 
@@ -183,8 +191,38 @@ public class ToDoCategoryResultData implements ALData {
     this.is_self_category = is_self_category;
   }
 
-  public boolean isSelfCategory() {
+  public boolean getIsSelfCategory() {
     return is_self_category;
+  }
+
+  /**
+   * @return update_user_id
+   */
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
+  }
+
+  /**
+   * @param update_user_id
+   *          セットする update_user_id
+   */
+  public void setUpdateUserId(ALNumberField update_user_id) {
+    this.update_user_id = update_user_id;
+  }
+
+  /**
+   * @return user_id
+   */
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  /**
+   * @param user_id
+   *          セットする user_id
+   */
+  public void setUserId(ALNumberField user_id) {
+    this.user_id = user_id;
   }
 
 }

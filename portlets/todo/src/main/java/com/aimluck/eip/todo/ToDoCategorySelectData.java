@@ -30,6 +30,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -55,7 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ToDoCategorySelectData extends
     ALAbstractSelectData<EipTTodoCategory, EipTTodoCategory> implements ALData {
@@ -84,7 +85,7 @@ public class ToDoCategorySelectData extends
   private int login_user_id;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -132,7 +133,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -162,7 +163,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -181,7 +182,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -195,7 +196,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -210,10 +211,11 @@ public class ToDoCategorySelectData extends
 
     rd.setHasAclDeleteCategoryOther(hasAclDeleteCategoryOther);
     rd.setHasAclEditCategoryOther(hasAclEditCategoryOther);
-    rd.setIsSelfCategory(record.getUserId() == login_user_id);
+    rd.setIsSelfCategory(record.getUpdateUserId() == login_user_id);
     try {
-      rd.setUserName(ALEipUtils
-        .getALEipUser(record.getUserId())
+      rd.setUpdateUserId(new ALNumberField(record.getUpdateUserId()));
+      rd.setUpdateUserName(ALEipUtils
+        .getALEipUser(record.getUpdateUserId())
         .getAliasName()
         .getValue());
     } catch (ALDBErrorException ex) {
@@ -225,7 +227,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -241,10 +243,12 @@ public class ToDoCategorySelectData extends
         .getALEipUser(record.getUserId())
         .getAliasName()
         .getValue());
+      rd.setUserId(new ALNumberField(record.getUserId()));
       rd.setUpdateUserName(ALEipUtils
         .getALEipUser(record.getUpdateUserId())
         .getAliasName()
         .getValue());
+      rd.setUpdateUserId(new ALNumberField(record.getUpdateUserId()));
     } catch (ALDBErrorException ex) {
       logger.error("todo", ex);
     }
@@ -258,7 +262,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -271,7 +275,7 @@ public class ToDoCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -285,7 +289,7 @@ public class ToDoCategorySelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -307,7 +311,7 @@ public class ToDoCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -315,7 +319,7 @@ public class ToDoCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -332,7 +336,7 @@ public class ToDoCategorySelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -349,10 +353,14 @@ public class ToDoCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ToDoCategoryResultData> getCategoryList() {
     return categoryList;
+  }
+
+  public ALNumberField getLoginUserId() {
+    return new ALNumberField(login_user_id);
   }
 }
