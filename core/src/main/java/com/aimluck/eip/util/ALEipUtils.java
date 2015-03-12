@@ -1752,11 +1752,11 @@ public class ALEipUtils {
           }
         }
       }
-
+      // 日本語（ひらがな、かたかな、漢字）が含まれていてもリンク化されるように正規表現を追加する。
       String newMsg =
         msg
           .replaceAll(
-            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
+            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
             "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
       return newMsg.replaceAll(
         "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
