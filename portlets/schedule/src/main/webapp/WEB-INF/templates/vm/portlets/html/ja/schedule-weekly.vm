@@ -164,9 +164,6 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #if($record2.isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
-#if(${record2.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
 #if($record2.isTmpreserve())
 <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end

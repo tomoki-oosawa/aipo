@@ -173,7 +173,7 @@ $record3.AliasName
 #end
 #if(!$result.isMatch($record3.UserId.Value) && $result.hasAuthorityNote())
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId).addQueryData('entityid','new')))
-<br /><a class="auiButtonSmall mt5" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
+<br /><a class="auiButtonSmall" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">
 <i class="icon-plus fs10"></i>&nbsp;
 $l10n.SCHEDULE_ADD_NOTE
 </a>
