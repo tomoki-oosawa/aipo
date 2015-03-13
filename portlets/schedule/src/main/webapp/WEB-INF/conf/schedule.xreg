@@ -116,6 +116,15 @@
         <parameter name="p7d-schk.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7d-schk.style.items" value="f,t" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7d-schk.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="icon-view" value="on" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>アイコンの表示</title>
+            </meta-info>
+        </parameter>
+        <parameter name="icon-view.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="icon-view.style.items" value="on,off" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="icon-view.style.values" value="表示,非表示" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
 
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="ScheduleFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
