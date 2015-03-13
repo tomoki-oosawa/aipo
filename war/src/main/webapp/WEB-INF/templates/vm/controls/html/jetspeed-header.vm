@@ -71,7 +71,7 @@ limitations under the License.
 		<ul class="hdCommunications">
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
 			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
+				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");aipo.message.reload()' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
 					<div class="title">$l10n.MESSAGE_MESSAGE<input id="messageDesktopNotifySwitch" style="display:none" type="button" class="auiButtonSmall floatRight" onclick="aipo.container.gadgetService.requestDesktopNotifyEnable();" value=""/><span id="message_val_desktop_notify_on" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_VALID}</span><span id="message_val_desktop_notify_off" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_INVALID}</span></div>
 					<div class="body">

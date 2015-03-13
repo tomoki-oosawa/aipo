@@ -83,6 +83,7 @@ function androidLocale(){
 #else
 <script type="text/javascript">
   djConfig = {
+    isDebug: true,
     cacheBust: '$!{utils.CacheBust}',
     siteTitle: '$!{alias}'
 	#if($!utils.isAndroid2Browser($data)) ,locale: androidLocale() #end
@@ -285,7 +286,9 @@ function activitySwitch(){
 }
 //]]>
 </script>
-
+<script type="text/javascript">
+	if(aipo.message) window.onfocus = aipo.message.reload;
+</script>
 <iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
 #if("$!{client}" == "IE" && ("$!{clientVer}" == "6" || "$!{clientVer}" == "7" || "$!{clientVer}" == "8"))
   #ALjavascript("javascript/aipo/common.js")
