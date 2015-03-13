@@ -7,7 +7,7 @@ var retryCount = null;
 function join() {
     var params = {
        url: "push/",
-       timeout: 10 * 60 * 1000,//(m・sec)デバッグ時には2000ぐらいに設定
+       timeout: 10 * 60 * 1000,//(m・sec)
        cache: false,
        contentType: "application/javascript",
        success: function(data, status) {
@@ -15,7 +15,6 @@ function join() {
            if("messagev2" == type) {
         	   //クライアント側がメッセージを受信
                gadgets.rpc.call(null, "requestCheckMessage", null, data);
-        	   console.log("you recived a message");
                retryCount = 0;
            }
            if("messagev2_read" == type) {
@@ -32,10 +31,8 @@ function join() {
        error: function(data, status) {
            if(retryCount < 10) {
                retryCount++;
-        	   console.log("retryCount is " + retryCount);
                join();
            }else{
-        	   console.log("retry is stopped");
                retryCount = 101;//諦めたよフラグ
            }
        }
@@ -55,7 +52,6 @@ function init() {
 
 function reload(){
 	if(retryCount > 100) {
-		console.log("retryCount is restarted");
 		init();
 	}
 	return false;
