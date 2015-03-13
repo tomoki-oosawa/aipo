@@ -50,7 +50,7 @@
 <tr>
 #ALtdheadThinClass("#ALswitchCheckbox()" "center")
 #ALtdheadW75("#ALajaxsort('category_name' $l10n.TODO_CATEGORY_NAME $result 'ToDoCategoryListScreen')")
-#ALtdheadAtt("#ALajaxsort('user_name' $l10n.COMMON_UPDATE_USER $result 'ToDoCategoryListScreen')"  'class="mb_hide wName"')
+#ALtdheadAtt("#ALajaxsort('user_name' $l10n.COMMON_UPDATE_USER $result 'ToDoCategoryListScreen')" 'class="mb_hide wName"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -58,7 +58,11 @@
 #ALtdcellheader()
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a></div>
 #ALtdcellfooter()
-#ALtdcellAtt($record.userName 'class="mb_hide"')
+#if($record.IsSelfCategory)
+#ALtdcellAtt($record.UpdateUserName 'class="mb_hide"')
+#else
+<td class="mb_hide"><a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UpdateUserId})">$!record.UpdateUserName</a></td>
+#end
 </tr>
 #end
 #AUItablefooter()
