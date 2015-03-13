@@ -116,7 +116,8 @@
     <script type="text/javascript">
   // <![CDATA[
   function change_print_form(){
-    if(document.all!=undefined){
+
+if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('icon_onoff').checked){
       for(i = 0; i < document.all.length; i++){
@@ -143,7 +144,7 @@
       }
     }
 }
-  }
+	}
   //]]>
 </script>>
 </div>
