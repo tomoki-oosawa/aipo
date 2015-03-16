@@ -292,6 +292,5 @@ function activitySwitch(){
 #else
   #ALjavascriptdefer("javascript/aipo/common.js")
 #end
-#ALjavascriptdefer("javascript/retina.min.js")
 </body>
 </html>
