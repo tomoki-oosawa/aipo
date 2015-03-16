@@ -1371,7 +1371,7 @@ public class ALEipUtils {
 
     int index = sb.lastIndexOf("<br/>");
     if (index == -1) {
-      return sb.toString().replaceAll("<wbr/><br/>", "<br/>");
+      return sb.toString();
     }
     return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
   }
