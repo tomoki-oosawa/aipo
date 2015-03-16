@@ -477,7 +477,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                }
 
 	                if(!item['public']) {
-	                    name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
+	                    name += '<i class="icon-lock"></i>';
 	                }
 	                if(item.duplicate) {
 	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
@@ -604,7 +604,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                    }
 
 	                    if(!item['public']) {
-	                        name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
+	                        name += '<i class="icon-lock"></i>';
 	                    }
 	                    if(item.duplicate) {
 	                        name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
