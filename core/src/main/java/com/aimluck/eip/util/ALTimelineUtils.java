@@ -47,7 +47,11 @@ public class ALTimelineUtils {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALTimelineUtils.class.getName());
 
-  public static void PostTimeline(JetspeedRunData data, int uid) {
+  public static boolean hasTimelinePost() {
+    return Database.query(EipTTimeline.class).getCount() > 0;
+  }
+
+  public static void postTimeline(JetspeedRunData data, int uid) {
     Date now = new Date();
     EipTTimeline timeline = Database.create(EipTTimeline.class);
     timeline.setParentId(0);

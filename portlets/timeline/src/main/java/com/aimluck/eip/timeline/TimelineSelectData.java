@@ -909,8 +909,8 @@ public class TimelineSelectData extends
     for (int i = 0; i < userList.size(); i++) {
       useridList.add((int) (userList.get(i).getUserId().getValue()));
     }
-    // ガイドユーザー(Admin)表示用
-    useridList.add(1);
+    // ガイドユーザー表示用
+    useridList.add(2);
   }
 
   /**

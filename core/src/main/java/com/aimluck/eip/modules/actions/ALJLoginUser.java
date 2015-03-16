@@ -139,7 +139,11 @@ public class ALJLoginUser extends ActionEvent {
 
     if ("admin".equals(username)
       && "T".equals(ALConfigService.get(Property.FIRST_ADMIN_LOGIN))) {
-      ALTimelineUtils.PostTimeline(data, 1);
+      // アップデート時には自動投稿しない
+      if (!ALTimelineUtils.hasTimelinePost()) {
+        // ID=2 をガイドユーザーとする
+        ALTimelineUtils.postTimeline(data, 2);
+      }
       ALConfigService.put(Property.FIRST_ADMIN_LOGIN, "F");
     }
 
