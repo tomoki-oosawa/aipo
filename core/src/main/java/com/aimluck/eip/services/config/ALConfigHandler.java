@@ -103,6 +103,13 @@ public abstract class ALConfigHandler {
       public String defaultValue() {
         return JetspeedResources.getString("check.activity.interval", "300");
       }
+    },
+
+    FIRST_ADMIN_LOGIN("first.admin.login") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("first.admin.login", "T");
+      }
     };
 
     private final String property;

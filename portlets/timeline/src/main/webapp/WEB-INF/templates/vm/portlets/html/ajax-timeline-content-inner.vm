@@ -24,17 +24,31 @@
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message $!{firstCss}">
 	#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 	<div class="avatar mr10">
-		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && !$!result.isMatch(2, $!{record.OwnerId.Value}))
+		<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">
+		#end
 		#if(${record.hasPhoto()})
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="$!{record.OwnerName}" width="50" height="50" />
+		#elseif($!result.isMatch(2, $!{record.OwnerId.Value}))
+			<img src="themes/default/images/guide_icon.png" alt="$l10n.TIMELINE_GUIDE_USER" width="50" height="50" />
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!{record.OwnerName}" width="50" height="50" />
 		#end
-		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))</a>#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && !$!result.isMatch(2, $!{record.OwnerId.Value}))
+		</a>
+		#end
 	</div>
 #if($!{record.isNotActivityParent()})
 	<div class="messageContents">
-		<div class="name">#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}))$!{record.OwnerName}#else<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a>#end</div>
+		<div class="name">
+			#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && !$!result.isMatch(2, $!{record.OwnerId.Value}))
+			<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a>
+			#elseif($!result.isMatch(2, $!{record.OwnerId.Value}))
+			$l10n.TIMELINE_GUIDE_USER
+			#else
+			$!{record.OwnerName}
+			#end
+		</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
 				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
@@ -43,9 +57,13 @@
 				<p class="more">$l10n.WAR_LONG_ROUND<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
 				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
-					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
-#end#end
-</div>#end
+					#foreach( $attachmentFile in $!record.AttachmentFileList )
+					#if($attachmentFile.isImage())
+					<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+					#end
+					#end
+				</div>
+				#end
 				#foreach ($attachmentUrl in $record.UrlList)
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">

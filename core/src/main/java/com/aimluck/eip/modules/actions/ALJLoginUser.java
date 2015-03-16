@@ -52,10 +52,11 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.ALTimelineUtils;
 
 /**
  * ログイン処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALJLoginUser extends ActionEvent {
 
@@ -134,6 +135,16 @@ public class ALJLoginUser extends ActionEvent {
       data.setMessage(ALLocalizationUtils.getl10n("LOGINACTION_LOGIN_ONLY_PC"));
       data.getUser().setHasLoggedIn(Boolean.FALSE);
       return;
+    }
+
+    if ("admin".equals(username)
+      && "T".equals(ALConfigService.get(Property.FIRST_ADMIN_LOGIN))) {
+      // アップデート時には自動投稿しない
+      if (!ALTimelineUtils.hasTimelinePost()) {
+        // ID=2 をガイドユーザーとする
+        ALTimelineUtils.postTimeline(data, 2);
+      }
+      ALConfigService.put(Property.FIRST_ADMIN_LOGIN, "F");
     }
 
     boolean newUserApproval =
@@ -434,9 +445,9 @@ public class ALJLoginUser extends ActionEvent {
   }
 
   /**
-   * 
+   *
    * 指定したchar型文字が記号であるかを判断します。
-   * 
+   *
    * @param ch
    * @return
    */
@@ -481,5 +492,4 @@ public class ALJLoginUser extends ActionEvent {
     }
     return disabled;
   }
-
 }
