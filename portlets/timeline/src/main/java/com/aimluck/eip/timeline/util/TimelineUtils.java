@@ -431,7 +431,7 @@ public class TimelineUtils {
     try {
       List<EipTTimeline> list = new ArrayList<EipTTimeline>();
       String query =
-        "SELECT DISTINCT ON (OWNER_ID) OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = "
+        "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = "
           + parent_id;
       list = Database.sql(EipTTimeline.class, query).fetchList();
       int recordNum = list.size();
