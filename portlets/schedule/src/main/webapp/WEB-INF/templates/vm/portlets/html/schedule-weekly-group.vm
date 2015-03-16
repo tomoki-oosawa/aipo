@@ -122,7 +122,7 @@
 #if($result.MemberList.size() == 0 && $result.FacilityList.size() == 0)
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
-#ALtableheaderCalendar("100%")
+#ALtableheaderCalendarDay("100%")
 #set($entityids = "")
 #set($roop = 0)
 #foreach($record3 in $result.MemberList)
@@ -224,6 +224,42 @@ $!{record4.TermResultData.WbrName}
 #set($show_tr = $show_tr + 1 )
 #end
 ### 期間スケジュール（ここまで） ###
+### ToDoリスト（ここから） ###
+#foreach($todocontainer in ${result.getToDoContainer($record3.UserId.Value)})
+<tr>
+#set($nottodocount = 0)
+#foreach($record in $todocontainer.DayList)
+#if( ! $record.isTodoNull() )
+#if($nottodocount > 0)
+#foreach($num in [1..$nottermcount])
+#ALtdcellAtt("" "class='calendarTodo'")
+#end
+#end
+#ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' class='calerndarTodo'")
+<div class="calerndarTodoDiv">
+##if($record3.UserId.Value == $result.UserId )
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
+##else
+##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
+##end
+#if(!${record.ToDoResultData.isPublic()})<i class="icon-lock"></i>#end
+$!{record.ToDoResultData.TodoName}
+</a>
+</div>
+#ALtdcellfooter()
+#set($nottodocount = 0)
+#elseif (! $record.isHasTodo() )
+#set($nottodocount = $nottodocount + 1)
+#end
+#end
+#if($nottodocount > 0)
+#foreach($num in [1..$nottermcount])
+#ALtdcellAtt("" "class='calendarTodo'")
+#end
+#end
+</tr>
+#end
+### ToDoリスト（ここまで） ###
 ### １日もしくは$l10n.SCHEDULE_REPEATスケジュール（ここから） ###
 #if($show_tr > 0)
 <tr>
@@ -304,40 +340,7 @@ $!{record4.TermResultData.WbrName}
 #end
 #set($show_tr = $show_tr + 1 )
 ### １日もしくは$l10n.SCHEDULE_REPEATスケジュール（ここまで） ###
-### ToDoリスト（ここから） ###
-#foreach($todocontainer in ${result.getToDoContainer($record3.UserId.Value)})
-<tr>
-#set($nottodocount = 0)
-#foreach($record in $todocontainer.DayList)
-#if( ! $record.isTodoNull() )
-#if($nottodocount > 0)
-#ALtdcellAtt("" "colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;line-height: 8pt;'")
-#end
-#ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' align='center' style='vertical-align:top;background-color:#FFE5E5;line-height: 8pt;'")
-<div class="calerndarTodoDiv">
-##if($record3.UserId.Value == $result.UserId )
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-##else
-##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-##end
-$!{record.ToDoResultData.TodoName}
-#if(! ${record.ToDoResultData.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
-#end
-</a>
-</div>
-#ALtdcellfooter()
-#set($nottodocount = 0)
-#elseif (! $record.isHasTodo() )
-#set($nottodocount = $nottodocount + 1)
-#end
-#end
-#if($nottodocount > 0)
-#ALtdcellAtt("" "colspan='$nottodocount' style='vertical-align:top;background-color:#FFFFFF;line-height:8pt;'")
-#end
-</tr>
-#end
-### ToDoリスト（ここまで） ###
+
 #end
 ### 設備スケジュール（ここから） ###
 #if ($roop > 0)
