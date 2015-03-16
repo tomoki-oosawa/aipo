@@ -144,6 +144,12 @@ $theLink
 #end
 
 #macro(ALtableheaderCalendar $width)
+<div class="calendarWrapper">
+<table class="calendar" width="$width">
+  <tbody>
+#end
+
+#macro(ALtableheaderCalendarDay $width)
 <div class="calendarWrapper calendarDisplayDay">
 <table class="calendar" width="$width">
   <tbody>

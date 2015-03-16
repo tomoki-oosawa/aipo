@@ -143,7 +143,7 @@
 #set ($stday = $velocityCount )
 #ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
 <br />
-<span class="holiday small">${record.Holiday.Name}</span>
+<span class="holiday">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
 #ALOnedayLink($!portlet.ID $filter $record 'sunday groupWeekly')
@@ -189,7 +189,9 @@ $l10n.SCHEDULE_ADD_NOTE
 #if( ! $record4.isTermNull() )
 ##if($record4.TermResultData.isShowDetail())
 #if($nottermcount > 0)
-#ALtdcellAtt("" "class='term' colspan='$nottermcount'")
+#foreach($num in [1..$nottermcount])
+#ALtdcellAtt("" "class='term'")
+#end
 #end
 #set($addScheduleLink = "")
 #ALtdcellheaderAtt("class='term' colspan='$!{record4.TermResultData.Rowspan}'")
@@ -214,7 +216,9 @@ $!{record4.TermResultData.WbrName}
 #end
 #end
 #if($nottermcount > 0)
-#ALtdcellAtt("" "class='term' colspan='$nottermcount'")
+#foreach($num in [1..$nottermcount])
+#ALtdcellAtt("" "class='term'")
+#end
 #end
 </tr>
 #set($show_tr = $show_tr + 1 )
@@ -253,11 +257,10 @@ $!{record4.TermResultData.WbrName}
 #end
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
-<div class="calendarScheduleDiv"><div class="small">
-</div></div>
+<div class="calendarScheduleDiv"></div>
 </div>
 #else
-<div class="calendarScheduleDiv"><div class="small">
+<div class="calendarScheduleDiv">
 #if($!{result.hasAuthoritySelfInsert()})
 #if($record3.UserId.Value == $result.UserId)
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()})")
@@ -265,27 +268,27 @@ $!{record4.TermResultData.WbrName}
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.Date.toString()}).addQueryData('form_end', $!{record.Date.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
 #end
-</div></div>
+</div>
 #foreach($record2 in $record.ScheduleList)
 #if(! ${record2.isDummy()})
 <div>
 #if($record2.isShowDetail())
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record.Date.toString()})")
-<div class="calendarScheduleDiv #if($record2.isDuplicate())overlap#end">
+<div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId} #if($record2.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record2.Date}</span>
 #if(!${record2.isPublic()})<i class="icon-lock"></i>#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
-<span class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} title">$!{record2.WbrName}</span>
+<span class="title">$!{record2.WbrName}</span>
 </a>
 </div>
 #else
-<div class="calendarScheduleDiv #if($record2.isDuplicate())overlap#end">
+<div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId} #if($record2.isDuplicate())overlap#end">
 <span class="time">$!{record2.Date}</span>
 #if(!${record2.isPublic()})<i class="icon-lock"></i>#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
-<span class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} title">$!{record2.WbrName}</span>
+<span class="title">$!{record2.WbrName}</span>
 </div>
 #end
 </div>
@@ -362,7 +365,7 @@ $!{record.ToDoResultData.TodoName}
 #set ($stday = $velocityCount )
 #ALOnedayLinkFacility($!portlet.ID $filter $record 'holiday groupWeekly')
 <br />
-<span class="holiday small">${record.Holiday.Name}</span>
+<span class="holiday">${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
 #ALOnedayLinkFacility($!portlet.ID $filter $record 'sunday groupWeekly')
@@ -411,32 +414,29 @@ $!{record.ToDoResultData.TodoName}
 
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
-<div class="calendarScheduleDiv"><div class="small">
-
-</div></div>
+<div class="calendarScheduleDiv"></div>
 </div>
 #else
-<div class="calendarScheduleDiv"><div class="small">
-</div></div>
+<div class="calendarScheduleDiv"></div>
 #foreach($record2 in $record.ScheduleList)
 #if(! ${record2.isDummy()})
 #if($record2.isShowDetail())
 #set($entityids = "$!{entityids}$!{record2.ScheduleId},")
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('view_date', $!{record.Date.toString()}).addQueryData('facilityid', $record3.FacilityId.Value)")
-<div class="calendarScheduleDiv #if($record2.isDuplicate())overlap#end">
-<a class="small" href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
+<div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId} #if($record2.isDuplicate())overlap#end">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record2.Date}</span>
 #if(!${record2.isPublic()})<i class="icon-lock"></i>#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
-<span class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} title">$record2.WbrName</span>
+<span class="title">$record2.WbrName</span>
 </a>
 </div>
 #else
-<div class="calendarScheduleDiv #if($record2.isDuplicate())overlap#end">
+<div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId} #if($record2.isDuplicate())overlap#end">
 <span class="time">${record2.Date}</span>
 #if(!${record2.isPublic()})<i class="icon-lock"></i>#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
-<span class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} title">$record2.Name</span>
+<span class="title">$record2.Name</span>
 </div>
 #end
 #end

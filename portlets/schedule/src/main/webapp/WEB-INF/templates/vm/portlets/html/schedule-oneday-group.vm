@@ -139,7 +139,7 @@
 #set($colspanmax = $colspanmax + $todocolcount)
 #end
 #set($endHour = $!{result.EndHour} - 1)
-#ALtableheaderCalendar("100%")
+#ALtableheaderCalendarDay("100%")
 <tr>
 #ALtdheadAtt("" "class='w10'")
 ##<img src="images/common/dot.gif" width="15" height="1" alt="" />
@@ -481,8 +481,7 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new').addQueryData('form_start', $!{record.StartDate.toString()}).addQueryData('form_end', $!{record.EndDate.toString()}).addQueryData('member_to', $!{record3.getName().getValue()})")
 #end
 #ALtdcellheaderAtt("colspan='$colspan'")
-<div class="calendarScheduleDiv"><div class="small">
-</div></div>
+<div class="calendarScheduleDiv"></div>
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("" "colspan='$colspan' height='1'")
