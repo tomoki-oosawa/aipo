@@ -431,9 +431,12 @@ public class TimelineUtils {
     try {
       List<EipTTimeline> list = new ArrayList<EipTTimeline>();
       String query =
-        "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = "
-          + parent_id;
-      list = Database.sql(EipTTimeline.class, query).fetchList();
+        "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = #bind($parent_id)";
+      list =
+        Database
+          .sql(EipTTimeline.class, query)
+          .param("parent_id", parent_id)
+          .fetchList();
       int recordNum = list.size();
       for (int i = 0; i < recordNum; i++) {
         Integer ownerId;
