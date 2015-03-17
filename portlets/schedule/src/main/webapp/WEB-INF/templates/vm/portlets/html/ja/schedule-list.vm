@@ -21,7 +21,7 @@
 #set ($navilist = [["$l10n.SCHEDULE_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.SCHEDULE_SCHEDULE_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
-<!-- style>
+<style>
 .icon-lock {
 	color: #cc9900;
 }
@@ -38,7 +38,7 @@
 	background-color: #003399;
 }
 
-</style -->
+</style>
 
 <script type="text/javascript">
 //<![CDATA[

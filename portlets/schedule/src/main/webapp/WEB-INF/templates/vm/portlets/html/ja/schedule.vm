@@ -19,7 +19,7 @@
 
 ## ---------------------------------------------------------------------------
 
-<!-- style>
+<style>
 .icon-lock {
 	color: #cc9900;
 }
@@ -36,7 +36,7 @@
 	background-color: #003399;
 }
 
-</style -->
+</style>
 <script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');
