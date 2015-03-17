@@ -69,16 +69,16 @@ $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/
 $!{result.Detail.Date}
 #end
 #if(! ${result.Detail.isPublic()})
-	#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 #if($!{result.Detail.isDuplicate()})
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if($!{result.Detail.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
+<i class="icon-refresh" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($!{result.Detail.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="txtIcon">仮</span>
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
@@ -114,7 +114,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{record.UserId.Value})">$!record.AliasName</a>
     #end
         #if($result.getStatus($record.UserId.Value) == "T")
-        <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+        <span class="txtIcon">仮</span>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <i class="icon-remove fcRed" title="$l10n.SCHEDULE_DELETED"></i>

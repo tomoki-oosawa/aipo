@@ -1908,7 +1908,7 @@ $!{text}
 #end
 
 #macro(AUIiconSecretAtt $option $class)
-<i class="auiIcon auiIconSecret $!{class}" $option></i>
+<i class="icon-lock $!{class}" $option></i>
 #end
 
 #macro(AUIlinkList $onclick $text $public_flag $option)

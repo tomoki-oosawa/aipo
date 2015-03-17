@@ -195,7 +195,7 @@ $l10n.SCHEDULE_ADD_NOTE
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
 ###end
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.TodoId}))');">
-#if(! ${record.isPublic()})<i class="icon-lock"></i>#end
+#if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 ${record.TodoName}
 </a>
 </div>
@@ -216,11 +216,11 @@ ${record.TodoName}
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv left">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
-#if(! ${record.isPublic()})<i class="icon-lock"></i>#end
+#if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 $record.WbrName
 #else
 <div class="calerndarTermScheduleDiv left">
-#if(! ${record.isPublic()})<i class="icon-lock"></i>#end
+#if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 $record.WbrName
 #end
 </a>
@@ -246,7 +246,7 @@ $record.WbrName
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </a>
@@ -254,7 +254,7 @@ $record.WbrName
 #else
 <div class="calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </div>
@@ -316,7 +316,7 @@ $record.WbrName
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </a>
@@ -324,7 +324,7 @@ $record.WbrName
 #else
 <div class="calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </div>
@@ -398,7 +398,7 @@ $record.WbrName
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </a>
@@ -406,7 +406,7 @@ $record.WbrName
 #else
 <div class="calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </div>
@@ -459,7 +459,7 @@ $record.WbrName
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </a>
@@ -467,7 +467,7 @@ $record.WbrName
 #else
 <div class="calendarScheduleDiv #if($record.isDuplicate())overlap#end">
 <span class="time">${record.Date}</span>
-#if(!${record.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record.WbrName}</span>
 </div>

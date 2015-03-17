@@ -39,13 +39,13 @@ if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('auiIcon')>=0){
+        if(document.all[i].className.indexOf('iconTag')>=0){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('auiIcon')>=0){
+        if(document.all[i].className.indexOf('iconTag')>=0){
           document.all[i].style.display = 'none';
         }
       }
@@ -96,12 +96,12 @@ if(document.all!=undefined){
 ### firefox用 ############################################
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
-        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = '';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
+        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = '';
       }
     }else{
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
-        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = 'none';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
+        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = 'none';
       }
     }
 ## 期間スケジュールの表示切替
@@ -240,24 +240,24 @@ ${record.TodoName}
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTag txtIcon">仮</span>
 #end
 </div>
 #else
 <div class="calerndarTermScheduleDiv small">
 $record.WbrName
 #if(! ${record.isPublic()})
-&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #else
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTag txtIcon">仮</span>
 #end
 </div>
 #end
@@ -290,13 +290,13 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #end
 #if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTag txtIcon">仮</span>
 #end
 #ALtdcellfooter()
 #else
@@ -361,9 +361,9 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #end
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #ALtdcellfooter()
 #else
 #if ($!{result.hasAuthoritySelfInsert()})
@@ -440,13 +440,13 @@ $record.WbrName
 </div>
 #end
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #end
 #if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTag txtIcon">仮</span>
 #end
 #ALtdcellfooter()
 #else
@@ -501,11 +501,11 @@ $record.WbrName
 #end
 
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #end
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTag txtIcon">仮</span>
 #end
 #else
 #if ($!{result.hasAuthoritySelfInsert()})

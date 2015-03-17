@@ -21,6 +21,25 @@
 #set ($navilist = [["$l10n.SCHEDULE_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.SCHEDULE_SCHEDULE_LIST", ""]])
 ## ---------------------------------------------------------------------------
 
+<!-- style>
+.icon-lock {
+	color: #cc9900;
+}
+
+.icon-exclamation-sign {
+	color: #cc3333;
+}
+
+.icon-refresh {
+	color: #009933;
+}
+
+.txtIcon {
+	background-color: #003399;
+}
+
+</style -->
+
 <script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');

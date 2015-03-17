@@ -192,19 +192,19 @@
 <td><div>
 #set ($count =0)
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+<i class="icon-lock" title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"></i>
 #set($count=$count + 1)
 #end
 #if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #set($count=$count + 1)
 #end
 #if(${record.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
+<i class="icon-refresh" title="$l10n.SCHEDULE_REPEAT"></i>
 #set($count=$count + 1)
 #end
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="txtIcon">仮</span>
 #set($count=$count + 1)
 #end
 #if($count > 0)

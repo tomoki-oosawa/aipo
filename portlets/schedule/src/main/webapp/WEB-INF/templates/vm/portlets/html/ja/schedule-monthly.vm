@@ -202,12 +202,12 @@
 #if(${record.TermResultData.isShowDetail()})
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">
-	#if(! ${record.TermResultData.isPublic()})<i class="icon-lock"></i>#end
+	#if(! ${record.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 	$!{record.TermResultData.WbrName}
 	</a>
 #else
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv">
-	#if(! ${record.TermResultData.isPublic()})<i class="icon-lock"></i>#end
+	#if(! ${record.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 	$!{record.TermResultData.WbrName}
 	</div>
 #end
@@ -251,7 +251,7 @@
 <td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
 <div class="calerndarTodoDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-#if(! ${record.ToDoResultData.isPublic()})<i class="icon-lock"></i>#end
+#if(! ${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 $!{record.ToDoResultData.TodoName}
 </a>
 </div>
@@ -314,7 +314,7 @@ $!{record.ToDoResultData.TodoName}
 <div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId} #if($record2.isDuplicate())overlap#end">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="schedule-$!{portlet.ID}-$!{record2.ScheduleId}">
 <span class="time">$!{record2.StartDate}</span>
-#if(!${record2.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record2.WbrName}</span>
 </a>
@@ -322,7 +322,7 @@ $!{record.ToDoResultData.TodoName}
 #else
 <div class="calendarScheduleDiv #if($record2.isDuplicate())overlap#end">
 <span class="time">$!{record2.StartDate}</span>
-#if(!${record2.isPublic()})<i class="icon-lock"></i>#end
+#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 #if($record2.isDuplicate())<i class="icon-exclamation-sign"></i>#end
 <span class="title">$!{record2.WbrName}</span>
 </div>

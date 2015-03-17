@@ -38,13 +38,13 @@ if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('auiIcon')>=0){
+        if(document.all[i].className.indexOf('iconTag')>=0){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('auiIcon')>=0){
+        if(document.all[i].className.indexOf('iconTag')>=0){
           document.all[i].style.display = 'none';
         }
       }
@@ -52,12 +52,12 @@ if(document.all!=undefined){
 }else{
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
-        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = '';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
+        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = '';
       }
     }else{
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
-        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = 'none';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
+        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = 'none';
       }
     }
 }
@@ -78,16 +78,16 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "iconTag")
 #end
 #if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if(${record.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
+<i class="iconTag icon-refresh" title="$l10n.SCHEDULE_REPEAT"></i>
 #end
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<span class="iconTab txtIcon">仮</span>
 #end</div></td>
 <td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>
