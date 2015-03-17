@@ -481,21 +481,13 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
 
       EipTMsgboardTopic edittopic;
 
-      if (this.hasAclDeleteTopicOthers) {
-        edittopic =
-          MsgboardUtils.getEipTMsgboardTopicReply(
-            rundata,
-            context,
-            topicid,
-            true);
-      } else {
-        edittopic =
-          MsgboardUtils.getEipTMsgboardTopicReply(
-            rundata,
-            context,
-            topicid,
-            false);
-      }
+      edittopic =
+        MsgboardUtils.getEipTMsgboardTopicReply(
+          rundata,
+          context,
+          topicid,
+          false);
+
       EipTMsgboardTopic parenttopic =
         MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
 
@@ -503,6 +495,12 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         // 指定した トピック ID のレコードが見つからない場合
         logger.debug("[MsgboardTopicReplyFormData] Not found ID...");
         throw new ALPageNotFoundException();
+      }
+
+      if (ALEipUtils.getUserId(rundata) != edittopic.getOwnerId()) {
+        // 自分のコメントでない場合弾く
+        msgList.add(" このコメントを編集する権限がありません。 ");
+        return false;
       }
 
       if (!MsgboardUtils.hasAuthorityToReply(uid, parenttopic
@@ -532,7 +530,7 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
         edittopic.getTopicId(),
         ALEventlogConstants.PORTLET_TYPE_MSGBOARD_TOPIC,
         parenttopic.getTopicName(),
-        "insert");
+        "update");
 
       /* 自分以外の全員に新着ポートレット登録 */
       if ("T".equals(edittopic.getEipTMsgboardCategory().getPublicFlag())) {
@@ -754,12 +752,13 @@ public class MsgboardTopicReplyFormData extends ALAbstractFormData {
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
     List<String> msgList = new ArrayList<String>();
     try {
-      // if (!doCheckSecurity(rundata, context)) {
-      // return false;
-      // }
+      if (!doCheckSecurity(rundata, context)) {
+        return false;
+      }
 
       init(action, rundata, context);
 
+      // トピック返信の編集権限は存在しないためコメントアウト
       // doCheckAclPermission(
       // rundata,
       // context,
