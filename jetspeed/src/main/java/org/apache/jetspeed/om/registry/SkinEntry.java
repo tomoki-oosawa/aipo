@@ -23,7 +23,7 @@ import java.util.Map;
  * The SkinEntry defines the properties used for storing a Skin description in
  * the registry
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: SkinEntry.java,v 1.2 2004/02/23 03:11:39 jford Exp $
  */
 public interface SkinEntry extends RegistryEntry

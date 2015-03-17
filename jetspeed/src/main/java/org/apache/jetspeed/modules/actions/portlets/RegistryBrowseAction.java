@@ -33,7 +33,7 @@ import org.apache.velocity.context.Context;
  * This action enables to browse any of the system registries for displaying
  * available entries and information on these entries
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $ID$
  */
 public class RegistryBrowseAction extends GenericMVCAction

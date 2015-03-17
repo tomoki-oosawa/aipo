@@ -30,7 +30,7 @@ import org.apache.jetspeed.om.security.JetspeedUser;
  * <note>Several of these properties may be put in the base RunData
  * interface in future releases of Turbine</note>
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: JetspeedRunData.java,v 1.10 2004/02/23 03:36:10 jford Exp $
  */
 public interface JetspeedRunData extends TurbineRunData

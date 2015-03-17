@@ -41,7 +41,7 @@ import org.w3c.dom.NodeList;
  * is only used for this mime-type</dd>
  * </dl>
  * 
- * @author <A HREF="mailto:raphael@apache.org">Raphaël Luta</A>
+ * @author <A HREF="mailto:raphael@apache.org">Raphaè¬– Luta</A>
  * @version $Id: $
  * @since 1.4b4
  */

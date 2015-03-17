@@ -22,7 +22,7 @@ import org.apache.turbine.services.Service;
  * <p>base interface for a simple ThreadPool</p>
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: ThreadPoolService.java,v 1.5 2004/02/23 03:51:31 jford Exp $
  */
 public interface ThreadPoolService extends Service {

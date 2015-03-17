@@ -69,7 +69,7 @@ import java.util.Iterator;
  *
  * 
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
  *
  * @version $Id: VelocityPortletControl.java,v 1.30 2004/03/29 21:38:42 taylor Exp $

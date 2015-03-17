@@ -23,7 +23,7 @@ import org.apache.jetspeed.om.SecurityReference;
  * RegistryEntry is the base interface that objects must implement in order
  * to be used with the Registry service.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id: RegistryEntry.java,v 1.11 2004/02/23 03:11:39 jford Exp $
  */

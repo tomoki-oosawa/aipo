@@ -27,7 +27,7 @@ import java.util.Enumeration;
  * <code>RegistryService</code></P>
  *
  * @see org.apache.jetspeed.services.registry.RegistryService
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: Registry.java,v 1.8 2004/02/23 04:00:57 jford Exp $
  */
 public class Registry

@@ -26,7 +26,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
  * A customized version of the DynamicURI for linking to non-servlet
  * webapp resources.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
  * @version $Id: ContentTemplateLink.java,v 1.7 2004/02/23 03:20:45 jford Exp $
  */

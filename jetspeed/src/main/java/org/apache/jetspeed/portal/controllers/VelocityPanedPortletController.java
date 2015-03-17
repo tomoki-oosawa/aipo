@@ -36,7 +36,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
  * to manage paned content (ie, where a only a subset of all portlets
  * is visible at any given time)
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  *
  * @version $Id: VelocityPanedPortletController.java,v 1.13 2004/02/23 03:25:06 jford Exp $

@@ -24,7 +24,7 @@ import java.util.List;
  * informations</p>
  * <strong>It should be extended to also provide access to their contents</strong>
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: URLManagerService.java,v 1.6 2004/02/23 03:30:47 jford Exp $
  */
 public interface URLManagerService extends Service {

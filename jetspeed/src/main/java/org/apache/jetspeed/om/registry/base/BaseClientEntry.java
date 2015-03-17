@@ -24,7 +24,7 @@ import org.apache.jetspeed.om.registry.CapabilityMap;
  * Simple implementation of the ClientRegistry interface.
  *
  * @author <a href="shesmer@raleigh.ibm.com">Stephan Hesmer</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseClientEntry.java,v 1.4 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseClientEntry extends BaseRegistryEntry

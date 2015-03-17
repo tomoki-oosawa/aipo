@@ -38,7 +38,7 @@ import org.apache.velocity.context.Context;
  * A Velocity based portlet controller implementation
  * 
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  *
  * @version $Id: VelocityPortletController.java,v 1.12 2004/02/23 03:25:06 jford Exp $
  */

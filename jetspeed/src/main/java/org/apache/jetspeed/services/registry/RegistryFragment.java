@@ -26,7 +26,7 @@ import java.util.Iterator;
  * Bean like implementation of a multi-object registry usable
  * by Castor XML serialization
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: RegistryFragment.java,v 1.10 2004/02/23 03:31:50 jford Exp $
  */
 public class RegistryFragment extends Hashtable implements java.io.Serializable

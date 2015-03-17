@@ -25,7 +25,7 @@ import org.apache.jetspeed.util.template.JetspeedTemplateNavigation;
 /**
  * Extends JetspeedTemplatePage to set the Velocity template Context.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: JetspeedVelocityPage.java,v 1.9 2004/02/23 02:59:52 jford Exp $
  */
 public class JetspeedVelocityPage extends JetspeedTemplatePage

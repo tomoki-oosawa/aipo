@@ -61,7 +61,7 @@ import java.util.StringTokenizer;
  * This action builds a context suitable for controllers handling
  * grid positioned layout using PortletSet.Constraints
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
  * @version $Id: MultiColumnControllerAction.java,v 1.30 2004/02/23 02:49:58 jford Exp $
  */

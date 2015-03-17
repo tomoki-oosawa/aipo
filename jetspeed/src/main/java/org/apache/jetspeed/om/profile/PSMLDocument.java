@@ -25,7 +25,7 @@ import java.io.Serializable;
  * all facilities for finding and updating specific parts of the 
  * document.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PSMLDocument.java,v 1.8 2004/02/23 03:05:01 jford Exp $
  */
 public interface PSMLDocument extends Serializable, Cloneable

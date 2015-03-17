@@ -20,7 +20,7 @@ package org.apache.jetspeed.om.registry;
  * Interface for manipulatin the access rights on the registry entries
  *
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: Security.java,v 1.3 2004/02/23 03:11:39 jford Exp $
  */
 public interface Security
