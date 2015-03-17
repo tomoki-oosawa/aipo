@@ -124,6 +124,20 @@
 								<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
 								<td>#ALtextarea('note' $!record.rawNote 5 40)</td>
 							</tr>
+							#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+							<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+								<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
+								<td>
+									<div class="clearfix">
+									<ul class="attachments">
+										#foreach($record2 in $!record.AttachmentFileList )
+											<li data-fileid="s${record2.FileId}" data-filename="$!{record2.FileName}"><span>$result.getStringCR($!record2.FileNameField)</span></li>
+										#end
+									</ul>
+									</div>
+								</td>
+							</tr>
+							#end
 						</tbody>
 					</table>
 					#ALbuttonheader()
