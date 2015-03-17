@@ -110,7 +110,7 @@
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitleHtml</a></div>
 #ALtdcellfooter()
 ##更新者
-#ALtdcellAtt("$!{record.updateUser}" 'class="mb_hide left" nowrap="nowrap"')
+<td class="mb_hide left" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.UpdateUserId.value)">$!{record.UpdateUser}</a></td>
 ##更新日
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide right" nowrap="nowrap"')
 ##ダウンロード数
