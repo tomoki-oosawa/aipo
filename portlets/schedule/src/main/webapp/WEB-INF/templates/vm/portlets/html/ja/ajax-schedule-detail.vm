@@ -68,22 +68,12 @@ $!{result.Detail.Date}
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date}
 #end
-#if(! ${result.Detail.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
-#end
-#if($!{result.Detail.isDuplicate()})
-<i class="icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#end
-#if($!{result.Detail.isRepeat()})
-<i class="icon-refresh" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
-#if($!{result.Detail.isTmpreserve()})
-<span class="txtIcon">仮</span>
-#end
+#AUIiconScheduleSets($!{result.Detail})
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
-#ALtditem($!{result.Detail.WbrName})
-
+#ALtditemheader()
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.WbrName}
+#ALtditemfooter()
 #* 共有カテゴリ連携（ここから）  *#
 #if($!result.isDisplayManHour())
 #ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)

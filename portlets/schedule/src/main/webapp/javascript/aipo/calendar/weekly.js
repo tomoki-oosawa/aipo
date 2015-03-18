@@ -477,10 +477,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                }
 
 	                if(!item['public']) {
-	                    name += '<i class="icon-lock" title="非公開"></i>';
+	                    name = '<i class="icon-lock" title="非公開"></i>' + name;
 	                }
 	                if(item.duplicate) {
-	                    name += '<i class="icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>';
+	                    name += '<i class="icon-exclamation-sign" title="重複スケジュール"></i>';
 	                }
 	                if(item.repeat) {
 	                    name += '<i class="icon-refresh" title="繰り返し"></i>';
@@ -604,7 +604,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                    }
 
 	                    if(!item['public']) {
-	                        name += '<i class="icon-lock" title="非公開"></i>';
+	                        name = '<i class="icon-lock" title="非公開"></i>' + name;
 	                    }
 	                    if(item.duplicate) {
 	                        name += '<i class="icon-exclamation-sign" title="重複スケジュール"></i>';
