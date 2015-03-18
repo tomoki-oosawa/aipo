@@ -1489,6 +1489,9 @@ div.off, td.off {
 .calendar th.groupOneday {
   white-space: nowrap;
 }
+.calendar th.groupOneday .auiButtonSmall {
+  margin-top: 5px;
+}
 .calendar th.groupWeekly {
   width: 12.5%;
 }
@@ -1605,6 +1608,7 @@ div.off, td.off {
 .calendar .calendarScheduleDiv .time {
   margin-right: .3em;
   padding: 1px;
+  white-space: nowrap;
 }
 .calendar .calendarScheduleDiv .title {
   padding: 1px;
@@ -1657,8 +1661,7 @@ div.off, td.off {
   width: 1em;
   text-align: center;
 }
-.calendarDisplayDay .calendar .calerndarTermScheduleDiv,
-.calendarDisplayDay .calendar .calendarScheduleDiv {
+.calendarDisplayDay .calendar .calerndarTermScheduleDiv {
   min-width: 4.3em;
 }
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
