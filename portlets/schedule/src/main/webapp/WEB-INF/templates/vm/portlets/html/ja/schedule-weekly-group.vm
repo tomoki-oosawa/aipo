@@ -180,45 +180,54 @@ $l10n.SCHEDULE_ADD_NOTE
 #end
 #ALtdheadfooter()
 ### 期間スケジュール（ここから） ###
+#set($col_span = 0)
 #foreach($termcontainer in ${result.getTermContainer($record3.UserId.Value)})
 #if($show_tr > 0)
 <tr>
 #end
 #set($nottermcount = 0)
-#foreach($record4 in $termcontainer.DayList)
-#if( ! $record4.isTermNull() )
-##if($record4.TermResultData.isShowDetail())
-#if($nottermcount > 0)
-#foreach($num in [1..$nottermcount])
-#ALtdcellAtt("" "class='term'")
+#foreach($record in $termcontainer.DayList)
+#set ($color_style = "")
+#set ($color_style_holiday = "")
+#set ($color_style_othermonth = "")
+#if($!{record.TermResultData})
+#set($col_span=$!{record.TermResultData.Rowspan})
 #end
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#set ($color_style = " today")
+#elseif($!{record.Date.Value.Day} == 0)
+#set ($color_style = " sunday")
+#elseif($!{record.Date.Value.Day} == 6)
+#set ($color_style = " saturday")
 #end
-#set($addScheduleLink = "")
-#ALtdcellheaderAtt("class='term' colspan='$!{record4.TermResultData.Rowspan}'")
-#set($entityids = "$!{entityids}$!{record4.TermResultData.ScheduleId},")
-#if(${record4.TermResultData.isShowDetail()})
-<div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">
-#if(!${record4.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
-$!{record4.TermResultData.WbrName}
-</a>
+#if($!{record.isHoliday()})
+#set ($color_style_holiday = " holiday")
+#end
+#if( ! $record.isTermNull() )
+#set($entityids = "$!{entityids}$!{record.TermResultData.ScheduleId},")
+##if($record.TermResultData.isShowDetail())
+
+#set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record.Date.toString()})")
+<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
+#if(${record.TermResultData.isShowDetail()})
+	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
+
+	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">
+	#if(! ${record.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+	$!{record.TermResultData.WbrName}
+	</a>
 #else
-<div class="calerndarTermScheduleDiv">
-#if(!${record4.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
-$!{record4.TermResultData.WbrName}
+	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv">
+	#if(! ${record.TermResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+	$!{record.TermResultData.WbrName}
+	</div>
 #end
-</div>
-#ALtdcellfooter()
-#set($nottermcount = 0)
+</td>
+#else
+#if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end
+#end
 ##end
-#elseif (! $record4.isHasTerm() )
-#set($nottermcount = $nottermcount + 1)
-#end
-#end
-#if($nottermcount > 0)
-#foreach($num in [1..$nottermcount])
-#ALtdcellAtt("" "class='term'")
-#end
+#set ($col_span = $col_span - 1)
 #end
 </tr>
 #set($show_tr = $show_tr + 1 )
@@ -226,38 +235,44 @@ $!{record4.TermResultData.WbrName}
 ### 期間スケジュール（ここまで） ###
 ### ToDoリスト（ここから） ###
 #foreach($todocontainer in ${result.getToDoContainer($record3.UserId.Value)})
+#if($show_tr > 0)
 <tr>
+#end
 #set($nottodocount = 0)
 #foreach($record in $todocontainer.DayList)
+#set ($color_style = "")
+#set ($color_style_holiday = "")
+#set ($color_style_othermonth = "")
+#if($!{record.ToDoResultData})
+#set($col_span=$!{record.ToDoResultData.Rowspan})
+#end
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#set ($color_style = " today")
+#elseif($!{record.Date.Value.Day} == 0)
+#set ($color_style = " sunday")
+#elseif($!{record.Date.Value.Day} == 6)
+#set ($color_style = " saturday")
+#end
+#if($!{record.isHoliday()})
+#set ($color_style_holiday = " holiday")
+#end
 #if( ! $record.isTodoNull() )
-#if($nottodocount > 0)
-#foreach($num in [1..$nottermcount])
-#ALtdcellAtt("" "class='calendarTodo'")
-#end
-#end
-#ALtdcellheaderAtt("colspan='$!{record.ToDoResultData.Rowspan}' class='calerndarTodo'")
+<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
 <div class="calerndarTodoDiv">
-##if($record3.UserId.Value == $result.UserId )
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-##else
-##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoPublicDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
-##end
-#if(!${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+#if(! ${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 $!{record.ToDoResultData.TodoName}
 </a>
 </div>
-#ALtdcellfooter()
-#set($nottodocount = 0)
-#elseif (! $record.isHasTodo() )
-#set($nottodocount = $nottodocount + 1)
+</td>
+#else
+#if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end
 #end
-#end
-#if($nottodocount > 0)
-#foreach($num in [1..$nottermcount])
-#ALtdcellAtt("" "class='calendarTodo'")
-#end
+##end
+#set ($col_span = $col_span - 1)
 #end
 </tr>
+#set($show_tr = $show_tr + 1 )
 #end
 ### ToDoリスト（ここまで） ###
 ### １日もしくは$l10n.SCHEDULE_REPEATスケジュール（ここから） ###

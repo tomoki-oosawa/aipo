@@ -67,7 +67,7 @@ aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
         entity_ids[i] = dojo.trim(entity_ids[i]);
 
         var nodeList = new Array();
-        dojo.query('.schedule-' + portlet_id + '-' + entity_ids[i], obj_content).forEach(function(node, index, arr){
+        dojo.query('div.schedule-' + portlet_id + '-' + entity_ids[i], obj_content).forEach(function(node, index, arr){
             nodeList.push(node);
         });
 
