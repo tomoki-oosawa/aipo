@@ -37,13 +37,13 @@ if(document.all!=undefined){
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('iconTag')>=0){
+        if(document.all[i].className.indexOf('auiIcon')>=0){
           document.all[i].style.display = '';
         }
       }
     }else{
       for(i = 0; i < document.all.length; i++){
-        if(document.all[i].className.indexOf('iconTag')>=0){
+        if(document.all[i].className.indexOf('auiIcon')>=0){
           document.all[i].style.display = 'none';
         }
       }
@@ -51,12 +51,12 @@ if(document.all!=undefined){
 }else{
 ## アイコンの表示切替
     if(document.getElementById('print_icon').checked){
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
-        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = '';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
+        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = '';
       }
     }else{
-      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('iconTag').length; i++){
-        document.getElementById('printBody').getElementsByClassName('iconTag')[i].style.display = 'none';
+      for(i = 0; i < document.getElementById('printBody').getElementsByClassName('auiIcon').length; i++){
+        document.getElementById('printBody').getElementsByClassName('auiIcon')[i].style.display = 'none';
       }
     }
 }
@@ -88,18 +88,12 @@ $!{result.Detail.Date2}
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #end
-#if(! ${result.Detail.isPublic()})
-#AUIiconSecretAtt('title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD"' 'iconTag')
-#end
-#if($!{result.Detail.isDuplicate()})
-<i class="iconTag icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#end
-#if($!{result.Detail.isTmpreserve()})
-<span class="iconTag txtIcon">仮</span>
-#end
+#AUIiconScheduleSets($!{result.Detail})
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
-#ALtditem($!{result.Detail.Name})
+#ALtditemheader()
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.Name}
+#ALtditemfooter()
 
 #* 共有カテゴリ連携（ここから）  *#
 
@@ -129,7 +123,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <span class="iconTag txtIcon">仮</span>
+        <i class="auiIcon auiIconTmpreserve"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <i class="icon-remove fcRed" title="$l10n.SCHEDULE_DELETED"></i>

@@ -104,7 +104,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{record.UserId.Value})">$!record.AliasName</a>
     #end
         #if($result.getStatus($record.UserId.Value) == "T")
-        <span class="txtIcon">仮</span>
+        <i class="auiIcon auiIconTmpreserve"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <i class="icon-remove fcRed" title="$l10n.SCHEDULE_DELETED"></i>

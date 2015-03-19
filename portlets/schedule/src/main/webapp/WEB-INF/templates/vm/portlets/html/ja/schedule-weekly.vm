@@ -95,7 +95,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <img src="images/common/dot.gif" border="0" width="1" height="16" align="absmiddle" alt="" />
 #end
 #if(${record.TermResultData.isTmpreserve()})
-<span class="txtIcon">仮</span>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </a>
 </div>
@@ -162,10 +162,10 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 #if($record2.isDuplicate())
-<i class="icon-exclamation-sign" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
 #if($record2.isTmpreserve())
-<span class="txtIcon">仮</span>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </div>
 #end

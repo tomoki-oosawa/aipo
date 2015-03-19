@@ -21,7 +21,7 @@
 
 ## ---------------------------------------------------------------------------
 ##
-## Aipo Common Styles ( Aipo4 )
+## Aipo Common Styles ( Aipo8 )
 ##
 ## ---------------------------------------------------------------------------
 
@@ -1908,13 +1908,15 @@ $!{text}
 #end
 
 #macro(AUIiconSecretAtt $option $class)
-<i class="icon-lock $!{class}" $option></i>
+<i class="auiIcon auiIconSecret $!{class}" $option></i>
 #end
 
 #macro(AUIiconScheduleSetsAtt $record $class)
-#if($record.isDuplicate())<i class="icon-exclamation-sign $!{class}" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>#end
-#if($record.isRepeat())<i class="icon-refresh $!{class}" title="$l10n.SCHEDULE_REPEAT"></i>#end
-#if($record.isTmpreserve())<span class="txtIcon $!{class}">仮</span>#end
+<span class="inline-block">
+#if($record.isDuplicate())<i class="auiIcon auiIconOverlap $!{class}" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>#end
+#if($record.isRepeat())<i class="auiIcon auiIconRepeat $!{class}" title="$l10n.SCHEDULE_REPEAT"></i>#end
+#if($record.isTmpreserve())<i class="auiIcon auiIconTmpreserve $!{class}" titile="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end
+</span>
 #end
 
 
