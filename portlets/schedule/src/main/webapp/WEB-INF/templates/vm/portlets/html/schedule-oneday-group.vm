@@ -245,12 +245,14 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </a>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </div>
 #end
 #ALtdcellfooter()
@@ -309,12 +311,14 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </a>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </div>
 #end
 #ALtdcellfooter()
@@ -385,12 +389,14 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('facilityid', $!{record3.FacilityId})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </a>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </div>
 #end
 #ALtdcellfooter()
@@ -440,12 +446,14 @@ $record.WbrName
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()}).addQueryData('facilityid', $!{record3.FacilityId})")
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calendarScheduleDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </a>
 </div>
 #else
 <div class="calendarScheduleDiv">
-<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>#AUIiconScheduleSets($!record)
+<span class="time">${record.Date}</span>#if(!${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record.WbrName}</span>
+#AUIiconScheduleSets($!record)
 </div>
 #end
 

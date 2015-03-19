@@ -318,10 +318,7 @@ $!{record.ToDoResultData.TodoName}
 </div>
 #else
 <div class="calendarScheduleDiv">
-<span class="time">$!{record2.StartDate}</span>
-#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
-#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end
-<span class="title">$!{record2.WbrName}</span>
+<span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end<span class="title">$!{record2.WbrName}</span>
 </div>
 #end
 </div>

@@ -1913,9 +1913,15 @@ $!{text}
 
 #macro(AUIiconScheduleSetsAtt $record $class)
 <span class="inline-block">
-#if($record.isDuplicate())<i class="auiIcon auiIconOverlap $!{class}" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>#end
-#if($record.isRepeat())<i class="auiIcon auiIconRepeat $!{class}" title="$l10n.SCHEDULE_REPEAT"></i>#end
-#if($record.isTmpreserve())<i class="auiIcon auiIconTmpreserve $!{class}" titile="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end
+#if($record.isDuplicate())
+<i class="auiIcon auiIconOverlap $!{class}" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
+#end
+#if($record.isRepeat())
+<i class="auiIcon auiIconRepeat $!{class}" title="$l10n.SCHEDULE_REPEAT"></i>
+#end
+#if($record.isTmpreserve())
+<i class="auiIcon auiIconTmpreserve $!{class}" titile="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+#end
 </span>
 #end
 

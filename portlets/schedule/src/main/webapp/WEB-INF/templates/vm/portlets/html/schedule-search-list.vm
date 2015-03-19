@@ -189,7 +189,17 @@
 		#end
 #end
 <td #if(${client}!="IPHONE") nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
-<td><div>#if(!$!record.isPublic())#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end#AUIiconScheduleSets($!record)</div></td>
+<td><div>
+#if(!$!record.isPublic())
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#end
+#if($record.isShowDetail())
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>
+#else
+$!{record.WbrName}
+#end
+#AUIiconScheduleSets($!record)
+</div></td>
 <td class="wName mb_hide">
 	<div>
 		#if($!result.isLoginUserID($record.CreateUser.UserId.Value))
