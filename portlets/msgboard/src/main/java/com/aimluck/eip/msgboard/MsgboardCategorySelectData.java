@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板カテゴリ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardCategorySelectData extends
     ALAbstractSelectData<EipTMsgboardCategoryMap, EipTMsgboardCategory>
@@ -82,7 +82,7 @@ public class MsgboardCategorySelectData extends
   private boolean authority_delete;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -117,7 +117,7 @@ public class MsgboardCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -128,7 +128,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -155,7 +155,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -228,7 +228,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -242,7 +242,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -268,6 +268,7 @@ public class MsgboardCategorySelectData extends
         .getTurbineUser()
         .getUserId()
         .intValue()));
+      rd.setLoginUserId(uid);
     } catch (Exception e) {
       logger.error("[MsgboardCategorySelectData]", e);
       throw new ALDBErrorException();
@@ -277,7 +278,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -339,6 +340,7 @@ public class MsgboardCategorySelectData extends
         .intValue()));
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setLoginUserId(uid);
 
       if (public_flag) {
         if ((MsgboardUtils.STAT_VALUE_ALL).equals(loginUserStatus)) {
@@ -361,7 +363,7 @@ public class MsgboardCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<MsgboardCategoryResultData> getCategoryList() {
@@ -370,7 +372,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -399,7 +401,7 @@ public class MsgboardCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -417,7 +419,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -426,7 +428,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

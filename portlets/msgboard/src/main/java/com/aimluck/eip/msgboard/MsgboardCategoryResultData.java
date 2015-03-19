@@ -26,7 +26,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板カテゴリ の ResultData <BR>
- * 
+ *
  */
 public class MsgboardCategoryResultData implements ALData {
 
@@ -57,6 +57,9 @@ public class MsgboardCategoryResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
+
   /**
    *
    *
@@ -67,6 +70,7 @@ public class MsgboardCategoryResultData implements ALData {
     category_name = new ALStringField();
     owner_id = new ALNumberField();
     owner_name = new ALStringField();
+    login_user_id = new ALNumberField();
     note = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
@@ -154,7 +158,7 @@ public class MsgboardCategoryResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -182,6 +186,14 @@ public class MsgboardCategoryResultData implements ALData {
 
   public ALNumberField getAccessFlag() {
     return access_flag;
+  }
+
+  public void setLoginUserId(int i) {
+    login_user_id.setValue(i);
+  }
+
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
   }
 
 }
