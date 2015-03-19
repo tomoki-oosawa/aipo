@@ -1264,8 +1264,8 @@ div.scheduleDiv {
 /*.scheduleDiv .auiIcon {
   margin: -1px 0 0 2px;
 }*/
-.scheduleDiv span > .auiIcon {
-  margin: 0 0 0 2px;
+.scheduleDiv .auiIcon {
+  margin: 0 1px 0 1px;
 }
 
 div.scheduleDivFirstLine {
