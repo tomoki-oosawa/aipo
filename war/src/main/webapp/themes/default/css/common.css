@@ -1437,19 +1437,23 @@ div.tableBorderM {
   line-height: 1px;
 }
 
-div.sunday, td.sunday {
+div.sunday, td.sunday,
+.calendar th.sunday  {
   background: #fef6f1;
 }
 
-div.saturday, td.saturday {
+div.saturday, td.saturday,
+.calendar th.saturday {
   background: #f4f7fa;
 }
 
-div.holiday, td.holiday {
+div.holiday, td.holiday,
+.calendar th.holiday {
   background: #fef6f1;
 }
 
-div.today, td.today {
+div.today, td.today,
+.calendar th.today {
   background: #edfeed;
 }
 
@@ -1471,7 +1475,7 @@ div.off, td.off {
 .calendar th {
   min-width: 2em;
   border: 1px solid #ddd;
-  padding: 3px;
+  padding: 3px 5px;
   font-weight: normal;
   text-align: center;
 }
@@ -1482,14 +1486,11 @@ div.off, td.off {
   word-break: break-all;
 }
 .calendar tr:first-child th {
-  padding: 0;
-  background: #f6f6f6;
+  padding: 3px;
+  /* background: #f6f6f6; */
 }
 .calendar tr.calendarWeek th {
   width: 14.286%;
-  white-space: nowrap;
-}
-.calendar th.groupOneday {
   white-space: nowrap;
 }
 .calendar th.groupOneday .auiButtonSmall {
@@ -1664,8 +1665,14 @@ div.off, td.off {
   width: 1em;
   text-align: center;
 }
-.calendarDisplayDay .calendar .calerndarTermScheduleDiv {
+.calendarDisplayDay .calendar .calerndarTermScheduleDiv,
+.calendarDisplayDay .calendar .calerndarTodoDiv {
   min-width: 4.3em;
+}
+.calendarDisplayDay .calendar tr:first-child th {
+  background: #f6f6f6;
+  white-space: nowrap;
+  min-width: 1em;
 }
 .calendarDisplayWeek .calendar .calendarScheduleDiv a,
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
@@ -1676,7 +1683,7 @@ div.off, td.off {
   display: block;
 }
 .calendarDisplayDay .calendar th {
-  min-width: 1em;
+  min-width: 4em;
 }
 .calendarDisplayWeek .calendar th {
   min-width: 4em;
