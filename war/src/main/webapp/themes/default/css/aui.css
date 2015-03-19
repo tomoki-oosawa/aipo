@@ -4806,8 +4806,8 @@ a.auiIconSearch:hover {
 a.auiIconTmpreserve:hover {
   background-position: 0px -688px;
 }
-.termScheduleDivNameDiv > .auiIconTmpreserve {background-position: 0px -816px; margin-top: 1px !important;}
-.termScheduleDivNameDiv > .auiIconTmpreserve:hover {background-position: 0px -816px;}
+.termScheduleDivNameDiv .auiIconTmpreserve {background-position: 0px -816px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconTmpreserve:hover {background-position: 0px -816px;}
 
 .auiIconOverlap {
   background-position: 0px -704px;
@@ -4817,8 +4817,8 @@ a.auiIconTmpreserve:hover {
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
 }
-.termScheduleDivNameDiv > .auiIconOverlap {background-position: 0px -832px; margin-top: 1px !important;}
-.termScheduleDivNameDiv > .auiIconOverlap:hover {background-position: 0px -832px;}
+.termScheduleDivNameDiv .auiIconOverlap {background-position: 0px -832px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconOverlap:hover {background-position: 0px -832px;}
 
 .auiIconRepeat {
   background-position: 0px -720px;
@@ -4828,8 +4828,8 @@ a.auiIconOverlap:hover {
 a.auiIconRepeat:hover {
   background-position: 0px -720px;
 }
-.termScheduleDivNameDiv > .auiIconRepeat {background-position: 0px -848px; margin-top: 1px !important;}
-.termScheduleDivNameDiv > .auiIconRepeat:hover {background-position: 0px -848px;}
+.termScheduleDivNameDiv .auiIconRepeat {background-position: 0px -848px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconRepeat:hover {background-position: 0px -848px;}
 
 .auiIconSecret {
   background-position: 0px -736px;
@@ -4839,8 +4839,8 @@ a.auiIconRepeat:hover {
 a.auiIconSecret:hover {
   background-position: 0px -736px;
 }
-.termScheduleDivNameDiv > .auiIconSecret {background-position: 0px -864px; margin-top: 1px !important;}
-.termScheduleDivNameDiv > .auiIconSecret:hover {background-position: 0px -864px;}
+.termScheduleDivNameDiv .auiIconSecret {background-position: 0px -864px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconSecret:hover {background-position: 0px -864px;}
 
 .auiIconTrash {
   background-position: 0px -752px;
