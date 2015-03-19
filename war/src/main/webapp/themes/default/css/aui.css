@@ -3770,7 +3770,7 @@ ul.attachments {
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4556,7 +4556,7 @@ tr:first-child #gantt_task > table td {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4800,6 +4800,7 @@ a.auiIconSearch:hover {
 
 .auiIconTmpreserve {
   background-position: 0px -688px;
+  width: 13px;
 }
 
 a.auiIconTmpreserve:hover {
@@ -4808,6 +4809,7 @@ a.auiIconTmpreserve:hover {
 
 .auiIconOverlap {
   background-position: 0px -704px;
+  width: 13px;
 }
 
 a.auiIconOverlap:hover {
@@ -4816,6 +4818,7 @@ a.auiIconOverlap:hover {
 
 .auiIconRepeat {
   background-position: 0px -720px;
+  width: 13px;
 }
 
 a.auiIconRepeat:hover {
@@ -4824,6 +4827,7 @@ a.auiIconRepeat:hover {
 
 .auiIconSecret {
   background-position: 0px -736px;
+  width: 13px;
 }
 
 a.auiIconSecret:hover {
@@ -4871,7 +4875,7 @@ a.auiIconMailOpen:hover {
   width: 15px;
   height: 18px;
   vertical-align: baseline;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
