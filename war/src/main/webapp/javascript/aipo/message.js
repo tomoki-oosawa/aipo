@@ -78,7 +78,9 @@ aipo.message.init = function(portletId, jslink, isMobile) {
 
 aipo.message.reload = function(){
 	var iframeWindow = document.getElementById('sharedStateIframe').contentWindow;
-	if(iframeWindow && iframeWindow.retryCount) iframeWindow.reload();
+	if(iframeWindow && iframeWindow.retryCount) {
+		iframeWindow.reload();
+	}
 }
 
 aipo.message.messagePane = null;

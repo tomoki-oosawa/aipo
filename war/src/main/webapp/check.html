@@ -7,7 +7,7 @@ var retryCount = null;
 function join() {
     var params = {
        url: "push/",
-       timeout: 10 * 60 * 1000,//(m・sec)
+       timeout: 1000,//10 * 60 * 1000,//(m・sec)
        cache: false,
        contentType: "application/javascript",
        success: function(data, status) {
@@ -51,7 +51,8 @@ function init() {
 }
 
 function reload(){
-	if(retryCount > 100) {
+	if(retryCount > 100){
+		window.parent.aipo.message.reloadMessageList();
 		init();
 	}
 	return false;
