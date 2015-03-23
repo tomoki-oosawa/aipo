@@ -92,7 +92,7 @@ import java.text.MessageFormat;
  * <p>Don't call it from the URL, the Portlet and the Action are automatically
  * associated through the registry PortletName
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: CustomizeSetAction.java,v 1.51 2004/02/23 02:56:58 jford Exp $
  */
 public class CustomizeSetAction extends VelocityPortletAction

@@ -42,7 +42,7 @@ It uses SAX-1 API and outputs text to an
 output stream.
 WARNING: This behavior will be modified in the future.
 
-@author <A HREF="mailto:raphael@apache.org">Raphaël Luta</A>
+@author <A HREF="mailto:raphael@apache.org">Raphaè¬– Luta</A>
 @version $Id: SAXPIFilter.java,v 1.8 2004/02/23 03:23:42 jford Exp $
 */
 public class SAXPIFilter extends HandlerBase 

@@ -23,7 +23,7 @@ package org.apache.jetspeed.om.registry;
  * FIXME: we should add some additionnal attrbutes for separating 2 versions
  * of the same mime type
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: MediaTypeEntry.java,v 1.4 2004/02/23 03:11:39 jford Exp $
  */
 public interface MediaTypeEntry extends RegistryEntry

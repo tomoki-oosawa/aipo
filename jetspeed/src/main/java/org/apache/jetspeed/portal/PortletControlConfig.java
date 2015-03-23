@@ -21,7 +21,7 @@ import org.apache.jetspeed.util.Config;
 /**
  * The PortletControl configuration object
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PortletControlConfig.java,v 1.6 2004/02/23 04:05:35 jford Exp $
  */
 public interface PortletControlConfig extends Config

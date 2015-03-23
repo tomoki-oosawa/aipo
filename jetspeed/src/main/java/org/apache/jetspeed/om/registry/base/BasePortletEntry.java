@@ -29,7 +29,7 @@ import org.apache.jetspeed.services.Registry;
  * Default bean like implementation of the PortletEntry interface
  * suitable for serialization with Castor
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BasePortletEntry.java,v 1.5 2004/02/23 03:08:26 jford Exp $
  */
 public class BasePortletEntry extends BasePortletInfoEntry

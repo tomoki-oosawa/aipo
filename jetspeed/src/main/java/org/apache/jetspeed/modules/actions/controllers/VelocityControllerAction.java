@@ -36,7 +36,7 @@ import org.apache.velocity.context.Context;
  * <p>Don't call it from the URL, the Portlet and the Action are automatically
  * associated through the registry PortletName
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
  */
 public abstract class VelocityControllerAction extends VelocityAction

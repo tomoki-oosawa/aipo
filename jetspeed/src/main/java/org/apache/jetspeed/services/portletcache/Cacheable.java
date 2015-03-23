@@ -26,7 +26,7 @@ import org.apache.turbine.services.cache.CachedObject;
  * that will uniquely identify it within the cache system</p>
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: Cacheable.java,v 1.7 2004/02/23 03:34:54 jford Exp $
  */
 public interface Cacheable

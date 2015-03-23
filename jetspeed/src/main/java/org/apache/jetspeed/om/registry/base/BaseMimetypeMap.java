@@ -25,7 +25,7 @@ import java.util.Iterator;
  * Simple bean-like implementation of the CapabilityMap
  *
  * @author <a href="shesmer@raleigh.ibm.com">Stephan Hesmer</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseMimetypeMap.java,v 1.3 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseMimetypeMap implements MimetypeMap, java.io.Serializable

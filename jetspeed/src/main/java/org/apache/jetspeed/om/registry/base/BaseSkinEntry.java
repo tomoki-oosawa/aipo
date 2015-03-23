@@ -25,7 +25,7 @@ import java.util.*;
  * interface suitable for Castor XML serialization
  *
  * @see org.apache.jetspeed.om.registry.SkinEntry
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseSkinEntry.java,v 1.4 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseSkinEntry extends BaseRegistryEntry implements SkinEntry

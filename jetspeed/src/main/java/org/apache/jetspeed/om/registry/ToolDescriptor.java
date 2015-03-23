@@ -19,7 +19,7 @@ package org.apache.jetspeed.om.registry;
 /**
  * Interface for storing tool information for a portlet, control or controller
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: ToolDescriptor.java,v 1.2 2004/02/23 03:11:39 jford Exp $
  */
 public interface ToolDescriptor

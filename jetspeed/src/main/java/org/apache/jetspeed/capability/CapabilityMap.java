@@ -23,7 +23,7 @@ import java.util.*;
  * This interface provides lookup features on the capabilities supported
  * by a client user agent.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id: CapabilityMap.java,v 1.8 2004/02/23 02:46:39 jford Exp $
  */

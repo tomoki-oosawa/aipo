@@ -23,7 +23,7 @@ import java.util.Map;
  * The PortletInfoEntry defines all the common description properties
  * for all the portlet related entries.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaï¿½l Luta</a>
  * @version $Id: PortletInfoEntry.java,v 1.4 2004/02/23 03:11:39 jford Exp $
  */
 public interface PortletInfoEntry extends RegistryEntry

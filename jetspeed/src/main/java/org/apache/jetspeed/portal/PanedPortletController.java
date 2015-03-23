@@ -25,7 +25,7 @@ import org.apache.turbine.util.DynamicURI;
  * interface allows the controls object that interact with this controller
  * to build the correct links for referencing the hidden portlets
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  *
  * @version $Id: PanedPortletController.java,v 1.9 2004/02/23 04:05:35 jford Exp $

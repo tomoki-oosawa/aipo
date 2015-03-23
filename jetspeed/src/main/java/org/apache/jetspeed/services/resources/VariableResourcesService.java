@@ -62,7 +62,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
  *     They may override the previously defined default variables
  *  </p>
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaï¿½l Luta</a>
  * @version $Id: VariableResourcesService.java,v 1.15 2004/02/23 03:29:53 jford Exp $
  */
 public class VariableResourcesService extends TurbineResourceService

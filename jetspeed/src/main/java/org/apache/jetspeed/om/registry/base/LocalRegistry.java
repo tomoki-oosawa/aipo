@@ -24,7 +24,7 @@ import org.apache.jetspeed.om.registry.InvalidEntryException;
  * This interface declares the methods used by the RegistryService to
  * set entries within the registry without impacting the persistant state.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: LocalRegistry.java,v 1.2 2004/02/23 03:08:26 jford Exp $
  */
 public interface LocalRegistry extends Registry

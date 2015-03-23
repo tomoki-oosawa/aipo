@@ -62,7 +62,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 月間スケジュールの検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
@@ -161,7 +161,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   protected String target_user_id;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -409,7 +409,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -445,7 +445,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -477,7 +477,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -601,7 +601,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -612,7 +612,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -780,7 +780,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -789,7 +789,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -798,7 +798,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -807,7 +807,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -816,7 +816,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 前の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -825,7 +825,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 次の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -834,7 +834,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 前の年を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevYear() {
@@ -843,7 +843,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 次の年を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextYear() {
@@ -852,7 +852,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewMonth() {
@@ -868,7 +868,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 今日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getToday() {
@@ -877,7 +877,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 今月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getCurrentMonth() {
@@ -886,7 +886,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 月間スケジュールコンテナを取得します。
-   * 
+   *
    * @return
    */
   public ScheduleMonthContainer getContainer() {
@@ -895,7 +895,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws ALDBErrorException
@@ -964,7 +964,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -975,7 +975,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param target_key
    * @param context
@@ -1003,7 +1003,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param target_key
@@ -1099,7 +1099,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1145,7 +1145,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替え時に指定するグループ名
-   * 
+   *
    * @return
    */
   public String getTargetGroupName() {
@@ -1154,7 +1154,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   * 
+   *
    * @return
    */
   public String getTargetUserId() {
@@ -1163,7 +1163,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -1183,7 +1183,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1196,7 +1196,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * My グループの一覧を取得する．
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -1209,7 +1209,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * ログインユーザの ID を取得する．
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -1218,7 +1218,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 期間スケジュール用の月間コンテナを取得する.
-   * 
+   *
    * @return
    */
   public ScheduleTermMonthContainer getTermContainer() {
@@ -1227,7 +1227,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 月間 ToDo コンテナを取得する.
-   * 
+   *
    * @return
    */
   public ScheduleToDoMonthContainer getToDoContainer() {
@@ -1246,7 +1246,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -1264,7 +1264,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 設備のグループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getFacilitiyGroupList() {
@@ -1307,7 +1307,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * 表示切り替え時に指定するユーザ のログイン名前
-   * 
+   *
    * @return
    */
   public String getTargetUserName() {
@@ -1316,7 +1316,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * ユーザーを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getUser() {
@@ -1325,7 +1325,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /**
    * ユーザーを設定します。
-   * 
+   *
    * @param user
    */
   public void setUser(ALEipUser user) {

@@ -24,7 +24,7 @@ import org.apache.jetspeed.om.profile.*;
  * Default bean like implementation of the Entry interface
  * suitable for serialization with Castor
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  * @version $Id: PsmlEntry.java,v 1.6 2004/02/23 03:02:54 jford Exp $
  */

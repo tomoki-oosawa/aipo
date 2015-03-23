@@ -29,7 +29,7 @@ import org.apache.turbine.services.cache.ObjectExpiredException;
  * which doesn't provide its own wrapper.
  * 
  * @see org.apache.turbine.services.cache.GlobalCacheService
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: GlobalCache.java,v 1.7 2004/02/23 03:34:54 jford Exp $
  */
 public class GlobalCache {
