@@ -259,7 +259,7 @@ $!{record.TermResultData.Name}
 #AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 #if(${record.TermResultData.isTmpreserve()})
-<span class="txtIcon">仮</span>
+<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
 #end
 #end
 </div>
