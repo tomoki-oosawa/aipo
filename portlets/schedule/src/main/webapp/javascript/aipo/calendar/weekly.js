@@ -479,15 +479,15 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                if(!item['public']) {
 	                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
 	                }
-	                name += '\n<span class="inline-block">\n';
+	                name += '\n<span class="inline-block">';
 	                if(item.duplicate) {
-	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
+	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
 	                }
 	                if(item.repeat) {
-	                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
+	                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
 	                }
 	                if(item.tmpreserve) {
-	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
+	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
 	                }
 	                name += '</span>';
 	                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
@@ -609,15 +609,15 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 		                if(!item['public']) {
 		                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
 		                }
-		                name += '\n<span class="inline-block">\n';
+		                name += '\n<span class="inline-block">';
 		                if(item.duplicate) {
-		                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
+		                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
 		                }
 		                if(item.repeat) {
-		                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
+		                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
 		                }
 		                if(item.tmpreserve) {
-		                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
+		                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
 		                }
 		                name += '</span>';
 	                    if(width==100)width='99.99999';
