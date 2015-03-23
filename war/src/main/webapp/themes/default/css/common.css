@@ -1566,6 +1566,12 @@ div.off, td.off {
   border: 1px solid #9c9;
   background-color: #DFD;
 }
+.calendarDisplayWeek div.calerndarTermScheduleDiv,
+.calendarDisplayMonth div.calerndarTermScheduleDiv,
+.calendarDisplayWeek div.calerndarTodoDiv,
+.calendarDisplayMonth div.calerndarTodoDiv{
+  height: 18px;
+}
 .calendar div.calerndarTermScheduleDiv a {
   padding: 0 2px;
 }
