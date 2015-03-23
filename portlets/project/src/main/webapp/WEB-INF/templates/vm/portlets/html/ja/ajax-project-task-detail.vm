@@ -91,14 +91,22 @@ $!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 #ALtditemfooter()
 #ALtdcaption($l10n.PROJECT_MEMBER)
 <td>
-	<ul class="w90">
+<ul class="w90">
 #foreach($record in $!result.Detail.MemberList)
-		<li class="clearfix">
-			<div class="floatLeft w70">$!record.UserName</div>
-			<div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
-		</li>
+<li class="clearfix">
+<div class="floatLeft w70">
+#if($!record.UserId.value != $!result.Detail.LoginUserId.value)
+<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId.value)">
+$!record.UserName
+</a>
+#else
+$!record.UserName
 #end
-	</ul>
+</div>
+<div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
+</li>
+#end
+</ul>
 </td>
 #ALtdcellfooter()
 <td class="caption">$l10n.PROJECT_PROGRESS_RATE</td>

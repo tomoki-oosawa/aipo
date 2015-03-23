@@ -56,7 +56,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * プロジェクト管理の検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ProjectSelectData extends
     ALAbstractSelectData<EipTProject, EipTProject> implements ALData {
@@ -71,9 +71,12 @@ public class ProjectSelectData extends
   /** 全プロジェクトの一覧 */
   private List<ProjectResultData> allProject;
 
+  /** ログインユーザーID */
+  private Integer loginUserId;
+
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -91,12 +94,14 @@ public class ProjectSelectData extends
 
     allProject = ProjectUtils.getAllProject(); // 全プロジェクト
 
+    loginUserId = ALEipUtils.getUserId(rundata);
+
     super.init(action, rundata, context);
   }
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -124,7 +129,7 @@ public class ProjectSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -139,7 +144,7 @@ public class ProjectSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -154,7 +159,7 @@ public class ProjectSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -232,7 +237,7 @@ public class ProjectSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -248,6 +253,10 @@ public class ProjectSelectData extends
     data.setAdminUserId(record.getAdminUserId()); // 管理者ID
     data.setProgressFlg(record.getProgressFlg()); // 進捗率入力フラグ
     data.setProgressRate(record.getProgressRate()); // 進捗率
+    data.setLoginUserId(loginUserId.longValue()); // ログインユーザーID
+    data.setCreateUserId(record.getTurbineUser().getUserId().longValue()); // 作成者ID
+    data.setUpdateUserId(record.getUpdateUserId()); // 更新者ID
+
     try {
       // 作成者
       data.setCreateUserName(ALEipUtils.getALEipUser(
@@ -258,6 +267,7 @@ public class ProjectSelectData extends
         .getALEipUser(record.getUpdateUserId())
         .getAliasName()
         .getValue());
+
       // 管理者名
       data.setAdminUserName(ALEipUtils
         .getALEipUser(record.getAdminUserId())
@@ -316,7 +326,7 @@ public class ProjectSelectData extends
 
   /**
    * 項目情報を取得する
-   * 
+   *
    * @return 項目情報
    */
   @Override
@@ -328,7 +338,7 @@ public class ProjectSelectData extends
 
   /**
    * プロジェクトの総数を取得する
-   * 
+   *
    * @return プロジェクト総数
    */
   public int getProjectCount() {
@@ -337,7 +347,7 @@ public class ProjectSelectData extends
 
   /**
    * 全プロジェクトのリストを返す
-   * 
+   *
    * @return 全プロジェクトのリスト
    */
   public List<ProjectResultData> getAllProject() {
@@ -346,7 +356,7 @@ public class ProjectSelectData extends
 
   /**
    * ビュータイプを取得する
-   * 
+   *
    * @return ビュータイプ
    */
   public String getViewtype() {

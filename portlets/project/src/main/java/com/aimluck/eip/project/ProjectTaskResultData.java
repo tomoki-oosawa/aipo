@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タスクのResultDataです。 <BR>
- * 
+ *
  */
 public class ProjectTaskResultData implements ALData {
 
@@ -104,6 +104,9 @@ public class ProjectTaskResultData implements ALData {
   /** 担当者リスト */
   private List<ProjectTaskMemberResultData> memberList = null;
 
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
+
   /** 作成日 */
   protected ALDateTimeField create_date;
 
@@ -164,6 +167,7 @@ public class ProjectTaskResultData implements ALData {
     plan_progress_rate = new ALNumberField();
     progress_rate = new ALNumberField();
     memberList = new ArrayList<ProjectTaskMemberResultData>();
+    login_user_id = new ALNumberField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     attachmentFileList = new ArrayList<FileuploadBean>();
@@ -179,7 +183,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスクIDを取得する
-   * 
+   *
    * @return タスクID
    */
   public ALNumberField getTaskId() {
@@ -188,7 +192,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスクIDを設定する
-   * 
+   *
    * @param i
    *          タスクトID
    */
@@ -198,7 +202,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 親タスクIDを取得する
-   * 
+   *
    * @return 親タスクID
    */
   public ALNumberField getParentTaskId() {
@@ -207,7 +211,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 親タスクIDを設定する
-   * 
+   *
    * @param i
    *          親タスクID
    */
@@ -217,7 +221,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 親タスク名を取得する
-   * 
+   *
    * @return 親タスク名
    */
   public String getParentTaskName() {
@@ -226,7 +230,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 親タスク名を設定する
-   * 
+   *
    * @param string
    *          親タスク名
    */
@@ -236,7 +240,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * プロジェクトIDを取得する
-   * 
+   *
    * @return プロジェクトID
    */
   public ALNumberField getProjectId() {
@@ -245,7 +249,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * プロジェクトIDを設定する
-   * 
+   *
    * @param i
    *          プロジェクトID
    */
@@ -255,7 +259,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 分類を取得する
-   * 
+   *
    * @return 分類
    */
   public String getTracker() {
@@ -264,7 +268,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 分類を設定する
-   * 
+   *
    * @param string
    *          分類
    */
@@ -274,7 +278,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスク名を取得する
-   * 
+   *
    * @return タスク名
    */
   public ALStringField getTaskName() {
@@ -287,7 +291,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスク名を設定する
-   * 
+   *
    * @param string
    *          タスク名
    */
@@ -297,7 +301,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 説明を取得する
-   * 
+   *
    * @return 説明
    */
   public String getExplanation() {
@@ -306,7 +310,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 説明を設定する
-   * 
+   *
    * @param string
    *          説明
    */
@@ -316,7 +320,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * ステータスを取得する
-   * 
+   *
    * @return ステータス
    */
   public String getStatus() {
@@ -325,7 +329,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * ステータスを設定する
-   * 
+   *
    * @param string
    *          ステータス
    */
@@ -335,7 +339,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 優先度を取得する
-   * 
+   *
    * @return 優先度
    */
   public String getPriority() {
@@ -344,7 +348,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 優先度を設定する
-   * 
+   *
    * @param string
    *          優先度
    */
@@ -354,7 +358,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 開始予定日を取得する
-   * 
+   *
    * @return 開始予定日
    */
   public ALDateTimeField getStartPlanDate() {
@@ -363,7 +367,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 開始予定日を設定する
-   * 
+   *
    * @param dt
    *          開始予定日
    */
@@ -373,7 +377,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予定日を取得する
-   * 
+   *
    * @return 完了予定日
    */
   public ALDateTimeField getEndPlanDate() {
@@ -382,7 +386,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予定日をフォーマットしていで取得する
-   * 
+   *
    * @return 完了予定日
    */
   public String getEndPlanDateWithFormat(String format) {
@@ -391,7 +395,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予定日を設定する
-   * 
+   *
    * @param dt
    *          完了予定日
    */
@@ -401,7 +405,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 予定期間を取得する
-   * 
+   *
    * @return 予定期間
    */
   public ALNumberField getPlanTerm() {
@@ -410,7 +414,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 予定期間を設定する
-   * 
+   *
    * @param i
    *          予定期間
    */
@@ -420,7 +424,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 開始実績日を取得する
-   * 
+   *
    * @return 開始実績日
    */
   public ALDateTimeField getStartDate() {
@@ -429,7 +433,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 開始実績日を設定する
-   * 
+   *
    * @param dt
    *          開始実績日
    */
@@ -439,7 +443,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了実績日を取得する
-   * 
+   *
    * @return 完了実績日
    */
   public ALDateTimeField getEndDate() {
@@ -448,7 +452,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了実績日を設定する
-   * 
+   *
    * @param dt
    *          完了実績日
    */
@@ -458,7 +462,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 計画工数を取得する
-   * 
+   *
    * @return 計画工数
    */
   public BigDecimal getPlanWorkload() {
@@ -467,7 +471,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 計画工数を設定する
-   * 
+   *
    * @param i
    *          計画工数
    */
@@ -477,7 +481,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 計画工数を取得する（表示用）
-   * 
+   *
    * @return 計画工数
    */
   public String getPlanWorkloadFormat() {
@@ -486,7 +490,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 実績工数を取得する
-   * 
+   *
    * @return 実績工数
    */
   public BigDecimal getWorkload() {
@@ -495,7 +499,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 実績工数を設定する
-   * 
+   *
    * @param i
    *          実績工数
    */
@@ -505,7 +509,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 実績工数を取得する（表示用）
-   * 
+   *
    * @return 実績工数
    */
   public String getWorkloadFormat() {
@@ -514,7 +518,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予測工数を取得する
-   * 
+   *
    * @return 完了予測工数
    */
   public BigDecimal getForecastWorkload() {
@@ -523,7 +527,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予測工数を設定する
-   * 
+   *
    * @param i
    *          完了予測工数
    */
@@ -533,7 +537,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了予測工数を取得する（表示用）
-   * 
+   *
    * @return 完了予測工数
    */
   public String getForecastWorkloadFormat() {
@@ -542,7 +546,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 予定進捗率を取得する
-   * 
+   *
    * @return 予定進捗率
    */
   public ALNumberField getPlanProgressRate() {
@@ -551,7 +555,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 予定進捗率を設定する
-   * 
+   *
    * @param i
    *          予定進捗率
    */
@@ -561,7 +565,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 進捗率を取得する
-   * 
+   *
    * @return 進捗率
    */
   public ALNumberField getProgressRate() {
@@ -570,7 +574,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 進捗率を設定する
-   * 
+   *
    * @param i
    *          進捗率
    */
@@ -580,7 +584,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 作成日を取得する
-   * 
+   *
    * @return 作成日
    */
   public ALDateTimeField getCreateDate() {
@@ -589,7 +593,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 作成日を設定する
-   * 
+   *
    * @param dt
    *          作成日
    */
@@ -599,7 +603,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 更新日を取得する
-   * 
+   *
    * @return 更新日
    */
   public ALDateTimeField getUpdateDate() {
@@ -608,7 +612,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 更新日を設定する
-   * 
+   *
    * @param dt
    *          更新日
    */
@@ -618,7 +622,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 担当者リストを取得します。
-   * 
+   *
    * @return 担当者リスト
    */
   public List<ProjectTaskMemberResultData> getMemberList() {
@@ -627,7 +631,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 担当者リストを設定します。
-   * 
+   *
    * @param memberList
    *          担当者リスト
    */
@@ -637,7 +641,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 担当者リスト文字列を取得します。
-   * 
+   *
    * @return 担当者リスト
    */
   public String getMemberListString() {
@@ -660,8 +664,26 @@ public class ProjectTaskResultData implements ALData {
   }
 
   /**
+   * ログインユーザーIDを取得します。
+   *
+   * @return ログインユーザーID
+   */
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
+  }
+
+  /**
+   * ログインユーザーIDを設定する
+   *
+   * @param ログインユーザーID
+   */
+  public void setLoginUserId(long i) {
+    login_user_id.setValue(i);
+  }
+
+  /**
    * 工数合計を取得します。
-   * 
+   *
    * @return 担当者リスト
    */
   public BigDecimal getWorkloadTotal() {
@@ -682,7 +704,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 添付ファイルリストを取得します。
-   * 
+   *
    * @return list 添付ファイルリスト
    */
   public List<FileuploadBean> getAttachmentFileList() {
@@ -691,7 +713,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 添付ファイルリストを設定します。
-   * 
+   *
    * @param list
    *          添付ファイルリスト
    */
@@ -701,7 +723,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * コメントリストを取得します。
-   * 
+   *
    * @return list コメントリスト
    */
   public List<ProjectTaskCommentResultData> getCommentList() {
@@ -710,7 +732,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * コメントリストを設定します。
-   * 
+   *
    * @param list
    *          添付ファイルリスト
    */
@@ -720,7 +742,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 実績表示フラグを取得します。
-   * 
+   *
    * @return 実績表示フラグ
    */
   public boolean getResultDisplayFlg() {
@@ -729,7 +751,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 実績表示フラグを設定します。
-   * 
+   *
    * @param b
    *          実績表示フラグ
    */
@@ -739,7 +761,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 子タスク保持フラグを取得します。
-   * 
+   *
    * @return 子タスク保持フラグ
    */
   public boolean getHasChildren() {
@@ -748,7 +770,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 子タスク保持フラグを設定します。
-   * 
+   *
    * @param b
    *          子タスク保持フラグ
    */
@@ -758,7 +780,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 一覧条件絞込みフラグを取得します。
-   * 
+   *
    * @return 一覧条件絞込みフラグ
    */
   public boolean getConditionFlg() {
@@ -767,7 +789,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * インデント表示フラグを設定します。
-   * 
+   *
    * @param b
    *          インデント表示フラグ
    */
@@ -777,7 +799,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスク名表示インデントを取得する
-   * 
+   *
    * @return インデント
    */
   public ALNumberField getIndent() {
@@ -786,7 +808,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスク名表示インデントを設定する
-   * 
+   *
    * @param i
    *          インデント
    */
@@ -796,7 +818,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * タスク名表示インデント文字列を取得する
-   * 
+   *
    * @return インデント
    */
   public String getIndentString() {
@@ -815,7 +837,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 進捗遅延であるかをチェックする
-   * 
+   *
    * @return TRUE:工数オーバー
    */
   public boolean isDelay() {
@@ -828,7 +850,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 工数オーバーであるかをチェックする
-   * 
+   *
    * @return TRUE:工数オーバー
    */
   public boolean isWorkloadOver() {
@@ -841,7 +863,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * パンくずリストを設定する
-   * 
+   *
    * @param i
    *          パンくずリスト
    */
@@ -851,7 +873,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * パンくずリストを取得する
-   * 
+   *
    * @return パンくずリスト
    */
   public ALStringField getTopicPath() {
@@ -860,7 +882,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 未来開始予定であるかを取得する
-   * 
+   *
    * @return TRUE:未来開始予定タスクである
    */
   public boolean isNoStart() {
@@ -879,7 +901,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了済み予定であるかを取得する
-   * 
+   *
    * @return TRUE:完了済み予定
    */
   public boolean isPastFinish() {
@@ -898,7 +920,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 完了済であるかを取得する
-   * 
+   *
    * @return TRUE:ステータスが新規、進行中、フィードバックのもの以外を完了済とする
    */
   public boolean isFinishStatus() {
@@ -915,7 +937,7 @@ public class ProjectTaskResultData implements ALData {
   // ---------------------------------------------------
   /**
    * 分類区分値を取得する
-   * 
+   *
    * @param kubun
    *          区分値
    * @return 区分値文字列
@@ -926,7 +948,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * ステータス区分値を取得する
-   * 
+   *
    * @param kubun
    *          区分値
    * @return 区分値文字列
@@ -937,7 +959,7 @@ public class ProjectTaskResultData implements ALData {
 
   /**
    * 優先度区分値を取得する
-   * 
+   *
    * @param kubun
    *          区分値
    * @return 区分値文字列
