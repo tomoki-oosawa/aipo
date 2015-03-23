@@ -252,7 +252,8 @@ $record.WbrName
 $record.WbrName
 #if(! ${record.isPublic()})
 &nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
-#elauiIcong class="dot_schedule" src="images/common/dot.gif" alt="" />
+#else
+<img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
 <i class="auiIcon auiIconTmpreserve"></i>
