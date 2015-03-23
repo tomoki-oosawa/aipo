@@ -2238,6 +2238,7 @@ body.messageRoomList .dijitContentPane {
   background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+  width: 16px;
 }
 
 .auiIconIndicator {
