@@ -664,8 +664,7 @@ public class ExtTimecardSummaryListSelectData extends
         && (!target_group_name.equals("all"))
         && (!target_group_name.equals("only"))) {
         userList = ALEipUtils.getUsers(target_group_name);
-      } else if (target_group_name.equals("all")
-        || target_group_name.equals("only")) {
+      } else if (target_group_name.equals("only")) {
         userList = getUserList(Integer.parseInt(userid));
       } else {
         userList = ALEipUtils.getUsers("LoginUser");
@@ -1088,11 +1087,9 @@ public class ExtTimecardSummaryListSelectData extends
     this.target_group_name = target_group_name;
     if (this.target_group_name != null) {
       if ((!this.target_group_name.equals(""))
-        && (!this.target_group_name.equals("all"))
         && (!this.target_group_name.equals("only"))) {
         userList = ALEipUtils.getUsers(target_group_name);
-      } else if (this.target_group_name.equals("all")
-        || this.target_group_name.equals("only")) {
+      } else if (this.target_group_name.equals("only")) {
         userList = getUserList(Integer.parseInt(userid));
       } else {
         userList = ALEipUtils.getUsers("LoginUser");
