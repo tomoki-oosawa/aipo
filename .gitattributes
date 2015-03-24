@@ -12,4 +12,12 @@
 *.txt text
 *.vm text
 *.jsp text
+*.sql text
+*.php text
+*.dtd text
+*.xsl text
+*.jsp text
+*.template text
+*.default text
+*.md text
 *.properties text
