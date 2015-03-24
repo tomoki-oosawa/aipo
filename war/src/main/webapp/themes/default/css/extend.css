@@ -457,7 +457,7 @@
 
 *:first-child + html .dijitCalendarMonthLabelSpacer {
   height: 5px;
-  �ｽ@�ｽ@margin-top: -4px;
+  margin-top: -4px;
 }
 
 /****
