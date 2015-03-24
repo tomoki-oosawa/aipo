@@ -139,6 +139,9 @@
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+      <br/>
+      <imput id="repeat_typeY" type="radio" value="Y" #if ($!{result.RepeatType.toString()} == "Y") checked="checked" #end name="repeat_type"/>
+      <label for="repeat_typeY">$l10n.SCHEDULE_EVERY_YEAR</label>
    </div>
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
