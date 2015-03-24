@@ -2,7 +2,7 @@
 <!--
 
     Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2011 Aimluck,Inc.
+    Copyright (C) 2004-2015 Aimluck,Inc.
     http://www.aipo.com
 
     This program is free software: you can redistribute it and/or modify
@@ -19,12 +19,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-
 <registry>
     <portlet-entry name="Cell_Schedule" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>ｽｹｼﾞｭｰﾙ</title>
+            <title>スケジュール</title>
             <description>個人の 1 日のスケジュールを時間割で管理します。カスタマイズ画面で表示時間の幅を自由に設定できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>

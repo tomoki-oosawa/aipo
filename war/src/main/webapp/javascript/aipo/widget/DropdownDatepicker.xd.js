@@ -1,13 +1,6 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.widget.DropdownDatepicker"],
-["require", "aimluck.widget.Dropdown"],
-["require", "aipo.widget.DateCalendar"],
-["require", "dojo.date.locale"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DropdownDatepicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.DropdownDatepicker"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +16,13 @@ dojo._hasResource["aipo.widget.DropdownDatepicker"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.DropdownDatepicker"],
+["require", "aimluck.widget.Dropdown"],
+["require", "aipo.widget.DateCalendar"],
+["require", "dojo.date.locale"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DropdownDatepicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.DropdownDatepicker"] = true;
 
 dojo.provide("aipo.widget.DropdownDatepicker");
 
