@@ -18,24 +18,6 @@
  */
 if(!dojo._hasResource["aimluck.widget.Menu"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aimluck.widget.Menu"] = true;
-/*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
- * http://www.aipo.com
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 dojo.provide("aimluck.widget.Menu");
 dojo.provide("aimluck.widget.Menuitem");
@@ -138,7 +120,7 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
         var _this = this;
         var _count = 0;
         dojo.forEach(items, function(itemJson){
-                if(itemJson.submenu){ 
+                if(itemJson.submenu){
                     var menu = new aimluck.widget.Menu({id: itemJson.caption, style: "display: none;" });
                     dojo.forEach(itemJson.submenu, function(itemJson2){
                         if(itemJson2 != null){
@@ -152,7 +134,7 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
                     var _itemClass = "";
                     if(_this.selectedIndex == parseInt(_count) ){
                         _itemClass += "menuBarItemSelected";
-                    }  
+                    }
                     var ddb = new aimluck.widget.ComboButton({ label: itemJson.caption, iconClass: itemJson.iconClass, dropDown: menu, url: itemJson.url, itemClass:_itemClass});
                     ddb.addChild(menu);
                     _this.addChild(ddb);
@@ -167,8 +149,8 @@ dojo.declare("aimluck.widget.Menubar", [dijit.Toolbar], {
                     _this.addChild(new aimluck.widget.ToolbarSeparator());
                 }
                 _count++;
-               
-        }); 
+
+        });
 
     }
 });
