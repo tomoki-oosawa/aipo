@@ -65,7 +65,7 @@ determined by the layout information in each portlet</li>
 layout information. If this information is not found, put the Portlet in the
 first cell of the table</p>
 
-@author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+@author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
 @version $Id: GridPortletController.java,v 1.17 2004/02/23 03:25:06 jford Exp $
 */
 public class GridPortletController extends AbstractPortletController 

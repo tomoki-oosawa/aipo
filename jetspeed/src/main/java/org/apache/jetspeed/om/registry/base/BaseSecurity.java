@@ -23,7 +23,7 @@ import org.apache.jetspeed.om.registry.*;
  * Castor serialization.
  *
  * @see org.apache.jetspeed.om.registry.Security
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseSecurity.java,v 1.4 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseSecurity implements Security,java.io.Serializable

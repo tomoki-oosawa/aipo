@@ -23,7 +23,7 @@ import org.apache.jetspeed.om.registry.*;
  * Castor serialization.
  *
  * @see org.apache.jetspeed.om.registry.Parameter
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseParameter.java,v 1.4 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseParameter extends BaseRegistryEntry

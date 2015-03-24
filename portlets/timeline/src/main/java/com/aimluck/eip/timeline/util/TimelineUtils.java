@@ -1,3 +1,21 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 //TimelineUtils.jav
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
@@ -420,6 +438,35 @@ public class TimelineUtils {
     return list;
   }
 
+  /**
+   * コメントした投稿に対してこれまでコメントしていたユーザーを取得する
+   *
+   * @param parent_id
+   * @return List
+   */
+  public static List<Integer> getTimelineOtherCommentUserList(int parent_id) {
+    List<Integer> resultList = new ArrayList<Integer>();
+    try {
+      List<EipTTimeline> list = new ArrayList<EipTTimeline>();
+      String query =
+        "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = #bind($parent_id)";
+      list =
+        Database
+          .sql(EipTTimeline.class, query)
+          .param("parent_id", parent_id)
+          .fetchList();
+      int recordNum = list.size();
+      for (int i = 0; i < recordNum; i++) {
+        Integer ownerId;
+        ownerId = list.get(i).getOwnerId();
+        resultList.add(ownerId);
+      }
+    } catch (Exception ex) {
+      logger.error("[timelineUtils]", ex);
+    }
+    return resultList;
+  }
+
   public static void createNewCommentActivity(EipTTimeline timeline,
       String loginName, String targetLoginName) {
     if (loginName.equals(targetLoginName)) {
@@ -428,6 +475,30 @@ public class TimelineUtils {
     List<String> recipients = new ArrayList<String>();
     recipients.add(targetLoginName);
     String title = new StringBuilder("あなたの投稿にコメントしました。").toString();
+    String portletParams =
+      new StringBuilder("?template=TimelineDetailScreen")
+        .append("&entityid=")
+        .append(timeline.getTimelineId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("timeline")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTitle(title)
+      .withPriority(1f)
+      .withExternalId(String.valueOf(timeline.getTimelineId())));
+  }
+
+  public static void createNewOtherCommentActivity(EipTTimeline timeline,
+      String loginName, String otherLoginName, String targetUserName) {
+    if (loginName.equals(otherLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(otherLoginName);
+    String title =
+      new StringBuilder(targetUserName + "さんの投稿にコメントしました。").toString();
     String portletParams =
       new StringBuilder("?template=TimelineDetailScreen")
         .append("&entityid=")

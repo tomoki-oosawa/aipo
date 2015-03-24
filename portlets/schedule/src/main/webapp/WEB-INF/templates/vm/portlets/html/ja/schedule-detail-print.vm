@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #ALprintoptionheader()
 <tr>
@@ -88,21 +87,12 @@ $!{result.Detail.Date2}
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #end
-#if(! ${result.Detail.isPublic()})
-#AUIiconSecretAtt('title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"' '')
-#end
-#if($!{result.Detail.isDuplicate()})
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
-#end
-#if($!{result.Detail.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
-#end
-#if($!{result.Detail.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
-#end
+#AUIiconScheduleSets($!{result.Detail})
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
-#ALtditem($!{result.Detail.Name})
+#ALtditemheader()
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.Name}
+#ALtditemfooter()
 
 #* 共有カテゴリ連携（ここから）  *#
 
@@ -132,7 +122,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
+        <i class="auiIcon auiIconTmpreserve"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <i class="icon-remove fcRed" title="$l10n.SCHEDULE_DELETED"></i>

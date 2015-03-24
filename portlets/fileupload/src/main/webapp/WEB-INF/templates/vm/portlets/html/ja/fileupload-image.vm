@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,5 @@
     </div>
  <div class="imgBody">
 	<div class="indicatorDialog center"><i class="auiIcon auiIconIndicator"></i> $l10n.FILEUPLOAD_READING</div></div>
- 	<a href="javascript:void(0)">
-		<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" onerror="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" style="display:none;" />
-	</a>
+	<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" onerror="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" style="display:none;" />
  </div>

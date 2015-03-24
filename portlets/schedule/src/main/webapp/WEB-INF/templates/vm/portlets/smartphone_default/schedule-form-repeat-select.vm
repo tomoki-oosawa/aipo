@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($title = "グループ選択")
 #set($linklist = [["自分のスケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
@@ -52,7 +51,7 @@ Myグループ#ALcell_br($career)
 #end
 #end
 #ALcell_submit($career "eventSubmit_doSchedule_form_selectmember" "ユーザー選択へ")
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
 #ALcell_formfooter()
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)

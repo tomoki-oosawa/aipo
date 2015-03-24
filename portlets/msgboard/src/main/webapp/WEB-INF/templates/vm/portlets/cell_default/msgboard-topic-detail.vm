@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,19 +16,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if($!resultOnTopicDetail)
-#set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #else
-#set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#set($methodlist = [["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #end
-#set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
+#set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 #ALcell_pagetitle($career "トピック詳細")
 #ALcell_dl_header($career)
-#ALcell_dt($career 'ﾄﾋﾟｯｸﾀｲﾄﾙ')
+#ALcell_dt($career 'トピックタイトル')
 #ALcell_dd($career $!{result.ParentTopic.TopicName})
-#ALcell_dt($career 'ｶﾃｺﾞﾘ')
+#ALcell_dt($career 'カテゴリ')
 #ALcell_dd($career $!{result.ParentTopic.CategoryName})
 #ALcell_dt($career '投稿者')
 #ALcell_dd($career "$!{result.ParentTopic.OwnerName}")
@@ -56,10 +55,10 @@
 #end
 #ALcell_dl_footer($career)
 #ALcell_hr($career '1')
-ｺﾒﾝﾄ一覧
+コメント一覧
 #ALcell_hr($career '1')
 #if(!$!result.CoTopicList || $!result.CoTopicList.size() <= 0)
-ｺﾒﾝﾄはありません
+コメントはありません
 #ALcell_hr($career '1')
 #else
 #foreach ($record in $result.CoTopicList)

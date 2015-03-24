@@ -50,7 +50,7 @@ import java.util.Enumeration;
  * A Velocity based portlet control designed for handling a PortletSet
  * child
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  *
  * @version $Id: VelocityPortletSetControl.java,v 1.15 2004/02/23 03:25:35 jford Exp $
  */

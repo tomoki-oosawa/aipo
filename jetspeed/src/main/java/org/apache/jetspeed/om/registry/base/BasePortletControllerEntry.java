@@ -22,7 +22,7 @@ import org.apache.jetspeed.om.registry.*;
  * Default bean like implementation of the PortletControllerEntry registry
  * entry
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BasePortletControllerEntry.java,v 1.2 2004/02/23 03:08:26 jford Exp $
  */
 public class BasePortletControllerEntry extends BasePortletInfoEntry

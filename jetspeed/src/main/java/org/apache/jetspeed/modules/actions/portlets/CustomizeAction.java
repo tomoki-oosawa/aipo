@@ -61,7 +61,7 @@ import java.util.Iterator;
  * <p>Don't call it from the URL, the Portlet and the Action are automatically
  * associated through the registry PortletName
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  */
 public class CustomizeAction extends VelocityPortletAction
 {

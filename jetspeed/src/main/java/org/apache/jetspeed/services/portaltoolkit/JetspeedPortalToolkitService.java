@@ -75,7 +75,7 @@ import javax.servlet.ServletConfig;
 /**
  * Simple implementation of the PortalFactoryService.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
  *

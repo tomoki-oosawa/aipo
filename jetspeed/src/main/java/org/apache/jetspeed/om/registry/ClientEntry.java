@@ -24,7 +24,7 @@ package org.apache.jetspeed.om.registry;
  * </P>
  *
  * @author <a href="shesmer@raleigh.ibm.com">Stephan Hesmer</a>
- * @author <a href="raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="raphael@apache.org">Raphaè¬– Luta</a>
  */
 public interface ClientEntry extends RegistryEntry
 {
