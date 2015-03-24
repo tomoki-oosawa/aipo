@@ -84,6 +84,18 @@
       <timezone>+9</timezone>
     </developer>
     <developer>
+      <id>nonstop-girl</id>
+      <url>https://github.com/nonstop-girl</url>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
+      <id>haradaaa</id>
+      <url>https://github.com/haradaaa</url>
+      <organization>Aimluck,Inc.</organization>
+      <timezone>+9</timezone>
+    </developer>
+    <developer>
       <id>y-ozaki</id>
       <url>https://github.com/y-ozaki</url>
       <timezone>+9</timezone>
@@ -224,7 +236,6 @@
             <include>**/src/**/*.xreg</include>
             <include>**/src/**/*.psml</include>
             <include>**/src/**/*.js</include>
-            <include>**/src/**/*.css</include>
             <include>**/src/**/*.css</include>
             <include>**/src/**/*.jsp</include>
             <include>**/src/**/*.xsl</include>
