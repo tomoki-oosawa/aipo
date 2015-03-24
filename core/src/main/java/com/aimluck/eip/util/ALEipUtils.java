@@ -1373,7 +1373,7 @@ public class ALEipUtils {
     if (index == -1) {
       return sb.toString();
     }
-    return sb.substring(0, index);
+    return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
   }
 
   /**
