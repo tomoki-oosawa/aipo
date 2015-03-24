@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 {
 	// 'この'+button.form.name+'を削除してよろしいですか？'
 	DW_STR:"${dw_this}${dw_name}\u3092${dw_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",

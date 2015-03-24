@@ -2,7 +2,7 @@
 <!--
 
     Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2011 Aimluck,Inc.
+    Copyright (C) 2004-2015 Aimluck,Inc.
     http://www.aipo.com
 
     This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
                 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
                 xmlns:downlevel="http://my.netscape.com/rdf/simple/0.9/"
