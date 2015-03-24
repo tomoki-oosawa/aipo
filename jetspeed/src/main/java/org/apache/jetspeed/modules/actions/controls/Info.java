@@ -24,7 +24,7 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 /**
  * Display information about the selected portlet
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:mark_orciuch@ngsltd.com">Mark Orciuch</a>
  */
 public class Info extends Action

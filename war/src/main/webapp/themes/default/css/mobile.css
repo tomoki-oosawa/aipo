@@ -1,3 +1,21 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @charset "utf-8";
 .bRadius4, .roundMainWrapper noscript .alert, .alertCount, #mobileHeader .mhLeft,
 #mobileHeader .mhRight, #mobileHeader .auiMbBtn, #mobileHeader_v2 .auiMbBtn, #mobileHeader_v3 .auiMbBtn {
@@ -1508,7 +1526,7 @@ ul.hdCommunications .num {
 
 .iconLike,
 .iconComment {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -1925,6 +1943,9 @@ table tr.caption {
 .calendarWrapper {
   overflow-x: visible;
 }
+.calendarWrapper.calendarDisplayDay {
+  overflow-x: auto;
+}
 
 /***************************************************
 	addressbookDialog
@@ -2231,9 +2252,10 @@ body.messageRoomList .dijitContentPane {
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+  width: 16px;
 }
 
 .auiIconIndicator {
@@ -2252,7 +2274,7 @@ body.messageRoomList .dijitContentPane {
 	auiIcon
 --------------------------------------------------*/
 .auiIconArrow {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }

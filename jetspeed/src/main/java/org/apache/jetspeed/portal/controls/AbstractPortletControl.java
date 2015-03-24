@@ -56,7 +56,7 @@ import org.apache.ecs.StringElement;
  * inner object and can thus be transparently cascaded or substituted to
  * a simple portlet wherever in a PSML object tree.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
  * @version $Id: AbstractPortletControl.java,v 1.22 2004/03/29 21:16:27 taylor Exp $
  */

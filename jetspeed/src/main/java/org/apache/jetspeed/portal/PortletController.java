@@ -32,7 +32,7 @@ import java.io.Serializable;
  *       within the set and moving entries around within the set
  * </ul>
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id: PortletController.java,v 1.54 2004/02/23 04:05:35 jford Exp $
  */

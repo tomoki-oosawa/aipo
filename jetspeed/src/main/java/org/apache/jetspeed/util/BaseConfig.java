@@ -26,7 +26,7 @@ Defines a standard object configuration
 A Config provides the parameters passed in the current request as well
 as init parameters.
 
-@author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+@author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
 @version $Id: BaseConfig.java,v 1.3 2004/02/23 03:23:42 jford Exp $
 */
 

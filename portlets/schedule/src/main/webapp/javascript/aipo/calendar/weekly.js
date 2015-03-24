@@ -1,8 +1,6 @@
-if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.calendar.weekly"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,8 @@ dojo._hasResource["aipo.calendar.weekly"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.calendar.weekly"] = true;
 
 dojo.provide("aipo.calendar.weekly");
 
@@ -477,8 +477,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                }
 
 	                if(!item['public']) {
-	                    name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
+	                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
 	                }
+	                name += '\n<span class="inline-block">';
 	                if(item.duplicate) {
 	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
 	                }
@@ -488,6 +489,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                if(item.tmpreserve) {
 	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
 	                }
+	                name += '</span>';
 	                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
 	                count++;
 	            });
@@ -602,21 +604,24 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                            str_tmpflgmb   =  "[共有]";
 	                        }
 	                    }
+	                    name = str_tmpflgmb + name;
 
-	                    if(!item['public']) {
-	                        name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
-	                    }
-	                    if(item.duplicate) {
-	                        name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
-	                    }
-	                    if(item.repeat) {
-	                        name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
-	                    }
-	                    if(item.tmpreserve) {
-	                        name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
-	                    }
+		                if(!item['public']) {
+		                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
+		                }
+		                name += '\n<span class="inline-block">';
+		                if(item.duplicate) {
+		                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
+		                }
+		                if(item.repeat) {
+		                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
+		                }
+		                if(item.tmpreserve) {
+		                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
+		                }
+		                name += '</span>';
 	                    if(width==100)width='99.99999';
-	                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
+	                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
 	                    count++;
 	                }
 	                dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;

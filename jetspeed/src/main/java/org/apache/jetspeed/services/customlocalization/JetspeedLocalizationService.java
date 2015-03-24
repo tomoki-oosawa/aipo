@@ -36,7 +36,7 @@ import org.apache.jetspeed.om.security.JetspeedUser;
  * and a user.getPerm("language")are not set,
  * the "Accept-Language" header are read.
  * 
- * @author <a href="mailto:desmax74@yahoo.it">Dessì Massimiliano</a>
+ * @author <a href="mailto:desmax74@yahoo.it">DessMassimiliano</a>
  * @version $Id: JetspeedLocalizationService.java,v 1.8 2004/02/23 03:49:33 jford Exp $
  */
 public class JetspeedLocalizationService extends TurbineLocalizationService implements CustomLocalizationService

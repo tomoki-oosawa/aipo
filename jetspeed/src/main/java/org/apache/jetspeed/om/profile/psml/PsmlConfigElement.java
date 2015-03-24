@@ -25,7 +25,7 @@ import org.apache.jetspeed.om.profile.*;
  * Base simple bean-like implementation of the ConfigElement interface
  * suitable for Castor XML serialization.
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  * @version $Id: PsmlConfigElement.java,v 1.6 2004/02/23 03:02:54 jford Exp $
  */

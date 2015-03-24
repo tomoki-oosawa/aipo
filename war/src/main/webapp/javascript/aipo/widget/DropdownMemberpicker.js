@@ -1,8 +1,6 @@
-if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,8 @@ dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
 
 dojo.provide("aipo.widget.DropdownMemberpicker");
 
@@ -67,7 +67,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
     changeGroupUrl:"",
     listWidgetId:"memberlistwidget",
     templateString:"<div class=\"dijit dijitLeft dijitInline\"\n\tdojoAttachEvent=\"onmouseenter:_onMouse,onmouseleave:_onMouse,onmousedown:_onMouse,onclick:_onDropDownClick,onkeydown:_onDropDownKeydown,onblur:_onDropDownBlur,onkeypress:_onKey\"\n\t><div class='dijitRight'>\n\t<span class=\"\" type=\"${type}\"\n\t\tdojoAttachPoint=\"focusNode,titleNode\" waiRole=\"button\" waiState=\"haspopup-true,labelledby-${id}_label\"\n\t\t><span class=\"\" \tdojoAttachPoint=\"containerNode,popupStateNode\"\n\t\tid=\"${id}_label\"><img src=\"${iconURL}\" alt=\"${iconAlt}\" style=\"cursor:pointer;cursor:hand;padding-right:2px\" align=\"top\" />\n\t</span><select name=\"${selectId}\" id=\"${selectId}\" size=\"10\" multiple=\"multiple\" style=\"display:none\" dojoAttachPoint=\"selectNode\"></select><input type=\"hidden\" id=\"${hiddenId}\" name=\"${hiddenId}\" value=\"${hiddenValue}\" dojoAttachPoint=\"valueNode\" /><span name=\"${inputId}\" id=\"${inputId}\" dojoAttachPoint=\"inputNode\">${inputValue}</span>\n</div></div>\n",
-    postCreate: function(){      
+    postCreate: function(){
       var userparams = {
           widgetId:this.listWidgetId,
           selectId:this.selectId,
@@ -88,7 +88,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
           memberGroupUrl:this.memberGroupUrl,
           changeGroupUrl:this.changeGroupUrl
       };
-     
+
       var listWidget = dijit.byId(this.listWidgetId);
       if(listWidget){
         this.dropDown = listWidget;
@@ -114,7 +114,7 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
 	    var t_o = select.options;
 	    for(i = 0 ;i < t_o.length; i ++ ) {
 	      select.removeChild(t_o[i]);
-	      i -= 1; 
+	      i -= 1;
 	    }
 	  }
 	},

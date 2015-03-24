@@ -25,7 +25,7 @@ import org.apache.turbine.services.Service;
 /**
  * This service handles the creation of Portlet objects
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PortletFactoryService.java,v 1.4 2004/02/23 03:36:42 jford Exp $
  */
 public interface PortletFactoryService extends Service

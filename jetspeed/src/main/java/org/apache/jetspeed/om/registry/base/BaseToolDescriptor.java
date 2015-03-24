@@ -21,7 +21,7 @@ import org.apache.jetspeed.om.registry.ToolDescriptor;
 /**
  * Bean-like implementation of the ToolDescriptor interface
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseToolDescriptor.java,v 1.2 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseToolDescriptor implements ToolDescriptor, java.io.Serializable

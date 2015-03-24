@@ -36,7 +36,7 @@ import org.apache.velocity.context.Context;
  * Should be associated with a controller implementing PanedPortletController
  * to work correctly
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  *
  * @version $Id: PanedControllerAction.java,v 1.13 2004/02/23 02:49:58 jford Exp $

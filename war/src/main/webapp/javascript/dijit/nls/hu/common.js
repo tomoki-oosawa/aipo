@@ -1,1 +1,1 @@
-({"buttonCancel": "Mégse", "buttonSave": "Mentés", "buttonOk": "OK"})
+({"buttonCancel": "M辿gse", "buttonSave": "Ment辿s", "buttonOk": "OK"})

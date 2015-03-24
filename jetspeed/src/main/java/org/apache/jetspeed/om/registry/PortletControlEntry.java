@@ -20,7 +20,7 @@ package org.apache.jetspeed.om.registry;
  * This entry describes all the properties that should be present in
  * a RegistryEntry describing a PortletControl
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PortletControlEntry.java,v 1.2 2004/02/23 03:11:39 jford Exp $
  */
 public interface PortletControlEntry extends PortletInfoEntry

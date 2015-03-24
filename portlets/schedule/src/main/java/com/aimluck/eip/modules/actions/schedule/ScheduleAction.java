@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.schedule;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのアクションクラスです。
- * 
+ *
  */
 public class ScheduleAction extends ALBaseAction {
 
@@ -86,7 +85,7 @@ public class ScheduleAction extends ALBaseAction {
   private static final String AFTER_BEHAVIOR = "afterbehavior";
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -354,7 +353,7 @@ public class ScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -449,7 +448,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -479,7 +478,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -524,7 +523,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -570,7 +569,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -611,7 +610,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -725,7 +724,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -749,7 +748,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -786,7 +785,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * 編集画面でキャンセルを押したときの処理．
-   * 
+   *
    * @param rundata
    * @param context
    */
