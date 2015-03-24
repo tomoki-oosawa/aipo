@@ -27,7 +27,7 @@
 #set ($subtitle = 'ToDo編集')
 #set ($event_submit = "eventSubmit_doTodo_update")
 #end
-#set ($home = ["ﾒﾆｭｰToDoへ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"])
+#set ($home = ["メニューToDoへ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"])
 #ALcell_pagetitle($career $subtitle)
 #ALcell_errmsg($career $errmsgs)
 #ALcell_formheader($jslink $portlet)

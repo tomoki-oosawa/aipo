@@ -18,11 +18,11 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')")
-#set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
-#set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
+#set($methodlist = [["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 #ALcell_pagetitle($career '掲示板')
 #if(!$result.List || $!result.List.size() <= 0)
- &nbsp;指定された条件に該当するﾄﾋﾟｯｸはありません。
+ &nbsp;指定された条件に該当するトピックはありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_hr($career '1')

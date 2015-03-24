@@ -27,19 +27,19 @@ $screen_placeholder
     <hr style="border:solid 1px #ffffff; color:#ffffff" />
 #if($enableEasyLogin)
     <form method="post" utn="utn" action="${clink.setURI($uri)}?${jslink.ActionKey}=${config.getString("action.login")}&key=${key}">
-    <input type="submit" value="簡単ﾛｸﾞｲﾝ" name="submit"/>
+    <input type="submit" value="簡単ログイン" name="submit"/>
     </form>
 #end
-    <div><a href="${clink.setURI($uri)}?eventSubmit_doAccount_info=1">簡易ﾛｸﾞｲﾝとは?</a></div>
+    <div><a href="${clink.setURI($uri)}?eventSubmit_doAccount_info=1">簡易ログインとは?</a></div>
     <hr style="border:solid 1px #ffffff; color:#ffffff" />
 </div>
 
 <form action="${clink.setURI($uri)}" method="post">
     <input type="hidden" name="secid" value="$secid" />
     <input name="$jslink.ActionKey" type="hidden" value="$config.getString("action.login")">
-    <div style="background:#d6dce1;">▼ﾕｰｻﾞｰ名</div>
+    <div style="background:#d6dce1;">▼ユーザー名</div>
     #ALcell_textfield($career 'username' "$!username" 20 50 '' 'en')<br />
-    <div style="background:#d6dce1;">▼ﾊﾟｽﾜｰﾄﾞ</div>
+    <div style="background:#d6dce1;">▼パスワード</div>
     #ALcell_textfield($career 'password' '' 20 50 '' 'en')
     <div style="text-align:center;">
         <hr style="border:solid 1px #ffffff; color:#ffffff" />

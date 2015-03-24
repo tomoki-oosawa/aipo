@@ -1380,27 +1380,27 @@ $link.get(0)
 		#end
       #elseif($career == "vodafone")
         #if($emoji == "1")
-            $F<
+            $F<
         #elseif($emoji == "2")
-            $F=
+            $F=
         #elseif($emoji == "3")
-            $F>
+            $F>
         #elseif($emoji == "4")
-            $F?
+            $F?
         #elseif($emoji == "5")
-            $F@
+            $F@
         #elseif($emoji == "6")
-            $FA
+            $FA
         #elseif($emoji == "7")
-            $FB
+            $FB
         #elseif($emoji == "8")
-            $FC
+            $FC
         #elseif($emoji == "9")
-            $FD
+            $FD
         #elseif($emoji == "0")
-            $FE
+            $FE
         #elseif($emoji == "keitai")
-##            $G*
+##            $G*
         #end
 	  #else
 		#if($emoji == "1")
@@ -1526,7 +1526,7 @@ $!{detail.Note}
 #end
 
 #macro(ALcell_msgboard_comment $career $comment )
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　##ｶﾃｺﾞﾘ：$!{comment.ParentTopic.CategoryName}
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　##カテゴリ：$!{comment.ParentTopic.CategoryName}
 </p>
 $!{comment.Note}
 #end

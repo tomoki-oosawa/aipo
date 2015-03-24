@@ -51,7 +51,7 @@ Myグループ#ALcell_br($career)
 #end
 #end
 #ALcell_submit($career "eventSubmit_doSchedule_form_selectmember" "ユーザー選択へ")
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
 #ALcell_formfooter()
 #ALcell_contents_footer($career)
 #ALcell_linklist_iphone($career $linklist)

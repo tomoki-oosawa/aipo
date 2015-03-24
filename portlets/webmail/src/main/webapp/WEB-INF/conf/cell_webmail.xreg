@@ -23,7 +23,7 @@
     <portlet-entry name="Cell_WebMail" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>Webﾒｰﾙ</title>
+            <title>Webメール</title>
             <description>設定したアカウントのメールが送受信できるWebメール機能です。オリジナルの署名も設定することができます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>

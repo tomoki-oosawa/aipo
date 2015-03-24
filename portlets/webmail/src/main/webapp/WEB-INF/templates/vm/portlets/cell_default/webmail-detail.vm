@@ -26,7 +26,7 @@
 #set($person = "$l10n.WEBMAIL_TO")
 #set($person_value = "$!{result.Detail.To}")
 #end
-#set($methodlist = [["$l10n.WEBMAIL_REPLY_HALFWIDTH", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["ﾒｰﾙ転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
+#set($methodlist = [["$l10n.WEBMAIL_REPLY_HALFWIDTH", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '1')"], ["メール転送", "$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_create_mail','1').addQueryData('entityid', $entityid).addQueryData('tab', $!result.currentTab).addQueryData('mailtype', '2')"]])
 #set($linklist = [["$l10n.WEBMAIL_DO_WATCH_MAILLIST_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_list','1')"],["$l10n.WEBMAIL_WEBMAIL_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_menu','1')"]])
 #ALcell_pagetitle($career "$l10n.WEBMAIL_DETAIL_HAFLWIDTH")
 #if($hasError)

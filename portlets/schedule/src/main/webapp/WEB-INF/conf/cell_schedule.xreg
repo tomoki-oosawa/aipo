@@ -23,7 +23,7 @@
     <portlet-entry name="Cell_Schedule" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>ｽｹｼﾞｭｰﾙ</title>
+            <title>スケジュール</title>
             <description>個人の 1 日のスケジュールを時間割で管理します。カスタマイズ画面で表示時間の幅を自由に設定できます。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>

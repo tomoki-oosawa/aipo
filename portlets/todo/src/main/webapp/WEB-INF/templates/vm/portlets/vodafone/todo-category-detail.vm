@@ -18,10 +18,10 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#set($linklist = [["ｶﾃｺﾞﾘ一覧へ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')"], ["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
-#ALcell_pagetitle($career "ｶﾃｺﾞﾘ詳細")
+#set($linklist = [["カテゴリ一覧へ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')"], ["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ログアウト", "$jslink.setAction($config.getString('action.logout'))"]])
+#ALcell_pagetitle($career "カテゴリ詳細")
 #ALcell_dl_header($career)
-#ALcell_dt($career 'ｶﾃｺﾞﾘ名')#ALcell_dd($career "$!{result.Detail.CategoryName}")
+#ALcell_dt($career 'カテゴリ名')#ALcell_dd($career "$!{result.Detail.CategoryName}")
 #ALcell_dt($career '作成日')#ALcell_dd($career "$!{result.Detail.CreateDate}")
 #ALcell_dt($career '更新日')#ALcell_dd($career "$!{result.Detail.UpdateDate}")
 #ALcell_dl_footer($career)

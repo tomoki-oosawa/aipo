@@ -125,7 +125,7 @@ $!result.getFieldName("public_flag")#ALcell_br($career)
 <input name="public_flag" type="radio" value="P" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end>$l10n.SCHEDULE_HIDE_ALL
 #ALcell_hr($career '1')
 #ALcell_submit($career $event_submit $action_str)
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

@@ -19,12 +19,12 @@
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1').addQueryData('tab','corp')")
-#set($linklist = [["社内ｱﾄﾞﾚｽ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1')"], ["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
-#ALcell_pagetitle($career "社内ｱﾄﾞﾚｽ詳細")
+#set($linklist = [["社内アドレス一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1')"], ["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#ALcell_pagetitle($career "社内アドレス詳細")
 #ALcell_dl_header($career)
 #ALcell_dt($career '名前')#ALcell_dd($career "$!{result.Detail.Name}")
-#ALcell_dt($career '名前(ﾌﾘｶﾞﾅ)')#ALcell_dd($career "$!{result.Detail.NameKana}")
-#ALcell_dt($career 'ﾒｰﾙｱﾄﾞﾚｽ')
+#ALcell_dt($career '名前(フリガナ)')#ALcell_dd($career "$!{result.Detail.NameKana}")
+#ALcell_dt($career 'メールアドレス')
 #if($!{result.Detail.Email} && $!{result.Detail.Email.Value} != '')
 #ALcell_dd_header($career)<a href="mailto:$!{result.Detail.Email}">$!{result.Detail.Email}</a>#ALcell_dd_footer($career)
 #end
@@ -45,7 +45,7 @@
 #ALcell_dd($career "$!{result.Detail.CellularPhone}")
 #end
 #end
-#ALcell_dt($career '携帯ﾒｰﾙｱﾄﾞﾚｽ')
+#ALcell_dt($career '携帯メールアドレス')
 #if($!{result.Detail.CellularMail} && $!{result.Detail.CellularMail.Value} != '')
 #ALcell_dd_header($career)<a href="mailto:$!{result.Detail.CellularMail}">$!{result.Detail.CellularMail}</a>#ALcell_dd_footer($career)
 #end

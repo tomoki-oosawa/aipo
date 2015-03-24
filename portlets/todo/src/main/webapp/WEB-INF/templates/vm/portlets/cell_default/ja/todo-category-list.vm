@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')")
 #set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"]])
-#ALcell_pagetitle($career "ｶﾃｺﾞﾘ一覧")
+#ALcell_pagetitle($career "カテゴリ一覧")
 #if($result.List.size() <= 0)
 カテゴリはありません。
 #else

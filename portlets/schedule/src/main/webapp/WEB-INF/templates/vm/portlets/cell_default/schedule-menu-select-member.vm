@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 ## add by motegi1019 start
-##set($otherlist = [["別のﾕｰｻﾞｰのｽｹｼﾞｭｰﾙへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"]])
+##set($otherlist = [["別のユーザーのスケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"]])
 #set($otherlist = [[$l10n.SCHEDULE_BACK_USER_SELECT, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectmember','1')"]])
 ## add by motegi1019 end
 #set($linklist = [[$l10n.SCHEDULE_BACK_USER_SELECT, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectmember','1')"]])

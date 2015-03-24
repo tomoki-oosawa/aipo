@@ -53,7 +53,7 @@
 #end
 #*
 <hr>
-ｶﾃｺﾞﾘ選択
+カテゴリ選択
 <select name="filter">
 <option value="">（全体）
 #foreach( $record in $result.CategoryList )

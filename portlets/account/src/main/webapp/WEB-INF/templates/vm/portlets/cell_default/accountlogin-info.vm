@@ -18,19 +18,19 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($uri = "portal/")
-#ALcell_pagetitle($career "簡易ﾛｸﾞｲﾝとは？")
-簡易ﾛｸﾞｲﾝとは？#ALcell_br($career)
-簡易ﾛｸﾞｲﾝ設定をすると、次回からﾊﾟｽﾜｰﾄﾞの入力なしで${alias}にﾛｸﾞｲﾝできます。
+#ALcell_pagetitle($career "簡易ログインとは？")
+簡易ログインとは？#ALcell_br($career)
+簡易ログイン設定をすると、次回からパスワードの入力なしで${alias}にログインできます。
 携帯電話の固有情報(電話番号ではありません)を利用するため、
-設定しても別の携帯電話からﾛｸﾞｲﾝされる心配はありません。
+設定しても別の携帯電話からログインされる心配はありません。
 #ALcell_hr($career '')
-簡易ﾛｸﾞｲﾝを設定するには？#ALcell_br($career)
-最初にﾊﾟｽﾜｰﾄﾞでﾛｸﾞｲﾝします。
-TOPメニューの [簡易ﾛｸﾞｲﾝ設定] で簡易ﾛｸﾞｲﾝを有効にしてください。
-次回からのﾛｸﾞｲﾝ時にはﾊﾟｽﾜｰﾄﾞを入力せずにﾛｸﾞｲﾝできます。
+簡易ログインを設定するには？#ALcell_br($career)
+最初にパスワードでログインします。
+TOPメニューの [簡易ログイン設定] で簡易ログインを有効にしてください。
+次回からのログイン時にはパスワードを入力せずにログインできます。
 #ALcell_hr($career '1')
 #if($key && $key != '')
-<a href="${clink.setURI($uri)}?eventSubmit_doAccount_login=1&key=${key}">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${clink.setURI($uri)}?eventSubmit_doAccount_login=1&key=${key}">ログイン画面へ</a>
 #else
-<a href="${clink.setURI($uri)}">ﾛｸﾞｲﾝ画面へ</a>
+<a href="${clink.setURI($uri)}">ログイン画面へ</a>
 #end

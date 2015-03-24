@@ -40,8 +40,8 @@
     </portlet-entry>
     <portlet-entry name="Cell_AccountEdit" hidden="true" type="ref" parent="Velocity" application="false">
         <meta-info>
-            <title>簡易ﾛｸﾞｲﾝ設定</title>
-            <description>ﾕｰｻﾞｰ情報を管理します。</description>
+            <title>簡易ログイン設定</title>
+            <description>ユーザー情報を管理します。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="accountlogin-form" hidden="true" cachedOnName="true" cachedOnValue="true"/>

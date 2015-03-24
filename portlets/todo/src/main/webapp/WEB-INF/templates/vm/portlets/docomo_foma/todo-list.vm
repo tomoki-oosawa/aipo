@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1')")
-#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
+#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ログアウト", "$jslink.setAction($config.getString('action.logout'))"]])
 #if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
 #ALcell_pagetitle($career "$pagetitle")
 #if ($result.List.size() == 0)
@@ -55,7 +55,7 @@ aa
 #end
 #*
 <hr>
-ｶﾃｺﾞﾘ選択
+カテゴリ選択
 <select name="filter">
 <option value="">（全体）
 #foreach( $record in $result.CategoryList )

@@ -21,7 +21,7 @@
 #set ($action_str = "返信する")
 #set ($subtitle = '返信')
 #set ($event_submit = "eventSubmit_doMsgboard_topic_reply")
-#set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
+#set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 <input type="hidden" name="mode" value="insert" />
 #ALcell_pagetitle($career $subtitle)
 #ALcell_errmsg($career $errmsgsOnTopicDetail)

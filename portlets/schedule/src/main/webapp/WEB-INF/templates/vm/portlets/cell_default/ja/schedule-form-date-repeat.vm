@@ -99,7 +99,7 @@ $l10n.SCHEDULE_SPAN_SETTING#ALcell_br($career)
 #if(! $!{result.isSpan()})
 #ALcell_submit($career "eventSubmit_doSchedule_form_facility_group" $l10n.SCHEDULE_SELECT_SHARED_FACILITIES)
 #end
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

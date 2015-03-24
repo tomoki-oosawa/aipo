@@ -245,7 +245,7 @@
 				##==============グラフ描画==============
 				#foreach ($record in $result.List)
 					#if($record.PlanTerm.Value.intValue() > 0)
-						##高さ＝（行数－１）×（１行当たりの高さ）＋（ヘッダ部分を入れた１行目の高さ）＋（グラフが行の中央になる高さ）
+						##高さ＝（行数−１）×（１行当たりの高さ）＋（ヘッダ部分を入れた１行目の高さ）＋（グラフが行の中央になる高さ）
 						#set($top = ($velocityCount - 1) * $lineHeight + $dataTop + (($lineHeight - $heightGraph) / 2 - ($borderWidthGraph * 2)))
 						##開始位置
 						#set($left = ($!result.getDays($record.StartPlanDate.Value) - 1) * $cellWidth)

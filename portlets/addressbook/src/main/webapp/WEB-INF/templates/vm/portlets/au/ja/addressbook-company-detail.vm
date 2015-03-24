@@ -18,11 +18,11 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
-#set($linklist = [["会社情報一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_list','1')','1')"], ["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#set($linklist = [["会社情報一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_company_list','1')','1')"], ["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "会社情報詳細")
 #ALcell_dl_header($career)
 #ALcell_dt($career '会社名')#ALcell_dd($career "$!{result.Detail.CompanyName}")
-#ALcell_dt($career '会社名(ﾌﾘｶﾞﾅ)')#ALcell_dd($career "$!{result.Detail.CompanyNameKana}")
+#ALcell_dt($career '会社名(フリガナ)')#ALcell_dd($career "$!{result.Detail.CompanyNameKana}")
 #ALcell_dt($career '部署名')#ALcell_dd($career "$!{result.Detail.PostName}")
 #ALcell_dt($career '郵便番号')#ALcell_dd($career "$!{result.Detail.Zipcode}")
 #ALcell_dt($career '住所')#ALcell_dd($career "$!{result.Detail.Address}")

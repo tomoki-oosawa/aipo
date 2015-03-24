@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#set($linklist = [["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "会社情報検索")
 #ALcell_formheader($career $jslink $portlet)
 #ALcell_textfield($career 'sword' "$!result.SearchWord" 14 100 '' 'h')#ALcell_br($career)

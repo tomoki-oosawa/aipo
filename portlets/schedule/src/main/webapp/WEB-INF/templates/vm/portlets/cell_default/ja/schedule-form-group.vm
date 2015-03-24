@@ -87,7 +87,7 @@ $l10n.SCHEDULE_POST#ALcell_br($career)
 #end
 #ALcell_hr($career '1')
 #ALcell_submit($career "eventSubmit_doSchedule_form_member" $l10n.SCHEDULE_SELECT_USER)
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

@@ -19,8 +19,8 @@
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_imode')
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')")
-#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
-#ALcell_pagetitle($career "ｶﾃｺﾞﾘ一覧")
+#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ログアウト", "$jslink.setAction($config.getString('action.logout'))"]])
+#ALcell_pagetitle($career "カテゴリ一覧")
 #if($result.List.size() <= 0)
 複数の ToDo をグループ化することで、ToDo を分類することができます。
 『カテゴリ追加』 ボタンを押して、追加してください。 

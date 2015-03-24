@@ -23,7 +23,7 @@
     <portlet-entry name="Cell_Blog" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>ﾌﾞﾛｸﾞ</title>
+            <title>ブログ</title>
             <description>日記のほか日報などに活用できるブログです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
