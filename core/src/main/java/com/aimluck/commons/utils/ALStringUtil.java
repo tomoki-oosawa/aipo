@@ -177,7 +177,7 @@ public class ALStringUtil {
       char[] res;
       if (pos < maxPos) {
         char nextChar = nChars[pos];
-        if (nextChar == 'ﾞ' || nextChar == 'ﾟ') {
+        if (nextChar == '゛' || nextChar == '゜') {
           pos++;
           daku[ALKanaMapTable.INDEX_HANKAKU_BASE] = currChar;
           daku[ALKanaMapTable.INDEX_HANKAKU_DAKUTEN] = nextChar;

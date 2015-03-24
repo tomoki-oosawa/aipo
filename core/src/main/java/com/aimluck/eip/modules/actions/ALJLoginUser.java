@@ -225,7 +225,7 @@ public class ALJLoginUser extends ActionEvent {
       user = JetspeedSecurity.login(username, password);
       JetspeedSecurity.saveUser(user);
 
-      // 運営からのお知らせ用のクッキ－削除
+      // 運営からのお知らせ用のクッキ−削除
       if (rundata.getRequest().getCookies() != null) {
         for (Cookie cookie : rundata.getRequest().getCookies()) {
           String cookieName = cookie.getName();

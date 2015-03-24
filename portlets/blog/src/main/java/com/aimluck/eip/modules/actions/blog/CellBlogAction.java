@@ -253,7 +253,7 @@ public class CellBlogAction extends BlogAction {
       .getALEipUser(userid)
       .getAliasName()
       .toString()
-      + "のﾌﾞﾛｸﾞ");
+      + "のブログ");
 
     // ユーザー一覧を得る
     SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);

@@ -45,7 +45,7 @@ public class ALSmtpMailSenderContext implements ALMailSenderContext {
   /** 送信時の暗号化方式 */
   protected int encryptionFlag = -1;
 
-  /** SMTP 認証時のユーザ－ ID */
+  /** SMTP 認証時のユーザ− ID */
   protected String authSendUserId = null;
 
   /** SMTP 認証時のユーザパスワード */
