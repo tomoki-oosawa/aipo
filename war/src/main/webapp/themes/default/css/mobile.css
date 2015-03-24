@@ -1508,7 +1508,7 @@ ul.hdCommunications .num {
 
 .iconLike,
 .iconComment {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -1925,6 +1925,9 @@ table tr.caption {
 .calendarWrapper {
   overflow-x: visible;
 }
+.calendarWrapper.calendarDisplayDay {
+  overflow-x: auto;
+}
 
 /***************************************************
 	addressbookDialog
@@ -2231,9 +2234,10 @@ body.messageRoomList .dijitContentPane {
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+  width: 16px;
 }
 
 .auiIconIndicator {
@@ -2252,7 +2256,7 @@ body.messageRoomList .dijitContentPane {
 	auiIcon
 --------------------------------------------------*/
 .auiIconArrow {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }

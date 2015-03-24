@@ -3778,7 +3778,7 @@ ul.attachments {
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4527,6 +4527,27 @@ tr:first-child #gantt_task > table td {
   padding-left: 5px;
   margin: 0;
 }
+/***************************************************
+	txtIcon
+--------------------------------------------------*/
+.txtIcon {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: text-bottom;
+  background-color: #999;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 12px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  width: 16px;
+  line-height: 16px;
+}
 
 /***************************************************
 	auiIcon
@@ -4543,7 +4564,7 @@ tr:first-child #gantt_task > table td {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4787,35 +4808,47 @@ a.auiIconSearch:hover {
 
 .auiIconTmpreserve {
   background-position: 0px -688px;
+  width: 13px;
 }
 
 a.auiIconTmpreserve:hover {
   background-position: 0px -688px;
 }
+.termScheduleDivNameDiv .auiIconTmpreserve {background-position: 0px -816px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconTmpreserve:hover {background-position: 0px -816px;}
 
 .auiIconOverlap {
   background-position: 0px -704px;
+  width: 12px;
 }
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
 }
+.termScheduleDivNameDiv .auiIconOverlap {background-position: 0px -832px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconOverlap:hover {background-position: 0px -832px;}
 
 .auiIconRepeat {
   background-position: 0px -720px;
+  width: 13px;
 }
 
 a.auiIconRepeat:hover {
   background-position: 0px -720px;
 }
+.termScheduleDivNameDiv .auiIconRepeat {background-position: 0px -848px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconRepeat:hover {background-position: 0px -848px;}
 
 .auiIconSecret {
   background-position: 0px -736px;
+  width: 12px;
 }
 
 a.auiIconSecret:hover {
   background-position: 0px -736px;
 }
+.termScheduleDivNameDiv .auiIconSecret {background-position: 0px -864px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconSecret:hover {background-position: 0px -864px;}
 
 .auiIconTrash {
   background-position: 0px -752px;
@@ -4858,7 +4891,7 @@ a.auiIconMailOpen:hover {
   width: 15px;
   height: 18px;
   vertical-align: baseline;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 

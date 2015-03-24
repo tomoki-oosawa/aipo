@@ -18,7 +18,6 @@
  *#
 
 ## ---------------------------------------------------------------------------
-
 <script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');
