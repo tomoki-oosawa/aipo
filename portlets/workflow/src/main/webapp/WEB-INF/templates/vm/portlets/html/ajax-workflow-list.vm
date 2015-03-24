@@ -83,7 +83,9 @@
 #ALtdcellAtt("$!record.StateString" 'nowrap="nowrap"')
 #if($result.LoginUser.UserId.Value != $user.UserId.Value)
 #ALtdcellheader()
+<div>
 <a href="javascript: void(0)" onclick="aipo.message.openDirect($user.UserId)">$!user.AliasName</a>
+</div>
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("<div>$!user.AliasName</div>" '')
