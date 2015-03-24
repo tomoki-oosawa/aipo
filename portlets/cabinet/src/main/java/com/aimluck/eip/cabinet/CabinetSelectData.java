@@ -462,6 +462,8 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId().intValue());
+      rd.setLoginUserId(loginUserId.longValue());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {

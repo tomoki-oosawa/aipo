@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * キャビネットのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class CabinetUtils {
 
@@ -115,7 +115,7 @@ public class CabinetUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -153,7 +153,7 @@ public class CabinetUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -191,7 +191,7 @@ public class CabinetUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -360,7 +360,7 @@ public class CabinetUtils {
 
   /**
    * リスト中のフォルダに対し、閲覧権限の有無により、可視、不可視を設定します
-   * 
+   *
    * @param folder_list
    * @param rundata
    */
@@ -440,7 +440,7 @@ public class CabinetUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -452,7 +452,7 @@ public class CabinetUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -462,7 +462,7 @@ public class CabinetUtils {
 
   /**
    * 現在ログインしているユーザーは指定したIDのフォルダを閲覧する権限を持つかを返します
-   * 
+   *
    * @param folder_id
    * @param rundata
    * @return
@@ -543,7 +543,7 @@ public class CabinetUtils {
 
   /**
    * 現在ログインしているユーザーは指定したIDのフォルダを編集する権限を持つかを返します
-   * 
+   *
    * @param folder_id
    * @param rundata
    * @return
@@ -620,7 +620,7 @@ public class CabinetUtils {
 
   /**
    * フォームで使用するフォルダのリストに対し、権限的に不可視なフォルダを設定します
-   * 
+   *
    * @param folder_list
    * @param rundata
    */
@@ -655,7 +655,7 @@ public class CabinetUtils {
 
   /**
    * 権限的に閲覧可能な全フォルダのIDを返します。
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -675,7 +675,7 @@ public class CabinetUtils {
 
   /**
    * 上位でアクセスコントロールを行っているフォルダを再帰的に検索します
-   * 
+   *
    * @param parentId
    * @return
    */
@@ -743,7 +743,7 @@ public class CabinetUtils {
   }
 
   /**
-   * 
+   *
    * @param file
    * @param loginName
    */
@@ -793,7 +793,7 @@ public class CabinetUtils {
 
   /**
    * <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -864,7 +864,7 @@ public class CabinetUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -876,7 +876,7 @@ public class CabinetUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -896,7 +896,7 @@ public class CabinetUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return

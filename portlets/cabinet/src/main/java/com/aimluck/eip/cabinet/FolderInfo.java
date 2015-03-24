@@ -24,13 +24,14 @@ import java.util.Date;
 import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのフォルダ階層の情報（一行）を表すクラス．
- * 
+ *
  */
 public class FolderInfo implements Cloneable {
 
@@ -64,9 +65,12 @@ public class FolderInfo implements Cloneable {
   /** 更新日 */
   private Date update_date;
 
+  /** 更新者ID */
+  private ALNumberField update_user_id;
+
   /**
    * コンストラクタ
-   * 
+   *
    * @param index
    * @param isRead
    * @param subject
@@ -80,6 +84,11 @@ public class FolderInfo implements Cloneable {
     update_name = new ALEipUser();
     colist = new ArrayList<FolderInfo>();
     update_date = new Date();
+    update_user_id = new ALNumberField();
+  }
+
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
   }
 
   public ALEipUser getUpdateName() {
@@ -108,6 +117,10 @@ public class FolderInfo implements Cloneable {
    */
   public void setUpdateName(ALEipUser user) {
     update_name = user;
+  }
+
+  public void setUpdateUserId(ALNumberField user_id) {
+    update_user_id = user_id;
   }
 
   public void setList(List<FolderInfo> list) {
