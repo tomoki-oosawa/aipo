@@ -18,8 +18,8 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_imode')
-#set($linklist = [["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
-#ALcell_pagetitle($career "アドレス検索")
+#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#ALcell_pagetitle($career "ｱﾄﾞﾚｽ検索")
 #ALcell_formheader($career $jslink $portlet)
 <value="syagai" #if($address_type && $address_type=="corp_address") checked="checked" #end>
 #ALcell_br($career)
@@ -28,7 +28,7 @@
 <input name="eventSubmit_doAddressbook_addr_search_list" type="hidden" value="1">
 #ALcell_formfooter()
 #ALcell_br($career)
-名前・メールアドレス・電話番号・会社名で検索します。
+名前･ﾒｰﾙｱﾄﾞﾚｽ･電話番号･会社名で検索します｡
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)
 #ALtdcellFooterLink($career)

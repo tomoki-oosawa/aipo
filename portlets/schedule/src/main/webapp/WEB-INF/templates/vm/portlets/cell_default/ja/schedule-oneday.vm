@@ -40,7 +40,7 @@ $l10n.SCHEDULE_NO_SCHEDULE
 #if(! $!{record.isSpan()})
 $!{record.Date}
 #else
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 #end
 <a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{record.ScheduleId}).addQueryData('view_date', $!{result.ViewDate.toString()})">$!{record.Name}</a>#ALcell_br($career)
 #if(! ${record.isPublic()})

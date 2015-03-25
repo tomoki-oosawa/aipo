@@ -22,7 +22,7 @@
 #ALcell_pagetitle($career $title)
 #ALcell_formheader($career $jslink $portlet)
 
-##ALcell_center_header($career)参照ユーザー選択#ALcell_center_footer($career)
+##ALcell_center_header($career)参照ﾕｰｻﾞｰ選択#ALcell_center_footer($career)
 #ALcell_hr($career '1')
 $l10n.SCHEDULE_SELECT_USERS_GROUP
 #ALcell_hr($career '1')
@@ -43,7 +43,7 @@ $l10n.SCHEDULE_POST#ALcell_br($career)
 #end
 #ALcell_hr($career '1')
 #ALcell_submit($career "eventSubmit_doSchedule_form_selectmember" $l10n.SCHEDULE_SELECT_USER)
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

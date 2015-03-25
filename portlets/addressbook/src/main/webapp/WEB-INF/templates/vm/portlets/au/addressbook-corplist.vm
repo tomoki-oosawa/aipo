@@ -23,14 +23,14 @@
 #else
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_corp_list','1').addQueryData('tab','corp')")
 #end
-#set($linklist = [["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
-#ALcell_pagetitle($career "社内アドレス一覧")
+#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#ALcell_pagetitle($career "社内ｱﾄﾞﾚｽ一覧")
 #if($isSerchRes)
 #ALcell_center_header($career)検索結果#ALcell_center_footer($career)
 #ALcell_hr($career '1')
 #end
 #if($result.List.size() == 0)
-指定された条件に該当するアドレスはありません。
+指定された条件に該当するｱﾄﾞﾚｽはありません｡
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)

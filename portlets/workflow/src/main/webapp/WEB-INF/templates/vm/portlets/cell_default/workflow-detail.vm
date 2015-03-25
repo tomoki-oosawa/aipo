@@ -38,7 +38,7 @@
 #ALcell_dt($career $l10n.WORKFLOW_POSTING_DAY)
 
 #ALcell_dd($career "$!result.Detail.CreateDate")
-<input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
+<input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##ﾒﾝﾊﾞｰﾘｽﾄの作成
 
 #ALcell_dt($career $l10n.WORKFLOW_CREATEDATE)
 #ALcell_dd($career "$!result.Detail.CreateDate")

@@ -18,10 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_imode')
-#set($linklist = [["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ログアウト", "$jslink.setAction($config.getString('action.logout'))"]])
-#set ($menulist_todo = [["ToDo", ""], ["未完了ToDo一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1').addQueryData('tab','list')"], ["完了ToDo一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1').addQueryData('tab','complete')"]]) 
-#set ($menulist_category = [["カテゴリ",""], ["カテゴリ一覧", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')"]]) 
-#set ($menulist = [$menulist_todo, $menulist_category]) 
-#ALcell_menulist($career 'ToDo' $menulist)
-#ALcell_hr($career '1')
-#ALcell_linklist($career $linklist)
+#parse("/portlets/cell_default/ja/todo-menu.vm")

@@ -60,7 +60,7 @@ $l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 S
 #end
 #if($record2.isDuplicate())
-##重複スケジュール
+##重複ｽｹｼﾞｭｰﾙ
 D
 #end
 #if(${record2.isRepeat()})
@@ -68,7 +68,7 @@ D
 R
 #end
 #if($record2.isTmpreserve())
-##仮スケジュール
+##仮ｽｹｼﾞｭｰﾙ
 T
 #end
 #if($record2.isShowDetail())

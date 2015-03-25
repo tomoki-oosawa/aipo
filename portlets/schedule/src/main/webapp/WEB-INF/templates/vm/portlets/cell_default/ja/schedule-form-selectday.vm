@@ -24,7 +24,7 @@
 #ALcell_hr($career '1')
 #end
 #ALcell_formheader($career $jslink $portlet)
-$l10n.SCHEDULE_CELL_DATE：#ALcell_br($career)
+$l10n.SCHEDULE_CELL_DATE:#ALcell_br($career)
 #ALcell_textfield($career 'view_date' "$!{result.ViewDateDate}" 8 8 '' 'n')
 #ALcell_br($career)$l10n.SCHEDULE_SAMPLE#ALcell_br($career)$l10n.SCHEDULE_SAMPLE_DATE_ONLY
 #ALcell_br($career)

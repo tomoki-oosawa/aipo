@@ -33,11 +33,11 @@
 <input type="hidden" name="sharefacs" value="#foreach($record in $!{result.FormData.FacilityMemberList})$!{record.FacilityId}#if($facilitycount<$fmembersize),#set($facilitycount = $facilitycount + 1)#end#end">
 
 <input type="hidden" name="end_date_date" value="$!{result.FormData.StartDateDate}">
-$l10n.SCHEDULE_CELL_DATE：#ALcell_textfield($career 'start_date_date' "$!{result.FormData.StartDateDate}" 8 8 '' 'n')
+$l10n.SCHEDULE_CELL_DATE:#ALcell_textfield($career 'start_date_date' "$!{result.FormData.StartDateDate}" 8 8 '' 'n')
 #ALcell_br($career)$l10n.SCHEDULE_SAMPLE#ALcell_br($career)2005/1/1→20050101
 #ALcell_hr($career '1')
 
-$l10n.SCHEDULE_TIME：#ALcell_br($career)
+$l10n.SCHEDULE_TIME:#ALcell_br($career)
 #ALcell_textfield($career 'start_date_time' "$!{result.FormData.StartDateTime}" 4 4 '' 'n') $l10n.SCHEDULE_FROM#ALcell_textfield($career 'end_date_time' "$!{result.FormData.EndDateTime}" 4 4 '' 'n')
 #ALcell_br($career)$l10n.SCHEDULE_SAMPLE_TIME#ALcell_br($career)$l10n.SCHEDULE_PER_15MINUTES
 
@@ -52,7 +52,7 @@ $l10n.SCHEDULE_TIME：#ALcell_br($career)
 #if(! $!{result.isSpan()})
 #ALcell_submit($career "eventSubmit_doSchedule_form_facility_group" $l10n.SCHEDULE_SELECT_SHARED_FACILITIES)
 #end
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

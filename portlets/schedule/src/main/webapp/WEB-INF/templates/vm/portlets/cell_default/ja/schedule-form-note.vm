@@ -30,14 +30,14 @@
 #ALcell_errmsg($career $errmsgs)
 
 #if ($!{result.isRepeat()})
-$l10n.SCHEDULE_REPEAT：#ALcell_br($career)
+$l10n.SCHEDULE_REPEAT:#ALcell_br($career)
 <BLOCKQUOTE>
 #if ($!{result.FormData.RepeatType.toString()} == "D") $l10n.SCHEDULE_EVERY_DAY#end
 #if ($!{result.FormData.RepeatType.toString()} == "W") $l10n.SCHEDULE_EVERY_WEEK#ALcell_br($career)#if ($!{result.FormData.Week0.toString()} == "TRUE")$l10n.SCHEDULE_SUNDAY#end#if ($!{result.FormData.Week1.toString()} == "TRUE")$l10n.SCHEDULE_MONDAY#end#if ($!{result.FormData.Week2.toString()} == "TRUE")$l10n.SCHEDULE_TUSEDAY#end#if ($!{result.FormData.Week3.toString()} == "TRUE")$l10n.SCHEDULE_WEDNESDAY#end#if ($!{result.FormData.Week4.toString()} == "TRUE")$l10n.SCHEDULE_THURSDAY#end#if ($!{result.FormData.Week5.toString()} == "TRUE")$l10n.SCHEDULE_FRIDAY#end#if ($!{result.FormData.Week6.toString()} == "TRUE")$l10n.SCHEDULE_SATURDAY#end $l10n.SCHEDULE_A_DAY_OF_THE_WEEK#end
 #if ($!{result.FormData.RepeatType.toString()} == "M") $l10n.SCHEDULE_EVERY_MONTH $!{result.FormData.MonthDay}$l10n.SCHEDULE_DAY#end
 </BLOCKQUOTE>
 #if ($!{result.FormData.LimitFlag.toString()} == "ON")
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 <BLOCKQUOTE>
 $!{result.FormData.LimitStartDateDate2}$l10n.SCHEDULE_FROM#ALcell_br($career)
 $!{result.FormData.LimitEndDateDate2}
@@ -53,7 +53,7 @@ $l10n.SCHEDULE_ALERT_DUPLICATIVE_FACILITIES
 </BLOCKQUOTE>
 #end
 #elseif($!{result.isSpan()})
-$l10n.SCHEDULE_TERM：#ALcell_br($career)
+$l10n.SCHEDULE_TERM:#ALcell_br($career)
 $!{result.FormData.StartDateDate2}$l10n.SCHEDULE_FROM#ALcell_br($career)
 $!{result.FormData.EndDateDate2}
 #else
@@ -125,7 +125,7 @@ $!result.getFieldName("public_flag")#ALcell_br($career)
 <input name="public_flag" type="radio" value="P" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end>$l10n.SCHEDULE_HIDE_ALL
 #ALcell_hr($career '1')
 #ALcell_submit($career $event_submit $action_str)
-##cell_submit($career 'eventSubmit_doSchedule_menu' 'キャンセルする')
+##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

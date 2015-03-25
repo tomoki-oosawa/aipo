@@ -18,12 +18,12 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($uri = "portal/")
-#ALcell_pagetitle($career "${alias}ログアウト")
-${alias}サイトからログアウトしました。
+#ALcell_pagetitle($career "${alias}ﾛｸﾞｱｳﾄ")
+${alias}ｻｲﾄからﾛｸﾞｱｳﾄしました｡
 #ALcell_hr($career '1')
 #if($key && $key != '')
-<a href="${clink.setURI($uri)}?eventSubmit_doAccount_login=1&key=${key}">ログイン画面へ</a>
+<a href="${clink.setURI($uri)}?eventSubmit_doAccount_login=1&key=${key}">ﾛｸﾞｲﾝ画面へ</a>
 #else
-<a href="${clink.setURI($uri)}">ログイン画面へ</a>
+<a href="${clink.setURI($uri)}">ﾛｸﾞｲﾝ画面へ</a>
 #end
 <hr style="border:solid 1px #ffffff; color:#ffffff" />

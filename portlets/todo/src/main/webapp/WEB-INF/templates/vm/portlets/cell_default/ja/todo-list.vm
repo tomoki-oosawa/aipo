@@ -22,7 +22,7 @@
 #if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
 #ALcell_pagetitle($career "$pagetitle")
 #if ($result.List.size() == 0)
-<div class="message">ToDoはありません。</div>
+<div class="message">ToDoはありません｡</div>
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
@@ -40,7 +40,7 @@
 #end
 #ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.TodoId)"><span style="color:$color">$!record.TodoName</span></a>
 #if(! ${record.isPublic()})
-（非公開）
+(非公開)
 ##AUIiconSecretAtt("title='非公開'" "")
 #end
 #ALcell_li_footer($career)
@@ -53,9 +53,9 @@
 #end
 #*
 <hr>
-カテゴリ選択
+ｶﾃｺﾞﾘ選択
 <select name="filter">
-<option value="">（全体）
+<option value="">(全体)
 #foreach( $record in $result.CategoryList )
 <option value="$!record.CategoryId" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected #end>$!record.CategoryName
 #end

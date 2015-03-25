@@ -48,8 +48,8 @@
 #ALcell_li_header($career)
 <span class="caution">#if($record.Progress.Value == "D") $l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK #elseif($record.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end</span>
 <a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end</a>
-##[$!{record.PriceStr}&nbsp;$l10n.WORKFLOW_YEN]/[$l10n.WORKFLOW_CREATE：$!record.CreateDate]/
-[$title：$user]/[$l10n.WORKFLOW_SITUATION：$!record.StateString]
+##[$!{record.PriceStr}&nbsp;$l10n.WORKFLOW_YEN]/[$l10n.WORKFLOW_CREATE:$!record.CreateDate]/
+[$title:$user]/[$l10n.WORKFLOW_SITUATION:$!record.StateString]
 #ALcell_li_footer($career)
 #end
 #ALcell_ul_footer($career)

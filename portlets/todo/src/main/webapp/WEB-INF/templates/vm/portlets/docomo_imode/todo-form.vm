@@ -27,7 +27,7 @@
 #set ($subtitle = 'ToDo編集')
 #set ($event_submit = "eventSubmit_doTodo_update")
 #end
-#set ($home = ["メニューToDoへ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"])
+#set ($home = ["ﾒﾆｭｰToDoへ戻る", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"])
 #ALcell_pagetitle($career $subtitle)
 #ALcell_errmsg($career $errmsgs)
 #ALcell_formheader($jslink $portlet)
@@ -113,7 +113,7 @@ $!result.getFieldName("public_flag")<br>
 <input name="public_flag" type="radio" value="T"#if ($!result.PublicFlag.toString() == "T") checked#end>公開
 <input name="public_flag" type="radio" value="F"#if ($!result.PublicFlag.toString() == "F") checked#end>非公開
 <hr size="1">
-#submit($event_submit $action_str)#submit('eventSubmit_doTodo_list' 'キャンセルする')
+#submit($event_submit $action_str)#submit('eventSubmit_doTodo_list' 'ｷｬﾝｾﾙする')
 #ALcell_formfooter()
 <hr>
 #ALcell_menuhome($home)

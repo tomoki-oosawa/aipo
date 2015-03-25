@@ -22,7 +22,7 @@
 
 #ALcell_pagetitle($career $l10n.SCHEDULE_EDIT_REPEAT_SCHEDULE)
 #ALcell_formheader($career $jslink $portlet)
-$l10n.SCHEDULE_EDIT_RANGE：#ALcell_br($career)
+$l10n.SCHEDULE_EDIT_RANGE:#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="0" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) checked="checked" #end>
 $l10n.SCHEDULE_ALL_SCHEDULE#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="1" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 1) checked="checked" #end>
