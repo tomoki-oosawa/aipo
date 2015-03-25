@@ -32,7 +32,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class MsgboardTopicResultData implements ALData {
 
@@ -87,6 +87,9 @@ public class MsgboardTopicResultData implements ALData {
   /** 顔写真フラグ */
   private boolean has_photo;
 
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
+
   /**
    *
    *
@@ -115,6 +118,8 @@ public class MsgboardTopicResultData implements ALData {
     new_topic = false;
 
     has_photo = false;
+
+    login_user_id = new ALNumberField();
   }
 
   /**
@@ -292,7 +297,7 @@ public class MsgboardTopicResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -334,6 +339,14 @@ public class MsgboardTopicResultData implements ALData {
    */
   public void setOwnerHasPhoto(boolean hasPhoto) {
     this.has_photo = hasPhoto;
+  }
+
+  public void setLoginUserId(int i) {
+    login_user_id.setValue(i);
+  }
+
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
   }
 
 }

@@ -68,7 +68,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックの検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardTopicSelectData extends
     ALAbstractMultiFilterSelectData<EipTMsgboardTopic, EipTMsgboardTopic>
@@ -132,7 +132,7 @@ public class MsgboardTopicSelectData extends
   private boolean isFileUploadable;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -197,7 +197,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -208,7 +208,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -279,7 +279,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -314,7 +314,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -385,7 +385,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -519,7 +519,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -554,6 +554,7 @@ public class MsgboardTopicSelectData extends
       now.add(Calendar.DATE, -1);
       rd.setNewTopicFlag(date.after(now.getTime()));
       rd.setReplyCount(MsgboardUtils.countReply(record.getTopicId()));
+      rd.setLoginUserId(uid);
 
       return rd;
     } catch (Exception ex) {
@@ -565,7 +566,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 詳細表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -607,7 +608,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -694,7 +695,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -754,6 +755,7 @@ public class MsgboardTopicSelectData extends
       rd.setNote(record.getNote());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setLoginUserId(uid);
 
       List<EipTMsgboardFile> list =
         getSelectQueryForFiles(record.getTopicId().intValue()).fetchList();
@@ -790,7 +792,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<MsgboardCategoryResultData> getCategoryList() {
@@ -803,7 +805,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * トピックの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getTopicSum() {
@@ -812,7 +814,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -832,7 +834,7 @@ public class MsgboardTopicSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -862,7 +864,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -872,7 +874,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclUpdateTopicOthers() {
@@ -881,7 +883,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {
@@ -916,7 +918,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -925,7 +927,7 @@ public class MsgboardTopicSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
