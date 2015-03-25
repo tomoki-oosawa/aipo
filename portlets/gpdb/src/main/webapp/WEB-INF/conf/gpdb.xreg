@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Aipo is a groupware program developed by Aimluck,Inc.
@@ -18,7 +19,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-﻿<?xml version="1.0" encoding="UTF-8"?>
 
 <registry>
     <portlet-entry name="Gpdb" hidden="false" type="ref" parent="Velocity" application="false">
