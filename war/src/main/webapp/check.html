@@ -23,14 +23,65 @@
 <script type="text/javascript" src="/container/gadgets/js/core:rpc:jquery.js?c=0"></script>
 <script type="text/javascript">
 
+function CronTask(task, interval) {
+  this.task = task;
+  this.interval = interval;
+}
+
+CronTask.prototype = {
+
+  start: function() {
+    this.stop().run();
+    return this;
+  },
+
+  stop: function() {
+    if (this.worker) {
+      window.clearTimeout(this.worker);
+    }
+    return this;
+  },
+
+  run: function() {
+    var cronTask = this;
+    this.task(function() {
+      var expire = Math.floor(cronTask.interval);
+      cronTask.worker = window.setTimeout(
+          function () {
+            cronTask.run.call(cronTask);
+          },
+          expire);
+    });
+  },
+
+  reset: function() {
+    this.destroy().run();
+    return this;
+  },
+
+  destroy: function() {
+    this.stop();
+    this.decayRate = 1;
+    return this;
+  }
+};
+
 var retryCount = 0;
+var isConnect = false;
+var isPush = 0;
 function join() {
+    if(isConnect) {
+        return;
+    }
+    isConnect = true;
     var params = {
        url: "push/",
-       timeout: 10 * 60 * 1000,
+       timeout: 10 * 60 * 1000 ,
        cache: false,
        contentType: "application/javascript",
        success: function(data, status) {
+           isConnect = false;
+           retryCount = 0;
            var type = data.type;
            if("messagev2" == type) {
                gadgets.rpc.call(null, "requestCheckMessage", null, data);
@@ -44,9 +95,14 @@ function join() {
            join();
        },
        error: function(data, status) {
+           isConnect = false;
            if(retryCount < 10) {
                retryCount++;
-               join();
+               if(retryCount == 1) {
+                   join();
+               } else {
+                   setTimeout(join, 1000);
+               }
            }
        }
     }
@@ -55,11 +111,32 @@ function join() {
 
 function init() {
     gadgets.rpc.call(null, "requestCheckActivity");
-	var push = gadgets.util.getUrlParameters()['push'];
-	if(push == 1) {
-        join();
-	}
+    isPush = gadgets.util.getUrlParameters()['push'];
+    if(isPush == 1) {
+        var task = new CronTask(update, 5 * 60 * 1000);
+        task.start();
+    }
     return false;
+}
+
+function update(decay) {
+	retryCount = 0;
+    refresh();
+    decay();
+}
+
+function refresh() {
+    if(isPush == 1) {
+        if(!isConnect) {
+            join();
+            setTimeout(function() {
+                try {
+                    window.parent.aipo.message.reloadRoomList();
+                } catch(ignore) {
+                }
+              }, 3000);
+        }
+    }
 }
 
 gadgets.util.registerOnLoadHandler(init);
@@ -67,6 +144,6 @@ gadgets.util.registerOnLoadHandler(init);
 </script>
 </head>
 <body>
-	<script type="text/javascript">gadgets.util.runOnLoadHandlers();</script>
+    <script type="text/javascript">gadgets.util.runOnLoadHandlers();</script>
 </body>
 </html>

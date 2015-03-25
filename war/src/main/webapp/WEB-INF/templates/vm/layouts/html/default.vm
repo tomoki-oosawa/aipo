@@ -130,6 +130,15 @@ dojo.addOnLoad(function() {
     if(window.webkitNotifications || window.Notification) {
       aipo.container.gadgetService.requestDesktopNotifyEnable();
     }
+    dojo.connect(window, "onfocus", null, function(e) {
+        var sharedStateIframe = document.getElementById('sharedStateIframe').contentWindow;
+        if(sharedStateIframe) {
+            try {
+                sharedStateIframe.refresh();
+            } catch(ignore) {
+            }
+        }
+    });
 #end
 });
 
