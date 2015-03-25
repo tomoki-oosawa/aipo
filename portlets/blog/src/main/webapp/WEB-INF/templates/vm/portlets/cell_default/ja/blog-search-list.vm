@@ -31,7 +31,7 @@ $l10n.BLOG_ENTRY_SEARCH<br />
 ($l10n.BLOG_SEARCH_ALL)<br />
 #ALcell_hr($career '1')
 #if (!$result.List || $!{result.List.size()} <= 0)
- &nbsp;$l10n.BLOG_NOTHING_ENTRY｡
+ &nbsp;$l10n.BLOG_NOTHING_ENTRY。
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)

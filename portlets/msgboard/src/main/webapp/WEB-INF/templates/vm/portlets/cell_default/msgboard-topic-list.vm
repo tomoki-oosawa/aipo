@@ -22,7 +22,7 @@
 #set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 #ALcell_pagetitle($career '掲示板')
 #if(!$result.List || $!result.List.size() <= 0)
- &nbsp;指定された条件に該当するﾄﾋﾟｯｸはありません｡
+ &nbsp;指定された条件に該当するﾄﾋﾟｯｸはありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_hr($career '1')

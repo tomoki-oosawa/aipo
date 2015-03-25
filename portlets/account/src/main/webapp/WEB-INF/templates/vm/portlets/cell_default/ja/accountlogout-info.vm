@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set($uri = "portal/")
 #ALcell_pagetitle($career "${alias}ﾛｸﾞｱｳﾄ")
-${alias}ｻｲﾄからﾛｸﾞｱｳﾄしました｡
+${alias}ｻｲﾄからﾛｸﾞｱｳﾄしました。
 #ALcell_hr($career '1')
 #if($key && $key != '')
 <a href="${clink.setURI($uri)}?eventSubmit_doAccount_login=1&key=${key}">ﾛｸﾞｲﾝ画面へ</a>

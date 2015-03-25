@@ -24,7 +24,7 @@
 <input name="sword" type="text" size="14" maxlength="100" value="$!result.SearchWord">#ALcell_br($career)
 #ALcell_submit($career 'submit' '検索')
 #ALcell_br($career)#ALcell_br($career)
-会社名･部署名･住所･電話番号で検索します｡
+会社名･部署名･住所･電話番号で検索します。
 <input name="eventSubmit_doAddressbook_company_search_list" type="hidden" value="1">
 #ALcell_formfooter()
 #ALcell_hr($career '1')

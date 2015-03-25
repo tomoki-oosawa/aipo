@@ -22,7 +22,7 @@
 #if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
 #ALcell_pagetitle($career "$pagetitle")
 #if ($result.List.size() == 0)
-<div class="message">ToDoはありません｡</div>
+<div class="message">ToDoはありません。</div>
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)

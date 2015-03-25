@@ -21,7 +21,7 @@
 #set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"]])
 #ALcell_pagetitle($career "ｶﾃｺﾞﾘ一覧")
 #if($result.List.size() <= 0)
-ｶﾃｺﾞﾘはありません｡
+ｶﾃｺﾞﾘはありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)

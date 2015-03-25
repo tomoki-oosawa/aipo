@@ -34,7 +34,7 @@
 $record.DefaultImageDescription
 #end
 <a href='$!jslink.getPortletById($!portlet.getID()).addQueryData('eventSubmit_doWebmail_account','1').addQueryData('entityid',$record.AccountId)'>$!record.AccountName($!record.MailAddress)</a>
-($l10n.WEBMAIL_NEW_ARRIVAL:$newMailNum､$l10n.WEBMAIL_UNREAD:$countUnRead)
+($l10n.WEBMAIL_NEW_ARRIVAL:$newMailNum、$l10n.WEBMAIL_UNREAD:$countUnRead)
 #ALcell_li_footer($career)
 #end
 </ul>

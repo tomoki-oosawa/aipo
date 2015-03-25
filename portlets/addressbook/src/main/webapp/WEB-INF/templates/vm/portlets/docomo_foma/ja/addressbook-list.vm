@@ -30,7 +30,7 @@
 #ALcell_hr($career '1')
 #end
 #if($result.List.size() == 0)
-指定された条件に該当するｱﾄﾞﾚｽはありません｡
+指定された条件に該当するｱﾄﾞﾚｽはありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)

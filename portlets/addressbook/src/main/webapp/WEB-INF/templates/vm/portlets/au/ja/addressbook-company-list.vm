@@ -30,7 +30,7 @@
 #ALcell_hr($career '1')
 #end
 #if($result.List.size() ==0)
-会社情報はありません｡
+会社情報はありません。
 #else
 #if($result.PagesNum > 1)
 #ALcell_pageview($career $link $result)
