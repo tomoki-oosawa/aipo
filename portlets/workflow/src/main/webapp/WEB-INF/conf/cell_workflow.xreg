@@ -23,7 +23,7 @@
     <portlet-entry name="Cell_Workflow" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
         <meta-info>
-            <title>ワークフロー</title>
+            <title>ﾜｰｸﾌﾛｰ</title>
             <description>決裁や有給の稟議に利用できるワークフローです。</description>
         </meta-info>
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
