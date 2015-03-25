@@ -33,7 +33,7 @@
 #end
 #ALcell_pagetitle($career $l10n.SCHEDULE_SCHEDULE_DELETE)
 #ALcell_formheader($career $jslink $portlet)
-$l10n.SCHEDULE_DELETE_CONDITOPN：#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_CONDITOPN:#ALcell_br($career)
 #if($!{result.Detail.isOwner()})
 #if($hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>

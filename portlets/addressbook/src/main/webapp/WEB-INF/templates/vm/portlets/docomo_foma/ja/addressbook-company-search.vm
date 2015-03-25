@@ -18,13 +18,13 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
-#set($linklist = [["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
+#set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "会社情報検索")
 #ALcell_formheader($career $jslink $portlet)
 #ALcell_textfield($career 'sword' "$!result.SearchWord" 14 100 '' 'h')#ALcell_br($career)
 #ALcell_submit($career 'submit' '検索')
 #ALcell_br($career)#ALcell_br($career)
-会社名・部署名・住所・電話番号で検索します。
+会社名･部署名･住所･電話番号で検索します。
 <input name="eventSubmit_doAddressbook_company_search_list" type="hidden" value="1">
 #ALcell_formfooter()
 #ALcell_hr($career '1')

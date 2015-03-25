@@ -18,16 +18,16 @@
  *#
 ## ---------------------------------------------------------------------------
 #if($!resultOnTopicDetail)
-#set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #else
-#set($methodlist = [["トピック追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
+#set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #end
-#set($linklist = [["トピック一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
-#ALcell_pagetitle($career "トピック詳細")
+#set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
+#ALcell_pagetitle($career "ﾄﾋﾟｯｸ詳細")
 #ALcell_dl_header($career)
-#ALcell_dt($career 'トピックタイトル')
+#ALcell_dt($career 'ﾄﾋﾟｯｸﾀｲﾄﾙ')
 #ALcell_dd($career $!{result.ParentTopic.TopicName})
-#ALcell_dt($career 'カテゴリ')
+#ALcell_dt($career 'ｶﾃｺﾞﾘ')
 #ALcell_dd($career $!{result.ParentTopic.CategoryName})
 #ALcell_dt($career '投稿者')
 #ALcell_dd($career "$!{result.ParentTopic.OwnerName}")
@@ -36,7 +36,7 @@
 #ALcell_dt($career "内容")
 #ALcell_dd($career $!{result.ParentTopic.Note})
 #if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size()>0)
-#ALcell_dt($career "添付ファイル")
+#ALcell_dt($career "添付ﾌｧｲﾙ")
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
@@ -55,10 +55,10 @@
 #end
 #ALcell_dl_footer($career)
 #ALcell_hr($career '1')
-コメント一覧
+ｺﾒﾝﾄ一覧
 #ALcell_hr($career '1')
 #if(!$!result.CoTopicList || $!result.CoTopicList.size() <= 0)
-コメントはありません
+ｺﾒﾝﾄはありません
 #ALcell_hr($career '1')
 #else
 #foreach ($record in $result.CoTopicList)
@@ -70,7 +70,7 @@
 #ALcell_dt($career "書き込み")
 #ALcell_dd($career $!{record.Note})
 #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
-#ALcell_dt($career "添付ファイル")
+#ALcell_dt($career "添付ﾌｧｲﾙ")
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())

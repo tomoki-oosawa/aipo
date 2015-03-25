@@ -41,7 +41,7 @@ $l10n.SCHEDULE_NO_SCHEDULE
 #if(!${record.isPublic()} && !${record.isMember()})
 <span>
 #if($schedule.Repeat)
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 #else
 $!{record.Date}#ALcell_br($career)
 #end
@@ -58,7 +58,7 @@ $l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 #if(!$!{record.isSpan()})
 $!{record.Date}#ALcell_br($career)
 #else
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 #end
 $!{record.Name}
 #if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end

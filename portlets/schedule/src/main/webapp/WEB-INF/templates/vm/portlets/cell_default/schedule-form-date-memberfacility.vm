@@ -19,7 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set($membersize = $!{result.FormData.MemberList.size()})
 #if($membersize > 1)
-$l10n.SCHEDULE_MEMBERS：#ALcell_br($career)
+$l10n.SCHEDULE_MEMBERS:#ALcell_br($career)
 <ul>
 #foreach($record in $!{result.FormData.MemberList})
 #if ( ! ($!result.LoginUser.Name.toString() == $!record.Name.toString()) )
@@ -44,7 +44,7 @@ $l10n.SCHEDULE_UPDATE_TO_TEMP_SCHEDULE#ALcell_br($career)
 
 #set($fmembersize = $!{result.FormData.FacilityMemberList.size()})
 #if($fmembersize > 0)
-$l10n.SCHEDULE_SHARED_FACILITIES：#ALcell_br($career)
+$l10n.SCHEDULE_SHARED_FACILITIES:#ALcell_br($career)
 <ul>
 #foreach($record in $!{result.FormData.FacilityMemberList})
 #ALcell_li_header($career)$!{record.FacilityName}#ALcell_li_footer($career)
