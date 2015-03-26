@@ -65,7 +65,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ReportSelectData extends
     ALAbstractMultiFilterSelectData<EipTReport, EipTReport> implements ALData {
@@ -120,7 +120,7 @@ public class ReportSelectData extends
   private boolean isAdmin;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -210,7 +210,7 @@ public class ReportSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -239,7 +239,7 @@ public class ReportSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -287,7 +287,7 @@ public class ReportSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -415,7 +415,7 @@ public class ReportSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -471,7 +471,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -486,7 +486,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -528,7 +528,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -593,7 +593,7 @@ public class ReportSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -614,6 +614,7 @@ public class ReportSelectData extends
       rd.setNote(record.getNote());
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
+      rd.setClientId(client.getUserId().getValue());
       // 自身の報告書かを設定する
       Integer login_user_id =
         Integer.valueOf((int) login_user.getUserId().getValue());
@@ -704,7 +705,7 @@ public class ReportSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -719,7 +720,7 @@ public class ReportSelectData extends
 
   /**
    * 現在選択されているサブメニューを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentSubMenu() {
@@ -744,7 +745,7 @@ public class ReportSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -752,7 +753,7 @@ public class ReportSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -762,7 +763,7 @@ public class ReportSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
