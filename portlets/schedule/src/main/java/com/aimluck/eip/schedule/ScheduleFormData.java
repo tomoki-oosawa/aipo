@@ -786,7 +786,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         getLimitStartDate(),
         getLimitEndDate(),
         getMonthDay(),
-        // getYearMonth(),
+        getYearMonth(),
         loginUser,
         null,
         msgList,

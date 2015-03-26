@@ -1968,9 +1968,9 @@ public class ScheduleUtils {
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
       ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
       ALDateField limit_start_date, ALDateField limit_end_date,
-      ALNumberField month_day, ALEipUser login_user, String entityid,
-      List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
-      ALPageNotFoundException {
+      ALNumberField month_day, ALNumberField year_month, ALEipUser login_user,
+      String entityid, List<String> msgList, boolean isCellPhone)
+      throws ALDBErrorException, ALPageNotFoundException {
 
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
@@ -2070,7 +2070,8 @@ public class ScheduleUtils {
             msgList.add(ALLocalizationUtils
               .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
           }
-        } else if ("M".equals(repeat_type.getValue())) {
+        }
+        if ("M".equals(repeat_type.getValue())) {
           // 毎月の繰り返し
           if (month_day.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件
@@ -2079,6 +2080,17 @@ public class ScheduleUtils {
           } else {
             month_day.validate(msgList);
           }
+        }
+        if ("Y".equals(repeat_type.getValue())) {
+          // 毎年の繰り返し
+          if (year_month.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEAR"));
+          } else {
+            year_month.validate(msgList);
+          }
+
         }
 
         if ("ON".equals(limit_flag.getValue())) {
@@ -2122,7 +2134,7 @@ public class ScheduleUtils {
           if ("ON".equals(limit_flag.getValue())) {
             lim = 'L';
           }
-          String repeat_pattern;
+          String repeat_pattern = null;
           int date_count = 0;
           if ("D".equals(repeat_type.getValue())) {
             repeat_pattern =
@@ -2145,11 +2157,17 @@ public class ScheduleUtils {
                 + (week_4.getValue() != null ? 1 : 0)
                 + (week_5.getValue() != null ? 1 : 0)
                 + (week_6.getValue() != null ? 1 : 0);
-          } else {
+          } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
               new StringBuffer().append('M').append(
                 format.format(month_day.getValue())).append(lim).toString();
+            date_count = 1;
+          } else if ("Y".equals(repeat_type.getValue())) {
+            DecimalFormat format = new DecimalFormat("0000");
+            repeat_pattern =
+              new StringBuffer().append('Y').append(
+                format.format(year_month.getValue())).append(lim).toString();
             date_count = 1;
           }
           // 開始時刻(期間初日)
@@ -3043,6 +3061,7 @@ public class ScheduleUtils {
       boolean week_6;
       String limit_flag;
       int month_day = -1;
+      int year_month = -1;
       Integer db_scheduleid = null;
       boolean[] week_array = new boolean[7];
       boolean unlimited_repeat = false;
@@ -3073,6 +3092,9 @@ public class ScheduleUtils {
 
         if (repeat_pattern.startsWith("M")) {
           month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
+        }
+        if (repeat_pattern.startsWith("Y")) {
+          year_month = Integer.parseInt(repeat_pattern.substring(1, 5));
         }
 
         // 単体スケジュールは期限1日のみのスケジュールとして判定
@@ -3271,6 +3293,25 @@ public class ScheduleUtils {
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "M___");
+            }
+          }
+          { // "Y".equals(repeat_type.getValue())
+            if (year_month > 0) { // 毎月、もしくは単体の場合
+              DecimalFormat exF = new DecimalFormat("0000");
+              String md_str = exF.format(year_month);
+              rmexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "Y" + md_str + "_");
+            } else {
+              rmexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "Y_____");
             }
           }
 
