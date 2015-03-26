@@ -122,6 +122,14 @@ public class ScheduleAction extends ALBaseAction {
       String top_form = portlet.getPortletConfig().getInitParameter("p19-rows");
       context.put("top_form", top_form);
 
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
+
       // 表示開始時間を取得する．
       String time_start =
         portlet.getPortletConfig().getInitParameter("p1a-rows");
@@ -366,6 +374,14 @@ public class ScheduleAction extends ALBaseAction {
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
 
     context.put("theme", ALOrgUtilsService.getTheme());
+
+    // 表示形式（月間）を取得する
+    String display_month =
+      portlet.getPortletConfig().getInitParameter("p195-rows");
+    if (display_month == null || "".equals(display_month)) {
+      display_month = "detail";
+    }
+    context.put("display_month", display_month);
 
     // 表示開始時間を取得する．
     String time_start = portlet.getPortletConfig().getInitParameter("p1a-rows");

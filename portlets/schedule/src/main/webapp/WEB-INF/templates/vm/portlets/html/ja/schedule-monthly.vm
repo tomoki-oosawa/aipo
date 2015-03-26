@@ -118,7 +118,11 @@
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
 #else
+#if($!display_month == "detail")
+#ALtableheaderCalendarAtt("100%" "calendarDisplayWeek")
+#else
 #ALtableheaderCalendarAtt("100%" "calendarDisplayMonth")
+#end
 <tr>
 #foreach($test in ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
 <th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
@@ -312,12 +316,22 @@ $!{record.ToDoResultData.TodoName}
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid', $!{record2.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.Date.toString()})")
 <div class="calendarScheduleDiv schedule-$!{portlet.ID}-$!{record2.ScheduleId}">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)" class="schedule-$!{portlet.ID}-$!{record2.ScheduleId}">
+#if($!display_month == "detail")
+<span class="time">${record2.Date}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record2.WbrName}</span>
+#AUIiconScheduleSets($!record2)
+</span>
+#else
 <span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end<span class="title">$!{record2.WbrName}</span>
+#end
 </a>
 </div>
 #else
 <div class="calendarScheduleDiv">
+#if($!display_month == "detail")
+<span class="time">$!{record2.Date}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record2.WbrName}</span>
+#else
 <span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end<span class="title">$!{record2.WbrName}</span>
+#end
 </div>
 #end
 </div>
