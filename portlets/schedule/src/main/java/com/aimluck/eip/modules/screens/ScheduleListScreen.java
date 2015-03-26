@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ScheduleListScreen extends ScheduleScreen {
 
@@ -53,7 +53,7 @@ public class ScheduleListScreen extends ScheduleScreen {
     .getLogger(ScheduleListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -84,6 +84,14 @@ public class ScheduleListScreen extends ScheduleScreen {
         showAll = "f";
       }
       context.put("init_s_all", showAll);
+
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
