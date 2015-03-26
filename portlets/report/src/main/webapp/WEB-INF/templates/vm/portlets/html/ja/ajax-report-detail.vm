@@ -89,7 +89,11 @@ $!record.AliasName<br />
 #else
 <i class="auiIcon auiIconMail" title="$l10n.REPORT_UNREAD"></i>
 #end
-$!record.AliasName
+#if($!LoginUser.UserId.Value == $!record.UserId.Value)
+	$!record.AliasName
+#else
+	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a>
+#end
 <br />
 #end
 #ALtditemfooter()

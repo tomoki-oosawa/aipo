@@ -23,7 +23,7 @@
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.REPORT_DETAIL)
+#ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
@@ -89,7 +89,11 @@ $!record.AliasName<br />
 #else
 <i class="auiIcon auiIconMail" title="$l10n.REPORT_UNREAD"></i>
 #end
-$!record.AliasName
+#if($!LoginUser.UserId.Value == $!record.UserId.Value)
+	$!record.AliasName
+#else
+	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a>
+#end
 <br />
 #end
 #ALtditemfooter()
@@ -130,11 +134,10 @@ ${record.Note}
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <li><a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a>
 #if($attachmentFile.isImage())
-<div id='popc' style='position:absolute'></div>
-<div class="thumbBlock">
-	<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-	<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-</div>
+	<div class="thumbBlock">
+		<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+		<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+	</div>
 #end
 </li>
 #end
@@ -185,7 +188,7 @@ ${record.Note}
 #end
 #ALbuttonheader()
 <input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
-#ALajaxbuttonClose()
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.report.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
