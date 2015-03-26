@@ -1495,7 +1495,7 @@ div.off, td.off {
 .calendar th {
   min-width: 2em;
   border: 1px solid #ddd;
-  padding: 3px 5px;
+  padding: 3px;
   font-weight: normal;
   text-align: center;
 }
@@ -1525,9 +1525,6 @@ div.off, td.off {
 .calendar td.day {
   padding: 3px 5px;
   border-bottom: none;
-}
-.calendar td.day a {
-  /*text-decoration: none;*/
 }
 .calendar td.day.sunday a {
   color: #ff3333;
@@ -1575,21 +1572,20 @@ div.off, td.off {
   padding: 0;
   border-top: none;
   border-bottom: none;
+  vertical-align: middle;
 }
 .calendar td.term.today {
   background: #edfeed;
-}
-.calendar div.calerndarTermScheduleDiv {
-  margin: 1px;
-  text-align: center;
-  border: 1px solid #9c9;
-  background-color: #DFD;
 }
 .calendarDisplayWeek div.calerndarTermScheduleDiv,
 .calendarDisplayMonth div.calerndarTermScheduleDiv,
 .calendarDisplayWeek div.calerndarTodoDiv,
 .calendarDisplayMonth div.calerndarTodoDiv{
   height: 18px;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv .time {
+  display: inline;
+  margin-right:5px;
 }
 .calendar div.calerndarTermScheduleDiv a {
   padding: 0 2px;
@@ -1632,9 +1628,6 @@ div.off, td.off {
 }
 .calendar .calendarScheduleDiv {
   margin: 1px;
-}
-.calendar .calendarScheduleDiv a {
-
 }
 .calendar .calendarScheduleDiv .time {
   white-space: nowrap;
@@ -1697,25 +1690,22 @@ div.off, td.off {
   background: #f6f6f6;
   white-space: nowrap;
   min-width: 0em;
+  padding: 0;
 }
 .calendarDisplayWeek .calendar .calendarScheduleDiv a,
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
   height: auto;
 }
-.calendarDisplayDay .calendar th {
-  min-width: 2em;
+.calendarDisplayMonth .calendar .calendarScheduleDiv a {
+  height: 1.5em;
+  overflow: hidden;
 }
-.calendarDisplayWeek .calendar th {
-  min-width: 2em;
-}
+.calendarDisplayDay .calendar th,
+.calendarDisplayWeek .calendar th,
 .calendarDisplayMonth .calendar th {
   min-width: 2em;
 }
-
 div.calendarScheduleDiv div.time {
-/*  height: 1.5em;
-  line-height: 1.5em; */
-  overflow: hidden;
   white-space: nowrap;
 }
 div.calendarScheduleDiv a:link,
@@ -1767,6 +1757,7 @@ div.calendarScheduleDiv .addSchedule:hover {
   border: 1px solid #9c9;
   background-color: #DFD;
   overflow: hidden;
+  margin: 1px;
 }
 
 .calendar td.topNone {
