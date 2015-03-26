@@ -319,9 +319,9 @@ $!{record.ToDoResultData.TodoName}
 #if($!display_month == "detail")
 <span class="time">${record2.Date}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record2.WbrName}</span>
 #AUIiconScheduleSets($!record2)
-</span>
 #else
-<span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end<span class="title">$!{record2.WbrName}</span>
+<span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>
+#end<span class="title">$!{record2.WbrName}</span>
 #end
 </a>
 </div>
@@ -329,8 +329,10 @@ $!{record.ToDoResultData.TodoName}
 <div class="calendarScheduleDiv">
 #if($!display_month == "detail")
 <span class="time">$!{record2.Date}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end<span class="title">$!{record2.WbrName}</span>
+#AUIiconScheduleSets($!record2)
 #else
-<span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>#end<span class="title">$!{record2.WbrName}</span>
+<span class="time">$!{record2.StartDate}</span>#if(!${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end#if($record2.isDuplicate())<i class="auiIcon auiIconOverlap"></i>
+#end<span class="title">$!{record2.WbrName}</span>
 #end
 </div>
 #end
