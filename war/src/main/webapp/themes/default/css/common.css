@@ -1692,12 +1692,17 @@ div.off, td.off {
   min-width: 0em;
   padding: 0;
 }
+.calendarDisplayMonth .calendar .calendarScheduleDiv {
+	min-width:6em;
+}
+
 .calendarDisplayWeek .calendar .calendarScheduleDiv a,
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
   height: auto;
 }
 .calendarDisplayMonth .calendar .calendarScheduleDiv a {
   height: 1.5em;
+  line-height: 1.6em;
   overflow: hidden;
 }
 .calendarDisplayDay .calendar th,
