@@ -263,7 +263,13 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   }
 
   public boolean isLoginUserID(Long id) {
-    return id == userid;
+    // idがnullで無ければそのまま返す
+    // そうでなければ、falseを返す
+    if (id != null) {
+      return id == userid;
+    } else {
+      return false;
+    }
   }
 
 }
