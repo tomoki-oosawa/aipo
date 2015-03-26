@@ -1490,11 +1490,12 @@ div.off, td.off {
   border-collapse: collapse;
   border-spacing: 0;
   border: 1px solid #d2d2d2;
+  font-size: 12px;
 }
 .calendar th {
   min-width: 2em;
   border: 1px solid #ddd;
-  padding: 3px 5px;
+  padding: 3px;
   font-weight: normal;
   text-align: center;
 }
@@ -1505,8 +1506,7 @@ div.off, td.off {
   word-break: break-all;
 }
 .calendar tr:first-child th {
-  padding: 3px;
-  /* background: #f6f6f6; */
+  padding: 3px 1px;
 }
 .calendar tr.calendarWeek th {
   width: 14.286%;
@@ -1524,9 +1524,6 @@ div.off, td.off {
 .calendar td.day {
   padding: 3px 5px;
   border-bottom: none;
-}
-.calendar td.day a {
-  text-decoration: none;
 }
 .calendar td.day.sunday a {
   color: #ff3333;
@@ -1574,21 +1571,20 @@ div.off, td.off {
   padding: 0;
   border-top: none;
   border-bottom: none;
+  vertical-align: middle;
 }
 .calendar td.term.today {
   background: #edfeed;
-}
-.calendar div.calerndarTermScheduleDiv {
-  margin: 1px;
-  text-align: center;
-  border: 1px solid #9c9;
-  background-color: #DFD;
 }
 .calendarDisplayWeek div.calerndarTermScheduleDiv,
 .calendarDisplayMonth div.calerndarTermScheduleDiv,
 .calendarDisplayWeek div.calerndarTodoDiv,
 .calendarDisplayMonth div.calerndarTodoDiv{
   height: 18px;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv .time {
+  display: inline;
+  margin-right:5px;
 }
 .calendar div.calerndarTermScheduleDiv a {
   padding: 0 2px;
@@ -1605,6 +1601,9 @@ div.off, td.off {
   padding: 0;
   border-top: none;
   border-bottom: none;
+}
+.calendar td.fill{
+  background-color: #edf1f2;
 }
 .calendar td.calendarTodo.today {
   background: #edfeed;
@@ -1629,24 +1628,15 @@ div.off, td.off {
 .calendar .calendarScheduleDiv {
   margin: 1px;
 }
-.calendar .calendarScheduleDiv a {
-  line-height: 1.6em;
-  height: 1.5em;
-  overflow: hidden;
-}
 .calendar .calendarScheduleDiv .time {
-  margin-right: .3em;
-  padding: 1px;
-  white-space: nowrap;
+  display: block;
 }
 .calendar .calendarScheduleDiv .title {
-  padding: 1px;
 }
 .calendar .calendarScheduleDiv a:link,
 .calendar .calendarScheduleDiv a:visited {
   display: block;
   text-decoration: none;
-  padding: 1px;
 }
 .calendar .calendarScheduleDiv a:hover {
   background-color: #FFFFE5;
@@ -1697,31 +1687,25 @@ div.off, td.off {
 .calendarDisplayDay .calendar tr:first-child th {
   background: #f6f6f6;
   white-space: nowrap;
-  min-width: 1em;
+  min-width: 0em;
+  padding: 0;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv {
+	min-width:6em;
 }
 .calendarDisplayWeek .calendar .calendarScheduleDiv a,
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
   height: auto;
 }
-.calendarDisplayWeek .calendar .calendarScheduleDiv .time,
-.calendarDisplayDay .calendar .calendarScheduleDiv .time {
-  display: block;
-}
-.calendarDisplayDay .calendar th {
-  min-width: 4em;
-}
-.calendarDisplayWeek .calendar th {
-  min-width: 4em;
-}
-.calendarDisplayMonth .calendar th {
-  min-width: 7.5em;
-}
-
-div.calendarScheduleDiv div.time {
+.calendarDisplayMonth .calendar .calendarScheduleDiv a {
   height: 1.5em;
-  line-height: 1.5em;
+  line-height: 1.6em;
   overflow: hidden;
-  white-space: nowrap;
+}
+.calendarDisplayDay .calendar th,
+.calendarDisplayWeek .calendar th,
+.calendarDisplayMonth .calendar th {
+  min-width: 2em;
 }
 div.calendarScheduleDiv a:link,
 div.calendarScheduleDiv a:visited {
@@ -1772,6 +1756,7 @@ div.calendarScheduleDiv .addSchedule:hover {
   border: 1px solid #9c9;
   background-color: #DFD;
   overflow: hidden;
+  margin: 1px;
 }
 
 .calendar td.topNone {

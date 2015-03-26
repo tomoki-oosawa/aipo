@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * カレンダーのアクションクラスです。
- * 
+ *
  * @deprecated
  */
 @Deprecated
@@ -53,7 +53,7 @@ public class AjaxScheduleAction extends ALBaseAction {
   private boolean isMax = false;
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -73,6 +73,14 @@ public class AjaxScheduleAction extends ALBaseAction {
       // 表示形式（トップページ）を取得する．
       String top_form = portlet.getPortletConfig().getInitParameter("p19-rows");
       context.put("top_form", top_form);
+
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
 
       // 表示開始時間を取得する．
       String time_start =
@@ -197,7 +205,7 @@ public class AjaxScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -211,7 +219,7 @@ public class AjaxScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
