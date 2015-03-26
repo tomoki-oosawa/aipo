@@ -141,6 +141,16 @@ public class ScheduleAction extends ALBaseAction {
         portlet.getPortletConfig().getInitParameter("p2a-days");
       context.put("weekly_days", weekly_days);
 
+      // 初期選択グループを取得する.
+      String weekly_group =
+        portlet.getPortletConfig().getInitParameter("p3a-group");
+      context.put("weekly_group", weekly_group);
+
+      // 初期選択ユーザー／設備を取得する
+      String init_user =
+        portlet.getPortletConfig().getInitParameter("p3a-user");
+      context.put("init_user", init_user);
+
       // 初期共有メンバー表示フラグを取得する
       String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
       if (!("t".equals(showAll))) {
