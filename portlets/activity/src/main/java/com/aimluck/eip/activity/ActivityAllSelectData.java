@@ -236,7 +236,7 @@ public class ActivityAllSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -258,7 +258,7 @@ public class ActivityAllSelectData extends
 
   /**
    * Activity の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getActivitySum() {
@@ -309,7 +309,7 @@ public class ActivityAllSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -318,7 +318,7 @@ public class ActivityAllSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {

@@ -334,7 +334,8 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateUserId(record.getUpdateUserId().intValue());
+      rd.setUpdateUserId(record.getUpdateUserId().intValue()); // setUpdateUserIdメソッドで値をセット,
+                                                               // 引数にはrecord.getUpdateUserId.intValue()でgetterで取ってきた値を入れる
       rd.setLoginUserId(loginUserId.longValue());
       rd.setUpdateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY_HOUR_MINUTE")).format(record

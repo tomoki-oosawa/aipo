@@ -66,7 +66,7 @@ public class FolderInfo implements Cloneable {
   private Date update_date;
 
   /** 更新者ID */
-  private ALNumberField update_user_id;
+  private final ALNumberField update_user_id; // 　FolderInfoクラス内でのみ使用できるメンバ変数update_user_idを定義
 
   /**
    * コンストラクタ
@@ -84,9 +84,10 @@ public class FolderInfo implements Cloneable {
     update_name = new ALEipUser();
     colist = new ArrayList<FolderInfo>();
     update_date = new Date();
-    update_user_id = new ALNumberField();
+    update_user_id = new ALNumberField(); // オブジェクトの生成
   }
 
+  // update_user_id を所得するためのメソッド(getter)
   public ALNumberField getUpdateUserId() {
     return update_user_id;
   }
@@ -119,8 +120,9 @@ public class FolderInfo implements Cloneable {
     update_name = user;
   }
 
-  public void setUpdateUserId(ALNumberField user_id) {
-    update_user_id = user_id;
+  // update_user_id の値をセットするためのメソッド(setter)
+  public void setUpdateUserId(long i) {
+    update_user_id.setValue(i);
   }
 
   public void setList(List<FolderInfo> list) {
