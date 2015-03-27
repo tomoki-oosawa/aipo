@@ -240,3 +240,4 @@ public class FolderInfo implements Cloneable {
   }
 
 }
+//
