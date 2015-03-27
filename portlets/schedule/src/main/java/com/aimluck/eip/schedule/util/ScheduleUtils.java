@@ -2164,9 +2164,10 @@ public class ScheduleUtils {
                 format.format(month_day.getValue())).append(lim).toString();
             date_count = 1;
           } else if ("Y".equals(repeat_type.getValue())) {
-            DecimalFormat format = new DecimalFormat("0000");
+            DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
               new StringBuffer().append('Y').append(
+                format.format(year_month.getValue())).append(
                 format.format(year_month.getValue())).append(lim).toString();
             date_count = 1;
           }
@@ -3061,7 +3062,7 @@ public class ScheduleUtils {
       boolean week_6;
       String limit_flag;
       int month_day = -1;
-      int year_month = 0;
+      int year_month = -1;
       Integer db_scheduleid = null;
       boolean[] week_array = new boolean[7];
       boolean unlimited_repeat = false;
@@ -3094,6 +3095,7 @@ public class ScheduleUtils {
           month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
         }
         if (repeat_pattern.startsWith("Y")) {
+          month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
           year_month = Integer.parseInt(repeat_pattern.substring(1, 5));
         }
 
@@ -3298,7 +3300,7 @@ public class ScheduleUtils {
           }
           { // "Y".equals(repeat_type.getValue())
             if (year_month > 0) { // 毎月、もしくは単体の場合
-              DecimalFormat exF = new DecimalFormat("0000");
+              DecimalFormat exF = new DecimalFormat("00");
               String md_str = exF.format(year_month);
               rmexp =
                 ExpressionFactory.likeExp(

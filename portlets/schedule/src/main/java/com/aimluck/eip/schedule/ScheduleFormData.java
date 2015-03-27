@@ -1165,9 +1165,10 @@ public class ScheduleFormData extends ALAbstractFormData {
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
             format.format(month_day.getValue())).append(lim).toString());
         } else {
-          DecimalFormat format = new DecimalFormat("0000");
+          DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
-            format.format(year_month.getValue())).append(lim).toString());
+            format.format(year_month.getValue())).append(
+            format.format(month_day.getValue())).append(lim).toString());
         }
       }
 
