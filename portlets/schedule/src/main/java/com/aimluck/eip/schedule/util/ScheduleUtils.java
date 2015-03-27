@@ -3061,7 +3061,7 @@ public class ScheduleUtils {
       boolean week_6;
       String limit_flag;
       int month_day = -1;
-      int year_month = -1;
+      int year_month = 0;
       Integer db_scheduleid = null;
       boolean[] week_array = new boolean[7];
       boolean unlimited_repeat = false;
@@ -3110,6 +3110,7 @@ public class ScheduleUtils {
           week_5 = (dow == Calendar.FRIDAY);
           week_6 = (dow == Calendar.SATURDAY);
           month_day = cal.get(Calendar.DAY_OF_MONTH);
+          year_month = cal.get(Calendar.DAY_OF_YEAR);
         } else if (repeat_pattern.endsWith("N")) {
           unlimited_repeat = true;
         }
