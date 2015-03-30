@@ -1719,6 +1719,28 @@ div.off, td.off {
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
   height: auto;
 }
+.calendarDisplayWeek .calendar,
+.calendarDisplayMonth .calendar {
+  height: 100%;
+}
+.calendarDisplayWeek .calendar td.term,
+.calendarDisplayMonth .calendar td.term {
+  height: 100%;
+}
+.calendarDisplayWeek .calendar .calerndarTermScheduleDiv,
+.calendarDisplayMonth .calendar .calerndarTermScheduleDiv {
+  height: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: content-box !important;
+  box-sizing: border-box;
+}
+.calendarDisplayWeek .calendar .calerndarTermScheduleDiv a,
+.calendarDisplayMonth .calendar .calerndarTermScheduleDiv a {
+  height: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
 /*span span span,*/
 span.dispUser {
