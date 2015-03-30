@@ -428,10 +428,9 @@ public class TimelineUtils {
   public static List<Integer> getTimelineOtherCommentUserList(int parent_id) {
     List<Integer> resultList = new ArrayList<Integer>();
     try {
-      List<EipTTimeline> list = new ArrayList<EipTTimeline>();
       String query =
         "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = #bind($parent_id)";
-      list =
+      List<EipTTimeline> list =
         Database
           .sql(EipTTimeline.class, query)
           .param("parent_id", parent_id)
