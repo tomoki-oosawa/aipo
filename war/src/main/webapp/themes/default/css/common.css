@@ -1571,7 +1571,7 @@ div.off, td.off {
   padding: 1px;
   border-top: none;
   border-bottom: none;
-  vertical-align: middle;
+  vertical-align: top;
 }
 .calendar td.term.today {
   background: #edfeed;
@@ -1715,33 +1715,9 @@ div.off, td.off {
   min-width: 4.3em;
   margin: 1px;
 }
-
 .calendarDisplayWeek .calendar .calendarScheduleDiv a,
 .calendarDisplayDay .calendar .calendarScheduleDiv a {
   height: auto;
-}
-
-.calendarDisplayWeek .calendar,
-.calendarDisplayMonth .calendar {
-  height: 100%;
-}
-.calendarDisplayWeek .calendar td.term,
-.calendarDisplayMonth .calendar td.term {
-  height: 100%;
-}
-.calendarDisplayWeek .calendar .calerndarTermScheduleDiv,
-.calendarDisplayMonth .calendar .calerndarTermScheduleDiv {
-  height: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: content-box !important;
-  box-sizing: border-box;
-}
-.calendarDisplayWeek .calendar .calerndarTermScheduleDiv a,
-.calendarDisplayMonth .calendar .calerndarTermScheduleDiv a {
-  height: 100%;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
 }
 
 /*span span span,*/
