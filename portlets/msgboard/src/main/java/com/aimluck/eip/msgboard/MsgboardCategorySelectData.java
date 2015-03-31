@@ -279,6 +279,7 @@ public class MsgboardCategorySelectData extends
         .getTurbineUser()
         .getUserId()
         .intValue()));
+      rd.setLoginUserId(uid);
     } catch (Exception e) {
       logger.error("[MsgboardCategorySelectData]", e);
       throw new ALDBErrorException();
@@ -350,6 +351,7 @@ public class MsgboardCategorySelectData extends
         .intValue()));
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setLoginUserId(uid);
 
       if (public_flag) {
         if ((MsgboardUtils.STAT_VALUE_ALL).equals(loginUserStatus)) {

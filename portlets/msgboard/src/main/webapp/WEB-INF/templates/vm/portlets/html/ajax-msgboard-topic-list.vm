@@ -86,7 +86,11 @@
 $!record.CategoryName
 </div>
 </td>
+#if($!{record.LoginUserId.value}==$!{record.OwnerId.value})
 #ALtdcellAtt("$!{record.OwnerName}" 'class="mb_hide" nowrap="nowrap"')
+#else
+<td class="mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a></td>
+#end
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
