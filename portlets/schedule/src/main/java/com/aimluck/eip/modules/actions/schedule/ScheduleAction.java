@@ -96,6 +96,8 @@ public class ScheduleAction extends ALBaseAction {
 
     // セッション情報をクリアする
     clearScheduleSession(rundata, context);
+    rundata.getParameters().remove("filtertype");
+    rundata.getParameters().remove("filter");
 
     String tab;
     String portletId;
