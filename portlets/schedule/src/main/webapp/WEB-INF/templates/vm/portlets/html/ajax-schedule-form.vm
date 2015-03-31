@@ -335,6 +335,8 @@
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
+##ファイル添付欄の追加
+#ALtdcaption(添付ファイル)
 
 #ALtablefooter()
 #ALbuttonheader()

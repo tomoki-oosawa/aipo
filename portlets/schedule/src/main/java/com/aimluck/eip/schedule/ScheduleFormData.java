@@ -45,6 +45,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
@@ -59,6 +60,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.mail.ALAdminMailContext;
 import com.aimluck.eip.mail.ALAdminMailMessage;
 import com.aimluck.eip.mail.ALMailService;
@@ -80,7 +82,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
- * 
+ *
  */
 public class ScheduleFormData extends ALAbstractFormData {
 
@@ -232,12 +234,22 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>todo_id</code> ToDo ID */
   private ALNumberField common_category_id;
 
+  /** 添付ファイルリスト */
+  private final List<FileuploadLiteBean> fileuploadList = null;
+
+  /** 添付フォルダ名 */
+  private final String folderName = null;
+
+  private int uid;
+
+  private EipTMsgboardCategory category;
+
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
   private final int msg_type = 0;
 
-  private String orgId;
+  private String orgId;// 添付フォルダでも使う
 
   private ALEipUser loginUser;
 
@@ -249,10 +261,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean is_same_date;
 
   /** アクセス権限の機能名 */
-  private String aclPortletFeature = null;
+  private String aclPortletFeature = null;// 添付フォルダでも使う
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -363,7 +375,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * パラメータを読み込みます。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -663,7 +675,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -750,7 +762,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    * @throws ALDBErrorException
@@ -801,7 +813,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1016,7 +1028,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1330,7 +1342,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1923,7 +1935,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 参加ユーザー全員の予定を完全に削除します。
-   * 
+   *
    * @param schedule
    * @param members
    */
@@ -1935,7 +1947,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 参加ユーザー全員の一日分の予定を削除します。
-   * 
+   *
    * @param schedule
    * @param members
    * @throws ALDBErrorException
@@ -1969,7 +1981,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 特定のメンバーの予定を完全に削除します。
-   * 
+   *
    * @param schedule
    * @param members
    * @throws ALDBErrorException
@@ -2042,7 +2054,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 特定のメンバーの一日分の予定を削除します。
-   * 
+   *
    * @param schedule
    * @param members
    * @throws ALDBErrorException
@@ -2128,7 +2140,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -2276,7 +2288,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -2329,7 +2341,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -2343,7 +2355,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -2404,7 +2416,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 指定した曜日が，選択範囲に入っているかを検証する．
-   * 
+   *
    * @param selectedWeek
    *          指定曜日
    * @param startWeek
@@ -2432,7 +2444,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 指定したスケジュールを削除する．
-   * 
+   *
    * @param schedule
    */
   private void deleteSchedule(EipTSchedule schedule) {
@@ -2457,7 +2469,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -2476,7 +2488,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -2485,7 +2497,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDateSub() {
@@ -2496,7 +2508,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDateTime() {
@@ -2507,7 +2519,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -2516,7 +2528,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDateSub() {
@@ -2527,7 +2539,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDateTime() {
@@ -2538,7 +2550,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -2547,7 +2559,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 指定したグループ名のユーザーを取得します。
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -2557,7 +2569,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 部署マップを取得します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -2566,7 +2578,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * タイトルを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getName() {
@@ -2575,7 +2587,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 内容を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -2584,7 +2596,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 場所を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPlace() {
@@ -2593,7 +2605,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します。
-   * 
+   *
    * @return
    */
   public int getCurrentYear() {
@@ -2601,7 +2613,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isMember() {
@@ -2609,7 +2621,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isOwner() {
@@ -2618,7 +2630,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * ログインユーザを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getLoginUser() {
@@ -2627,7 +2639,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 編集するスケジュールの1日の情報を取得します。
-   * 
+   *
    * @return
    */
   public ScheduleOnedayGroupSelectData getSelectData() {
@@ -2636,7 +2648,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 公開/非公開フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -2652,7 +2664,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返すかどうか。
-   * 
+   *
    * @return
    */
   public boolean isRepeat() {
@@ -2661,7 +2673,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期間スケジュールかどうか。
-   * 
+   *
    * @return
    */
   public boolean isSpan() {
@@ -2670,7 +2682,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * コピーを作るかどうか。
-   * 
+   *
    * @return
    */
   public boolean isCopy() {
@@ -2679,7 +2691,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   * 
+   *
    * @return
    */
   public ALDateField getLimitStartDate() {
@@ -2688,7 +2700,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getLimitStartDateSub() {
@@ -2704,7 +2716,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   * 
+   *
    * @return
    */
   public ALDateField getLimitEndDate() {
@@ -2713,7 +2725,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期限を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getLimitEndDateSub() {
@@ -2729,7 +2741,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 期限フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getLimitFlag() {
@@ -2738,7 +2750,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 終日フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getAllDayFlag() {
@@ -2747,7 +2759,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 毎月繰り返す日を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getMonthDay() {
@@ -2756,7 +2768,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返しタイプを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getRepeatType() {
@@ -2765,7 +2777,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek0() {
@@ -2774,7 +2786,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek1() {
@@ -2783,7 +2795,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek2() {
@@ -2792,7 +2804,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek3() {
@@ -2801,7 +2813,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek4() {
@@ -2810,7 +2822,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek5() {
@@ -2819,7 +2831,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getWeek6() {
@@ -2828,7 +2840,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getGroupList() {
@@ -2837,7 +2849,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 繰り返しスケジュールの編集フラグ
-   * 
+   *
    * @return
    */
   public ALNumberField getEditRepeatFlag() {
@@ -2846,7 +2858,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 共有メンバーによる編集／削除権限フラグ
-   * 
+   *
    * @return
    */
   public ALStringField getEditFlag() {
@@ -2874,7 +2886,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isFacility() {
@@ -2891,7 +2903,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 共有カテゴリ ID
-   * 
+   *
    * @return
    */
   public ALNumberField getCommonCategoryId() {
@@ -2904,7 +2916,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 開始日時と終了日時が同じかどうか返します。
-   * 
+   *
    * @return
    */
   public boolean getIsSameDate() {
@@ -2913,7 +2925,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻と終了時刻が同じかどうか返します。
-   * 
+   *
    * @return
    */
   public boolean getIsSameTime() {
@@ -2923,7 +2935,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

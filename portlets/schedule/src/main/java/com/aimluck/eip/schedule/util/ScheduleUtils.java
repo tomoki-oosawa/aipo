@@ -18,7 +18,10 @@
  */
 package com.aimluck.eip.schedule.util;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -33,6 +36,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import javax.imageio.ImageIO;
 
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
@@ -69,6 +74,8 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
@@ -80,7 +87,12 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
@@ -97,12 +109,14 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
@@ -119,6 +133,20 @@ public class ScheduleUtils {
 
   /** <code>SCHEDULEMAP_TYPE_FACILITY</code> 設備 */
   public static final String SCHEDULEMAP_TYPE_FACILITY = "F";
+
+  /** スケジュールの添付ファイルを保管するディレクトリの指定 */
+  private static final String FOLDER_FILEDIR_SCHEDULE = JetspeedResources
+    .getString("aipo.filedir", "");
+
+  /** スケジュールの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
+  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.schedule.categorykey",
+    "");
+
+  /** デフォルトエンコーディングを表わすシステムプロパティのキー */
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
@@ -4090,5 +4118,337 @@ public class ScheduleUtils {
       return false;
     }
     return true;
+  }
+
+  /**
+   * 添付ファイルを取得します。
+   * 
+   * @param uid
+   * @return
+   */
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
+      return null;
+    }
+
+    ArrayList<String> hadfileids = new ArrayList<String>();
+    ArrayList<String> newfileids = new ArrayList<String>();
+
+    for (int j = 0; j < fileids.length; j++) {
+      if (fileids[j].trim().startsWith("s")) {
+        hadfileids.add(fileids[j].trim().substring(1));
+      } else {
+        newfileids.add(fileids[j].trim());
+      }
+    }
+
+    ArrayList<FileuploadLiteBean> fileNameList =
+      new ArrayList<FileuploadLiteBean>();
+    FileuploadLiteBean filebean = null;
+
+    // 新規にアップロードされたファイルの処理
+    if (newfileids.size() > 0) {
+      String folderName =
+        rundata.getParameters().getString(
+          FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
+      if (folderName == null || folderName.equals("")) {
+        return null;
+      }
+
+      for (String newfileid : newfileids) {
+        if ("".equals(newfileid)) {
+          continue;
+        }
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(newfileid);
+        } catch (Exception e) {
+          continue;
+        }
+
+        if (fileid == 0) {
+          filebean = new FileuploadLiteBean();
+          filebean.initField();
+          filebean.setFolderName("photo");
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
+        } else {
+          BufferedReader reader = null;
+          try {
+            reader =
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getFile(
+                  FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+                  ALEipUtils.getUserId(rundata)
+                    + ALStorageService.separator()
+                    + folderName,
+                  fileid + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            String line = reader.readLine();
+            if (line == null || line.length() <= 0) {
+              continue;
+            }
+            filebean = new FileuploadLiteBean();
+            filebean.initField();
+            filebean.setFolderName(newfileid);
+            filebean.setFileId(fileid);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
+          } catch (Exception e) {
+            logger.error("msgboard", e);
+          } finally {
+            try {
+              reader.close();
+            } catch (Exception e) {
+              logger.error("msgboard", e);
+            }
+          }
+        }
+      }
+    }
+
+    // すでにあるファイルの処理
+    if (hadfileids.size() > 0) {
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
+      for (String hadfileid : hadfileids) {
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(hadfileid);
+          hadfileidsValue.add(fileid);
+        } catch (Exception e) {
+          continue;
+        }
+      }
+
+      try {
+        SelectQuery<EipTMsgboardFile> reqquery =
+          Database.query(EipTMsgboardFile.class);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTMsgboardFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
+        reqquery.setQualifier(reqexp1);
+        List<EipTMsgboardFile> requests = reqquery.fetchList();
+        for (EipTMsgboardFile file : requests) {
+          filebean = new FileuploadBean();
+          filebean.initField();
+          filebean.setFileId(file.getFileId());
+          filebean.setFileName(file.getFileName());
+          filebean.setFlagNewFile(false);
+          fileNameList.add(filebean);
+        }
+      } catch (Exception ex) {
+        logger.error("[BlogUtils] Exception.", ex);
+      }
+    }
+    return fileNameList;
+  }
+
+  public static boolean insertFileDataDelegate(RunData rundata,
+      Context context, EipTMsgboardTopic topic,
+      List<FileuploadLiteBean> fileuploadList, String folderName,
+      List<String> msgList) {
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      fileuploadList = new ArrayList<FileuploadLiteBean>();
+    }
+
+    int uid = ALEipUtils.getUserId(rundata);
+    String orgId = Database.getDomainName();
+
+    List<Integer> hadfileids = new ArrayList<Integer>();
+    for (FileuploadLiteBean file : fileuploadList) {
+      if (!file.isNewFile()) {
+        hadfileids.add(file.getFileId());
+      }
+    }
+
+    SelectQuery<EipTMsgboardFile> dbquery =
+      Database.query(EipTMsgboardFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+      topic.getTopicId()));
+    List<EipTMsgboardFile> existsFiles = dbquery.fetchList();
+    List<EipTMsgboardFile> delFiles = new ArrayList<EipTMsgboardFile>();
+    for (EipTMsgboardFile file : existsFiles) {
+      if (!hadfileids.contains(file.getFileId())) {
+        delFiles.add(file);
+      }
+    }
+
+    // ローカルファイルに保存されているファイルを削除する．
+    if (delFiles.size() > 0) {
+      int delsize = delFiles.size();
+      for (int i = 0; i < delsize; i++) {
+        ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
+          + (delFiles.get(i)).getFilePath());
+      }
+      // データベースから添付ファイルのデータ削除
+      Database.deleteAll(delFiles);
+    }
+
+    // ファイル追加処理
+    try {
+      for (FileuploadLiteBean filebean : fileuploadList) {
+        if (!filebean.isNewFile()) {
+          continue;
+        }
+
+        // サムネイル処理
+        String[] acceptExts = ImageIO.getWriterFormatNames();
+        ShrinkImageSet shrinkImageSet =
+          FileuploadUtils.getBytesShrinkFilebean(
+            orgId,
+            folderName,
+            uid,
+            filebean,
+            acceptExts,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+            msgList,
+            true);
+
+        String filename = "0_" + String.valueOf(System.nanoTime());
+
+        // 新規オブジェクトモデル
+        EipTMsgboardFile file = Database.create(EipTMsgboardFile.class);
+        // 所有者
+        file.setOwnerId(Integer.valueOf(uid));
+        // トピックID
+        file.setEipTMsgboardTopic(topic);
+        // ファイル名
+        file.setFileName(filebean.getFileName());
+        // ファイルパス
+        file.setFilePath(MsgboardUtils.getRelativePath(filename));
+        // サムネイル画像
+        if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
+          file.setFileThumbnail(shrinkImageSet.getShrinkImage());
+        }
+        // 作成日
+        file.setCreateDate(Calendar.getInstance().getTime());
+        // 更新日
+        file.setUpdateDate(Calendar.getInstance().getTime());
+
+        if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
+          // ファイルの作成
+          ALStorageService.createNewFile(new ByteArrayInputStream(
+            shrinkImageSet.getFixImage()), FOLDER_FILEDIR_SCHEDULE
+            + ALStorageService.separator()
+            + Database.getDomainName()
+            + ALStorageService.separator()
+            + CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid
+            + ALStorageService.separator()
+            + filename);
+        } else {
+          // ファイルの移動
+          ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+            .getFileId()), FOLDER_FILEDIR_SCHEDULE, CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid, filename);
+        }
+      }
+
+      // 添付ファイル保存先のフォルダを削除
+      ALStorageService.deleteTmpFolder(uid, folderName);
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("msgboard", e);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * ユーザ毎のルート保存先（絶対パス）を取得します。
+   * 
+   * @param uid
+   * @return
+   */
+  public static String getSaveDirPath(String orgId, int uid) {
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_SCHEDULE,
+      CATEGORY_KEY + ALStorageService.separator() + uid);
+  }
+
+  /**
+   * ユーザ毎の保存先（相対パス）を取得します。
+   * 
+   * @param uid
+   * @return
+   */
+  public static String getRelativePath(String fileName) {
+    return new StringBuffer().append("/").append(fileName).toString();
+  }
+
+  @Deprecated
+  public static void shiftWhatsNewReadFlag(RunData rundata, int entityid) {
+    int uid = ALEipUtils.getUserId(rundata);
+    boolean isPublic = false;
+
+    SelectQuery<EipTMsgboardTopic> query =
+      Database.query(EipTMsgboardTopic.class);
+    Expression exp =
+      ExpressionFactory
+        .matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, entityid);
+    query.setQualifier(exp);
+    query.select(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
+    query.distinct(true);
+
+    List<EipTMsgboardTopic> topics = query.fetchList();
+
+    query = Database.query(EipTMsgboardTopic.class);
+    exp =
+      ExpressionFactory.matchDbExp(
+        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+        entityid);
+    query.setQualifier(exp);
+
+    List<EipTMsgboardTopic> topic = query.fetchList();
+    if (topic != null
+      && ((topic.get(0)).getEipTMsgboardCategory().getPublicFlag().equals("T"))) {
+      isPublic = true;
+    }
+
+    if (topics != null) {
+
+      int size = topics.size();
+      Integer _id = null;
+
+      if (isPublic) {
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardTopic record = topics.get(i);
+          _id = record.getTopicId();
+          WhatsNewUtils.shiftWhatsNewReadFlagPublic(
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            _id.intValue(),
+            uid);
+        }
+      } else {
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardTopic record = topics.get(i);
+          _id = record.getTopicId();
+          WhatsNewUtils.shiftWhatsNewReadFlag(
+            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            _id.intValue(),
+            uid);
+        }
+      }
+    }
+    if (isPublic) {
+      WhatsNewUtils.shiftWhatsNewReadFlagPublic(
+        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        entityid,
+        uid);
+    } else {
+      WhatsNewUtils.shiftWhatsNewReadFlag(
+        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        entityid,
+        uid);
+    }
+
   }
 }
