@@ -189,6 +189,19 @@ public class ScheduleAction extends ALBaseAction {
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
+      if (has_acl_other.equals("F")) {
+        if ("group".equals(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ScheduleUtils.FILTER_NAMESPACE_TYPE))
+          && !"Facility".equals(ALEipUtils.getTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE))) {
+          rundata.getParameters().add("filter", "null");
+          rundata.getParameters().remove("filtertype");
+        }
+      }
 
       if (("".equals(template)) || (!done)) {
         template = "schedule-calendar";
@@ -426,13 +439,18 @@ public class ScheduleAction extends ALBaseAction {
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
       if (has_acl_other.equals("F")) {
-        if (rundata.getParameters().get("filter") == null
-          || rundata.getParameters().get("filter").equals("Facility")) {
+        if ("group".equals(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ScheduleUtils.FILTER_NAMESPACE_TYPE))
+          && !"Facility".equals(ALEipUtils.getTemp(
+            rundata,
+            context,
+            ScheduleUtils.FILTER_NAMESPACE))) {
           rundata.getParameters().add("filter", "null");
           rundata.getParameters().remove("filtertype");
         }
       }
-
       if (ALEipConstants.MODE_FORM.equals(mode)) {
         doSchedule_form(rundata, context);
       } else if (ALEipConstants.MODE_DETAIL.equals(mode)) {
