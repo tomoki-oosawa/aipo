@@ -3,6 +3,7 @@
 Javaで構築したオープンソースのグループウェアです。
 
 * [公式サイト](http://www.aipo.com/)  
+* [ダウンロード](http://free.aipo.com/)
 * [ドキュメント](http://doc.aipo.com/)  
 * [コミュニティ](http://user.aipo.com/)  
 
