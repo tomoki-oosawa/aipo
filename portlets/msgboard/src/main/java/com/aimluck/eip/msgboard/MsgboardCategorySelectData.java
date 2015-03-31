@@ -383,37 +383,38 @@ public class MsgboardCategorySelectData extends
       EipTMsgboardCategory obj = selectDetail(rundata, context);
       if (obj != null) {
         data = getResultDataDetail(obj);
-      }
 
-      // 公開区分
-      boolean public_flag =
-        (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(obj.getPublicFlag());
-      boolean isMember = false;
+        // 公開区分
+        boolean public_flag =
+          (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(obj.getPublicFlag());
 
-      // このカテゴリを共有しているメンバーを取得
-      SelectQuery<EipTMsgboardCategoryMap> mapquery =
-        Database.query(EipTMsgboardCategoryMap.class);
-      Expression mapexp =
-        ExpressionFactory.matchDbExp(
-          EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
-          obj.getCategoryId());
-      mapquery.setQualifier(mapexp);
+        boolean isMember = false;
 
-      List<EipTMsgboardCategoryMap> list = mapquery.fetchList();
+        // このカテゴリを共有しているメンバーを取得
+        SelectQuery<EipTMsgboardCategoryMap> mapquery =
+          Database.query(EipTMsgboardCategoryMap.class);
+        Expression mapexp =
+          ExpressionFactory.matchDbExp(
+            EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+            obj.getCategoryId());
+        mapquery.setQualifier(mapexp);
 
-      List<Integer> users = new ArrayList<Integer>();
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTMsgboardCategoryMap map = list.get(i);
-        users.add(map.getUserId());
-        if (uid == map.getUserId().intValue()) {
-          isMember = true;
+        List<EipTMsgboardCategoryMap> list = mapquery.fetchList();
+
+        List<Integer> users = new ArrayList<Integer>();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardCategoryMap map = list.get(i);
+          users.add(map.getUserId());
+          if (uid == map.getUserId().intValue()) {
+            isMember = true;
+          }
         }
-      }
 
-      // 自分がメンバーではない非公開のカテゴリで、他人のカテゴリの詳細表示権限がない場合はエラー
-      if (!public_flag && !isMember && !authority_detail) {
-        throw new ALPermissionException();
+        // 自分がメンバーではない非公開のカテゴリで、他人のカテゴリの詳細表示権限がない場合はエラー
+        if (!public_flag && !isMember && !authority_detail) {
+          throw new ALPermissionException();
+        }
       }
 
       action.setResultData(this);
