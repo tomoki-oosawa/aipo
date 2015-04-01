@@ -151,7 +151,6 @@
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
      	 #end
       </select>
-	  <br/>
    </div>
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
