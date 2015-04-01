@@ -535,6 +535,12 @@ aipo.schedule.enableMonth = function(form){
     }
 }
 
+aipo.schedule.enableYear = function(form){
+    if(! form.repeat_type[3].checked){
+        form.repeat_type[3].checked = true;
+    }
+}
+
 aipo.schedule.buttonEdit = function(form, editurl) {
     aimluck.io.disableForm(form, true);
     aipo.common.showDialog(editurl);
@@ -577,7 +583,6 @@ aipo.schedule.onSubmit = function(form) {
         form.end_date.value = form.start_date.value;
         form.end_date_day.value = form.start_date_day.value;
         form.end_date_month.value = form.start_date_month.value;
-        form.end_date_year.value = form.start_date_year.value;
         form.limit_end_date.value = form.limit_start_date.value;
         form.limit_end_date_day.value = form.limit_start_date_day.value;
         form.limit_end_date_month.value = form.limit_start_date_month.value;

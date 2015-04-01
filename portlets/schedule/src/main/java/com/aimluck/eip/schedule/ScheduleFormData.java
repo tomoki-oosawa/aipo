@@ -160,8 +160,14 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>limit_date</code> 繰り返し期限（終了日） */
   private ALDateField limit_end_date;
 
-  /** <code>month_day</code> 繰り返す日 */
+  /** <code>month_day</code> 繰り返す日(毎月) */
   private ALNumberField month_day;
+
+  /** <code>yaer_month</code> 繰り返す日(毎年) */
+  private ALNumberField year_month;
+
+  /** <code>yaer_day</code> 繰り返す日(毎年) */
+  private ALNumberField year_day;
 
   /** <code>memberList</code> メンバーリスト */
   private ArrayList<ALEipUser> memberList;
@@ -552,10 +558,19 @@ public class ScheduleFormData extends ALAbstractFormData {
     week_6.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
-    // 繰り返し日
+    // 繰り返し日(毎月)
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
+    // 繰り返し月(毎年)
+    year_month = new ALNumberField();
+    year_month.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
+    // 繰り返し日(毎年)
+    year_day = new ALNumberField();
+    year_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
+
     // 繰り返しフラグ
     limit_flag = new ALStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -890,6 +905,11 @@ public class ScheduleFormData extends ALAbstractFormData {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         count = 3;
+      } else if (ptn.charAt(0) == 'Y') {
+        repeat_type.setValue("Y");
+        year_month.setValue(Integer.parseInt(ptn.substring(1, 5)));
+
+        count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         is_span = true;
@@ -1146,11 +1166,17 @@ public class ScheduleFormData extends ALAbstractFormData {
             week_4.getValue() != null ? 1 : 0).append(
             week_5.getValue() != null ? 1 : 0).append(
             week_6.getValue() != null ? 1 : 0).append(lim).toString());
-        } else {
+        } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
             format.format(month_day.getValue())).append(lim).toString());
+        } else if ("Y".equals(repeat_type.getValue())) {
+          DecimalFormat format = new DecimalFormat("0000");
+          schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+            format.format(year_month.getValue())).append(
+            format.format(year_day.getValue())).append(lim).toString());
         }
+
       }
 
       EipTCommonCategory category1 =
