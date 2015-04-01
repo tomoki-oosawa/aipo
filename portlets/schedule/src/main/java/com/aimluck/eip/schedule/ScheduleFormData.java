@@ -2786,6 +2786,24 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
+   * 毎年繰り返す月を取得します。
+   * 
+   * @return
+   */
+  public ALNumberField getYearMonth() {
+    return year_month;
+  }
+
+  /**
+   * 毎年繰り返す日を取得します。
+   * 
+   * @return
+   */
+  public ALNumberField getYearDay() {
+    return year_day;
+  }
+
+  /**
    * 繰り返しタイプを取得します。
    * 
    * @return
