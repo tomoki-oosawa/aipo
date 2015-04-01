@@ -907,8 +907,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         count = 3;
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
-        year_month.setValue(Integer.parseInt(ptn.substring(1, 5)));
-
+        year_month.setValue(Integer.parseInt(ptn.substring(1, 2)));
+        year_day.setValue(Integer.parseInt(ptn.substring(3, 4)));
         count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -1710,10 +1710,15 @@ public class ScheduleFormData extends ALAbstractFormData {
                 week_6.getValue() != null ? 1 : 0).append(lim).toString();
             schedule.setRepeatPattern(tmpPattern);
 
-          } else {
+          } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
               format.format(month_day.getValue())).append(lim).toString());
+          } else if ("Y".equals(repeat_type.getValue())) {
+            DecimalFormat format = new DecimalFormat("0000");
+            schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+              format.format(year_month.getValue())).append(
+              format.format(year_day.getValue())).append(lim).toString());
           }
         }
 
