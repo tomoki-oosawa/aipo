@@ -1872,6 +1872,31 @@ create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_
 create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
 
 -----------------------------------------------------------------------------
+-- EIP_T_SCHEDULE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE eip_t_schedule_file
+(
+  file_id integer NOT NULL,
+  owner_id integer,
+  schedule_id integer,
+  title character varying(99) NOT NULL,
+  file_path character varying NOT NULL,
+  file_thumbnail bytea,
+  create_date date,
+  update_date timestamp without time zone,
+  CONSTRAINT eip_t_schedule_file_pkey PRIMARY KEY (file_id),
+  CONSTRAINT eip_t_schedule_file_schedule_id_fkey FOREIGN KEY (schedule_id)
+      REFERENCES eip_t_schedule (schedule_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE eip_t_schedule_file
+  OWNER TO postgres;
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 

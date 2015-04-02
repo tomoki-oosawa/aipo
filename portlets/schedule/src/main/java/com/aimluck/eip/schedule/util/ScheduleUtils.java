@@ -92,7 +92,7 @@ import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.util.ALMailUtils;
-import com.aimluck.eip.msgboard.util.MsgboardUtils;
+//import com.aimluck.eip.msgboard.util.MsgboardUtils;//いらないんじゃない？
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
@@ -309,7 +309,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * Scheudle オブジェクトモデルを取得します。
+   * Schedule オブジェクトモデルを取得します。
    *
    * @param rundata
    * @param context
@@ -463,7 +463,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * ツールチップ表示用の Scheudle オブジェクトモデルを取得する．
+   * ツールチップ表示用の Schedule オブジェクトモデルを取得する．
    *
    * @param rundata
    * @param context
@@ -515,7 +515,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 詳細表示用の Scheudle オブジェクトモデルを取得する．
+   * 詳細表示用の Schedule オブジェクトモデルを取得する．
    *
    * @param rundata
    * @param context
@@ -4122,7 +4122,7 @@ public class ScheduleUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -4282,7 +4282,7 @@ public class ScheduleUtils {
     if (delFiles.size() > 0) {
       int delsize = delFiles.size();
       for (int i = 0; i < delsize; i++) {
-        ALStorageService.deleteFile(MsgboardUtils.getSaveDirPath(orgId, uid)
+        ALStorageService.deleteFile(ScheduleUtils.getSaveDirPath(orgId, uid)
           + (delFiles.get(i)).getFilePath());
       }
       // データベースから添付ファイルのデータ削除
@@ -4321,7 +4321,7 @@ public class ScheduleUtils {
         // ファイル名
         file.setFileName(filebean.getFileName());
         // ファイルパス
-        file.setFilePath(MsgboardUtils.getRelativePath(filename));
+        file.setFilePath(ScheduleUtils.getRelativePath(filename));
         // サムネイル画像
         if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
           file.setFileThumbnail(shrinkImageSet.getShrinkImage());
@@ -4364,7 +4364,7 @@ public class ScheduleUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -4376,7 +4376,7 @@ public class ScheduleUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -4423,7 +4423,7 @@ public class ScheduleUtils {
           EipTMsgboardTopic record = topics.get(i);
           _id = record.getTopicId();
           WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
             _id.intValue(),
             uid);
         }
@@ -4432,7 +4432,7 @@ public class ScheduleUtils {
           EipTMsgboardTopic record = topics.get(i);
           _id = record.getTopicId();
           WhatsNewUtils.shiftWhatsNewReadFlag(
-            WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+            WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
             _id.intValue(),
             uid);
         }
@@ -4440,12 +4440,12 @@ public class ScheduleUtils {
     }
     if (isPublic) {
       WhatsNewUtils.shiftWhatsNewReadFlagPublic(
-        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
         entityid,
         uid);
     } else {
       WhatsNewUtils.shiftWhatsNewReadFlag(
-        WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC,
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
         entityid,
         uid);
     }

@@ -47,6 +47,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -235,10 +236,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   private ALNumberField common_category_id;
 
   /** 添付ファイルリスト */
-  private final List<FileuploadLiteBean> fileuploadList = null;
+  private List<FileuploadLiteBean> fileuploadList = null;
 
   /** 添付フォルダ名 */
-  private final String folderName = null;
+  private String folderName = null;
 
   private int uid;
 
@@ -304,6 +305,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+
+    folderName = rundata.getParameters().getString("folderName");
 
     // 終日設定
     if (tmpEnd != null
@@ -667,6 +670,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     // 設備リスト
     facilityList = new ArrayList<Object>();
 
+    // 添付ファイルリスト
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
+
     // 2007.3.28 ToDo連携
     common_category_id = new ALNumberField();
     common_category_id.setFieldName(ALLocalizationUtils
@@ -743,6 +749,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       } catch (Exception ex) {
         logger.error("schedule", ex);
       }
+    }
+    try {
+      fileuploadList = ScheduleUtils.getFileuploadList(rundata);
+    } catch (Exception ex) {
+      logger.error("schedule", ex);
     }
     return res;
   }
@@ -844,180 +855,195 @@ public class ScheduleFormData extends ALAbstractFormData {
       place.setValue(record.getPlace());
       // 内容
       note.setValue(record.getNote());
-      // 公開フラグ
-      public_flag.setValue(record.getPublicFlag());
-      // メールフラグ
-      mail_flag = record.getMailFlag();
-      // 共有メンバーによる編集／削除フラグ
-      if ("T".equals(record.getEditFlag())) {
-        if (is_owner) {
-          edit_flag.setValue(record.getEditFlag());
-        } else {
-          // スケジュールの登録ユーザがすでにメンバーから抜けているかを検証する．
-          int createUserId = record.getOwnerId().intValue();
-          boolean inculudeCreateUser = false;
-          List<EipTScheduleMap> scheduleMaps = record.getEipTScheduleMaps();
+      // ファイル
+      SelectQuery<EipTScheduleFile> query =
+        Database.query(EipTScheduleFile.class);
+      query.andQualifier(ExpressionFactory.matchDbExp(
+        EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+        record.getScheduleId()));
+      List<EipTScheduleFile> scheduleFileList = query.fetchList();
+      for (EipTScheduleFile file : scheduleFileList) {
+        FileuploadLiteBean fbean = new FileuploadLiteBean();
+        fbean.initField();
+        fbean.setFileId(file.getFileId());
+        fbean.setTitle(file.getTitle());
+        fileuploadList.add(fbean);
+        // 公開フラグ
+        public_flag.setValue(record.getPublicFlag());
+        // メールフラグ
+        mail_flag = record.getMailFlag();
+        // 共有メンバーによる編集／削除フラグ
+        if ("T".equals(record.getEditFlag())) {
+          if (is_owner) {
+            edit_flag.setValue(record.getEditFlag());
+          } else {
+            // スケジュールの登録ユーザがすでにメンバーから抜けているかを検証する．
+            int createUserId = record.getOwnerId().intValue();
+            boolean inculudeCreateUser = false;
+            List<EipTScheduleMap> scheduleMaps = record.getEipTScheduleMaps();
 
-          for (EipTScheduleMap map : scheduleMaps) {
-            if (createUserId == map.getUserId().intValue()
-              && !"R".equals(map.getStatus())) {
-              inculudeCreateUser = true;
-              break;
+            for (EipTScheduleMap map : scheduleMaps) {
+              if (createUserId == map.getUserId().intValue()
+                && !"R".equals(map.getStatus())) {
+                inculudeCreateUser = true;
+                break;
+              }
+            }
+            if (inculudeCreateUser) {
+              edit_flag.setValue("F");
+            } else {
+              edit_flag.setValue("T");
             }
           }
-          if (inculudeCreateUser) {
-            edit_flag.setValue("F");
+        } else {
+          edit_flag.setValue("F");
+        }
+        // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
+        // WnnnnnnnN W01111110 -> 毎週(月～金用)
+        // MnnN M25 -> 毎月25日
+        // S -> 期間での指定
+        String ptn = record.getRepeatPattern();
+        int count = 0;
+        is_repeat = true;
+        is_span = false;
+        // 毎日
+        if (ptn.charAt(0) == 'D') {
+          repeat_type.setValue("D");
+          count = 1;
+          // 毎週
+        } else if (ptn.charAt(0) == 'W') {
+          repeat_type.setValue("W");
+          week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
+          week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
+          week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
+          week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
+          week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
+          week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
+          week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
+          count = 8;
+          // 毎月
+        } else if (ptn.charAt(0) == 'M') {
+          repeat_type.setValue("M");
+          month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+          count = 3;
+          // 期間
+        } else if (ptn.charAt(0) == 'S') {
+          is_span = true;
+          is_repeat = false;
+        } else {
+          is_repeat = false;
+        }
+        if (is_repeat) {
+          // 開始日時
+          Calendar tmpViewCal = Calendar.getInstance();
+          tmpViewCal.setTime(view_date.getValue());
+          Calendar tmpStartCal = Calendar.getInstance();
+          tmpStartCal.setTime(record.getStartDate());
+          tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStartCal
+            .get(Calendar.HOUR_OF_DAY));
+          tmpViewCal.set(Calendar.MINUTE, tmpStartCal.get(Calendar.MINUTE));
+          start_date.setValue(tmpViewCal.getTime());
+          // 終了日時
+          Calendar tmpStopCal = Calendar.getInstance();
+          tmpStopCal.setTime(record.getEndDate());
+          tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStopCal
+            .get(Calendar.HOUR_OF_DAY));
+          tmpViewCal.set(Calendar.MINUTE, tmpStopCal.get(Calendar.MINUTE));
+          end_date.setValue(tmpViewCal.getTime());
+
+          if (ptn.charAt(count) == 'N') {
+            limit_start_date.setValue(view_date.getValue());
+            limit_end_date.setValue(view_date.getValue());
+            limit_flag.setValue("OFF");
           } else {
-            edit_flag.setValue("T");
+            limit_flag.setValue("ON");
+            limit_start_date.setValue(record.getStartDate());
+            limit_end_date.setValue(record.getEndDate());
+          }
+
+          // 繰り返しスケジュールの編集フラグ
+          edit_repeat_flag.setValue(FLAG_EDIT_REPEAT_ALL);
+        }
+
+        if (is_span) {
+          // 開始日時
+          start_date.setValue(record.getStartDate());
+          // 終了日時
+          end_date.setValue(record.getEndDate());
+
+          limit_start_date.setValue(record.getStartDate());
+          limit_end_date.setValue(record.getEndDate());
+
+          if (record.getStartDate().equals(record.getEndDate())) {
+            // 終日予定
+            all_day_flag.setValue("ON");
           }
         }
-      } else {
-        edit_flag.setValue("F");
-      }
-      // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
-      // WnnnnnnnN W01111110 -> 毎週(月～金用)
-      // MnnN M25 -> 毎月25日
-      // S -> 期間での指定
-      String ptn = record.getRepeatPattern();
-      int count = 0;
-      is_repeat = true;
-      is_span = false;
-      // 毎日
-      if (ptn.charAt(0) == 'D') {
-        repeat_type.setValue("D");
-        count = 1;
-        // 毎週
-      } else if (ptn.charAt(0) == 'W') {
-        repeat_type.setValue("W");
-        week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
-        week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
-        week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
-        week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
-        week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
-        week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
-        week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-        count = 8;
-        // 毎月
-      } else if (ptn.charAt(0) == 'M') {
-        repeat_type.setValue("M");
-        month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
-        count = 3;
-        // 期間
-      } else if (ptn.charAt(0) == 'S') {
-        is_span = true;
-        is_repeat = false;
-      } else {
-        is_repeat = false;
-      }
-      if (is_repeat) {
-        // 開始日時
-        Calendar tmpViewCal = Calendar.getInstance();
-        tmpViewCal.setTime(view_date.getValue());
-        Calendar tmpStartCal = Calendar.getInstance();
-        tmpStartCal.setTime(record.getStartDate());
-        tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStartCal
-          .get(Calendar.HOUR_OF_DAY));
-        tmpViewCal.set(Calendar.MINUTE, tmpStartCal.get(Calendar.MINUTE));
-        start_date.setValue(tmpViewCal.getTime());
-        // 終了日時
-        Calendar tmpStopCal = Calendar.getInstance();
-        tmpStopCal.setTime(record.getEndDate());
-        tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStopCal
-          .get(Calendar.HOUR_OF_DAY));
-        tmpViewCal.set(Calendar.MINUTE, tmpStopCal.get(Calendar.MINUTE));
-        end_date.setValue(tmpViewCal.getTime());
 
-        if (ptn.charAt(count) == 'N') {
-          limit_start_date.setValue(view_date.getValue());
-          limit_end_date.setValue(view_date.getValue());
-          limit_flag.setValue("OFF");
-        } else {
-          limit_flag.setValue("ON");
+        if (!is_repeat && !is_span) {
+          // 開始日時
+          start_date.setValue(record.getStartDate());
+          // 終了日時
+          end_date.setValue(record.getEndDate());
+
           limit_start_date.setValue(record.getStartDate());
           limit_end_date.setValue(record.getEndDate());
         }
 
-        // 繰り返しスケジュールの編集フラグ
-        edit_repeat_flag.setValue(FLAG_EDIT_REPEAT_ALL);
-      }
-
-      if (is_span) {
-        // 開始日時
-        start_date.setValue(record.getStartDate());
-        // 終了日時
-        end_date.setValue(record.getEndDate());
-
-        limit_start_date.setValue(record.getStartDate());
-        limit_end_date.setValue(record.getEndDate());
-
-        if (record.getStartDate().equals(record.getEndDate())) {
-          // 終日予定
-          all_day_flag.setValue("ON");
-        }
-      }
-
-      if (!is_repeat && !is_span) {
-        // 開始日時
-        start_date.setValue(record.getStartDate());
-        // 終了日時
-        end_date.setValue(record.getEndDate());
-
-        limit_start_date.setValue(record.getStartDate());
-        limit_end_date.setValue(record.getEndDate());
-      }
-
-      if (start_date.toString().equals(end_date.toString())) {
-        is_same_date = true;
-      } else {
-        is_same_date = false;
-      }
-
-      // このスケジュールを共有しているメンバーを取得
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression mapexp =
-        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
-          .getScheduleId());
-      mapquery.setQualifier(mapexp);
-      List<EipTScheduleMap> scheduleMaps = mapquery.fetchList();
-
-      List<Integer> userIds = new ArrayList<Integer>();
-      List<Integer> facilityIds = new ArrayList<Integer>();
-      for (EipTScheduleMap map : scheduleMaps) {
-        if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
-          userIds.add(map.getUserId());
-          EipTCommonCategory category = map.getEipTCommonCategory();
-          if (category == null) {
-            common_category_id.setValue(1);
-          } else {
-            common_category_id.setValue(category
-              .getCommonCategoryId()
-              .longValue());
-          }
+        if (start_date.toString().equals(end_date.toString())) {
+          is_same_date = true;
         } else {
-          facilityIds.add(map.getUserId());
+          is_same_date = false;
         }
-      }
 
-      if (userIds.size() > 0) {
-        SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-        Expression exp =
-          ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIds);
-        query.setQualifier(exp);
-        memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
-      } else {
-        memberList.add(login_user);
-      }
+        // このスケジュールを共有しているメンバーを取得
+        SelectQuery<EipTScheduleMap> mapquery =
+          Database.query(EipTScheduleMap.class);
+        Expression mapexp =
+          ExpressionFactory.matchExp(
+            EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+            record.getScheduleId());
+        mapquery.setQualifier(mapexp);
+        List<EipTScheduleMap> scheduleMaps = mapquery.fetchList();
 
-      if (facilityIds.size() > 0) {
-        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
-        Expression fexp =
-          ExpressionFactory.inDbExp(
-            EipMFacility.FACILITY_ID_PK_COLUMN,
-            facilityIds);
-        fquery.setQualifier(fexp);
-        facilityList.addAll(FacilitiesUtils
-          .getFacilitiesFromSelectQuery(fquery));
+        List<Integer> userIds = new ArrayList<Integer>();
+        List<Integer> facilityIds = new ArrayList<Integer>();
+        for (EipTScheduleMap map : scheduleMaps) {
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
+            userIds.add(map.getUserId());
+            EipTCommonCategory category = map.getEipTCommonCategory();
+            if (category == null) {
+              common_category_id.setValue(1);
+            } else {
+              common_category_id.setValue(category
+                .getCommonCategoryId()
+                .longValue());
+            }
+          } else {
+            facilityIds.add(map.getUserId());
+          }
+        }
+
+        if (userIds.size() > 0) {
+          SelectQuery<TurbineUser> query1 = Database.query(TurbineUser.class);
+          Expression exp =
+            ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, userIds);
+          query1.setQualifier(exp);
+          memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query1));
+        } else {
+          memberList.add(login_user);
+        }
+
+        if (facilityIds.size() > 0) {
+          SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+          Expression fexp =
+            ExpressionFactory.inDbExp(
+              EipMFacility.FACILITY_ID_PK_COLUMN,
+              facilityIds);
+          fquery.setQualifier(fexp);
+          facilityList.addAll(FacilitiesUtils
+            .getFacilitiesFromSelectQuery(fquery));
+        }
       }
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
