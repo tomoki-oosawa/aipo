@@ -120,6 +120,7 @@ public class ALJLogoutUser extends ActionEvent {
 
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
     if ("".equals(externalLoginUrl)) {
+      // 　ガラケーのログアウト時はifの中を通っている。
       if (ALEipUtils.isCellularPhone(data)) {
         data.setRedirectURI(jsLink
           .getHomePage()
