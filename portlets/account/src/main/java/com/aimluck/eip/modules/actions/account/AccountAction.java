@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの取り扱いに関するアクションクラスです。
- * 
+ *
  */
 public class AccountAction extends ALSecureBaseAction {
 
@@ -62,7 +62,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * 登録画面用のフォームを表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -80,7 +80,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * アカウントの登録を行います。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -105,9 +105,16 @@ public class AccountAction extends ALSecureBaseAction {
     }
   }
 
+  // ４月６日追加
+  public void doAccount_export(RunData rundata, Context context)
+      throws Exception {
+    AccountUserFormData formData = new AccountUserFormData();
+    formData.initField();
+  }
+
   /**
    * アカウントの削除を行います。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -130,7 +137,7 @@ public class AccountAction extends ALSecureBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -158,7 +165,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * アカウント一覧を表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -174,7 +181,7 @@ public class AccountAction extends ALSecureBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -192,7 +199,7 @@ public class AccountAction extends ALSecureBaseAction {
 
   /**
    * ユーザーアカウントを削除します（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -211,7 +218,7 @@ public class AccountAction extends ALSecureBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -233,7 +240,7 @@ public class AccountAction extends ALSecureBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

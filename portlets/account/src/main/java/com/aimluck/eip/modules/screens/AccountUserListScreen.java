@@ -28,7 +28,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class AccountUserListScreen extends AccountUserScreen {
 
@@ -37,7 +37,7 @@ public class AccountUserListScreen extends AccountUserScreen {
     .getLogger(AccountUserListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
