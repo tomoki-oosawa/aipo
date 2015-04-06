@@ -71,14 +71,15 @@ import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
-import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
+import com.aimluck.eip.cayenne.om.portlet.auto._EipTSchedule;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
@@ -86,13 +87,13 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.mail.util.ALMailUtils;
-//import com.aimluck.eip.msgboard.util.MsgboardUtils;//いらないんじゃない？
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
@@ -4120,6 +4121,16 @@ public class ScheduleUtils {
     return true;
   }
 
+  public static void deleteFiles(int timelineId, String orgId, int uid,
+      List<String> fpaths) throws ALFileNotRemovedException {
+    ALDeleteFileUtil.deleteFiles(
+      timelineId,
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      getSaveDirPath(orgId, uid),
+      fpaths,
+      EipTScheduleFile.class);
+  }
+
   /**
    * 添付ファイルを取得します。
    *
@@ -4146,7 +4157,7 @@ public class ScheduleUtils {
       }
     }
 
-    ArrayList<FileuploadLiteBean> fileNameList =
+    ArrayList<FileuploadLiteBean> titleList =
       new ArrayList<FileuploadLiteBean>();
     FileuploadLiteBean filebean = null;
 
@@ -4174,8 +4185,8 @@ public class ScheduleUtils {
           filebean = new FileuploadLiteBean();
           filebean.initField();
           filebean.setFolderName("photo");
-          filebean.setFileName("以前の写真ファイル");
-          fileNameList.add(filebean);
+          filebean.setTitle("以前の写真ファイル");
+          titleList.add(filebean);
         } else {
           BufferedReader reader = null;
           try {
@@ -4195,15 +4206,15 @@ public class ScheduleUtils {
             filebean.initField();
             filebean.setFolderName(newfileid);
             filebean.setFileId(fileid);
-            filebean.setFileName(line);
-            fileNameList.add(filebean);
+            filebean.setTitle(line);
+            titleList.add(filebean);
           } catch (Exception e) {
-            logger.error("msgboard", e);
+            logger.error("schedule", e);
           } finally {
             try {
               reader.close();
             } catch (Exception e) {
-              logger.error("msgboard", e);
+              logger.error("schedule", e);
             }
           }
         }
@@ -4224,31 +4235,31 @@ public class ScheduleUtils {
       }
 
       try {
-        SelectQuery<EipTMsgboardFile> reqquery =
-          Database.query(EipTMsgboardFile.class);
+        SelectQuery<EipTScheduleFile> reqquery =
+          Database.query(EipTScheduleFile.class);
         Expression reqexp1 =
           ExpressionFactory.inDbExp(
-            EipTMsgboardFile.FILE_ID_PK_COLUMN,
+            EipTScheduleFile.FILE_ID_PK_COLUMN,
             hadfileidsValue);
         reqquery.setQualifier(reqexp1);
-        List<EipTMsgboardFile> requests = reqquery.fetchList();
-        for (EipTMsgboardFile file : requests) {
+        List<EipTScheduleFile> requests = reqquery.fetchList();
+        for (EipTScheduleFile file : requests) {
           filebean = new FileuploadBean();
           filebean.initField();
           filebean.setFileId(file.getFileId());
-          filebean.setFileName(file.getFileName());
+          filebean.setTitle(file.getTitle());
           filebean.setFlagNewFile(false);
-          fileNameList.add(filebean);
+          titleList.add(filebean);
         }
       } catch (Exception ex) {
         logger.error("[BlogUtils] Exception.", ex);
       }
     }
-    return fileNameList;
+    return titleList;
   }
 
   public static boolean insertFileDataDelegate(RunData rundata,
-      Context context, EipTMsgboardTopic topic,
+      Context context, EipTSchedule schedule,
       List<FileuploadLiteBean> fileuploadList, String folderName,
       List<String> msgList) {
     if (fileuploadList == null || fileuploadList.size() <= 0) {
@@ -4265,14 +4276,14 @@ public class ScheduleUtils {
       }
     }
 
-    SelectQuery<EipTMsgboardFile> dbquery =
-      Database.query(EipTMsgboardFile.class);
+    SelectQuery<EipTScheduleFile> dbquery =
+      Database.query(EipTScheduleFile.class);
     dbquery.andQualifier(ExpressionFactory.matchDbExp(
-      EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
-      topic.getTopicId()));
-    List<EipTMsgboardFile> existsFiles = dbquery.fetchList();
-    List<EipTMsgboardFile> delFiles = new ArrayList<EipTMsgboardFile>();
-    for (EipTMsgboardFile file : existsFiles) {
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
+    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+    List<EipTScheduleFile> delFiles = new ArrayList<EipTScheduleFile>();
+    for (EipTScheduleFile file : existsFiles) {
       if (!hadfileids.contains(file.getFileId())) {
         delFiles.add(file);
       }
@@ -4310,18 +4321,18 @@ public class ScheduleUtils {
             msgList,
             true);
 
-        String filename = "0_" + String.valueOf(System.nanoTime());
+        String title = "0_" + String.valueOf(System.nanoTime());
 
         // 新規オブジェクトモデル
-        EipTMsgboardFile file = Database.create(EipTMsgboardFile.class);
+        EipTScheduleFile file = Database.create(EipTScheduleFile.class);
         // 所有者
         file.setOwnerId(Integer.valueOf(uid));
         // トピックID
-        file.setEipTMsgboardTopic(topic);
+        // file.setEipTSchedule(topic);
         // ファイル名
-        file.setFileName(filebean.getFileName());
+        file.setTitle(filebean.getTitle());
         // ファイルパス
-        file.setFilePath(ScheduleUtils.getRelativePath(filename));
+        file.setFilePath(ScheduleUtils.getRelativePath(title));
         // サムネイル画像
         if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
           file.setFileThumbnail(shrinkImageSet.getShrinkImage());
@@ -4342,13 +4353,13 @@ public class ScheduleUtils {
             + ALStorageService.separator()
             + uid
             + ALStorageService.separator()
-            + filename);
+            + title);
         } else {
           // ファイルの移動
           ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
             .getFileId()), FOLDER_FILEDIR_SCHEDULE, CATEGORY_KEY
             + ALStorageService.separator()
-            + uid, filename);
+            + uid, title);
         }
       }
 
@@ -4356,7 +4367,7 @@ public class ScheduleUtils {
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       Database.rollback();
-      logger.error("msgboard", e);
+      logger.error("schedule", e);
       return false;
     }
     return true;
@@ -4380,8 +4391,8 @@ public class ScheduleUtils {
    * @param uid
    * @return
    */
-  public static String getRelativePath(String fileName) {
-    return new StringBuffer().append("/").append(fileName).toString();
+  public static String getRelativePath(String title) {
+    return new StringBuffer().append("/").append(title).toString();
   }
 
   @Deprecated
@@ -4389,39 +4400,37 @@ public class ScheduleUtils {
     int uid = ALEipUtils.getUserId(rundata);
     boolean isPublic = false;
 
-    SelectQuery<EipTMsgboardTopic> query =
-      Database.query(EipTMsgboardTopic.class);
+    SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
     Expression exp =
-      ExpressionFactory
-        .matchExp(EipTMsgboardTopic.PARENT_ID_PROPERTY, entityid);
+      ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, entityid);
     query.setQualifier(exp);
-    query.select(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN);
+    query.select(EipTSchedule.SCHEDULE_ID_PK_COLUMN);
     query.distinct(true);
 
-    List<EipTMsgboardTopic> topics = query.fetchList();
+    List<EipTSchedule> schedules = query.fetchList();
 
-    query = Database.query(EipTMsgboardTopic.class);
+    query = Database.query(EipTSchedule.class);
     exp =
-      ExpressionFactory.matchDbExp(
-        EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
-        entityid);
+      ExpressionFactory
+        .matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, entityid);
     query.setQualifier(exp);
 
-    List<EipTMsgboardTopic> topic = query.fetchList();
-    if (topic != null
-      && ((topic.get(0)).getEipTMsgboardCategory().getPublicFlag().equals("T"))) {
+    List<EipTSchedule> schedule = query.fetchList();
+    if (schedule != null
+      && (((_EipTSchedule) (schedule.get(0)).getEipTScheduleMaps())
+        .getPublicFlag().equals("T"))) {
       isPublic = true;
     }
 
-    if (topics != null) {
+    if (schedules != null) {
 
-      int size = topics.size();
+      int size = schedules.size();
       Integer _id = null;
 
       if (isPublic) {
         for (int i = 0; i < size; i++) {
-          EipTMsgboardTopic record = topics.get(i);
-          _id = record.getTopicId();
+          EipTSchedule record = schedules.get(i);
+          _id = record.getScheduleId();
           WhatsNewUtils.shiftWhatsNewReadFlagPublic(
             WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
             _id.intValue(),
@@ -4429,8 +4438,8 @@ public class ScheduleUtils {
         }
       } else {
         for (int i = 0; i < size; i++) {
-          EipTMsgboardTopic record = topics.get(i);
-          _id = record.getTopicId();
+          EipTSchedule record = schedules.get(i);
+          _id = record.getScheduleId();
           WhatsNewUtils.shiftWhatsNewReadFlag(
             WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
             _id.intValue(),

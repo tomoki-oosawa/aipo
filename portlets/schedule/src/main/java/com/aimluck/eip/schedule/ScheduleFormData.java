@@ -1135,6 +1135,19 @@ public class ScheduleFormData extends ALAbstractFormData {
       schedule.setUpdateDate(now);
       schedule.setUpdateUserId(Integer.valueOf(ownerid));
 
+      // ファイルをデータベースに登録する．
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        schedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
+      }
+
+      Database.commit();
+
       if (is_span) {
         // 期間スケジュール設定の場合
         schedule.setEndDate(end_date.getValue());
@@ -1447,6 +1460,18 @@ public class ScheduleFormData extends ALAbstractFormData {
           check = false;
         }
       }
+      // ファイルをデータベースに登録する．
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        schedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
+      }
+
+      Database.commit();
       // スケジュールのアップデート権限を検証する．
       /*
        * if (ownerid != schedule.getOwnerId().intValue() &&
