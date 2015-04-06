@@ -833,6 +833,12 @@ public class ScheduleUtils {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
+    } else if (ptn.charAt(0) == 'Y') {
+      int ymonth = Integer.parseInt(ptn.substring(1, 2));
+      result = Integer.parseInt(date.getMonth()) == ymonth;
+      int yday = Integer.parseInt(ptn.substring(3, 4));
+      result = Integer.parseInt(date.getDay()) == yday;
+      count = 5;
     } else {
       return true;
     }
@@ -1950,6 +1956,8 @@ public class ScheduleUtils {
    * @param limit_start_date
    * @param limit_end_date
    * @param month_day
+   * @param year_month
+   * @param year_day
    * @param login_user
    * @param entityid
    * @param msgList
@@ -1966,7 +1974,8 @@ public class ScheduleUtils {
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
       ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
       ALDateField limit_start_date, ALDateField limit_end_date,
-      ALNumberField month_day, ALEipUser login_user, String entityid,
+      ALNumberField month_day, ALNumberField year_month,
+      ALNumberField year_day, ALEipUser login_user, String entityid,
       List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
       ALPageNotFoundException {
 
@@ -2077,6 +2086,15 @@ public class ScheduleUtils {
           } else {
             month_day.validate(msgList);
           }
+        } else if ("Y".equals(repeat_type.getValue())) {
+          // 毎年の繰り返し
+          if (year_month.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY"));
+          } else {
+            year_month.validate(msgList);
+          }
         }
 
         if ("ON".equals(limit_flag.getValue())) {
@@ -2143,11 +2161,18 @@ public class ScheduleUtils {
                 + (week_4.getValue() != null ? 1 : 0)
                 + (week_5.getValue() != null ? 1 : 0)
                 + (week_6.getValue() != null ? 1 : 0);
-          } else {
+          } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
               new StringBuffer().append('M').append(
                 format.format(month_day.getValue())).append(lim).toString();
+            date_count = 1;
+          } else if ("Y".equals(repeat_type.getValue())) {
+            DecimalFormat format = new DecimalFormat("00");
+            repeat_pattern =
+              new StringBuffer().append('Y').append(
+                format.format(year_month.getValue())).append(
+                format.format(year_day.getValue())).append(lim).toString();
             date_count = 1;
           }
           // 開始時刻(期間初日)
@@ -3623,6 +3648,12 @@ public class ScheduleUtils {
       int month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
       return (month_day == ptn_day);
+    } else if (repeat_ptn.startsWith("Y")) {
+      int year_month = Integer.parseInt(repeat_ptn.substring(1, 2));
+      int year_day = Integer.parseInt(repeat_ptn.substring(3, 4));
+      int ptn_month = cal.get(Calendar.MONTH);
+      int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
+      return (year_day == ptn_day && year_month == ptn_month);
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       if (dow == Calendar.SUNDAY) {
