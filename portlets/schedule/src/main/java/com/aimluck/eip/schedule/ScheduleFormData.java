@@ -45,7 +45,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
-import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
@@ -241,9 +240,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  private int uid;
+  private int uid;// この変数に対する処理が何も行われていない、ここが怪しい
 
-  private EipTMsgboardCategory category;
+  // private EipTMsgboardCategory category;//ここはいらないかもしれない。
 
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;

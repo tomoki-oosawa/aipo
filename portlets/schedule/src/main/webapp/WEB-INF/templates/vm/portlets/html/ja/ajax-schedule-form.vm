@@ -336,6 +336,23 @@
 </div>
 #ALtditemfooter()
 
+##ファイル添付欄の追加
+<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+<td class="caption" >$l10n.SCHEDULE_FILE_ATTACH</td>
+<td>
+  <div class="clearfix">
+  <div>
+  #IFFileUpload()
+  </div>
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+    #foreach($record in $!result.AttachmentTitleList )
+      <li data-fileid="s${record.FileId}" data-filename="$!{record.Title}"><span>$!record.Title</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.SCHEDULE_DELETE_DO</span></li>
+    #end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
