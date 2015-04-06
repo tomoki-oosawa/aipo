@@ -313,12 +313,4 @@ public class ALNumberField extends ALAbstractField {
   public String toString() {
     return ALStringUtil.sanitizing(value);
   }
-
-  /**
-   * @param intValue
-   * @return
-   */
-  public static ALNumberField getALNumberField(int intValue) {
-    return null;
-  }
 }
