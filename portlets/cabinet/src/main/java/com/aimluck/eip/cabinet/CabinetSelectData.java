@@ -88,7 +88,7 @@ public class CabinetSelectData extends
   private RunData rundata;
 
   /** ログインユーザーID */
-  private Integer loginUserId;
+  private long loginUserId;
 
   public void setIsNormalContext(boolean flg) {
     isNormalContext = flg;
@@ -462,8 +462,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateUserId(record.getUpdateUserId().intValue());
-      rd.setLoginUserId(loginUserId.longValue());
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -507,7 +506,7 @@ public class CabinetSelectData extends
         createUserName = createUser.getAliasName().getValue();
       }
       rd.setCreateUser(createUserName);
-      rd.setCreateUserId(record.getCreateUserId().intValue());
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -517,8 +516,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateUserId(record.getUpdateUserId().intValue());
-      rd.setLoginUserId(loginUserId.longValue());
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -661,5 +659,14 @@ public class CabinetSelectData extends
 
   public String getSelectedPostName() {
     return post_name;
+  }
+
+  /**
+   * ログインユーザーIDの取得
+   *
+   * @return ログインユーザーID
+   */
+  public long getLoginUserId() {
+    return loginUserId;
   }
 }

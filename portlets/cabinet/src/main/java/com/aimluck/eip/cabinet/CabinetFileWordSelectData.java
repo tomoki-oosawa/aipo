@@ -70,7 +70,7 @@ public class CabinetFileWordSelectData extends
   private RunData rundata;
 
   /** ログインユーザーID */
-  private Integer loginUserId;
+  private long loginUserId;
 
   /**
    *
@@ -211,9 +211,8 @@ public class CabinetFileWordSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateUserId(record.getUpdateUserId().intValue());
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
-      rd.setLoginUserId(loginUserId.longValue());
       return rd;
     } catch (Exception ex) {
       logger.error("cabinet", ex);
@@ -313,5 +312,14 @@ public class CabinetFileWordSelectData extends
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
+  }
+
+  /**
+   * ログインユーザーIDの取得
+   *
+   * @return ログインユーザーID
+   */
+  public long getLoginUserId() {
+    return loginUserId;
   }
 }

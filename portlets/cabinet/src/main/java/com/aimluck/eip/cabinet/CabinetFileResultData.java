@@ -67,9 +67,6 @@ public class CabinetFileResultData implements ALData {
   /** 更新者名 */
   private ALStringField update_user;
 
-  /** ログインユーザー ID */
-  private ALNumberField login_user_id;
-
   /** 作成日 */
   private ALStringField create_date;
 
@@ -102,7 +99,6 @@ public class CabinetFileResultData implements ALData {
     create_user = new ALStringField();
     update_user_id = new ALNumberField();
     update_user = new ALStringField();
-    login_user_id = new ALNumberField();
     create_date = new ALStringField();
     update_date = new ALDateTimeField();
     folder_id = new ALNumberField();
@@ -267,24 +263,6 @@ public class CabinetFileResultData implements ALData {
    */
   public void setUpdateUserId(long i) {
     update_user_id.setValue(i);
-  }
-
-  /**
-   * ログインユーザーIDのの取得
-   *
-   * @return
-   */
-  public ALNumberField getLoginUserId() {
-    return login_user_id;
-  }
-
-  /**
-   * ログインユーザーIDの設定
-   *
-   * @param i
-   */
-  public void setLoginUserId(long i) {
-    login_user_id.setValue(i);
   }
 
   /**
