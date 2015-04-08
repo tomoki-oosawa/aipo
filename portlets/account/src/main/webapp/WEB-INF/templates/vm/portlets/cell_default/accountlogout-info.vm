@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($uri = "portal/")
+#set($uri = "")
 #ALcell_pagetitle($career "${alias}ﾛｸﾞｱｳﾄ")
 ${alias}ｻｲﾄからﾛｸﾞｱｳﾄしました。
 #ALcell_hr($career '1')
