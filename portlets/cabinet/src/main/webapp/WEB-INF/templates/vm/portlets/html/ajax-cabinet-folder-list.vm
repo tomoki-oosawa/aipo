@@ -54,7 +54,11 @@ $!{record.FolderName}
 #ALtdcellfooter()
 #if(${record.FolderId} > 1)
 #ALtdcellheaderAtt("class='mb_hide'")
-<div><a href="jsavascript: void(0)" onclick="aipo.message.openDirect($!record.UpdateUserId.AliasName)">$!{record.UpdateName.AliasName}</a></div>
+#if($!record.UpdateUserId.value != $!result.LoginUserId)
+<div><a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UpdateUserId.value)">$!{record.UpdateName.AliasName}</a></div>
+#else
+<div>$!{record.UpdateName.AliasName}</div>
+#end
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("" "thin class='mb_hide'")

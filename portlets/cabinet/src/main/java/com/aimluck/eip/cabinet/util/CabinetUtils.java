@@ -275,6 +275,7 @@ public class CabinetUtils {
         info.setFolderName(folder.getFolderName());
         info.setUpdateDate(folder.getUpdateDate());
         try {
+          info.setUpdateUserId(folder.getUpdateUserId());
           info.setUpdateName(ALEipUtils.getALEipUser(folder
             .getUpdateUserId()
             .intValue()));

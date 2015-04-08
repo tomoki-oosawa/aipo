@@ -67,7 +67,7 @@ $!record.AliasName <br />
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
-#if($!result.Detail.CreateUserId.value != $!result.Detail.LoginUserId.value)
+#if($!result.Detail.CreateUserId.value != $!result.LoginUserId)
 <a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.CreateUserId.value)">$!{result.Detail.CreateUser}</a>
 #else
 $!{result.Detail.CreateUser}
@@ -76,7 +76,7 @@ $!{result.Detail.CreateUser}
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditemheader()
-#if($!result.Detail.UpdateUserId.value != $!result.Detail.LoginUserId.value)
+#if($!result.Detail.UpdateUserId.value != $!result.LoginUserId)
 <a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.UpdateUserId.value)">$!{result.Detail.UpdateUser}</a>
 #else
 $!{result.Detail.UpdateUser}

@@ -65,7 +65,7 @@ public class CabinetFolderSelectData extends
   private RunData rundata;
 
   /** ログインユーザーID */
-  private Integer loginUserId;
+  private long loginUserId;
 
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
@@ -300,7 +300,7 @@ public class CabinetFolderSelectData extends
       }
 
       rd.setCreateUser(createUserName);
-      rd.setCreateUserId(record.getCreateUserId().intValue());
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -334,9 +334,7 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
-      rd.setUpdateUserId(record.getUpdateUserId().intValue()); // setUpdateUserIdメソッドで値をセット,
-                                                               // 引数にはrecord.getUpdateUserId.intValue()でgetterで取ってきた値を入れる
-      rd.setLoginUserId(loginUserId.longValue());
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY_HOUR_MINUTE")).format(record
         .getUpdateDate()));
@@ -407,5 +405,14 @@ public class CabinetFolderSelectData extends
 
   public void setEditable(boolean isEditable) {
     this.isEditable = isEditable;
+  }
+
+  /**
+   * ログインユーザーIDの取得
+   *
+   * @return ログインユーザーID
+   */
+  public long getLoginUserId() {
+    return loginUserId;
   }
 }
