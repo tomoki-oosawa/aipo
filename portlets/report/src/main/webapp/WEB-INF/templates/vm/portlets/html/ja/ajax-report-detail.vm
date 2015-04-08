@@ -43,7 +43,7 @@
 	#if($!result.LoginUser.UserId.Value == $!result.ParentReport.ClientId.Value)
 		$!result.ParentReport.ClientName<br />
 	#else
-		<a href="javascript: void(0)" onclick="aipo.message.openDirect($!$!result.ParentReport.ClientId)">$!result.ParentReport.ClientName</a><br />
+		<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.ParentReport.ClientId)">$!result.ParentReport.ClientName</a><br />
 	#end
 	</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
