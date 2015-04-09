@@ -137,7 +137,27 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <br/>
+
+      <input id="repeat_typeMT" type="radio" value="MT" #if ($!{result.RepeatType.toString()} == "MT") checked="checked" #end name="repeat_type"/>
+      <label for="repeat_typeMT">$l10n.SCHEDULE_EVERY_MONTH</label>
+      <select onchange="aipo.schedule.enableMonthly(this.form)" name="monthly_day">
+      #foreach( $num in [1..5])
+      	<option value="$num" #if ($!{result.MonthlyDay.toString()} == "$num") selected #end>第$num</option>
+      #end
       </select>
+      <select onchange="aipo.schedule.enableMonthly(this.form)" name="monthly_day">
+      	<option value="$sund" #if ($!{result.Sund.toString()} == "$sund") selected #end>日曜日</option>
+      	<option value="$mond" #if ($!{result.Mond.toString()} == "$mond") selected #end>月曜日</option>
+      	<option value="$tued" #if ($!{result.Tued.toString()} == "$tued") selected #end>火曜日</option>
+      	<option value="$wedd" #if ($!{result.Wedd.toString()} == "$wedd") selected #end>水曜日</option>
+      	<option value="$thud" #if ($!{result.Thud.toString()} == "$thud") selected #end>木曜日</option>
+      	<option value="$frid" #if ($!{result.Frid.toString()} == "$frid") selected #end>金曜日</option>
+      	<option value="$satd" #if ($!{result.Satd.toString()} == "$satd") selected #end>土曜日</option>
+     </select>
+
+
+
    </div>
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
