@@ -2077,7 +2077,9 @@ div.userInfo {
   z-index: 111 !important;
   top: 40px !important;
 }
-
+.menubar ul {
+  max-width: 260px;
+}
 .dijitPopup .menubar {
   position: static;
 }
