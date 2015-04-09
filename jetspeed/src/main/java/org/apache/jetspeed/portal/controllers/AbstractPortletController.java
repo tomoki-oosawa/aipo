@@ -1,12 +1,12 @@
 /*
  * Copyright 2000-2004 The Apache Software Foundation.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,239 +17,238 @@
 package org.apache.jetspeed.portal.controllers;
 
 //jetspeed support
+import java.util.Iterator;
+import java.util.Map;
+
+//ecs stuff
+import org.apache.ecs.ConcreteElement;
+import org.apache.ecs.ElementContainer;
+import org.apache.jetspeed.capability.CapabilityMap;
+import org.apache.jetspeed.om.registry.MediaTypeEntry;
+import org.apache.jetspeed.om.registry.PortletControllerEntry;
 import org.apache.jetspeed.portal.BasePortletSetConstraints;
 import org.apache.jetspeed.portal.PortletConfig;
 import org.apache.jetspeed.portal.PortletController;
 import org.apache.jetspeed.portal.PortletControllerConfig;
 import org.apache.jetspeed.portal.PortletSet;
-
-import org.apache.jetspeed.capability.CapabilityMap;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.om.registry.PortletControllerEntry;
-import org.apache.jetspeed.om.registry.MediaTypeEntry;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.util.MimeType;
-
 //turbine support
 import org.apache.turbine.util.RunData;
 
-//ecs stuff
-import org.apache.ecs.ConcreteElement;
-import org.apache.ecs.ElementContainer;
-
-import java.util.Map;
-import java.util.Iterator;
-
 /**
- @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- @version $Id: AbstractPortletController.java,v 1.26 2004/02/23 03:25:06 jford Exp $
-*/
-public abstract class AbstractPortletController implements PortletController
-{
+ * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
+ * @version $Id: AbstractPortletController.java,v 1.26 2004/02/23 03:25:06 jford
+ *          Exp $
+ */
+public abstract class AbstractPortletController implements PortletController {
 
-    /**
-     * Static initialization of the logger for this class
-     */    
-    private static final JetspeedLogger logger = JetspeedLogFactoryService.getLogger(AbstractPortletController.class.getName());    
-    
-    /**
-     *  Default padding to be displayed between portlets
-     */
-    public int DEFAULT_PADDING = 3;
+  /**
+   *
+   */
+  private static final long serialVersionUID = 213770551358779824L;
 
-    private String width="100%";
-    private PortletSet portlets = null;
-    private PortletControllerConfig conf = null;
+  /**
+   * Static initialization of the logger for this class
+   */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AbstractPortletController.class.getName());
 
+  /**
+   * Default padding to be displayed between portlets
+   */
+  public int DEFAULT_PADDING = 3;
 
-    /**
-    Allows the user to override the default set of portlets...
+  private String width = "100%";
+
+  private PortletSet portlets = null;
+
+  private PortletControllerConfig conf = null;
+
+  /**
+   * Allows the user to override the default set of portlets...
+   */
+  @Override
+  public final void setConfig(PortletControllerConfig conf) {
+    this.conf = conf;
+  }
+
+  /**
     */
-    public final void setConfig(PortletControllerConfig conf)
-    {
-        this.conf = conf;
+  @Override
+  public final PortletControllerConfig getConfig() {
+    return this.conf;
+  }
+
+  /**
+   * Allows the user to override the default set of portlets...
+   */
+  @Override
+  public final void setPortlets(PortletSet portlets) {
+    this.portlets = portlets;
+  }
+
+  /**
+    */
+  @Override
+  public final PortletSet getPortlets() {
+    return this.portlets;
+  }
+
+  /**
+    */
+  public String getWidth() {
+    return this.width;
+  }
+
+  /**
+    */
+  public void setWidth(String width) {
+    this.width = width;
+  }
+
+  /**
+   * Returns the padding value between the displayed portlets
+   */
+  public int getPadding() {
+    int padding = 0;
+
+    try {
+      PortletConfig conf = getPortlets().getPortletConfig();
+      padding =
+        Integer.parseInt(conf.getSkin("padding", String
+          .valueOf(DEFAULT_PADDING)));
+    } catch (RuntimeException e) {
+      logger.error("Exception getting padding value", e);
+      padding = DEFAULT_PADDING;
     }
 
+    return padding;
+  }
 
-    /**
-    */
-    public final PortletControllerConfig getConfig()
-    {
-        return this.conf;
+  /**
+   * Sets the padding space to be put between portlets
+   */
+  public void setPadding(int padding) {
+    try {
+      PortletConfig conf = getPortlets().getPortletConfig();
+      conf.setSkin("padding", String.valueOf(padding));
+    } catch (RuntimeException e) {
+      logger.error("Exception setting padding value", e);
+      // FIXME: What should we do if there's no portlets, config or skin defined
+      // ?
     }
 
-    /**
-    Allows the user to override the default set of portlets...
-    */
-    public final void setPortlets(PortletSet portlets)
-    {
-      this.portlets = portlets;
+  }
+
+  /**
+   * Sets the padding space to be put between portlets
+   */
+  public void setPadding(String padding) {
+    try {
+      PortletConfig conf = getPortlets().getPortletConfig();
+      conf.setSkin("padding", padding);
+    } catch (RuntimeException e) {
+      logger.error("Exception setting padding value", e);
+      // FIXME: What should we do if there's no portlets, config or skin defined
+      // ?
     }
+  }
 
-
-    /**
+  /**
     */
-    public final PortletSet getPortlets()
-    {
-        return this.portlets;
-    }
+  @Override
+  public void init() {
+    // no specific init
+  }
 
-    /**
-    */
-    public String getWidth() {
-        return this.width;
-    }
+  /**
+   * @see Portlet#supportsType
+   */
+  @Override
+  public boolean supportsType(MimeType mimeType) {
+    // we now need to check that the control also supports the type...
+    PortletControllerEntry entry =
+      (PortletControllerEntry) Registry.getEntry(
+        Registry.PORTLET_CONTROLLER,
+        getConfig().getName());
+    String baseType = mimeType.toString();
 
-    /**
-    */
-    public void setWidth(String width) {
-        this.width = width;
-    }
+    if (entry != null) {
+      Iterator<?> i = entry.listMediaTypes();
 
-    /**
-    Returns the padding value between the displayed portlets
-    */
-    public int getPadding() {
-        int padding = 0;
+      while (i.hasNext()) {
+        String name = (String) i.next();
+        MediaTypeEntry media =
+          (MediaTypeEntry) Registry.getEntry(Registry.MEDIA_TYPE, name);
 
-        try {
-            PortletConfig conf = getPortlets().getPortletConfig();
-            padding =  Integer.parseInt( conf.getSkin( "padding" , String.valueOf( DEFAULT_PADDING ) ) );
-        } catch ( RuntimeException e ) {
-            logger.error("Exception getting padding value", e);
-            padding = DEFAULT_PADDING;
+        if (media != null) {
+          if (baseType.equals(media.getMimeType())) {
+            return true;
+          }
         }
-
-        return padding;
+      }
     }
 
-    /**
-    Sets the padding space to be put between portlets
+    return false;
+  }
+
+  /**
     */
-    public void setPadding(int padding) {
-        try {
-            PortletConfig conf = getPortlets().getPortletConfig();
-            conf.setSkin( "padding" , String.valueOf( padding ) );
-        } catch ( RuntimeException e ) {
-            logger.error("Exception setting padding value", e);
-            // FIXME: What should we do if there's no portlets, config or skin defined ?
-        }
+  @Override
+  public ConcreteElement getContent(RunData rundata) {
 
+    CapabilityMap map = ((JetspeedRunData) rundata).getCapability();
+    ConcreteElement content = null;
+
+    if (MimeType.WML.equals(map.getPreferredType())) {
+      content = getWMLContent(portlets, rundata);
+    } else if (MimeType.HTML.equals(map.getPreferredType())) {
+      content = getHTMLContent(portlets, rundata);
+    } else {
+      // we don't know how to handle this type, maybe a subclass knows
+      content = getContent(portlets, rundata);
     }
 
-    /**
-    Sets the padding space to be put between portlets
+    return content;
+  }
+
+  /**
     */
-    public void setPadding(String padding) {
-        try {
-            PortletConfig conf = getPortlets().getPortletConfig();
-            conf.setSkin( "padding" , padding );
-        } catch ( RuntimeException e ) {
-            logger.error("Exception setting padding value", e);
-            // FIXME: What should we do if there's no portlets, config or skin defined ?
-        }
-    }
+  protected ConcreteElement getContent(PortletSet set, RunData data) {
+    return new ElementContainer();
+  }
 
-    /**
+  /**
     */
-    public void init()
-    {
-        // no specific init
-    }
+  protected ConcreteElement getWMLContent(PortletSet set, RunData data) {
+    return new ElementContainer();
+  }
 
-
-    /**
-    @see Portlet#supportsType
+  /**
     */
-    public boolean supportsType( MimeType mimeType )
-    {
-        // we now need to check that the control also supports the type...
-        PortletControllerEntry entry =
-                (PortletControllerEntry)Registry.getEntry(Registry.PORTLET_CONTROLLER,
-                                                   getConfig().getName() );
-        String baseType = mimeType.toString();
+  protected ConcreteElement getHTMLContent(PortletSet set, RunData data) {
+    return new ElementContainer();
+  }
 
-        if (entry!=null)
-        {
-            Iterator i = entry.listMediaTypes();
-
-            while(i.hasNext())
-            {
-                String name = (String)i.next();
-                MediaTypeEntry media = (MediaTypeEntry)Registry.getEntry(Registry.MEDIA_TYPE, name);
-
-                if (media != null)
-                {
-                    if (baseType.equals(media.getMimeType()))
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
+  /**
+   * Creates a constraint object based on an original map source.
+   *
+   * @param original
+   *          the source for this constraint object
+   * @return a new Constraints object appropriate for this controller
+   */
+  @SuppressWarnings("unchecked")
+  @Override
+  public PortletSet.Constraints getConstraints(Map<?, ?> original) {
+    PortletSet.Constraints constraints = new BasePortletSetConstraints();
+    if (original != null) {
+      constraints.putAll(original);
     }
-
-    /**
-    */
-    public ConcreteElement getContent( RunData rundata )
-    {
-
-        CapabilityMap map = ((JetspeedRunData)rundata).getCapability();
-        ConcreteElement content = null;
-
-        if ( MimeType.WML.equals( map.getPreferredType() ) )
-        {
-            content = getWMLContent( portlets, rundata );
-        }
-        else if ( MimeType.HTML.equals( map.getPreferredType() ) )
-        {
-            content = getHTMLContent( portlets, rundata );
-        }
-        else
-        {
-            // we don't know how to handle this type, maybe a subclass knows
-            content = getContent( portlets, rundata );
-        }
-
-        return content;
-    }
-
-    /**
-    */
-    protected ConcreteElement getContent( PortletSet set, RunData data )
-    {
-        return new ElementContainer();
-    }
-
-    /**
-    */
-    protected ConcreteElement getWMLContent( PortletSet set, RunData data )
-    {
-        return new ElementContainer();
-    }
-
-    /**
-    */
-    protected ConcreteElement getHTMLContent( PortletSet set, RunData data )
-    {
-        return new ElementContainer();
-    }
-
-    /**
-     * Creates a constraint object based on an original map source.
-     *
-     * @param original the source for this constraint object
-     * @return a new Constraints object appropriate for this controller
-     */
-    public PortletSet.Constraints getConstraints( Map original )
-    {
-        PortletSet.Constraints constraints = new BasePortletSetConstraints();
-        if (original != null) constraints.putAll(original);
-        return constraints;
-    }
+    return constraints;
+  }
 
 }

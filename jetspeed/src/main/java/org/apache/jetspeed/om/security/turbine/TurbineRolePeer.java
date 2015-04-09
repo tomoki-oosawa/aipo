@@ -5,11 +5,15 @@ package org.apache.jetspeed.om.security.turbine;
  *
  * [Thu Jun 10 23:17:32 JST 2004]
  *
- *  You should add additional methods to this class to meet the
- *  application requirements.  This class will only be generated as
- *  long as it does not already exist in the output directory.
+ * You should add additional methods to this class to meet the application
+ * requirements. This class will only be generated as long as it does not
+ * already exist in the output directory.
  */
-public class TurbineRolePeer
-    extends org.apache.jetspeed.om.security.turbine.BaseTurbineRolePeer
-{
+public class TurbineRolePeer extends
+    org.apache.jetspeed.om.security.turbine.BaseTurbineRolePeer {
+
+  /**
+   *
+   */
+  private static final long serialVersionUID = 6954851871656997841L;
 }

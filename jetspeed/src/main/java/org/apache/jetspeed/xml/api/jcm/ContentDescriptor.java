@@ -1,5 +1,5 @@
 /*
- * This class was automatically generated with 
+ * This class was automatically generated with
  * <a href="http://castor.exolab.org">Castor 0.9.2</a>, using an
  * XML Schema.
  * $Id$
@@ -7,190 +7,197 @@
 
 package org.apache.jetspeed.xml.api.jcm;
 
-  //---------------------------------/
- //- Imported classes and packages -/
+//---------------------------------/
+//- Imported classes and packages -/
 //---------------------------------/
 
-import org.exolab.castor.mapping.AccessMode;
-import org.exolab.castor.mapping.ClassDescriptor;
-import org.exolab.castor.mapping.FieldDescriptor;
-import org.exolab.castor.xml.*;
 import org.exolab.castor.xml.FieldValidator;
-import org.exolab.castor.xml.TypeValidator;
-import org.exolab.castor.xml.XMLFieldDescriptor;
-import org.exolab.castor.xml.handlers.*;
+import org.exolab.castor.xml.NodeType;
+import org.exolab.castor.xml.XMLFieldHandler;
 import org.exolab.castor.xml.util.XMLFieldDescriptorImpl;
-import org.exolab.castor.xml.validators.*;
+import org.exolab.castor.xml.validators.StringValidator;
 
 /**
- * 
+ *
  * @version $Revision$ $Date$
-**/
-public class ContentDescriptor extends org.exolab.castor.xml.util.XMLClassDescriptorImpl {
+ **/
+public class ContentDescriptor extends
+    org.exolab.castor.xml.util.XMLClassDescriptorImpl {
 
+  // --------------------------/
+  // - Class/Member Variables -/
+  // --------------------------/
 
-      //--------------------------/
-     //- Class/Member Variables -/
-    //--------------------------/
+  private java.lang.String nsPrefix;
 
-    private java.lang.String nsPrefix;
+  private java.lang.String nsURI;
 
-    private java.lang.String nsURI;
+  private java.lang.String xmlName;
 
-    private java.lang.String xmlName;
+  private org.exolab.castor.xml.XMLFieldDescriptor identity;
 
-    private org.exolab.castor.xml.XMLFieldDescriptor identity;
+  // ----------------/
+  // - Constructors -/
+  // ----------------/
 
+  public ContentDescriptor() {
+    super();
+    nsURI = "http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content";
+    xmlName = "content";
+    XMLFieldDescriptorImpl desc = null;
+    XMLFieldHandler handler = null;
+    FieldValidator fieldValidator = null;
+    // -- initialize attribute descriptors
 
-      //----------------/
-     //- Constructors -/
-    //----------------/
+    // -- _version
+    desc =
+      new XMLFieldDescriptorImpl(
+        java.lang.String.class,
+        "_version",
+        "version",
+        NodeType.Attribute);
+    desc.setImmutable(true);
+    handler = (new XMLFieldHandler() {
+      @Override
+      public Object getValue(Object object) throws IllegalStateException {
+        Content target = (Content) object;
+        return target.getVersion();
+      }
 
-    public ContentDescriptor() {
-        super();
-        nsURI = "http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content";
-        xmlName = "content";
-        XMLFieldDescriptorImpl  desc           = null;
-        XMLFieldHandler         handler        = null;
-        FieldValidator          fieldValidator = null;
-        //-- initialize attribute descriptors
-        
-        //-- _version
-        desc = new XMLFieldDescriptorImpl(java.lang.String.class, "_version", "version", NodeType.Attribute);
-        desc.setImmutable(true);
-        handler = (new XMLFieldHandler() {
-            public Object getValue( Object object ) 
-                throws IllegalStateException
-            {
-                Content target = (Content) object;
-                return target.getVersion();
-            }
-            public void setValue( Object object, Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Content target = (Content) object;
-                    target.setVersion( (java.lang.String) value);
-                }
-                catch (Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public Object newInstance( Object parent ) {
-                return null;
-            }
-        } );
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content");
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _version
-        fieldValidator = new FieldValidator();
-        { //-- local scope
-            StringValidator sv = new StringValidator();
-            sv.setWhiteSpace("preserve");
-            fieldValidator.setValidator(sv);
+      @Override
+      public void setValue(Object object, Object value)
+          throws IllegalStateException, IllegalArgumentException {
+        try {
+          Content target = (Content) object;
+          target.setVersion((java.lang.String) value);
+        } catch (Exception ex) {
+          throw new IllegalStateException(ex.toString());
         }
-        desc.setValidator(fieldValidator);
-        
-        //-- initialize element descriptors
-        
-        //-- _channel
-        desc = new XMLFieldDescriptorImpl(Channel.class, "_channel", "channel", NodeType.Element);
-        handler = (new XMLFieldHandler() {
-            public Object getValue( Object object ) 
-                throws IllegalStateException
-            {
-                Content target = (Content) object;
-                return target.getChannel();
-            }
-            public void setValue( Object object, Object value) 
-                throws IllegalStateException, IllegalArgumentException
-            {
-                try {
-                    Content target = (Content) object;
-                    target.setChannel( (Channel) value);
-                }
-                catch (Exception ex) {
-                    throw new IllegalStateException(ex.toString());
-                }
-            }
-            public Object newInstance( Object parent ) {
-                return new Channel();
-            }
-        } );
-        desc.setHandler(handler);
-        desc.setNameSpaceURI("http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content");
-        desc.setRequired(true);
-        desc.setMultivalued(false);
-        addFieldDescriptor(desc);
-        
-        //-- validation code for: _channel
-        fieldValidator = new FieldValidator();
-        fieldValidator.setMinOccurs(1);
-        desc.setValidator(fieldValidator);
-        
-    } //-- org.apache.jetspeed.xml.api.jcm.ContentDescriptor()
+      }
 
-
-      //-----------/
-     //- Methods -/
-    //-----------/
-
-    /**
-    **/
-    public org.exolab.castor.mapping.AccessMode getAccessMode()
-    {
+      @Override
+      public Object newInstance(Object parent) {
         return null;
-    } //-- org.exolab.castor.mapping.AccessMode getAccessMode() 
+      }
+    });
+    desc.setHandler(handler);
+    desc
+      .setNameSpaceURI("http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content");
+    addFieldDescriptor(desc);
 
-    /**
-    **/
-    public org.exolab.castor.mapping.ClassDescriptor getExtends()
-    {
-        return null;
-    } //-- org.exolab.castor.mapping.ClassDescriptor getExtends() 
+    // -- validation code for: _version
+    fieldValidator = new FieldValidator();
+    { // -- local scope
+      StringValidator sv = new StringValidator();
+      sv.setWhiteSpace("preserve");
+      fieldValidator.setValidator(sv);
+    }
+    desc.setValidator(fieldValidator);
 
-    /**
-    **/
-    public org.exolab.castor.mapping.FieldDescriptor getIdentity()
-    {
-        return identity;
-    } //-- org.exolab.castor.mapping.FieldDescriptor getIdentity() 
+    // -- initialize element descriptors
 
-    /**
-    **/
-    public java.lang.Class getJavaClass()
-    {
-        return org.apache.jetspeed.xml.api.jcm.Content.class;
-    } //-- java.lang.Class getJavaClass() 
+    // -- _channel
+    desc =
+      new XMLFieldDescriptorImpl(
+        Channel.class,
+        "_channel",
+        "channel",
+        NodeType.Element);
+    handler = (new XMLFieldHandler() {
+      @Override
+      public Object getValue(Object object) throws IllegalStateException {
+        Content target = (Content) object;
+        return target.getChannel();
+      }
 
-    /**
-    **/
-    public java.lang.String getNameSpacePrefix()
-    {
-        return nsPrefix;
-    } //-- java.lang.String getNameSpacePrefix() 
+      @Override
+      public void setValue(Object object, Object value)
+          throws IllegalStateException, IllegalArgumentException {
+        try {
+          Content target = (Content) object;
+          target.setChannel((Channel) value);
+        } catch (Exception ex) {
+          throw new IllegalStateException(ex.toString());
+        }
+      }
 
-    /**
-    **/
-    public java.lang.String getNameSpaceURI()
-    {
-        return nsURI;
-    } //-- java.lang.String getNameSpaceURI() 
+      @Override
+      public Object newInstance(Object parent) {
+        return new Channel();
+      }
+    });
+    desc.setHandler(handler);
+    desc
+      .setNameSpaceURI("http://jakarta.apache.org/jetspeed/xml/jetspeed-portal-content");
+    desc.setRequired(true);
+    desc.setMultivalued(false);
+    addFieldDescriptor(desc);
 
-    /**
-    **/
-    public org.exolab.castor.xml.TypeValidator getValidator()
-    {
-        return this;
-    } //-- org.exolab.castor.xml.TypeValidator getValidator() 
+    // -- validation code for: _channel
+    fieldValidator = new FieldValidator();
+    fieldValidator.setMinOccurs(1);
+    desc.setValidator(fieldValidator);
 
-    /**
+  } // -- org.apache.jetspeed.xml.api.jcm.ContentDescriptor()
+
+  // -----------/
+  // - Methods -/
+  // -----------/
+
+  /**
     **/
-    public java.lang.String getXMLName()
-    {
-        return xmlName;
-    } //-- java.lang.String getXMLName() 
+  @Override
+  public org.exolab.castor.mapping.AccessMode getAccessMode() {
+    return null;
+  } // -- org.exolab.castor.mapping.AccessMode getAccessMode()
+
+  /**
+    **/
+  @Override
+  public org.exolab.castor.mapping.ClassDescriptor getExtends() {
+    return null;
+  } // -- org.exolab.castor.mapping.ClassDescriptor getExtends()
+
+  /**
+    **/
+  @Override
+  public org.exolab.castor.mapping.FieldDescriptor getIdentity() {
+    return identity;
+  } // -- org.exolab.castor.mapping.FieldDescriptor getIdentity()
+
+  /**
+    **/
+  @Override
+  public Class<Content> getJavaClass() {
+    return org.apache.jetspeed.xml.api.jcm.Content.class;
+  } // -- java.lang.Class getJavaClass()
+
+  /**
+    **/
+  @Override
+  public java.lang.String getNameSpacePrefix() {
+    return nsPrefix;
+  } // -- java.lang.String getNameSpacePrefix()
+
+  /**
+    **/
+  @Override
+  public java.lang.String getNameSpaceURI() {
+    return nsURI;
+  } // -- java.lang.String getNameSpaceURI()
+
+  /**
+    **/
+  @Override
+  public org.exolab.castor.xml.TypeValidator getValidator() {
+    return this;
+  } // -- org.exolab.castor.xml.TypeValidator getValidator()
+
+  /**
+    **/
+  @Override
+  public java.lang.String getXMLName() {
+    return xmlName;
+  } // -- java.lang.String getXMLName()
 
 }

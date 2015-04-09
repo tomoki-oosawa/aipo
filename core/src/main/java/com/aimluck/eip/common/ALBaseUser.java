@@ -21,6 +21,7 @@ package com.aimluck.eip.common;
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,9 +32,9 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- * 
+ *
  */
-public class ALBaseUser extends
+public abstract class ALBaseUser extends
     org.apache.jetspeed.om.security.BaseJetspeedUser {
 
   /**
@@ -84,7 +85,6 @@ public class ALBaseUser extends
 
   public static final String MIGRATE_VERSION = "MIGRATE_VERSION";
 
-  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseUser.class.getName());
 
@@ -96,7 +96,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getInTelephone() {
@@ -104,7 +104,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setInTelephone(String str) {
@@ -112,7 +112,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getOutTelephone() {
@@ -120,7 +120,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setOutTelephone(String str) {
@@ -128,7 +128,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCellularPhone() {
@@ -136,7 +136,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCellularPhone(String str) {
@@ -144,7 +144,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCellularMail() {
@@ -152,7 +152,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCellularMail(String str) {
@@ -160,7 +160,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getCompanyId() {
@@ -168,7 +168,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCompanyId(int id) {
@@ -176,7 +176,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPostId() {
@@ -184,7 +184,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setPostId(int id) {
@@ -192,7 +192,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPositionId() {
@@ -200,7 +200,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setPositionId(int id) {
@@ -208,7 +208,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getFirstNameKana() {
@@ -216,7 +216,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setFirstNameKana(String str) {
@@ -224,7 +224,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getLastNameKana() {
@@ -232,7 +232,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setLastNameKana(String str) {
@@ -240,7 +240,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return byte[]
    */
   public byte[] getPhoto() {
@@ -263,7 +263,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return byte[]
    */
   public byte[] getPhotoSmartphone() {
@@ -286,7 +286,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param v
    */
   public void setPhoto(byte[] v) {
@@ -294,7 +294,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param b
    */
   public void setPhotoSmartphone(byte[] b) {
@@ -359,7 +359,7 @@ public class ALBaseUser extends
 
   /**
    * 会社名を取得します。
-   * 
+   *
    * @param id
    *          会社ID
    * @return 会社名
@@ -391,7 +391,7 @@ public class ALBaseUser extends
 
   /**
    * 最終アクセス時間を取得します。
-   * 
+   *
    * @return
    */
   public String getLastAccessTime() {
@@ -414,7 +414,7 @@ public class ALBaseUser extends
 
   /**
    * 指定されたユーザが管理者権限を持っているかを返します。
-   * 
+   *
    * @return
    */
   public boolean isAdmin() {
@@ -489,5 +489,21 @@ public class ALBaseUser extends
    */
   public void setMigrateVersion(int id) {
     setPerm(MIGRATE_VERSION, Integer.valueOf(id));
+  }
+
+  /**
+   * @param arg0
+   */
+  @SuppressWarnings("rawtypes")
+  @Override
+  public void setPermStorage(Hashtable arg0) {
+  }
+
+  /**
+   * @param arg0
+   */
+  @SuppressWarnings("rawtypes")
+  @Override
+  public void setTempStorage(Hashtable arg0) {
   }
 }
