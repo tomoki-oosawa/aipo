@@ -60,11 +60,12 @@
                                 <div class="auiPortletTitle">$!utils.escapeXML($titles.get($portlet.id))</div>
 								<div class="auiPortletTool">
 #if($accessControl == "true" && ($portlet.parent != "Timeline" || ($timelineCount > 1)))
-									<div class="auiPortletDelete">
+		<div class="auiPortletDelete">
 										<a href="javascript:(function(e){ document.getElementById('remove_button_$portlet.id').click()})();" class="auiIcon"><i class="icon-remove"></i></a>
 										<button  type="submit" id="remove_button_$portlet.id" style="display:none" name="eventSubmit_doDelete"/>&nbsp;<i class="icon-remove"></i>&nbsp;</button>
-									</div>
+		</div>
 #end
+
 								</div>
 							</div>
 						</div>

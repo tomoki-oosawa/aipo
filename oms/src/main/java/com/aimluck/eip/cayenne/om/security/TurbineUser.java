@@ -66,4 +66,8 @@ public class TurbineUser extends _TurbineUser {
     setObjectId(new ObjectId("TurbineUser", USER_ID_PK_COLUMN, Integer
       .valueOf(id)));
   }
+
 }
+/**
+ * @return
+ */
