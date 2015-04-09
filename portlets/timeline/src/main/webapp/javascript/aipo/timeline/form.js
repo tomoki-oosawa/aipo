@@ -273,9 +273,11 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 				var spritval = _val.split(/\r\n|\n/g);
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
-						if(aipo.timeline.revmaxlist[pid]!=null)return;
-						aipo.timeline.revmaxlist[pid] = 0;
-						aipo.timeline.getUrl(spritval[i], pid);
+						if(dojo.byId("flag_" + pid).value == "none"){
+							dojo.byId("flag_" + pid).value = "processing";
+							aipo.timeline.getUrl(spritval[i], pid);
+							aipo.timeline.revmaxlist[pid] = 0;
+						}
 					}
 				}
 			}
