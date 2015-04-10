@@ -299,6 +299,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     is_owner = true;
 
+    uid = ALEipUtils.getUserId(rundata);
     orgId = Database.getDomainName();
     loginUser = ALEipUtils.getALEipUser(rundata);
 
@@ -1126,6 +1127,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // オーナーID
       schedule.setOwnerId(Integer.valueOf(ownerid));
+      // ユーザーID
+      schedule.setOwnerId(Integer.valueOf(uid));
       // 作成日
       Date now = new Date();
       schedule.setCreateDate(now);
