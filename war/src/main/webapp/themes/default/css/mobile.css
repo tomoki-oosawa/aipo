@@ -741,14 +741,11 @@ input[type=password] {
   z-index: 110;
   width: 100%;
   height: 45px;
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
-  border-bottom: solid 1px #d0d0d0;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-bottom: solid 1px #d2d2d2;
 }
 #mobileHeader_v3 .inner {
   position: relative;
@@ -787,13 +784,11 @@ input[type=password] {
   font-size: 20px;
   line-height: 42px;
   cursor: pointer;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
 }
 #mobileHeader_v3 .mhLeft .active [class^="icon-"],
 #mobileHeader_v3 .mhLeft .active [class*=" icon-"], #mobileHeader_v3 .mhRight .active [class^="icon-"],
 #mobileHeader_v3 .mhRight .active [class*=" icon-"] {
   color: #333333;
-  text-shadow: 0 -1px 0 black;
 }
 #mobileHeader_v3 .mhLeft .zero ~ span [class^="icon-"],
 #mobileHeader_v3 .mhLeft .zero ~ span [class*=" icon-"], #mobileHeader_v3 .mhRight .zero ~ span [class^="icon-"],
@@ -824,7 +819,7 @@ input[type=password] {
   text-align: center;
   vertical-align: middle;
   text-decoration: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: transparent;
 }
 #mobileHeader_v3 .icon-bell-alt {
   font-size: 18px;
@@ -852,17 +847,17 @@ input[type=password] {
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
-  color: white !important;
-  -webkit-box-sizing: border-box;
+  color: #ffffff !important;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   text-align: center;
-  background: #f0f0f0 -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.1)));
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background: #f0f0f0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.1)));
+  -webkit-tap-highlight-color: transparent;
 }
 #mobileHeader_v3 .auiMbBtn span {
   display: table-cell;
