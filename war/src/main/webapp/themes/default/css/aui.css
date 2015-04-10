@@ -153,6 +153,10 @@ input[type=password], #timelineOuter #inputField,
   font-family: Arial, Helvetica, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
 }
 
+:lang(ja).dj_ie textarea {
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+}
+
 html, body {
   width: 100%;
   height: 100%;
@@ -3495,7 +3499,7 @@ ul.attachments {
   -ms-border-radius: 0;
   -o-border-radius: 0;
   border-radius: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 #timelineOuter textarea:focus,
 .timelineOuter textarea:focus {
@@ -3509,9 +3513,13 @@ ul.attachments {
   overflow: hidden;
   resize: none;
   outline: 0;
-  line-height: normal;
+  line-height: 1.38;
   height: 21px;
   -webkit-appearance: caret;
+}
+
+#timelineOuter .timeline .commentField textarea {
+ font-size:13px;
 }
 
 .tlInputMention {
