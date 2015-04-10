@@ -2336,6 +2336,10 @@ button[disabled]:active {
   margin-bottom: 50px;
 }
 
+#auiLoginBox .inlineLabel {
+  vertical-align: middle;
+}
+
 #auiLoginBox .field {
   position: relative;
   margin-bottom: 10px;
@@ -3231,6 +3235,10 @@ form {
   max-width: 100%;
 }
 
+form label {
+  vertical-align: middle;
+}
+
 input[type=text],
 input[type=password],
 textarea,
@@ -3242,11 +3250,12 @@ select {
 input[type=radio],
 input[type=checkbox] {
   position: relative;
-  top: -1px;
+  vertical-align: middle;
+  top:-1px;
 }
 .dj_ie input[type=radio],
 .dj_ie input[type=checkbox] {
-  top: 2px;
+	top:0;
 }
 
 textarea,
