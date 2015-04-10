@@ -120,11 +120,19 @@ public class ALJLogoutUser extends ActionEvent {
 
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
     if ("".equals(externalLoginUrl)) {
+      // 　ガラケーのログアウト時はifの中を通っている。
       if (ALEipUtils.isCellularPhone(data)) {
-        data.setRedirectURI(jsLink
-          .getHomePage()
-          .addQueryData("logout", "T")
-          .toString());
+
+        // contextPathの取得
+        ServletContext servletContext = ServletContextLocator.get();
+        String contextPath = servletContext.getContextPath(); // "" "/"
+        // contextPath = "" なら contextPath = "/"にする。
+        if ("".equals(contextPath)) {
+          contextPath = "/";
+        }
+
+        // contextPathをsetする。
+        data.setRedirectURI(contextPath.concat("?logout=T"));
       } else {
         // contextPathの取得
         ServletContext servletContext = ServletContextLocator.get();
