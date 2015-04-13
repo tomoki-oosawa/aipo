@@ -130,7 +130,6 @@
 <div id="content-$!portlet.ID" style="visibility:visible">
 #AUIrowTableWideScheduleList()
 #foreach ($record in $result.ScheduleList)
-	$!{record.WbrName}
 #set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
 #set($trClass ="")
 #if(!$record.isStartDayEqualsEndDay())
