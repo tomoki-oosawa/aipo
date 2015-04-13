@@ -28,7 +28,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- * 
+ *
  */
 public class AccountResultData implements ALData {
 
@@ -439,7 +439,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 会社の電話番号を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyTelephone() {
@@ -526,7 +526,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名を取得します
-   * 
+   *
    * @return
    */
   public ALStringField getGroupName() {
@@ -535,7 +535,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名をセットします
-   * 
+   *
    * @param string
    */
   public void setGroupName(String string) {
@@ -544,7 +544,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public Object getPostID(int i) {

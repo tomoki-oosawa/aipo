@@ -67,6 +67,13 @@ public class TurbineUser extends _TurbineUser {
       .valueOf(id)));
   }
 
+  /**
+   * @return
+   */
+  public TurbineUser getTurbineUser() {
+    return null;
+  }
+
 }
 /**
  * @return

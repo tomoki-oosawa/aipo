@@ -1393,6 +1393,8 @@ dojo.declare("aipo.calendar.WeeklyScheduleDraggable", [aimluck.dnd.Draggable], {
         //**//
     },
     onScheduleOver: function(e) {
+    	return;
+
         if(ptConfig[this.portletId].isTooltipEnable == false){return;}
         /*
         var ttdiv = dojo.byId("dummy_div_" + this.portletId);

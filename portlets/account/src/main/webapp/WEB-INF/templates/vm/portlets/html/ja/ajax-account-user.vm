@@ -55,6 +55,8 @@
 <div>
 #AUIbuttonAction($l10n.ACCOUNT_USER_EXPORT "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
 </div>
+#set($title = "$l10n.ACCOUNT_USER_EXPORT")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
 ##AUIconfigheader($!{portlet.ID} "15em")
 ##AUIconfigitem($l10n.ACCOUNT_USER_SORT $orderUser)
 ##AUIconfigfooter()

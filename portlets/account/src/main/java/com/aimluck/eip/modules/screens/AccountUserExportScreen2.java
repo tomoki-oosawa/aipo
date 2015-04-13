@@ -27,10 +27,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.account.AccountResultData;
-import com.aimluck.eip.account.util.AccountUtils;
-import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.orm.Database;
@@ -57,32 +54,6 @@ public class AccountUserExportScreen2 extends ALCSVScreen {
     return "application/octet-stream";
   }
 
-  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
-    try {
-      ALStringField target_keyword;
-      // 登録済みのユーザ数をデータベースから取得
-      target_keyword.setValue(AccountUtils.getTargetKeyword(rundata, context));
-
-      SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
-      buildSelectQueryForListView(query);
-      buildSelectQueryForListViewSort(query, rundata, context);
-      ResultList<TurbineUser> list = query.getResultList();
-
-      int registeredUserNum = list.getTotalCount();
-
-      return list;
-    } catch (Exception ex) {
-      logger.error("AccountUserSelectData.selectList", ex);
-      return null;
-    }
-  }
-
-  /**
-   * @param query
-   */
-  private void buildSelectQueryForListView(SelectQuery<TurbineUser> query) {
-  }
-
   /**
    * AccountResultData に値を格納して返します。（一覧データ） <BR>
    *
@@ -95,24 +66,29 @@ public class AccountUserExportScreen2 extends ALCSVScreen {
 
       AccountResultData ard = new AccountResultData();
       ard.initField();
-      ard.setUserName(record.getLoginName());
-      ard.setName(record.getName(record == null ? "" : new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString()));
-      ard.setNameKana();
-      ard.setEmail();
-      ard.setOutTelephone();
-      ard.setInTelephone();
-      ard.setCellularPhone();
-      ard.setCellularMail();
-      ard.setPositionName();
-
       TurbineUser user = record.getTurbineUser();
 
+      ard.setUserName(user.getLoginName());
+      ard.setName(new StringBuffer()
+        .append(user.getLastName())
+        .append(" ")
+        .append(user.getFirstName())
+        .toString());
+      ard.setNameKana(new StringBuffer().append(user.getLastNameKana()).append(
+        " ").append(user.getFirstNameKana()).toString());
+      ard.setEmail(user.getEmail());
+      ard.setOutTelephone(user.getOutTelephone());
+      ard.setInTelephone(user.getInTelephone());
+      ard.setCellularPhone(user.getCellularPhone());
+      ard.setCellularMail(user.getCellularMail());
+
+      ard.setPostNameList(ALEipUtils.getPostNameList(user.getUpdatedUserId()));
+      ard.setPositionName(ALEipUtils.getPositionName(user.getPositionId()));
+
+      return ard;
+
     } catch (Exception ex) {
-      logger.error("eventlog", ex);
+      logger.error("TurbineUser", ex);
       return null;
     }
   }
@@ -122,10 +98,10 @@ public class AccountUserExportScreen2 extends ALCSVScreen {
    */
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
-    if (ALEipUtils.isAdmin(rundata)) {
-      SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
+    if (ALEipUtils.isAdmin(rundata)) { // ここ
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
 
-      ResultList<EipTEventlog> list = query.getResultList();
+      ResultList<TurbineUser> list = query.getResultList();
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
 
@@ -135,7 +111,7 @@ public class AccountUserExportScreen2 extends ALCSVScreen {
           new StringBuffer(
             "\"ログイン名\",\"名前\",\"名前（フリガナ）\",\"メールアドレス\",\"番号（外線）\",\"番号（内線）\",\"電話番号（携帯）\",\"携帯メールアドレス\",\"部署\",\"役職\"");
         AccountResultData data;
-        for (ListIterator<EipTEventlog> iterator =
+        for (ListIterator<TurbineUser> iterator =
           list.listIterator(list.size()); iterator.hasPrevious();) {
           sb.append(LINE_SEPARATOR);
           data = getResultData(iterator.previous());
@@ -162,7 +138,7 @@ public class AccountUserExportScreen2 extends ALCSVScreen {
         }
         return sb.toString();
       } catch (Exception e) {
-        logger.error("EventlogCsvExportScreen.getCSVString", e);
+        logger.error("AccountUserExportScreen2.getCSVString", e);
         return null;
       }
     } else {
