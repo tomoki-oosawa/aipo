@@ -303,10 +303,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
 
         Database.sql(EipTMessage.class, messageDeleteSql1).param(
           "user_id",
-          user.getUserId()).execute();
+          user.getUserId());
         Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
           "user_id",
-          user.getUserId()).execute();
+          user.getUserId());
 
         Database.commit();
 

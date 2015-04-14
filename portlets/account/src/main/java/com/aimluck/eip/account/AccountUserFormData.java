@@ -1395,11 +1395,11 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       // ToDoを削除する
       String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodo.class, sql4).execute();
+      Database.sql(EipTTodo.class, sql4);
 
       String sql5 =
         "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodoCategory.class, sql5).execute();
+      Database.sql(EipTTodoCategory.class, sql5);
 
       String orgId = Database.getDomainName();
       // ブログの削除
@@ -1443,7 +1443,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       // ブログの足跡を削除する
       String sql6 =
         "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql6).execute();
+      Database.sql(EipTBlogFootmarkMap.class, sql6);
 
       // ソーシャルアプリ関連データ削除
       ALApplicationService.deleteUserData(user_name);
@@ -1523,10 +1523,10 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       Database.sql(EipTMessage.class, messageDeleteSql1).param(
         "user_id",
-        user.getUserId()).execute();
+        user.getUserId());
       Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
         "user_id",
-        user.getUserId()).execute();
+        user.getUserId());
 
       Database.commit();
 
