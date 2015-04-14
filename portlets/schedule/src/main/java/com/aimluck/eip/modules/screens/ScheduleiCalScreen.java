@@ -207,9 +207,18 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cEnd.set(Calendar.MINUTE, min);
             dEnd = new DateTime(cEnd.getTime());
           } else {
-            cEnd.set(Calendar.YEAR, cStart.get(Calendar.YEAR));
-            cEnd.set(Calendar.MONTH, cStart.get(Calendar.MONTH));
-            cEnd.set(Calendar.DATE, cStart.get(Calendar.DATE));
+            java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
+            int hour = cStart.get(Calendar.HOUR_OF_DAY);
+            int min = cStart.get(Calendar.MINUTE);
+            cStart.setTime(RepeatStartDate);
+            cStart.set(Calendar.HOUR_OF_DAY, hour);
+            cStart.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(RepeatStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
             dEnd = new DateTime(cEnd.getTime());
           }
         } else {
@@ -290,7 +299,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     Calendar cal = Calendar.getInstance();
     cal.setTime(startDate);
 
-    if (isView(cal.getTime(), ptn)) {
+    if (isView(cal, ptn)) {
       return startDate;
     } else {
       cal.add(Calendar.DATE, 1);
@@ -298,10 +307,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     }
   }
 
-  private boolean isView(java.util.Date date, String ptn) {
+  private boolean isView(Calendar cal, String ptn) {
     boolean result = false;
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
     // 毎日
     if (ptn.charAt(0) == 'D') {
       result = true;
