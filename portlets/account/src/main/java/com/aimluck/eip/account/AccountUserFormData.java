@@ -31,10 +31,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.JetspeedUser;
-import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -44,25 +41,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
-import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
-import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
-import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
-import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -76,7 +59,6 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -85,7 +67,6 @@ import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
@@ -1330,20 +1311,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       List<String> msgList) {
 
     try {
-      // WebAPIのDBへ接続できるか確認
-      logger.debug("deleteFormData");
-      if (!ALDataSyncFactoryService
-        .getInstance()
-        .getDataSyncHandler()
-        .checkConnect()) {
-        msgList.add(ALLocalizationUtils
-          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
-        return false;
-      }
-      logger.debug("enddeleteFormData");
       String user_name =
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-
       if (user_name == null) {
         return false;
       }
@@ -1354,240 +1323,10 @@ public class AccountUserFormData extends ALAbstractFormData {
           TurbineUser.LOGIN_NAME_COLUMN,
           user_name);
 
-      if (user.getLoginName().equals(rundata.getUser().getUserName())) {
-        msgList.add(ALLocalizationUtils
-          .getl10nFormat("ACCOUNT_ALERT_DELETE_LOGINUSER"));
-        return false;
-      }
+      List<TurbineUser> userList = new ArrayList<TurbineUser>();
+      userList.add(user);
 
-      if (ALEipUtils.isAdmin(user.getUserId())
-        && !AccountUtils.isAdminDeletable()) {
-        msgList.add(ALLocalizationUtils.getl10nFormat(
-          "ACCOUNT_ALERT_DELETE_USER",
-          user.getLoginName(),
-          Integer.valueOf(ALConfigService
-            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
-        return false;
-      }
-
-      // ユーザーを論理削除
-      user.setPositionId(Integer.valueOf(0));
-      user.setDisabled("T");
-
-      // ユーザーIDを取得する
-      String userId = user.getUserId().toString();
-
-      // 対象ユーザのユーザーグループロールをすべて削除する
-      SelectQuery<TurbineUserGroupRole> query2 =
-        Database.query(TurbineUserGroupRole.class);
-      Expression exp2 =
-        ExpressionFactory.matchExp(
-          TurbineUserGroupRole.TURBINE_USER_PROPERTY,
-          userId);
-      query2.setQualifier(exp2);
-      List<TurbineUserGroupRole> list4 = query2.fetchList();
-
-      TurbineUserGroupRole ugr = null;
-      for (int i = 0; i < list4.size(); i++) {
-        ugr = list4.get(i);
-        Database.delete(ugr);
-      }
-
-      // ToDoを削除する
-      String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodo.class, sql4);
-
-      String sql5 =
-        "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodoCategory.class, sql5);
-
-      String orgId = Database.getDomainName();
-      // ブログの削除
-      SelectQuery<EipTBlog> EipBlogSQL =
-        Database.query(EipTBlog.class).where(
-          Operations.in(EipTBlog.OWNER_ID_PROPERTY, userId));
-      List<EipTBlog> EipBlogList = EipBlogSQL.fetchList();
-      if (EipBlogList != null && EipBlogList.size() > 0) {
-        List<EipTBlogEntry> EipTBlogEntryList =
-          Database
-            .query(EipTBlogEntry.class)
-            .where(Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
-            .fetchList();
-
-        for (EipTBlogEntry entry : EipTBlogEntryList) {
-          List<String> fpaths = new ArrayList<String>();
-          List<?> files = entry.getEipTBlogFiles();
-          if (files != null && files.size() > 0) {
-            int fileSize = files.size();
-            for (int j = 0; j < fileSize; j++) {
-              fpaths.add(((EipTBlogFile) files.get(j)).getFilePath());
-            }
-
-            ALDeleteFileUtil.deleteFiles(
-              entry.getEntryId(),
-              EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY,
-              AccountUtils.getSaveDirPath(orgId, entry.getOwnerId(), "blog"),
-              fpaths,
-              EipTBlogFile.class);
-
-          }
-        }
-        Database
-          .query(EipTBlogEntry.class)
-          .where(Operations.in(EipTBlogEntry.EIP_TBLOG_PROPERTY, EipBlogList))
-          .deleteAll();
-
-        EipBlogSQL.deleteAll();
-      }
-
-      // ブログの足跡を削除する
-      String sql6 =
-        "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql6);
-
-      // ソーシャルアプリ関連データ削除
-      ALApplicationService.deleteUserData(user_name);
-
-      // ワークフロー自動承認
-      AccountUtils.acceptWorkflow(user.getUserId());
-
-      // タイムライン削除
-      Expression exp01 =
-        ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, user
-          .getUserId());
-
-      Expression exp02 =
-        ExpressionFactory.matchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
-      Expression exp03 =
-        ExpressionFactory.matchDbExp(
-          "TIMELINE_TYPE",
-          EipTTimeline.TIMELINE_TYPE_TIMELINE);
-
-      SelectQuery<EipTTimeline> EipTTimelineSQL =
-        Database.query(EipTTimeline.class).andQualifier(
-          exp01.andExp(exp02.andExp(exp03)));
-      List<EipTTimeline> timelineList = EipTTimelineSQL.fetchList();
-      List<Integer> timelineIdList = new ArrayList<Integer>();
-      for (EipTTimeline timeline : timelineList) {
-        timelineIdList.add(timeline.getTimelineId());
-      }
-      if (!timelineIdList.isEmpty()) {
-        SelectQuery<EipTTimeline> EipTTimelineSQL2 =
-          Database.query(EipTTimeline.class).andQualifier(
-            ExpressionFactory.inDbExp(
-              EipTTimeline.PARENT_ID_COLUMN,
-              timelineIdList));
-        List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
-        if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
-          timelineList.addAll(timelineCommentList);
-        }
-
-        for (EipTTimeline entry : timelineList) {
-          List<String> fpaths = new ArrayList<String>();
-          List<?> files = entry.getEipTTimelineFile();
-          if (files != null && files.size() > 0) {
-            int fileSize = files.size();
-            for (int j = 0; j < fileSize; j++) {
-              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
-            }
-
-            ALDeleteFileUtil.deleteFiles(
-              entry.getTimelineId(),
-              EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
-              AccountUtils
-                .getSaveDirPath(orgId, entry.getOwnerId(), "timeline"),
-              fpaths,
-              EipTTimelineFile.class);
-
-          }
-        }
-        EipTTimelineSQL.deleteAll();
-        EipTTimelineSQL2.deleteAll();
-      }
-
-      // メッセージ
-      List<EipTMessageFile> messageFileList =
-        Database
-          .query(EipTMessageFile.class)
-          .where(
-            Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, user.getUserId()))
-          .fetchList();
-
-      ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
-        .getUserId(), "message"), messageFileList);
-
-      String messageDeleteSql1 =
-        "delete from eip_t_message where user_id = #bind($user_id)";
-      String messageDeleteSql2 =
-        "delete from eip_t_message_room_member where user_id = #bind($user_id)";
-
-      Database.sql(EipTMessage.class, messageDeleteSql1).param(
-        "user_id",
-        user.getUserId());
-      Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
-        "user_id",
-        user.getUserId());
-
-      Database.commit();
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        user.getUserId(),
-        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-        "ユーザー「"
-          + new StringBuffer().append(user.getLastName()).append(" ").append(
-            user.getFirstName()).toString()
-          + "」を削除");
-
-      // PSMLを削除
-      JetspeedUser juser =
-        JetspeedSecurity.getUser(new UserNamePrincipal(user_name));
-      PsmlManager.removeUserDocuments(juser);
-
-      // ユーザー名の先頭に"dummy_userid_"を追加
-      String dummy_user_name =
-        ALEipUtils.dummy_user_head + userId + "_" + user_name;
-      user.setLoginName(dummy_user_name);
-
-      Database.commit();
-
-      // 他のユーザの順番を変更する．
-      SelectQuery<EipMUserPosition> p_query =
-        Database.query(EipMUserPosition.class);
-      p_query.orderAscending(EipMUserPosition.POSITION_PROPERTY);
-      List<EipMUserPosition> userPositions = p_query.fetchList();
-      if (userPositions != null && userPositions.size() > 0) {
-        EipMUserPosition userPosition = null;
-        int index = -1;
-        int size = userPositions.size();
-        for (int i = 0; i < size; i++) {
-          userPosition = userPositions.get(i);
-          if (userId.equals(userPosition.getTurbineUser().toString())) {
-            // 指定したユーザを削除する．
-            Database.delete(userPosition);
-            index = i;
-            break;
-          }
-        }
-        if (index >= 0) {
-          for (int i = index + 1; i < size; i++) {
-            userPosition = userPositions.get(i);
-            userPosition.setPosition(Integer.valueOf(i));
-          }
-        }
-      }
-
-      Database.commit();
-
-      // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService
-        .getInstance()
-        .getDataSyncHandler()
-        .deleteUser(user_name)) {
-        return false;
-      }
-
-      return true;
+      return AccountUtils.deleteUserList(rundata, userList, msgList);
     } catch (RuntimeException e) {
       Database.rollback();
       logger.error("AccountUserFormData.deleteFormData", e);
