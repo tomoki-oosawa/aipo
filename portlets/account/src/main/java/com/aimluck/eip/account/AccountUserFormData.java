@@ -1375,19 +1375,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       user.setDisabled("T");
 
       // ユーザーIDを取得する
-      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-      Expression exp1 =
-        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user_name);
-      query.setQualifier(exp1);
-      List<TurbineUser> list3 = query.fetchList();
-
-      int userNum = list3.size();
-      if (userNum != 1) {
-        return false;
-      }
-      TurbineUser deleteuser = list3.get(0);
-      String userId;
-      userId = deleteuser.getUserId().toString();
+      String userId = user.getUserId().toString();
 
       // 対象ユーザのユーザーグループロールをすべて削除する
       SelectQuery<TurbineUserGroupRole> query2 =
@@ -1461,7 +1449,7 @@ public class AccountUserFormData extends ALAbstractFormData {
       ALApplicationService.deleteUserData(user_name);
 
       // ワークフロー自動承認
-      AccountUtils.acceptWorkflow(deleteuser.getUserId());
+      AccountUtils.acceptWorkflow(user.getUserId());
 
       // タイムライン削除
       Expression exp01 =
@@ -1519,14 +1507,14 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       // メッセージ
       List<EipTMessageFile> messageFileList =
-        Database.query(EipTMessageFile.class).where(
-          Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, deleteuser
-            .getUserId())).fetchList();
+        Database
+          .query(EipTMessageFile.class)
+          .where(
+            Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, user.getUserId()))
+          .fetchList();
 
-      ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(
-        orgId,
-        deleteuser.getUserId(),
-        "message"), messageFileList);
+      ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
+        .getUserId(), "message"), messageFileList);
 
       String messageDeleteSql1 =
         "delete from eip_t_message where user_id = #bind($user_id)";
@@ -1535,10 +1523,10 @@ public class AccountUserFormData extends ALAbstractFormData {
 
       Database.sql(EipTMessage.class, messageDeleteSql1).param(
         "user_id",
-        deleteuser.getUserId()).execute();
+        user.getUserId()).execute();
       Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
         "user_id",
-        deleteuser.getUserId()).execute();
+        user.getUserId()).execute();
 
       Database.commit();
 

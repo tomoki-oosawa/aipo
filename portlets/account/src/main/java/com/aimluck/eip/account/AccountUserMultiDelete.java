@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数削除するためのクラス． <BR>
- * 
+ *
  */
 public class AccountUserMultiDelete extends ALAbstractCheckList {
 
@@ -72,7 +72,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
     .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -146,7 +146,7 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         user.setDisabled("T");
 
         // ユーザーIDを取得する
-        String userId = record.getUserId().toString();
+        String userId = user.getUserId().toString();
 
         // 対象ユーザのユーザーグループロールをすべて削除する
         SelectQuery<TurbineUserGroupRole> ugr_query =
@@ -222,11 +222,11 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
         ALApplicationService.deleteUserData(user_name);
 
         // ワークフロー自動承認
-        AccountUtils.acceptWorkflow(record.getUserId());
+        AccountUtils.acceptWorkflow(user.getUserId());
 
         // タイムライン削除
         Expression exp01 =
-          ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, record
+          ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, user
             .getUserId());
 
         Expression exp02 =
@@ -289,11 +289,11 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
           Database
             .query(EipTMessageFile.class)
             .where(
-              Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, record
-                .getUserId()))
+              Operations
+                .eq(EipTMessageFile.OWNER_ID_PROPERTY, user.getUserId()))
             .fetchList();
 
-        ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, record
+        ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
           .getUserId(), "message"), messageFileList);
 
         String messageDeleteSql1 =
@@ -303,10 +303,10 @@ public class AccountUserMultiDelete extends ALAbstractCheckList {
 
         Database.sql(EipTMessage.class, messageDeleteSql1).param(
           "user_id",
-          record.getUserId()).execute();
+          user.getUserId()).execute();
         Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
           "user_id",
-          record.getUserId()).execute();
+          user.getUserId()).execute();
 
         Database.commit();
 
