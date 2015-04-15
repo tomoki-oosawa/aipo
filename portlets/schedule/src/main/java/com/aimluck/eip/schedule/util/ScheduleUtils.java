@@ -834,11 +834,11 @@ public class ScheduleUtils {
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
     } else if (ptn.charAt(0) == 'Y') {
-      int ymonth = Integer.parseInt(ptn.substring(1, 2));
-      int yday = Integer.parseInt(ptn.substring(3, 4));
+      int ymonth = Integer.parseInt(ptn.substring(1, 3));
+      int yday = Integer.parseInt(ptn.substring(3, 5));
       result =
-        (Integer.parseInt(date.getDay()) == yday && Integer.parseInt(date
-          .getMonth()) == ymonth);
+        Integer.parseInt(date.getDay()) == yday
+          && Integer.parseInt(date.getMonth()) == ymonth;
       count = 5;
     } else {
       return true;
