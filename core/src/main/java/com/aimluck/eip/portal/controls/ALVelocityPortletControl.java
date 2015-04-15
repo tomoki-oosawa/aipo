@@ -289,6 +289,8 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       boolean maximized =
         customized || (jdata.getMode() == JetspeedRunData.MAXIMIZE);
 
+      // ここでportletsをcontext.putする処理を書く↓
+
       if (maximized && "true".equals(showTab)) {
         Portlets portlets =
           ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
@@ -316,6 +318,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
             gadgetCounts++;
           }
         }
+        // context.put("portletsForTimeline", portlets);
         context.put("gadgetCounts", gadgetCounts);
         context.put("accountMenues", getAccountMenues(menues));
         context.put("systemMenus", getSystemMenus(menues));
