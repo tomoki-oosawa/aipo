@@ -552,13 +552,11 @@ public class AccountUtils {
         Database.delete(ugr);
       }
 
-      // ToDoを削除する
-      String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodo.class, sql4);
-
-      String sql5 =
-        "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodoCategory.class, sql5);
+      // TODOの削除
+      Database.query(EipTTodo.class).where(
+        Operations.in(EipTTodo.USER_ID_PROPERTY, userId)).deleteAll();
+      Database.query(EipTTodoCategory.class).where(
+        Operations.in(EipTTodoCategory.USER_ID_PROPERTY, userId)).deleteAll();
 
       String orgId = Database.getDomainName();
 
@@ -599,10 +597,12 @@ public class AccountUtils {
 
         EipBlogSQL.deleteAll();
       }
+
       // ブログの足跡を削除する
-      String sql6 =
-        "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql6);
+      Database
+        .query(EipTBlogFootmarkMap.class)
+        .where(Operations.in(EipTBlogFootmarkMap.USER_ID_PROPERTY, userId))
+        .deleteAll();
 
       // ソーシャルアプリ関連データ削除
       ALApplicationService.deleteUserData(user_name);
@@ -680,17 +680,12 @@ public class AccountUtils {
       ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
         .getUserId(), "message"), messageFileList);
 
-      String messageDeleteSql1 =
-        "delete from eip_t_message where user_id = #bind($user_id)";
-      String messageDeleteSql2 =
-        "delete from eip_t_message_room_member where user_id = #bind($user_id)";
-
-      Database.sql(EipTMessage.class, messageDeleteSql1).param(
-        "user_id",
-        user.getUserId());
-      Database.sql(EipTMessageRoomMember.class, messageDeleteSql2).param(
-        "user_id",
-        user.getUserId());
+      Database.query(EipTMessage.class).where(
+        Operations.in(EipTMessage.USER_ID_PROPERTY, userId)).deleteAll();
+      Database
+        .query(EipTMessageRoomMember.class)
+        .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
+        .deleteAll();
 
       Database.commit();
 
