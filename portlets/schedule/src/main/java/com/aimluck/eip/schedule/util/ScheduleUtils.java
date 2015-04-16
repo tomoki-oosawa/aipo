@@ -2139,13 +2139,13 @@ public class ScheduleUtils {
             msgList.add(ALLocalizationUtils
               .getl10n("SCHEDULE_MESSAGE_SELECT_MONTHLY_WEEKLY"));
           }
-          // if (month_the_week.getValue() == 0 && isCellPhone) {
-          // // 携帯画面用条件
-          // msgList.add(ALLocalizationUtils
-          // .getl10n("SCHEDULE_MESSAGE_MONTH_WEEKLY"));
-          // } else {
-          // month_the_week.validate(msgList);
-          // }
+          if (month_the_week.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_MONTH_WEEKLY"));
+          } else {
+            month_the_week.validate(msgList);
+          }
 
         }
 
