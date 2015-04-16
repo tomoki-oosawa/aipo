@@ -151,26 +151,29 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>week_6</code> 繰り返し曜日 */
   private ALStringField week_6;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_a;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_b;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_c;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_d;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_e;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_f;
 
-  /** <code>week_a</code> 繰り返し曜日 */
+  /** <code>week_a</code> 繰り返し曜日(毎月第〜) */
   private ALStringField week_g;
+
+  /** <code>month_the_week</code> 毎月第何週目の曜日か */
+  private ALNumberField month_the_week;
 
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
@@ -183,9 +186,6 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>month_day</code> 繰り返す日 */
   private ALNumberField month_day;
-
-  /** <code>monthly_day</code> 繰り返す週 */
-  private ALNumberField monthly_day;
 
   /** <code>memberList</code> メンバーリスト */
   private ArrayList<ALEipUser> memberList;
@@ -576,6 +576,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     week_6.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
+
     // 繰り返し日
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
@@ -617,6 +618,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     week_g.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_g.setTrim(true);
+    // 第何週目の曜日で繰り返すか
+    month_the_week = new ALNumberField();
+    month_the_week.setFieldName(ALLocalizationUtils.getl10n(""));
 
     // 繰り返し週
     month_day = new ALNumberField();
@@ -841,10 +845,18 @@ public class ScheduleFormData extends ALAbstractFormData {
         getWeek4(),
         getWeek5(),
         getWeek6(),
+        getWeeka(),
+        getWeekb(),
+        getWeekc(),
+        getWeekd(),
+        getWeeke(),
+        getWeekf(),
+        getWeekg(),
         getLimitFlag(),
         getLimitStartDate(),
         getLimitEndDate(),
         getMonthDay(),
+        getMonthTheWeek(),
         loginUser,
         null,
         msgList,
@@ -968,8 +980,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_e.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
         week_f.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_g.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-
-        count = 8;
+        month_the_week.setValue(ptn.charAt(8) != '0' ? "TRUE" : null);
+        count = 9;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         is_span = true;
@@ -2990,6 +3002,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getWeekg() {
     return week_g;
+  }
+
+  /**
+   * 毎月の繰り返し週を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getMonthTheWeek() {
+    return month_the_week;
   }
 
   /**

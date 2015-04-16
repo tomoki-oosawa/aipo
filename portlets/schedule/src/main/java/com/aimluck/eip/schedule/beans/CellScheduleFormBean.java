@@ -99,6 +99,9 @@ public class CellScheduleFormBean implements ALData {
   /** <code>week_g</code> 毎週第◯の繰り返し曜日 */
   private ALCellStringField week_g;
 
+  /** <code>month_the_week</code> その月の第何週目か */
+  private ALCellNumberField month_the_week;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALCellStringField limit_flag;
 
@@ -231,47 +234,53 @@ public class CellScheduleFormBean implements ALData {
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
 
-    // 日
+    // 毎月の繰り返しの日曜日
     week_a = new ALCellStringField();
     week_a.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SUNDAY"));
     week_a.setTrim(true);
 
-    // 月
+    // 毎月の繰り返しの月曜日
     week_b = new ALCellStringField();
     week_b.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_MANDAY"));
     week_b.setTrim(true);
 
-    // 火
+    // 毎月の繰り返しの火曜日
     week_c = new ALCellStringField();
     week_c.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_TUSEDAY"));
     week_c.setTrim(true);
 
-    // 水
+    // 毎月の繰り返しの水曜日
     week_d = new ALCellStringField();
     week_d.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_WEDNESDAY"));
     week_d.setTrim(true);
 
-    // 木
+    // 毎月の繰り返しの木曜日
     week_e = new ALCellStringField();
     week_e.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_THURSDAY"));
     week_e.setTrim(true);
 
-    // 金
+    // 毎月の繰り返しの金曜日
     week_f = new ALCellStringField();
     week_f.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_FRIDAY"));
     week_f.setTrim(true);
 
-    // 土
+    // 毎月の繰り返しの土曜日
     week_g = new ALCellStringField();
     week_g.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_g.setTrim(true);
+
+    // 毎月第何週目の繰り返しか
+    month_the_week = new ALCellNumberField();
+    month_the_week.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
+    month_the_week.limitValue(1, 5);
 
     // 繰り返し日（選択されたときのみ Validate する）
     month_day = new ALCellNumberField();
@@ -371,14 +380,15 @@ public class CellScheduleFormBean implements ALData {
       count = 3;
     } else if (ptn.charAt(0) == 'X') {
       repeat_type.setValue("X");
-      week_a.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
+      week_a.setValue(ptn.charAt(1) != '0' ? "TRUE" : null); // もしweek_aの項目にチェックされていたら、0をつなげる
       week_b.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
       week_c.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
       week_d.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
       week_e.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
       week_f.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
       week_g.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-      count = 8;
+      month_the_week.setValue(Integer.parseInt(ptn.substring(8, 9)));
+      count = 9;
     } else if (ptn.charAt(0) == 'S') {
       is_span = true;
       is_repeat = false;
@@ -501,10 +511,18 @@ public class CellScheduleFormBean implements ALData {
       getWeek4(),
       getWeek5(),
       getWeek6(),
+      getWeeka(),
+      getWeekb(),
+      getWeekc(),
+      getWeekd(),
+      getWeeke(),
+      getWeekf(),
+      getWeekg(),
       getLimitFlag(),
       getLimitStartDate(),
       getLimitEndDate(),
       getMonthDay(),
+      getMonthTheWeek(),
       loginUser,
       entityId,
       msgList,
@@ -810,6 +828,15 @@ public class CellScheduleFormBean implements ALData {
    */
   public ALCellNumberField getMonthDay() {
     return month_day;
+  }
+
+  /**
+   * 毎月繰り返す週を取得します。
+   *
+   * @return
+   */
+  public ALCellNumberField getMonthTheWeek() {
+    return month_the_week;
   }
 
   /**

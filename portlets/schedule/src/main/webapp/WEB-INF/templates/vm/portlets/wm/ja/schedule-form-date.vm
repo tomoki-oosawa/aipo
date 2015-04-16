@@ -44,18 +44,27 @@
 function onChangeRepeat(form) {
   var repeatMonthlySpan = document.getElementById('repeatMonthlySpan');
   var repeatWeeklySpan = document.getElementById('repeatWeeklySpan');
+  var repeatMonthWeeklySpan = document.getElementById('repeatMonthWeeklySpan');
   switch (form.repeat_type.value) {
     case "D" :
       repeatMonthlySpan.style.display = "none";
       repeatWeeklySpan.style.display = "none";
+      repeatMonthWeeklySpan.style.display = "none";
       break;
     case "W" :
       repeatMonthlySpan.style.display = "none";
       repeatWeeklySpan.style.display = "";
+      repeatMonthWeeklySpan.style.display = "none";
       break;
     case "M" :
       repeatMonthlySpan.style.display = "";
       repeatWeeklySpan.style.display = "none";
+	  repeatMonthWeeklySpan.style.display = "none";
+      break;
+    case "X" :
+      repeatMonthlySpan.style.display = "none";
+      repeatWeeklySpan.style.display = "none";
+	  repeatMonthWeeklySpan.style.display = "";
       break;
   }
 }
@@ -65,8 +74,11 @@ function onChangeRepeat(form) {
    <option value="D"  #if ($!{result.FormData.RepeatType.toString()} == "D") selected="selected" #end>毎日</option>
    <option value="W"  #if ($!{result.FormData.RepeatType.toString()} == "W") selected="selected" #end>毎週</option>
    <option value="M"  #if ($!{result.FormData.RepeatType.toString()} == "M") selected="selected" #end>毎月</option>
+   <option value="X"  #if ($!{result.FormData.RepeatType.toString()} == "X") selected="selected" #end>毎月週越し</option>
 </select>
 <span id="repeatMonthlySpan" #if ($!{result.FormData.RepeatType.toString()} != "M") style="display:none;" #end><input type="text" name="month_day" size="2" maxlength="2" value="$!{result.FormData.MonthDay}"/>日</span>
+<span id="repeatYearlySpan" #if ($!{result.FormData.RepeatType.toString()} != "X") style="display:none;" #end><input type="text" name="month_week" size="2" maxlength="2" value="$!{result.FormData.TheWeek}"/>第何周</span>
+<span id="repeatYearlySpan" #if ($!{result.FormData.RepeatType.toString()} != "X") style="display:none;" #end><input type="text" name="month_the_week" size="2" maxlength="2" value="$!{result.FormData.MonthWeekly}"/></span>
 
 <div class="weaklycheck" id="repeatWeeklySpan" #if ($!{result.FormData.RepeatType.toString()} != "W") style="display:none;" #end>
 <p class="sun">日<br /><input name="week_0" type="checkbox" class="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE"/></p>
@@ -272,6 +284,7 @@ function onChangeRepeat(form) {
    <option value="D"  #if ($!{result.FormData.RepeatType.toString()} == "D") selected="selected" #end>毎日</option>
    <option value="W"  #if ($!{result.FormData.RepeatType.toString()} == "W") selected="selected" #end>毎週</option>
    <option value="M"  #if ($!{result.FormData.RepeatType.toString()} == "M") selected="selected" #end>毎月</option>
+   <option value="X"  #if ($!{result.FormData.RepeatType.toString()} == "X") selected="selected" #end>毎月週越し</option>
 </select>
 <span id="repeatMonthlySpan" #if ($!{result.FormData.RepeatType.toString()} != "M") style="display:none;" #end><input type="text" name="month_day" size="2" maxlength="2" value="$!{result.FormData.MonthDay}"/>日</span>
 <div class="weaklycheck" id="repeatWeeklySpan" #if ($!{result.FormData.RepeatType.toString()} != "W") style="display:none;" #end>

@@ -833,6 +833,45 @@ public class ScheduleUtils {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
+    } else if (ptn.charAt(0) == 'X') {
+      int mtheweek = Integer.parseInt(ptn.substring(8, 10));
+      result = Integer.parseInt(date.getMonth()) == mtheweek;
+
+      int mtw = cal.get(Calendar.DAY_OF_WEEK);
+      switch (mtw) {
+      // 日
+        case Calendar.SUNDAY:
+          result = ptn.charAt(1) != '0';
+          break;
+        // 月
+        case Calendar.MONDAY:
+          result = ptn.charAt(2) != '0';
+          break;
+        // 火
+        case Calendar.TUESDAY:
+          result = ptn.charAt(3) != '0';
+          break;
+        // 水
+        case Calendar.WEDNESDAY:
+          result = ptn.charAt(4) != '0';
+          break;
+        // 木
+        case Calendar.THURSDAY:
+          result = ptn.charAt(5) != '0';
+          break;
+        // 金
+        case Calendar.FRIDAY:
+          result = ptn.charAt(6) != '0';
+          break;
+        // 土
+        case Calendar.SATURDAY:
+          result = ptn.charAt(7) != '0';
+          break;
+        default:
+          result = false;
+          break;
+      }
+      count = 9;
     } else {
       return true;
     }
@@ -1946,6 +1985,14 @@ public class ScheduleUtils {
    * @param week_4
    * @param week_5
    * @param week_6
+   * @param week_a
+   * @param week_b
+   * @param week_c
+   * @param week_d
+   * @param week_e
+   * @param week_f
+   * @param week_g
+   * @param month_the_week
    * @param limit_flag
    * @param limit_start_date
    * @param limit_end_date
@@ -1964,8 +2011,11 @@ public class ScheduleUtils {
       ALDateTimeField end_date, ALStringField repeat_type, boolean is_repeat,
       boolean is_span, ALStringField week_0, ALStringField week_1,
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
-      ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
-      ALDateField limit_start_date, ALDateField limit_end_date,
+      ALStringField week_5, ALStringField week_6, ALStringField week_a,
+      ALStringField week_b, ALStringField week_c, ALStringField week_d,
+      ALStringField week_e, ALStringField week_f, ALStringField week_g,
+      ALStringField limit_flag, ALDateField limit_start_date,
+      ALDateField limit_end_date, ALNumberField month_the_week,
       ALNumberField month_day, ALEipUser login_user, String entityid,
       List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
       ALPageNotFoundException {
@@ -2070,13 +2120,33 @@ public class ScheduleUtils {
           }
         } else if ("M".equals(repeat_type.getValue())) {
           // 毎月の繰り返し
-          if (month_day.getValue() == 0 && isCellPhone) {
-            // 携帯画面用条件
+        } else {
+          month_day.validate(msgList);
+        }
+        if (month_day.getValue() == 0 && isCellPhone) {
+          // 携帯画面用条件
+          msgList.add(ALLocalizationUtils
+            .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_MONTHLY"));
+        } else if ("X".equals(repeat_type.getValue())) {
+          // 毎月週越しの繰り返し
+          if (week_a.getValue() == null
+            && week_b.getValue() == null
+            && week_c.getValue() == null
+            && week_d.getValue() == null
+            && week_e.getValue() == null
+            && week_f.getValue() == null
+            && week_g.getValue() == null) {
             msgList.add(ALLocalizationUtils
-              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_MONTHLY"));
-          } else {
-            month_day.validate(msgList);
+              .getl10n("SCHEDULE_MESSAGE_SELECT_MONTHLY_WEEKLY"));
           }
+          // if (month_the_week.getValue() == 0 && isCellPhone) {
+          // // 携帯画面用条件
+          // msgList.add(ALLocalizationUtils
+          // .getl10n("SCHEDULE_MESSAGE_MONTH_WEEKLY"));
+          // } else {
+          // month_the_week.validate(msgList);
+          // }
+
         }
 
         if ("ON".equals(limit_flag.getValue())) {
@@ -2143,6 +2213,34 @@ public class ScheduleUtils {
                 + (week_4.getValue() != null ? 1 : 0)
                 + (week_5.getValue() != null ? 1 : 0)
                 + (week_6.getValue() != null ? 1 : 0);
+          } else if ("X".equals(repeat_type.getValue())) {
+            repeat_pattern =
+              new StringBuffer().append('X').append(
+                week_a.getValue() != null ? 1 : 0).append(
+                week_b.getValue() != null ? 1 : 0).append(
+                week_c.getValue() != null ? 1 : 0).append(
+                week_d.getValue() != null ? 1 : 0).append(
+                week_e.getValue() != null ? 1 : 0).append(
+                week_f.getValue() != null ? 1 : 0).append(
+                week_g.getValue() != null ? 1 : 0).append(lim).toString();
+            date_count =
+              (week_a.getValue() != null ? 1 : 0)
+                + (week_b.getValue() != null ? 1 : 0)
+                + (week_c.getValue() != null ? 1 : 0)
+                + (week_d.getValue() != null ? 1 : 0)
+                + (week_e.getValue() != null ? 1 : 0)
+                + (week_f.getValue() != null ? 1 : 0)
+                + (week_g.getValue() != null ? 1 : 0);
+
+            DecimalFormat format = new DecimalFormat("00");
+            repeat_pattern =
+              new StringBuffer()
+                .append('X')
+                .append(format.format(month_the_week.getValue()))
+                .append(lim)
+                .toString();
+            date_count = 1;
+
           } else {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
@@ -2928,6 +3026,7 @@ public class ScheduleUtils {
     StringBuffer result = new StringBuffer();
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
+    // XnnnnnnnN -> 毎月第N週の曜日
     // MnnN M25 -> 毎月25日
     // S -> 期間での指定
     String ptn = schedule.getRepeatPattern();
@@ -3039,8 +3138,16 @@ public class ScheduleUtils {
       boolean week_4;
       boolean week_5;
       boolean week_6;
+      boolean week_a;
+      boolean week_b;
+      boolean week_c;
+      boolean week_d;
+      boolean week_e;
+      boolean week_f;
+      boolean week_g;
       String limit_flag;
       int month_day = -1;
+      int month_the_week = -1;
       Integer db_scheduleid = null;
       boolean[] week_array = new boolean[7];
       boolean unlimited_repeat = false;
@@ -3069,8 +3176,24 @@ public class ScheduleUtils {
 
         week_6 = repeat_pattern.matches("W......1.");
 
+        week_a = repeat_pattern.matches("X1.......");
+
+        week_b = repeat_pattern.matches("X.1......");
+
+        week_c = repeat_pattern.matches("X..1.....");
+
+        week_d = repeat_pattern.matches("X...1....");
+
+        week_e = repeat_pattern.matches("X....1...");
+
+        week_f = repeat_pattern.matches("X.....1..");
+
+        week_g = repeat_pattern.matches("X......1.");
+
         if (repeat_pattern.startsWith("M")) {
           month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
+        } else if (repeat_pattern.startsWith("X")) {
+          month_the_week = Integer.parseInt(repeat_pattern.substring(8, 10));
         }
 
         // 単体スケジュールは期限1日のみのスケジュールとして判定
@@ -3252,6 +3375,88 @@ public class ScheduleUtils {
             }
           }
 
+          { // "X".equals(repeat_type.getValue())
+            Expression mwexp = null;
+            List<Expression> mwexps = new ArrayList<Expression>();
+            if (week_a == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X1_______");
+              mwexps.add(mwexp);
+            }
+            if (week_b == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X_1______");
+              mwexps.add(mwexp);
+            }
+            if (week_c == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X__1_____");
+              mwexps.add(mwexp);
+            }
+            if (week_d == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X___1____");
+              mwexps.add(mwexp);
+            }
+            if (week_e == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X____1___");
+              mwexps.add(mwexp);
+            }
+            if (week_f == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X_____1__");
+              mwexps.add(mwexp);
+            }
+            if (week_g == true) {
+              mwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X______1_");
+              mwexps.add(mwexp);
+            }
+            if (mwexps.size() > 0) {
+              rwexp = mwexps.get(0);
+              int wexpssize = mwexps.size();
+              for (int k = 1; k < wexpssize; k++) {
+                rwexp = rwexp.orExp(mwexps.get(k));
+              }
+            } else {
+              rwexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "X________");
+            }
+          }
+
           { // "M".equals(repeat_type.getValue())
             if (month_day > 0) { // 毎月、もしくは単体の場合
               DecimalFormat exF = new DecimalFormat("00");
@@ -3334,6 +3539,20 @@ public class ScheduleUtils {
 
             } else if (ptn.charAt(0) == 'D') {
               if (ptn.charAt(1) == 'L') {
+                try {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
+                    containtsRs = true;
+                  }
+                } catch (Exception e) {
+                  containtsRs = false;
+                }
+              } else {
+                containtsRs = true;
+              }
+            } else if (ptn.charAt(0) == 'X') {
+              if (ptn.charAt(9) == 'L') {
                 try {
                   if ((dbStartDate.before(end_date) && dbEndDate
                     .after(start_date))
@@ -3595,6 +3814,7 @@ public class ScheduleUtils {
                       }
                       ddate = cald.getTime();
                     }
+
                   } else {
                     continue;
                   }
@@ -3645,6 +3865,30 @@ public class ScheduleUtils {
       }
       if (dow == Calendar.SATURDAY) {
         return repeat_ptn.matches("W......1.");
+      }
+      return false;
+    } else if (repeat_ptn.startsWith("X")) {
+      int mtw = cal.get(Calendar.DAY_OF_WEEK);
+      if (mtw == Calendar.SUNDAY) {
+        return repeat_ptn.matches("W1........");
+      }
+      if (mtw == Calendar.MONDAY) {
+        return repeat_ptn.matches("W.1.......");
+      }
+      if (mtw == Calendar.TUESDAY) {
+        return repeat_ptn.matches("W..1......");
+      }
+      if (mtw == Calendar.WEDNESDAY) {
+        return repeat_ptn.matches("W...1.....");
+      }
+      if (mtw == Calendar.THURSDAY) {
+        return repeat_ptn.matches("W....1....");
+      }
+      if (mtw == Calendar.FRIDAY) {
+        return repeat_ptn.matches("W.....1...");
+      }
+      if (mtw == Calendar.SATURDAY) {
+        return repeat_ptn.matches("W......1..");
       }
       return false;
     } else {

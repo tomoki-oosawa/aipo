@@ -141,26 +141,26 @@
 
       <input id="repeat_typeX" type="radio" value="X" #if ($!{result.RepeatType.toString()} == "X") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeX">$l10n.SCHEDULE_EVERY_MONTH</label>
-      <select onchange="aipo.schedule.enableMonthly(this.form)" name="monthly_day">
+      <select onchange="aipo.schedule.enableMonthly(this.form)" name="month_the_week">
       #foreach( $num in [1..5])
-      	<option value="$num" #if ($!{result.MonthlyDay.toString()} == "$num") selected #end>第$num</option>
+      	<option value="$num" #if ($!{result.MonthTheWeekly.toString()} == "$num") selected #end>第$num</option>
       #end
       </select>
 
-      <input id="week_a_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weeka.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_a"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_a_id">$l10n.SCHEDULE_SUNDAY</label>
-      <input id="week_b_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weekb.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_b"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_b_id">$l10n.SCHEDULE_MONDAY</label>
-      <input id="week_c_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weekc.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_c"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_c_id">$l10n.SCHEDULE_TUSEDAY</label>
-      <input id="week_d_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weekd.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_d"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_d_id">$l10n.SCHEDULE_WEDNESDAY</label>
-      <input id="week_e_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weeke.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_e"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_e_id">$l10n.SCHEDULE_THURSDAY</label>
-      <input id="week_f_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weekf.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_f"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_f_id">$l10n.SCHEDULE_FRIDAY</label>
-      <input id="week_g_id" type="checkbox" onclick="aipo.schedule.enablePerMonthly(this.form)" #if ($!{result.Weekg.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_g"/>
-      <label onclick="aipo.schedule.enablePerMonthly(this.form)" for="week_g_id">$l10n.SCHEDULE_SATURDAY</label>
+      <input id="week_a_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weeka.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_a"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_a_id">$l10n.SCHEDULE_SUNDAY</label>
+      <input id="week_b_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weekb.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_b"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_b_id">$l10n.SCHEDULE_MONDAY</label>
+      <input id="week_c_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weekc.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_c"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_c_id">$l10n.SCHEDULE_TUSEDAY</label>
+      <input id="week_d_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weekd.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_d"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_d_id">$l10n.SCHEDULE_WEDNESDAY</label>
+      <input id="week_e_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weeke.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_e"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_e_id">$l10n.SCHEDULE_THURSDAY</label>
+      <input id="week_f_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weekf.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_f"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_f_id">$l10n.SCHEDULE_FRIDAY</label>
+      <input id="week_g_id" type="checkbox" onclick="aipo.schedule.enablePerMonthWeekly(this.form)" #if ($!{result.Weekg.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_g"/>
+      <label onclick="aipo.schedule.enablePerMonthWeekly(this.form)" for="week_g_id">$l10n.SCHEDULE_SATURDAY</label>
 
 
 
