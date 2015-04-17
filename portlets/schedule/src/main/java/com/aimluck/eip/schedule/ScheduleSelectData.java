@@ -574,7 +574,7 @@ public class ScheduleSelectData extends
       int size = list.size();
       for (int i = 0; i < size; i++) {
         file = list.get(i);
-        String realname = file.getTitle();
+        String realname = file.getFileName();
         javax.activation.DataHandler hData =
           new javax.activation.DataHandler(new javax.activation.FileDataSource(
             realname));

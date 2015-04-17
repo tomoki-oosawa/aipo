@@ -4157,7 +4157,7 @@ public class ScheduleUtils {
       }
     }
 
-    ArrayList<FileuploadLiteBean> titleList =
+    ArrayList<FileuploadLiteBean> fileNameList =
       new ArrayList<FileuploadLiteBean>();
     FileuploadLiteBean filebean = null;
 
@@ -4185,8 +4185,8 @@ public class ScheduleUtils {
           filebean = new FileuploadLiteBean();
           filebean.initField();
           filebean.setFolderName("photo");
-          filebean.setTitle("以前の写真ファイル");
-          titleList.add(filebean);
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
         } else {
           BufferedReader reader = null;
           try {
@@ -4206,8 +4206,8 @@ public class ScheduleUtils {
             filebean.initField();
             filebean.setFolderName(newfileid);
             filebean.setFileId(fileid);
-            filebean.setTitle(line);
-            titleList.add(filebean);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
           } catch (Exception e) {
             logger.error("schedule", e);
           } finally {
@@ -4247,15 +4247,15 @@ public class ScheduleUtils {
           filebean = new FileuploadBean();
           filebean.initField();
           filebean.setFileId(file.getFileId());
-          filebean.setTitle(file.getTitle());
+          filebean.setFileName(file.getFileName());
           filebean.setFlagNewFile(false);
-          titleList.add(filebean);
+          fileNameList.add(filebean);
         }
       } catch (Exception ex) {
         logger.error("[BlogUtils] Exception.", ex);
       }
     }
-    return titleList;
+    return fileNameList;
   }
 
   public static boolean insertFileDataDelegate(RunData rundata,
@@ -4321,7 +4321,7 @@ public class ScheduleUtils {
             msgList,
             true);
 
-        String title = "0_" + String.valueOf(System.nanoTime());
+        String filename = "0_" + String.valueOf(System.nanoTime());
 
         // 新規オブジェクトモデル
         EipTScheduleFile file = Database.create(EipTScheduleFile.class);
@@ -4330,9 +4330,9 @@ public class ScheduleUtils {
         // トピックID
         // file.setEipTSchedule(topic);
         // ファイル名
-        file.setTitle(filebean.getTitle());
+        file.setFileName(filebean.getFileName());
         // ファイルパス
-        file.setFilePath(ScheduleUtils.getRelativePath(title));
+        file.setFilePath(ScheduleUtils.getRelativePath(filename));
         // サムネイル画像
         if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
           file.setFileThumbnail(shrinkImageSet.getShrinkImage());
@@ -4353,13 +4353,13 @@ public class ScheduleUtils {
             + ALStorageService.separator()
             + uid
             + ALStorageService.separator()
-            + title);
+            + filename);
         } else {
           // ファイルの移動
           ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
             .getFileId()), FOLDER_FILEDIR_SCHEDULE, CATEGORY_KEY
             + ALStorageService.separator()
-            + uid, title);
+            + uid, filename);
         }
       }
 

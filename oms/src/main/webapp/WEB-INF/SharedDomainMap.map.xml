@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2015 Aimluck,Inc.
-    http://www.aipo.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
 	<db-entity name="eip_facility_group">
@@ -642,6 +622,16 @@
 		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_schedule_file">
+		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="SCHEDULE_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_schedule_map">
 		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -1375,6 +1365,15 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipTScheduleFile" className="com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile" dbEntityName="eip_t_schedule_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="scheduleId" type="java.lang.Integer" db-attribute-path="SCHEDULE_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
 	<obj-entity name="EipTScheduleMap" className="com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap" dbEntityName="eip_t_schedule_map">
 		<obj-attribute name="commonCategoryId" type="java.lang.Integer" db-attribute-path="COMMON_CATEGORY_ID"/>
 		<obj-attribute name="scheduleId" type="java.lang.Integer" db-attribute-path="SCHEDULE_ID"/>
@@ -1832,7 +1831,13 @@
 	<db-relationship name="eipTReport" source="eip_t_report_member_map" target="eip_t_report" toMany="false">
 		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTScheduleFile" source="eip_t_schedule" target="eip_t_schedule_file" toMany="true">
+		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTScheduleMaps" source="eip_t_schedule" target="eip_t_schedule_map" toMany="true">
+		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSchedule" source="eip_t_schedule_file" target="eip_t_schedule" toMany="false">
 		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTCommonCategory" source="eip_t_schedule_map" target="eip_t_common_category" toMany="false">
@@ -2022,7 +2027,7 @@
 	<obj-relationship name="eipTReport" source="EipTReportMap" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTReport" source="EipTReportMemberMap" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTScheduleMaps" source="EipTSchedule" target="EipTScheduleMap" db-relationship-path="eipTScheduleMaps"/>
-	<obj-relationship name="EipTSchedule" source="EipTScheduleFile" target="EipTSchedule" db-relationship-path="EipTSchedule"/>
+	<obj-relationship name="eipTSchedule" source="EipTScheduleFile" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>

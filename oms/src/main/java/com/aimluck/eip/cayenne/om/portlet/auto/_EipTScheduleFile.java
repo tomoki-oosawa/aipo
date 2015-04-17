@@ -8,21 +8,29 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _EipTScheduleFile extends org.apache.cayenne.CayenneDataObject {
 
     public static final String CREATE_DATE_PROPERTY = "createDate";
+    public static final String FILE_NAME_PROPERTY = "fileName";
     public static final String FILE_PATH_PROPERTY = "filePath";
     public static final String FILE_THUMBNAIL_PROPERTY = "fileThumbnail";
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String SCHEDULE_ID_PROPERTY = "scheduleId";
-    public static final String TITLE_PROPERTY = "title";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
-    public static final String EIP_TSCHEDULE_PROPERTY = "EipTSchedule";
+    public static final String EIP_TSCHEDULE_PROPERTY = "eipTSchedule";
 
-    public static final String FILE_ID_PK_COLUMN = "file_id";
+    public static final String FILE_ID_PK_COLUMN = "FILE_ID";
 
     public void setCreateDate(java.util.Date createDate) {
         writeProperty("createDate", createDate);
     }
     public java.util.Date getCreateDate() {
         return (java.util.Date)readProperty("createDate");
+    }
+    
+    
+    public void setFileName(String fileName) {
+        writeProperty("fileName", fileName);
+    }
+    public String getFileName() {
+        return (String)readProperty("fileName");
     }
     
     
@@ -58,14 +66,6 @@ public class _EipTScheduleFile extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setTitle(String title) {
-        writeProperty("title", title);
-    }
-    public String getTitle() {
-        return (String)readProperty("title");
-    }
-    
-    
     public void setUpdateDate(java.util.Date updateDate) {
         writeProperty("updateDate", updateDate);
     }
@@ -74,12 +74,12 @@ public class _EipTScheduleFile extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void setEipTSchedule(com.aimluck.eip.cayenne.om.portlet.EipTSchedule EipTSchedule) {
-        setToOneTarget("EipTSchedule", EipTSchedule, true);
+    public void setEipTSchedule(com.aimluck.eip.cayenne.om.portlet.EipTSchedule eipTSchedule) {
+        setToOneTarget("eipTSchedule", eipTSchedule, true);
     }
 
     public com.aimluck.eip.cayenne.om.portlet.EipTSchedule getEipTSchedule() {
-        return (com.aimluck.eip.cayenne.om.portlet.EipTSchedule)readProperty("EipTSchedule");
+        return (com.aimluck.eip.cayenne.om.portlet.EipTSchedule)readProperty("eipTSchedule");
     } 
     
     

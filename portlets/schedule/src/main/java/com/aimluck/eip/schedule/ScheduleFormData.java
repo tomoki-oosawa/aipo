@@ -866,7 +866,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         FileuploadLiteBean fbean = new FileuploadLiteBean();
         fbean.initField();
         fbean.setFileId(file.getFileId());
-        fbean.setTitle(file.getTitle());
+        fbean.setFileName(file.getFileName());
         fileuploadList.add(fbean);
         // 公開フラグ
         public_flag.setValue(record.getPublicFlag());

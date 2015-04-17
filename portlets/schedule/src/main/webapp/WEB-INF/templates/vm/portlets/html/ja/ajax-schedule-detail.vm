@@ -140,7 +140,29 @@ $l10n.SCHEDULE_MESSAGE_OF_DONOT_SEND_EMAIL_FOR_USER
 ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
-
+##添付ファイルの表示
+<tr>
+				<td style="border-bottom:none;" class="sentence">
+							$!{result.ParentTopic.Note}
+							#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
+								<div style="padding-top:15px;">
+									<ul>
+									#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
+										<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ScheduleFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+										#if($attachmentFile.isImage())
+											<div id='popc' style='position:absolute'></div>
+											<div class="thumbBlock">
+												<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ScheduleFileRawScreen').addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+												<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+											</div>
+										#end
+										</li>
+									#end
+									</ul>
+								</div>
+							#end
+				</td>
+			</tr>
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditemheader()
 #if($!result.isLoginUserID($!{result.Detail.CreateUser.UserId.Value}))$!{result.Detail.CreateUser.AliasName}
