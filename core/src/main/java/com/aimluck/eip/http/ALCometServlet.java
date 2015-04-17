@@ -19,13 +19,11 @@
 package com.aimluck.eip.http;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -87,6 +85,8 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       HttpServletResponse response = event.getHttpServletResponse();
       ALBaseUser user = getUser(request);
       if (user == null) {
+        close(response);
+        event.close();
         return;
       }
       switch (event.getEventType()) {
@@ -185,8 +185,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
 
   public class MessageSender extends Thread {
 
-    private final BlockingQueue<Message> messages =
-      new LinkedBlockingQueue<Message>();
+    protected final List<Message> messages = new ArrayList<Message>();
 
     protected boolean running = true;
 
@@ -198,8 +197,11 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
 
     public synchronized void sendMessage(List<String> recipients, String message) {
       try {
-        messages.put(new Message(recipients, message));
-      } catch (InterruptedException e) {
+        synchronized (messages) {
+          messages.add(new Message(recipients, message));
+          messages.notify();
+        }
+      } catch (Throwable ignore) {
         //
       }
     }
@@ -208,8 +210,21 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     public void run() {
       while (running) {
         try {
-          Message message = messages.poll(1000, TimeUnit.SECONDS);
-          if (message != null) {
+          if (messages.size() == 0) {
+            try {
+              synchronized (messages) {
+                messages.wait();
+              }
+            } catch (InterruptedException ignore) {
+              // Ignore
+            }
+          }
+          Message[] pendingMessages = null;
+          synchronized (messages) {
+            pendingMessages = messages.toArray(new Message[0]);
+            messages.clear();
+          }
+          for (Message message : pendingMessages) {
             Iterator<Entry<HttpServletResponse, String>> iterator =
               connections.entrySet().iterator();
 
@@ -238,6 +253,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
                 }
               }
             }
+            pendingMessages = null;
           }
           try {
             Thread.sleep(100);
