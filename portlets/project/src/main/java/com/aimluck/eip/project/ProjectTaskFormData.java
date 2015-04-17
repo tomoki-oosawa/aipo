@@ -167,7 +167,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -179,8 +179,6 @@ public class ProjectTaskFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    rundata.getUser().setTemp(ALEipConstants.MYGROUP, null);
 
     try {
       parentTaskId =
@@ -309,7 +307,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -392,7 +390,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスクのフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -513,7 +511,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスクをデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -597,7 +595,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスクをデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -703,7 +701,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 登録・更新共通の項目を設定します。
-   * 
+   *
    * @param task
    *          タスク
    * @param msgList
@@ -754,7 +752,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 日付項目の値を取得する
-   * 
+   *
    * @param check
    *          チェック項目
    * @param date
@@ -775,7 +773,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスクを更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -895,7 +893,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスクをデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -951,7 +949,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 分類を取得します。
-   * 
+   *
    * @return 分類
    */
   public ALStringField getTracker() {
@@ -960,7 +958,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * タスク名を取得します。
-   * 
+   *
    * @return タスク名
    */
   public ALStringField getTaskName() {
@@ -969,7 +967,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 説明を取得します。
-   * 
+   *
    * @return 説明
    */
   public ALStringField getExplanation() {
@@ -978,7 +976,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * ステータスを取得します。
-   * 
+   *
    * @return ステータス
    */
   public ALStringField getStatus() {
@@ -987,7 +985,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 優先度を取得します。
-   * 
+   *
    * @return 優先度
    */
   public ALStringField getPriority() {
@@ -996,7 +994,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始予定日を取得します。
-   * 
+   *
    * @return 開始予定日
    */
   public ALDateField getStartPlanDate() {
@@ -1005,7 +1003,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了予定日を取得します。
-   * 
+   *
    * @return 完了予定日
    */
   public ALDateField getEndPlanDate() {
@@ -1014,7 +1012,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始実績日を取得します。
-   * 
+   *
    * @return 開始実績日
    */
   public ALDateField getStartDate() {
@@ -1023,7 +1021,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了実績日を取得します。
-   * 
+   *
    * @return 完了実績日
    */
   public ALDateField getEndDate() {
@@ -1032,7 +1030,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始予定日を取得します。（画面表示用）
-   * 
+   *
    * @return 開始予定日
    */
   public String getStartPlanDateString() {
@@ -1047,7 +1045,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了予定日を取得します。（画面表示用）
-   * 
+   *
    * @return 完了予定日
    */
   public String getEndPlanDateString() {
@@ -1062,7 +1060,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始実績日を取得します。（画面表示用）
-   * 
+   *
    * @return 開始予定日
    */
   public String getStartDateString() {
@@ -1077,7 +1075,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了実績日を取得します。（画面表示用）
-   * 
+   *
    * @return 完了予定日
    */
   public String getEndDateString() {
@@ -1092,7 +1090,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始予定日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getStartPlanDateCheck() {
@@ -1101,7 +1099,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了予定日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEndPlanDateCheck() {
@@ -1110,7 +1108,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 開始実績日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getStartDateCheck() {
@@ -1119,7 +1117,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 完了実績日指定フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEndDateCheck() {
@@ -1128,7 +1126,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 計画工数を取得します。
-   * 
+   *
    * @return 計画工数
    */
   public BigDecimal getPlanWorkload() {
@@ -1137,7 +1135,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 計画工数を取得します。
-   * 
+   *
    * @return 計画工数
    */
   public String getPlanWorkloadString() {
@@ -1149,7 +1147,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 進捗率を取得します。
-   * 
+   *
    * @return 進捗率
    */
   public ALNumberField getProgressRate() {
@@ -1158,7 +1156,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 部署情報を取得する
-   * 
+   *
    * @return 部署情報
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1167,7 +1165,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * ログインユーザーIDを返します。
-   * 
+   *
    * @return ログインユーザーID
    */
   public int getLoginUserId() {
@@ -1176,7 +1174,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 親タスクIDを取得します。
-   * 
+   *
    * @return 親タスクID
    */
   public Integer getParentTaskId() {
@@ -1185,7 +1183,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 子タスク保持フラグを取得します。
-   * 
+   *
    * @return 子タスク保持フラグ
    */
   public boolean getHasChildren() {
@@ -1194,7 +1192,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトidを取得します。
-   * 
+   *
    * @return 親タスクID
    */
   public Integer getProjectId() {
@@ -1203,7 +1201,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 分類リストを返します。
-   * 
+   *
    * @return 分類リスト
    */
   public Map<String, String> getTrackerMap() {
@@ -1212,7 +1210,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * ステータスリストを返します。
-   * 
+   *
    * @return ステータスリスト
    */
   public Map<String, String> getStatusMap() {
@@ -1221,7 +1219,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 優先度リストを返します。
-   * 
+   *
    * @return 優先度リスト
    */
   public Map<String, String> getPriorityMap() {
@@ -1230,7 +1228,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 担当者リストを返します。
-   * 
+   *
    * @return 担当者リスト
    */
   public List<ProjectTaskMemberResultData> getTaskMembers() {
@@ -1239,7 +1237,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトメンバーリストを返します。
-   * 
+   *
    * @return プロジェクトメンバーリスト
    */
   public List<ALEipUser> getProjectMembers() {
@@ -1248,7 +1246,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * アップロードファイルリストを返します。
-   * 
+   *
    * @return アップロードファイルリスト
    */
   public List<FileuploadBean> getAttachmentFileNameList() {
@@ -1257,7 +1255,7 @@ public class ProjectTaskFormData extends ALAbstractFormData {
 
   /**
    * 全プロジェクトのリストを返す
-   * 
+   *
    * @return 全プロジェクトのリスト
    */
   public List<ProjectResultData> getAllProject() {
