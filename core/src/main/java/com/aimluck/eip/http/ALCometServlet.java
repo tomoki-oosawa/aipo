@@ -36,6 +36,9 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.catalina.comet.CometEvent;
 import org.apache.catalina.comet.CometProcessor;
+import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.om.security.UserNamePrincipal;
+import org.apache.jetspeed.services.JetspeedUserManagement;
 
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
@@ -149,6 +152,11 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
         return null;
       }
 
+      String username = (String) session.getAttribute("turbine.username");
+      JetspeedUser user =
+        JetspeedUserManagement.getUser(new UserNamePrincipal(username));
+      ALBaseUser baseUser = (ALBaseUser) user;
+      // return baseUser;
       return (ALBaseUser) session.getAttribute("turbine.user");
     } catch (Throwable ignore) {
       // ignore
