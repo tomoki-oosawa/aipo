@@ -35,7 +35,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書のResultDataです。 <BR>
- * 
+ *
  */
 public class ReportResultData implements ALData {
 
@@ -260,7 +260,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param date
    */
   public void setStartDate(Date date) {
@@ -268,7 +268,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -276,7 +276,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param date
    */
   public void setEndDate(Date date) {
@@ -284,7 +284,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDate() {

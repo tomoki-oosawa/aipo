@@ -23,7 +23,7 @@
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.REPORT_DETAIL)
+#ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
@@ -39,7 +39,13 @@
 <img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" />
 #end
 </div>
-<div class="alignleft"><strong>$!result.ParentReport.ClientName</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
+<div class="alignleft"><strong>
+	#if($!result.LoginUser.UserId.Value == $!result.ParentReport.ClientId.Value)
+		$!result.ParentReport.ClientName<br />
+	#else
+		<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.ParentReport.ClientId)">$!result.ParentReport.ClientName</a><br />
+	#end
+	</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if($result.ParentReport.isSelfReport())
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
@@ -56,7 +62,11 @@
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_MENVERS)
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MemberList)
-$!record.AliasName<br />
+#if($!result.LoginUser.UserId.Value == $!record.UserId.Value)
+	$!record.AliasName<br />
+#else
+	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a><br />
+#end
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
@@ -89,7 +99,11 @@ $!record.AliasName<br />
 #else
 <i class="auiIcon auiIconMail" title="$l10n.REPORT_UNREAD"></i>
 #end
-$!record.AliasName
+#if($!result.LoginUser.UserId.Value == $!record.UserId.Value)
+	$!record.AliasName
+#else
+	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a>
+#end
 <br />
 #end
 #ALtditemfooter()
@@ -130,11 +144,10 @@ ${record.Note}
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 <li><a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a>
 #if($attachmentFile.isImage())
-<div id='popc' style='position:absolute'></div>
-<div class="thumbBlock">
-	<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
-	<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
-</div>
+	<div class="thumbBlock">
+		<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+		<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+	</div>
 #end
 </li>
 #end
@@ -185,7 +198,7 @@ ${record.Note}
 #end
 #ALbuttonheader()
 <input name="${event_submit}" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.REPORT_ADD" onclick="aimluck.io.setHiddenValue(this);">
-#ALajaxbuttonClose()
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.report.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()
