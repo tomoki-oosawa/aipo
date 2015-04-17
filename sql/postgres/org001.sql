@@ -1880,8 +1880,8 @@ CREATE TABLE eip_t_schedule_file
   file_id integer NOT NULL,
   owner_id integer,
   schedule_id integer,
-  title character varying(99) NOT NULL,
-  file_path character varying NOT NULL,
+  file_name character varying(128) NOT NULL,
+  file_path text NOT NULL,
   file_thumbnail bytea,
   create_date date,
   update_date timestamp without time zone,
@@ -1890,11 +1890,6 @@ CREATE TABLE eip_t_schedule_file
       REFERENCES eip_t_schedule (schedule_id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE
 )
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE eip_t_schedule_file
-  OWNER TO postgres;
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
