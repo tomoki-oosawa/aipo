@@ -28,7 +28,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- * 
+ *
  */
 public class AccountResultData implements ALData {
 
@@ -74,6 +74,8 @@ public class AccountResultData implements ALData {
   private boolean has_photo;
 
   private boolean is_admin;
+
+  private boolean is_owner;
 
   /** 会社ID */
   private ALNumberField company_id;
@@ -132,6 +134,7 @@ public class AccountResultData implements ALData {
 
     has_photo = false;
     is_admin = false;
+    is_owner = false;
 
     company_id = new ALNumberField();
     company_name = new ALStringField();
@@ -384,6 +387,20 @@ public class AccountResultData implements ALData {
   }
 
   /**
+   * @return is_admin
+   */
+  public boolean isOwnwer() {
+    return is_owner;
+  }
+
+  /**
+   * @param is_owner
+   */
+  public void setIsOwner(boolean is_owner) {
+    this.is_owner = is_owner;
+  }
+
+  /**
    * @return
    */
   public ALStringField getCompanyAddress() {
@@ -439,7 +456,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 会社の電話番号を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyTelephone() {
@@ -526,7 +543,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名を取得します
-   * 
+   *
    * @return
    */
   public ALStringField getGroupName() {
@@ -535,7 +552,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名をセットします
-   * 
+   *
    * @param string
    */
   public void setGroupName(String string) {
@@ -544,7 +561,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public Object getPostID(int i) {
