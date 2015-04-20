@@ -50,6 +50,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIbuttonAction($l10n.ACCOUNT_USER_ADD "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
+#AUIbuttonAction($l10n.ACCOUNT_ACCOUNT_EXPORT "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
 </div>
 
 ##AUIconfigheader($!{portlet.ID} "15em")
