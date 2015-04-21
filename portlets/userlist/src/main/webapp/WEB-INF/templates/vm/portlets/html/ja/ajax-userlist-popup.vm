@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
         <div class="contents divider clearfix">
             <a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">
             #if($!{result.Detail.hasPhoto()})
@@ -32,20 +33,23 @@
             <li><a href="javascript:void(0)" onclick="aipo.message.openDirect($!{result.Detail.UserId})"><div><i class="icon-comment-alt"></i></div>メッセージ</a></li>
             <li><a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');"><div><i class="icon-user"></i></div>プロフィール</a></li>
         </ul>
-        <div class="contents dividerBg" id="profile_card_dummy">
-            <div id="" class="messageInputDummy" onclick="">
-                <span onclick="if(document.getElementById('profile_card_02').style.display!='none'){document.getElementById('profile_card_02').style.display='none';document.getElementById('profile_card_dummy').style.display='block'}else{document.getElementById('profile_card_02').style.display='block';document.getElementById('profile_card_dummy').style.display='none'}" href="javascript:void(0);">メッセージを送信する</span>
+        <div class="contents dividerBg" id="profile_card_dummy_$!{result.Detail.UserId}">
+            <div class="messageInputDummy">
+                <span onclick="aipo.message.openProfileTextarea($!{result.Detail.UserId})" href="javascript:void(0);">メッセージを送信する</span>
             </div>
         </div>
-        <div class="contents dividerBg" id="profile_card_02" style="display: none;">
+        <div class="contents dividerBg" id="profile_card_$!{result.Detail.UserId}" style="display: none;">
             <div style="" class="messageField">
-                <form onsubmit="" method="post" action="" id="" name="">
-                    <input type="hidden" value="" name="secid">
+				<form name="messageForm$!{result.Detail.UserId}" id="messageForm$!{result.Detail.UserId}" action="?js_peid=${messagePortletId}&template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.submit_callbackparams(this,'indicator-dlg-profile-$!{result.Detail.UserId}-','$messagePortletId',aipo.message.onReceiveProfileMessage);return false;">
+					<input type="hidden" name="_name" value="formMessage" />
+					<input type="hidden" name="secid" value="$secid" />
+					<input type="hidden" name="roomId" value="" />
+					<input type="hidden" name="userId" value="$!{result.Detail.UserId}" />
 
                     <div class="outer">
-                        <textarea onkeydown="" style="height: 39px;" rows="1" name="note" cols="10" id="" class="elastic"></textarea>
+                        <textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
                     </div>
-                    <div class="right"><a onclick="" href="javascript:void(0)" class="auiButtonAction">送信する</a>
+                    <div class="right"><i class="indicator" id="indicator-dlg-profile-$!{result.Detail.UserId}-$messagePortletId" style="display: none;"></i><input type="submit" class="auiButtonAction" value="送信する" onclick="aimluck.io.setHiddenValue(this);"/>
                     </div>
                 </form>
             </div>

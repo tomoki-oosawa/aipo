@@ -48,6 +48,8 @@ public class UserPopupScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
+      context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
+
       UserSelectData detailData = new UserSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);

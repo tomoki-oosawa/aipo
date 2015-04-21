@@ -866,6 +866,7 @@ aipo.message.switchDesktopNotify = function() {
 }
 
 aipo.message.openDirect = function(user_id) {
+	aipo.message.hideProfile();
 	if(aipo.message.isMobile) {
 		location.href = aipo.message.jslink +"?action=controls.Maximize&u=" + user_id
 	} else {
@@ -922,12 +923,16 @@ aipo.message.hideProfile = function() {
 	dojo.query('.profilePopup').style('display', 'none');
 }
 
-var bodyHandleProfile = null;
-var mouseEnterHandleProfile = null;
-var mouseLeaveHandleProfile = null;
+var profileHandle = {};
+profileHandle['body'] = null;
+profileHandle['linkEnter'] = null;
+profileHandle['linkLeave'] = null;
+profileHandle['profileEnter'] = null;
+profileHandle['profileLeave'] = null;
+aipo.message.profileCurrentUserId = null;
 aipo.message.popupProfile = function(userId, event) {
-	if(!bodyHandleProfile) {
-		bodyHandleProfile = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+	if(!profileHandle['body']) {
+		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
 			if (dojo.query('.profileMouseenter').length == 0) {
 				aipo.message.hideProfile();
 			}
@@ -943,13 +948,21 @@ aipo.message.popupProfile = function(userId, event) {
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
 
 	}
-
-	dojo.disconnect(mouseEnterHandleProfile);
-	mouseEnterHandleProfile = dojo.connect(event.getTarget(), 'onmouseenter', null, function(){
+    var popupProfile = dojo.byId("popupProfileInner_" + userId);
+	dojo.disconnect(profileHandle['linkEnter']);
+	profileHandle['linkEnter'] = dojo.connect(event.getTarget(), 'onmouseenter', null, function(){
 		dojo.addClass(this, 'profileMouseenter');
 	});
-	dojo.disconnect(mouseLeaveHandleProfile);
-	mouseLeaveHandleProfile = dojo.connect(event.getTarget(), 'onmouseleave', null, function(){
+	dojo.disconnect(profileHandle['linkLeave']);
+	profileHandle['linkLeave'] = dojo.connect(event.getTarget(), 'onmouseleave', null, function(){
+		dojo.removeClass(this, 'profileMouseenter');
+	});
+	dojo.disconnect(profileHandle['profileEnter']);
+	profileHandle['profileEnter'] = dojo.connect(popupProfile, 'onmouseenter', null, function(){
+		dojo.addClass(this, 'profileMouseenter');
+	});
+	dojo.disconnect(profileHandle['profileLeave']);
+	profileHandle['profileLeave'] = dojo.connect(popupProfile, 'onmouseleave', null, function(){
 		dojo.removeClass(this, 'profileMouseenter');
 	});
 	dojo.addClass(event.getTarget(), 'profileMouseenter');
@@ -997,6 +1010,7 @@ aipo.message.popupProfile = function(userId, event) {
 		}
 		popupInner.eventTarget = event.getTarget();
 		popupInner.currentUserId = userId;
+		aipo.message.profileCurrentUserId = userId;
 	}
 
 	if(userId == popupInner.currentUserId) {
@@ -1004,4 +1018,37 @@ aipo.message.popupProfile = function(userId, event) {
 	} else {
 		popupInner.viewPage("?template=UserPopupScreen&entityid=" + userId);
 	}
+}
+
+aipo.message.onReceiveProfileMessage = function(msg) {
+    if (!msg["error"]) {
+    	aipo.message.openDirect(aipo.message.profileCurrentUserId);
+    }
+}
+
+aipo.message.focusProfileInput = function(userId) {
+    var messageForm = dojo.byId("messageForm" + userId);
+    if (messageForm && !aipo.message.isMobile) {
+    	try{
+    		messageForm.message.focus();
+    	}catch(e){
+    		//ignore
+    	}
+
+    }
+}
+
+aipo.message.openProfileTextarea = function(userId) {
+	var card = dojo.byId("profile_card_" + userId);
+	var cardDummy = dojo.byId("profile_card_dummy_" + userId);
+	card.style.display="block";
+	cardDummy.style.display="none";
+	aipo.message.focusProfileInput(userId);
+}
+
+aipo.message.closeProifleTextarea  = function(userId) {
+	var card = dojo.byId("profile_card_" + userId);
+	var cardDummy = dojo.byId("profile_card_dummy_" + userId);
+	cardDummy.style.display="block";
+	card.style.display="none";
 }
