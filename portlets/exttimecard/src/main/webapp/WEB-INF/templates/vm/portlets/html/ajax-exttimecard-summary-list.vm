@@ -104,7 +104,27 @@
 #ALtdheadAtt($l10n.EXTTIMECARD_NOT_INPUT "class='center'")
 </tr>
 <tr>
-#ALtdcellAtt("$!{key.UserNameHtml}" "")
+<td>
+<div class="avatar floatLeft mr10">
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && !$!result.isMatch(2, $!{record.OwnerId.Value}))
+		<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">
+		#end
+		#if(${record.OwnerHasPhoto()})
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="$!{record.OwnerName}" width="50" height="50" />
+		#elseif($!result.isMatch(2, $!{record.OwnerId.Value}))
+			<img src="themes/default/images/guide_icon.png" alt="$!{key.UserName}" width="50" height="50" />
+		#else
+			<img src="images/common/avatar_default3.png" alt="$!{key.UserName}" width="50" height="50" />
+		#end
+		#if(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && !$!result.isMatch(2, $!{record.OwnerId.Value}))
+		</a>
+		#end
+	</div>
+	<div style="height:50px;line-height:50px;">
+    <a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!{key.UserNameHtml}</a>
+    </div>
+</td>
+##ALtdcellAtt("$!{key.UserNameHtml}" "")
 #ALtdcellAtt("$!{key.SystemNameHtml}" "class='wType'")
 #ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
