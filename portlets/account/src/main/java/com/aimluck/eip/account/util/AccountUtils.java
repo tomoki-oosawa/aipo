@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -109,7 +110,7 @@ public class AccountUtils {
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -143,7 +144,7 @@ public class AccountUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -181,7 +182,7 @@ public class AccountUtils {
 
   /**
    * セッションに格納されているIDを用いて、部署情報を取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -217,7 +218,7 @@ public class AccountUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -291,7 +292,7 @@ public class AccountUtils {
 
   /**
    * ユーザーの所属する部署の一覧を取得します。
-   * 
+   *
    * @param uid
    *          ユーザーID
    * @return 所属する部署リスト
@@ -338,7 +339,7 @@ public class AccountUtils {
 
   /**
    * 指定した ID のユーザが削除済みかどうかを調べる。
-   * 
+   *
    * @param userId
    * @return
    */
@@ -367,7 +368,7 @@ public class AccountUtils {
 
   /**
    * 指定されたユーザーが削除／無効化されたとき、申請が来ているワークフローを全て承認します。
-   * 
+   *
    * @param uid
    */
   public static boolean acceptWorkflow(int uid) {
@@ -449,7 +450,7 @@ public class AccountUtils {
   /**
    * 管理者権限を持ったユーザを一人、管理者権限剥奪・無効化・削除しても<br/>
    * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
-   * 
+   *
    * @return
    */
   public static boolean isAdminDeletable() {
@@ -459,7 +460,7 @@ public class AccountUtils {
   /**
    * 管理者権限を持ったユーザを指定人数、管理者権限剥奪・無効化・削除しても<br/>
    * 最低限必要な管理者権限を持ったユーザ数を割らないかどうかを返します。
-   * 
+   *
    * @param admin_count
    * @return
    */
@@ -493,7 +494,7 @@ public class AccountUtils {
 
   /**
    * 与えられたユーザー名に使われている記号が、使用できるものかを確認します。
-   * 
+   *
    * @return
    */
   public static boolean isValidSymbolUserName(String name) {
@@ -508,7 +509,7 @@ public class AccountUtils {
 
   /**
    * 指定されたuserIdが使用しているメールの総容量を返します。 <BR>
-   * 
+   *
    * @param userId
    * @return メールの容量
    */
@@ -542,7 +543,7 @@ public class AccountUtils {
 
   /**
    * データ容量を単位つきで返します。 <BR>
-   * 
+   *
    * @param size
    * @return 文字列
    */
@@ -566,7 +567,7 @@ public class AccountUtils {
 
   /**
    * ユーザーのRole一覧を返します。
-   * 
+   *
    * @return
    */
   public static Map<Integer, FilterRole> getRoleMap() {
@@ -630,7 +631,7 @@ public class AccountUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -660,5 +661,18 @@ public class AccountUtils {
     return JetspeedResources.getString(
       "aipo." + portletName + ".categorykey",
       "");
+  }
+
+  public static String getPortletId(RunData rundata) {
+    HashMap<String, String> map = ALEipUtils.getPortletFromAppIdMap(rundata);
+    Iterator<java.util.Map.Entry<String, String>> iterator =
+      map.entrySet().iterator();
+    while (iterator.hasNext()) {
+      java.util.Map.Entry<String, String> next = iterator.next();
+      if (next.getKey().endsWith("AccountPerson")) {
+        return next.getValue();
+      }
+    }
+    return null;
   }
 }

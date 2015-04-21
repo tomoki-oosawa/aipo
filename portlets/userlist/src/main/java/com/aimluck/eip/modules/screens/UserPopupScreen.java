@@ -24,6 +24,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.userlist.UserSelectData;
 import com.aimluck.eip.userlist.utils.UserListUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -55,7 +56,13 @@ public class UserPopupScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-userlist-popup.vm";
+      ALEipUser user = ALEipUtils.getALEipUser(rundata);
+      String layout_template = null;
+      if (String.valueOf(user.getUserId().getValue()).equals(entityid)) {
+        layout_template = "portlets/html/ja/ajax-userlist-popup-owner.vm";
+      } else {
+        layout_template = "portlets/html/ja/ajax-userlist-popup.vm";
+      }
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[AccountUserDetailScreen] Exception.", ex);

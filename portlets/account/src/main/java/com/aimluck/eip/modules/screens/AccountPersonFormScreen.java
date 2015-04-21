@@ -31,7 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 個人設定・ユーザー情報を処理するクラスです。 <br />
- * 
+ *
  */
 public class AccountPersonFormScreen extends ALVelocityScreen {
 
@@ -40,13 +40,20 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     .getLogger(AccountPersonFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
+    String portletId = AccountUtils.getPortletId(rundata);
+    if (portletId != null) {
+      ALEipUtils.setupContext(portletId, rundata, context);
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+        .getUser()
+        .getUserName());
+    }
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
@@ -63,7 +70,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -80,7 +87,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

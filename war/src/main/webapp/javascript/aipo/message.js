@@ -913,3 +913,95 @@ aipo.message.openDirectMessage = function(user_id) {
 		    aipo.message.selectTab("user");
 		}
 }
+
+
+function getTarget() { return this.srcElement || this.target; }
+Event.prototype.getTarget = getTarget;
+
+aipo.message.hideProfile = function() {
+	dojo.query('.profilePopup').style('display', 'none');
+}
+
+var bodyHandleProfile = null;
+var mouseEnterHandleProfile = null;
+var mouseLeaveHandleProfile = null;
+aipo.message.popupProfile = function(userId, event) {
+	if(!bodyHandleProfile) {
+		bodyHandleProfile = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+			if (dojo.query('.profileMouseenter').length == 0) {
+				aipo.message.hideProfile();
+			}
+		});
+	}
+	var popup = dojo.byId("popupProfile_" + userId);
+	if(!popup) {
+		var div = document.createElement("div");
+		div.id = "popupProfile_" + userId;
+		div.className = "profilePopupWrap";
+		div.style.display = "block";
+		document.body.appendChild(div);
+		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
+
+	}
+
+	dojo.disconnect(mouseEnterHandleProfile);
+	mouseEnterHandleProfile = dojo.connect(event.getTarget(), 'onmouseenter', null, function(){
+		dojo.addClass(this, 'profileMouseenter');
+	});
+	dojo.disconnect(mouseLeaveHandleProfile);
+	mouseLeaveHandleProfile = dojo.connect(event.getTarget(), 'onmouseleave', null, function(){
+		dojo.removeClass(this, 'profileMouseenter');
+	});
+	dojo.addClass(event.getTarget(), 'profileMouseenter');
+
+	var popupInner = dijit.byId("popupProfileInner_" + userId);
+	if (!popupInner) {
+		popupInner = dijit.byId("popupProfileInner_" + userId);
+		popupInner = new aimluck.widget.Contentpane({}, "popupProfileInner_" + userId);
+		popupInner.eventTarget = event.getTarget();
+	}
+	popupInner.onLoad = function() {
+		var rect = event.getTarget().getBoundingClientRect();
+		var html = document.documentElement.getBoundingClientRect();
+		var node = dojo.query("#popupProfileInner_" + userId);
+		var popupNode = dojo.query("#popupProfile_" + userId);
+
+		if (node.style('display') == 'none' || popupInner.eventTarget !== event.getTarget()) {
+			dojo.query('.profilePopup').style('display', 'none');
+			var scroll={
+					left:document.documentElement.scrollLeft||document.body.scrollLeft,
+					top:document.documentElement.scrollTop||document.body.scrollTop
+			};
+
+			node.style("display","block");
+			popupNode.style("position","absolute");
+			node.style("opacity","0");
+
+			var width = scroll.left + html.right;
+			var bottom = node[0].clientWidth + rect.right;
+			if(bottom < width){
+				popupNode.style("left",rect.left+scroll.left+"px");
+			}else{
+				popupNode.style("left",rect.right-node[0].clientWidth+scroll.left+"px");
+			}
+			var height = scroll.top + html.bottom;
+			var top = node[0].clientHeight + rect.bottom;
+			if(top < height){
+				popupNode.style("top",rect.bottom+scroll.top+"px");
+			}else {
+				popupNode.style("top",rect.top-node[0].clientHeight+scroll.top+"px");
+			}
+			node.style("opacity","1");
+		} else {
+			node.style('display','none');
+		}
+		popupInner.eventTarget = event.getTarget();
+		popupInner.currentUserId = userId;
+	}
+
+	if(userId == popupInner.currentUserId) {
+		popupInner.onLoad();
+	} else {
+		popupInner.viewPage("?template=UserPopupScreen&entityid=" + userId);
+	}
+}

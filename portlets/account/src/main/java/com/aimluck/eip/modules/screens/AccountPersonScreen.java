@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 個人設定・ユーザー情報を処理するクラスです。 <br />
- * 
+ *
  */
 public class AccountPersonScreen extends ALVelocityScreen {
 
@@ -38,7 +38,7 @@ public class AccountPersonScreen extends ALVelocityScreen {
     .getLogger(AccountPersonScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
