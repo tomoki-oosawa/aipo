@@ -535,7 +535,7 @@ aipo.schedule.enableMonth = function(form){
     }
 }
 
-aipo.schedule.enableMonthWeekly = function(form){
+aipo.schedule.enableMonthTheWeeek = function(form){
 	if(! form.repeat_type[3].checked){
 	    form.repeat_type[3].checked = true;
 	}

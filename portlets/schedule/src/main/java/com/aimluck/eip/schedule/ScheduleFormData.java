@@ -944,6 +944,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // MnnN M25 -> 毎月25日
+      // XnnnnnnnnN X010100040 -> 毎月第4月水曜日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
       int count = 0;
@@ -980,7 +981,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_e.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
         week_f.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_g.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-        month_the_week.setValue(ptn.charAt(8) != '0' ? "TRUE" : null);
+        month_the_week.setValue(Integer.parseInt(ptn.substring(8, 9)));
         count = 9;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -1240,6 +1241,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             week_6.getValue() != null ? 1 : 0).append(lim).toString());
 
         } else if ("X".equals(repeat_type.getValue())) {
+          DecimalFormat format = new DecimalFormat("0");
           schedule.setRepeatPattern(new StringBuffer().append('X').append(
             week_a.getValue() != null ? 1 : 0).append(
             week_b.getValue() != null ? 1 : 0).append(
@@ -1247,7 +1249,8 @@ public class ScheduleFormData extends ALAbstractFormData {
             week_d.getValue() != null ? 1 : 0).append(
             week_e.getValue() != null ? 1 : 0).append(
             week_f.getValue() != null ? 1 : 0).append(
-            week_g.getValue() != null ? 1 : 0).append(lim).toString());
+            week_g.getValue() != null ? 1 : 0).append(
+            format.format(month_the_week.getValue())).append(lim).toString());
 
         } else {
           DecimalFormat format = new DecimalFormat("00");
