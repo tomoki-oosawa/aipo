@@ -816,8 +816,8 @@ ul.hdTools .dropdown:before {
   background-color: #ffffff;
   line-height: 2;
   min-width: 220px;
-  left: 55px;
-  top: 10px;
+  left: 0;
+  top: 0;
   z-index: 1;
   overflow: hidden;
 }
