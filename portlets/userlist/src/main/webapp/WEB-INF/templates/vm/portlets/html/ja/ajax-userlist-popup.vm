@@ -19,19 +19,19 @@
 ## ---------------------------------------------------------------------------
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
         <div class="contents divider clearfix">
-            <a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">
+            <a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">
             #if($!{result.Detail.hasPhoto()})
             <img width="50" height="50" alt="$!result.Detail.Name" src='?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}' class="avatar_l">
             #else
             <img width="50" height="50" alt="$!result.Detail.Name" src="images/common/avatar_default3.png" class="avatar_l">
             #end</a><div class="popupInner">
-            <span class="name"><a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">$!result.Detail.Name</a></span>
+            <span class="name"><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">$!result.Detail.Name</a></span>
             <span class="name_kana">$!result.Detail.NameKana</span>
             <span class="post_name">#foreach($record in $!result.Detail.getPostNameList())$!record <br />#end</span></div>
         </div>
         <ul class="icon_menu clearfix divider">
-            <li><a href="javascript:void(0)" onclick="aipo.message.openDirect($!{result.Detail.UserId})"><div><i class="icon-comment-alt"></i></div>メッセージ</a></li>
-            <li><a href="javascript:void(0)" onclick="aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');"><div><i class="icon-user"></i></div>プロフィール</a></li>
+            <li><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><div><i class="icon-comment-alt"></i></div>メッセージ</a></li>
+            <li><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');"><div><i class="icon-user"></i></div>プロフィール</a></li>
         </ul>
         <div class="contents dividerBg" id="profile_card_dummy_$!{result.Detail.UserId}">
             <div class="messageInputDummy">

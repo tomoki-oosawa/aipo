@@ -921,6 +921,9 @@ Event.prototype.getTarget = getTarget;
 
 aipo.message.hideProfile = function() {
 	dojo.query('.profilePopup').style('display', 'none');
+	if(aipo.message.mobileUnderlay) {
+		aipo.message.mobileUnderlay.hide();
+	}
 }
 
 var profileHandle = {};
@@ -930,9 +933,20 @@ profileHandle['linkLeave'] = null;
 profileHandle['profileEnter'] = null;
 profileHandle['profileLeave'] = null;
 aipo.message.profileCurrentUserId = null;
+aipo.message.mobileUnderlay = null;
 aipo.message.popupProfile = function(userId, event) {
+	if(aipo.message.isMobile && !aipo.message.mobileUnderlay) {
+		aipo.message.mobileUnderlay = new aimluck.widget.DialogUnderlay();
+		dojo.byId(aipo.message.mobileUnderlay.domNode.id).style["z-index"] = 999;
+		dojo.connect(aipo.message.mobileUnderlay.domNode, "onmousedown", aipo.message.mobileUnderlay.domNode, function(){
+			 aipo.message.hideProfile();
+		 });
+	}
+	if(aipo.message.isMobile) {
+	    aipo.message.mobileUnderlay.show();
+	}
 	if(!profileHandle['body']) {
-		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
 			if (dojo.query('.profileMouseenter').length == 0) {
 				aipo.message.hideProfile();
 			}
@@ -944,6 +958,7 @@ aipo.message.popupProfile = function(userId, event) {
 		div.id = "popupProfile_" + userId;
 		div.className = "profilePopupWrap";
 		div.style.display = "block";
+		div.style['z-index'] = 1000;
 		document.body.appendChild(div);
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
 
@@ -992,17 +1007,19 @@ aipo.message.popupProfile = function(userId, event) {
 
 			var width = scroll.left + html.right;
 			var bottom = node[0].clientWidth + rect.right;
-			if(bottom < width){
-				popupNode.style("left",rect.left+scroll.left+"px");
+			if(aipo.message.isMobile) {
+				popupNode.style("left","0px");
+			} else if(bottom < width){
+				popupNode.style("left",10+rect.right+scroll.left+"px");
 			}else{
-				popupNode.style("left",rect.right-node[0].clientWidth+scroll.left+"px");
+				popupNode.style("left",-10+rect.left-node[0].clientWidth+scroll.left+"px");
 			}
 			var height = scroll.top + html.bottom;
 			var top = node[0].clientHeight + rect.bottom;
 			if(top < height){
-				popupNode.style("top",rect.bottom+scroll.top+"px");
+				popupNode.style("top",rect.top+scroll.top+"px");
 			}else {
-				popupNode.style("top",rect.top-node[0].clientHeight+scroll.top+"px");
+				popupNode.style("top",rect.bottom-node[0].clientHeight+scroll.top+"px");
 			}
 			node.style("opacity","1");
 		} else {
@@ -1023,6 +1040,11 @@ aipo.message.popupProfile = function(userId, event) {
 aipo.message.onReceiveProfileMessage = function(msg) {
     if (!msg["error"]) {
     	aipo.message.openDirect(aipo.message.profileCurrentUserId);
+    	 var messageForm = dojo.byId("messageForm" + aipo.message.profileCurrentUserId);
+    	 if(messageForm) {
+    		 messageForm.message.value = "";
+    	 }
+    	 aipo.message.closeProifleTextarea(aipo.message.profileCurrentUserId);
     }
 }
 
