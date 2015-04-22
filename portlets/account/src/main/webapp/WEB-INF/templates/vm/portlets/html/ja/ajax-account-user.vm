@@ -50,7 +50,11 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIbuttonAction($l10n.ACCOUNT_USER_ADD "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
-#AUIbuttonAction($l10n.ACCOUNT_ACCOUNT_EXPORT "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+
+#set($title = "$l10n.EVENTLOG_DOWNLOAD")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
+
 </div>
 
 ##AUIconfigheader($!{portlet.ID} "15em")
