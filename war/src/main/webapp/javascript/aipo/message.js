@@ -867,6 +867,10 @@ aipo.message.switchDesktopNotify = function() {
 
 aipo.message.openDirect = function(user_id) {
 	aipo.message.hideProfile();
+	if(aipo.message.isMobile ? aipo.message.isInit : dojo.hasClass("dd_message", "open")) {
+		aipo.message.openDirectMessage(user_id);
+		return;
+	}
 	if(aipo.message.isMobile) {
 		location.href = aipo.message.jslink +"?action=controls.Maximize&u=" + user_id
 	} else {
