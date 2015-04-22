@@ -220,7 +220,7 @@
 		#set($existcomment = $existcomment + 1)
 	#end
 	#if($velocityCount==1)
-	<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record2.OwnerId},arguments[0])">$!record.OwnerName</a></div>
+	<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a></div>
 	#end
 	<div class="body">
 		<a href="javascript:void(0);" onclick="aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
