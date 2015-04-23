@@ -436,7 +436,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                    tmpHeight[count] = -1;
 	                }
 	                var left = 100 /  ptConfig[_portletId].scheduleDivDaySum * item.index;
-	                var width = 100 / ptConfig[_portletId].scheduleDivDaySum * 0.99;
+	                var width = 100 / ptConfig[_portletId].scheduleDivDaySum * 0.90;
 	                var name = item.name;
 	                var startDate = tmpHeight[count] == -1 ? ((item.startDateHour > 9) ? item.startDate : "0" +item.startDate) : item.name;
 	                var endDate = tmpHeight[count] == -1 ? ((item.endDateHour > 9) ? item.endDate : "0" +item.endDate) : '';
@@ -812,8 +812,8 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 // aipo.calendar.relocation
 aipo.calendar.relocation = function(_portletId,sum,scheduleDiv,scheduleDivLeft) {
     var i,j;
-    var offsetW = 0.99;
-    var scheduleDivWidth = 100 / 7;
+    var offsetW = 0.95;
+    var scheduleDivWidth = 95 / 7;
     var endoverlapSchedule=0;
     var overlapNumArrayMax=0;
     var bottomLineMax=0;
