@@ -919,10 +919,6 @@ aipo.message.openDirectMessage = function(user_id) {
 		}
 }
 
-
-function getTarget() { return this.srcElement || this.target; }
-Event.prototype.getTarget = getTarget;
-
 aipo.message.hideProfile = function() {
 	dojo.query('.profilePopup').style('display', 'none');
 	if(aipo.message.mobileUnderlay) {
@@ -967,13 +963,15 @@ aipo.message.popupProfile = function(userId, event) {
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
 
 	}
+	event = event || window.event;
+	var eventTarget = event.srcElement || event.target;
     var popupProfile = dojo.byId("popupProfileInner_" + userId);
 	dojo.disconnect(profileHandle['linkEnter']);
-	profileHandle['linkEnter'] = dojo.connect(event.getTarget(), 'onmouseenter', null, function(){
+	profileHandle['linkEnter'] = dojo.connect(eventTarget, 'onmouseenter', null, function(){
 		dojo.addClass(this, 'profileMouseenter');
 	});
 	dojo.disconnect(profileHandle['linkLeave']);
-	profileHandle['linkLeave'] = dojo.connect(event.getTarget(), 'onmouseleave', null, function(){
+	profileHandle['linkLeave'] = dojo.connect(eventTarget, 'onmouseleave', null, function(){
 		dojo.removeClass(this, 'profileMouseenter');
 	});
 	dojo.disconnect(profileHandle['profileEnter']);
@@ -984,21 +982,21 @@ aipo.message.popupProfile = function(userId, event) {
 	profileHandle['profileLeave'] = dojo.connect(popupProfile, 'onmouseleave', null, function(){
 		dojo.removeClass(this, 'profileMouseenter');
 	});
-	dojo.addClass(event.getTarget(), 'profileMouseenter');
+	dojo.addClass(eventTarget, 'profileMouseenter');
 
 	var popupInner = dijit.byId("popupProfileInner_" + userId);
 	if (!popupInner) {
 		popupInner = dijit.byId("popupProfileInner_" + userId);
 		popupInner = new aimluck.widget.Contentpane({}, "popupProfileInner_" + userId);
-		popupInner.eventTarget = event.getTarget();
+		popupInner.eventTarget = eventTarget;
 	}
 	popupInner.onLoad = function() {
-		var rect = event.getTarget().getBoundingClientRect();
+		var rect = eventTarget.getBoundingClientRect();
 		var html = document.documentElement.getBoundingClientRect();
 		var node = dojo.query("#popupProfileInner_" + userId);
 		var popupNode = dojo.query("#popupProfile_" + userId);
 
-		if (node.style('display') == 'none' || popupInner.eventTarget !== event.getTarget()) {
+		if (node.style('display') == 'none' || popupInner.eventTarget !== eventTarget) {
 			dojo.query('.profilePopup').style('display', 'none');
 			var scroll={
 					left:document.documentElement.scrollLeft||document.body.scrollLeft,
@@ -1029,7 +1027,7 @@ aipo.message.popupProfile = function(userId, event) {
 		} else {
 			node.style('display','none');
 		}
-		popupInner.eventTarget = event.getTarget();
+		popupInner.eventTarget = eventTarget;
 		popupInner.currentUserId = userId;
 		aipo.message.profileCurrentUserId = userId;
 	}
