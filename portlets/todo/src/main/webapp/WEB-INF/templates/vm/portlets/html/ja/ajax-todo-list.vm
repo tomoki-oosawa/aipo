@@ -108,13 +108,9 @@
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoNameString</a>
 </div>
 #ALtdcellfooter()
-#if($!record.UserId.value != $!record.LoginUserId.value)
 #ALtdcellheader()
-<div><a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId.value)">$!record.UserName</a></div>
+<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.UserId.Value,arguments[0])">$!record.UserName</a></div>
 #ALtdcellfooter()
-#else
-#ALtdcellAtt("<div>$!record.UserName</div>" "")
-#end
 #ALtdcellAtt("<div>$!record.CategoryName</div>" "class='mb_hide' ")
 #ALtdcellAtt("<div>$!record.EndDate</div>" 'nowrap="nowrap"')
 #ALtdcellheaderAtt('nowrap="nowrap" class="mb_hide" ')
