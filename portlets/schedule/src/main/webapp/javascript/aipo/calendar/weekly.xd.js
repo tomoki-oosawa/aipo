@@ -529,9 +529,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                scheduleDiv[item.index].push(draggable);
 	                if(item['public'] || item.member){
 	                    dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
+		                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 	                }
 
-	                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 
 	                count++;
 	            });
@@ -691,8 +691,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                            dojo.style(draggable3, "cursor", "pointer");
 	                            draggable3.style.zIndex = 1;
 	                        }
-	                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
-	                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+
+	                        if(item.member || item.loginuser || item.owner || item['public']){
+		                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
+		                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+	                        }
 
 	                        if(item.member || item.loginuser || item.owner || item['public']){
 	                            tmpDraggable.setDraggable(true);
