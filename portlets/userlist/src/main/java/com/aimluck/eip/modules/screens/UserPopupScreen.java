@@ -23,19 +23,21 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.account.AccountEditSelectData;
-import com.aimluck.eip.account.util.AccountUtils;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.userlist.UserSelectData;
+import com.aimluck.eip.userlist.utils.UserListUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * 個人設定・ユーザー情報を処理するクラスです。 <br />
+ * ユーザーアカウントの詳細画面を処理するクラスです。 <br />
  *
  */
-public class AccountPersonScreen extends ALVelocityScreen {
+public class UserPopupScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountPersonScreen.class.getName());
+    .getLogger(UserPopupScreen.class.getName());
 
   /**
    *
@@ -46,21 +48,26 @@ public class AccountPersonScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      AccountEditSelectData detailData = new AccountEditSelectData();
+      context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
+
+      UserSelectData detailData = new UserSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      String type = rundata.getParameters().getString("type", "");
-      String layout_template;
-      if (type.equals("popup")) {
-        layout_template =
-          "portlets/html/ja/ajax-account-person-detail-popup.vm";
+
+      String entityid =
+        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      context.put(ALEipConstants.ENTITY_ID, entityid);
+
+      ALEipUser user = ALEipUtils.getALEipUser(rundata);
+      String layout_template = null;
+      if (String.valueOf(user.getUserId().getValue()).equals(entityid)) {
+        layout_template = "portlets/html/ja/ajax-userlist-popup-owner.vm";
       } else {
-        layout_template = "portlets/html/ja/ajax-account-person-detail.vm";
+        layout_template = "portlets/html/ja/ajax-userlist-popup.vm";
       }
       setTemplate(rundata, context, layout_template);
-
     } catch (Exception ex) {
-      logger.error("AccountPersonScreen.doOutput", ex);
+      logger.error("[AccountUserDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
@@ -70,7 +77,7 @@ public class AccountPersonScreen extends ALVelocityScreen {
    */
   @Override
   protected String getPortletName() {
-    return AccountUtils.ACCOUNT_PERSON_PORTLET_NAME;
+    return UserListUtils.USERLIST_PORTLET_NAME;
   }
 
 }

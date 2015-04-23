@@ -2193,6 +2193,24 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	profilePopup
+--------------------------------------------------*/
+.profilePopupWrap {
+  width: 100%;
+}
+.profilePopupWrap .profilePopup {
+  width: auto;
+  margin: 0 5px;
+  position: relative;
+}
+.profilePopupWrap .profilePopup .icon_menu {
+  width: auto;
+}
+.profilePopupWrap .profilePopup .icon_menu li {
+  width: 50%;
+}
+
+/***************************************************
 	message
 --------------------------------------------------*/
 body.messageRoomList {
