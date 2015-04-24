@@ -50,6 +50,7 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
+#ALajaxscreenformheader("scheduleForm" $jslink $portlet "SceduleFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
 #if($result.SelectData.Max)
 #if($!result.SelectData.isDuplicate())
 #set($colspanmax = $!{result.SelectData.Max} + 2)
@@ -346,7 +347,7 @@
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #foreach($record in $!result.AttachmentTitleList )
-      <li data-fileid="s${record.FileId}" data-filename="$!{record.Title}"><span>$!record.Title</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.SCHEDULE_DELETE_DO</span></li>
+      <li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.SCHEDULE_DELETE_DO</span></li>
     #end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />

@@ -586,6 +586,9 @@ aipo.schedule.onSubmit = function(form) {
 }
 
 aipo.schedule.onReceiveMessage = function(msg){
+	var select=dojo.byId("attachments_select");
+	if(typeof select!="undefined"&& select!=null)
+		select.parentNode.removeChild(select);
     if(!msg) {
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){

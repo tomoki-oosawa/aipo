@@ -2956,6 +2956,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     return facilityAllList;
   }
 
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    return fileuploadList;
+  }
+
+  public String getFolderName() {
+    return folderName;
+  }
+
   /**
    * 共有カテゴリ ID
    *
