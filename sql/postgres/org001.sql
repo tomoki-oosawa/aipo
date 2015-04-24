@@ -1875,19 +1875,20 @@ create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,
 -- EIP_T_SCHEDULE_FILE
 -----------------------------------------------------------------------------
 
-CREATE TABLE eip_t_schedule_file
+CREATE TABLE EIP_T_SCHEDULE_FILE
 (
-  file_id integer NOT NULL,
-  owner_id integer,
-  schedule_id integer,
-  file_name character varying(128) NOT NULL,
-  file_path text NOT NULL,
-  file_thumbnail bytea,
-  create_date date,
-  update_date timestamp without time zone,
-  CONSTRAINT eip_t_schedule_file_pkey PRIMARY KEY (file_id),
-  CONSTRAINT eip_t_schedule_file_schedule_id_fkey FOREIGN KEY (schedule_id)
-      REFERENCES eip_t_schedule (schedule_id) MATCH SIMPLE
+  FILE_ID INTEGER NOY NULL,
+  OWNER_ID INTEGER,
+  SCHEDULE_ID INTEGER,
+  FILE_NAME CHARACTER VARYING(128) NOT NULL,
+  FILE_PATH TEXT NOT NULL,
+  FILE_THUMBNAIL bytea,
+  CREATE_DATE DATE,
+  UPDATE_DATE TIMESTAMP,
+
+  CONSTRAINT EIP_T_SCHEDULE_FILE_PKEY PRIMARY KEY (FILE_ID),
+  CONSTRAINT EIP_T_SCHEDULE_FILE_SCHEDULE_ID_FKEY FOREIGN KEY (SCHEDULE_ID)
+      REFERENCES EIP_T_SCHEDULE (SCHEDULE_ID) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE CASCADE
 )
 

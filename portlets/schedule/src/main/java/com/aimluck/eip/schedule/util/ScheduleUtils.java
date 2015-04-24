@@ -4391,8 +4391,8 @@ public class ScheduleUtils {
    * @param uid
    * @return
    */
-  public static String getRelativePath(String title) {
-    return new StringBuffer().append("/").append(title).toString();
+  public static String getRelativePath(String fileName) {
+    return new StringBuffer().append("/").append(fileName).toString();
   }
 
   @Deprecated

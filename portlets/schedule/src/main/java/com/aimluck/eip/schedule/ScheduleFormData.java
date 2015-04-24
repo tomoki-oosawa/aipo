@@ -1462,13 +1462,20 @@ public class ScheduleFormData extends ALAbstractFormData {
           check = false;
         }
       }
-      // ファイルをデータベースに登録する．//ここいらないんじゃないか…
-      /*
-       * if (!ScheduleUtils.insertFileDataDelegate( rundata, context, schedule,
-       * fileuploadList, folderName, msgList)) { return false; }
-       * 
-       * Database.commit();
-       */
+      // ファイルをデータベースに登録する．
+
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        schedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
+      }
+
+      Database.commit();
+
       // スケジュールのアップデート権限を検証する．
       /*
        * if (ownerid != schedule.getOwnerId().intValue() &&
