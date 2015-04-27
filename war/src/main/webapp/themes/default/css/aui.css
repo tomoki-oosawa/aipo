@@ -3354,6 +3354,10 @@ button[disabled]:active {
   font-size: 11px;
 }
 
+.dojoDndItem .entryFooter .subCaption {
+  display: inline-block;
+}
+
 /***************************************************
 	auiMail
 --------------------------------------------------*/
