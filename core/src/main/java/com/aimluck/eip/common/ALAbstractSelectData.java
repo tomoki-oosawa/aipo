@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 検索データを管理するための抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
@@ -94,25 +94,33 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /** アクセス権限の有無 */
   protected boolean hasAuthority;
 
-  protected final String LIST_SORT_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_SORT).toString();
+  protected final String LIST_SORT_STR = new StringBuffer()
+    .append(this.getClass().getSimpleName())
+    .append(ALEipConstants.LIST_SORT)
+    .toString();
 
-  protected final String LIST_SORT_TYPE_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_SORT_TYPE).toString();
+  protected final String LIST_SORT_TYPE_STR = new StringBuffer()
+    .append(this.getClass().getSimpleName())
+    .append(ALEipConstants.LIST_SORT_TYPE)
+    .toString();
 
-  protected final String LIST_FILTER_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_FILTER).toString();
+  protected final String LIST_FILTER_STR = new StringBuffer()
+    .append(this.getClass().getSimpleName())
+    .append(ALEipConstants.LIST_FILTER)
+    .toString();
 
   protected final String LIST_SEARCH_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.SEARCH).toString();
+    this.getClass().getSimpleName()).append(ALEipConstants.SEARCH).toString();
 
   protected final String LIST_FILTER_TYPE_STR = new StringBuffer()
-    .append(this.getClass().getName())
+    .append(this.getClass().getSimpleName())
     .append(ALEipConstants.LIST_FILTER_TYPE)
     .toString();
 
-  protected final String LIST_INDEX_STR = new StringBuffer().append(
-    this.getClass().getName()).append(ALEipConstants.LIST_INDEX).toString();;
+  protected final String LIST_INDEX_STR = new StringBuffer()
+    .append(this.getClass().getSimpleName())
+    .append(ALEipConstants.LIST_INDEX)
+    .toString();;
 
   /**
    *
@@ -124,7 +132,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -178,7 +186,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -224,7 +232,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 一覧表示のためのデータを取得します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -265,7 +273,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 詳細表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -300,7 +308,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -312,7 +320,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -331,7 +339,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   }
 
   /**
-   * 
+   *
    * @param cnt
    */
   protected void setPageParam(int cnt) {
@@ -349,7 +357,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * ソート用の <code>SelectQuery</code> を構築します。
-   * 
+   *
    * @param crt
    * @return
    */
@@ -381,7 +389,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * フィルタ用の <code>SelectQuery</code> を構築します。
-   * 
+   *
    * @param crt
    * @param rundata
    * @param context
@@ -410,7 +418,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 表示する項目数を設定します。
-   * 
+   *
    * @param num
    */
   public void setRowsNum(int num) {
@@ -421,7 +429,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 表示文字数を設定します。
-   * 
+   *
    * @param num
    */
   public void setStrLength(int num) {
@@ -432,7 +440,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 表示文字数を取得します。
-   * 
+   *
    * @return
    */
   public int getStrLength() {
@@ -441,7 +449,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 表示する項目数を取得します。
-   * 
+   *
    * @return
    */
   public int getRowsNum() {
@@ -458,7 +466,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 総件数を取得します。
-   * 
+   *
    * @return
    */
   public int getCount() {
@@ -489,7 +497,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 総ページ数を取得します。
-   * 
+   *
    * @return
    */
   public int getPagesNum() {
@@ -498,7 +506,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 現在表示されているページを取得します。
-   * 
+   *
    * @return
    */
   public int getCurrentPage() {
@@ -507,7 +515,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @return
    */
   public List<Object> getList() {
@@ -516,7 +524,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 詳細データを取得します。
-   * 
+   *
    * @return
    */
   public Object getDetail() {
@@ -524,7 +532,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentSort() {
@@ -532,7 +540,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentSortType() {
@@ -540,7 +548,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentFilter() {
@@ -548,7 +556,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentFilterType() {
@@ -561,7 +569,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 一覧データを取得する抽象メソッドです。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -571,7 +579,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * 詳細データを取得する抽象メソッドです。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -581,7 +589,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * ResultDataを取得する抽象メソッドです。（一覧データ）
-   * 
+   *
    * @param obj
    * @return
    */
@@ -590,7 +598,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * ResultDataを取得する抽象メソッドです。（詳細データ）
-   * 
+   *
    * @param obj
    * @return
    */
@@ -598,14 +606,14 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
       throws ALPageNotFoundException, ALDBErrorException;
 
   /**
-   * 
+   *
    * @return
    */
   protected abstract Attributes getColumnMap();
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   protected boolean doCheckAclPermission(RunData rundata, Context context,
@@ -641,7 +649,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   * 
+   *
    * @return
    */
   public boolean hasAuthority() {
@@ -651,7 +659,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   public String getAclPortletFeature() {
@@ -671,7 +679,7 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
 
   /**
    * レイアウトテーマを取得
-   * 
+   *
    * @return
    */
   public String getTheme() {

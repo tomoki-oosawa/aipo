@@ -19,6 +19,7 @@
 package com.aimluck.eip.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -26,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.modules.actions.portlets.PortletFilter;
 import org.apache.jetspeed.om.profile.IdentityElement;
@@ -50,8 +53,10 @@ import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALApplicationService;
@@ -60,16 +65,11 @@ import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 
 /**
  * 伝言メモの一覧を処理するクラスです。
- * 
+ *
  */
 public class CustomizeUtils {
 
-  public static final String USER_SELECTIONS =
-    "session.portlets.user.selections";
-
   public static final String UI_PORTLETS_SELECTED = "portletsSelected";
-
-  public static final String PORTLET_LIST = "session.portlets.list";
 
   private static final String HIDE_EMPTY_CATEGORIES =
     "customizer.hide.empty.categories";
@@ -106,7 +106,19 @@ public class CustomizeUtils {
   @SuppressWarnings("unchecked")
   public static List<PortletEntry> buildPortletList(RunData data,
       String mediaType, List<PortletEntry> allPortlets) {
-    List<PortletEntry> list = new ArrayList<PortletEntry>();
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    List<PortletEntry> list = null;
+    if (request != null) {
+      try {
+        list = (List<PortletEntry>) request.getAttribute("portlets.list");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (list != null) {
+      return list;
+    }
+    list = new ArrayList<PortletEntry>();
     Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
 
     while (i.hasNext()) {
@@ -170,7 +182,9 @@ public class CustomizeUtils {
     });
     // this is used only by maintainUserSelection - which does not need the
     // portlet list to be regenrated
-    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
+    if (request != null) {
+      request.setAttribute("portlets.list", list);
+    }
     return list;
   }
 
@@ -178,7 +192,19 @@ public class CustomizeUtils {
   @SuppressWarnings("unchecked")
   public static List<PortletEntry> buildPortletListWithStatus(RunData data,
       String mediaType, List<PortletEntry> allPortlets, Status status) {
-    List<PortletEntry> list = new ArrayList<PortletEntry>();
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    List<PortletEntry> list = null;
+    if (request != null) {
+      try {
+        list = (List<PortletEntry>) request.getAttribute("portlets.list");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (list != null) {
+      return list;
+    }
+    list = new ArrayList<PortletEntry>();
     Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
 
     while (i.hasNext()) {
@@ -242,7 +268,9 @@ public class CustomizeUtils {
     });
     // this is used only by maintainUserSelection - which does not need the
     // portlet list to be regenrated
-    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
+    if (request != null) {
+      request.setAttribute("portlets.list", list);
+    }
     return list;
   }
 
@@ -250,7 +278,19 @@ public class CustomizeUtils {
   @SuppressWarnings("unchecked")
   public static List<PortletEntry> buildAllPortletList(RunData data,
       String mediaType, List<PortletEntry> allPortlets) {
-    List<PortletEntry> list = new ArrayList<PortletEntry>();
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    List<PortletEntry> list = null;
+    if (request != null) {
+      try {
+        list = (List<PortletEntry>) request.getAttribute("portlets.list");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (list != null) {
+      return list;
+    }
+    list = new ArrayList<PortletEntry>();
     Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
 
     while (i.hasNext()) {
@@ -314,20 +354,25 @@ public class CustomizeUtils {
     });
     // this is used only by maintainUserSelection - which does not need the
     // portlet list to be regenrated
-    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
+    if (request != null) {
+      request.setAttribute("portlets.list", list);
+    }
     return list;
   }
 
+  @SuppressWarnings("unchecked")
   public static Map<String, PortletEntry> getUserSelections(RunData data) {
-    @SuppressWarnings("unchecked")
-    Map<String, PortletEntry> userSelections =
-      (Map<String, PortletEntry>) PortletSessionState.getAttribute(
-        data,
-        USER_SELECTIONS,
-        null);
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    Map<String, PortletEntry> userSelections = null;
+    if (request != null) {
+      userSelections =
+        (Map<String, PortletEntry>) request.getAttribute("portlets.selections");
+    }
     if (userSelections == null) {
       userSelections = new HashMap<String, PortletEntry>();
-      PortletSessionState.setAttribute(data, USER_SELECTIONS, userSelections);
+    }
+    if (request != null) {
+      request.setAttribute("portlets.selections", userSelections);
     }
     return userSelections;
   }
@@ -400,7 +445,7 @@ public class CustomizeUtils {
 
   /**
    * Builds a list of all portlet categories
-   * 
+   *
    * @param RunData
    *          current requests RunData object
    * @param List
@@ -548,7 +593,7 @@ public class CustomizeUtils {
    * Add an element to the "table" or "work" objects. If the element is
    * unconstrained, and the position is within the number of columns, then the
    * element is added to "table". Othewise the element is added to "work"
-   * 
+   *
    * @param element
    *          to add
    * @param table
@@ -602,7 +647,7 @@ public class CustomizeUtils {
 
   /**
    * 管理者ユーザーのみ表示可能アプリ
-   * 
+   *
    * @param entry
    * @param data
    * @return
@@ -624,7 +669,7 @@ public class CustomizeUtils {
 
   /**
    * 管理者ユーザーのみ表示可能アプリ
-   * 
+   *
    * @param entry
    * @param data
    * @return
@@ -641,7 +686,7 @@ public class CustomizeUtils {
 
   /**
    * 管理者ユーザーのみ表示可能アプリ
-   * 
+   *
    * @param entry
    * @param data
    * @return
@@ -657,5 +702,60 @@ public class CustomizeUtils {
       logger.error("CustomizeUtils.isAdminUserView", e);
     }
     return isAdminUserView(entry, jData);
+  }
+
+  public List<?>[] buildCustomizeColumns(RunData rundata, Context context,
+      Portlets portlets) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+
+    List<?>[] columns = null;
+    if (request != null) {
+      columns = (List[]) request.getAttribute("customize-columns");
+    }
+    String controllerName = portlets.getController().getName();
+    int colNum = 2;
+    if (controllerName.startsWith("One")) {
+      colNum = 1;
+    } else if (controllerName.startsWith("Three")) {
+      colNum = 3;
+    }
+    Portlets set = portlets;
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("MultiCol: columns "
+        + Arrays.toString(columns)
+        + " set "
+        + set);
+    }
+    if ((columns != null) && (columns.length == colNum)) {
+      int eCount = 0;
+      for (int i = 0; i < columns.length; i++) {
+        eCount += columns[i].size();
+      }
+
+      if (logger.isDebugEnabled()) {
+        logger.debug("MultiCol: eCount "
+          + eCount
+          + " setCount"
+          + set.getEntryCount()
+          + set.getPortletsCount());
+      }
+      if (eCount != set.getEntryCount() + set.getPortletsCount()) {
+        if (logger.isDebugEnabled()) {
+          logger.debug("MultiCol: rebuilding columns ");
+        }
+        columns = CustomizeUtils.buildColumns(set, colNum);
+      }
+
+    } else {
+      if (logger.isDebugEnabled()) {
+        logger.debug("MultiCol: rebuilding columns ");
+      }
+      columns = CustomizeUtils.buildColumns(set, colNum);
+    }
+    if (request != null) {
+      request.setAttribute("customize-columns", columns);
+    }
+    return columns;
   }
 }

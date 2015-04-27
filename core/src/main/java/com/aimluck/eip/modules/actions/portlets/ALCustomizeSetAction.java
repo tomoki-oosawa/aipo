@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.jetspeed.modules.actions.portlets.PortletFilter;
 import org.apache.jetspeed.modules.actions.portlets.VelocityPortletAction;
 import org.apache.jetspeed.om.BaseSecurityReference;
@@ -95,6 +97,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
@@ -119,8 +122,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     "session.portlets.user.selections";
 
   private static final String UI_PORTLETS_SELECTED = "portletsSelected";
-
-  private static final String PORTLET_LIST = "session.portlets.list";
 
   // private static final String ALL_PORTLET_LIST = "session.all.portlets.list";
 
@@ -279,8 +280,11 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
       int start = rundata.getParameters().getInt("start", -1);
       if (start < 0) {
         start = 0;
+        HttpServletRequest request = HttpServletRequestLocator.get();
+        if (request != null) {
+          request.removeAttribute("portlets.list");
+        }
         PortletSessionState.clearAttribute(rundata, USER_SELECTIONS);
-        PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
       }
 
       ArrayList<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
@@ -571,14 +575,13 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
   }
 
   protected void maintainUserSelections(RunData rundata) throws Exception {
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    Profile profile = jdata.getCustomizedProfile();
+    String mediaType = profile.getMediaType();
+
     String[] pnames = rundata.getParameters().getStrings("pname");
     Map<String, PortletEntry> userSelections = getUserSelections(rundata);
-    @SuppressWarnings("unchecked")
-    List<PortletEntry> portlets =
-      (List<PortletEntry>) PortletSessionState.getAttribute(
-        rundata,
-        PORTLET_LIST,
-        null);
+    List<PortletEntry> portlets = buildPortletList(rundata, mediaType);
     if (portlets != null) {
       // int end = Math.min(start + size, portlets.size());
       // int pnamesIndex = 0;
@@ -837,7 +840,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
            * There is no way to do a check on a Portlets element, only a Entry
            * element. This can easily be added, but Im just under a release
            * right now and it could be perceived as too destabilizing -- david
-           *
+           * 
            * if (JetspeedSecurity.checkPermission((JetspeedUser)
            * rundata.getUser(), rootSet, JetspeedSecurity.PERMISSION_VIEW)) {
            */
@@ -1050,7 +1053,19 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
   @SuppressWarnings("unchecked")
   public static List<PortletEntry> buildPortletList(RunData data,
       PortletSet set, String mediaType, List<PortletEntry> allPortlets) {
-    List<PortletEntry> list = new ArrayList<PortletEntry>();
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    List<PortletEntry> list = null;
+    if (request != null) {
+      try {
+        list = (List<PortletEntry>) request.getAttribute("portlets.list");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (list != null) {
+      return list;
+    }
+    list = new ArrayList<PortletEntry>();
     Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
 
     while (i.hasNext()) {
@@ -1068,7 +1083,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         JetspeedSecurity.PERMISSION_VIEW)
         && ((!entry.isHidden())
           && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-          .hasMediaType(mediaType))
+            .hasMediaType(mediaType))
         && !entry.getSecurityRef().getParent().equals("admin-view")
         && CustomizeUtils.isAdminUserView(entry, data)
         && ALPortalApplicationService.isActive(entry.getName())) {
@@ -1114,10 +1129,97 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     });
     // this is used only by maintainUserSelection - which does not need the
     // portlet list to be regenrated
-    PortletSessionState.setAttribute(data, PORTLET_LIST, list);
+    if (request != null) {
+      request.setAttribute("portlets.list", list);
+    }
     return list;
   }
 
+  @SuppressWarnings("unchecked")
+  public static List<PortletEntry> buildPortletList(RunData data,
+      String mediaType) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    List<PortletEntry> list = null;
+    if (request != null) {
+      try {
+        list = (List<PortletEntry>) request.getAttribute("portlets.list");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (list != null) {
+      return list;
+    }
+    list = new ArrayList<PortletEntry>();
+    Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
+
+    while (i.hasNext()) {
+      PortletEntry entry =
+        (PortletEntry) Registry.getEntry(Registry.PORTLET, (String) i.next());
+
+      // Iterator medias;
+      // Make a master portlet list, we will eventually us this to build a
+      // category list
+      // MODIFIED: Selection now takes care of the specified mediatype!
+      if (JetspeedSecurity.checkPermission(
+        (JetspeedUser) data.getUser(),
+        new PortalResource(entry),
+        JetspeedSecurity.PERMISSION_VIEW)
+        && ((!entry.isHidden())
+          && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
+            .hasMediaType(mediaType))
+        && !entry.getSecurityRef().getParent().equals("admin-view")
+        && CustomizeUtils.isAdminUserView(entry, data)
+        && ALPortalApplicationService.isActive(entry.getName())) {
+        list.add(entry);
+      }
+    }
+
+    ResultList<ALApplication> resultList =
+      ALApplicationService.getList(new ALApplicationGetRequest()
+        .withStatus(ALApplicationGetRequest.Status.ACTIVE));
+
+    for (ALApplication app : resultList) {
+      BasePortletEntry entry = new BasePortletEntry();
+      entry.setTitle(app.getTitle().getValue());
+      entry.setDescription(app.getDescription().getValue());
+      entry.setName("GadgetsTemplate::" + app.getAppId().getValue());
+      entry.setParent("GadgetsTemplate");
+      entry.addParameter("aid", app.getAppId().getValue());
+      entry.addParameter("url", app.getUrl().getValue());
+      list.add(entry);
+    }
+
+    String[] filterFields =
+      (String[]) PortletSessionState.getAttribute(data, FILTER_FIELDS);
+    String[] filterValues =
+      (String[]) PortletSessionState.getAttribute(data, FILTER_VALUES);
+    list = PortletFilter.filterPortlets(list, filterFields, filterValues);
+
+    Collections.sort(list, new Comparator<PortletEntry>() {
+      @Override
+      public int compare(PortletEntry o1, PortletEntry o2) {
+        String t1 =
+          ((o1).getTitle() != null) ? (o1).getTitle().toLowerCase() : (o1)
+            .getName()
+            .toLowerCase();
+        String t2 =
+          ((o2).getTitle() != null) ? (o2).getTitle().toLowerCase() : (o2)
+            .getName()
+            .toLowerCase();
+
+        return t1.compareTo(t2);
+      }
+    });
+    // this is used only by maintainUserSelection - which does not need the
+    // portlet list to be regenrated
+    if (request != null) {
+      request.setAttribute("portlets.list", list);
+    }
+    return list;
+  }
+
+  @SuppressWarnings("unchecked")
   public static Map<String, PortletEntry> getUserSelections(RunData data) {
     @SuppressWarnings("unchecked")
     Map<String, PortletEntry> userSelections =
@@ -1242,7 +1344,7 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           JetspeedSecurity.PERMISSION_VIEW)
           && ((!entry.isHidden())
             && (!entry.getType().equals(PortletEntry.TYPE_ABSTRACT)) && entry
-            .hasMediaType(mediaType))) {
+              .hasMediaType(mediaType))) {
           Iterator<?> cItr = entry.listCategories();
           while (cItr.hasNext()) {
             BaseCategory cat = (BaseCategory) cItr.next();

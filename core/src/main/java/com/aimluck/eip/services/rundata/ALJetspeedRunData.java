@@ -22,20 +22,16 @@ package com.aimluck.eip.services.rundata;
 // Java classes
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.apache.jetspeed.om.security.JetspeedUser;
-import org.apache.jetspeed.om.security.UserNamePrincipal;
-import org.apache.jetspeed.services.JetspeedUserManagement;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.DefaultJetspeedRunData;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.security.JetspeedSecurityException;
-import org.apache.turbine.om.security.User;
-
-import com.aimluck.eip.common.ALBaseUser;
+import org.apache.jetspeed.services.statemanager.JetspeedHttpStateManagerService;
 
 // Jetspeed classes
 
@@ -60,37 +56,64 @@ public class ALJetspeedRunData extends DefaultJetspeedRunData implements
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALJetspeedRunData.class.getName());
 
-  @Override
-  public User getUserFromSession() {
-    return getUserFromSession(this.getSession());
-  }
+  /*-
+   @Override
+   public User getUserFromSession() {
 
-  @Override
-  public boolean removeUserFromSession() {
-    return removeUserFromSession(this.getSession());
-  }
+   try {
+   User user = (User) getSession().getAttribute("turbine.user");
+   if (user != null) {
+   return user;
+   }
+   } catch (Throwable ignore) {
+   }
+   try {
+   User user = (User) getRequest().getAttribute("turbine.user");
+   if (user != null) {
+   return user;
+   }
+   } catch (Throwable ignore) {
+   }
+   String username = null;
+   try {
+   username = (String) getSession().getAttribute("turbine.username");
+   } catch (Throwable ignore) {
+   }
+   if (username == null) {
+   return null;
+   }
+   try {
+   JetspeedUser user =
+   JetspeedUserManagement.getUser(new UserNamePrincipal(username));
+   if (user != null) {
+   user.setHasLoggedIn(Boolean.TRUE);
+   getRequest().setAttribute("turbine.user", user);
+   // getSession().setAttribute("turbine.user", user);
+   return user;
+   }
+   } catch (JetspeedSecurityException e) {
+   }
+   return null;
+   }
 
-  @Override
-  public void populate() {
-    System.out.println("============populate==============");
-    setUser(getUserFromSession());
-    if (getUser() != null) {
-      getUser().setLastAccessDate();
-      getUser().incrementAccessCounter();
-      getUser().incrementAccessCounterForSession();
-    }
-  }
-
-  @Override
-  public boolean userExists() {
-    setUser(getUserFromSession());
-    return getUser() != null;
-  }
+   @Override
+   public boolean removeUserFromSession() {
+   try {
+   getRequest().removeAttribute("turbine.user");
+   getSession().removeAttribute("turbine.user");
+   getSession().removeAttribute("turbine.username");
+   } catch (Exception e) {
+   return false;
+   }
+   return true;
+   }
+   */
 
   @Override
   public void save() {
-    this.getSession().putValue("turbine.user", getUser());
-    this.getSession().putValue("turbine.username", getUser().getUserName());
+    getRequest().setAttribute("turbine.user", getUser());
+    getSession().setAttribute("turbine.username", getUser().getUserName());
+    getSession().setAttribute("turbine.user", getUser());
 
     HttpSession session = this.getSession();
     Enumeration e = session.getAttributeNames();
@@ -99,6 +122,17 @@ public class ALJetspeedRunData extends DefaultJetspeedRunData implements
       String key1 = (String) e.nextElement();
 
       System.out.println(key1 + "：" + session.getAttribute(key1));
+      if (session.getAttribute(key1) instanceof JetspeedHttpStateManagerService.StateEntry) {
+        JetspeedHttpStateManagerService.StateEntry entry =
+          (JetspeedHttpStateManagerService.StateEntry) session
+            .getAttribute(key1);
+        Map map2 = entry.getMap();
+        Iterator iterator = map2.keySet().iterator();
+        while (iterator.hasNext()) {
+          Object next = iterator.next();
+          System.out.println(next + "：" + map2.get(next));
+        }
+      }
     }
 
     if (getUser() != null) {
@@ -111,76 +145,6 @@ public class ALJetspeedRunData extends DefaultJetspeedRunData implements
       }
     }
 
-  }
-
-  public static User getUserFromSession(HttpSession session) {
-    try {
-      String username = (String) session.getValue("turbine.username");
-      JetspeedUser user =
-        JetspeedUserManagement.getUser(new UserNamePrincipal(username));
-
-      ALBaseUser baseuser = (ALBaseUser) user;
-      User value = (User) session.getValue("turbine.user");
-
-      Enumeration e = session.getAttributeNames();
-      System.out.println("============getUserFromSession==============");
-      System.out.println(username);
-      if (user != null) {
-        System.out.println("============JetspeedUser==============");
-        System.out.println(user.getUserId() + " " + user.getUserName());
-      }
-      if (baseuser != null) {
-        System.out.println("============ALBaseUser==============");
-        System.out.println(baseuser.getUserId() + " " + baseuser.getUserName());
-      }
-      if (value != null) {
-        System.out.println("============User==============");
-        System.out.println(value.getUserName());
-      }
-      while (e.hasMoreElements()) {
-        String key1 = (String) e.nextElement();
-
-        System.out.println(key1 + "：" + session.getAttribute(key1));
-      }
-
-      if (baseuser != null) {
-        Hashtable tempStorage = baseuser.getTempStorage();
-        Enumeration keys = tempStorage.keys();
-        System.out.println("============baseuser==============");
-        while (keys.hasMoreElements()) {
-          String key2 = (String) keys.nextElement();
-          System.out.println(key2 + "：" + tempStorage.get(key2));
-        }
-      }
-
-      if (value != null) {
-        Hashtable tempStorage1 = value.getTempStorage();
-        Enumeration keys1 = tempStorage1.keys();
-        System.out.println("============turbine.user==============");
-        while (keys1.hasMoreElements()) {
-          String key2 = (String) keys1.nextElement();
-          System.out.println(key2 + "：" + tempStorage1.get(key2));
-        }
-      }
-
-      return (User) session.getValue("turbine.user");
-      // return user;
-    } catch (ClassCastException e) {
-    } catch (JetspeedSecurityException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  public static boolean removeUserFromSession(HttpSession session) {
-    try {
-      System.out.println("============removeUserFromSession==============");
-      session.removeValue("turbine.username");
-      session.removeValue("turbine.user");
-    } catch (Exception e) {
-      return false;
-    }
-    return true;
   }
 
 }

@@ -23,11 +23,15 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
@@ -41,6 +45,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.JetspeedSecurityCache;
 import org.apache.jetspeed.services.security.LoginException;
+import org.apache.jetspeed.services.statemanager.JetspeedHttpStateManagerService;
 import org.apache.jetspeed.util.Base64;
 import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.jetspeed.util.template.JetspeedLink;
@@ -481,6 +486,43 @@ public class ALSessionValidator extends JetspeedSessionValidator {
         data,
         context,
         ALAccessControlConstants.VALUE_ACL_UPDATE));
+    }
+
+    HttpSession session = data.getSession();
+    Enumeration e = session.getAttributeNames();
+    System.out.println("============save==============");
+    while (e.hasMoreElements()) {
+      String key1 = (String) e.nextElement();
+
+      System.out.println(key1 + "：" + session.getAttribute(key1));
+      if (session.getAttribute(key1) instanceof JetspeedHttpStateManagerService.StateEntry) {
+        JetspeedHttpStateManagerService.StateEntry entry =
+          (JetspeedHttpStateManagerService.StateEntry) session
+            .getAttribute(key1);
+        Map map2 = entry.getMap();
+        Iterator iterator = map2.keySet().iterator();
+        while (iterator.hasNext()) {
+          Object next = iterator.next();
+          System.out.println(next + "：" + map2.get(next));
+          if (map2.get(next) instanceof List) {
+            List list = (List) map2.get(next);
+            for (Object l : list) {
+              System.out.println(l);
+
+            }
+          }
+        }
+      }
+    }
+
+    if (data.getUser() != null) {
+      Hashtable tempStorage = data.getUser().getTempStorage();
+      Enumeration keys = tempStorage.keys();
+      System.out.println("============save baseuser==============");
+      while (keys.hasMoreElements()) {
+        String key2 = (String) keys.nextElement();
+        System.out.println(key2 + "：" + tempStorage.get(key2));
+      }
     }
   }
 
