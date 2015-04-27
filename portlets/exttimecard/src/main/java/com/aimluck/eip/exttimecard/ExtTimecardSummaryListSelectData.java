@@ -1043,6 +1043,7 @@ public class ExtTimecardSummaryListSelectData extends
       summary_rd.setCompensatoryHoliday(compensatory_holiday);
       summary_rd.setOtherDay(other_day);
       summary_rd.setNoInput(no_input);
+      summary_rd.setOwnerId(eipUser.getUserId().getValue());
 
       list.add(summary_rd);
     }
