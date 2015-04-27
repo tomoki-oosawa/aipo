@@ -22,11 +22,11 @@
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
 @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
-@version $Id: permission-browser.vm,v 1.6 2004/03/17 19:19:02 jford Exp $
+@version $Id: permission-browser.vm,v 1.2 2004/04/27 13:53:13 shinsuke Exp $
 
 *#
 
-#set ( $headings = ["Permission Name", "Actions"] )
+#set ( $headings = ["$l10n.WAR_PERMISSION_NAME", "$l10n.CUSTOMIZER_ACTION"] )
 
 <table>
 
@@ -43,7 +43,7 @@
         <tr>
           #entryCell ($permission.Name)
           <td>
-            #if ($config.getVector("services.JetspeedSecurity.system.permissions").contains($permission.Name) == false)              
+            #if ($config.getVector("services.JetspeedSecurity.system.permissions").contains($permission.Name) == false)
             <a href="$jslink.getPaneByName("PermissionForm").addPathInfo("entityid",$permission.Name).addQueryData("mode","delete")">${l10n.PERMISSION_BROWSER_REMOVE_VM}</a>
             #else
             &nbsp;

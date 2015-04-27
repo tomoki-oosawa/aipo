@@ -50,7 +50,7 @@ public class EventlogDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      setTemplate(rundata, context, "portlets/html/ja/ajax-eventlog-detail.vm");
+      setTemplate(rundata, context, "portlets/html/ajax-eventlog-detail.vm");
     } catch (Exception ex) {
       logger.error("[EventlogDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

@@ -59,7 +59,7 @@ public class BlogThemaFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-blog-thema-form.vm";
+    String layout_template = "portlets/html/ajax-blog-thema-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

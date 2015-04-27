@@ -55,7 +55,7 @@ public class ToDoCategoryDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-todo-category-detail.vm";
+      String layout_template = "portlets/html/ajax-todo-category-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

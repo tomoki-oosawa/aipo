@@ -27,7 +27,7 @@
 //]]>
 </script>
 #if($!result.hasAuthority())
-#parse("/portlets/html/ja/ajax-timecard.vm")
+#parse("/portlets/html/ajax-timecard.vm")
 #else
 #parse("/portlets/html/PermissionError.vm")
 #end

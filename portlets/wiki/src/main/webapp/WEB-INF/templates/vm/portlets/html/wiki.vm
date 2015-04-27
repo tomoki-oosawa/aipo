@@ -25,7 +25,7 @@
 //]]>
 </script>
 ##if($!result.hasAuthority())
-#parse("/portlets/html/ja/ajax-wiki.vm")
+#parse("/portlets/html/ajax-wiki.vm")
 ##else
 ##parse("/portlets/html/PermissionError.vm")
 ##end

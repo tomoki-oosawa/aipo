@@ -58,7 +58,7 @@ public class ManHourCategoryFormScreen extends ALVelocityScreen {
     CommonCategoryFormData formData = new CommonCategoryFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
-    String layout_template = "portlets/html/ja/ajax-manhour-category-form.vm";
+    String layout_template = "portlets/html/ajax-manhour-category-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

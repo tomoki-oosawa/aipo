@@ -276,7 +276,7 @@ public class ScheduleScreenPrint extends ALVelocityScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-schedule-print.vm";
+      String layout_template = "portlets/html/ajax-schedule-print.vm";
 
       setTemplate(rundata, context, layout_template);
 

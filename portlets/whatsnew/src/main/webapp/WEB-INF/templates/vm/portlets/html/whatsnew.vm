@@ -27,5 +27,5 @@
 //]]>
 </script>
 #ALformheader('WhatsNew' $jslink $portlet)
-#parse("/portlets/html/ja/ajax-whatsnew.vm")
+#parse("/portlets/html/ajax-whatsnew.vm")
 #ALformfooter()

@@ -73,7 +73,7 @@ public class ProjectTaskFormScreen extends ProjectScreen {
       context.put("new_form", false);
     }
 
-    String layout_template = "portlets/html/ja/ajax-project-task-form.vm";
+    String layout_template = "portlets/html/ajax-project-task-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

@@ -84,7 +84,7 @@ public class AddressBookListScreen extends AddressBookScreen {
           setTemplate(
             rundata,
             context,
-            "portlets/html/ja/ajax-addressbook-list.vm");
+            "portlets/html/ajax-addressbook-list.vm");
         } else {
           AddressBookCorpFilterdSelectData listData =
             new AddressBookCorpFilterdSelectData();
@@ -100,7 +100,7 @@ public class AddressBookListScreen extends AddressBookScreen {
           setTemplate(
             rundata,
             context,
-            "portlets/html/ja/ajax-addressbook-corplist.vm");
+            "portlets/html/ajax-addressbook-corplist.vm");
         }
       }
     } catch (Exception ex) {

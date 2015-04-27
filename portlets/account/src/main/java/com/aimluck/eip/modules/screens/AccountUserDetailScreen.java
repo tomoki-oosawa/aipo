@@ -55,7 +55,7 @@ public class AccountUserDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-account-user-detail.vm";
+      String layout_template = "portlets/html/ajax-account-user-detail.vm";
 
       String noedit = rundata.getParameters().getString("noedit");
       if (noedit != null && "1".equals(noedit)) {

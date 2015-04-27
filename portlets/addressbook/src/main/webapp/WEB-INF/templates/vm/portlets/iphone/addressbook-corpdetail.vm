@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/addressbook-corpdetail.vm")
+#parse("/portlets/smartphone_default/addressbook-corpdetail.vm")

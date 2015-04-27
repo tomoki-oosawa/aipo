@@ -69,5 +69,5 @@ $!{record.FolderName}
 #ALspacebothfooter()
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/cabinet-folder-widgets.vm")
+#parse("/portlets/html/cabinet-folder-widgets.vm")
 

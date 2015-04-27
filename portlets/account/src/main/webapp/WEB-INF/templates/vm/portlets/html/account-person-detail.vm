@@ -28,9 +28,9 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #AUIcontentsAreaHeader()
-#parse("/portlets/html/ja/ajax-account-person-detail.vm")
+#parse("/portlets/html/ajax-account-person-detail.vm")
 #AUIcontentsAreaFooter()
 #ALcontentfooter()
 #else
-#parse("/portlets/html/ja/ajax-account-person-detail.vm")
+#parse("/portlets/html/ajax-account-person-detail.vm")
 #end

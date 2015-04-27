@@ -17,16 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
-
 #**
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
 @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
-@version $Id: group-browser.vm,v 1.7 2004/03/17 19:19:02 jford Exp $
+@version $Id: group-browser.vm,v 1.2 2004/04/27 13:53:13 shinsuke Exp $
 
 *#
 
-#set ( $headings = ["Group Name", "Actions"] )
+#set ( $headings = ["$l10n.ADDRESSBOOK_GROUP_NAME", "$l10n.CUSTOMIZER_ACTION"] )
 
 <table>
 

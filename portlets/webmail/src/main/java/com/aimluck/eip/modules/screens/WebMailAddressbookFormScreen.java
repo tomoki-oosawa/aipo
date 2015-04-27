@@ -49,7 +49,7 @@ public class WebMailAddressbookFormScreen extends ALVelocityScreen {
       formData.initField();
       formData.doViewForm(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/webmail-addressbook.vm";
+      String layout_template = "portlets/html/webmail-addressbook.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[WebMailAddressbookFormScreen] Exception.", ex);

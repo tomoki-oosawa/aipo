@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/accountlogin-info.vm")
+#parse("/portlets/smartphone_default/accountlogin-info.vm")

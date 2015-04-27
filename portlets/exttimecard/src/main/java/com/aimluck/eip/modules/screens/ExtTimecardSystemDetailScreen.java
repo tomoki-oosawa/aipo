@@ -53,7 +53,7 @@ public class ExtTimecardSystemDetailScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/exttimecardsystem-detail.vm");
+        "portlets/html/exttimecardsystem-detail.vm");
     } catch (Exception ex) {
       logger.error("[ExtTimecardSystemScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

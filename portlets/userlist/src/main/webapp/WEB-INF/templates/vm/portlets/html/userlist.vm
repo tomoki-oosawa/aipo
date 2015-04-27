@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-userlist.vm")
+#parse("/portlets/html/ajax-userlist.vm")

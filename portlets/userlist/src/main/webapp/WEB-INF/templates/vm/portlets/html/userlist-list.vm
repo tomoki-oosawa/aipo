@@ -27,5 +27,5 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-userlist-list.vm")
+#parse("/portlets/html/ajax-userlist-list.vm")
 #ALcontentfooter()

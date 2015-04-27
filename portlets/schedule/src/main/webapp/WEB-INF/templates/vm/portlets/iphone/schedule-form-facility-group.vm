@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/schedule-form-facility-group.vm")
+#parse("/portlets/smartphone_default/schedule-form-facility-group.vm")

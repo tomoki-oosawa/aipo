@@ -59,7 +59,7 @@ public class AccountPostFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-account-post-form.vm";
+    String layout_template = "portlets/html/ajax-account-post-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

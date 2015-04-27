@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/blog-entry-detail.vm")
+#parse("/portlets/cell_default/blog-entry-detail.vm")

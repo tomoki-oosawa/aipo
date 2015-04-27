@@ -24,4 +24,4 @@
 ##
 ##//]]>
 ##</script>
-#parse("/portlets/smartphone_default/ja/ajax-account-person-detail.vm")
+#parse("/portlets/smartphone_default/ajax-account-person-detail.vm")

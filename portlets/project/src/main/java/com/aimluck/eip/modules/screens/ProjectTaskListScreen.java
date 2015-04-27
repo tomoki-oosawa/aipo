@@ -55,7 +55,7 @@ public class ProjectTaskListScreen extends ProjectScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-project-task-list.vm";
+      String layout_template = "portlets/html/ajax-project-task-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

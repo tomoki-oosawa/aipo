@@ -188,5 +188,5 @@ $!{record.State.toString()}%
 </div>
 </div>
 
-#parse("/portlets/html/ja/todo-widgets.vm")
+#parse("/portlets/html/todo-widgets.vm")
 

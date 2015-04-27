@@ -56,7 +56,7 @@ public class TimecardSummaryListScreen extends TimecardSettingsScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-timecard-summary-list.vm");
+        "portlets/html/ajax-timecard-summary-list.vm");
     } catch (Exception ex) {
       logger.error("[TimecardSummaryListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

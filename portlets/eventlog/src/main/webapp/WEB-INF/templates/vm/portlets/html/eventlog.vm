@@ -28,7 +28,7 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-eventlog.vm")
+#parse("/portlets/html/ajax-eventlog.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

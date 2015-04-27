@@ -53,7 +53,7 @@ public class CabinetFolderListScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.loadFolderList();
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-cabinet-folder-list.vm";
+      String layout_template = "portlets/html/ajax-cabinet-folder-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[CabinetFolderListScreen] Exception.", ex);

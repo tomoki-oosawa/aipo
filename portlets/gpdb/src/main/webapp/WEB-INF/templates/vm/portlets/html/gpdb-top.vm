@@ -28,5 +28,5 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-gpdb-top.vm")
+#parse("/portlets/html/ajax-gpdb-top.vm")
 

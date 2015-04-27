@@ -55,7 +55,7 @@ public class AccountPostDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-account-post-detail.vm";
+      String layout_template = "portlets/html/ajax-account-post-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

@@ -21,12 +21,12 @@
 #**
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
-@version $Id: user-role-form.vm,v 1.4 2004/03/17 19:19:02 jford Exp $
+@version $Id: user-role-form.vm,v 1.2 2004/04/27 13:53:13 shinsuke Exp $
 
 *#
 
-<h3>${l10n.USER_ROLE_FORM_ROLES_FOR_VM}$user.FirstName $user.LastName<h3>
-#set ( $headings = ["Role Name", "Assign"] )
+<h3>${l10n.USER_ROLE_FORM_ROLES_FOR_VM}$user.LastName $user.FirstName<h3>
+#set ( $headings = ["$l10n.ACCESSCTL_ROLE_NAME", "$l10n.WAR_RATION"] )
 
 <form method="post" action="$jslink.getPaneByName("UserBrowser").addPathInfo($jslink.ActionKey,"portlets.security.UserRoleUpdateAction")">
 
@@ -55,7 +55,7 @@
        <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_ROLE_FORM_UPDATE_VM}"/>
     <td>
       <td>
-         $!msg         
+         $!msg
       </td>
   </tr>
 </table>

@@ -131,4 +131,4 @@ $!record.CategoryName
 
 
 
-#parse("/portlets/html/ja/msgboard-widgets.vm")
+#parse("/portlets/html/msgboard-widgets.vm")

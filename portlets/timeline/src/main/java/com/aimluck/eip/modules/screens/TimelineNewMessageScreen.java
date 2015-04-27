@@ -59,7 +59,7 @@ public class TimelineNewMessageScreen extends ALVelocityScreen {
       listData.doViewListNew(this, rundata, context);
 
       if (listData.getList() != null && listData.getList().size() > 0) {
-        String layout_template = "portlets/html/ja/ajax-timeline-content.vm";
+        String layout_template = "portlets/html/ajax-timeline-content.vm";
         setTemplate(rundata, context, layout_template);
       }
 

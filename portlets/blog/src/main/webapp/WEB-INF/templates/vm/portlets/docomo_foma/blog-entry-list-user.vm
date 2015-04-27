@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
-#parse("/portlets/cell_default/ja/blog-entry-list-user.vm")
+#parse("/portlets/cell_default/blog-entry-list-user.vm")

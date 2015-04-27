@@ -33,6 +33,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-webmail-account-list.vm")
+#parse("/portlets/html/ajax-webmail-account-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/webmail-menu.vm")
+#parse("/portlets/html/webmail-menu.vm")

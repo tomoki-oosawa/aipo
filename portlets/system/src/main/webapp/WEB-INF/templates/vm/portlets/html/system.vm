@@ -25,4 +25,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-system.vm")
+#parse("/portlets/html/ajax-system.vm")

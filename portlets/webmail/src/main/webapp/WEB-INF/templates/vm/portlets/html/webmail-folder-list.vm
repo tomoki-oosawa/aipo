@@ -29,5 +29,5 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-webmail-folder-list.vm")
+#parse("/portlets/html/ajax-webmail-folder-list.vm")
 #ALcontentfooter()

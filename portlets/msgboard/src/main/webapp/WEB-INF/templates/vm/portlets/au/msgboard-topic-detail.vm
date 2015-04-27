@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
-#parse("/portlets/cell_default/ja/msgboard-topic-detail.vm")
+#parse("/portlets/cell_default/msgboard-topic-detail.vm")

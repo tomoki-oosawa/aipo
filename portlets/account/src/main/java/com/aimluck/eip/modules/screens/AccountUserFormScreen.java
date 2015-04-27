@@ -59,7 +59,7 @@ public class AccountUserFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-account-user-form.vm";
+    String layout_template = "portlets/html/ajax-account-user-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

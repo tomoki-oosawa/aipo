@@ -61,4 +61,4 @@
 #end
 #ALformfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/blog-thema-widgets.vm")
+#parse("/portlets/html/blog-thema-widgets.vm")

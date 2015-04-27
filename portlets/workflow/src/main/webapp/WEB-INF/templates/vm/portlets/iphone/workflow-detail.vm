@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/workflow-detail.vm")
+#parse("/portlets/smartphone_default/workflow-detail.vm")

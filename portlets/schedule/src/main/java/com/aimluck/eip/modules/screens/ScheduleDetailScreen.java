@@ -65,7 +65,7 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
       } else {
         context.put(IGNORE_VIEWDATE, "false");
       }
-      String layout_template = "portlets/html/ja/ajax-schedule-detail.vm";
+      String layout_template = "portlets/html/ajax-schedule-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ScheduleDetailScreen] Exception.", ex);

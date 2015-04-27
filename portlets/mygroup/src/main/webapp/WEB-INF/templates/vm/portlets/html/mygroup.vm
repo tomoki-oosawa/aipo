@@ -29,10 +29,10 @@
 
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
-#parse("/portlets/html/ja/ajax-mygroup.vm")
-#parse("/portlets/html/ja/mygroup-menu.vm")
+#parse("/portlets/html/ajax-mygroup.vm")
+#parse("/portlets/html/mygroup-menu.vm")
 #ALcontentfooter()
 #else
-#parse("/portlets/html/ja/ajax-mygroup.vm")
-#parse("/portlets/html/ja/mygroup-menu.vm")
+#parse("/portlets/html/ajax-mygroup.vm")
+#parse("/portlets/html/mygroup-menu.vm")
 #end

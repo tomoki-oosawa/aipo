@@ -59,7 +59,7 @@ public class AccessControlFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.loadPortletFeatureList(rundata, context);
     formData.doViewForm(this, rundata, context);
-    String layout_template = "portlets/html/ja/ajax-accessctl-form.vm";
+    String layout_template = "portlets/html/ajax-accessctl-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

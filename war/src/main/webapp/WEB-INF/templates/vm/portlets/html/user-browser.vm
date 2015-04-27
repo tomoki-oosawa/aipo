@@ -22,11 +22,11 @@
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
 @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
-@version $Id: user-browser.vm,v 1.11 2004/03/17 19:19:02 jford Exp $
+@version $Id: user-browser.vm,v 1.2 2004/04/27 13:53:13 shinsuke Exp $
 
 *#
 
-#set ( $headings = ["Username","First Name", "Last Name", "Email", "Actions"] )
+#set ( $headings = ["$l10n.USER_BROWSER_USER_NAME_VM","$l10n.WAR_LASTNAME", "$l10n.WAR_FIRSTNAME", "$l10n.WAR_EMAIL", "$l10n.CUSTOMIZER_ACTION"] )
 #set ( $filter = $data.getRequest().getParameter("filter_value") )
 #set ( $filter_type = $data.getRequest().getParameter("filter_type") )
 #set ( $regexp = $data.getRequest().getParameter("filter_regexp") )
@@ -37,7 +37,7 @@
 <b>${l10n.USER_BROWSER_FILTER_STRING_CASE_VM}</b> <input type="Text" name="filter_value" value="$!filter"/>
 <select name="filter_type">
   <option value="filter_type_username" #if ($filter_type == "filter_type_username") selected #end>${l10n.USER_BROWSER_USER_NAME_VM}</option>
-  <option value="filter_type_lastname" #if ($filter_type == "filter_type_lastname") selected #end>${l10n.USER_BROWSER_LAST_NAME_VM}</option>  
+  <option value="filter_type_lastname" #if ($filter_type == "filter_type_lastname") selected #end>${l10n.USER_BROWSER_LAST_NAME_VM}</option>
 </select>
 <input type="submit" value="${l10n.USER_BROWSER_FILTER_VM}"/>
 <INPUT TYPE="CHECKBOX" NAME="filter_regexp" #if($!regexp) checked #end/>${l10n.USER_BROWSER_USE_REGULAR_EXPRESS_VM}<table>
@@ -57,8 +57,8 @@
           #if ($user.Confirmed != ${s_config.CONFIRM_VALUE}) class="UserBrowserUserConfirmed" #end
         >
           #entryCell ($!user.UserName)
-          #entryCell ($!user.FirstName)
           #entryCell ($!user.LastName)
+          #entryCell ($!user.FirstName)
           #entryCell ("<a href=mailto:$!user.Email>$!user.Email</a>")
           <td>
               <a href="$jslink.getPaneByName("UserForm").addPathInfo("entityid",$user.UserName).addQueryData("mode","update")">${l10n.USER_BROWSER_EDIT_VM}</a> &nbsp;

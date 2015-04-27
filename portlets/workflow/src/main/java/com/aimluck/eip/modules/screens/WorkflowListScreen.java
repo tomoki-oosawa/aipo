@@ -56,7 +56,7 @@ public class WorkflowListScreen extends WorkflowScreen {
 
       context.put("all_flg", false);
 
-      String layout_template = "portlets/html/ja/ajax-workflow-list.vm";
+      String layout_template = "portlets/html/ajax-workflow-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[WorkflowListScreen] Exception.", ex);

@@ -176,4 +176,4 @@ $l10n.CABINET_NOT_PERMISSION_VIEW
 	</div>
 </div>
 
-#parse("/portlets/html/ja/cabinet-widgets.vm")
+#parse("/portlets/html/cabinet-widgets.vm")

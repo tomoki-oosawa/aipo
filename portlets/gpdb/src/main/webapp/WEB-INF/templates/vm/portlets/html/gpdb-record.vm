@@ -29,6 +29,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-gpdb-record.vm")
+#parse("/portlets/html/ajax-gpdb-record.vm")
 #ALcontentfooter()
 

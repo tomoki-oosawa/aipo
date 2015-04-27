@@ -17,4 +17,4 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#parse("/portlets/cell_default/ja/accountlogin-info.vm")
+#parse("/portlets/cell_default/accountlogin-info.vm")

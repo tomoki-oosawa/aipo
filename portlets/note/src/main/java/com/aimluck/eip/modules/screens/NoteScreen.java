@@ -76,7 +76,7 @@ public class NoteScreen extends ALVelocityScreen {
         .getPortletConfig()
         .getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-note.vm";
+      String layout_template = "portlets/html/ajax-note.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

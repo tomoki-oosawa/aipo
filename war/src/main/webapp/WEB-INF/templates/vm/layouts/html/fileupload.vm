@@ -55,6 +55,6 @@
 #end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 #ALjavascript("javascript/aipo/container.js")
-#parse("/portlets/html/ja/fileupload.vm")
+#parse("/portlets/html/fileupload.vm")
 </body>
 </html>

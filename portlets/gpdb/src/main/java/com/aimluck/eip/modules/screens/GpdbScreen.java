@@ -57,7 +57,7 @@ public class GpdbScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1c-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb.vm";
+      String layout_template = "portlets/html/ajax-gpdb.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[GpdbScreen] Exception.", ex);

@@ -59,7 +59,7 @@ public class CabinetFileFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-cabinet-file-form.vm";
+    String layout_template = "portlets/html/ajax-cabinet-file-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

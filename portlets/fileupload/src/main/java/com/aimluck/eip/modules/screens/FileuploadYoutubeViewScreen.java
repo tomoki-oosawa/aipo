@@ -71,7 +71,7 @@ public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
     }
     context.put("scheme", scheme);
 
-    String layout_template = "portlets/html/ja/fileupload-youtube.vm";
+    String layout_template = "portlets/html/fileupload-youtube.vm";
     setTemplate(rundata, context, layout_template);
   }
 

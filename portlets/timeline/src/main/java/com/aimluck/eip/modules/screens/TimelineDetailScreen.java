@@ -55,7 +55,7 @@ public class TimelineDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-timeline-detail.vm";
+      String layout_template = "portlets/html/ajax-timeline-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

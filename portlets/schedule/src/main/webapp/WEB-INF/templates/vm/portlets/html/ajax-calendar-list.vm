@@ -28,8 +28,8 @@
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #ALtabheader($tabs "")
-#parse("/portlets/html/ja/ajax-calendar-weekly.vm")
+#parse("/portlets/html/ajax-calendar-weekly.vm")
 #ALtabfooter()
 #ALcontentfooter()
-#parse("/portlets/html/ja/schedule-menu.vm")
+#parse("/portlets/html/schedule-menu.vm")
 

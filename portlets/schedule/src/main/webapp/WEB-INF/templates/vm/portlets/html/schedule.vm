@@ -154,7 +154,7 @@
 //]]>
 </script>
 #if($!hasMinimumAuthority)
-#parse("/portlets/html/ja/ajax-schedule.vm")
+#parse("/portlets/html/ajax-schedule.vm")
 #else
 #parse("/portlets/html/PermissionError.vm")
 #end

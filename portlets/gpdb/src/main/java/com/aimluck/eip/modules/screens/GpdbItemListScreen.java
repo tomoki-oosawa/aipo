@@ -57,7 +57,7 @@ public class GpdbItemListScreen extends GpdbScreen {
         context).getPortletConfig().getInitParameter("p1c-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb-item.vm";
+      String layout_template = "portlets/html/ajax-gpdb-item.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

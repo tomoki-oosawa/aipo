@@ -66,7 +66,7 @@ public class AddressBookScreen extends ALVelocityScreen {
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
 
-        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
+        setTemplate(rundata, context, "portlets/html/ajax-addressbook.vm");
       } else {
         AbstractAddressBookWordSelectData<?, ?> listData =
           AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
@@ -81,7 +81,7 @@ public class AddressBookScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
 
-        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
+        setTemplate(rundata, context, "portlets/html/ajax-addressbook.vm");
       }
 
     } catch (Exception ex) {

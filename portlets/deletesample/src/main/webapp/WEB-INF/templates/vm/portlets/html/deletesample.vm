@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-deletesample.vm")
+#parse("/portlets/html/ajax-deletesample.vm")

@@ -112,7 +112,7 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         listData.getList().add(0, rd);
         context.put("currentRoom", 0);
       }
-      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
+      String layout_template = "portlets/html/ajax-message-room-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageRoomListScreen.doOutput", ex);

@@ -21,6 +21,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader("共有カテゴリ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
 #ALajaxdetailformheader("共有カテゴリ")
 #ALtableheaderWide()
 #ALtdcaption('共有カテゴリ名')
@@ -32,10 +33,14 @@
 #ALtdcaption('更新日')
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
-#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}))
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.manhour.onLoadManhourDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.manhour.onReceiveMessage")#ALajaxbuttonClose()
-#ALbuttonfooter()
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}) || $!result.AuthorityEdit)
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.manhour.onLoadManhourDialog")
 #end
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}) || $!result.AuthorityDelete)
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.manhour.onReceiveMessage")
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

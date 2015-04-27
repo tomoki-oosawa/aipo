@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/wm/ja/schedule-form-title.vm")
+#parse("/portlets/wm/schedule-form-title.vm")
 
 #set($linklist = [["スケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_linklist_iphone($career $linklist)

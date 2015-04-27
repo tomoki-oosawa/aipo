@@ -71,7 +71,7 @@ public class LicenseScreen extends ALVelocityScreen {
     LicenseSelectData detailData = new LicenseSelectData();
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
-    setTemplate(rundata, context, "portlets/html/ja/ajax-license.vm");
+    setTemplate(rundata, context, "portlets/html/ajax-license.vm");
   }
 
   /**

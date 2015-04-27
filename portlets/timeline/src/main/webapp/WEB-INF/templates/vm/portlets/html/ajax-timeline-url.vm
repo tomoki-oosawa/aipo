@@ -43,7 +43,7 @@
     <div class="tlClipTitle" id="tlClipTitle_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.Title</a></div>
     <div class="tlClipUrl" id="tlClipUrl_$!{portlet.ID}"><a href="$!result.Url" target="_blank">$!result.AutoCRUrl</a></div>
     <div class="tlClipBody" id="tlClipBody_$!{portlet.ID}">$!result.Body</div>
-    <input type="hidden" name="tlClipTitle" id="tlClipTitle_hidden" value="$!result.Title"/>
+	<input type="hidden" name="tlClipTitle" id="tlClipTitle_hidden" value="$!result.Title"/>
 	<input type="hidden" name="tlClipBody" id="tlClipBody_hidden" value="$!result.Body"/>
      #if($result.Images.size() > 0 )
       <div class="auiSummaryMeta clearfix hide" id="auiSummaryMeta_$portlet.ID"  #if($result.YoutubeFlag) style="display:none" #end>

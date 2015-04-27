@@ -115,4 +115,4 @@
 	</ul>
 </div>
 <!-- END Contents Area -->
-#parse("/portlets/html/ja/report-widgets.vm")
+#parse("/portlets/html/report-widgets.vm")

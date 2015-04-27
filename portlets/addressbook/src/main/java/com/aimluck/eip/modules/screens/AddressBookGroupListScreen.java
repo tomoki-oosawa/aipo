@@ -59,7 +59,7 @@ public class AddressBookGroupListScreen extends AddressBookScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-addressbook-group-list.vm");
+        "portlets/html/ajax-addressbook-group-list.vm");
     } catch (Exception ex) {
       logger.error("AddressBookGroupListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);

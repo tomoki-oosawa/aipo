@@ -372,6 +372,6 @@ public class AddressBookWordSelectData extends
    */
   @Override
   public String getTemplateFilePath() {
-    return "portlets/html/ja/ajax-addressbook-list.vm";
+    return "portlets/html/ajax-addressbook-list.vm";
   }
 }

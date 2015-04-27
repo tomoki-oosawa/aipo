@@ -24,7 +24,7 @@
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
 #ALtabheader($tabs "")
 #ALspacebothheader()
-#parse("/portlets/html/ja/externalsearch.vm")
+#parse("/portlets/html/externalsearch.vm")
 #ALspacebothfooter()
 #ALtabfooter()
 #ALcontentfooter()

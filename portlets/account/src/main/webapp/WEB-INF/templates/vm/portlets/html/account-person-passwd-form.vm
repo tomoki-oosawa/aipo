@@ -26,5 +26,5 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-account-person-passwd-form.vm")
-#parse("/portlets/html/ja/account-person-menu.vm")
+#parse("/portlets/html/ajax-account-person-passwd-form.vm")
+#parse("/portlets/html/account-person-menu.vm")

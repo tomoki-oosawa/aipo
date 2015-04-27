@@ -60,7 +60,7 @@ public class AddressBookGroupFormScreen extends ALVelocityScreen {
 
     formData.loadAddresses(rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-addressbook-group-form.vm";
+    String layout_template = "portlets/html/ajax-addressbook-group-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

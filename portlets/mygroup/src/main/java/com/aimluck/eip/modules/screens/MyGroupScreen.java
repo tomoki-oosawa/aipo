@@ -57,9 +57,9 @@ public class MyGroupScreen extends ALVelocityScreen {
       String type = rundata.getParameters().getString("type", "");
       String layout_template;
       if (type.equals("popup")) {
-        layout_template = "portlets/html/ja/ajax-mygroup-popup.vm";
+        layout_template = "portlets/html/ajax-mygroup-popup.vm";
       } else {
-        layout_template = "portlets/html/ja/ajax-mygroup.vm";
+        layout_template = "portlets/html/ajax-mygroup.vm";
       }
 
       setTemplate(rundata, context, layout_template);

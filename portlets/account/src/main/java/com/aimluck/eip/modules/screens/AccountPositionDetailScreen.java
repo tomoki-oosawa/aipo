@@ -56,7 +56,7 @@ public class AccountPositionDetailScreen extends ALVelocityScreen {
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String layout_template =
-        "portlets/html/ja/ajax-account-position-detail.vm";
+        "portlets/html/ajax-account-position-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

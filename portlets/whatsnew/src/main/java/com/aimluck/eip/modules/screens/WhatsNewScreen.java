@@ -78,7 +78,7 @@ public class WhatsNewScreen extends ALVelocityScreen {
         .getInitParameter("p2a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-whatsnew.vm";
+      String layout_template = "portlets/html/ajax-whatsnew.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

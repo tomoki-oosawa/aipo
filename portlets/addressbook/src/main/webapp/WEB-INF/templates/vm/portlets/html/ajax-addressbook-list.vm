@@ -108,5 +108,5 @@
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/addressbook-widgets.vm")
+#parse("/portlets/html/addressbook-widgets.vm")
 

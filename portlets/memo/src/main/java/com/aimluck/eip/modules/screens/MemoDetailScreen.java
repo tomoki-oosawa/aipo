@@ -50,7 +50,7 @@ public class MemoDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-memo-detail.vm";
+      String layout_template = "portlets/html/ajax-memo-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MemoDetailScreen] Exception.", ex);

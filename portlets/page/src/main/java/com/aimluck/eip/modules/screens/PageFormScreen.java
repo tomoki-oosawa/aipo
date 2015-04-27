@@ -59,7 +59,7 @@ public class PageFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-page-form.vm";
+    String layout_template = "portlets/html/ajax-page-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

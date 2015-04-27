@@ -61,7 +61,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     if (app == null) {
       context.put("isActive", false);
       context.put("title", "");
-      String template = "portlets/html/ja/gadgets-popup.vm";
+      String template = "portlets/html/gadgets-popup.vm";
       setTemplate(rundata, context, template);
       return;
     }
@@ -134,7 +134,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     context.put("nocache", "true".equals(ALContainerConfigService
       .get(Property.CACHE_GADGET_XML)) ? "0" : "1");
 
-    String template = "portlets/html/ja/gadgets-popup.vm";
+    String template = "portlets/html/gadgets-popup.vm";
     setTemplate(rundata, context, template);
 
   }

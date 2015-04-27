@@ -106,4 +106,4 @@ ${user.AliasName}</a></li>
 </div>
 </div>
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/blog-widgets.vm")
+#parse("/portlets/html/blog-widgets.vm")

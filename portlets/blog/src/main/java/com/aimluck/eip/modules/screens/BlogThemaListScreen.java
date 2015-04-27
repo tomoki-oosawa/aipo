@@ -55,7 +55,7 @@ public class BlogThemaListScreen extends ALVelocityScreen {
 
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-blog-thema-list.vm";
+      String layout_template = "portlets/html/ajax-blog-thema-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[BlogThemaListScreen] Exception.", ex);

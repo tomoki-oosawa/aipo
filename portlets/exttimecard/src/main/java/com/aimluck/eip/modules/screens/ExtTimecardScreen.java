@@ -51,7 +51,7 @@ public class ExtTimecardScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-exttimecard.vm";
+      String layout_template = "portlets/html/ajax-exttimecard.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

@@ -53,7 +53,7 @@ public class AccountUserListScreen extends AccountUserScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-account-user.vm";
+      String layout_template = "portlets/html/ajax-account-user.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

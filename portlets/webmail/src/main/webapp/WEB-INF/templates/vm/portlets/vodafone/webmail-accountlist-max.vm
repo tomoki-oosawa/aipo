@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/webmail-accountlist-max.vm")
+#parse("/portlets/cell_default/webmail-accountlist-max.vm")

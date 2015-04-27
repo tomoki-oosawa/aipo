@@ -53,7 +53,7 @@ public class ExtTimecardSystemMapListScreen extends ExtTimecardScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-exttimecardsystem-user-list.vm";
+        "portlets/html/ajax-exttimecardsystem-user-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

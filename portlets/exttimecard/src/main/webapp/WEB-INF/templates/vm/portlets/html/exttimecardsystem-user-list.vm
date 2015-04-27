@@ -29,7 +29,7 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-exttimecardsystem-user-list.vm")
+#parse("/portlets/html/ajax-exttimecardsystem-user-list.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

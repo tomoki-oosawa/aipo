@@ -17,4 +17,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#parse("/portlets/smartphone_default/ja/account-person-detail.vm")
+#set($career = 'iphone')
+#parse("/portlets/smartphone_default/account-person-detail.vm")

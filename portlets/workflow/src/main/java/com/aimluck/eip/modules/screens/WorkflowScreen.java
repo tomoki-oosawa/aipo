@@ -53,7 +53,7 @@ public class WorkflowScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-workflow.vm";
+      String layout_template = "portlets/html/ajax-workflow.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

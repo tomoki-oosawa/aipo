@@ -89,4 +89,4 @@ $!{record.FilterType}$l10n.WEBMAIL_IS$!{record.FilterString}$l10n.WEBMAIL_CONTAI
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
+#parse("/portlets/html/webmail-nonaction-widgets.vm")

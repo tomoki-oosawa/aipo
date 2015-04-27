@@ -29,7 +29,7 @@
 #ALcontentheader($!portlet.Title '')
 #AUIcontentsAreaHeader()
 #end
-#parse("/portlets/html/ja/ajax-account-position-list.vm")
+#parse("/portlets/html/ajax-account-position-list.vm")
 #if(${client}=="IPHONE")
 #AUIcontentsAreaFooter()
 #ALcontentfooter()

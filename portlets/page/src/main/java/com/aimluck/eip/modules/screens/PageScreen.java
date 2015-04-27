@@ -54,7 +54,7 @@ public class PageScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-page.vm";
+      String layout_template = "portlets/html/ajax-page.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

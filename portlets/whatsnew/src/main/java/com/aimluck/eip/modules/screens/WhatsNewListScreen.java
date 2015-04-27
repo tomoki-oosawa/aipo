@@ -65,7 +65,7 @@ public class WhatsNewListScreen extends WhatsNewScreen {
         .getInitParameter("p2a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-whatsnew-list.vm";
+      String layout_template = "portlets/html/ajax-whatsnew-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

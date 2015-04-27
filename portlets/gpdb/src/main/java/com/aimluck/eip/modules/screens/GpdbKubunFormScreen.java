@@ -69,7 +69,7 @@ public class GpdbKubunFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-gpdb-kubun-form.vm";
+    String layout_template = "portlets/html/ajax-gpdb-kubun-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

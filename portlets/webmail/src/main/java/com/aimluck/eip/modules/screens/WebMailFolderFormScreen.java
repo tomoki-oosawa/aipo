@@ -61,7 +61,7 @@ public class WebMailFolderFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-webmail-folder-form.vm";
+    String layout_template = "portlets/html/ajax-webmail-folder-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

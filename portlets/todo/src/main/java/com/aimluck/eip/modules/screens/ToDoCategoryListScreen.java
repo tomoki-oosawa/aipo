@@ -54,7 +54,7 @@ public class ToDoCategoryListScreen extends ALVelocityScreen {
       listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-todo-category-list.vm";
+      String layout_template = "portlets/html/ajax-todo-category-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ToDoCategoryListScreen] Exception.", ex);

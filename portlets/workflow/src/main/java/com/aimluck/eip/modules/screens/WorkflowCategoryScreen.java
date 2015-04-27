@@ -55,7 +55,7 @@ public class WorkflowCategoryScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-workflow-category-list.vm";
+        "portlets/html/ajax-workflow-category-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
