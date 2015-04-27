@@ -115,7 +115,7 @@ unread
 #if (!$isReceive)
 #ALtdcellheaderAtt('class="mb_hide"')<div>
 #foreach ($destUser in $record.DestUsers)
-#if($record.SrcUserId.toString() != $destUser.UserId.toString()) <a href="javascript: void(0)" onclick="aipo.message.openDirect(${destUser.UserId})">$!destUser.AliasName</a>#end
+#if($record.SrcUserId.toString() != $destUser.UserId.toString()) <a href="javascript: void(0)" onclick="aipo.message.popupProfile(${destUser.UserId},arguments[0])">$!destUser.AliasName</a>#end
 #end
 </div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.ReadNote.Value/$!record.SentNote.Value</div>#ALtdcellfooter()
