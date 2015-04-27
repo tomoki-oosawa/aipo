@@ -91,13 +91,9 @@ $!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 #foreach($record in $!result.Detail.MemberList)
 <li class="clearfix">
 <div class="floatLeft w70">
-#if($!record.UserId.value != $!result.Detail.LoginUserId.value)
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId.value)">
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.value},arguments[0])">
 $!record.UserName
 </a>
-#else
-$!record.UserName
-#end
 </div>
 <div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
 </li>
