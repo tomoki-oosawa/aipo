@@ -25,7 +25,7 @@
 #ALtableheaderWide()
 #ALtdcaption($l10n.USERLIST_NAME)
 #ALtditemheader()
-$!result.Detail.Name
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UserId},arguments[0])">$!result.Detail.Name</a>
 #ALtditemfooter()
 #ALtdcaption($l10n.USERLIST_NAME_KANA)
 #ALtditem($result.getStringCR($!result.Detail.NameKana))
