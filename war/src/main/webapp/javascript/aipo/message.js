@@ -961,7 +961,6 @@ aipo.message.popupProfile = function(userId, event) {
 		div.style['z-index'] = 1000;
 		document.body.appendChild(div);
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
-
 	}
 	event = event || window.event;
 	var eventTarget = event.srcElement || event.target;
@@ -993,8 +992,9 @@ aipo.message.popupProfile = function(userId, event) {
 	popupInner.onLoad = function() {
 		var rect = eventTarget.getBoundingClientRect();
 		var html = document.documentElement.getBoundingClientRect();
-		var node = dojo.query("#popupProfileInner_" + userId);
-		var popupNode = dojo.query("#popupProfile_" + userId);
+		var objBody = document.getElementsByTagName("body").item(0);
+		var node = dojo.query("#popupProfileInner_" + userId); /*プロフィールカード本体の表示・非表示*/
+		var popupNode = dojo.query("#popupProfile_" + userId); /*プロフィールカードの出現位置を指定*/
 
 		if (node.style('display') == 'none' || popupInner.eventTarget !== eventTarget) {
 			dojo.query('.profilePopup').style('display', 'none');
@@ -1031,11 +1031,26 @@ aipo.message.popupProfile = function(userId, event) {
 		popupInner.currentUserId = userId;
 		aipo.message.profileCurrentUserId = userId;
 	}
-
 	if(userId == popupInner.currentUserId) {
 		popupInner.onLoad();
 	} else {
 		popupInner.viewPage("?template=UserPopupScreen&entityid=" + userId);
+	}
+	//　 Android2系でプロフィールカードポップアップからメッセージを送信しようとすると
+    // 　画面が上下に激しく動くバグを回避
+	if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
+        var wrapper=dojo.byId("wrapper");
+        if (wrapper.style('display') == 'block') {
+        // wrapper非表示はhiddenではなくdisplay:none;で
+        // dojo.style(wrapper, "visibility", "hidden");
+         dojo.style(wrapper, "display", "none");
+         var myModal=dojo.byId("modalDialog");
+         dojo.style(myModal, "top", "0px");
+         dojo.style(myModal, "margin", "0");
+         }else{
+	         // wrapper再表示
+	         dojo.style(wrapper, "display", "block");
+         }
 	}
 }
 
