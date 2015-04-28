@@ -86,6 +86,9 @@ public class CabinetSelectData extends
 
   private RunData rundata;
 
+  /** ログインユーザーID */
+  private long loginUserId;
+
   public void setIsNormalContext(boolean flg) {
     isNormalContext = flg;
   }
@@ -102,7 +105,7 @@ public class CabinetSelectData extends
   protected boolean isFileUploadable;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -270,13 +273,15 @@ public class CabinetSelectData extends
     this.rundata = rundata;
     target_keyword = new ALStringField();
 
+    loginUserId = ALEipUtils.getUserId(rundata);
+
     super.init(action, rundata, context);
 
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -339,7 +344,7 @@ public class CabinetSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -417,7 +422,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -456,6 +461,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -465,7 +471,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -499,6 +505,7 @@ public class CabinetSelectData extends
         createUserName = createUser.getAliasName().getValue();
       }
       rd.setCreateUser(createUserName);
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -508,6 +515,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -543,7 +551,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -553,7 +561,7 @@ public class CabinetSelectData extends
 
   /**
    * ファイル総数を取得する． <BR>
-   * 
+   *
    * @return
    */
   public int getFileSum() {
@@ -563,7 +571,7 @@ public class CabinetSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -607,7 +615,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -650,5 +658,14 @@ public class CabinetSelectData extends
 
   public String getSelectedPostName() {
     return post_name;
+  }
+
+  /**
+   * ログインユーザーIDの取得
+   *
+   * @return ログインユーザーID
+   */
+  public long getLoginUserId() {
+    return loginUserId;
   }
 }

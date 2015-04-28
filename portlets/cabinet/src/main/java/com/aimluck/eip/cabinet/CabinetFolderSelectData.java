@@ -63,6 +63,9 @@ public class CabinetFolderSelectData extends
 
   private RunData rundata;
 
+  /** ログインユーザーID */
+  private long loginUserId;
+
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
 
@@ -82,7 +85,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -197,11 +200,13 @@ public class CabinetFolderSelectData extends
 
     this.rundata = rundata;
 
+    loginUserId = ALEipUtils.getUserId(rundata);
+
     super.init(action, rundata, context);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -219,7 +224,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -234,7 +239,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -252,7 +257,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -294,6 +299,7 @@ public class CabinetFolderSelectData extends
       }
 
       rd.setCreateUser(createUserName);
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -327,6 +333,7 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY_HOUR_MINUTE")).format(record
         .getUpdateDate()));
@@ -379,7 +386,7 @@ public class CabinetFolderSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -397,5 +404,14 @@ public class CabinetFolderSelectData extends
 
   public void setEditable(boolean isEditable) {
     this.isEditable = isEditable;
+  }
+
+  /**
+   * ログインユーザーIDの取得
+   *
+   * @return ログインユーザーID
+   */
+  public long getLoginUserId() {
+    return loginUserId;
   }
 }
