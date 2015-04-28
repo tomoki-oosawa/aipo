@@ -25,7 +25,7 @@
 			<li>
 				<div class="content">
 					<div class="avatar">
-						<a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">
+						<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 							#if($!record.isHasPhoto())
 							<td class="caption"><img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", $!record.PhotoModified))" alt="$!record.LastName $!record.FirstName" width="50" height="50" /></td>
 							#else
@@ -34,7 +34,7 @@
 						</a>
 					</div>
 					<div class="name">
-					<td><a href="javascript: void(0)" onclick="aipo.message.openDirectMessage(${record.UserId.Value})">$!record.LastName $!record.FirstName</a></td>
+					<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></td>
 					</tr>
 					</div>
 				</div>

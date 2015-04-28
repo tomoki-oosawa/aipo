@@ -1,0 +1,58 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+        <div class="contents divider clearfix">
+            <a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">
+            #if($!{result.Detail.hasPhoto()})
+            <img width="50" height="50" alt="$!result.Detail.Name" src='?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}' class="avatar_l">
+            #else
+            <img width="50" height="50" alt="$!result.Detail.Name" src="images/common/avatar_default3.png" class="avatar_l">
+            #end</a><div class="popupInner">
+            <span class="name"><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');">$!result.Detail.Name</a></span>
+            <span class="name_kana">$!result.Detail.NameKana</span>
+            <span class="post_name">#foreach($record in $!result.Detail.getPostNameList())$!record <br />#end</span></div>
+        </div>
+        <ul class="icon_menu clearfix divider">
+            <li><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><div><i class="icon-comment-alt"></i></div>メッセージ</a></li>
+            <li><a href="javascript:void(0)" onclick="aipo.message.hideProfile();aipo.common.showDialog('?template=UserDetailScreen&entityid=$!{result.Detail.UserId}');"><div><i class="icon-user"></i></div>プロフィール</a></li>
+        </ul>
+        <div class="contents dividerBg" id="profile_card_dummy_$!{result.Detail.UserId}">
+            <div class="messageInputDummy">
+                <span onclick="aipo.message.openProfileTextarea($!{result.Detail.UserId})" href="javascript:void(0);">メッセージを送信する</span>
+            </div>
+        </div>
+        <div class="contents dividerBg" id="profile_card_$!{result.Detail.UserId}" style="display: none;">
+            <div style="" class="messageField">
+				<form name="messageForm$!{result.Detail.UserId}" id="messageForm$!{result.Detail.UserId}" action="?js_peid=${messagePortletId}&template=MessageFormJSONScreen" method="post" onsubmit="aimluck.io.submit_callbackparams(this,'indicator-dlg-profile-$!{result.Detail.UserId}-','$messagePortletId',aipo.message.onReceiveProfileMessage);return false;">
+					<input type="hidden" name="_name" value="formMessage" />
+					<input type="hidden" name="secid" value="$secid" />
+					<input type="hidden" name="roomId" value="" />
+					<input type="hidden" name="userId" value="$!{result.Detail.UserId}" />
+
+                    <div class="outer">
+                        <textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
+                    </div>
+                    <div class="right"><i class="indicator" id="indicator-dlg-profile-$!{result.Detail.UserId}-$messagePortletId" style="display: none;"></i><input type="submit" class="auiButtonAction" value="送信する" onclick="aimluck.io.setHiddenValue(this);"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+

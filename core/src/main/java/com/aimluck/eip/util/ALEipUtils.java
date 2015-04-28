@@ -1600,6 +1600,14 @@ public class ALEipUtils {
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
+  public static void setupContext(String js_peid, RunData rundata,
+      Context context) {
+    Portlet portlet = getPortlet(rundata, js_peid);
+    context.put("portlet", portlet);
+    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("clink", new ContentTemplateLink(rundata));
+  }
+
   /**
    *
    * @param rundata

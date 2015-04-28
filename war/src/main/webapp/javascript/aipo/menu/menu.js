@@ -112,6 +112,7 @@ dojo.addOnLoad(function() {
                         className : srcElement.className
                     };
                     var parent = srcElement.parentNode;
+                    var tmp = "";
                     for ( var i = 1; parent; i++) {
                         node[i] = {
                             nodeName : parent.nodeName,
@@ -139,6 +140,10 @@ dojo.addOnLoad(function() {
                                 break;
                             }
                             if (node[i].className.indexOf('imgPopup') >= 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
+                            if (node[i].className.indexOf('profilePopup') >= 0) {
                                 var isHideDropdown = false;
                                 break;
                             }
