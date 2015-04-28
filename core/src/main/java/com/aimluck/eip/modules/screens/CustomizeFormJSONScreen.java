@@ -429,7 +429,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
       ((JetspeedRunData) data).getPageSessionState();
     // update the changes made here to the profile being edited
     List<?>[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     for (int col = 0; col < columns.length; col++) {
       for (int row = 0; row < columns[col].size(); row++) {
         setPosition((IdentityElement) columns[col].get(row), col, row);
@@ -500,10 +500,9 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     HttpServletRequest request = HttpServletRequestLocator.get();
 
-    List<?>[] columns = null;
-    if (request != null) {
-      columns = (List[]) request.getAttribute("customize-columns");
-    }
+    List<?>[] columns =
+      CustomizeUtils.buildCustomizeColumns(rundata, context, portlets);
+
     String controllerName = portlets.getController().getName();
     int colNum = 2;
     if (controllerName.startsWith("One")) {

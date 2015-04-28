@@ -20,131 +20,184 @@
 package com.aimluck.eip.services.rundata;
 
 // Java classes
-import java.util.Enumeration;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.Stack;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileLocator;
+import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.services.Profiler;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.DefaultJetspeedRunData;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
-import org.apache.jetspeed.services.statemanager.JetspeedHttpStateManagerService;
+import org.apache.jetspeed.services.statemanager.SessionState;
 
-// Jetspeed classes
+import com.aimluck.eip.http.HttpServletRequestLocator;
 
 /**
- * This interface extends the RunData interface with methods specific to the
- * needs of a Jetspeed like portal implementation.
  *
- * <note>Several of these properties may be put in the base RunData interface in
- * future releases of Turbine</note>
- *
- * @author <a href="mailto:raphael@apache.org">Rapha謖 Luta</a>
- * @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
- * @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
- * @version $Id: DefaultJetspeedRunData.java,v 1.20 2004/02/23 03:36:10 jford
- *          Exp $
  */
 public class ALJetspeedRunData extends DefaultJetspeedRunData implements
     JetspeedRunData {
-  /**
-   * Static initialization of the logger for this class
-   */
+
+  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALJetspeedRunData.class.getName());
 
-  /*-
-   @Override
-   public User getUserFromSession() {
+  @Override
+  public Profile getCustomizedProfile() {
+    Profile profile = null;
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      try {
+        profile = (Profile) request.getAttribute("customize-profile");
+      } catch (Throwable ignore) {
+        //
+      }
+    }
+    if (profile != null) {
+      return profile;
+    }
 
-   try {
-   User user = (User) getSession().getAttribute("turbine.user");
-   if (user != null) {
-   return user;
-   }
-   } catch (Throwable ignore) {
-   }
-   try {
-   User user = (User) getRequest().getAttribute("turbine.user");
-   if (user != null) {
-   return user;
-   }
-   } catch (Throwable ignore) {
-   }
-   String username = null;
-   try {
-   username = (String) getSession().getAttribute("turbine.username");
-   } catch (Throwable ignore) {
-   }
-   if (username == null) {
-   return null;
-   }
-   try {
-   JetspeedUser user =
-   JetspeedUserManagement.getUser(new UserNamePrincipal(username));
-   if (user != null) {
-   user.setHasLoggedIn(Boolean.TRUE);
-   getRequest().setAttribute("turbine.user", user);
-   // getSession().setAttribute("turbine.user", user);
-   return user;
-   }
-   } catch (JetspeedSecurityException e) {
-   }
-   return null;
-   }
+    try {
+      ProfileLocator locator = (ProfileLocator) getProfile().clone();
 
-   @Override
-   public boolean removeUserFromSession() {
-   try {
-   getRequest().removeAttribute("turbine.user");
-   getSession().removeAttribute("turbine.user");
-   getSession().removeAttribute("turbine.username");
-   } catch (Exception e) {
-   return false;
-   }
-   return true;
-   }
+      String editMediaType = getParameters().getString("mtype");
+      if (editMediaType != null) {
+        locator.setMediaType(editMediaType);
+      }
+
+      // get a profile to edit
+      profile = (Profile) Profiler.getProfile(locator).clone();
+    } catch (Throwable ignore) {
+      //
+    }
+    if (request != null && profile != null) {
+      request.setAttribute("customize-profile", profile);
+    }
+
+    return profile;
+
+  } // getCustomizedProfile
+
+  /**
+   * Set the psml profile being customized.
+   *
+   * @param profile
+   *          The Profile being customized.
    */
+  @Override
+  public void setCustomizedProfile(Profile profile) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute("customize-profile", profile);
+    }
+  }
 
   @Override
-  public void save() {
-    getRequest().setAttribute("turbine.user", getUser());
-    getSession().setAttribute("turbine.username", getUser().getUserName());
-    getSession().setAttribute("turbine.user", getUser());
+  public void cleanupFromCustomization() {
+    // get the customization state for this page
+    SessionState customizationState = getPageSessionState();
 
-    HttpSession session = this.getSession();
-    Enumeration e = session.getAttributeNames();
-    System.out.println("============save==============");
-    while (e.hasMoreElements()) {
-      String key1 = (String) e.nextElement();
+    // customizationState.removeAttribute("customize-stack");
+    customizationState.removeAttribute("customize-paneName");
+    customizationState.removeAttribute("customize-profile");
+    // customizationState.removeAttribute("customize-type");
+    customizationState.removeAttribute("customize-columns");
+    customizationState.removeAttribute("customize-mode");
+    customizationState.removeAttribute("customize-parameters");
 
-      System.out.println(key1 + "：" + session.getAttribute(key1));
-      if (session.getAttribute(key1) instanceof JetspeedHttpStateManagerService.StateEntry) {
-        JetspeedHttpStateManagerService.StateEntry entry =
-          (JetspeedHttpStateManagerService.StateEntry) session
-            .getAttribute(key1);
-        Map map2 = entry.getMap();
-        Iterator iterator = map2.keySet().iterator();
-        while (iterator.hasNext()) {
-          Object next = iterator.next();
-          System.out.println(next + "：" + map2.get(next));
+    setMode("default");
+
+  } // cleanupFromCustomization
+
+  @Override
+  public Portlet getCustomized() {
+    Portlet p = null;
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      try {
+        p = (Portlet) request.getAttribute("customize-portlet");
+      } catch (Throwable ignore) {
+        // ignore
+      }
+    }
+    if (p != null) {
+      return p;
+    }
+
+    SessionState customizationState = getPageSessionState();
+    Stack stack = (Stack) customizationState.getAttribute("customize-stack");
+
+    if ((stack != null) && (!stack.empty())) {
+      p = (Portlet) stack.peek();
+    }
+
+    /**
+     * Save the title of this currently selected portlet
+     * ------------------------
+     * -------------------------------------------------- last modified:
+     * 11/06/01 Andreas Kempf, Siemens ICM S CP PE, Munich
+     */
+    if ((p != null) && (stack.size() > 1)) {
+      customizationState.setAttribute("customize-paneName", p.getTitle());
+    } else {
+      customizationState.setAttribute("customize-paneName", "*");
+    }
+
+    if (request != null) {
+      request.setAttribute("customize-portlet", p);
+    }
+    return p;
+  }
+
+  @Override
+  public void setCustomized(Portlet p) {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute("customize-portlet", p);
+    }
+    // customization state info is in the page's session state
+    SessionState customizationState = getPageSessionState();
+    Stack stack = (Stack) customizationState.getAttribute("customize-stack");
+    if (stack == null) {
+      stack = new Stack();
+      customizationState.setAttribute("customize-stack", stack);
+    }
+
+    if (p == null) {
+      if (!stack.empty()) {
+        stack.pop();
+      }
+
+      customizationState.setAttribute("customize-paneName", "*");
+    } else {
+      if (stack.size() > 0) {
+        Portlet last = (Portlet) stack.peek();
+
+        if ((last != null)
+          && (p.getName().equals(last.getName()))
+          && (p.getTitle().equals(last.getTitle()))) {
+          // System.out.println ("Portlet already used!!!");
+        } else {
+          stack.push(p);
         }
+      } else {
+        stack.push(p);
       }
-    }
 
-    if (getUser() != null) {
-      Hashtable tempStorage = getUser().getTempStorage();
-      Enumeration keys = tempStorage.keys();
-      System.out.println("============save baseuser==============");
-      while (keys.hasMoreElements()) {
-        String key2 = (String) keys.nextElement();
-        System.out.println(key2 + "：" + tempStorage.get(key2));
-      }
-    }
+      /**
+       * Save the title of this currently selected portlet
+       * ----------------------
+       * ---------------------------------------------------- last modified:
+       * 11/06/01 Andreas Kempf, Siemens ICM S CP PE, Munich
+       */
 
+      customizationState.setAttribute("customize-paneName", p.getTitle());
+      customizationState.setAttribute("customize-stack", stack);
+    }
   }
 
 }

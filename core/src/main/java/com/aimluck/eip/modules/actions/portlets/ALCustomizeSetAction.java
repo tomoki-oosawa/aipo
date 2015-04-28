@@ -118,9 +118,6 @@ import com.aimluck.eip.util.CustomizeUtils;
  */
 public class ALCustomizeSetAction extends VelocityPortletAction {
 
-  private static final String USER_SELECTIONS =
-    "session.portlets.user.selections";
-
   private static final String UI_PORTLETS_SELECTED = "portletsSelected";
 
   // private static final String ALL_PORTLET_LIST = "session.all.portlets.list";
@@ -283,14 +280,15 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
         HttpServletRequest request = HttpServletRequestLocator.get();
         if (request != null) {
           request.removeAttribute("portlets.list");
+          request.removeAttribute("portlets.selections");
         }
-        PortletSessionState.clearAttribute(rundata, USER_SELECTIONS);
       }
 
       ArrayList<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
       List<PortletEntry> portlets =
         buildPortletList(rundata, set, mediaType, allPortlets);
-      Map<String, PortletEntry> userSelections = getUserSelections(rundata);
+      Map<String, PortletEntry> userSelections =
+        CustomizeUtils.getUserSelections(rundata);
       // Build a list of categories from the available portlets
       List<BaseCategory> categories =
         buildCategoryList(rundata, mediaType, allPortlets);
@@ -576,19 +574,22 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
 
   protected void maintainUserSelections(RunData rundata) throws Exception {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
-    Profile profile = jdata.getCustomizedProfile();
+    Profile profile = jdata.getProfile();
     String mediaType = profile.getMediaType();
-
     String[] pnames = rundata.getParameters().getStrings("pname");
-    Map<String, PortletEntry> userSelections = getUserSelections(rundata);
-    List<PortletEntry> portlets = buildPortletList(rundata, mediaType);
-    if (portlets != null) {
-      // int end = Math.min(start + size, portlets.size());
-      // int pnamesIndex = 0;
-      // Go through all the portlets on this page and figure out which ones have
-      // been
-      // checked and which ones unchecked and accordingly update the
-      // userSelectionMap
+    Map<String, PortletEntry> userSelections =
+      CustomizeUtils.getUserSelections(rundata);
+    List<PortletEntry> portlets =
+      CustomizeUtils.buildAllPortletList(
+        rundata,
+        mediaType,
+        new ArrayList<PortletEntry>());
+
+    if (portlets == null) {
+      throw new Exception("Master Portlet List is null!");
+    }
+
+    if (pnames != null) {
       for (String pname : pnames) {
         for (PortletEntry entry : portlets) {
           String name = entry.getName();
@@ -598,12 +599,12 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
           }
         }
       }
-      PortletSessionState
-        .setAttribute(rundata, USER_SELECTIONS, userSelections);
-    } else {
-      throw new Exception("Master Portlet List is null!");
     }
 
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute("portlets.selections", userSelections);
+    }
   }
 
   /** Add new portlets in the customized set */
@@ -620,7 +621,8 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     PortletSet set = (PortletSet) ((JetspeedRunData) rundata).getCustomized();
 
     maintainUserSelections(rundata);
-    Map<String, PortletEntry> userSelections = getUserSelections(rundata);
+    Map<String, PortletEntry> userSelections =
+      CustomizeUtils.getUserSelections(rundata);
     String[] pnames = new String[userSelections.size()];
     userSelections.keySet().toArray(pnames);
 
@@ -748,14 +750,19 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
   }
 
   public void doSaveAddAction(RunData data, Context context) {
+    PortletSet set = (PortletSet) ((JetspeedRunData) data).getCustomized();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(set.getID());
+
     setPageLayout(data, context);
     // String REFERENCES_REMOVED = "references-removed";
     // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
     // update the changes made here to the profile being edited
     List<?>[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     for (int col = 0; col < columns.length; col++) {
       for (int row = 0; row < columns[col].size(); row++) {
         setPosition((IdentityElement) columns[col].get(row), col, row);
@@ -1219,21 +1226,6 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     return list;
   }
 
-  @SuppressWarnings("unchecked")
-  public static Map<String, PortletEntry> getUserSelections(RunData data) {
-    @SuppressWarnings("unchecked")
-    Map<String, PortletEntry> userSelections =
-      (Map<String, PortletEntry>) PortletSessionState.getAttribute(
-        data,
-        USER_SELECTIONS,
-        null);
-    if (userSelections == null) {
-      userSelections = new HashMap<String, PortletEntry>();
-      PortletSessionState.setAttribute(data, USER_SELECTIONS, userSelections);
-    }
-    return userSelections;
-  }
-
   public static List<PortletInfoEntry> buildInfoList(RunData data,
       String regName, String mediaType) {
     List<PortletInfoEntry> list = new ArrayList<PortletInfoEntry>();
@@ -1519,11 +1511,11 @@ public class ALCustomizeSetAction extends VelocityPortletAction {
     // controller.getConfig().getInitParameter("col_classes");
     // context.put("col_classes", getCellClasses(columnClasses));
 
-    columns = (List[]) customizationState.getAttribute("customize-columns");
     PortletSet customizedSet = (PortletSet) jdata.getCustomized();
     Portlets set =
       jdata.getCustomizedProfile().getDocument().getPortletsById(
         customizedSet.getID());
+    columns = CustomizeUtils.buildCustomizeColumns(rundata, context, set);
 
     if (logger.isDebugEnabled()) {
       logger.debug("MultiCol: columns "

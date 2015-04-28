@@ -221,7 +221,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
   /**
    * Store the Map for the state, and listen for HttpSessionBinding events
    */
-  public class StateEntry implements HttpSessionBindingListener, Serializable {
+  private class StateEntry implements HttpSessionBindingListener, Serializable {
 
     private static final long serialVersionUID = 8630600178442354718L;
 

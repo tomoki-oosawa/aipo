@@ -22,10 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +43,9 @@ import org.apache.jetspeed.om.registry.RegistryEntry;
 import org.apache.jetspeed.om.registry.base.BaseCategory;
 import org.apache.jetspeed.om.registry.base.BasePortletEntry;
 import org.apache.jetspeed.om.security.JetspeedUser;
+import org.apache.jetspeed.portal.Portlet;
+import org.apache.jetspeed.portal.PortletControl;
+import org.apache.jetspeed.portal.PortletSet;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.Registry;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -704,8 +709,8 @@ public class CustomizeUtils {
     return isAdminUserView(entry, jData);
   }
 
-  public List<?>[] buildCustomizeColumns(RunData rundata, Context context,
-      Portlets portlets) {
+  public static List<?>[] buildCustomizeColumns(RunData rundata,
+      Context context, Portlets portlets) {
     HttpServletRequest request = HttpServletRequestLocator.get();
 
     List<?>[] columns = null;
@@ -757,5 +762,44 @@ public class CustomizeUtils {
       request.setAttribute("customize-columns", columns);
     }
     return columns;
+  }
+
+  public static Portlet getCustomizePortlet(RunData rundata, String peid) {
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+
+    Portlet found = null;
+    Stack<Portlet> sets = new Stack<Portlet>();
+    sets.push(jdata.getCustomizedProfile().getRootSet());
+
+    while ((found == null) && (sets.size() > 0)) {
+      PortletSet set = (PortletSet) sets.pop();
+
+      if (set.getID().equals(peid)) {
+        found = set;
+      } else {
+        Enumeration<?> en = set.getPortlets();
+        while ((found == null) && en.hasMoreElements()) {
+          Portlet p = (Portlet) en.nextElement();
+
+          // unstack the controls to find the real PortletSets
+          Portlet real = p;
+          while (real instanceof PortletControl) {
+            real = ((PortletControl) p).getPortlet();
+          }
+
+          if (real instanceof PortletSet) {
+            if (real.getID().equals(peid)) {
+              found = real;
+            } else {
+              // we'll explore this set afterwards
+              sets.push(real);
+            }
+          } else if (p.getID().equals(peid)) {
+            found = p;
+          }
+        }
+      }
+    }
+    return found;
   }
 }
