@@ -37,13 +37,16 @@ $!{result.Detail.TitleHtml}
 <td>
 <div class="clearfix">
 <div class="avatar floatLeft mr10">
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
 #if(${result.Detail.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.Detail.OwnerId}).addQueryData("t", ${result.Detail.PhotoModified}))" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #else
 <img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #end
+</a>
 </div>
-<div class="alignleft"><strong>${result.Detail.OwnerName}</strong>
+<div class="alignleft"><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
+<strong>${result.Detail.OwnerName}</strong></a>
 <br />
 $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.DayOfWeek} $!{result.Detail.CreateDateAlternative.time}
 </div>
