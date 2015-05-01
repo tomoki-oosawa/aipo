@@ -124,6 +124,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>note</code> 内容 */
   private ALStringField note;
 
+  /** <code>situation</code> 出勤状況 */
+  private ALNumberField situation;
+
   /** <code>public_flag</code> 公開/非公開フラグ */
   private ALStringField public_flag;
 
@@ -601,9 +604,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     place.setTrim(true);
     // 内容
     note = new ALStringField();
-    note
-      .setFieldName(ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_NOTE"));
+    note.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SITUATION"));
     note.setTrim(false);
+    // 出勤状況
+    situation = new ALNumberField();
+    situation.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_SITUATION"));
+
     // 公開区分
     public_flag = new ALStringField();
     public_flag.setFieldName(ALLocalizationUtils
@@ -747,6 +755,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     place.limitMaxLength(50);
     // 内容
     note.limitMaxLength(1000);
+
   }
 
   /**
@@ -832,6 +841,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       place.setValue(record.getPlace());
       // 内容
       note.setValue(record.getNote());
+      // 出勤状況
+      situation.setValue(record.getNote());
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
       // メールフラグ
@@ -1449,6 +1460,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         newSchedule.setPlace(place.getValue());
         // 内容
         newSchedule.setNote(note.getValue());
+        // 出勤状況
+        newSchedule.setSituation((int) situation.getValue());
         // 公開フラグ
         newSchedule.setPublicFlag(public_flag.getValue());
         // 共有メンバーによる編集／削除フラグ
@@ -1602,6 +1615,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.setPlace(place.getValue());
         // 内容
         schedule.setNote(note.getValue());
+        // 出勤状況
+        schedule.setSituation((int) situation.getValue());
         // 公開フラグ
         schedule.setPublicFlag(public_flag.getValue());
         // メールフラグ
@@ -1787,42 +1802,46 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
         }
-      }
 
-      // スケジュールを登録
-      Database.commit();
+        // 出勤状況の選択
 
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        schedule.getScheduleId(),
-        ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
-        schedule.getName());
+        // スケジュールを登録
+        Database.commit();
 
-      // アクティビティ
-      String loginName = loginUser.getName().getValue();
-      List<String> recipients = new ArrayList<String>();
-      for (ALEipUser user : memberList) {
-        if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
-          recipients.add(user.getName().getValue());
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          schedule.getScheduleId(),
+          ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
+          schedule.getName());
+
+        // アクティビティ
+        String loginName = loginUser.getName().getValue();
+        List<String> recipients = new ArrayList<String>();
+        for (ALEipUser user : memberList) {
+          if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+            recipients.add(user.getName().getValue());
+          }
         }
-      }
-      int userid = ALEipUtils.getUserId(rundata);
-      ScheduleUtils.createShareScheduleActivity(
-        tmpSchedule,
-        loginName,
-        recipients,
-        false,
-        userid);
-
-      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
-      if ("O".equals(public_flag.toString())) {
-        ScheduleUtils.createNewScheduleActivity(
-          schedule,
+        int userid = ALEipUtils.getUserId(rundata);
+        ScheduleUtils.createShareScheduleActivity(
+          tmpSchedule,
           loginName,
+          recipients,
           false,
           userid);
+
+        // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+        if ("O".equals(public_flag.toString())) {
+          ScheduleUtils.createNewScheduleActivity(
+            schedule,
+            loginName,
+            false,
+            userid);
+        }
       }
-    } catch (RuntimeException e) {
+    }
+
+    catch (RuntimeException e) {
       // RuntimeException
       Database.rollback();
       logger.error("[ScheduleFormData]", e);

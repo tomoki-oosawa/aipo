@@ -73,6 +73,17 @@ $!{result.Detail.Date}
 #ALtditemheader()
 #if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.WbrName}
 #ALtditemfooter()
+#ALtdcaption($l10n.SCHEDULE_SITUATION)
+#ALtditemheader()
+#if($!result.Detail.isPublic())
+$l10n.SCHEDULE_TIKOKU
+#elseif(!$!result.Detail.isHidden())
+$l10n.SCHEDULE_GAISYUTU
+#else
+$l10n.SCHEDULE_KYUKA
+#end
+
+#ALtdcaption()
 #* 共有カテゴリ連携（ここから）  *#
 #if($!result.isDisplayManHour())
 #ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
