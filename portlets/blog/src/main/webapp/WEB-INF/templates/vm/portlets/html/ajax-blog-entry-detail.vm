@@ -30,7 +30,7 @@
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
 <table class="listTable wide">
 <caption>
-<span class="floatRight" style="font-weight:normal; color:#434343;">$!{result.Detail.ThemaNameHtml}</span>
+<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 $!{result.Detail.TitleHtml}
 </cation>
 <tr>
@@ -60,7 +60,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 </tr>
 
 <tr>
-<td style="border-bottom:none;" class="sentence">
+<td style="border-top:none;" class="sentence">
 <div class="clearfix">
   <div>
   $!{result.Detail.Note}
