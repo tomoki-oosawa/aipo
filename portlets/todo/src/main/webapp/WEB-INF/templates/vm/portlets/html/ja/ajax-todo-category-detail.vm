@@ -33,22 +33,14 @@
 #ALtditem($!result.Detail.UpdateDate)
 
 #ALtdcaption($l10n.COMMON_CREATE_USER)
-#if($result.Detail.IsSelfCategory)
-#ALtditem($!result.Detail.UserName)
-#else
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.Detail.UserId})">$!result.Detail.UserName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UserId},arguments[0])">$!result.Detail.UserName</a>
 #ALtditemfooter()
-#end
 
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
-#if($!result.LoginUserId.Value == $result.Detail.UpdateUserId.Value)
-#ALtditem($!result.Detail.UpdateUserName)
-#else
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.Detail.UpdateUserId})">$!result.Detail.UpdateUserName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId},arguments[0])">$!result.Detail.UpdateUserName</a>
 #ALtditemfooter()
-#end
 #ALtablefooter()
 #ALbuttonheader()
 #if($result.Detail.isSelfCategory())
