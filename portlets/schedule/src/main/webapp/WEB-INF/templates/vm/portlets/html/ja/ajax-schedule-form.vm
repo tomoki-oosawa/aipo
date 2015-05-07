@@ -50,7 +50,6 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
-#ALajaxscreenformheader("scheduleForm" $jslink $portlet "SceduleFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
 #if($result.SelectData.Max)
 #if($!result.SelectData.isDuplicate())
 #set($colspanmax = $!{result.SelectData.Max} + 2)
@@ -63,7 +62,7 @@
 #end
 #if($result.SelectData.EndHour)#set($endHour = $!{result.SelectData.EndHour} - 1)#end
 ##ALajaxscreenformheader("_scheduleForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
-<form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
+<form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
 <input type="hidden" name="ignore_duplicate_facility" value="false" />
 <input type="hidden" name="secid" value="$secid" />
 #if($mode=="new_form" || $!result.isCopy())

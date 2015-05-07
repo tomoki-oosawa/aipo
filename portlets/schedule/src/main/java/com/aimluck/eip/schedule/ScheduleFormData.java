@@ -240,16 +240,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  private int uid;// この変数に対する処理が何も行われていない、ここが怪しい
-
-  // private EipTMsgboardCategory category;//ここはいらないかもしれない。
-
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
   private final int msg_type = 0;
 
-  private String orgId;// 添付フォルダでも使う
+  private String orgId;
 
   private ALEipUser loginUser;
 
@@ -261,7 +257,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   private boolean is_same_date;
 
   /** アクセス権限の機能名 */
-  private String aclPortletFeature = null;// 添付フォルダでも使う
+  private String aclPortletFeature = null;
 
   /**
    *
@@ -299,7 +295,6 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     is_owner = true;
 
-    uid = ALEipUtils.getUserId(rundata);
     orgId = Database.getDomainName();
     loginUser = ALEipUtils.getALEipUser(rundata);
 
@@ -1127,8 +1122,6 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // オーナーID
       schedule.setOwnerId(Integer.valueOf(ownerid));
-      // ユーザーID
-      schedule.setOwnerId(Integer.valueOf(uid));
       // 作成日
       Date now = new Date();
       schedule.setCreateDate(now);

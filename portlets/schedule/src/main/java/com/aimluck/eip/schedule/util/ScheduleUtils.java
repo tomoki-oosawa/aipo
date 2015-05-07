@@ -4328,7 +4328,7 @@ public class ScheduleUtils {
         // 所有者
         file.setOwnerId(Integer.valueOf(uid));
         // トピックID
-        // file.setEipTSchedule(topic);
+        file.setEipTSchedule(schedule);
         // ファイル名
         file.setFileName(filebean.getFileName());
         // ファイルパス
