@@ -289,6 +289,23 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
       boolean maximized =
         customized || (jdata.getMode() == JetspeedRunData.MAXIMIZE);
 
+      // ここでportletsをcontext.putする処理を書く↓
+      Portlets portletsForTimeline =
+        ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
+
+      // タブ関係なくポートレット内のタイムラインの数を数える。
+      int timelineCount = 0;
+      for (Portlets p : portletsForTimeline.getPortletsArray()) {
+        for (Entry e : p.getEntriesArray()) {
+          if ("Timeline".equals(e.getParent())) {
+            timelineCount++;
+          }
+        }
+      }
+
+      // timelineCount, timelineMuitiをvmファイルで使えるようにcontext.putする。
+      context.put("timelineCount", timelineCount);
+
       if (maximized && "true".equals(showTab)) {
         Portlets portlets =
           ((JetspeedRunData) rundata).getProfile().getDocument().getPortlets();
@@ -316,6 +333,7 @@ public class ALVelocityPortletControl extends AbstractPortletControl {
             gadgetCounts++;
           }
         }
+        // context.put("portletsForTimeline", portlets);
         context.put("gadgetCounts", gadgetCounts);
         context.put("accountMenues", getAccountMenues(menues));
         context.put("systemMenus", getSystemMenus(menues));

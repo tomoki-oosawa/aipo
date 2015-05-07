@@ -397,7 +397,7 @@ $portlet.getContent($data)
 					#foreach ( $action in $actions)
 						<li><a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")'>$l10n.WAR_SET_UP</a></li>
 					#end
-					#if($accessControl == "true")
+					#if($accessControl == "true" && ($portlet.name != "Timeline" || ($timelineCount > 1)))
 						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); location.href='$!{jslink}'; } );">$l10n.CUSTOMIZER_DELETE</a></li>
 					#end
 					</ul>
