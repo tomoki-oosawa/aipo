@@ -100,7 +100,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   <td>
   <div class="clearfix mb10">
   <div class="avatar floatLeft mr10">
-  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
+  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">
   #if(${record.Owner.hasPhoto()})
     <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.Owner.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
   #else
@@ -109,7 +109,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   </a>
   </div>
   <div class="alignleft">
-  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
+  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">
   	<strong>$!{record.OwnerName}</strong>
   	</a>
   <br />
