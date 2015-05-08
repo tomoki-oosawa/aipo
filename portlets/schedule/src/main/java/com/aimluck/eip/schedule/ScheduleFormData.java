@@ -604,13 +604,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     place.setTrim(true);
     // 内容
     note = new ALStringField();
-    note.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_SITUATION"));
-    note.setTrim(false);
+    note
+      .setFieldName(ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_NOTE"));
+    note.setTrim(true);
     // 出勤状況
     situation = new ALNumberField();
     situation.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SITUATION"));
+    situation.setTrim(true);
 
     // 公開区分
     public_flag = new ALStringField();
@@ -842,7 +843,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 内容
       note.setValue(record.getNote());
       // 出勤状況
-      situation.setValue(record.getNote());
+      situation.setValue(record.getSituation());
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
       // メールフラグ

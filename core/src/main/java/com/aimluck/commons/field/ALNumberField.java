@@ -27,7 +27,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 入力フィールドを表すクラス（数字用）です。 <br />
- * 
+ *
  */
 public class ALNumberField extends ALAbstractField {
 
@@ -50,14 +50,14 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * コンストラクタ
-   * 
+   *
    */
   public ALNumberField() {
   }
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param value
    */
   public ALNumberField(long value) {
@@ -66,7 +66,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param str
    */
   public ALNumberField(String str) {
@@ -75,7 +75,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字）を設定します。
-   * 
+   *
    * @param value
    */
   public void setValue(long value) {
@@ -84,7 +84,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字の文字列）を設定します。
-   * 
+   *
    */
   @Override
   public void setValue(String str) {
@@ -97,7 +97,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字）を取得します。
-   * 
+   *
    * @return
    */
   public long getValue() {
@@ -113,7 +113,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値（数字）を取得します。
-   * 
+   *
    * @return
    */
   public int getValueWithInt() {
@@ -129,7 +129,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値の文字列表現を取得します。
-   * 
+   *
    * @return
    */
   public String getValueAsString() {
@@ -138,7 +138,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限の有無を判定します。
-   * 
+   *
    * @return
    */
   public boolean isLimitValue() {
@@ -147,7 +147,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値と最大値）を設定します。
-   * 
+   *
    * @param min
    * @param max
    */
@@ -163,7 +163,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値）を設定します。
-   * 
+   *
    * @return
    */
   public long getMinValue() {
@@ -172,7 +172,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最大値）を設定します。
-   * 
+   *
    * @return
    */
   public long getMaxValue() {
@@ -181,7 +181,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 数字の大きさ制限（最小値）を設定します。
-   * 
+   *
    * @param min
    */
   public void limitMinValue(long min) {
@@ -195,7 +195,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 文字列の長さ制限（最大値）を設定します。
-   * 
+   *
    * @param max
    */
   public void limitMaxValue(long max) {
@@ -209,7 +209,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値を検証します。
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -260,7 +260,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値がNullではないかどうかを判定します。
-   * 
+   *
    * @return
    */
   public boolean isNotNullValue() {
@@ -273,7 +273,7 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値が数字かどうかを判定します。
-   * 
+   *
    * @return
    */
   protected boolean isNumberValue() {
@@ -306,10 +306,16 @@ public class ALNumberField extends ALAbstractField {
 
   /**
    * 入力フィールド値の文字列表現を取得します。
-   * 
+   *
    */
   @Override
   public String toString() {
     return ALStringUtil.sanitizing(value);
+  }
+
+  /**
+   * @param b
+   */
+  public void setTrim(boolean b) {
   }
 }

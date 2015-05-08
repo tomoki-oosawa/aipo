@@ -21,6 +21,7 @@ package com.aimluck.eip.schedule;
 import java.util.Date;
 
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -43,7 +44,9 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   private ALStringField note;
 
   /** <code>note</code> 出勤状況 */
-  private ALStringField situation;
+  private ALNumberField situation;
+
+  private ALStringField situation_string;
 
   /** <code>createUser</code> 登録ユーザー */
   private ALEipUser createUser;
@@ -85,7 +88,8 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     note = new ALStringField();
     note.setTrim(false);
     // 勤務状況
-    situation = new ALStringField();
+    situation = new ALNumberField();
+    situation_string = new ALStringField();
     // テキスト
     text = new ALStringField();
     text.setValue("");
@@ -140,9 +144,21 @@ public class ScheduleDetailResultData extends ScheduleResultData {
    *
    * @param string
    */
-  public void setSituation(String string) {
-    situation.setValue(string);
-  } // 勤務状況の選択肢はint型で受け取るはずですが表現が分からず、構文なのでStringのままにしてあります。
+  public ALNumberField getSituation() {
+    return situation;
+  }
+
+  public void setSituation(int i) {
+    situation.setValue(i);
+  }
+
+  public ALStringField getSituationString() {
+    return situation_string;
+  }
+
+  public void setSituationString(String string) {
+    situation_string.setValue(string);
+  }
 
   /**
    * 場所を設定します。
