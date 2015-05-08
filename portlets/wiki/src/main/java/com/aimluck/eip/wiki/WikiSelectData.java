@@ -62,7 +62,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wiki検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WikiSelectData extends
     ALAbstractMultiFilterSelectData<EipTWiki, EipTWiki> implements ALData {
@@ -114,7 +114,7 @@ public class WikiSelectData extends
   private long tempOwnerId;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -167,7 +167,7 @@ public class WikiSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -221,7 +221,7 @@ public class WikiSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -292,7 +292,7 @@ public class WikiSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -438,7 +438,7 @@ public class WikiSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -471,7 +471,7 @@ public class WikiSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -490,7 +490,7 @@ public class WikiSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -564,7 +564,7 @@ public class WikiSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {

@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class WikiResultData implements ALData {
 
@@ -291,7 +291,7 @@ public class WikiResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -360,4 +360,5 @@ public class WikiResultData implements ALData {
   public boolean isChild() {
     return 0 != this.parent_id.getValue();
   }
+
 }
