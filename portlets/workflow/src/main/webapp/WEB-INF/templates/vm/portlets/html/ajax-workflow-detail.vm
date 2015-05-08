@@ -135,7 +135,7 @@ $!{record.UpdateDate}
 &nbsp;
 #else
 <span id="order_field">
-#ALselectpdheader("passback_order" "70%" "" )
+#ALselectpdheader("passback_order" "65%" "" )
 #if($!result.Detail.CanRemandApplicant)
 <option value='0'>$l10n.WORKFLOW_APPLICANT</option>
 #end
