@@ -69,7 +69,7 @@ dojo.declare( "aimluck.widget.Timeout",  [dijit._Widget, dijit._Templated] , {
 dojo.declare(
     "aimluck.widget.DialogSub",
     [aimluck.widget.Dialog,dijit.Dialog],
-    {
+    {  //詳細画面のポップアップウインドウ
     	templateString:"<div id='modalDialog' class='modalDialog' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>"
     }
 );

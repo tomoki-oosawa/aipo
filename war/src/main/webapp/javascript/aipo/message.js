@@ -937,7 +937,7 @@ aipo.message.mobileUnderlay = null;
 aipo.message.popupProfile = function(userId, event) {
 	if(aipo.message.isMobile && !aipo.message.mobileUnderlay) {
 		aipo.message.mobileUnderlay = new aimluck.widget.DialogUnderlay();
-		dojo.byId(aipo.message.mobileUnderlay.domNode.id).style["z-index"] = 999;
+		dojo.byId(aipo.message.mobileUnderlay.domNode.id).style["z-index"] = 999;//ポップアップを開いた時のスモーク
 		dojo.connect(aipo.message.mobileUnderlay.domNode, "onmousedown", aipo.message.mobileUnderlay.domNode, function(){
 			 aipo.message.hideProfile();
 		 });
@@ -961,7 +961,6 @@ aipo.message.popupProfile = function(userId, event) {
 		div.style['z-index'] = 1000;
 		document.body.appendChild(div);
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
-
 	}
 	event = event || window.event;
 	var eventTarget = event.srcElement || event.target;
