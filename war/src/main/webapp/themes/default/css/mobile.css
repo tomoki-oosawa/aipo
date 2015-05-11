@@ -2296,7 +2296,7 @@ body.messageRoomList .messageUserlist .index {
   margin-bottom: 5px;
 }
 .messageOuter .message {
-  border-top: none;
+  border-top: none !important;
 }
 .messageOuter .message .time {
   color: #999;
