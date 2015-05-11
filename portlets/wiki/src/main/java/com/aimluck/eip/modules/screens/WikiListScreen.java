@@ -30,7 +30,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiカテゴリの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class WikiListScreen extends ALVelocityScreen {
 
@@ -39,7 +39,7 @@ public class WikiListScreen extends ALVelocityScreen {
     .getLogger(WikiListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

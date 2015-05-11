@@ -462,6 +462,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setUpdateUserId(record.getUpdateUserId());
       return rd;
     } catch (Exception e) {
       logger.error("WikiSelectData.getResultData", e);
@@ -540,6 +541,7 @@ public class WikiSelectData extends
         .getValue());
       rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setBaseInternalLink(baseImageLink);
       rd.setBaseImageRawLink(baseImageRawLink);
 
