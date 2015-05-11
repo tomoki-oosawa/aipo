@@ -84,7 +84,7 @@
         </executions>
         <configuration>
           <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
-          <outputDirectory>${project.build.outputDirectory}/../../</outputDirectory>
+          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
           <nosuffix>true</nosuffix>
           <encoding>UTF-8</encoding>
           <gzip>false</gzip>
@@ -233,7 +233,7 @@
 		<groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-war-plugin</artifactId>
         <configuration>
-          <warSourceExcludes>javascript/**,themes/**</warSourceExcludes>
+          <warSourceExcludes>**/*.js,**/*.css</warSourceExcludes>
         </configuration>
       </plugin>
     </plugins>
