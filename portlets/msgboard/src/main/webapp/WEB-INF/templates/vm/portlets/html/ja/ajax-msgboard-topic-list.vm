@@ -77,7 +77,6 @@
 <div>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicDetailScreen").addQueryData("entityid",$record.TopicId))','$!portlet.ID',aipo.msgboard.onLoadMsgboardDialog);">$!record.TopicName  #if($record.ReplyCount.toString() != "0")（$record.ReplyCount）#end</a>
 </div>
-<p>テスト</p>
 #ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')
 <div>
@@ -87,11 +86,7 @@
 $!record.CategoryName
 </div>
 </td>
-#if($!{record.LoginUserId.value}==$!{record.OwnerId.value})
-#ALtdcellAtt("$!{record.OwnerName}" 'class="mb_hide" nowrap="nowrap"')
-#else
-<td class="mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.OwnerId})">$!record.OwnerName</a></td>
-#end
+<td class="mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a></td>
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
 </tr>
 #end
