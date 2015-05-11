@@ -84,7 +84,7 @@
         </executions>
         <configuration>
           <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
-          <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+          <outputDirectory>target/aipo</outputDirectory>
           <nosuffix>true</nosuffix>
           <encoding>UTF-8</encoding>
           <gzip>false</gzip>
