@@ -2232,6 +2232,9 @@ body.messageRoomList .messageSummary .latest {
   line-height: inherit;
   height: auto;
 }
+body.messageRoomList .messageSummary .latest {
+  display: block;
+}
 body.messageRoomList .messageSummary .avatar,
 body.messageRoomList .messageUserlist ul .avatar {
   padding: 7px;

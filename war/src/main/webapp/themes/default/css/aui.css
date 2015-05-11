@@ -1122,6 +1122,9 @@ ul.hdTools .dropdown:before {
 #dd_message .timelineOuter .timeline .messageContents {
   margin-right: 60px;
 }
+#dd_message .contents {
+  background: #ffffff;
+}
 #dd_message .subContents {
   float: right;
   width: 240px;
@@ -1186,6 +1189,9 @@ ul.hdTools .dropdown:before {
 .messageSummary li .latest, .messageSummary li .date, .messageUserlist ul li .latest, .messageUserlist ul li .date {
   font-size: 11px;
   color: #999;
+}
+.messageSummary li .latest{
+  display: none;
 }
 .messageSummary .avatar, .messageUserlist ul .avatar {
   position: absolute;
@@ -1390,6 +1396,7 @@ ul.hdTools .dropdown:before {
   line-height: 35px;
   border: none;
   /* color: #d2d2d2; */
+  border-radius: 0;
 }
 .sideBlock .auiTabs .tab li a:hover, .sideBlock .auiTabs .tab li:first-child a:hover {
   /* color: white; */
