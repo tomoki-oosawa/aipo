@@ -682,7 +682,8 @@ ul.hdTools .dropdown:before {
 .dropdown .sideBlock,
 .activityPopup .sideBlock, .supportPopup .sideBlock {
   float: left;
-  width: 280px;
+  /* width: 280px; */
+  width: 240px;
 }
 .dropdown .contents,
 .activityPopup .contents, .supportPopup .contents {
