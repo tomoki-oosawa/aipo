@@ -30,9 +30,9 @@
         <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>net.sf.alchim</groupId>
+          <groupId>net.alchim31.maven</groupId>
           <artifactId>yuicompressor-maven-plugin</artifactId>
-          <version>0.7.1</version>
+          <version>1.1</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -72,9 +72,9 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>net.sf.alchim</groupId>
+        <groupId>net.alchim31.maven</groupId>
         <artifactId>yuicompressor-maven-plugin</artifactId>
-        <version>0.7.1</version>
+        <version>1.1</version>
         <executions>
           <execution>
             <goals>
@@ -84,6 +84,7 @@
         </executions>
         <configuration>
           <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
+          <outputDirectory>${project.build.outputDirectory}/../../</outputDirectory>
           <nosuffix>true</nosuffix>
           <encoding>UTF-8</encoding>
           <gzip>false</gzip>
@@ -226,6 +227,13 @@
           <jswarn>false</jswarn>
           <statistics>false</statistics>
           <force>true</force>
+        </configuration>
+      </plugin>
+      <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <configuration>
+          <warSourceExcludes>javascript/**,themes/**</warSourceExcludes>
         </configuration>
       </plugin>
     </plugins>
