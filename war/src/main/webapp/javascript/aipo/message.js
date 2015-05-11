@@ -940,6 +940,14 @@ aipo.message.popupProfile = function(userId, event) {
 		dojo.byId(aipo.message.mobileUnderlay.domNode.id).style["z-index"] = 999;
 		dojo.connect(aipo.message.mobileUnderlay.domNode, "onmousedown", aipo.message.mobileUnderlay.domNode, function(){
 			 aipo.message.hideProfile();
+				//android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
+			    if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
+			        var wrapper=dojo.byId("wrapper");
+			        // wrapper再表示
+			        // wrapperの非表示はdisplay:none;で行う
+			        // dojo.style(wrapper, "visibility", "visible");
+			        dojo.style(wrapper, "display", "block");
+			    }
 		 });
 	}
 	if(aipo.message.isMobile) {
@@ -983,7 +991,7 @@ aipo.message.popupProfile = function(userId, event) {
 	});
 	dojo.addClass(eventTarget, 'profileMouseenter');
 
-	var popupInner = dijit.byId("popupProfileInner_" + userId);
+	var popupInner = dijit.byId("popupProfileInner_" + userId);/*プロフィールカード*/
 	if (!popupInner) {
 		popupInner = dijit.byId("popupProfileInner_" + userId);
 		popupInner = new aimluck.widget.Contentpane({}, "popupProfileInner_" + userId);
@@ -995,6 +1003,7 @@ aipo.message.popupProfile = function(userId, event) {
 		var objBody = document.getElementsByTagName("body").item(0);
 		var node = dojo.query("#popupProfileInner_" + userId); /*プロフィールカード本体の表示・非表示*/
 		var popupNode = dojo.query("#popupProfile_" + userId); /*プロフィールカードの出現位置を指定*/
+		var wrapper=dojo.byId("wrapper");
 
 		if (node.style('display') == 'none' || popupInner.eventTarget !== eventTarget) {
 			dojo.query('.profilePopup').style('display', 'none');
@@ -1023,6 +1032,15 @@ aipo.message.popupProfile = function(userId, event) {
 			}else {
 				popupNode.style("top",rect.bottom-node[0].clientHeight+scroll.top+"px");
 			}
+			//　 Android2系でプロフィールカードポップアップからメッセージを送信しようとすると
+		    // 　画面が上下に激しく動くバグを回避
+			if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
+				// wrapper非表示はhiddenではなくdisplay:none;で
+				// dojo.style(wrapper, "visibility", "hidden");
+				dojo.style(wrapper, "display", "none");
+				popupNode.style("top", "0px");
+				popupNode.style("margin", "0");
+				}
 			node.style("opacity","1");
 		} else {
 			node.style('display','none');
@@ -1035,22 +1053,6 @@ aipo.message.popupProfile = function(userId, event) {
 		popupInner.onLoad();
 	} else {
 		popupInner.viewPage("?template=UserPopupScreen&entityid=" + userId);
-	}
-	//　 Android2系でプロフィールカードポップアップからメッセージを送信しようとすると
-    // 　画面が上下に激しく動くバグを回避
-	if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
-        var wrapper=dojo.byId("wrapper");
-        if (wrapper.style('display') == 'block') {
-        // wrapper非表示はhiddenではなくdisplay:none;で
-        // dojo.style(wrapper, "visibility", "hidden");
-         dojo.style(wrapper, "display", "none");
-         var myModal=dojo.byId("modalDialog");
-         dojo.style(myModal, "top", "0px");
-         dojo.style(myModal, "margin", "0");
-         }else{
-	         // wrapper再表示
-	         dojo.style(wrapper, "display", "block");
-         }
 	}
 }
 
