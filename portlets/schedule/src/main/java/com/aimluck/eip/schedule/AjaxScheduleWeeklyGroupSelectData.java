@@ -61,7 +61,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * カレンダー用週間スケジュールの検索結果を管理するクラスです。
- * 
+ *
  */
 public class AjaxScheduleWeeklyGroupSelectData extends
     AjaxScheduleMonthlySelectData {
@@ -202,7 +202,10 @@ public class AjaxScheduleWeeklyGroupSelectData extends
       viewStart.setValue(tmpViewStart);
       if (!viewStart.validate(new ArrayList<String>())) {
         ALEipUtils.removeTemp(rundata, context, "view_start");
-        throw new ALPageNotFoundException();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        viewStart.setValue(cal.getTime());
       }
     }
     // MonthlyCalendarに表示する月を登録
@@ -383,7 +386,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -424,7 +427,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * ログインユーザーのスケジュールが上にくるようにソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -558,7 +561,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -690,7 +693,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -701,7 +704,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -835,7 +838,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -844,7 +847,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -853,7 +856,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -862,7 +865,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -871,7 +874,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 前の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevDate() {
@@ -880,7 +883,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 前の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevWeek() {
@@ -889,7 +892,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 次の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextDate() {
@@ -898,7 +901,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 次の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextWeek() {
@@ -907,7 +910,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 今日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getToday() {
@@ -916,7 +919,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 先月を取得する．
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -925,7 +928,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 来月を取得する．
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -934,7 +937,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
 
   /**
    * 週間スケジュールコンテナを取得します。
-   * 
+   *
    * @return
    */
   public AjaxScheduleWeekContainer getContainer() {
@@ -956,7 +959,7 @@ public class AjaxScheduleWeeklyGroupSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
