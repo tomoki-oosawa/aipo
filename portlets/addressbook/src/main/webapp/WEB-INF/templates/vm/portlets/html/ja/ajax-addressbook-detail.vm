@@ -93,9 +93,21 @@ $!record.Name <br />
 #ALtditem($!result.Detail.Note)
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
+#if($!{result.Detail.CreatedUserId.ValueWithInt} < 4)
+#ALtditem("$!result.Detail.CreatedUser　（$!result.Detail.CreateDate）")
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreatedUserId},arguments[0])">$!{result.Detail.CreatedUser}</a>（$!result.Detail.CreateDate）
+#ALtditemfooter()
+#end
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
+#if($!{result.Detail.CreatedUserId.ValueWithInt} < 4)
 #ALtditem("$!result.Detail.UpdatedUser （$!result.Detail.UpdateDate）")
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdatedUserId},arguments[0])">$!result.Detail.UpdatedUser</a>（$!result.Detail.UpdateDate）
+#ALtditemfooter()
+#end
 #end
 #ALtablefooter()
 #ALbuttonheader()

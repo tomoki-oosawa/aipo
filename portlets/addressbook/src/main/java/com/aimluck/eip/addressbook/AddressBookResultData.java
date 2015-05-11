@@ -110,8 +110,14 @@ public class AddressBookResultData implements ALData {
   /** 登録者 */
   private ALStringField created_user;
 
+  /** 登録者のID */
+  private ALNumberField created_user_id;
+
   /** 更新者 */
   private ALStringField updated_user;
+
+  /** 更新者のID */
+  private ALNumberField updated_user_id;
 
   /** 索引 */
   private ALStringField index;
@@ -147,7 +153,9 @@ public class AddressBookResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     created_user = new ALStringField();
+    created_user_id = new ALNumberField();
     updated_user = new ALStringField();
+    updated_user_id = new ALNumberField();
     index = new ALStringField();
   }
 
@@ -319,7 +327,7 @@ public class AddressBookResultData implements ALData {
 
   /**
    * 公開フラグを設定します。
-   * 
+   *
    * @param string
    */
   public void setPublicFlag(String string) {
@@ -328,7 +336,7 @@ public class AddressBookResultData implements ALData {
 
   /**
    * 公開フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -460,6 +468,20 @@ public class AddressBookResultData implements ALData {
   }
 
   /**
+   * @param field
+   */
+  public void setCreatedUserId(long i) {
+    created_user_id.setValue(i);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getCreatedUserId() {
+    return created_user_id;
+  }
+
+  /**
    * @return
    */
   public ALStringField getUpdatedUser() {
@@ -471,6 +493,20 @@ public class AddressBookResultData implements ALData {
    */
   public void setUpdatedUser(String string) {
     updated_user.setValue(string);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getUpdatedUserId() {
+    return updated_user_id;
+  }
+
+  /**
+   * @param field
+   */
+  public void setUpdatedUserId(long i) {
+    updated_user_id.setValue(i);
   }
 
   /**

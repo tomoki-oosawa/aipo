@@ -47,7 +47,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳での検索BOX用データです。(社外アドレス検索用)
- * 
+ *
  */
 public class AddressBookWordSelectData extends
     AbstractAddressBookWordSelectData<EipMAddressbook, EipMAddressbook> {
@@ -63,7 +63,7 @@ public class AddressBookWordSelectData extends
   private final List<ALEipGroup> myGroupList = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -78,7 +78,7 @@ public class AddressBookWordSelectData extends
 
   /**
    * 自分がオーナーのアドレスを取得
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -101,7 +101,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -112,7 +112,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -166,7 +166,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -176,7 +176,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -199,7 +199,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -328,7 +328,7 @@ public class AddressBookWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -339,7 +339,7 @@ public class AddressBookWordSelectData extends
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -349,7 +349,7 @@ public class AddressBookWordSelectData extends
 
   /**
    * マイグループリストを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -359,7 +359,7 @@ public class AddressBookWordSelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
