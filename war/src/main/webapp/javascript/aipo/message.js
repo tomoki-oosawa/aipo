@@ -377,6 +377,10 @@ aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
             dojo.byId("portletsBody").style.display = "none";
+            var copyright = dojo.byId("copyright");
+            if(copyright) {
+            	copyright.style.display = "none";
+            }
             aipo.message.fixMessageWindow();
             aipo.message.focusInput();
             if (aipo.message.isOpenWindow()
@@ -385,9 +389,14 @@ aipo.message.swapView = function() {
             }
         } else {
             dojo.byId("portletsBody").style.display = "";
+            var copyright = dojo.byId("copyright");
+            if(copyright) {
+            	copyright.style.display = "";
+            }
         }
     }
 }
+
 
 aipo.message.selectTab = function(tab) {
     var messageRoomTab = dojo.byId("messageRoomTab");

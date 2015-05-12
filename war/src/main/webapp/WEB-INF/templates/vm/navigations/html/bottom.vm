@@ -26,7 +26,7 @@
 							#end
 
                             <!-- FOOTER -->
-<div class="copyright mb_hide">
+<div class="copyright mb_hide" id="copyright">
     ${copyright_short}
     &nbsp;·&nbsp;
     ${alias_copyright} ${version}
