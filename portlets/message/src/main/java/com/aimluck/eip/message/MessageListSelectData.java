@@ -30,6 +30,7 @@ import javax.activation.FileDataSource;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
@@ -66,12 +67,21 @@ public class MessageListSelectData extends
 
   private EipTMessageRoom room;
 
+  private ALStringField keyword = null;
+
+  private boolean isSearch = false;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
+  }
+
+  @Override
+  public void initField() {
+    keyword = new ALStringField();
   }
 
   /**
@@ -102,8 +112,21 @@ public class MessageListSelectData extends
     } catch (Throwable ignore) {
       // ignore
     }
+
+    List<Integer> roomIds = new ArrayList<Integer>(1);
+    if (isSearch) {
+      List<Integer> roomIds2 = MessageUtils.getRoomIds(userId);
+      if (roomIds2 != null && roomIds2.size() > 0) {
+        roomIds.addAll(roomIds2);
+      } else {
+        roomIds.add(-1);
+      }
+    } else {
+      roomIds.add(room.getRoomId());
+    }
     return MessageUtils.getMessageList(
-      room.getRoomId(),
+      roomIds,
+      keyword.getValue(),
       cursor,
       MESSAGE_LIMIT,
       latest);
@@ -134,7 +157,7 @@ public class MessageListSelectData extends
     MessageResultData rd = new MessageResultData();
     rd.initField();
     rd.setMessageId(model.getMessageId());
-    rd.setRoomId(room.getRoomId());
+    rd.setRoomId(model.getRoomId());
     rd.setUserId(model.getUserId());
     rd.setFirstName(model.getFirstName());
     rd.setLastName(model.getLastName());
@@ -277,6 +300,32 @@ public class MessageListSelectData extends
 
   public boolean isMatch(int id1, long id2) {
     return id1 == (int) id2;
+  }
+
+  /**
+   * @return isSearch
+   */
+  public boolean isSearch() {
+    return isSearch;
+  }
+
+  /**
+   * @param isSearch
+   *          セットする isSearch
+   */
+  public void setSearch(boolean isSearch) {
+    this.isSearch = isSearch;
+  }
+
+  /**
+   * @param keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
+  }
+
+  public ALStringField getKeyword() {
+    return keyword;
   }
 
 }

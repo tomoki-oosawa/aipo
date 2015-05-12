@@ -25,6 +25,7 @@ aipo.message.currentUserId = null;
 aipo.message.currentGroupName = "all";
 aipo.message.currentRoomSearchKeyword = null;
 aipo.message.currentUserSearchKeyword = null;
+aipo.message.currentMessageSearchKeyword = null;
 aipo.message.moreMessageLock = false;
 aipo.message.isActive = true;
 aipo.message.portletId = null;
@@ -255,9 +256,64 @@ aipo.message.reloadRoomList = function(roomId, userId) {
     }
     aipo.message.messageRoomListPane.viewPage(screen);
 }
+
+aipo.message.messageRightPane = null;
+aipo.message.reloadSearchMessageList = function(roomId, userId) {
+    if (!aipo.message.messageRightPane) {
+        aipo.message.messageRightPane = dijit.byId("messageRightPane");
+        aipo.message.messageRightPane = new aimluck.widget.Contentpane({},
+                'messageRightPane');
+        aipo.message.messageRightPane.onLoad = function() {
+            aipo.message.fixMessageWindow();
+        }
+    }
+
+    var screen = aipo.message.jslink + "?template=MessageSearchListScreen";
+    if (aipo.message.currentMessageSearchKeyword) {
+        aipo.message.messageRightPane.setParam("k", aipo.message.currentMessageSearchKeyword);
+    }
+    aipo.message.messageRightPane.viewPage(screen);
+}
+
 aipo.message.searchRoomList = function(form) {
     aipo.message.currentRoomSearchKeyword = form.keyword.value;
     aipo.message.reloadRoomList();
+}
+aipo.message.searchMessageList = function(form) {
+    aipo.message.currentMessageSearchKeyword = form.keyword.value;
+    aipo.message.openRightBlock();
+    aipo.message.reloadSearchMessageList();
+}
+
+aipo.message.openRightBlock = function(){
+    var messageMainBlock = dojo.byId("messageMainBlock");
+    var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
+    if (messageMainBlock) {
+        messageMainBlock.style["margin-right"] = "360px";
+    }
+    if (messageMainBlockEmpty) {
+    	messageMainBlockEmpty.style["margin-right"] = "360px";
+    }
+}
+
+aipo.message.closeRightBlock = function(){
+    var messageMainBlock = dojo.byId("messageMainBlock");
+    var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
+    if (messageMainBlock) {
+        messageMainBlock.style["margin-right"] = "0px";
+    }
+    if (messageMainBlockEmpty) {
+    	messageMainBlockEmpty.style["margin-right"] = "0px";
+    }
+}
+
+aipo.message.clearSearchMessageList = function() {
+    var messageSearchForm = dojo.byId("messageSearchForm");
+    if(messageSearchForm) {
+    	messageSearchForm.keyword.value = "";
+    	aipo.message.currentMessageSearchKeyword = null;
+    	aipo.message.closeRightBlock();
+    }
 }
 
 aipo.message.clearSearchRoomList = function() {
