@@ -2291,17 +2291,30 @@ body.messageRoomList .messageUserlist .index {
   padding-bottom: 20px;
 }
 
-.messageOuter .inputField {
-  /* margin-bottom: 0; */
+/* .messageOuter .inputField {
+  margin-bottom: 0;
   margin-bottom: 5px;
 }
 .messageOuter .message {
-  border-top: none !important;
+  border-top: none;
 }
 .messageOuter .message .time {
   color: #999;
 }
 .messageOuter .message .time a {
+  color: #999;
+} */
+
+#messageMainBlock .timelineOuter .inputField {
+  margin-bottom: 5px;
+}
+#messageMainBlock .timelineOuter .message{
+  border-top: none;
+}
+#messageMainBlock .timelineOuter .message .time {
+  color: #999;
+}
+#messageMainBlock .timelineOuter .message .time a {
   color: #999;
 }
 
