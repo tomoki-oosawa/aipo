@@ -28,12 +28,12 @@
 		<ul class="tabContents">
 			<li class="active" id="messageRoomContents">
 				<div id="messageSideBlock1">
-					<div id="messageRoomListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+					<div id="messageRoomListPane"><div class="loader"><i class="indicator"></i></div></div>
 				</div>
 			</li>
 			<li id="messageUserContents">
 				<div id="messageSideBlock2">
-					<div id="messageUserListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+					<div id="messageUserListPane"><div class="loader"><i class="indicator"></i></div></div>
 				</div>
 			</li>
 		</ul>

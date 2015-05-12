@@ -34,12 +34,6 @@
     #end
 		</select>
 	</div>
-	<div class="inner">
-		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageUserListScreen')" onsubmit="aipo.message.searchUserList(); return false;" method="post">
-			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" id="messageUserKeywordInput" /><label class="placeholder" for="messageUserKeywordInput" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_USER_SEARCH</label>
-			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
-		</form>
-	</div>
 </div>
 <div class="messageUserlist scroll" id="messageUserlist">
 #if($result.List.size() == 0)
@@ -75,9 +69,9 @@
 	<a href="javascript:void(0)" onclick="aipo.message.selectUser($!record.UserId)">
 		<span class="avatar">
 		#if($!record.isHasPhoto())
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_m"/>
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#else
-			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_m"/>
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#end
 		</span>
 		<span class="name">$!record.LastName $!record.FirstName</span>
