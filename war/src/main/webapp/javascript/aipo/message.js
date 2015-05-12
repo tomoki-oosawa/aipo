@@ -584,10 +584,10 @@ aipo.message.fixMessageWindow = function() {
         return;
     }
     if (dojo.byId("dd_message") != null) {
-        var minusH = 55 + 40 + 35 + 10;
+        var minusH = 55 + 40 + 35 + 10 + 12;
         var w = dojo.byId("wrapper").clientWidth - 20;
         var h = document.documentElement.clientHeight - minusH;
-        var tabh = document.documentElement.clientHeight - (minusH + 106);
+        var tabh = document.documentElement.clientHeight - (minusH + 55);
         dojo.byId("dd_message").style.width = w + "px";
         if(dojo.byId("messageSideBlock1") != null) {
             dojo.byId("messageSideBlock1").style.height = h + "px";
@@ -603,7 +603,7 @@ aipo.message.fixMessageWindow = function() {
         }
     }
     if (dojo.byId("messagePane") != null) {
-        var minusH = 55 + 40 + 45 + 90 + 10 + 10 + 4;
+        var minusH = 55 + 40 + 45 + 90 + 10 + 10 + 12;
         var h = document.documentElement.clientHeight - minusH;
         dojo.byId("messagePane").style.height = h + "px";
     }
