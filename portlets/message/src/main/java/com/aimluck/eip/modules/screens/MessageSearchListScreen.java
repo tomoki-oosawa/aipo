@@ -25,6 +25,8 @@ import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.message.MessageListSelectData;
+import com.aimluck.eip.message.MessageRoomListSelectData;
+import com.aimluck.eip.message.MessageUserListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -52,13 +54,30 @@ public class MessageSearchListScreen extends ALVelocityScreen {
         // ignore
       }
 
-      MessageListSelectData listData = new MessageListSelectData();
-      listData.setSearch(true);
-      listData.initField();
+      MessageRoomListSelectData roomList = new MessageRoomListSelectData();
+      roomList.initField();
       if (!StringUtils.isEmpty(keyword)) {
-        listData.setKeyword(keyword);
+        roomList.setKeyword(keyword);
       }
-      listData.doViewList(this, rundata, context);
+      roomList.doViewList(this, rundata, context);
+      context.put("roomList", roomList.getList());
+
+      MessageUserListSelectData userList = new MessageUserListSelectData();
+      userList.initField();
+      if (!StringUtils.isEmpty(keyword)) {
+        userList.setKeyword(keyword);
+      }
+      userList.doViewList(this, rundata, context);
+      context.put("userList", userList.getList());
+
+      MessageListSelectData messageList = new MessageListSelectData();
+      messageList.setSearch(true);
+      messageList.initField();
+      if (!StringUtils.isEmpty(keyword)) {
+        messageList.setKeyword(keyword);
+      }
+      messageList.doViewList(this, rundata, context);
+
       String layout_template = "portlets/html/ja/ajax-message-search-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
