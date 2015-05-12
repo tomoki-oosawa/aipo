@@ -54,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MessageListSelectData extends
     ALAbstractSelectData<EipTMessage, EipTMessage> {
 
-  public static final int MESSAGE_LIMIT = 10;
+  public static final int MESSAGE_LIMIT = 50;
 
   private int cursor = 0;
 
