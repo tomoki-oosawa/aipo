@@ -1091,7 +1091,7 @@ ul.hdTools .dropdown:before {
 #dd_message .timelineOuter .message {
   border-top: none;
   /* padding: 0 7px 7px; */
-  padding: 0 7px 30px;
+  padding: 0 7px 20px;
   margin-bottom: 0px;
 }
 #dd_message .timelineOuter .message:first-child {
