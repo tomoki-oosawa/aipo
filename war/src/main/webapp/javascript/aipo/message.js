@@ -84,6 +84,7 @@ aipo.message.reloadMessageList = function() {
                 'messagePane');
         aipo.message.messagePane.onLoad = function() {
             aipo.message.read(aipo.message.currentRoomId);
+            aipo.message.fixDateLine();
         }
     }
 
@@ -148,6 +149,7 @@ aipo.message.moreMessageList = function() {
                             emptyMessage[0].parentNode.removeChild(emptyMessage[0]);
                         }
                     }
+                    aipo.message.fixDateLine();
                 }
                 aipo.message.moreMessageLock = false;
             },
@@ -191,6 +193,7 @@ aipo.message.latestMessageList = function() {
                         emptyMessage[0].parentNode.removeChild(emptyMessage[0]);
                     }
                 }
+                aipo.message.fixDateLine();
             }
             aipo.message.moreMessageLock = false;
             aipo.message.reloadRoomList();
@@ -941,7 +944,7 @@ aipo.message.getLastMessageId = function() {
         if(messagePane.children.length > 0) {
             var id = messagePane.children[messagePane.children.length-1].id;
             if(id) {
-                return id.replace("message", "");
+                return id.replace("message", "").replace("Line","");
             }
         }
     }
@@ -1201,5 +1204,23 @@ aipo.message.onBlurSearch = function() {
 	var messageSearchForm = dojo.byId("messageSearchForm");
 	if(messageSearchForm) {
 		dojo.removeClass(messageSearchForm, "focus");
+	}
+}
+
+aipo.message.fixDateLine = function() {
+	var messagePane = dojo.byId("messagePane");
+	var last = dojo.query(".messageLineLast", messagePane);
+	if(last.length > 0) {
+		var lastDom = last[0];
+		var className = lastDom.className.replace("date_line","").replace("messageLineLast","").replace("  ","");
+		var lineList = dojo.query("." + className, messagePane);
+		for(var i=0; i<lineList.length; i++) {
+			if(i == lineList.length-1) {
+				lineList[i].style.display = "";
+			} else {
+				dojo.removeClass(lineList[i], "messageLineLast");
+				lineList[i].style.display = "none";
+			}
+		}
 	}
 }

@@ -30,6 +30,7 @@ import javax.activation.FileDataSource;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
@@ -53,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 public class MessageListSelectData extends
     ALAbstractSelectData<EipTMessage, EipTMessage> {
 
-  public static final int MESSAGE_LIMIT = 50;
+  public static final int MESSAGE_LIMIT = 10;
 
   private int cursor = 0;
 
@@ -328,4 +329,9 @@ public class MessageListSelectData extends
     return keyword;
   }
 
+  public boolean isSameDate(ALDateTimeField a, ALDateTimeField b) {
+    return a.getYear().equals(b.getYear())
+      && a.getMonth().equals(b.getMonth())
+      && a.getDay().equals(b.getDay());
+  }
 }
