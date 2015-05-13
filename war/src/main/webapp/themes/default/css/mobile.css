@@ -31,7 +31,7 @@
 --------------------------------------------------*/
 body {
   position: absolute;
-  background: #ffffff;
+  background: #ffffff !important;
   -webkit-text-size-adjust: 100%;
 }
 
