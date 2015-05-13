@@ -37,7 +37,7 @@
 #ALtdcaption($person_key)
 #ALtditemheader()
 #if($!result.currentTab == "received_notes")
-<a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.Detail.SrcUserId.Value})">$person_value</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.SrcUserId.Value},arguments[0])">$person_value</a>
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
@@ -48,7 +48,7 @@
 #else
 <img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
 #end
-<a href="javascript: void(0)" onclick="aipo.message.openDirect(${record.UserId})">$!record.AliasName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!record.AliasName</a>
 <br/>
 #end
 #end
