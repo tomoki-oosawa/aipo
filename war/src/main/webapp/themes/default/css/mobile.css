@@ -29,6 +29,9 @@
 /***************************************************
 	style denial
 --------------------------------------------------*/
+html{
+  background: #FFFFFF !important;
+}
 body {
   position: absolute;
   background: #ffffff !important;
