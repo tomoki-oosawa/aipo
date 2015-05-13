@@ -1362,7 +1362,7 @@ ul.hdTools .dropdown:before {
 }
 .date_line span {
   position: absolute;
-  top: 10px;
+  top: 13px;
   left: 50%;
   width: 180px;
   margin-left: -90px;
