@@ -1356,7 +1356,7 @@ ul.hdTools .dropdown:before {
 .date_line {
   position: relative;
   text-align: center;
-  margin: 10px 0 30px;
+  margin: -10px 0 20px;
   height: 30px;
   border-bottom: 1px solid #eee;
 }
