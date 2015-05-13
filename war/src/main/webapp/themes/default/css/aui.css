@@ -3137,7 +3137,6 @@ button[disabled]:active {
   background: #ffffff;
   border-color: #e5e5e5;
   box-shadow: none;
-  min-width: 320px;
 }
 .auiSearch.gray.focus button {
   background: #ff9900;
