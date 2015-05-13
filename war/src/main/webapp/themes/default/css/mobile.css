@@ -2239,6 +2239,13 @@ body.messageRoomList .messageSummary .avatar,
 body.messageRoomList .messageUserlist ul .avatar {
   padding: 7px;
 }
+body.messageRoomList .messageSummary .avatar,
+body.messageRoomList .messageUserlist ul .avatar,
+body.messageRoomList .messageSummary .avatar_s,
+body.messageRoomList .messageUserlist ul .avatar_s{
+  width: 32px;
+  height: 32px;
+}
 body.messageRoomList .messageSummaryHead .inner {
   padding: 0;
   margin: 10px;
