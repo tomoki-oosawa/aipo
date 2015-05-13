@@ -2223,6 +2223,9 @@ body.messageRoomList .auiPortlet,
 body.messageRoomList .auiPortletBody {
   background-color: transparent !important;
 }
+body.messageRoomList .auiPortletFoot{
+  display: none;
+}
 body.messageRoomList .dijitContentPane {
 	overflow:hidden;
 }
