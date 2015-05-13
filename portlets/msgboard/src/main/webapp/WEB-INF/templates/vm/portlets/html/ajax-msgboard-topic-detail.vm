@@ -52,7 +52,11 @@
 						#if($!{result.ParentTopic.LoginUserId.value}!=$!{result.ParentTopic.OwnerId.value})</a>#end
 					</div>
 					<div>
-						<b><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">$!{record.OwnerName}</a></b>
+						#if($!{result.ParentTopic.LoginUserId.value}==$!{result.ParentTopic.OwnerId.value})
+						<b>$!{result.ParentTopic.OwnerName}</b>
+						#else
+						<b><a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.ParentTopic.OwnerId})">$!{result.ParentTopic.OwnerName}</a></b>
+						#end
 						<br>$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.DayOfWeek}  $!{result.ParentTopic.CreateDate.time}
 					</div>
 				</td>
