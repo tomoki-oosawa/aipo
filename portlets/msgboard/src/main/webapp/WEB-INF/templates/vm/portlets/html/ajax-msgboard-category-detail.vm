@@ -62,13 +62,7 @@ $!record.AliasName <br />
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.COMMON_CREATE_USER)
-#if($!{result.Detail.LoginUserId.value}==$!{result.Detail.OwnerId.value})
-#ALtditem($!result.Detail.OwnerName)
-#else
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect(${result.Detail.OwnerId})">$!result.Detail.OwnerName</a>
-#ALtditemfooter()
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.OwnerId},arguments[0])">$!result.Detail.OwnerName</a>
 #ALtdcaption($l10n.COMMON_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.COMMON_UPDATE_DATE)
