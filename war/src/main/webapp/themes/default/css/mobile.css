@@ -2250,6 +2250,7 @@ body.messageRoomList .messageSummary li {
 body.messageRoomList .messageSummary li a {
   padding: 5px 10px 5px 45px;
   height: 46px;
+  border: none;
 }
 body.messageRoomList .messageSummary .nrCount {
   margin-top: 2px;
