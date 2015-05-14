@@ -29,8 +29,6 @@ import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimecardSettings;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -93,8 +91,6 @@ public class ExtTimecardSummaryResultData implements ALData {
   private String user_name = null;
 
   private String systemName = null;
-
-  private ALEipUser user = null;
 
   /**
    *
@@ -455,36 +451,6 @@ public class ExtTimecardSummaryResultData implements ALData {
    */
   public ALNumberField getOwnerId() {
     return owner_id;
-  }
-
-  /**
-   * @return photoModified
-   */
-  public long getPhotoModified() {
-    ALEipUser user = getUser();
-    if (user != null) {
-      return user.getPhotoModified();
-    } else {
-      return 0;
-    }
-  }
-
-  public ALEipUser getUser() {
-    if (user == null) {
-      user =
-        ALEipManager.getInstance().getUser(
-          Integer.valueOf((int) this.owner_id.getValue()));
-    }
-    return user;
-  }
-
-  public boolean hasPhoto() {
-    ALEipUser user = getUser();
-    if (user != null) {
-      return user.hasPhoto();
-    } else {
-      return false;
-    }
   }
 
   /**

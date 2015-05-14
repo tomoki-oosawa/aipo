@@ -107,7 +107,6 @@
 <td>
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile(${key.OwnerId},arguments[0])">$!{key.UserNameHtml}</a>
 </td>
-##ALtdcellAtt("$!{key.UserNameHtml}" "")
 #ALtdcellAtt("$!{key.SystemNameHtml}" "align='center' class='wType'")
 #ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
