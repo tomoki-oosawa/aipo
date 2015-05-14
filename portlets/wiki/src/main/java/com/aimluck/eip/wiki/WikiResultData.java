@@ -373,8 +373,4 @@ public class WikiResultData implements ALData {
     return 0 != this.parent_id.getValue();
   }
 
-  public void setUpdateUserId(ALEipUser user) {
-    update_user_id = user.getUserId();
-  }
-
 }
