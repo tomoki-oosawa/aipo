@@ -32,14 +32,9 @@
 #ALtditem($!result.Detail.Explanation)
 
 #ALtdcaption("$l10n.PROJECT_ADMIN_USER")
-#if($!result.Detail.AdminUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.AdminUserId.value},arguments[0])">$!result.Detail.AdminUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.AdminUserName)
-#end
-
 #ALtdcaption("$l10n.PROJECT_MENVERS")
 #ALtditemheader()
 <ul>
@@ -57,22 +52,13 @@
 #ALtditem($!result.Detail.UpdateDate.toString())
 
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
-#if($!result.Detail.UpdateUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUserId.value},arguments[0])">$!result.Detail.UpdateUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.UpdateUserName)
-#end
-
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
-#if($!result.Detail.CreateUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUserId.value},arguments[0])">$!result.Detail.CreateUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.CreateUserName)
-#end
 
 #if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption("$l10n.PROJECT_FILE_ATTACH")
