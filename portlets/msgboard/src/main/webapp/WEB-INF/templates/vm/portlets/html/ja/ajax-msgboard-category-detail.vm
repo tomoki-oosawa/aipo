@@ -51,7 +51,7 @@ $l10n.MSGBOARD_OWN_REPLY_OWE_VIEWS
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
-$!record.AliasName <br />
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.UserId,arguments[0])">$!record.AliasName</a><br />
 #end
 #if($counter < ($!result.MemberList.size() - 1))
 #set ($hasMember = true)
