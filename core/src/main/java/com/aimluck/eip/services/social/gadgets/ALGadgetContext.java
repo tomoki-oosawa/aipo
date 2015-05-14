@@ -22,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -94,18 +96,18 @@ public class ALGadgetContext {
 
   public String getSecureToken() {
     try {
+      Map<String, String> map = new HashMap<String, String>();
+      map.put("o", viewer);
+      map.put("v", viewer);
+      map.put("u", appUrl);
+      map.put("i", appId);
+      map.put("m", String.valueOf(moduleId));
       AipoBlobCrypterSecurityToken token =
-        new AipoBlobCrypterSecurityToken(
-          loadCrypterFromFile(runData),
-          container,
-          domain);
-      token.setOwnerId(viewer);
-      token.setViewerId(viewer);
-      token.setAppUrl(appUrl);
-      token.setAppId(appId);
-      token.setModuleId(moduleId);
-      token.setActiveUrl(activeUrl);
-      return token.encrypt();
+        new AipoBlobCrypterSecurityToken(container, domain, activeUrl, map);
+      // 3 hour
+      token.setExpiresFor(60 * 60 * 3);
+      BlobCrypter crypter = loadCrypterFromFile(runData);
+      return container + ':' + crypter.wrap(token.toMap());
     } catch (Exception ex) {
       logger.error("ALGadgetContext.getSecureToken", ex);
       return "";

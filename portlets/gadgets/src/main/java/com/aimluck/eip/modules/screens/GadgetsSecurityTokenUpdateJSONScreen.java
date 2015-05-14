@@ -35,10 +35,10 @@ import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.services.social.gadgets.ALGadgetSpec;
 import com.aimluck.eip.util.ALEipUtils;
-import com.google.inject.internal.Lists;
+import com.google.common.collect.Lists;
 
 /**
- * 
+ *
  */
 public class GadgetsSecurityTokenUpdateJSONScreen extends ALJSONScreen {
 
