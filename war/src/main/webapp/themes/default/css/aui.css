@@ -1000,14 +1000,21 @@ ul.hdTools .dropdown:before {
   display: block;
   text-decoration: none;
 }
-#dd_message .rightBlock ul.user li:hover span, #dd_message .rightBlock ul.room li:hover span {
+#dd_message .rightBlock ul.user li:hover span,
+#dd_message .rightBlock ul.room li:hover span {
   text-decoration: none;
 }
-#dd_message .rightBlock ul.user li .name, #dd_message .rightBlock ul.room li .name,
+#dd_message .rightBlock ul.user li .name,
+#dd_message .rightBlock ul.room li .name,
 #dd_message .rightBlock ul.user li .date,
 #dd_message .rightBlock ul.room li .date {
   line-height: 25px;
   height: 25px;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
 }
 #dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.room li .date {
   float: right;
