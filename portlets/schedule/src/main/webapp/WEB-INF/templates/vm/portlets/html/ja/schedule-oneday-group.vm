@@ -170,11 +170,7 @@
 #end
 <tr>
 #ALtdheadheaderAtt("class='groupOneday' rowspan='$duplirowmax'")
-#if(!$result.isMatch($record3.UserId.Value))
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record3.userId)">$record3.AliasName</a>
-#else
-$record3.AliasName
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record3.userId,arguments[0])">$record3.AliasName</a>
 #if(!$result.isMatch($record3.UserId.Value) && $result.hasAuthorityNote())
 #set($noteLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormScreen').addQueryData('dest_user_id', $!record3.userId).addQueryData('entityid','new')))
 <br /><a class="auiButtonSmall" href="javascript:void(0);" onclick="aipo.common.showDialog('$noteLink', '$!portlet.ID', aipo.note.onLoadNoteDialog);">

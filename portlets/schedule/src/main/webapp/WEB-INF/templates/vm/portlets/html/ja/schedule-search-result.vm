@@ -136,11 +136,7 @@ $!{record.WbrName}
 <td class="mb_hide"><div>$!{record.NoteShort}</div></td>
 <td class="mb_hide">
 	<div>
-		#if($!result.isLoginUserID($record.CreateUser.UserId.Value))
-		$!{record.CreateUser.AliasName}
-		#else
-		<a href="javascript: void(0)" onclick="aipo.message.openDirect($record.CreateUser.UserId)">$!{record.CreateUser.AliasName}</a>
-     	#end
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile($record.CreateUser.UserId,arguments[0])">$!{record.CreateUser.AliasName}</a>
     </div>
 </td>
 </tr>
