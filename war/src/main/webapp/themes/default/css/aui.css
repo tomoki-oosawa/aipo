@@ -984,12 +984,14 @@ ul.hdTools .dropdown:before {
 #dd_message .rightBlock ul.close li.index {
   display: block;
 }
-#dd_message .rightBlock ul.user li,
-#dd_message .rightBlock ul.room li {
+#dd_message .rightBlock ul.user li, #dd_message .rightBlock ul.room li {
   height: 38px;
+  border: 1px solid #E7E7E7;
 }
-#dd_message .rightBlock ul.user li a,
-#dd_message .rightBlock ul.room li a {
+#dd_message .rightBlock ul.user li:hover, #dd_message .rightBlock ul.room li:hover {
+  border: 1px solid #999;
+}
+#dd_message .rightBlock ul.user li a, #dd_message .rightBlock ul.room li a {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -998,30 +1000,21 @@ ul.hdTools .dropdown:before {
   display: block;
   text-decoration: none;
 }
-#dd_message .rightBlock ul.user li:hover span,
-#dd_message .rightBlock ul.room li:hover span {
+#dd_message .rightBlock ul.user li:hover span, #dd_message .rightBlock ul.room li:hover span {
   text-decoration: none;
 }
-#dd_message .rightBlock ul.user li .name,
-#dd_message .rightBlock ul.room li .name,
+#dd_message .rightBlock ul.user li .name, #dd_message .rightBlock ul.room li .name,
 #dd_message .rightBlock ul.user li .date,
 #dd_message .rightBlock ul.room li .date {
   line-height: 25px;
   height: 25px;
-  white-space: nowrap;
-  overflow: hidden;
-  -ms-text-overflow: ellipsis;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
 }
-#dd_message .rightBlock ul.user li .date,
-#dd_message .rightBlock ul.room li .date {
+#dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.room li .date {
   float: right;
   color: #999;
   font-size: 11px;
 }
-#dd_message .rightBlock ul.user li .nrCount,
-#dd_message .rightBlock ul.room li .nrCount {
+#dd_message .rightBlock ul.user li .nrCount, #dd_message .rightBlock ul.room li .nrCount {
   background-color: #ff3333;
   border-radius: 3px;
   color: #ffffff;
@@ -1038,13 +1031,8 @@ ul.hdTools .dropdown:before {
 #dd_message .rightBlock ul li {
   position: relative;
   margin: 0 15px 7px 15px;
-  border: 1px solid #E7E7E7;
   border-radius: 4px;
   background: #ffffff;
-}
-#dd_message .rightBlock ul li:hover {
-  border: 1px solid #999;
-  cursor: pointer;
 }
 #dd_message .rightBlock ul li.index {
   background: none;
@@ -1054,11 +1042,15 @@ ul.hdTools .dropdown:before {
   margin: 15px 0 7px;
   cursor: auto;
   height: auto;
+  border: none;
 }
 #dd_message .rightBlock ul li.index a {
   height: auto;
   padding: 0;
   margin-right: 4px;
+}
+#dd_message .rightBlock ul li.index:hover {
+  border: none;
 }
 #dd_message .rightBlock ul li.index span {
   color: #999;
@@ -1095,6 +1087,9 @@ ul.hdTools .dropdown:before {
 }
 #dd_message .rightBlock ul li.message .time a {
   color: #999;
+}
+#dd_message .rightBlock ul li.message .time a:hover {
+  color: #ff9900;
 }
 /* ------------------------------------------------
    rightBlock  END
