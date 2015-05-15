@@ -28,7 +28,7 @@ import com.aimluck.eip.workflow.WorkflowAllSelectData;
 
 /**
  * ワークフローの管理者用の一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class WorkflowAllListScreen extends WorkflowAllScreen {
 
@@ -37,7 +37,7 @@ public class WorkflowAllListScreen extends WorkflowAllScreen {
     .getLogger(WorkflowAllListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

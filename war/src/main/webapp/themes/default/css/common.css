@@ -439,10 +439,16 @@ table.outer td.f08 {
   overflow: hidden;
 }
 .listTable caption {
-  background: #f0f0f0;
   padding: 5px;
   font-weight: bold;
   text-align: left;
+  font-size: 14px;
+}
+.listTable caption .subCaption {
+  display: block;
+  font-weight: normal;
+  margin-bottom: 3px;
+  font-size: 13px;
 }
 .listTable .caption {
   width: 135px;
@@ -1032,7 +1038,8 @@ table.simpleTable .caption {
   margin-bottom: 5px;
 }
 
-.memberlistToTop {
+.memberlistToTop,
+.memberlistFromTop {
   line-height: 32px;
 }
 

@@ -102,7 +102,9 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
-#ALtdcellAtt("<div>$!record.OwnerNameHtml</div>" '')
+#ALtdcellheader()
+<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.OwnerId,arguments[0])">$!record.OwnerNameHtml</a></div>
+#ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end

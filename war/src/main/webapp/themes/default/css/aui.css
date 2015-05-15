@@ -807,6 +807,7 @@ ul.hdTools .dropdown:before {
 --------------------------------------------------*/
 .profilePopupWrap {
   position: absolute;
+  z-index: 1000;
 }
 
 .profilePopup {
@@ -3352,6 +3353,10 @@ button[disabled]:active {
 .dojoDndItem .entryFooter {
   margin: 10px 0;
   font-size: 11px;
+}
+
+.dojoDndItem .entryFooter .subCaption {
+  display: inline-block;
 }
 
 /***************************************************

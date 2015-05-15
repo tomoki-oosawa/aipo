@@ -91,13 +91,9 @@ $!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
 #foreach($record in $!result.Detail.MemberList)
 <li class="clearfix">
 <div class="floatLeft w70">
-#if($!record.UserId.value != $!result.Detail.LoginUserId.value)
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId.value)">
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.value},arguments[0])">
 $!record.UserName
 </a>
-#else
-$!record.UserName
-#end
 </div>
 <div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
 </li>
@@ -157,14 +153,16 @@ $!result.Detail.Explanation
 					##end
 				</div>
 				<div class="avatar floatLeft mr10">
-					#if($!{record.hasPhoto()})
-					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.CreateUserId}).addQueryData("t", $!{record.CreateUserId}))" alt="$!{record.CreateUserId}" width="32" height="32" />
-					#else
-					<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
-					#end
+					<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.CreateUserId},arguments[0])">
+						#if($!{record.hasPhoto()})
+						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.CreateUserId}).addQueryData("t", $!{record.CreateUserId}))" alt="$!{record.CreateUserId}" width="32" height="32" />
+						#else
+						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						#end
+					</a>
 				</div>
 				<div class="alignleft">
-					<b>$!{record.CreateUser}</b><br>$!{record.CreateDate.Year}${l10n.PROJECT_YEAR}$!{record.CreateDate.Month}${l10n.PROJECT_MONTH}$!{record.CreateDate.Day}${l10n.PROJECT_DATE}$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}
+					<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.CreateUserId},arguments[0])"><b>$!{record.CreateUser}</b></a><br>$!{record.CreateDate.Year}${l10n.PROJECT_YEAR}$!{record.CreateDate.Month}${l10n.PROJECT_MONTH}$!{record.CreateDate.Day}${l10n.PROJECT_DATE}$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}
 				</div>
 			</div>
 			<div><br>

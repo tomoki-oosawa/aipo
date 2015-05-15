@@ -958,10 +958,8 @@ aipo.message.popupProfile = function(userId, event) {
 		div.id = "popupProfile_" + userId;
 		div.className = "profilePopupWrap";
 		div.style.display = "block";
-		div.style['z-index'] = 1000;
 		document.body.appendChild(div);
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
-
 	}
 	event = event || window.event;
 	var eventTarget = event.srcElement || event.target;
