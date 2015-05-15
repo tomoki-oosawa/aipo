@@ -45,7 +45,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogThemaSelectData extends
     ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
@@ -62,7 +62,7 @@ public class BlogThemaSelectData extends
   private int uid;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -85,7 +85,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -110,7 +110,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -129,7 +129,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -142,7 +142,7 @@ public class BlogThemaSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -160,7 +160,7 @@ public class BlogThemaSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -172,10 +172,12 @@ public class BlogThemaSelectData extends
     rd.setThemaName(record.getThemaName());
     rd.setDescription(record.getDescription());
     if ((int) rd.getThemaId().getValue() != 1) {
+      rd.setCreateUserId(record.getCreateUserId().longValue());
       rd.setCreateUserName(BlogUtils.getUserFullName(record
         .getCreateUserId()
         .intValue()));
     }
+    rd.setUpdateUserId(record.getUpdateUserId().longValue());
     rd.setUpdateUserName(BlogUtils.getUserFullName(record
       .getUpdateUserId()
       .intValue()));
@@ -188,7 +190,7 @@ public class BlogThemaSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -212,7 +214,7 @@ public class BlogThemaSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
