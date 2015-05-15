@@ -87,7 +87,7 @@
     		<div>$!{record.ReminderTask}</div>
     	#ALtdcellfooter()
     	#ALtdcellheader()
-    		<div>$!record.AdminUserName</div>
+    		<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.AdminUserId,arguments[0])">$!record.AdminUserName</a></div>
     	#ALtdcellfooter()
     	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
     		<div>$!{record.TaskUpdateDate}</div>

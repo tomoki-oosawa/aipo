@@ -114,7 +114,13 @@
         		#ALtdcellfooter()
         		#ALtdcellAtt("$!record.TrackerString" 'nowrap="nowrap" class="mb_hide"')
 				#ALtdcellAtt("$!record.StatusString" 'nowrap="nowrap"')
-        		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
+				#ALtdcellheader()
+				<div>
+				#foreach ($member in $record.MemberList)
+        		<a href="javascript: void(0)" onclick="aipo.message.popupProfile($member.UserId,arguments[0])">$member.UserName</a>
+        		#end
+        		</div>
+        		#ALtdcellfooter()
         		#ALtdcellheaderAtt('class="mb_hide"')
         		#if(!$!record.HasChildrenForForm && $!record.isEditable())
             		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
