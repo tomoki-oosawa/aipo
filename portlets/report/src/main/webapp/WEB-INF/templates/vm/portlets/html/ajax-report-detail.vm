@@ -40,11 +40,7 @@
 #end
 </div>
 <div class="alignleft"><strong>
-	#if($!result.LoginUser.UserId.Value == $!result.ParentReport.ClientId.Value)
-		$!result.ParentReport.ClientName<br />
-	#else
-		<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.ParentReport.ClientId)">$!result.ParentReport.ClientName</a><br />
-	#end
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!result.ParentReport.ClientId,arguments[0])">$!result.ParentReport.ClientName</a>
 	</strong><br />$!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if($result.ParentReport.isSelfReport())
@@ -62,11 +58,7 @@
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_MENVERS)
 #ALtditemheader()
 #foreach($record in $!result.ParentReport.MemberList)
-#if($!result.LoginUser.UserId.Value == $!record.UserId.Value)
-	$!record.AliasName<br />
-#else
-	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a><br />
-#end
+	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.UserId,arguments[0])">$!record.AliasName</a><br />
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
@@ -99,11 +91,7 @@
 #else
 <i class="auiIcon auiIconMail" title="$l10n.REPORT_UNREAD"></i>
 #end
-#if($!result.LoginUser.UserId.Value == $!record.UserId.Value)
-	$!record.AliasName
-#else
-	<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId)">$!record.AliasName</a>
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.UserId,arguments[0])">$!record.AliasName</a>
 <br />
 #end
 #ALtditemfooter()

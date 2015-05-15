@@ -83,11 +83,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$!{record.StartDate.toString($l10n.REPORT_TIME)}&nbsp;-&nbsp;$!{record.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}</div>")
-#if($!result.LoginUser.UserId.Value == $!record.ClientId.Value)
-	#ALtdcell("<div>$!record.ClientName</div>")
-#else
-	<td><div><a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.ClientId)">$!record.ClientName</a></div></td>
-#end
+<td><div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.ClientId,arguments[0])">$!record.ClientName</a></div></td>
 #if($!isCreated)
 #ALtdcell("<div>$!record.ReadReport/$!record.SentReport</div>")
 #end
