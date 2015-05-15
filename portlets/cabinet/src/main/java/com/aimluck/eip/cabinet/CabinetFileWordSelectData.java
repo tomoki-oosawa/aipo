@@ -68,9 +68,6 @@ public class CabinetFileWordSelectData extends
 
   private RunData rundata;
 
-  /** ログインユーザーID */
-  private long loginUserId;
-
   /**
    *
    * @param action
@@ -113,8 +110,6 @@ public class CabinetFileWordSelectData extends
       }
     }
     this.rundata = rundata;
-
-    loginUserId = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
   }
@@ -313,12 +308,4 @@ public class CabinetFileWordSelectData extends
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }
 
-  /**
-   * ログインユーザーIDの取得
-   *
-   * @return ログインユーザーID
-   */
-  public long getLoginUserId() {
-    return loginUserId;
-  }
 }

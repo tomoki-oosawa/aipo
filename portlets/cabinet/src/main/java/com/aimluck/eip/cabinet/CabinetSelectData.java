@@ -86,9 +86,6 @@ public class CabinetSelectData extends
 
   private RunData rundata;
 
-  /** ログインユーザーID */
-  private long loginUserId;
-
   public void setIsNormalContext(boolean flg) {
     isNormalContext = flg;
   }
@@ -272,8 +269,6 @@ public class CabinetSelectData extends
 
     this.rundata = rundata;
     target_keyword = new ALStringField();
-
-    loginUserId = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
 
@@ -660,12 +655,4 @@ public class CabinetSelectData extends
     return post_name;
   }
 
-  /**
-   * ログインユーザーIDの取得
-   *
-   * @return ログインユーザーID
-   */
-  public long getLoginUserId() {
-    return loginUserId;
-  }
 }

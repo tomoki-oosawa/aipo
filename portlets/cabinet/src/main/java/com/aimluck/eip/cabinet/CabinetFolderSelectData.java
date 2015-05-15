@@ -63,9 +63,6 @@ public class CabinetFolderSelectData extends
 
   private RunData rundata;
 
-  /** ログインユーザーID */
-  private long loginUserId;
-
   /** 選択されたフォルダ情報 */
   private FolderInfo selected_folderinfo = null;
 
@@ -199,8 +196,6 @@ public class CabinetFolderSelectData extends
     members = new ArrayList<ALEipUser>();
 
     this.rundata = rundata;
-
-    loginUserId = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
   }
@@ -406,12 +401,4 @@ public class CabinetFolderSelectData extends
     this.isEditable = isEditable;
   }
 
-  /**
-   * ログインユーザーIDの取得
-   *
-   * @return ログインユーザーID
-   */
-  public long getLoginUserId() {
-    return loginUserId;
-  }
 }
