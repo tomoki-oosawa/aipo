@@ -20,7 +20,9 @@
 
 ## ---------------------------------------------------------------------------
 #set($beforeselected =false)
+#if($!globalPortlets)
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
+#end
 #if( ! $portlet.isClosed($data) )
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
