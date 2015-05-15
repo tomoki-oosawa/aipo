@@ -49,7 +49,7 @@
 							#else
 							<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
-						#if($!{result.ParentTopic.LoginUserId.value}!=$!{result.ParentTopic.OwnerId.value})</a>#end
+						</a>
 					</div>
 					<div>
 						<b><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.ParentTopic.OwnerId},arguments[0])">$!{result.ParentTopic.OwnerName}</a></b>
@@ -101,12 +101,13 @@
 					#end
 				</div>
 					<div class="avatar floatLeft mr10">
-						<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">#end
+						<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">
 						#if($!{record.OwnerHasPhoto})
 						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#else
 						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
+						</a>
 					</div>
 				<div class="alignleft">
 					<b><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">$!{record.OwnerName}</a></b>
@@ -138,7 +139,7 @@
 #end
 </tbody>
 ##pageview($link $result)
-
+#end
 </table>
 #ALformfooter()
 
