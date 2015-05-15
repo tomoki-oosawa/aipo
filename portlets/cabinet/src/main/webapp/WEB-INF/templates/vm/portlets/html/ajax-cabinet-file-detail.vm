@@ -40,9 +40,11 @@
 #ALtdcaption("$l10n.CABINET_FILE_SIZE")
 #ALtditem("$!{result.Detail.FileSize} KB")
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
-#ALtditem("$!{result.Detail.CreateUser} （$!{result.Detail.CreateDate}）")
+<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId.value},arguments[0])">$!{result.Detail.CreateUser}</a>（$!{result.Detail.CreateDate}）</td>
+    </tr>
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
-#ALtditem("$!{result.Detail.UpdateUser} （$!{result.Detail.UpdateDate}）")
+<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId.value},arguments[0])">$!{result.Detail.UpdateUser}</a>（$!{result.Detail.UpdateDate}）</td>
+    </tr>
 #ALtablefooter()
 #ALbuttonheader()
 #if($!result.Detail.isEditable())

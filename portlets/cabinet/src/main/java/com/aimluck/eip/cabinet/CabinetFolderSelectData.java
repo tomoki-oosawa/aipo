@@ -82,7 +82,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -201,7 +201,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -219,7 +219,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -234,7 +234,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -252,7 +252,7 @@ public class CabinetFolderSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -294,6 +294,7 @@ public class CabinetFolderSelectData extends
       }
 
       rd.setCreateUser(createUserName);
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -327,6 +328,7 @@ public class CabinetFolderSelectData extends
       members.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY_HOUR_MINUTE")).format(record
         .getUpdateDate()));
@@ -379,7 +381,7 @@ public class CabinetFolderSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -398,4 +400,5 @@ public class CabinetFolderSelectData extends
   public void setEditable(boolean isEditable) {
     this.isEditable = isEditable;
   }
+
 }
