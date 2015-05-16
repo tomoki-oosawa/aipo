@@ -33,6 +33,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.shindig.auth.AipoBlobCrypterSecurityToken;
 import org.apache.shindig.common.crypto.BasicBlobCrypter;
 import org.apache.shindig.common.crypto.BlobCrypter;
 import org.apache.shindig.common.util.Base32;
