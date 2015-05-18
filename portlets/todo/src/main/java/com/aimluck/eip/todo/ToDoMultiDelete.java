@@ -76,7 +76,11 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
     Expression exp2 =
       ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, values);
 
-    if (Database.query(EipTTodo.class, exp1).andQualifier(exp2).getCount() > 0) {
+    if (Database
+      .query(EipTTodo.class)
+      .andQualifier(exp1)
+      .andQualifier(exp2)
+      .getCount() > 0) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
     } else {
