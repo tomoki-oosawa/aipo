@@ -2977,6 +2977,9 @@ button[disabled]:active {
   line-height: 35px;
   overflow: hidden;
 }
+.auiRowTable div a {
+	display:inline-block;
+}
 .auiRowTable .today .day {
   font-weight: bold;
 }
