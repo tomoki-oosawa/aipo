@@ -305,7 +305,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 	shadow.style.left = "-1000";
 	shadow.style.border = "0";
 	shadow.style.outline = "0";
-	shadow.style.lineHeight = "normal";
+	shadow.style.lineHeight = "20px";
 	shadow.style.height = "auto";
 	shadow.style.resize = "none";
 	shadow.cols = "10"
@@ -314,14 +314,14 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
 	var objBody = document.getElementsByTagName("body").item(0);
 	objBody.appendChild(shadow);
-	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth
-			+ "px";
+	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth + "px";
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	// 13pxに変更したことにより、"あ"の高さが18→20に変更になった。
-	if (shadowHeight < 20)
-		shadowHeight = 20;
+	// 13pxに変更したことにより、"あ"の高さが18→21に変更になった。
+    if (shadowHeight < 20) {
+        shadowHeight = 20;
+    }
 	dojo.byId(objId).style.height = shadowHeight * 1.0 + 19 + "px";
 	objBody.removeChild(shadow);
 }

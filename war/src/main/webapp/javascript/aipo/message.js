@@ -744,7 +744,7 @@ aipo.message.resizeInput = function(input) {
     shadowDiv.style.left = "-1000";
     shadowDiv.style.border = "0";
     shadowDiv.style.outline = "0";
-    shadowDiv.style.lineHeight = "1.38";
+    shadowDiv.style.lineHeight = "20px";
     shadowDiv.style.height = "auto";
     shadowDiv.style.resize = "none";
     shadowDiv.cols = "10"
@@ -757,14 +757,14 @@ aipo.message.resizeInput = function(input) {
     objShadow.style.width = input.offsetWidth + "px";
 
     var shadowHeight = objShadow.offsetHeight;
-    // 文字サイズを13pxに設定したため、高さが18→20に変更
+    // 文字サイズを13pxに設定したため、"あ"の高さが18→21に変更
     if (shadowHeight < 20) {
         shadowHeight = 20;
     }
     if (shadowHeight > 20*20) {
         shadowHeight = 20*20;
     }
-    input.style.height = shadowHeight * 1.0 + 20 + "px";
+    input.style.height = shadowHeight * 1.0 + 19 + "px";
     objBody.removeChild(shadowDiv);
 }
 
