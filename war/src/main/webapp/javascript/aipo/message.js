@@ -66,7 +66,7 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                 .connect(aipo.message.isMobile ? window : messagePane, "onscroll", null,
                         function(e) {
 		                	if (aipo.message.isMobile && window.scrollY + document.documentElement.clientHeight
-                                    + 50 >= document.body.scrollHeight) {
+                                    + 50 + 44 >= document.body.scrollHeight && !aipo.message.moreMessageLock) {
 		        				aipo.message.moreMessageList();
 		        			}
                 			else if (e.target.scrollTop + messagePane.clientHeight

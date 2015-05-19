@@ -85,7 +85,6 @@
 #end
 $!record.CategoryName
 </div>
-<p>テスト</p>
 </td>
 #if($!{record.LoginUserId.value}==$!{record.OwnerId.value})
 #ALtdcellAtt("$!{record.OwnerName}" 'class="mb_hide" nowrap="nowrap"')
