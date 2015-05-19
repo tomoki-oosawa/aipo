@@ -757,7 +757,7 @@ aipo.message.resizeInput = function(input) {
     objShadow.style.width = input.offsetWidth + "px";
 
     var shadowHeight = objShadow.offsetHeight;
-    // 文字サイズを13pxに設定したため、"あ"の高さが18→21に変更
+    // 文字サイズを13pxに設定したため、"あ"の高さが18→20に変更
     if (shadowHeight < 20) {
         shadowHeight = 20;
     }
