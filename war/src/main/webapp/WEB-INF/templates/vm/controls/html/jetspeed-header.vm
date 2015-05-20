@@ -57,7 +57,7 @@
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
-					<div class="title">$l10n.MESSAGE_MESSAGE<input id="messageDesktopNotifySwitch" style="display:none" type="button" class="auiButtonSmall floatRight" onclick="aipo.container.gadgetService.requestDesktopNotifyEnable();" value=""/><span id="message_val_desktop_notify_on" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_VALID}</span><span id="message_val_desktop_notify_off" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_INVALID}</span></div>
+					<div class="title">$l10n.MESSAGE_MESSAGE</div>
 					<div class="body">
 						<div id="messageSideBlock" class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
@@ -154,6 +154,7 @@
 					<ul class="dropdown_menu">
 #if ("$!data.User.getUserName()" != "admin")
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
+						<li><a href="javascript: void(0);" onclick="aipo.notification.openDialog();">$l10n.NOTIFICATION_SETTING</a></li>
 #if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
 #end#end

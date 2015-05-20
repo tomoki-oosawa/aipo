@@ -1968,16 +1968,18 @@ $!{text}
 #end
 
 #macro(AUINotificationCheck)
-<div id="notificationRequestField" class="alertRecommend mr5 ml5 mb0" style="display:none">
-<div class="floatRight"><a href="javascript:void(0);" onclick=""><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
-$l10n.NOTIFICATION_REQUEST_MESSAGE<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.requestPermission();">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a></span>
+<div id="notificationField">
+<div class="notificationRequestField alertRecommend mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+$l10n.NOTIFICATION_REQUEST_MESSAGE<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.requestDesktopNotification();">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a></span>
 </div>
-<div id="notificationConfirmField" class="alertRecommend mr5 ml5 mb0" style="display:none">
-<div class="floatRight"><a href="javascript:void(0);" onclick=""><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+<div class="notificationConfirmField alertRecommend mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
 $l10n.NOTIFICATION_CONFIRM_MESSAGE
 </div>
-<div id="notificationSuccessField" class="alertInfo mr5 ml5 mb0" style="display:none">
-<div class="floatRight"><a href="javascript:void(0);" onclick=""><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+<div class="notificationSuccessField alertInfo mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
 $l10n.NOTIFICATION_SUCCESS_MESSAGE
+</div>
 </div>
 #end
