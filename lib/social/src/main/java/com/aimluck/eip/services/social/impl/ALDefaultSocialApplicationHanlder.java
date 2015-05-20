@@ -531,6 +531,7 @@ public class ALDefaultSocialApplicationHanlder extends
           activity.setDisplayName(model.getLoginName());
         } else {
           activity.setDisplayName(user.getAliasName().getValue());
+          activity.setUserId(user.getUserId().getValueWithInt());
 
         }
       } catch (Throwable t) {

@@ -44,6 +44,8 @@ public class ALActivity implements ALData, Serializable {
 
   private ALStringField displayName;
 
+  private ALNumberField userId;
+
   private ALStringField appId;
 
   private ALStringField loginname;
@@ -79,6 +81,7 @@ public class ALActivity implements ALData, Serializable {
   public void initField() {
     displayName = new ALStringField();
     displayName.setValue("_");
+    userId = new ALNumberField();
     appId = new ALStringField();
     loginname = new ALStringField();
     title = new ALStringField();
@@ -175,6 +178,17 @@ public class ALActivity implements ALData, Serializable {
 
   public ALStringField getDisplayName() {
     return displayName;
+  }
+
+  public void setUserId(Integer userId) {
+    this.userId.setValue(userId);
+  }
+
+  /**
+   * @return userId
+   */
+  public ALNumberField getUserId() {
+    return userId;
   }
 
   public ALStringField getExternalId() {
@@ -274,7 +288,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * external_id毎の直近のアクティビティを返す。存在しない場合null。
-   * 
+   *
    * @param appid
    *          ex Schedule
    * @param external_id
@@ -294,7 +308,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報をReplaceするか
-   * 
+   *
    * @param activity
    * @param loginname
    * @return
@@ -306,7 +320,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報を消す。
-   * 
+   *
    * @param activity
    * @param loginname
    * @return
