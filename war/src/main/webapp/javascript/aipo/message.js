@@ -1,3 +1,4 @@
+
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
  * Copyright (C) 2004-2015 Aimluck,Inc.
@@ -64,7 +65,11 @@ aipo.message.init = function(portletId, jslink, isMobile) {
         dojo
                 .connect(aipo.message.isMobile ? window : messagePane, "onscroll", null,
                         function(e) {
-                            if (e.target.scrollTop + messagePane.clientHeight
+		                	if (aipo.message.isMobile && window.scrollY + document.documentElement.clientHeight
+                                    + 50 + 44 >= document.body.scrollHeight && !aipo.message.moreMessageLock) {
+		        				aipo.message.moreMessageList();
+		        			}
+                			else if (e.target.scrollTop + messagePane.clientHeight
                                     + 100 >= e.target.scrollHeight
                                     && !aipo.message.moreMessageLock) {
                                 aipo.message.moreMessageList();
@@ -958,10 +963,8 @@ aipo.message.popupProfile = function(userId, event) {
 		div.id = "popupProfile_" + userId;
 		div.className = "profilePopupWrap";
 		div.style.display = "block";
-		div.style['z-index'] = 1000;
 		document.body.appendChild(div);
 		dojo.byId("popupProfile_" + userId).innerHTML = '<div id="popupProfileInner_' + userId + '" class="profilePopup" style="display: none;">';
-
 	}
 	event = event || window.event;
 	var eventTarget = event.srcElement || event.target;

@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class WikiResultData implements ALData {
 
@@ -78,6 +78,9 @@ public class WikiResultData implements ALData {
   /** 更新者名 */
   private ALStringField update_user;
 
+  /** 更新者ID */
+  private ALNumberField update_user_id;
+
   /** 作成日 */
   private ALDateTimeField create_date;
 
@@ -108,6 +111,7 @@ public class WikiResultData implements ALData {
     owner_id = new ALNumberField();
     create_user = new ALStringField();
     update_user = new ALStringField();
+    update_user_id = new ALNumberField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
@@ -291,7 +295,7 @@ public class WikiResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -329,12 +333,20 @@ public class WikiResultData implements ALData {
     return parent_id;
   }
 
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
+  }
+
   public void setOwnerId(long i) {
     this.owner_id.setValue(i);
   }
 
   public void setParentId(long i) {
     this.parent_id.setValue(i);
+  }
+
+  public void setUpdateUserId(long i) {
+    this.update_user_id.setValue(i);
   }
 
   public ALStringField getParentName() {
@@ -360,4 +372,5 @@ public class WikiResultData implements ALData {
   public boolean isChild() {
     return 0 != this.parent_id.getValue();
   }
+
 }

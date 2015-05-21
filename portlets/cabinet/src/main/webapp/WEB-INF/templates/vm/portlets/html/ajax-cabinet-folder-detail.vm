@@ -66,11 +66,13 @@ $!record.AliasName <br />
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
-$!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId.value},arguments[0])">$!{result.Detail.CreateUser}</a>
+#if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditemheader()
-$!{result.Detail.UpdateUser} #if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId.value},arguments[0])">$!{result.Detail.UpdateUser}</a>
+#if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

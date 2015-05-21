@@ -29,9 +29,13 @@
 #ALtdcaption($l10n.BLOG_MEMO)
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditem($!result.Detail.CreateUserName)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!result.Detail.CreateUserId,arguments[0])">$!result.Detail.CreateUserName</a>
+#ALtditemfooter()
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditem($!result.Detail.UpdateUserName)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!result.Detail.UpdateUserId,arguments[0])">$!result.Detail.UpdateUserName</a>
+#ALtditemfooter()
 #ALtdcaption($l10n.COMMON_CREATE_DATE)
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.COMMON_UPDATE_DATE)

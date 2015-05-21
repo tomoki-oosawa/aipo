@@ -1038,7 +1038,8 @@ table.simpleTable .caption {
   margin-bottom: 5px;
 }
 
-.memberlistToTop {
+.memberlistToTop,
+.memberlistFromTop {
   line-height: 32px;
 }
 
