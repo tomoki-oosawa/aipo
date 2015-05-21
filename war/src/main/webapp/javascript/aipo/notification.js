@@ -88,6 +88,7 @@ aipo.notification.requestDesktopNotification = function(portletId) {
             if(portletId) {
                 dojo.byId("desktopNotification" + portletId + "_T").checked = true;
             }
+        	setTimeout(function() { aipo.notification.closeRequest(); }, 3000);
         } else if(aipo.notification.isDefault()) {
         	dojo.forEach(notificationSuccessField,function(item){item.style.display="none";});
         	dojo.forEach(notificationConfirmField,function(item){item.style.display="none";});
@@ -128,6 +129,9 @@ aipo.notification.openDialog = function() {
 
 aipo.notification.onReceiveMessage = function(msg){
     if(!msg) {
+        if(window.webkitNotifications || window.Notification) {
+            aipo.container.gadgetService.requestDesktopNotifyEnable();
+        }
         var arrDialog = dijit.byId("modalDialog");
         if(arrDialog){
             arrDialog.hide();
