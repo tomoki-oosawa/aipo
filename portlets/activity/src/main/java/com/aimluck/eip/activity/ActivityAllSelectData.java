@@ -30,7 +30,6 @@ import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.cayenne.om.social.Activity;
@@ -72,9 +71,6 @@ public class ActivityAllSelectData extends
 
   /** グループ名 */
   private String postName = "";
-
-  /** ユーザー ID */
-  private ALNumberField user_id;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -305,17 +301,6 @@ public class ActivityAllSelectData extends
   public boolean hasAuthority() {
     // TODO: アクセス権限
     return true;
-  }
-
-  /**
-   *
-   */
-  public void setUserId(long i) {
-    user_id.setValue(i);
-  }
-
-  public ALNumberField getUserId() {
-    return user_id;
   }
 
   /**
