@@ -23,9 +23,9 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.CABINET_MANAGEMENT_FOLDER</h2>
 
-<div class="auiSummaryMeta clearfix"><p>
+<div class="auiSummaryMeta clearfix">
 #AUIbuttonAction("$l10n.CABINET_DO_ADD_FOLDER" "javascript:aipo.common.showDialog('$newUrl1','$!portlet.ID',aipo.cabinet.onLoadCabinetFolderDialog);")
-</p></div>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheaderAction("$l10n.CABINET_FOLDER" $jslink $portlet)
