@@ -748,7 +748,7 @@ aipo.message.resizeInput = function(input) {
     shadowDiv.style.lineHeight = "1.38";
     shadowDiv.style.height = "auto";
     shadowDiv.style.resize = "none";
-    shadowDiv.cols = "10"
+    shadowDiv.cols = "10";
     shadowDiv.innerHTML = shadowVal + "あ";
 
     var objBody = document.getElementsByTagName("body").item(0);

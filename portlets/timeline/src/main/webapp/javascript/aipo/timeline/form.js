@@ -309,7 +309,7 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
     shadow.style.lineHeight = "1.38";
 	shadow.style.height = "auto";
 	shadow.style.resize = "none";
-	shadow.cols = "10"
+	shadow.cols = "10";
 	// これが呼ばれる際の入力はまだ入ってこないので、適当に1文字追加
 	shadow.innerHTML = shadowVal + "あ";
 
