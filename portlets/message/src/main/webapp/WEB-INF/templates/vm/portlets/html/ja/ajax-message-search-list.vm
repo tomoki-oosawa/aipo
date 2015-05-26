@@ -44,7 +44,7 @@
 <li class="index">$l10n.MESSAGE_ROOM<span>$!roomList.size()件</span>#if($!roomList.size() > 0)<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightRoom();return false;"><i class="icon-chevron-down" id="messageRightRoomSwapIcon"></i></a>#end</li>
 #foreach ($record in $roomList)
 	<li id="messageRightRoom$!record.RoomId" class="messageRightRoom">
-		<a href="javascript:void(0)" onclick="aipo.message.selectTab('room');aipo.message.selectRoom($!record.RoomId);">
+		<a href="javascript:void(0)" onclick="aipo.message.selectTab('room');aipo.message.selectRoom($!record.RoomId, true);">
 			<span class="avatar">
 			#if($!record.getRoomType().getValue() == "O")
 			#if($!record.isHasPhoto())

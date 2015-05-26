@@ -616,7 +616,7 @@ aipo.message.selectTab = function(tab) {
 }
 
 aipo.message.inputHistory = {};
-aipo.message.selectRoom = function(room_id) {
+aipo.message.selectRoom = function(room_id, scroll) {
     var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
@@ -675,7 +675,7 @@ aipo.message.selectRoom = function(room_id) {
         }
 
 		var pane = dojo.byId("messageSummary");
-		if(pane) {
+		if(scroll && pane) {
 		    aipo.message.scrollTo(pane, messageRoom.offsetTop, 100);
 		}
 
@@ -1284,7 +1284,7 @@ aipo.message.closeProifleTextarea  = function(userId) {
 aipo.message.jumpMessage = function(roomId, messageId){
 	aipo.message.jumpCursor = messageId;
 	aipo.message.selectTab('room');
-	aipo.message.selectRoom(roomId);
+	aipo.message.selectRoom(roomId, true);
 }
 
 aipo.message.onFocusSearch = function() {
@@ -1331,4 +1331,4 @@ aipo.message.scrollTo = function(element, to, duration) {
 	    if (element.scrollTop == to) return;
 	    aipo.message.scrollTo(element, to, duration - 10);
 	  }, 10);
-	}
+}
