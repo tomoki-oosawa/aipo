@@ -111,6 +111,10 @@ aipo.message.reloadMessageList = function() {
         		    dojo.byId("messagePane").scrollTop = active.offsetTop;
         		    dojo.addClass(active, "active");
         		}
+        		var summary = dojo.byId("messageSummary");
+        		if(summary) {
+        			summary.scrollTop = dojo.byId("messageRoom" + aipo.message.currentRoomId).offsetTop
+        		}
                 aipo.message.jumpCursor = null;
         	} else {
                 aipo.message.read(aipo.message.currentRoomId);
