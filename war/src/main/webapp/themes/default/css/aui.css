@@ -3509,12 +3509,13 @@ ul.attachments {
 }
 #timelineOuter textarea.elastic,
 .timelineOuter textarea.elastic {
-  width: 99%;
-  overflow: hidden;
+  width: 100%;
+  overflow: auto;
   resize: none;
   outline: 0;
   line-height: 1.38;
   height: 21px;
+  padding-right: 1%;
   -webkit-appearance: caret;
 }
 
