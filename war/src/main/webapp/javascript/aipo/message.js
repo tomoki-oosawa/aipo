@@ -853,23 +853,6 @@ aipo.message.onLoadMessageReadUserList = function() {
 
 }
 
-aipo.message.switchDesktopNotify = function() {
-    var messageDesktopNotifySwitch = dojo.byId("messageDesktopNotifySwitch");
-    if (messageDesktopNotifySwitch) {
-        if (window.webkitNotifications
-                && (!aipo.activityDesktopNotifyEnable || window.webkitNotifications
-                        .checkPermission() != 0)) {
-            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
-        } else if (window.Notification
-                && (!aipo.activityDesktopNotifyEnable || window.Notification.permission != "granted")) {
-            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_on");
-        } else {
-            messageDesktopNotifySwitch.value = aimluck.io.escapeText("message_val_desktop_notify_off");
-        }
-        messageDesktopNotifySwitch.style.display="";
-    }
-}
-
 aipo.message.openDirect = function(user_id) {
 	aipo.message.hideProfile();
 	if(aipo.message.isMobile ? aipo.message.isInit : dojo.hasClass("dd_message", "open")) {

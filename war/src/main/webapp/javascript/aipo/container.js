@@ -167,7 +167,6 @@ aipo.IfrGadgetService.prototype.requestDesktopNotifyEnable = function(enable) {
             if(data){
                 aipo.activityDesktopNotifyEnable = data.enable;
                 aipo.menu.activity.isLoad = false;
-                aipo.message.switchDesktopNotify();
             }
         }
     }

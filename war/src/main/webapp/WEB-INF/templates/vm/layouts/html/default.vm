@@ -123,6 +123,7 @@ dojo.require("aimluck.widget.Dialog");
 
 dojo.addOnLoad(function() {
 	aipo.customize.positionInitialize();
+	aipo.notification.setUp();
 #if ($data.User.hasLoggedIn() && "$!checkUrl" != "" && "$!relayUrl" != "" && "$!rpctoken" != "")
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
