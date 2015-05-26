@@ -223,6 +223,15 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 50)
 #ALtditemfooter()
+##スケジュールの種別
+#ALtdcaption($!result.getFieldName("classification"))
+#ALtditemheader()
+<p><input name="classification" type="radio" value="S" >$l10n.SCHEDULE_BUSINESS_TRIP</p>
+<p><input name="classification" type="radio" value="G" >$l10n.SCHEDULE_GO_STRAIGHT</p>
+<p><input name="classification" type="radio" value="H" >$l10n.SCHEDULE_RETURNING_HOME_DIRECTLY</p>
+<p><input name="classification" type="radio" value="Y" >$l10n.SCHEDULE_HOLIDAY</p>
+<p><input name="classification" type="radio" value="T" >$l10n.SCHEDULE_LATE</p>
+#ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/>&nbsp;<label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>

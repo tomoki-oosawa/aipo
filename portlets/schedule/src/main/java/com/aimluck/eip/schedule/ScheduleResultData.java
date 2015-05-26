@@ -138,6 +138,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_dummy = false;
     is_daystart = false;
     is_term = false;
+
   }
 
   /**
