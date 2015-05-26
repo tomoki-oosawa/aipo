@@ -106,14 +106,11 @@ aipo.message.reloadMessageList = function() {
                 'messagePane');
         aipo.message.messagePane.onLoad = function() {
         	if(aipo.message.jumpCursor) {
+        		var pane = dojo.byId("messagePane");
         		var active = dojo.byId("message" + aipo.message.jumpCursor);
-        		if(active) {
-        		    dojo.byId("messagePane").scrollTop = active.offsetTop;
+        		if(pane && active) {
+        			aipo.message.scrollTo(pane, active.offsetTop - 50, 100);
         		    dojo.addClass(active, "active");
-        		}
-        		var summary = dojo.byId("messageSummary");
-        		if(summary) {
-        			summary.scrollTop = dojo.byId("messageRoom" + aipo.message.currentRoomId).offsetTop
         		}
                 aipo.message.jumpCursor = null;
         	} else {
@@ -676,6 +673,11 @@ aipo.message.selectRoom = function(room_id) {
             messageForm.userId.value = 0;
             messageForm.roomId.value = aipo.message.currentRoomId;
         }
+
+		var pane = dojo.byId("messageSummary");
+		if(pane) {
+		    aipo.message.scrollTo(pane, messageRoom.offsetTop, 100);
+		}
 
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
@@ -1318,3 +1320,15 @@ aipo.message.fixDateLine = function() {
 		}
 	}
 }
+
+aipo.message.scrollTo = function(element, to, duration) {
+	  if (duration < 0) return;
+	  var difference = to - element.scrollTop;
+	  var perTick = difference / duration * 10;
+
+	  setTimeout(function() {
+	    element.scrollTop = element.scrollTop + perTick;
+	    if (element.scrollTop == to) return;
+	    aipo.message.scrollTo(element, to, duration - 10);
+	  }, 10);
+	}
