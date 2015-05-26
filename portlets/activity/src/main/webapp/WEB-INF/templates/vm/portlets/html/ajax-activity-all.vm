@@ -121,7 +121,13 @@
 </div>
 #ALtdcellfooter()
 <td>
-	<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!{record.DisplayName}</a></div>
+	<div>
+		#if($!{record.UserId})
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!{record.DisplayName}</a>
+		#else
+		$!{record.DisplayName}
+		#end
+	</div>
 </td>
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
