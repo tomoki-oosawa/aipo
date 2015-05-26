@@ -48,11 +48,7 @@
 #if(!($!result.isActivity() || $!ignore_viewdate == "true"))
 #ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditemheader()
-#if($!result.isLoginUserID($!result.Detail.User.UserId.Value))
-$!{result.Detail.User.AliasNameHtml}
-#else
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.User.UserId})">$!{result.Detail.User.AliasNameHtml}</a>
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">$!{result.Detail.User.AliasNameHtml}</a>
 #ALtditemfooter()
 #end
 #ALtdcaption($l10n.SCHEDULE_DATE)
@@ -99,9 +95,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
     #if($!result.isActivity() || $!ignore_viewdate == "true" || !($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}))
-    #if($!result.isLoginUserID($!{record.UserId.Value}))$!record.AliasName
-    #else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{record.UserId.Value})">$!record.AliasName</a>
-    #end
+    <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.Value},arguments[0])">$!record.AliasName</a>
         #if($result.getStatus($record.UserId.Value) == "T")
         <i class="auiIcon auiIconTmpreserve"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
@@ -143,16 +137,12 @@ ${record.FacilityNameHtml}<br/>
 
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditemheader()
-#if($!result.isLoginUserID($!{result.Detail.CreateUser.UserId.Value}))$!{result.Detail.CreateUser.AliasName}
-#else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.CreateUser.UserId.Value})">$!{result.Detail.CreateUser.AliasName}</a>
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
  （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
 #ALtditemfooter()
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditemheader()
-#if($!result.isLoginUserID($!{result.Detail.UpdateUser.UserId.Value}))$!{result.Detail.UpdateUser.AliasName}
-#else<a href="javascript: void(0)" onclick="aipo.message.openDirect($!{result.Detail.UpdateUser.UserId.Value})">$!{result.Detail.UpdateUser.AliasName}</a>
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
  （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
 #ALtditemfooter()
 #ALtablefooter()

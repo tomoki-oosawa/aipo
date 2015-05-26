@@ -32,24 +32,15 @@
 #ALtditem($!result.Detail.Explanation)
 
 #ALtdcaption("$l10n.PROJECT_ADMIN_USER")
-#if($!result.Detail.AdminUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.AdminUserId.value)">$!result.Detail.AdminUserName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.AdminUserId.value},arguments[0])">$!result.Detail.AdminUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.AdminUserName)
-#end
-
 #ALtdcaption("$l10n.PROJECT_MENVERS")
 #ALtditemheader()
 <ul>
 #foreach($record in $!result.Detail.MemberList)
 <li>
-#if($!record.UserId.value != $!result.Detail.LoginUserId.value)
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!record.UserId.value)">$!record.AliasName</a>
-#else
-$!record.AliasName
-#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.value},arguments[0])">$!record.AliasName</a>
 </li>
 #end
 </ul>
@@ -61,22 +52,13 @@ $!record.AliasName
 #ALtditem($!result.Detail.UpdateDate.toString())
 
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
-#if($!result.Detail.UpdateUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.UpdateUserId.value)">$!result.Detail.UpdateUserName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUserId.value},arguments[0])">$!result.Detail.UpdateUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.UpdateUserName)
-#end
-
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
-#if($!result.Detail.CreateUserId.value != $!result.Detail.LoginUserId.value)
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.openDirect($!result.Detail.CreateUserId.value)">$!result.Detail.CreateUserName</a>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUserId.value},arguments[0])">$!result.Detail.CreateUserName</a>
 #ALtditemfooter()
-#else
-#ALtditem($!result.Detail.CreateUserName)
-#end
 
 #if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption("$l10n.PROJECT_FILE_ATTACH")

@@ -53,7 +53,7 @@ $!{record.FolderName}
 #ALtdcellfooter()
 #if(${record.FolderId} > 1)
 #ALtdcellheaderAtt("class='mb_hide'")
-<div>$!{record.UpdateName.AliasName}</div>
+<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UpdateUserId.value},arguments[0])">$!{record.UpdateName.AliasName}</a></div>
 #ALtdcellfooter()
 #else
 #ALtdcellAtt("" "thin class='mb_hide'")

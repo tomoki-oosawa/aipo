@@ -359,6 +359,8 @@ dojo.declare(
                 return err;
             });
         },
+        _onKey: function(/*Event*/ evt){
+		},
         hide:function(){
         	var wrapper = document.getElementById('wrapper');
         	if(wrapper) {
