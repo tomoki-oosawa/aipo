@@ -16,7 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
+#if(!$isMore)
 <div class="index">$l10n.MESSAGE_SEARCH_RESULT1$!{result.Keyword}$l10n.MESSAGE_SEARCH_RESULT2<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.clearSearchMessageList();return false;"><i class="icon-remove"></i></a></div>
+#end
+#if($userList.size() == 0 && $roomList.size() == 0 && $result.List.size() == 0)
+<div class="emptyMessage">$l10n.MESSAGE_SEARCH_EMPTY_MESSAGE</div>
+#else
+#if(!$isMore)
 <ul class="user">
 <li class="index">$l10n.MESSAGE_USER<span>$!userList.size()件</span><a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightUser();return false;"><i class="icon-chevron-down" id="messageRightUserSwapIcon"></i></a></li>
 #foreach ($record in $userList)
@@ -62,19 +68,24 @@
 	</li>
 #end
 </ul>
+#end
 <ul class="messages">
+#if(!$isMore || $result.List.size() > 0)
 <li class="index">$l10n.MESSAGE_MESSAGE<span></span><a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightMessage();return false;"><i class="icon-chevron-down" id="messageRightMessageSwapIcon"></i></a></li>
+#end
 #foreach ($record in $result.List)
-<li id="messageRight$!record.MessageId" class="message messageRightMessage" onclick="aipo.message.jumpMessage($!record.RoomId,$!record.MessageId)">
+<li id="messageRight$!record.MessageId" class="message messageRightMessage" >
 	<div class="avatar">
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#end
+		</a>
 	</div>
 	<div class="messageContents">
-		<div class="name">$!record.LastName $!record.FirstName</div>
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
 		<div class="body">$!record.MessageHtml
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
@@ -84,9 +95,11 @@
 		</div>
 		<div class="time">
 			$!record.CreateDate&nbsp;
-			#if($!record.isOwner())#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end#end
+			#if($!record.isOwner())<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageReadUserListScreen").addQueryData("m",$!record.MessageId)','$!portlet.ID',aipo.message.onLoadMessageReadUserList);" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end</a>#end
+			&nbsp;<a href="javascript:void(0)" onclick="aipo.message.jumpMessage($!record.RoomId,$!record.MessageId)">$l10n.MESSAGE_JUMP_MESSAGE</a>
 		</div>
 	</div>
 </li>
 #end
 </ul>
+#end

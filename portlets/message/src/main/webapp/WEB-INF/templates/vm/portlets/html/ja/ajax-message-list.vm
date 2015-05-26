@@ -25,9 +25,9 @@
 #set($currentMessageId = "")
 #set($currentDateKey = "")
 #foreach ($record in $result.List)
-#if("$currentDate" != "" && "$!record.CreateDateLine.toString()" != "$currentDate")
-<div id="messageLine$!record.MessageId" class="date_line messageLine$!currentDateKey"><span>$!currentDate</span></div>
-#end
+##if("$currentDate" != "" && "$!record.CreateDateLine.toString()" != "$currentDate")
+##<div id="messageLine$!record.MessageId" class="date_line messageLine$!currentDateKey"><span>$!currentDate</span></div>
+##end
 #set($currentDate = $!record.CreateDateLine.toString())
 #set($currentMessageId = $!record.MessageId)
 #set($currentDateKey = $!record.CreateDateKey.toString())
@@ -57,5 +57,5 @@
 	</div>
 </div>
 #end
-<div id="messageLine$!currentMessageId" style="display:none" class="date_line messageLineLast messageLine$!currentDateKey"><span>$!currentDate</span></div>
+##<div id="messageLine$!currentMessageId" style="display:none" class="date_line messageLineLast messageLine$!currentDateKey"><span>$!currentDate</span></div>
 #end

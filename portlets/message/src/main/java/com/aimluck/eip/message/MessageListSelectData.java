@@ -66,6 +66,8 @@ public class MessageListSelectData extends
 
   private int lastMessageId;
 
+  private boolean jump = false;
+
   private EipTMessageRoom room;
 
   private ALStringField keyword = null;
@@ -113,6 +115,12 @@ public class MessageListSelectData extends
     } catch (Throwable ignore) {
       // ignore
     }
+    try {
+      int param = rundata.getParameters().getInt("jump");
+      jump = (param == 1);
+    } catch (Throwable ignore) {
+      // ignore
+    }
 
     List<Integer> roomIds = new ArrayList<Integer>(1);
     if (isSearch) {
@@ -125,12 +133,16 @@ public class MessageListSelectData extends
     } else {
       roomIds.add(room.getRoomId());
     }
-    return MessageUtils.getMessageList(
-      roomIds,
-      keyword.getValue(),
-      cursor,
-      MESSAGE_LIMIT,
-      latest);
+    if (jump) {
+      return MessageUtils.getMessageJumpList(room.getRoomId(), cursor);
+    } else {
+      return MessageUtils.getMessageList(
+        roomIds,
+        keyword.getValue(),
+        cursor,
+        MESSAGE_LIMIT,
+        latest);
+    }
   }
 
   /**

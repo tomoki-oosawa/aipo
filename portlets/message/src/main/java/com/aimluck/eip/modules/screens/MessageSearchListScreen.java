@@ -53,23 +53,33 @@ public class MessageSearchListScreen extends ALVelocityScreen {
       } catch (Throwable ignore) {
         // ignore
       }
-
-      MessageRoomListSelectData roomList = new MessageRoomListSelectData();
-      roomList.initField();
-      if (!StringUtils.isEmpty(keyword)) {
-        roomList.setKeyword(keyword);
+      Integer cursor = null;
+      try {
+        cursor = rundata.getParameters().getInt("c");
+      } catch (Throwable ignore) {
+        // ignore
       }
-      roomList.doViewList(this, rundata, context);
-      context.put("roomList", roomList.getList());
 
-      MessageUserListSelectData userList = new MessageUserListSelectData();
-      userList.initField();
-      if (!StringUtils.isEmpty(keyword)) {
-        userList.setKeyword(keyword);
+      if (cursor == null || cursor.intValue() == 0) {
+        MessageRoomListSelectData roomList = new MessageRoomListSelectData();
+        roomList.initField();
+        if (!StringUtils.isEmpty(keyword)) {
+          roomList.setKeyword(keyword);
+        }
+        roomList.doViewList(this, rundata, context);
+        context.put("roomList", roomList.getList());
+
+        MessageUserListSelectData userList = new MessageUserListSelectData();
+        userList.initField();
+        if (!StringUtils.isEmpty(keyword)) {
+          userList.setKeyword(keyword);
+        }
+        userList.doViewList(this, rundata, context);
+        context.put("userList", userList.getList());
+        context.put("isMore", false);
+      } else {
+        context.put("isMore", true);
       }
-      userList.doViewList(this, rundata, context);
-      context.put("userList", userList.getList());
-
       MessageListSelectData messageList = new MessageListSelectData();
       messageList.setSearch(true);
       messageList.initField();

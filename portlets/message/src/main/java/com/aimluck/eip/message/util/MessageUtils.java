@@ -21,6 +21,7 @@ package com.aimluck.eip.message.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,6 +54,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.message.MessageListSelectData;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -248,8 +250,48 @@ public class MessageUtils {
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
   }
 
+  public static ResultList<EipTMessage> getMessageJumpList(Integer roomId,
+      int cursor) {
+    List<Integer> roomList = new ArrayList<Integer>();
+    roomList.add(roomId);
+    ResultList<EipTMessage> resultListTop =
+      getMessageList(
+        roomList,
+        null,
+        cursor,
+        MessageListSelectData.MESSAGE_LIMIT / 2,
+        true,
+        true,
+        true);
+    ResultList<EipTMessage> resultListBottom =
+      getMessageList(
+        roomList,
+        null,
+        cursor,
+        MessageListSelectData.MESSAGE_LIMIT / 2,
+        false,
+        false,
+        false);
+    resultListTop.addAll(resultListBottom);
+    return new ResultList<EipTMessage>(resultListTop, -1, -1, resultListTop
+      .size());
+  }
+
   public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
       String keyword, int cursor, int limit, boolean isLatest) {
+    return getMessageList(
+      roomList,
+      keyword,
+      cursor,
+      limit,
+      isLatest,
+      false,
+      false);
+  }
+
+  public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
+      String keyword, int cursor, int limit, boolean isLatest,
+      boolean isReverse, boolean isEquals) {
     StringBuilder select = new StringBuilder();
 
     boolean isSearch = (keyword != null && keyword.length() > 0);
@@ -286,9 +328,17 @@ public class MessageUtils {
     body.append(") ");
     if (cursor > 0) {
       if (isLatest) {
-        body.append(" and t1.message_id > #bind($cursor) ");
+        if (isEquals) {
+          body.append(" and t1.message_id >= #bind($cursor) ");
+        } else {
+          body.append(" and t1.message_id > #bind($cursor) ");
+        }
       } else {
-        body.append(" and t1.message_id < #bind($cursor) ");
+        if (isEquals) {
+          body.append(" and t1.message_id <= #bind($cursor) ");
+        } else {
+          body.append(" and t1.message_id < #bind($cursor) ");
+        }
       }
     }
     if (isSearch) {
@@ -297,7 +347,11 @@ public class MessageUtils {
 
     StringBuilder last = new StringBuilder();
 
-    last.append(" order by t1.create_date desc ");
+    if (isReverse) {
+      last.append(" order by t1.create_date asc ");
+    } else {
+      last.append(" order by t1.create_date desc ");
+    }
 
     if (limit > 0) {
       last.append(" limit ");
@@ -336,6 +390,10 @@ public class MessageUtils {
       }
       object.setRoomId(roomId);
       list.add(object);
+    }
+
+    if (isReverse) {
+      Collections.reverse(list);
     }
 
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
