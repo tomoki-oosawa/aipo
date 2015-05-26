@@ -31,9 +31,8 @@
 #AUIEmptyMessage("icon-list-ul" "$l10n.COMMON_NO_CATEGORY")
 #else
 
-<div class="auiSummaryMeta clearfix"><p>
+<div class="auiSummaryMeta clearfix">
 #AUIbuttonAction($l10n.TODO_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.todo.onLoadCategoryDialog);")
-</p>
 </div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
