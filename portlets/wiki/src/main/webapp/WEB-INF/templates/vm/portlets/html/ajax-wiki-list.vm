@@ -91,6 +91,10 @@
 		#end
 	</tbody>
 </table>
+#AUISummaryDiv()
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
+#AUIajaxpageview('WikiListScreen' $result)
+#AUISummaryDivfooter()
 #ALformfooter()
 #end
 #end
