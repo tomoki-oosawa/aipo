@@ -527,11 +527,13 @@ public class ALDefaultSocialApplicationHanlder extends
       activity.setModuleId(model.getModuleId());
       try {
         ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
-        if (model.getAppId().equals("timeline") && user == null) {
+        if (user == null && model.getAppId().equals("timeline")) {
           activity.setDisplayName(model.getLoginName());
         } else {
-          activity.setDisplayName(user.getAliasName().getValue());
-
+          if (user != null) {
+            activity.setDisplayName(user.getAliasName().getValue());
+            activity.setUserId(user.getUserId().getValueWithInt());
+          }
         }
       } catch (Throwable t) {
         //
