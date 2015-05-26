@@ -66,8 +66,6 @@ public class ALActivity implements ALData, Serializable {
 
   private ALNumberField moduleId;
 
-  private ALNumberField user_id;
-
   private boolean isRead;
 
   public ALActivity() {
@@ -93,7 +91,6 @@ public class ALActivity implements ALData, Serializable {
     icon = new ALStringField();
     moduleId = new ALNumberField();
     isRead = true;
-    user_id = new ALNumberField();
   }
 
   public int getId() {
@@ -204,14 +201,6 @@ public class ALActivity implements ALData, Serializable {
     this.moduleId.setValue(moduleId);
   }
 
-  public void setUserId(long i) {
-    user_id.setValue(i);
-  }
-
-  public ALNumberField getUserId() {
-    return user_id;
-  }
-
   /**
    * @return moduleId
    */
@@ -285,7 +274,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * external_id毎の直近のアクティビティを返す。存在しない場合null。
-   *
+   * 
    * @param appid
    *          ex Schedule
    * @param external_id
@@ -305,7 +294,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報をReplaceするか
-   *
+   * 
    * @param activity
    * @param loginname
    * @return
@@ -317,7 +306,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報を消す。
-   *
+   * 
    * @param activity
    * @param loginname
    * @return

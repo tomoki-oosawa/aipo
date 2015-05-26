@@ -408,7 +408,6 @@ CREATE TABLE activity (
     EXTERNAL_ID varchar(99) NULL,
     ICON varchar(255) NULL,
     ID integer NOT NULL,
-    USER_ID integer NOT NULL,
     LOGIN_NAME varchar(32) NOT NULL,
     MODULE_ID integer NOT NULL,
     PORTLET_PARAMS varchar(99) NULL,
