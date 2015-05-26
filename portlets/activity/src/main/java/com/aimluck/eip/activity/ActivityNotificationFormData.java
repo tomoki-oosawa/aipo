@@ -104,6 +104,8 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
     if ("F".equals(desktopNotificationParam)
       || "T".equals(desktopNotificationParam)) {
       desktopNotification.setValue(desktopNotificationParam);
+    } else {
+      desktopNotification.setValue("T");
     }
     return true;
   }

@@ -130,6 +130,7 @@ aipo.notification.openDialog = function() {
 aipo.notification.onReceiveMessage = function(msg){
     if(!msg) {
         if(window.webkitNotifications || window.Notification) {
+        	aipo.activityDesktopNotifyEnable = null;
             aipo.container.gadgetService.requestDesktopNotifyEnable();
         }
         var arrDialog = dijit.byId("modalDialog");
