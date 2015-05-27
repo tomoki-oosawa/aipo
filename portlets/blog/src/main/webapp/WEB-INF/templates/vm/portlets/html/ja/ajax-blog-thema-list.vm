@@ -22,9 +22,9 @@
 ## ---------------------------------------------------------------------------
 <div id="auiContentsArea" #if($clientVer && $clientVer == "5") style="margin-bottom:45px" #end><div id="auiContentsAreaInner">
 <h2>$l10n.BLOG_MANAGEMENT</h2>
-<div class="auiSummaryMeta clearfix"><p>
+<div class="auiSummaryMeta clearfix">
 #AUIbuttonAction("$l10n.BLOG_ADD_THEME_DO" "javascript:aipo.common.showDialog('$newThemaUrl','$!portlet.ID',aipo.blog.onLoadBlogThemaDialog);")
-</p></div>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheader("$l10n.BLOG_THEME" $jslink $portlet)

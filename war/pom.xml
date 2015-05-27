@@ -126,6 +126,7 @@
                 <include>aipo/menu/activity.js</include>
                 <include>aipo/menu/message.js</include>
                 <include>aipo/message.js</include>
+                <include>aipo/notification.js</include>
               </includes>
               <excludes>
                 <exclude>**/*.xd.js</exclude>

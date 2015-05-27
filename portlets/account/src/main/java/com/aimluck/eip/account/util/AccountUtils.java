@@ -149,6 +149,9 @@ public class AccountUtils {
         return null;
       }
       ALBaseUser user = (ALBaseUser) JetspeedSecurity.getUser(userid);
+      if (user == null) {
+        return null;
+      }
       // 削除済みユーザの取得は行わない。
       // By Haruo Kaneko
       if ("T".equals(user.getDisabled())) {

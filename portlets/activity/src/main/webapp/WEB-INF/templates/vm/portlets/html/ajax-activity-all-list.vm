@@ -92,7 +92,13 @@ $l10n.COMMON_UPDATE_DATE
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
 </div>
 </td>
-<td><div>$!{record.DisplayName}</div></td>
+<td><div>
+	#if($!{record.userId})
+	<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!{record.DisplayName}</a>
+	#else
+	$!{record.DisplayName}
+	#end
+	</div></td>
 <td nowrap="nowrap" class="right">$!record.UpdateDate</td>
 </tr>
 #end

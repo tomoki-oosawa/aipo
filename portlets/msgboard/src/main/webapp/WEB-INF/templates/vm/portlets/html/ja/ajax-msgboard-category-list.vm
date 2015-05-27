@@ -34,9 +34,9 @@
 <div id="auiContentsAreaInner">
 <h2>$l10n.MSGBOARD_MANAGEMENT</h2>
 #if($result.List.size() > 0)
-<div class="auiSummaryMeta clearfix"><p>
+<div class="auiSummaryMeta clearfix">
 #AUIbuttonAction("$l10n.MSGBOARD_CATEGORY_ADD" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
-</p></div>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheaderAction($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)

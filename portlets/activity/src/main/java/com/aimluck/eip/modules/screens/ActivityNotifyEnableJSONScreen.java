@@ -91,7 +91,7 @@ public class ActivityNotifyEnableJSONScreen extends ALJSONScreen {
       json = new JSONObject();
       json.put("enable", notifyValue != null
         ? notifyValue.booleanValue()
-        : (desktopNotificationParam == null ? false : "T"
+        : (desktopNotificationParam == null ? true : "T"
           .equals(desktopNotificationParam)));
       result = json.toString();
     } catch (Exception e) {

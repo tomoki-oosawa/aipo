@@ -213,6 +213,7 @@ public class ActivityAllSelectData extends
           .withPage(page)
           .withTargetLoginName(loginName)
           .withPostId(postId));
+
     // // withの否定が無いため取得してから取り除く
     // if ("other".equals(currentCategory)) {
     // ResultList<ALActivity> removeList = new ResultList<ALActivity>();
