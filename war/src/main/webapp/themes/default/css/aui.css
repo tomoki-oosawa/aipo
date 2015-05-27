@@ -682,8 +682,8 @@ ul.hdTools .dropdown:before {
 .dropdown .sideBlock,
 .activityPopup .sideBlock, .supportPopup .sideBlock {
   float: left;
-  /* width: 280px; */
-  width: 240px;
+  width: 280px;
+  /*width: 240px;*/
 }
 .dropdown .contents,
 .activityPopup .contents, .supportPopup .contents {
@@ -953,9 +953,9 @@ ul.hdTools .dropdown:before {
   border-bottom: 1px solid #e5e5e5;
 }
 #dd_message .mainBlock {
-  /* margin-left: 280px;
-  border-left: solid 1px #d2d2d2; */
-  margin-left: 240px;
+   margin-left: 280px;
+  /*border-left: solid 1px #d2d2d2; */
+  /*margin-left: 240px;*/
 }
 #dd_message .mainBlock > .contents {
   /* padding: 10px 10px 0 10px; */
@@ -1243,7 +1243,7 @@ ul.hdTools .dropdown:before {
   height: 13px;
   min-width: 10px;
   line-height: 13px;
-  margin: 0 3px 0 0;
+  margin: 5px 3px 0 0;
   padding: 0 2px;
   font-size: 10px;
   text-align: center;
