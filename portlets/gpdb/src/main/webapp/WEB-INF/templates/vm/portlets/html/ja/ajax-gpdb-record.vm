@@ -86,6 +86,14 @@
 			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
+		#elseif ("$!item.Type" == ("13"))
+			#ALtdcellNowrapheader()
+			<a href="javascript:void(0);" onclick="aipo.message.popupProfile(,arguments[0])">$!record.WbrDispValue</a>
+			#ALtdcellNowrapheader()
+		#elseif ("$!item.Type" == ("14"))
+			#ALtdcellNowrapheader()
+			<a href="javascript:void(0);" onclick="aipo.message.popupProfile(,arguments[0])">$!record.WbrDispValue</a>
+			#ALtdcellNowrapheader()
 		#else
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="mb_hide"')
 		#end

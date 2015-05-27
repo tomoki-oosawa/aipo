@@ -38,7 +38,7 @@ $!result.Detail.WbrGpdbName
 #end
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!{result.Detail.WbrCreateUserName} </a>（$!{result.Detail.CreateDate}）")<br>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId},arguments[0])">$!{result.Detail.WbrCreateUserName} </a>（$!{result.Detail.CreateDate})<br>
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)

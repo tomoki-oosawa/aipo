@@ -39,7 +39,7 @@ public class GpdbDetailScreen extends ALVelocityScreen {
 
   /**
    * 出力する
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -69,7 +69,7 @@ public class GpdbDetailScreen extends ALVelocityScreen {
 
   /**
    * ポートレット名を取得する
-   * 
+   *
    * @return ポートレット名
    */
   @Override
