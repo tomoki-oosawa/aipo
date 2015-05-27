@@ -760,6 +760,7 @@ public class GpdbUtils {
 
     try {
       String value = model.getValue();
+      Integer userid = null;
       List<String> valueList = new ArrayList<String>();
       if (value != null) {
 
@@ -792,9 +793,9 @@ public class GpdbUtils {
 
         } else if (ITEM_TYPE_CREATE_USER.equals(type)
           || ITEM_TYPE_UPDATE_USER.equals(type)) {
-          // 登録者、更新者の場合、名称をセットする
+          // 登録者、更新者の場合、名称・ユーザーIDをセットする
           if (!"".equals(value.trim())) {
-            Integer userid = Integer.valueOf(value);
+            userid = Integer.valueOf(value);
             value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
           }
         } else if (ITEM_TYPE_DATE.equals(type)) {
@@ -836,10 +837,12 @@ public class GpdbUtils {
       rd.setGpdbItemId(model.getGpdbItemId());
       rd.setGpdbRecordId(model.getGpdbRecordId());
       rd.setRecordNo(model.getRecordNo());
-
       rd.setValue(model.getValue());
       rd.setDispValue(value);
       rd.setValueList(valueList);
+      if (userid != null) {
+        rd.setUserId(userid);
+      }
       return rd;
     } catch (RuntimeException ex) {
       logger.error("RuntimeException", ex);

@@ -52,6 +52,9 @@ public class GpdbRecordResultData implements ALData {
   /** 値(表示用) */
   protected ALStringField disp_value;
 
+  /** ユーザーID */
+  protected ALNumberField user_id;
+
   /** 値リスト */
   protected List<String> value_list;
 
@@ -69,6 +72,7 @@ public class GpdbRecordResultData implements ALData {
     record_no = new ALNumberField();
     value = new ALStringField();
     disp_value = new ALStringField();
+    user_id = new ALNumberField();
     value_list = new ArrayList<String>();
     attachmentFileList = new ArrayList<FileuploadBean>();
   }
@@ -203,6 +207,25 @@ public class GpdbRecordResultData implements ALData {
    */
   public void setDispValue(String s) {
     disp_value.setValue(s);
+  }
+
+  /**
+   * ユーザーIDを取得する
+   *
+   * @return ユーザーID
+   */
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  /**
+   * ユーザーIDを設定する
+   *
+   * @param i
+   *          ユーザーID
+   */
+  public void setUserId(long i) {
+    user_id.setValue(i);
   }
 
   /**
