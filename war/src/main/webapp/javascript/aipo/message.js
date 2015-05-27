@@ -35,6 +35,7 @@ aipo.message.isMobile = false;
 aipo.message.isInit = false;
 aipo.message.isDirect = false;
 aipo.message.jumpCursor = null;
+aipo.message.isSearched = false;
 
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
@@ -382,6 +383,7 @@ aipo.message.openRightBlock = function(){
     if(messageSideBlock && aipo.message.isMobile) {
     	messageSideBlock.style.display="none"
     }
+    aipo.message.isSearched = true;
 }
 
 aipo.message.swapRightRoom = function(){
@@ -440,6 +442,7 @@ aipo.message.closeRightBlock = function(){
     if(messageSideBlock && aipo.message.isMobile) {
     	messageSideBlock.style.display=""
     }
+    aipo.message.isSearched = false;
 }
 
 aipo.message.clearSearchMessageList = function() {
@@ -720,10 +723,6 @@ aipo.message.unselectRoom = function() {
             if(messageSearchForm) {
             	messageSearchForm.style.display=""
             }
-            if(messageRightBlock) {
-            	messageRightBlock.style.display="none";
-            }
-
         }
         dojo.query(".messageSummary li").forEach(function(item) {
             dojo.removeClass(item, "active")
@@ -732,16 +731,19 @@ aipo.message.unselectRoom = function() {
             dojo.removeClass(item, "active")
         });
         aipo.message.clearInput();
-        if(messageMainBlockEmpty) {
-            messageMainBlockEmpty.style.display = "";
-        } else {
-            messageSideBlock.style.display = "";
-        }
         messageMainBlock.style.display = "none";
 
         if(aipo.message.isMobile) {
             if(aipo.message.tmpPortletTitle) {
                 dojo.byId("portletTitle").innerHTML = aipo.message.tmpPortletTitle;
+            }
+            if(messageMainBlockEmpty) {
+                messageMainBlockEmpty.style.display = aipo.message.isSearched ? "none" : "";
+            } else {
+                messageSideBlock.style.display = aipo.message.isSearched ? "none" : "";
+            }
+            if(messageRightBlock) {
+            	messageRightBlock.style.display = aipo.message.isSearched ? "" : "none";
             }
         }
 
