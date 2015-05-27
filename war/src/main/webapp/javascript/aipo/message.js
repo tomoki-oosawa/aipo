@@ -110,7 +110,11 @@ aipo.message.reloadMessageList = function() {
         		var pane = dojo.byId("messagePane");
         		var active = dojo.byId("message" + aipo.message.jumpCursor);
         		if(pane && active) {
-        			aipo.message.scrollTo(pane, active.offsetTop - 50, 100);
+        			if(aipo.message.isMobile) {
+        			    window.scrollTo(0, active.offsetTop);
+        			} else {
+            			aipo.message.scrollTo(pane, active.offsetTop - 50, 100);
+        			}
         		    dojo.addClass(active, "active");
         		}
                 aipo.message.jumpCursor = null;
