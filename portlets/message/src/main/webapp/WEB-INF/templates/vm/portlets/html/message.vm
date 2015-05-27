@@ -19,7 +19,7 @@
  #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-##<form id="messageSearchForm" name="messageSearchForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageSearchListScreen')" onsubmit="aipo.message.searchMessageList(this); return false;" method="post" class="auiSearch gray">
+<form id="messageSearchForm" name="messageSearchForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageSearchListScreen')" onsubmit="aipo.message.searchMessageList(this); return false;" method="post" class="auiSearch gray">
 <input type="text" name="keyword" value="" placeholder="$l10n.MESSAGE_SEARCH" onFocus="aipo.message.onFocusSearch();" onBlur="aipo.message.onBlurSearch();"/><button type="submit"><i class="icon-search"></i></button>
 </form>
 <div id="messageSideBlock" class="sideBlock" #if($isMessageUser)style="display:none"#end>
@@ -41,6 +41,9 @@
 			</li>
 		</ul>
 	</div>
+</div>
+<div id="messageRightPane" class="rightBlock" style="display:none">
+　　<div class="loader"><i class="indicator"></i></div>
 </div>
 <div id="messageMainBlock" class="mainBlock" #if(!$isMessageUser)style="display:none"#end>
 	<div class="contents clearfix">

@@ -366,13 +366,21 @@ aipo.message.searchMessageList = function(form) {
 }
 
 aipo.message.openRightBlock = function(){
+    var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
-    if (messageMainBlock) {
+    var messageRightBlock = dojo.byId("messageRightPane");
+    if (messageMainBlock　&& !aipo.message.isMobile) {
         messageMainBlock.style["margin-right"] = "360px";
     }
-    if (messageMainBlockEmpty) {
+    if (messageMainBlockEmpty && !aipo.message.isMobile) {
     	messageMainBlockEmpty.style["margin-right"] = "360px";
+    }
+    if(messageRightBlock) {
+    	messageRightBlock.style.display=""
+    }
+    if(messageSideBlock && aipo.message.isMobile) {
+    	messageSideBlock.style.display="none"
     }
 }
 
@@ -416,13 +424,21 @@ aipo.message.swapRightMessage = function(){
 }
 
 aipo.message.closeRightBlock = function(){
+    var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
-    if (messageMainBlock) {
+    var messageRightBlock = dojo.byId("messageRightPane");
+    if (messageMainBlock && !aipo.message.isMobile) {
         messageMainBlock.style["margin-right"] = "0px";
     }
-    if (messageMainBlockEmpty) {
+    if (messageMainBlockEmpty && !aipo.message.isMobile) {
     	messageMainBlockEmpty.style["margin-right"] = "0px";
+    }
+    if(messageRightBlock) {
+    	messageRightBlock.style.display="none"
+    }
+    if(messageSideBlock && aipo.message.isMobile) {
+    	messageSideBlock.style.display=""
     }
 }
 
@@ -620,12 +636,14 @@ aipo.message.selectRoom = function(room_id, scroll) {
     var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
+    var messageRightBlock = dojo.byId("messageRightPane");
     var messageForm = dojo.byId("messageForm");
     var messageRoom = dojo.byId("messageRoom" + room_id);
     var messageRoomType = dojo.byId("messageRoomType" + room_id);
     var messageRoomAvatar = dojo.byId("messageRoomAvatar");
     var messageRoomName = dojo.byId("messageRoomName");
     var messageRoomSetting = dojo.byId("messageRoomSetting");
+    var messageSearchForm = dojo.byId("messageSearchForm");
     if (messageForm && messageRoom) {
         if(aipo.message.isMobile) {
             dojo.removeClass(document.body, "messageRoomList");
@@ -659,6 +677,12 @@ aipo.message.selectRoom = function(room_id, scroll) {
                 }
                 dojo.byId("portletTitle").innerHTML = roomTitle[0].innerHTML;
             }
+            if(messageRightBlock) {
+            	messageRightBlock.style.display="none"
+            }
+            if(messageSearchForm) {
+            	messageSearchForm.style.display="none"
+            }
         }
 
         messageRoomSetting.style.display = "G" == messageRoomType.innerHTML ? ""
@@ -687,10 +711,19 @@ aipo.message.selectRoom = function(room_id, scroll) {
 aipo.message.unselectRoom = function() {
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
+    var messageRightBlock = dojo.byId("messageRightPane");
     var messageForm = dojo.byId("messageForm");
+    var messageSearchForm = dojo.byId("messageSearchForm");
     if (messageForm) {
         if(aipo.message.isMobile) {
             dojo.addClass(document.body, "messageRoomList");
+            if(messageSearchForm) {
+            	messageSearchForm.style.display=""
+            }
+            if(messageRightBlock) {
+            	messageRightBlock.style.display="none";
+            }
+
         }
         dojo.query(".messageSummary li").forEach(function(item) {
             dojo.removeClass(item, "active")
