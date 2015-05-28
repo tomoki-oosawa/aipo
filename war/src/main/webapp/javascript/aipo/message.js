@@ -113,7 +113,8 @@ aipo.message.reloadMessageList = function() {
         			if(aipo.message.isMobile) {
         			    window.scrollTo(0, active.offsetTop);
         			} else {
-            			aipo.message.scrollTo(pane, active.offsetTop - 50, 100);
+        				var max = pane.scrollHeight - pane.clientHeight;
+        			    aipo.message.scrollTo(pane, max < active.offsetTop - 50 ? max : active.offsetTop - 50, 100);
         			}
         		    dojo.addClass(active, "active");
         		}
@@ -710,7 +711,8 @@ aipo.message.selectRoom = function(room_id, scroll) {
 
 		var pane = dojo.byId("messageSummary");
 		if(scroll && pane) {
-		    aipo.message.scrollTo(pane, messageRoom.offsetTop, 100);
+			var max = pane.scrollHeight - pane.clientHeight;
+		    aipo.message.scrollTo(pane, max < messageRoom.offsetTop ? max : messageRoom.offsetTop, 100);
 		}
 
         aipo.message.reloadRoomMemberList();
