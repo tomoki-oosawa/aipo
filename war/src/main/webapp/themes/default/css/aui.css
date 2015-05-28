@@ -3158,8 +3158,8 @@ button[disabled]:active {
 }
 .auiSearch.gray.focus button,
 .auiSearch.gray.focus button:active{
-  background: #ff9900;
-  border-color: #e68a00;
+  background: #ff9900 !important;
+  border-color: #e68a00 !important;
   text-shadow: none;
 }
 .auiSearch.gray.focus button i,
