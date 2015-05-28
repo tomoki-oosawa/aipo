@@ -44,7 +44,7 @@ import javax.servlet.http.HttpSessionBindingListener;
  * Note: This implementation segments the states by session. States created in
  * one session will NOT BE AVAILABLE from other sessions.
  * </p>
- * 
+ *
  * @version $Revision: 1.4 $
  * @see org.apache.jetspeed.services.statemanager.BaseStateManagerService
  * @see org.apache.jetspeed.services.statemanager.StateManagerService
@@ -94,7 +94,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
   /**
    * Convert the key to a name safe to store directly in the session.
-   * 
+   *
    * @param key
    *          The state key.
    * @return a name safe to store directly in the session based on key.
@@ -107,7 +107,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
   /**
    * Access the Map which is the set of attributes for a state.
-   * 
+   *
    * @param key
    *          The state key.
    * @return The Map which is the set of attributes for a state.
@@ -133,7 +133,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
   /**
    * Add a new state to the states we are managing.
-   * 
+   *
    * @param key
    *          The state key.
    * @param state
@@ -157,7 +157,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
   /**
    * Remove a state from the states we are managing.
-   * 
+   *
    * @param key
    *          The state key.
    */
@@ -177,7 +177,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
   /**
    * Access an array of the keys of all states managed, those that start with
    * the parameter.
-   * 
+   *
    * @param start
    *          The starting string used to select the keys.
    * @return an array of the keys of all states managed.
@@ -233,7 +233,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
     /**
      * Construct. s
-     * 
+     *
      * @param key
      *          The state key.
      * @param map
@@ -247,7 +247,7 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 
     /**
      * Access the map we are holding.
-     * 
+     *
      * @return the Map we are holding.
      */
     public Map getMap() {
@@ -278,11 +278,11 @@ public class JetspeedHttpStateManagerService extends BaseStateManagerService
 } // JetspeedHttpStateManagerService
 
 /**********************************************************************************
- * 
+ *
  * $Header:
  * /home/cvspublic/jakarta-jetspeed/src/java/org/apache/jetspeed/services
  * /statemanager/JetspeedHttpStateManagerService.java,v 1.4 2004/02/23 03:38:28
  * jford Exp $
- * 
+ *
  **********************************************************************************/
 

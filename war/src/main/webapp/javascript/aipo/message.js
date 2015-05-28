@@ -982,10 +982,11 @@ aipo.message.resizeInput = function(input) {
     shadowDiv.style.left = "-1000";
     shadowDiv.style.border = "0";
     shadowDiv.style.outline = "0";
-    shadowDiv.style.lineHeight = "normal";
+    shadowDiv.style.fontSize = "14px";
+    shadowDiv.style.lineHeight = "1.38";
     shadowDiv.style.height = "auto";
     shadowDiv.style.resize = "none";
-    shadowDiv.cols = "10"
+    shadowDiv.cols = "10";
     shadowDiv.innerHTML = shadowVal + "あ";
 
     var objBody = document.getElementsByTagName("body").item(0);
@@ -995,14 +996,18 @@ aipo.message.resizeInput = function(input) {
     objShadow.style.width = input.offsetWidth + "px";
 
     var shadowHeight = objShadow.offsetHeight;
-    // 文字サイズを13ptに設定したため、高さが18→20に変更
+    // 文字サイズを14pxに設定したため、"あ"の高さが18→20に変更
     if (shadowHeight < 20) {
         shadowHeight = 20;
     }
-    if (shadowHeight > 20*20) {
-        shadowHeight = 20*20;
+    // 最大10行
+    input.style.overflow = "hidden";
+    if (shadowHeight > 20*10) {
+        shadowHeight = 20*10;
+        input.style.overflow = "auto";
+        input.style.overflowX = "hidden";
     }
-    input.style.height = shadowHeight * 1.0 + 19 + "px";
+    input.style.height = shadowHeight * 1.0 + 40 + "px";
     objBody.removeChild(shadowDiv);
 }
 

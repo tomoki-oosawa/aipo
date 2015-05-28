@@ -316,24 +316,25 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 	shadow.style.left = "-1000";
 	shadow.style.border = "0";
 	shadow.style.outline = "0";
-	shadow.style.lineHeight = "normal";
+	shadow.style.fontSize = "14px";
+    shadow.style.lineHeight = "1.38";
 	shadow.style.height = "auto";
 	shadow.style.resize = "none";
-	shadow.cols = "10"
+	shadow.cols = "10";
 	// これが呼ばれる際の入力はまだ入ってこないので、適当に1文字追加
 	shadow.innerHTML = shadowVal + "あ";
 
 	var objBody = document.getElementsByTagName("body").item(0);
 	objBody.appendChild(shadow);
-	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth
-			+ "px";
+	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth + "px";
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	// 13pxに変更したことにより、"あ"の高さが18→20に変更になった。
-	if (shadowHeight < 20)
-		shadowHeight = 20;
-	dojo.byId(objId).style.height = shadowHeight * 1.0 + 19 + "px";
+    // 文字サイズを14pxに設定したため、"あ"の高さが18→20に変更
+    if (shadowHeight < 20) {
+        shadowHeight = 20;
+    }
+	dojo.byId(objId).style.height = shadowHeight * 1.0 + 40 + "px";
 	objBody.removeChild(shadow);
 }
 

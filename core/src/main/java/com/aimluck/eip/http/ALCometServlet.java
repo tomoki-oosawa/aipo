@@ -148,7 +148,6 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       if (session == null) {
         return null;
       }
-
       return (ALBaseUser) session.getAttribute("turbine.user");
     } catch (Throwable ignore) {
       // ignore

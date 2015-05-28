@@ -843,7 +843,7 @@ public class TimelineSelectData extends
     if (baseuser == null) {
       return false;
     }
-    return baseuser.getPhoto() != null;
+    return baseuser.hasPhoto();
   }
 
   public ALEipUser getMyUser() {
