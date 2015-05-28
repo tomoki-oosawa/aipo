@@ -368,6 +368,9 @@ aipo.message.searchMessageList = function(form) {
     dojo.byId("messageRightPane").innerHTML = '<div class="loader"><i class="indicator"></i></div>';
     aipo.message.openRightBlock();
     aipo.message.reloadSearchMessageList();
+    if (aipo.message.isMobile) {
+    	form.keyword.blur();
+    }
 }
 
 aipo.message.openRightBlock = function(){
