@@ -752,6 +752,10 @@ aipo.message.unselectRoom = function() {
             if(messageRightBlock) {
             	messageRightBlock.style.display = aipo.message.isSearched ? "" : "none";
             }
+        } else {
+            if(messageMainBlockEmpty) {
+                messageMainBlockEmpty.style.display = "";
+            }
         }
 
         aipo.message.currentRoomId = null;
