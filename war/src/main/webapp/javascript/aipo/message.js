@@ -821,6 +821,7 @@ aipo.message.fixMessageWindow = function() {
     if(aipo.message.isMobile) {
         return;
     }
+    var messageForm = dojo.byId("messageForm");
     if (dojo.byId("dd_message") != null) {
         var minusH = 55 + 40 + 35 + 10 + 12;
         var w = dojo.byId("wrapper").clientWidth - 20;
@@ -841,7 +842,10 @@ aipo.message.fixMessageWindow = function() {
         }
     }
     if (dojo.byId("messagePane") != null) {
-        var minusH = 55 + 40 + 45 + 90 + 10 + 10 + 12;
+        var minusH = 173;
+        if(messageForm) {
+        	minusH += messageForm.clientHeight;
+        }
         var h = document.documentElement.clientHeight - minusH;
         dojo.byId("messagePane").style.height = h + "px";
     }
@@ -1007,8 +1011,13 @@ aipo.message.resizeInput = function(input) {
         input.style.overflow = "auto";
         input.style.overflowX = "hidden";
     }
+    var changed = input.style.height != shadowHeight + 40 + "px";
     input.style.height = shadowHeight * 1.0 + 40 + "px";
     objBody.removeChild(shadowDiv);
+
+    if(changed) {
+        aipo.message.fixMessageWindow();
+    }
 }
 
 aipo.message.onPaste = function(input) {
