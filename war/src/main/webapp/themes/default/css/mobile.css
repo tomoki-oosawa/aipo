@@ -2322,6 +2322,9 @@ body.messageRoomList .messageUserlist .index {
 #messageMainBlock .contents.clearfix {
   overflow: inherit;
 }
+#messageMainBlock .timelineOuter #messagePane.scroll{
+  overflow: inherit;
+}
 #messageMainBlock .timelineOuter .inputField {
   margin-bottom: 5px;
 }
@@ -2331,7 +2334,7 @@ body.messageRoomList .messageUserlist .index {
 #messageMainBlock .timelineOuter .message.active {
   background: #fef6f1;
   margin: 0 -10px;
-  padding: 10px;
+  padding: 10px 10px 0;
 }
 #messageMainBlock .timelineOuter .message .time {
   color: #999;
