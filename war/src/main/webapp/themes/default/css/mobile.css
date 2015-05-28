@@ -2392,6 +2392,11 @@ body.messageRoomList .messageUserlist .index {
   line-height: 25px;
   height: 25px;
 }
+.rightBlock ul.user li .name, .rightBlock ul.room li .name{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 .rightBlock ul.user li .date, .rightBlock ul.room li .date {
   float: right;
   color: #999;
