@@ -1057,6 +1057,9 @@ ul.hdTools .dropdown:before {
   padding: 0;
   margin-right: 4px;
 }
+#dd_message .rightBlock ul li.index a i {
+  text-decoration: none;
+}
 #dd_message .rightBlock ul li.index:hover {
   border: none;
 }
@@ -1068,6 +1071,7 @@ ul.hdTools .dropdown:before {
 }
 #dd_message .rightBlock ul li.index a i {
   color: #d2d2d2;
+  text-decoration: none;
 }
 #dd_message .rightBlock ul li.index a:hover i {
   color: #333;
@@ -3152,12 +3156,14 @@ button[disabled]:active {
   border-color: #e5e5e5;
   box-shadow: none;
 }
-.auiSearch.gray.focus button {
-  background: #ff9900;
-  border-color: #e68a00;
+.auiSearch.gray.focus button,
+.auiSearch.gray.focus button:active{
+  background: #ff9900 !important;
+  border-color: #e68a00 !important;
   text-shadow: none;
 }
-.auiSearch.gray.focus button i {
+.auiSearch.gray.focus button i,
+.auiSearch.gray.focus button:active i{
   color: #ffffff;
 }
 
