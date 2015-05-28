@@ -2277,6 +2277,9 @@ body.messageRoomList .messageUserlist ul li a {
 body.messageRoomList .messageUserlist ul li a .name {
   height: 32px;
   line-height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 body.messageRoomList .messageUserlist .index {
   margin: 0;
@@ -2321,6 +2324,10 @@ body.messageRoomList .messageUserlist .index {
 }
 #messageMainBlock .timelineOuter .message{
   border-top: none;
+}
+#messageMainBlock .timelineOuter .message.active {
+  background: #fef6f1;
+  border-radius: 4px;
 }
 #messageMainBlock .timelineOuter .message .time {
   color: #999;
