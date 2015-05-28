@@ -878,11 +878,13 @@ public class ALEipUtils {
       throw new ALDBErrorException();
     }
 
-    // セッションのマイグループに保存
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    // ServletRequestのマイグループに保存
     ALMyGroups mygroups = new ALMyGroups();
     mygroups.addList(ulist);
-    jdata.getUser().setTemp(ALEipConstants.MYGROUP, mygroups);
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute(ALEipConstants.MYGROUP, mygroups);
+    }
 
   }
 
@@ -895,12 +897,19 @@ public class ALEipUtils {
   public static List<ALEipGroup> getMyGroups(RunData rundata)
       throws ALDBErrorException {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
-    // セッションからマイグループのリストを読み込む
-    Object obj = jdata.getUser().getTemp(ALEipConstants.MYGROUP);
+    // ServletRequestからマイグループのリストを読み込み
+    Object obj = null;
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      obj = request.getAttribute(ALEipConstants.MYGROUP);
+    }
+
     if (obj == null || !(obj instanceof ALMyGroups)) {
-      // まだMyGroupが読み込まれていない場合はセッションに読み込む
+      // まだMyGroupが読み込まれていない場合は
       reloadMygroup(rundata);
-      obj = jdata.getUser().getTemp(ALEipConstants.MYGROUP);
+      if (request != null) {
+        obj = request.getAttribute(ALEipConstants.MYGROUP);
+      }
     }
     ALMyGroups mygroups = (ALMyGroups) obj;
     return mygroups.getList();

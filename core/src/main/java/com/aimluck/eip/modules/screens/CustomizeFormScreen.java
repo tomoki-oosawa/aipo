@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.MetaInfo;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -37,6 +39,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -45,16 +48,11 @@ import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * カスタマイズの一覧を処理するクラスです。
- * 
+ *
  */
 public class CustomizeFormScreen extends ALVelocityScreen {
 
-  private static final String USER_SELECTIONS =
-    "session.portlets.user.selections";
-
   private static final String UI_PORTLETS_SELECTED = "portletsSelected";
-
-  private static final String PORTLET_LIST = "session.portlets.list";
 
   public static final String FILTER_FIELDS = "filter_fields";
 
@@ -68,7 +66,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     .getLogger(CustomizeFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -135,8 +133,11 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     int start = rundata.getParameters().getInt("start", -1);
     if (start < 0) {
       start = 0;
-      PortletSessionState.clearAttribute(rundata, USER_SELECTIONS);
-      PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
+      HttpServletRequest request = HttpServletRequestLocator.get();
+      if (request != null) {
+        request.removeAttribute("portlets.list");
+        request.removeAttribute("portlets.selections");
+      }
     }
 
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();

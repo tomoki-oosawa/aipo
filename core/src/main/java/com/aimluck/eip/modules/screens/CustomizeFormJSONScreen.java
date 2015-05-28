@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import net.sf.json.JSONArray;
 
 import org.apache.jetspeed.om.profile.Control;
@@ -52,12 +54,12 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.statemanager.SessionState;
-import org.apache.jetspeed.util.PortletSessionState;
 import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALApplication;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
@@ -66,7 +68,7 @@ import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ToDoをJSONデータとして出力するクラスです。 <br />
- * 
+ *
  */
 public class CustomizeFormJSONScreen extends ALJSONScreen {
 
@@ -385,15 +387,17 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
   }
 
   protected void maintainUserSelections(RunData rundata) throws Exception {
+    JetspeedRunData jdata = (JetspeedRunData) rundata;
+    Profile profile = jdata.getProfile();
+    String mediaType = profile.getMediaType();
     String[] pnames = rundata.getParameters().getStrings("pname");
     Map<String, PortletEntry> userSelections =
       CustomizeUtils.getUserSelections(rundata);
-    @SuppressWarnings("unchecked")
     List<PortletEntry> portlets =
-      (List<PortletEntry>) PortletSessionState.getAttribute(
+      CustomizeUtils.buildAllPortletList(
         rundata,
-        CustomizeUtils.PORTLET_LIST,
-        null);
+        mediaType,
+        new ArrayList<PortletEntry>());
 
     if (portlets == null) {
       throw new Exception("Master Portlet List is null!");
@@ -410,10 +414,11 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
         }
       }
     }
-    PortletSessionState.setAttribute(
-      rundata,
-      CustomizeUtils.USER_SELECTIONS,
-      userSelections);
+
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      request.setAttribute("portlets.selections", userSelections);
+    }
   }
 
   public void doSaveAddAction(RunData data, Context context, Portlets portlets) {
@@ -424,7 +429,7 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
       ((JetspeedRunData) data).getPageSessionState();
     // update the changes made here to the profile being edited
     List<?>[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     for (int col = 0; col < columns.length; col++) {
       for (int row = 0; row < columns[col].size(); row++) {
         setPosition((IdentityElement) columns[col].get(row), col, row);
@@ -493,11 +498,11 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
   private void setPageLayout(RunData rundata, Context context, Portlets portlets) {
     JetspeedRunData jdata = (JetspeedRunData) rundata;
 
-    // get the customization state for this page
-    SessionState customizationState = jdata.getPageSessionState();
+    HttpServletRequest request = HttpServletRequestLocator.get();
 
     List<?>[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(rundata, context, portlets);
+
     String controllerName = portlets.getController().getName();
     int colNum = 2;
     if (controllerName.startsWith("One")) {
@@ -539,7 +544,9 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
       }
       columns = CustomizeUtils.buildColumns(set, colNum);
     }
-    customizationState.setAttribute("customize-columns", columns);
+    if (request != null) {
+      request.setAttribute("customize-columns", columns);
+    }
     context.put("portlets", columns);
 
     Map<String, String> titles = new HashMap<String, String>();
