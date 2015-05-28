@@ -2319,6 +2319,9 @@ body.messageRoomList .messageUserlist .index {
   color: #999;
 } */
 
+#messageMainBlock .contents.clearfix {
+  overflow: inherit;
+}
 #messageMainBlock .timelineOuter .inputField {
   margin-bottom: 5px;
 }
@@ -2327,7 +2330,8 @@ body.messageRoomList .messageUserlist .index {
 }
 #messageMainBlock .timelineOuter .message.active {
   background: #fef6f1;
-  border-radius: 4px;
+  margin: 0 -10px;
+  padding: 10px;
 }
 #messageMainBlock .timelineOuter .message .time {
   color: #999;
