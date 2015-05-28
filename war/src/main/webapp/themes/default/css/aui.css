@@ -3510,7 +3510,7 @@ ul.attachments {
 #timelineOuter textarea.elastic,
 .timelineOuter textarea.elastic {
   width: 100%;
-  overflow: auto;
+  overflow: hidden;
   resize: none;
   outline: 0;
   line-height: 1.38;

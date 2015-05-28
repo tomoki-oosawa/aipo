@@ -319,11 +319,11 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	// 13pxに変更したことにより、"あ"の高さが18→21に変更になった。
+    // 文字サイズを14pxに設定したため、"あ"の高さが18→20に変更
     if (shadowHeight < 20) {
         shadowHeight = 20;
     }
-	dojo.byId(objId).style.height = shadowHeight * 1.0 + 19 + "px";
+	dojo.byId(objId).style.height = shadowHeight * 1.0 + 40 + "px";
 	objBody.removeChild(shadow);
 }
 
