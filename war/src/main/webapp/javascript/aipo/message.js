@@ -774,7 +774,7 @@ aipo.message.resizeInput = function(input) {
         input.style.overflow = "auto";
         input.style.overflowX = "hidden";
     }
-    input.style.height = shadowHeight * 1.0 + 40 + "px";
+    input.style.height = shadowHeight * 1.0 + 23 + "px";
     objBody.removeChild(shadowDiv);
 }
 
