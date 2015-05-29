@@ -52,7 +52,7 @@ public class ScheduleAdminAclListScreen extends ALVelocityScreen {
 
       selectData.doViewList(this, rundata, context);
       String layout_template =
-        "portlets/html/ja/ajax-schedule-admin-acl-list.vm";
+        "portlets/html/ajax-schedule-admin-acl-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

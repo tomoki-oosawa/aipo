@@ -61,7 +61,7 @@ public class MsgboardTopicFormScreen extends ALVelocityScreen {
     formData.loadCategoryList(rundata, context);
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-msgboard-topic-form.vm";
+    String layout_template = "portlets/html/ajax-msgboard-topic-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

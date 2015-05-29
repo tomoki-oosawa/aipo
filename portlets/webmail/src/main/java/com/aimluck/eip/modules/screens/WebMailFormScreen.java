@@ -49,7 +49,7 @@ public class WebMailFormScreen extends ALVelocityScreen {
       WebMailFormData formData = new WebMailFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
-      setTemplate(rundata, context, "portlets/html/ja/ajax-webmail-form.vm");
+      setTemplate(rundata, context, "portlets/html/ajax-webmail-form.vm");
     } catch (Exception ex) {
       logger.error("[WebMailFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

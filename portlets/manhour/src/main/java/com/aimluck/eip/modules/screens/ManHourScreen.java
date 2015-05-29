@@ -54,7 +54,7 @@ public class ManHourScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-manhour.vm";
+      String layout_template = "portlets/html/ajax-manhour.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

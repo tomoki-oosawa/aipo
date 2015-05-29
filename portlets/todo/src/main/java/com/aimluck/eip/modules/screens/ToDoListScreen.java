@@ -64,7 +64,7 @@ public class ToDoListScreen extends ToDoScreen {
       listData.setStrLength(0);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-todo-list.vm";
+      String layout_template = "portlets/html/ajax-todo-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
-#parse("/portlets/cell_default/ja/blog-entry-form.vm")
+#parse("/portlets/cell_default/blog-entry-form.vm")

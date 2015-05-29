@@ -56,7 +56,7 @@ public class GpdbTopScreen extends GpdbScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb-top.vm";
+      String layout_template = "portlets/html/ajax-gpdb-top.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception e) {

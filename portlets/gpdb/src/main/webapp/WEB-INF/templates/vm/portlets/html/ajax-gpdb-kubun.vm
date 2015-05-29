@@ -101,4 +101,4 @@ $l10n.GPDB_NO_SELECTION_ITEM<br />
 #ALformfooter()
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/gpdb-widgets.vm")
+#parse("/portlets/html/gpdb-widgets.vm")

@@ -19,4 +19,4 @@
 ## ---------------------------------------------------------------------------
 #ALcaution("送信に失敗しました。")<br />
 
-#parse("/portlets/html/ja/news.vm")
+#parse("/portlets/html/news.vm")

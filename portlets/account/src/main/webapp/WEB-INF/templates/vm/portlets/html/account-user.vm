@@ -29,8 +29,8 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-account-user.vm")
-##parse("/portlets/html/ja/account-user-menu.vm")
+#parse("/portlets/html/ajax-account-user.vm")
+##parse("/portlets/html/account-user-menu.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

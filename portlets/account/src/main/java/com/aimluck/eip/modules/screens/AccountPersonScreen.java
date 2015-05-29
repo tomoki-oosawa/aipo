@@ -53,9 +53,9 @@ public class AccountPersonScreen extends ALVelocityScreen {
       String layout_template;
       if (type.equals("popup")) {
         layout_template =
-          "portlets/html/ja/ajax-account-person-detail-popup.vm";
+          "portlets/html/ajax-account-person-detail-popup.vm";
       } else {
-        layout_template = "portlets/html/ja/ajax-account-person-detail.vm";
+        layout_template = "portlets/html/ajax-account-person-detail.vm";
       }
       setTemplate(rundata, context, layout_template);
 

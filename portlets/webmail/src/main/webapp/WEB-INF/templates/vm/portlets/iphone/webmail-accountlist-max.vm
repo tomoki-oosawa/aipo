@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/webmail-accountlist-max.vm")
+#parse("/portlets/smartphone_default/webmail-accountlist-max.vm")

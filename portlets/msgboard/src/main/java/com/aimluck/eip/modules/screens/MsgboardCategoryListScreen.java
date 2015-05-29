@@ -56,7 +56,7 @@ public class MsgboardCategoryListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-msgboard-category-list.vm";
+        "portlets/html/ajax-msgboard-category-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MsgboardCategoryListScreen] Exception.", ex);

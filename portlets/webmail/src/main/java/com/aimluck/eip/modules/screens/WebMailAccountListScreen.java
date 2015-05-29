@@ -56,7 +56,7 @@ public class WebMailAccountListScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-account-list.vm");
+        "portlets/html/ajax-webmail-account-list.vm");
     } catch (Exception ex) {
       logger.error("[WebMailAccountListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

@@ -79,7 +79,7 @@ public class ToDoScreen extends ALVelocityScreen {
       listData.setStrLength(0);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-todo.vm";
+      String layout_template = "portlets/html/ajax-todo.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

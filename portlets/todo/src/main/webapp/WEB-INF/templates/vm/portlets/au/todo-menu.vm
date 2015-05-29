@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
-#parse("/portlets/cell_default/ja/todo-menu.vm")
+#parse("/portlets/cell_default/todo-menu.vm")

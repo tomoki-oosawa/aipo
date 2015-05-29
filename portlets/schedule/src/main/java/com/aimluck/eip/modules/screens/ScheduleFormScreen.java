@@ -71,7 +71,7 @@ public class ScheduleFormScreen extends ALVelocityScreen {
     } else {
       context.put(IGNORE_VIEWDATE, "false");
     }
-    String layout_template = "portlets/html/ja/ajax-schedule-form.vm";
+    String layout_template = "portlets/html/ajax-schedule-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

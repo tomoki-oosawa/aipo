@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
-#parse("/portlets/cell_default/ja/webmail-detail.vm")
+#parse("/portlets/cell_default/webmail-detail.vm")

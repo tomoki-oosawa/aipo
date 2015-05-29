@@ -56,7 +56,7 @@ public class CabinetListScreen extends CabinetScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-cabinet-list.vm";
+      String layout_template = "portlets/html/ajax-cabinet-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

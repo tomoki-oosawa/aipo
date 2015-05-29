@@ -26,4 +26,8 @@
     aipo.psml.menuSelected = 0;  
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-psml.vm")
+<<<<<<< HEAD
+#parse("/portlets/html/ajax-psml.vm")
+=======
+#parse("/portlets/html/ajax-psml.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

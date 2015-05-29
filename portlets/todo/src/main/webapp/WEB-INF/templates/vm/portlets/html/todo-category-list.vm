@@ -26,5 +26,5 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-todo-category-list.vm")
+#parse("/portlets/html/ajax-todo-category-list.vm")
 #ALcontentfooter()

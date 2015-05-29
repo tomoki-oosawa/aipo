@@ -66,7 +66,7 @@ public class LicenseFormScreen extends ALVelocityScreen {
     LicenseFormData formData = new LicenseFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
-    setTemplate(rundata, context, "portlets/html/ja/ajax-license-form.vm");
+    setTemplate(rundata, context, "portlets/html/ajax-license-form.vm");
   }
 
   /**

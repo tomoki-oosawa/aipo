@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-cabinet.vm")
+#parse("/portlets/html/ajax-cabinet.vm")

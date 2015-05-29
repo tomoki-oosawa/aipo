@@ -50,7 +50,7 @@ public class CabinetFolderDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-cabinet-folder-detail.vm";
+      String layout_template = "portlets/html/ajax-cabinet-folder-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[CabinetFolderDetailScreen] Exception.", ex);

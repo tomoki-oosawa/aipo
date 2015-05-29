@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-addressbook.vm")
+#parse("/portlets/html/ajax-addressbook.vm")

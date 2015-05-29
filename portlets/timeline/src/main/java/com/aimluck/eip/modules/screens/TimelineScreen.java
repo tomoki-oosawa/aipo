@@ -69,7 +69,7 @@ public class TimelineScreen extends ALVelocityScreen {
       listData.setScrollTop(scrollTop);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-timeline.vm";
+      String layout_template = "portlets/html/ajax-timeline.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

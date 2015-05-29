@@ -125,5 +125,5 @@
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/exttimecard-widget.vm")
+#parse("/portlets/html/exttimecard-widget.vm")
 

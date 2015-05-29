@@ -105,5 +105,5 @@
 #ALformfooter()
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/gpdb-widgets.vm")
+#parse("/portlets/html/gpdb-widgets.vm")
 

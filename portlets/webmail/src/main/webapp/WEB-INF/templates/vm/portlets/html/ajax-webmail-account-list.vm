@@ -67,4 +67,4 @@
 #AUISummaryDivfooter()
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
+#parse("/portlets/html/webmail-nonaction-widgets.vm")

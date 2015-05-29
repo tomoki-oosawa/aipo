@@ -18,4 +18,8 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/blog-entry-form.vm")
+<<<<<<< HEAD
+#parse("/portlets/smartphone_default/blog-entry-form.vm")
+=======
+#parse("/portlets/smartphone_default/blog-entry-form.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

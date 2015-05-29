@@ -103,7 +103,7 @@ public class MessageListScreen extends ALVelocityScreen {
           .getLastMessageId());
       }
 
-      String layout_template = "portlets/html/ja/ajax-message-list.vm";
+      String layout_template = "portlets/html/ajax-message-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageListScreen.doOutput", ex);

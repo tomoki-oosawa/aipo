@@ -59,7 +59,7 @@ public class WebMailFolderListScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-folder-list.vm");
+        "portlets/html/ajax-webmail-folder-list.vm");
 
     } catch (Exception ex) {
       logger.error("[WebMailFolderListScreen] Exception.", ex);

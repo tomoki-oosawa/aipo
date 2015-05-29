@@ -111,4 +111,4 @@
   </div>
 </div>
 
-#parse("/portlets/html/ja/wiki-widgets.vm")
+#parse("/portlets/html/wiki-widgets.vm")

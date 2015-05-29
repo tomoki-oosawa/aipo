@@ -56,7 +56,7 @@ public class CabinetFileSearchListScreen extends CabinetScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-cabinet-file-search-list.vm";
+        "portlets/html/ajax-cabinet-file-search-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

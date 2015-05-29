@@ -70,7 +70,7 @@ public class AddressBookDetailScreen extends ALVelocityScreen {
       String entityid =
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
-      String layout_template = "portlets/html/ja/ajax-addressbook-detail.vm";
+      String layout_template = "portlets/html/ajax-addressbook-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (ALPermissionException e) {

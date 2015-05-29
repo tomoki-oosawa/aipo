@@ -19,4 +19,4 @@
 ## ---------------------------------------------------------------------------
 ## One day
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/schedule-list.vm")
+#parse("/portlets/smartphone_default/schedule-list.vm")

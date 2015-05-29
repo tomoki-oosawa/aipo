@@ -102,4 +102,4 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/project-widgets.vm")
+#parse("/portlets/html/project-widgets.vm")

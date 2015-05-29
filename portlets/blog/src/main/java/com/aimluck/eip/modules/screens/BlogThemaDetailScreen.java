@@ -49,7 +49,7 @@ public class BlogThemaDetailScreen extends ALVelocityScreen {
       BlogThemaSelectData detailData = new BlogThemaSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-blog-thema-detail.vm";
+      String layout_template = "portlets/html/ajax-blog-thema-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[BlogThemaDetailScreen] Exception.", ex);

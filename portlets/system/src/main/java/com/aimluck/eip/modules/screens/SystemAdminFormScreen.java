@@ -59,7 +59,7 @@ public class SystemAdminFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-system-adminpasswd-form.vm";
+      "portlets/html/ajax-system-adminpasswd-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

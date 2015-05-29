@@ -18,4 +18,8 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/account-person-menu.vm")
+<<<<<<< HEAD
+#parse("/portlets/smartphone_default/account-person-menu.vm")
+=======
+#parse("/portlets/smartphone_default/account-person-menu.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

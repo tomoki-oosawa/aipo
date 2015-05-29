@@ -29,6 +29,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-msgboard-topic-list.vm")
+#parse("/portlets/html/ajax-msgboard-topic-list.vm")
 #ALcontentfooter()
-##parse("/portlets/html/ja/msgboard-menu.vm")
+##parse("/portlets/html/msgboard-menu.vm")

@@ -80,5 +80,5 @@ $post
 #end
 #ALformfooter()
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/userlist-widgets.vm")
+#parse("/portlets/html/userlist-widgets.vm")
 

@@ -40,7 +40,7 @@ public class GadgetsAdminListScreen extends ALVelocityScreen {
     selectData.initField();
     selectData.doViewList(this, rundata, context);
 
-    String template = "portlets/html/ja/ajax-gadgets-admin-list.vm";
+    String template = "portlets/html/ajax-gadgets-admin-list.vm";
     setTemplate(rundata, context, template);
   }
 

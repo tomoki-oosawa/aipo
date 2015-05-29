@@ -29,5 +29,5 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-webmail-account-detail-admin.vm")
-#parse("/portlets/html/ja/webmail-admin-menu.vm")
+#parse("/portlets/html/ajax-webmail-account-detail-admin.vm")
+#parse("/portlets/html/webmail-admin-menu.vm")

@@ -29,7 +29,7 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-facility.vm")
+#parse("/portlets/html/ajax-facility.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

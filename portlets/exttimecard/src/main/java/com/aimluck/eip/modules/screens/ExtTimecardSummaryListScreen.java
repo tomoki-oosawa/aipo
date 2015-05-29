@@ -55,7 +55,7 @@ public class ExtTimecardSummaryListScreen extends ExtTimecardSystemScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-exttimecard-summary-list.vm");
+        "portlets/html/ajax-exttimecard-summary-list.vm");
     } catch (Exception ex) {
       logger.error("[ExtTimecardSummaryListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

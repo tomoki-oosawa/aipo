@@ -18,4 +18,8 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/todo-list.vm")
+<<<<<<< HEAD
+#parse("/portlets/cell_default/todo-list.vm")
+=======
+#parse("/portlets/cell_default/todo-list.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

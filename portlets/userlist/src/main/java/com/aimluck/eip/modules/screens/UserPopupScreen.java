@@ -61,9 +61,9 @@ public class UserPopupScreen extends ALVelocityScreen {
       ALEipUser user = ALEipUtils.getALEipUser(rundata);
       String layout_template = null;
       if (String.valueOf(user.getUserId().getValue()).equals(entityid)) {
-        layout_template = "portlets/html/ja/ajax-userlist-popup-owner.vm";
+        layout_template = "portlets/html/ajax-userlist-popup-owner.vm";
       } else {
-        layout_template = "portlets/html/ja/ajax-userlist-popup.vm";
+        layout_template = "portlets/html/ajax-userlist-popup.vm";
       }
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

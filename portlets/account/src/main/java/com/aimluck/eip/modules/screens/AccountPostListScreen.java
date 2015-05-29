@@ -53,7 +53,7 @@ public class AccountPostListScreen extends AccountPostScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-account-post-list.vm";
+      String layout_template = "portlets/html/ajax-account-post-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

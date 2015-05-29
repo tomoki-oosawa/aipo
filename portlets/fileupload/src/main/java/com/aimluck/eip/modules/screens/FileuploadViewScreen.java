@@ -60,7 +60,7 @@ public class FileuploadViewScreen extends ALVelocityScreen {
 
     putData(rundata, context);
 
-    String layout_template = "portlets/html/ja/fileupload-image.vm";
+    String layout_template = "portlets/html/fileupload-image.vm";
     setTemplate(rundata, context, layout_template);
   }
 

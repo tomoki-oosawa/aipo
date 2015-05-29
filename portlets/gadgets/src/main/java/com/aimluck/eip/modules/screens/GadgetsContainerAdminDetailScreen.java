@@ -41,7 +41,7 @@ public class GadgetsContainerAdminDetailScreen extends ALVelocityScreen {
     detailData.initField();
     detailData.doViewDetail(this, rundata, context);
 
-    String template = "portlets/html/ja/ajax-gadgets-container-admin.vm";
+    String template = "portlets/html/ajax-gadgets-container-admin.vm";
     setTemplate(rundata, context, template);
   }
 

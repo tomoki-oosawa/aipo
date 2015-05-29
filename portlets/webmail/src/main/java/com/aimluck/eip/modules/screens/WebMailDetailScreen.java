@@ -59,7 +59,7 @@ public class WebMailDetailScreen extends ALVelocityScreen {
         WebMailUtils.ACCOUNT_ID));
       context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
       context.put(ALEipConstants.ENTITY_ID, mailIndex);
-      setTemplate(rundata, context, "portlets/html/ja/ajax-webmail-detail.vm");
+      setTemplate(rundata, context, "portlets/html/ajax-webmail-detail.vm");
     } catch (Exception ex) {
       logger.error("[WebMailDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

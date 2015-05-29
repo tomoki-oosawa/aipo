@@ -53,7 +53,7 @@ public class ReportScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-report.vm";
+      String layout_template = "portlets/html/ajax-report.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

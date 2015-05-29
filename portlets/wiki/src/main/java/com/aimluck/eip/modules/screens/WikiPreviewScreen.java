@@ -61,7 +61,7 @@ public class WikiPreviewScreen extends ALVelocityScreen {
       if (note != null) {
         previewData.setTempNote(note, rundata, context);
       }
-      String layout_template = "portlets/html/ja/ajax-wiki-preview.vm";
+      String layout_template = "portlets/html/ajax-wiki-preview.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception e) {

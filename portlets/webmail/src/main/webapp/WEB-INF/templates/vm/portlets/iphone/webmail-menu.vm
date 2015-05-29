@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/webmail-menu.vm")
+#parse("/portlets/smartphone_default/webmail-menu.vm")

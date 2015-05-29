@@ -80,7 +80,7 @@ public class SystemDeleteSampleFormScreen extends ALVelocityScreen {
 
       // Set layout
       String layout_template =
-        "portlets/html/ja/ajax-system-form-delete-sample.vm";
+        "portlets/html/ajax-system-form-delete-sample.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

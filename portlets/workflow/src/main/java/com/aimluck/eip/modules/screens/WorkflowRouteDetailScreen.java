@@ -50,7 +50,7 @@ public class WorkflowRouteDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-workflow-route-detail.vm";
+      String layout_template = "portlets/html/ajax-workflow-route-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[WorkflowRouteDetailScreen] Exception.", ex);

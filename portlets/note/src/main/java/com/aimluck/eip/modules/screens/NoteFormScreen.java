@@ -65,7 +65,7 @@ public class NoteFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.enableAddDestTypes();
     formData.doViewForm(this, rundata, context);
-    String layout_template = "portlets/html/ja/ajax-note-form.vm";
+    String layout_template = "portlets/html/ajax-note-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

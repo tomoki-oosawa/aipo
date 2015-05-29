@@ -59,7 +59,7 @@ public class SystemCompanyFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-system-form-company.vm";
+    String layout_template = "portlets/html/ajax-system-form-company.vm";
     setTemplate(rundata, context, layout_template);
   }
 

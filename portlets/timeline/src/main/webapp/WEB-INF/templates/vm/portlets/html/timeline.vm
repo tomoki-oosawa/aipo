@@ -25,4 +25,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-timeline.vm")
+#parse("/portlets/html/ajax-timeline.vm")

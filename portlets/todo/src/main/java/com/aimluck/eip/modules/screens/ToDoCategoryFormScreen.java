@@ -59,7 +59,7 @@ public class ToDoCategoryFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-todo-category-form.vm";
+    String layout_template = "portlets/html/ajax-todo-category-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

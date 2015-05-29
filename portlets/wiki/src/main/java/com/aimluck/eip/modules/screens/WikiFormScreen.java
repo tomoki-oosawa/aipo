@@ -66,7 +66,7 @@ public class WikiFormScreen extends ALVelocityScreen {
       if (note != null) {
         formData.setNote(note);
       }
-      String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
+      String layout_template = "portlets/html/ajax-wiki-form.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception e) {

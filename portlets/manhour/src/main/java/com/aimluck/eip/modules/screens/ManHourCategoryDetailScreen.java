@@ -55,7 +55,7 @@ public class ManHourCategoryDetailScreen extends ALVelocityScreen {
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String layout_template =
-        "portlets/html/ja/ajax-manhour-category-detail.vm";
+        "portlets/html/ajax-manhour-category-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

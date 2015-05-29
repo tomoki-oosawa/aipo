@@ -19,5 +19,5 @@
 ## ---------------------------------------------------------------------------
 ## One day
 #if ($!result.Viewtype == "oneday")
-#parse("/portlets/smartphone_default/ja/schedule-oneday-select-member.vm")
+#parse("/portlets/smartphone_default/schedule-oneday-select-member.vm")
 #end

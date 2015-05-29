@@ -75,7 +75,7 @@ public class ReportDetailScreen extends ALVelocityScreen {
         formData.initField();
         formData.doViewForm(this, rundata, context);
       }
-      String layout_template = "portlets/html/ja/ajax-report-detail.vm";
+      String layout_template = "portlets/html/ajax-report-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ReportDetailScreen] Exception.", ex);

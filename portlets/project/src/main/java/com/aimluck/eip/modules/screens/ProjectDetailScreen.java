@@ -49,7 +49,7 @@ public class ProjectDetailScreen extends ProjectScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-project-detail.vm";
+      String layout_template = "portlets/html/ajax-project-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ProjectDetailScreen] Exception.", ex);

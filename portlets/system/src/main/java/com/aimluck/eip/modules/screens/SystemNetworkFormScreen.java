@@ -75,7 +75,7 @@ public class SystemNetworkFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-system-form-network.vm");
+        "portlets/html/ajax-system-form-network.vm");
     }
     if ("local".equals(mode)) {
       SystemNetworkInternalFormData formData =
@@ -85,7 +85,7 @@ public class SystemNetworkFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-system-form-network-internal.vm");
+        "portlets/html/ajax-system-form-network-internal.vm");
     }
   }
 

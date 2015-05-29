@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/schedule-oneday.vm")
+#parse("/portlets/smartphone_default/schedule-oneday.vm")

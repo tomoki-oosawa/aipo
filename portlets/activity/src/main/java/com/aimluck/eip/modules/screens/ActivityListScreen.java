@@ -61,7 +61,7 @@ public class ActivityListScreen extends ALVelocityScreen {
       listData.initField();
       listData.setRowsNum(5);
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-activity-list.vm";
+      String layout_template = "portlets/html/ajax-activity-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("ActivityListScreen.doOutput", ex);

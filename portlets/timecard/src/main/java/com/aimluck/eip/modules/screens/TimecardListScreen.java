@@ -51,7 +51,7 @@ public class TimecardListScreen extends TimecardScreen {
       listData.setRowsNum(200);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-timecard-list.vm";
+      String layout_template = "portlets/html/ajax-timecard-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

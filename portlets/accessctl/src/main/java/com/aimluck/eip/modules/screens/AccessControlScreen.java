@@ -52,7 +52,7 @@ public class AccessControlScreen extends ALVelocityScreen {
       listData.loadPortletFeatureList(rundata, context);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-accessctl.vm";
+      String layout_template = "portlets/html/ajax-accessctl.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

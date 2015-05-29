@@ -51,7 +51,7 @@ public class WorkflowCategoryDetailScreen extends ALVelocityScreen {
       detailData.doViewDetail(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-workflow-category-detail.vm";
+        "portlets/html/ajax-workflow-category-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[WorkflowCategoryDetailScreen] Exception.", ex);

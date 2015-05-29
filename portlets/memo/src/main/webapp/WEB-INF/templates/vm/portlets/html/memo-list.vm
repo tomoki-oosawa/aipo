@@ -29,6 +29,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-memo-list.vm")
+#parse("/portlets/html/ajax-memo-list.vm")
 #ALcontentfooter()
-##parse("/portlets/html/ja/memo-menu.vm") //デザイン変更により削除
+##parse("/portlets/html/memo-menu.vm") //デザイン変更により削除

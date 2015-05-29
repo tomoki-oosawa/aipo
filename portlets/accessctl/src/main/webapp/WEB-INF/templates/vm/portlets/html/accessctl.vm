@@ -29,8 +29,8 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-accessctl.vm")
-#parse("/portlets/html/ja/accessctl-menu.vm")
+#parse("/portlets/html/ajax-accessctl.vm")
+#parse("/portlets/html/accessctl-menu.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

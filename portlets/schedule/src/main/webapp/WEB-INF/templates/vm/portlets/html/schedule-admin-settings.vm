@@ -31,5 +31,5 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-schedule-admin-acl-list.vm")
+#parse("/portlets/html/ajax-schedule-admin-acl-list.vm")
 

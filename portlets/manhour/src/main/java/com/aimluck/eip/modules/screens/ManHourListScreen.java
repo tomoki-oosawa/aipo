@@ -52,7 +52,7 @@ public class ManHourListScreen extends ManHourScreen {
         rundata,
         context).getPortletConfig().getInitParameter("p1a-rows")));
       if (listData.doViewList(this, rundata, context)) {
-        String layout_template = "portlets/html/ja/ajax-manhour-list.vm";
+        String layout_template = "portlets/html/ajax-manhour-list.vm";
         setTemplate(rundata, context, layout_template);
       }
     } catch (Exception ex) {

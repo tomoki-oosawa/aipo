@@ -77,4 +77,4 @@
 #ALformfooter()
 </div>
 </div>
-#parse("/portlets/html/ja/msgboard-category-widgets.vm")
+#parse("/portlets/html/msgboard-category-widgets.vm")

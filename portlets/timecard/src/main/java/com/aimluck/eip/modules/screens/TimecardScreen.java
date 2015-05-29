@@ -51,7 +51,7 @@ public class TimecardScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-timecard.vm";
+      String layout_template = "portlets/html/ajax-timecard.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

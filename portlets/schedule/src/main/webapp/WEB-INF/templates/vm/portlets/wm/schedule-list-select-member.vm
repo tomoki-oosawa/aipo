@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/schedule-list-select-member.vm")
+#parse("/portlets/smartphone_default/schedule-list-select-member.vm")

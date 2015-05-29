@@ -194,7 +194,7 @@ public class ScheduleListScreen extends ScheduleScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-schedule-list.vm";
+      String layout_template = "portlets/html/ajax-schedule-list.vm";
 
       setTemplate(rundata, context, layout_template);
 
