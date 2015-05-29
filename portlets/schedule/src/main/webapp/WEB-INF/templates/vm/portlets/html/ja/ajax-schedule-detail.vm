@@ -80,6 +80,21 @@ $!{result.Detail.Date}
 #ALtditem($!{result.Detail.PlaceHtml})
 #ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
+
+#ALtdcaption($l10n.SCHEDULE_CLASSIFICATION)
+#if("$!{result.Detail.Classification}"=="T")
+#ALtditem($l10n.SCHEDULE_BUSINESS_TRIP)
+#elseif("$!{result.Detail.Classification}"=="S")
+#ALtditem($l10n.SCHEDULE_GO_STRAIGHT)
+#elseif("$!{result.Detail.Classification}"=="R")
+#ALtditem($l10n.SCHEDULE_RETURNING_HOME_DIRECTLY)
+#elseif("$!{result.Detail.Classification}"=="H")
+#ALtditem($l10n.SCHEDULE_HOLIDAY)
+#elseif("$!{result.Detail.Classification}"=="L")
+#ALtditem($l10n.SCHEDULE_LATE)
+
+#end
+###ALtditem(#if($!{result.Detail.Classification}=="T"  ))
 #ALtdcaption($l10n.SCHEDULE_PUBLIC)
 #ALtditemheader()
 #if($!result.Detail.isPublic())

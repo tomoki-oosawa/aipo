@@ -226,11 +226,11 @@
 ##スケジュールの種別
 #ALtdcaption($!result.getFieldName("classification"))
 #ALtditemheader()
-<p><input name="classification" type="radio" value="S" >$l10n.SCHEDULE_BUSINESS_TRIP</p>
-<p><input name="classification" type="radio" value="G" >$l10n.SCHEDULE_GO_STRAIGHT</p>
-<p><input name="classification" type="radio" value="H" >$l10n.SCHEDULE_RETURNING_HOME_DIRECTLY</p>
-<p><input name="classification" type="radio" value="Y" >$l10n.SCHEDULE_HOLIDAY</p>
-<p><input name="classification" type="radio" value="T" >$l10n.SCHEDULE_LATE</p>
+<p><input name="classification" type="radio" value="T" #if("$!result.Classification.toString()" == "T") checked = "checked" #end >$l10n.SCHEDULE_BUSINESS_TRIP</p>
+<p><input name="classification" type="radio" value="S" #if("$!result.Classification.toString()" == "S") checked = "checked" #end >$l10n.SCHEDULE_GO_STRAIGHT</p>
+<p><input name="classification" type="radio" value="R" #if("$!result.Classification.toString()" == "R") checked = "checked" #end >$l10n.SCHEDULE_RETURNING_HOME_DIRECTLY</p>
+<p><input name="classification" type="radio" value="H" #if("$!result.Classification.toString()" == "H") checked = "checked" #end >$l10n.SCHEDULE_HOLIDAY</p>
+<p><input name="classification" type="radio" value="L" #if("$!result.Classification.toString()" == "L") checked = "checked" #end >$l10n.SCHEDULE_LATE</p>
 #ALtditemfooter()
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()

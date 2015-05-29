@@ -609,6 +609,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     classification.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_CLASSIFICATION"));
     classification.setTrim(false);
+    classification.setValue("T");
 
     // 内容
     note = new ALStringField();
@@ -1085,6 +1086,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       schedule.setName(name.getValue());
       // 場所
       schedule.setPlace(place.getValue());
+      // 種別
+      schedule.setClassification(classification.getValue());
       // 内容
       schedule.setNote(note.getValue());
       // 公開フラグ
@@ -1456,6 +1459,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         newSchedule.setName(name.getValue());
         // 場所
         newSchedule.setPlace(place.getValue());
+        // 種別
+        newSchedule.setClassification(classification.getValue());
         // 内容
         newSchedule.setNote(note.getValue());
         // 公開フラグ
