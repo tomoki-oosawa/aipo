@@ -17,5 +17,5 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($career = 'wm')
+#set($career = 'iphone')
 #parse("/portlets/smartphone_default/ja/blog-thema-form.vm")
