@@ -24,7 +24,7 @@ import org.apache.turbine.util.RunData;
 
 /**
  * タイムラインを管理する抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALTimelineHandler {
 
@@ -37,5 +37,4 @@ public abstract class ALTimelineHandler {
   public abstract String pushToken(RunData rundata, String parentId);
 
   public abstract String getApiUrl();
-
 }
