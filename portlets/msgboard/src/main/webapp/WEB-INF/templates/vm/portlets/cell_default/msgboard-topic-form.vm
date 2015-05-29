@@ -29,6 +29,7 @@
 #end
 #set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
 #ALcell_pagetitle($career $subtitle)
+#ALcell_errmsg($career $errmsgs)
 #ALcell_formheader($career $jslink $portlet)
 ｶﾃｺﾞﾘ#ALcell_br($career)
 <select name="category_id">
