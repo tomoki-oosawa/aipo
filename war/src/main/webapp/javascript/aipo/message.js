@@ -941,7 +941,7 @@ aipo.message.popupProfile = function(userId, event) {
 		dojo.connect(aipo.message.mobileUnderlay.domNode, "onmousedown", aipo.message.mobileUnderlay.domNode, function(){
 			 aipo.message.hideProfile();
 				//android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
-			    if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
+			    if(aipo.userAgent.isAndroid2()){
 			        var wrapper=dojo.byId("wrapper");
 			        // wrapper再表示
 			        // wrapperの非表示はdisplay:none;で行う
@@ -1034,7 +1034,7 @@ aipo.message.popupProfile = function(userId, event) {
 			}
 			//　 Android2系でプロフィールカードポップアップからメッセージを送信しようとすると
 		    // 　画面が上下に激しく動くバグを回避
-			if(window.navigator.userAgent.toLowerCase().indexOf('android 2') != -1){
+			if(aipo.userAgent.isAndroid2()){
 				// wrapper非表示はhiddenではなくdisplay:none;で
 				// dojo.style(wrapper, "visibility", "hidden");
 				dojo.style(wrapper, "display", "none");
