@@ -22,8 +22,11 @@ aipo.notification.setUp = function() {
     var notificationRequestField = dojo.query(".notificationRequestField");
     var notificationConfirmField = dojo.query(".notificationConfirmField");
     var notificationSuccessField = dojo.query(".notificationSuccessField");
-    if(aipo.notification.isDefault()) {
-    	dojo.forEach(notificationRequestField,function(item){item.style.display="";});
+    var notificationRecommendField = dojo.query(".notificationRecommendField");
+    if(!aipo.getCookie("block_notification")){
+    	if(aipo.notification.isDefault()) {
+    	    dojo.forEach(notificationRequestField,function(item){item.style.display="";});
+    	}
     }
 }
 
@@ -78,12 +81,14 @@ aipo.notification.requestDesktopNotification = function(portletId) {
     var notificationRequestField = dojo.query(".notificationRequestField");
     var notificationConfirmField = dojo.query(".notificationConfirmField");
     var notificationSuccessField = dojo.query(".notificationSuccessField");
+    var notificationRecommendField = dojo.query(".notificationRecommendField");
 
     var callback = function() {
     	if(aipo.notification.isGranted()) {
         	dojo.forEach(notificationRequestField,function(item){item.style.display="none";});
         	dojo.forEach(notificationConfirmField,function(item){item.style.display="none";});
         	dojo.forEach(notificationSuccessField,function(item){item.style.display="";});
+        	dojo.forEach(notificationRecommendField,function(item){item.style.display="none";});
             aipo.notification.enableDesktopNotification('T');
             if(portletId) {
                 dojo.byId("desktopNotification" + portletId + "_T").checked = true;
@@ -93,10 +98,12 @@ aipo.notification.requestDesktopNotification = function(portletId) {
         	dojo.forEach(notificationSuccessField,function(item){item.style.display="none";});
         	dojo.forEach(notificationConfirmField,function(item){item.style.display="none";});
         	dojo.forEach(notificationRequestField,function(item){item.style.display="";});
+        	dojo.forEach(notificationRecommendField,function(item){item.style.display="none";});
         } else {
         	dojo.forEach(notificationSuccessField,function(item){item.style.display="none";});
         	dojo.forEach(notificationConfirmField,function(item){item.style.display="none";});
         	dojo.forEach(notificationRequestField,function(item){item.style.display="none";});
+        	dojo.forEach(notificationRecommendField,function(item){item.style.display="none";});
         	dojo.forEach(dojo.query(".notificationBlockField"),function(item){item.style.display="";});
         }
     };
@@ -104,6 +111,7 @@ aipo.notification.requestDesktopNotification = function(portletId) {
 	dojo.forEach(notificationRequestField,function(item){item.style.display="none";});
 	dojo.forEach(notificationSuccessField,function(item){item.style.display="none";});
 	dojo.forEach(notificationConfirmField,function(item){item.style.display="";});
+	dojo.forEach(notificationRecommendField,function(item){item.style.display="none";});
 }
 
 
@@ -113,6 +121,22 @@ aipo.notification.closeRequest = function() {
     if(notificationField) {
     	notificationField.style.display="none";
     }
+}
+
+aipo.notification.recommendRequest = function() {
+    var notificationRequestField = dojo.query(".notificationRequestField");
+    var notificationConfirmField = dojo.query(".notificationConfirmField");
+    var notificationSuccessField = dojo.query(".notificationSuccessField");
+    var notificationRecommendField = dojo.query(".notificationRecommendField");
+	dojo.forEach(notificationRequestField,function(item){item.style.display="none";});
+	dojo.forEach(notificationSuccessField,function(item){item.style.display="none";});
+	dojo.forEach(notificationConfirmField,function(item){item.style.display="none";});
+	dojo.forEach(notificationRecommendField,function(item){item.style.display="";});
+}
+
+aipo.notification.blockRequest = function() {
+	aipo.setCookie("block_notification", true, "/", null);
+	setTimeout(function() { aipo.notification.closeRequest(); }, 3000);
 }
 
 aipo.notification.openDialog = function() {
