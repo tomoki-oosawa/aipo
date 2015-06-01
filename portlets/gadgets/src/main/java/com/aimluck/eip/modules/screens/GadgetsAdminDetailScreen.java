@@ -42,7 +42,7 @@ public class GadgetsAdminDetailScreen extends ALVelocityScreen {
     if (selectData.doViewDetail(this, rundata, context)) {
 
       context.put("isAdmin", ALEipUtils.isAdmin(rundata));
-      String template = "portlets/html/ja/ajax-gadgets-admin-detail.vm";
+      String template = "portlets/html/ajax-gadgets-admin-detail.vm";
       setTemplate(rundata, context, template);
     } else {
       ALEipUtils.redirectPageNotFound(rundata);

@@ -53,7 +53,7 @@ public class FacilityGroupListScreen extends FacilityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-facility-group.vm";
+      String layout_template = "portlets/html/ajax-facility-group.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

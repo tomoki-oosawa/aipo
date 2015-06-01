@@ -59,7 +59,7 @@ public class FacilityFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-facility-form.vm";
+    String layout_template = "portlets/html/ajax-facility-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

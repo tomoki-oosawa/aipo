@@ -60,7 +60,7 @@ public class CellularScreen extends ALVelocityScreen {
         if (formData.doInsert(this, rundata, context)) {
           context.put("finishedSendmail", "T");
         }
-        setTemplate(rundata, context, "portlets/html/ja/ajax-cellular.vm");
+        setTemplate(rundata, context, "portlets/html/ajax-cellular.vm");
 
       } else {
 
@@ -73,9 +73,9 @@ public class CellularScreen extends ALVelocityScreen {
           setTemplate(
             rundata,
             context,
-            "portlets/html/ja/ajax-cellular-popup.vm");
+            "portlets/html/ajax-cellular-popup.vm");
         } else {
-          setTemplate(rundata, context, "portlets/html/ja/ajax-cellular.vm");
+          setTemplate(rundata, context, "portlets/html/ajax-cellular.vm");
         }
       }
 

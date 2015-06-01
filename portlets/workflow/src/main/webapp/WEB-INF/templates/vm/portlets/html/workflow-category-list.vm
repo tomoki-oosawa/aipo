@@ -29,8 +29,8 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-workflow-category-list.vm")
-#parse("/portlets/html/ja/workflow-category-menu.vm")
+#parse("/portlets/html/ajax-workflow-category-list.vm")
+#parse("/portlets/html/workflow-category-menu.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

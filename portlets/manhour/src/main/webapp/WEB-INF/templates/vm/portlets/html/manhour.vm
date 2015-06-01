@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-manhour.vm")
+#parse("/portlets/html/ajax-manhour.vm")

@@ -69,7 +69,7 @@ public class GpdbRecordFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-gpdb-record-form.vm";
+    String layout_template = "portlets/html/ajax-gpdb-record-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

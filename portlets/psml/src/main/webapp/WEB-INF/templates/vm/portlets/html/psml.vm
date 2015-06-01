@@ -17,5 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($career = 'vodafone')
-#parse("/portlets/cell_default/accountlogin-info.vm")
+
+#ALjavascript("javascript/aipo/psml/form.js")
+<script type="text/javascript">
+//<![CDATA[
+
+    ptConfig['$!portlet.ID'] = { group:"psml", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PsmlScreen"))', reloadFunction:aipo.reloadPage };
+    aipo.psml.menuSelected = 0;  
+//]]>
+</script>
+<<<<<<< HEAD
+#parse("/portlets/html/ajax-psml.vm")
+=======
+#parse("/portlets/html/ajax-psml.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

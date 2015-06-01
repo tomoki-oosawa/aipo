@@ -68,7 +68,7 @@ public class TimelineListScreen extends TimelineScreen {
       listData.setScrollTop(scrollTop);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-timeline-list.vm";
+      String layout_template = "portlets/html/ajax-timeline-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

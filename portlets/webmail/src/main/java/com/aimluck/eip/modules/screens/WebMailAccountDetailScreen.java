@@ -52,7 +52,7 @@ public class WebMailAccountDetailScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-account-detail.vm");
+        "portlets/html/ajax-webmail-account-detail.vm");
     } catch (Exception ex) {
       logger.error("[WebMailAccountDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

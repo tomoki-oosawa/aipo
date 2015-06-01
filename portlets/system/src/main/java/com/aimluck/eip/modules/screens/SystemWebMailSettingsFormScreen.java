@@ -53,7 +53,7 @@ public class SystemWebMailSettingsFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-system-form-webmail-option.vm");
+        "portlets/html/ajax-system-form-webmail-option.vm");
 
     } catch (Exception ex) {
       logger.error("[SystemWebMailSettingsFormScreen] Exception.", ex);

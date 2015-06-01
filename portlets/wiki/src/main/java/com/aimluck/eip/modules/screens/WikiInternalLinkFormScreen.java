@@ -70,7 +70,7 @@ public class WikiInternalLinkFormScreen extends ALVelocityScreen {
         formData.setDestWikiName(name);
         formData.loadTopWikiList(rundata, context);
         formData.doViewForm(this, rundata, context);
-        String layout_template = "portlets/html/ja/ajax-wiki-form.vm";
+        String layout_template = "portlets/html/ajax-wiki-form.vm";
         setTemplate(rundata, context, layout_template);
       } else {
         throw new ALPageNotFoundException();

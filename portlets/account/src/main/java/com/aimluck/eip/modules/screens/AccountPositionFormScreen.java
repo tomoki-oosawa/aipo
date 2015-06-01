@@ -59,7 +59,7 @@ public class AccountPositionFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-account-position-form.vm";
+    String layout_template = "portlets/html/ajax-account-position-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

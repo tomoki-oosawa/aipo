@@ -76,7 +76,7 @@ public class GpdbKubunChangeTurnFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-gpdb-kubun-change-turn-form.vm";
+      "portlets/html/ajax-gpdb-kubun-change-turn-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

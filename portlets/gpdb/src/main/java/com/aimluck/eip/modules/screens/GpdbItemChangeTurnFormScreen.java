@@ -76,7 +76,7 @@ public class GpdbItemChangeTurnFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-gpdb-item-change-turn-form.vm";
+      "portlets/html/ajax-gpdb-item-change-turn-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

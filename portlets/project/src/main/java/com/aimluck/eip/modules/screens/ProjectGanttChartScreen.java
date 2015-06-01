@@ -61,7 +61,7 @@ public class ProjectGanttChartScreen extends ProjectScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-project-gantt-chart.vm";
+      String layout_template = "portlets/html/ajax-project-gantt-chart.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

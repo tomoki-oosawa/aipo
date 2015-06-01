@@ -71,4 +71,4 @@
 #end
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/todo-category-widgets.vm")
+#parse("/portlets/html/todo-category-widgets.vm")

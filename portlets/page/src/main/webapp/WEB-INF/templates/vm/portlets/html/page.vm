@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-page.vm")
+#parse("/portlets/html/ajax-page.vm")

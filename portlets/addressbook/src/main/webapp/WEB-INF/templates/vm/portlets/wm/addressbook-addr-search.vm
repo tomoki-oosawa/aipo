@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/addressbook-addr-search.vm")
+#parse("/portlets/smartphone_default/addressbook-addr-search.vm")

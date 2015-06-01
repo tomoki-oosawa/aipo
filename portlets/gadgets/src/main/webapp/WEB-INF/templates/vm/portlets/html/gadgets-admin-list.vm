@@ -30,7 +30,7 @@
 #if(${client}=="IPHONE")
 #ALcontentheader($!portlet.Title '')
 #end
-#parse("/portlets/html/ja/ajax-gadgets-admin-list.vm")
+#parse("/portlets/html/ajax-gadgets-admin-list.vm")
 #if(${client}=="IPHONE")
 #ALcontentfooter()
 #end

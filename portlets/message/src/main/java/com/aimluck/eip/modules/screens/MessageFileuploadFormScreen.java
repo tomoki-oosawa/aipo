@@ -53,12 +53,12 @@ public class MessageFileuploadFormScreen extends FileuploadFormScreen {
 
   @Override
   protected String getContentTemplate() {
-    return "portlets/html/ja/message-fileupload.vm";
+    return "portlets/html/message-fileupload.vm";
   }
 
   @Override
   protected String getContentTemplateMini() {
-    return "portlets/html/ja/message-fileupload-mini.vm";
+    return "portlets/html/message-fileupload-mini.vm";
   }
 
 }

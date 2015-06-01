@@ -108,4 +108,4 @@
     </ul>
 </div>
 <!-- END Contents Area -->
-#parse("/portlets/html/ja/workflow-widgets.vm")
+#parse("/portlets/html/workflow-widgets.vm")

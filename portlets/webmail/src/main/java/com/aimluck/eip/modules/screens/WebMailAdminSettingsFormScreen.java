@@ -53,7 +53,7 @@ public class WebMailAdminSettingsFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-account-form-admin-option.vm");
+        "portlets/html/ajax-webmail-account-form-admin-option.vm");
 
     } catch (Exception ex) {
       logger.error("[WebMailAdminSettingsFormScreen] Exception.", ex);

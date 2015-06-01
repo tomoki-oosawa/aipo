@@ -72,7 +72,7 @@ public class WebMailListScreen extends ALVelocityScreen {
       listData.setStrLength(0);
       listData.doViewList(this, rundata, context);
 
-      setTemplate(rundata, context, "portlets/html/ja/ajax-webmail-list.vm");
+      setTemplate(rundata, context, "portlets/html/ajax-webmail-list.vm");
     } catch (Exception ex) {
       logger.error("[WebMailListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

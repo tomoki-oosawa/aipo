@@ -61,7 +61,7 @@ public class AccountUserDetailMailSizeScreen extends ALVelocityScreen {
         .getStorageSizeOfUserMail(user_id)));
 
       String layout_template =
-        "portlets/html/ja/ajax-account-user-detail-mailsize.vm";
+        "portlets/html/ajax-account-user-detail-mailsize.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

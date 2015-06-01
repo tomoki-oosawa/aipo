@@ -50,7 +50,7 @@ public class ToDoDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-todo-detail.vm";
+      String layout_template = "portlets/html/ajax-todo-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ToDoDetailScreen] Exception.", ex);

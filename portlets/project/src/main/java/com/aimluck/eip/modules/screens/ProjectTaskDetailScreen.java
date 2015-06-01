@@ -50,7 +50,7 @@ public class ProjectTaskDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-project-task-detail.vm";
+      String layout_template = "portlets/html/ajax-project-task-detail.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ProjectTaskDetailScreen] Exception.", ex);

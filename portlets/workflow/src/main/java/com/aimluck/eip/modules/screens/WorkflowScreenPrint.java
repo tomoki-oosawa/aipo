@@ -71,7 +71,7 @@ public class WorkflowScreenPrint extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-workflow-detail-print.vm");
+        "portlets/html/ajax-workflow-detail-print.vm");
     } catch (Exception ex) {
       logger.error("[WorkflowDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

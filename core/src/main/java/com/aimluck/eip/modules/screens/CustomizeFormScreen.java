@@ -178,7 +178,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     context.put("utils", new ALCommonUtils());
     context.put("client", ALEipUtils.getClient(rundata));
 
-    String layout_template = "portlets/html/ja/ajax-customize-form.vm";
+    String layout_template = "portlets/html/ajax-customize-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

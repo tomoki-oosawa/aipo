@@ -251,7 +251,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-schedule.vm";
+      String layout_template = "portlets/html/ajax-schedule.vm";
 
       setTemplate(rundata, context, layout_template);
 

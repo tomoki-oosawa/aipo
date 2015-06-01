@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/accountlogin-form.vm")
+#parse("/portlets/cell_default/accountlogin-form.vm")

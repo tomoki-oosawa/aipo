@@ -26,5 +26,5 @@
 //]]>
 </script>
 #ALcontentheader($!portlet.Title '')
-#parse("/portlets/html/ja/ajax-timeline-list.vm")
+#parse("/portlets/html/ajax-timeline-list.vm")
 #ALcontentfooter()

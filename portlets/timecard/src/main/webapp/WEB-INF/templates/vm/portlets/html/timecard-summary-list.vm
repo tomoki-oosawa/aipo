@@ -29,6 +29,6 @@
 //]]>
 </script>
 #ALcontentheader($!{portlet.Title} $navilist)
-#parse("/portlets/html/ja/ajax-timecard-summary-list.vm")
+#parse("/portlets/html/ajax-timecard-summary-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/timecard-menu.vm")
+#parse("/portlets/html/timecard-menu.vm")

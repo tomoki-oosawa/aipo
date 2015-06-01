@@ -57,7 +57,7 @@ public class TimecardSettingsScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/timecardsettings-detail.vm");
+        "portlets/html/timecardsettings-detail.vm");
     } catch (Exception ex) {
       logger.error("[TimecardSettingsScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

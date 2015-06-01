@@ -76,7 +76,7 @@ public class ProjectTaskChangeTurnFormScreen extends ProjectScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-project-task-change-turn-form.vm";
+      "portlets/html/ajax-project-task-change-turn-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 }

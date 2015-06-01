@@ -70,7 +70,7 @@ public class ProjectScreen extends ALVelocityScreen {
       listData.setTopView(true);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-project.vm";
+      String layout_template = "portlets/html/ajax-project.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

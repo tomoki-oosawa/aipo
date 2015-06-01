@@ -60,7 +60,7 @@ public class AddressBookCompanyListScreen extends AddressBookScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-addressbook-company-list.vm");
+        "portlets/html/ajax-addressbook-company-list.vm");
 
     } catch (Exception ex) {
       logger.error("AddressBookCompanyListScreen.doOutput", ex);

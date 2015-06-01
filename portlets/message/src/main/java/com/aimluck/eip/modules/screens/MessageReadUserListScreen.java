@@ -74,7 +74,7 @@ public class MessageReadUserListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-message-read-user-list.vm";
+        "portlets/html/ajax-message-read-user-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageReadUserListScreen.doOutput", ex);

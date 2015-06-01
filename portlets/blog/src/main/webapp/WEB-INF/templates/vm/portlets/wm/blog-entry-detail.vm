@@ -17,5 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/blog-entry-detail.vm")
+#set($career = 'wm')
+<<<<<<< HEAD
+#parse("/portlets/smartphone_default/blog-entry-detail.vm")
+=======
+#parse("/portlets/smartphone_default/blog-entry-detail.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

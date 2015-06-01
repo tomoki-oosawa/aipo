@@ -77,7 +77,7 @@ public class MsgboardTopicDetailScreen extends ALVelocityScreen {
         formData.doViewForm(this, rundata, context);
       }
 
-      String layout_template = "portlets/html/ja/ajax-msgboard-topic-detail.vm";
+      String layout_template = "portlets/html/ajax-msgboard-topic-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

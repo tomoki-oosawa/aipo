@@ -97,7 +97,7 @@ public class MessageRoomMemberListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       String layout_template =
-        "portlets/html/ja/ajax-message-room-member-list.vm";
+        "portlets/html/ajax-message-room-member-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageUserListScreen.doOutput", ex);

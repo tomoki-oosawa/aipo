@@ -155,4 +155,4 @@ $!record.Person
 #end
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-widgets.vm")
+#parse("/portlets/html/webmail-widgets.vm")

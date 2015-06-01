@@ -55,7 +55,7 @@ public class NoteDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-note-detail.vm";
+      String layout_template = "portlets/html/ajax-note-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

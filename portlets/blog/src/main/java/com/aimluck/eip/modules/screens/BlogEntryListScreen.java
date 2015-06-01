@@ -56,7 +56,7 @@ public class BlogEntryListScreen extends BlogScreen {
       listData.setStrLength(100);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-blog-entry-list.vm";
+      String layout_template = "portlets/html/ajax-blog-entry-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

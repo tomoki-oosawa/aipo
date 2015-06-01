@@ -43,7 +43,7 @@ public class GadgetsContainerAdminFormScreen extends ALVelocityScreen {
     formData.setMode("update");
     formData.doViewForm(this, rundata, context);
 
-    String template = "portlets/html/ja/ajax-gadgets-container-admin-form.vm";
+    String template = "portlets/html/ajax-gadgets-container-admin-form.vm";
     setTemplate(rundata, context, template);
   }
 

@@ -28,5 +28,5 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-report-list.vm")
+#parse("/portlets/html/ajax-report-list.vm")
 #ALcontentfooter()

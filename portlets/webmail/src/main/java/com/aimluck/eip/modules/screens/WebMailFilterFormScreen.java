@@ -62,7 +62,7 @@ public class WebMailFilterFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-webmail-filter-form.vm";
+    String layout_template = "portlets/html/ajax-webmail-filter-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

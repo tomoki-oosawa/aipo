@@ -25,4 +25,4 @@
     aipo.license.menuSelected = 1;  
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-license.vm")
+#parse("/portlets/html/ajax-license.vm")

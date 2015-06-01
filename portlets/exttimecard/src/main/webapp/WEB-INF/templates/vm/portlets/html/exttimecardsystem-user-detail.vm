@@ -25,4 +25,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-timecardsettings-detail.vm")
+#parse("/portlets/html/ajax-timecardsettings-detail.vm")

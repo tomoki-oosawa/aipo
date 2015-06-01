@@ -56,7 +56,7 @@ public class ExtTimecardSystemMapFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-exttimecardsystem-map-form.vm");
+        "portlets/html/ajax-exttimecardsystem-map-form.vm");
 
     } catch (Exception ex) {
       logger.error("[ExtTimecardSettingsFormScreen] Exception.", ex);

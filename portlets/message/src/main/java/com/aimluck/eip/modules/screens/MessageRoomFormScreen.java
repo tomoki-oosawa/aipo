@@ -51,7 +51,7 @@ public class MessageRoomFormScreen extends ALVelocityScreen {
       formData.initField();
       formData.doViewForm(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-message-room-form.vm";
+      String layout_template = "portlets/html/ajax-message-room-form.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception e) {
       logger.error("MessageRoomFormScreen.doOutput", e);

@@ -53,6 +53,6 @@
   };
 </script>
 #end
-#parse("/portlets/html/ja/fileuploadadv-mini.vm")
+#parse("/portlets/html/fileuploadadv-mini.vm")
 </body>
 </html>

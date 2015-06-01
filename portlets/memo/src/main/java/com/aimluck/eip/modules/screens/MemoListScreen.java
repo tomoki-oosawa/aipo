@@ -52,7 +52,7 @@ public class MemoListScreen extends MemoScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-memo-list.vm";
+      String layout_template = "portlets/html/ajax-memo-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MemoListScreen] Exception.", ex);

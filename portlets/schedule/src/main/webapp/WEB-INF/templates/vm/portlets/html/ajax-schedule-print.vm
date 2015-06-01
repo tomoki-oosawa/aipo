@@ -26,31 +26,31 @@
 #ALspacebothheader()
 ## One day
 #if ($!result.Viewtype == "oneday")
-#parse("/portlets/html/ja/schedule-oneday-print.vm")
+#parse("/portlets/html/schedule-oneday-print.vm")
 #end
 ## Weekly
 #if ($!result.Viewtype == "weekly")
-#parse("/portlets/html/ja/schedule-weekly-print.vm")
+#parse("/portlets/html/schedule-weekly-print.vm")
 #end
 ## Monthly
 #if ($!result.Viewtype == "monthly")
-#parse("/portlets/html/ja/schedule-monthly-print.vm")
+#parse("/portlets/html/schedule-monthly-print.vm")
 #end
 ## One day
 #if ($!result.Viewtype == "oneday-group")
-#parse("/portlets/html/ja/schedule-oneday-group-print.vm")
+#parse("/portlets/html/schedule-oneday-group-print.vm")
 #end
 ## Weekly
 #if ($!result.Viewtype == "weekly-group")
-#parse("/portlets/html/ja/schedule-weekly-group-print.vm")
+#parse("/portlets/html/schedule-weekly-group-print.vm")
 #end
 ## Detail
 #if ($!result.Viewtype == "detail")
-#parse("/portlets/html/ja/schedule-detail-print.vm")
+#parse("/portlets/html/schedule-detail-print.vm")
 #end
 ## List
 #if ($!result.Viewtype == "list")
-#parse("/portlets/html/ja/schedule-search-list-print.vm")
+#parse("/portlets/html/schedule-search-list-print.vm")
 #end
 #ALspacebothfooter()
 

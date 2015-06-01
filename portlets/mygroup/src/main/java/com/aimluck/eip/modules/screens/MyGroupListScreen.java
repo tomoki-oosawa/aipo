@@ -52,7 +52,7 @@ public class MyGroupListScreen extends MyGroupScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-mygroup.vm";
+      String layout_template = "portlets/html/ajax-mygroup.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MyGroupListScreen] Exception.", ex);

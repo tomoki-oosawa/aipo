@@ -156,6 +156,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-schedule-list.vm")
+#parse("/portlets/html/ajax-schedule-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/schedule-menu.vm")
+#parse("/portlets/html/schedule-menu.vm")

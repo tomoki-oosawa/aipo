@@ -60,7 +60,7 @@ public class WikiScreen extends ALVelocityScreen {
       listData.initField();
       listData.loadTopWikiList(rundata, context);
       listData.doViewDetailOne(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-wiki.vm";
+      String layout_template = "portlets/html/ajax-wiki.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("WikiScreen.doOutput", ex);

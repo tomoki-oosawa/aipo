@@ -63,7 +63,7 @@ public class BlogScreen extends ALVelocityScreen {
       listData.setStrLength(100);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-blog.vm";
+      String layout_template = "portlets/html/ajax-blog.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[BlogScreen] Exception.", ex);

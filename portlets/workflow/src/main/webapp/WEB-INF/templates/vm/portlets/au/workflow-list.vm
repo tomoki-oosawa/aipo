@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
-#parse("/portlets/cell_default/ja/workflow-list.vm")
+#parse("/portlets/cell_default/workflow-list.vm")

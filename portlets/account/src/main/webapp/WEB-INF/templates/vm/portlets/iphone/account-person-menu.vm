@@ -17,4 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#parse("/portlets/smartphone_default/ja/account-person-menu.vm")
+#set($career = 'iphone')
+<<<<<<< HEAD
+#parse("/portlets/smartphone_default/account-person-menu.vm")
+=======
+#parse("/portlets/smartphone_default/account-person-menu.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

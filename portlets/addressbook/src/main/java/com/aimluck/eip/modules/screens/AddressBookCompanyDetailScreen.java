@@ -57,7 +57,7 @@ public class AddressBookCompanyDetailScreen extends ALVelocityScreen {
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String layout_template =
-        "portlets/html/ja/ajax-addressbook-company-detail.vm";
+        "portlets/html/ajax-addressbook-company-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

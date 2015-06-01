@@ -53,7 +53,7 @@ public class EventlogScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-eventlog.vm";
+      String layout_template = "portlets/html/ajax-eventlog.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-#parse("/portlets/smartphone_default/ja/msgboard-topic-form.vm")
+#parse("/portlets/smartphone_default/msgboard-topic-form.vm")

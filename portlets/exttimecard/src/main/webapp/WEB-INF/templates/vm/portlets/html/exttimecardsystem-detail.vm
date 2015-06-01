@@ -26,4 +26,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-exttimecardsystem-detail.vm")
+#parse("/portlets/html/ajax-exttimecardsystem-detail.vm")

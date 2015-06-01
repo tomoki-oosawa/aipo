@@ -160,7 +160,7 @@
   #end
   <img src="images/common/dot.gif" width="1" height="1" onload="if(aipo.hasOwnProperty('timeline')) {aipo.timeline.setScrollTop('$portlet.ID', '$result.ScrollTop'); }" style="display:none" />
   <div id="content_$!{portlet.ID}_1">
-	#parse("/portlets/html/ja/ajax-timeline-content.vm")
+	#parse("/portlets/html/ajax-timeline-content.vm")
   </div>
   #if(${pages} > 1)
     #foreach ($i in [2..${pages}])

@@ -66,7 +66,7 @@ public class NoteListScreen extends NoteScreen {
         rundata,
         context).getPortletConfig().getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-note-list.vm";
+      String layout_template = "portlets/html/ajax-note-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

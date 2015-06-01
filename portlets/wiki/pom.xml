@@ -24,22 +24,6 @@
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.8</version>
         <executions>
-            <execution>
-                <id>copy-template</id>
-            	<phase>initialize</phase>
-            	<configuration>
-		          <target>
-		            <echo message="copy template files from ja directory"/>
-		            <property name="htmlDir" value="src/main/webapp/WEB-INF/templates/vm/portlets/html"/>
-		            <copy todir="${htmlDir}">
-		                <fileset dir="${htmlDir}/ja"/>
-		            </copy>
-		          </target>
-		        </configuration>
-	            <goals>
-	              <goal>run</goal>
-	            </goals>
-            </execution>
           <execution>
             <id>copy</id>
             <phase>package</phase>

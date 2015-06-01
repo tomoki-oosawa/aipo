@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#parse("/portlets/cell_default/ja/msgboard-topic-form.vm")
+#parse("/portlets/cell_default/msgboard-topic-form.vm")

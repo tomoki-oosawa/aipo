@@ -96,7 +96,7 @@ public class FileuploadadvFormScreen extends FileuploadFormScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "layouts/html/ja/fileuploadadv-mini.vm";
+    String layout_template = "layouts/html/fileuploadadv-mini.vm";
 
     setTemplate(rundata, context, layout_template);
   }
@@ -134,7 +134,7 @@ public class FileuploadadvFormScreen extends FileuploadFormScreen {
     if (formData.doUpdate(this, rundata, context)) {
       context.put("receiveFile", "true");
     }
-    String layout_template = "layouts/html/ja/fileuploadadv-mini.vm";
+    String layout_template = "layouts/html/fileuploadadv-mini.vm";
 
     setTemplate(rundata, context, layout_template);
 

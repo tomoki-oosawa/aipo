@@ -51,7 +51,7 @@ public class WikiViewScreen extends WikiScreen {
       listData.loadTopWikiList(rundata, context);
       listData.doViewDetailOne(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-wiki-view.vm";
+      String layout_template = "portlets/html/ajax-wiki-view.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

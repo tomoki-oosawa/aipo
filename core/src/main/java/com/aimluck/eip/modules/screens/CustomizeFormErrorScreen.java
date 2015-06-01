@@ -50,7 +50,7 @@ public class CustomizeFormErrorScreen extends ALVelocityScreen implements
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
-      String layout_template = "portlets/html/ja/ajax-customize-form-error.vm";
+      String layout_template = "portlets/html/ajax-customize-form-error.vm";
       context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

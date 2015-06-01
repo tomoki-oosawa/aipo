@@ -63,7 +63,7 @@ public class ActivityNotificationFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-activity-notification-form.vm";
+      "portlets/html/ajax-activity-notification-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

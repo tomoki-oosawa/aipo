@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/todo-category-detail.vm")
+#parse("/portlets/smartphone_default/todo-category-detail.vm")

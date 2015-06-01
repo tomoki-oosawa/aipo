@@ -52,7 +52,7 @@ public class ReportListScreen extends ReportScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-report-list.vm";
+      String layout_template = "portlets/html/ajax-report-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[ReportListScreen] Exception.", ex);

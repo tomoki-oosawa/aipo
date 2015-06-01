@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#parse("/portlets/smartphone_default/ja/schedule-form-title.vm")
+#parse("/portlets/smartphone_default/schedule-form-title.vm")
 
 #set($linklist = [["スケジュールへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 #ALcell_linklist_iphone($career $linklist)

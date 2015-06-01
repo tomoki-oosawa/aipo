@@ -54,7 +54,7 @@ public class FacilityScreen extends ALVelocityScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-facility.vm";
+      String layout_template = "portlets/html/ajax-facility.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

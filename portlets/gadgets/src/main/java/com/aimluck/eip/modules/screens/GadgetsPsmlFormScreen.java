@@ -54,7 +54,7 @@ public class GadgetsPsmlFormScreen extends ALVelocityScreen {
       context.put("maximized", "false");
     }
 
-    String template = "portlets/html/ja/gadgets-psml.vm";
+    String template = "portlets/html/gadgets-psml.vm";
     setTemplate(rundata, context, template);
   }
 

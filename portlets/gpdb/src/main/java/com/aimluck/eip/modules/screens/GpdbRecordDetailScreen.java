@@ -60,7 +60,7 @@ public class GpdbRecordDetailScreen extends ALVelocityScreen {
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb-record-detail.vm";
+      String layout_template = "portlets/html/ajax-gpdb-record-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

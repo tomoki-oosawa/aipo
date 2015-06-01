@@ -59,7 +59,7 @@ public class MemoFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-memo-form.vm";
+    String layout_template = "portlets/html/ajax-memo-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

@@ -53,6 +53,6 @@
   };
 </script>
 #end
-#parse("/portlets/html/ja/fileupload-mini.vm")
+#parse($contentTemplate)
 </body>
 </html>

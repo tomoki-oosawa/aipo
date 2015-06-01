@@ -57,7 +57,7 @@ public class WebMailFilterListScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-filter-list.vm");
+        "portlets/html/ajax-webmail-filter-list.vm");
     } catch (Exception ex) {
       logger.error("[WebMailAccountListScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

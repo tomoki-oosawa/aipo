@@ -56,7 +56,7 @@ public class MsgboardCategoryDetailScreen extends ALVelocityScreen {
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String layout_template =
-        "portlets/html/ja/ajax-msgboard-category-detail.vm";
+        "portlets/html/ajax-msgboard-category-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {

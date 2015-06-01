@@ -19,6 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["トップ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["工数集計一覧", ""]])
 ## ---------------------------------------------------------------------------
+
 #ALjavascript("javascript/aipo/manhour/form.js")
 <script type="text/javascript">
 //<![CDATA[
@@ -27,6 +28,6 @@
 //]]>
 </script>
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-manhour-list.vm")
+#parse("/portlets/html/ajax-manhour-list.vm")
 #ALcontentfooter()
-#parse("/portlets/html/ja/manhour-menu.vm")
+#parse("/portlets/html/manhour-menu.vm")

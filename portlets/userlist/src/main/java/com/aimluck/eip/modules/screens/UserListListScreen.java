@@ -56,7 +56,7 @@ public class UserListListScreen extends ALVelocityScreen {
       listData.setStrLength(0);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-userlist-list.vm";
+      String layout_template = "portlets/html/ajax-userlist-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

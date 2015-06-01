@@ -83,7 +83,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     setTemplate(
       rundata,
       context,
-      "portlets/html/ja/ajax-account-person-form.vm");
+      "portlets/html/ajax-account-person-form.vm");
   }
 
   /**
@@ -99,7 +99,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
 
     String layout_template =
-      "portlets/html/ja/ajax-account-person-passwd-form.vm";
+      "portlets/html/ajax-account-person-passwd-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

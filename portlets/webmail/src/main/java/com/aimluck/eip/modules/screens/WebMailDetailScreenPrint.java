@@ -66,7 +66,7 @@ public class WebMailDetailScreenPrint extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-webmail-detail-print.vm");
+        "portlets/html/ajax-webmail-detail-print.vm");
     } catch (Exception ex) {
       logger.error("[WebMailDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);

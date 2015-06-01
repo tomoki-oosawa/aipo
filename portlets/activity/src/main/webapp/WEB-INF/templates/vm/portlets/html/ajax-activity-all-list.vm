@@ -138,4 +138,4 @@ $l10n.COMMON_UPDATE_DATE
 	</div>
 </div>
 <!-- END Contents Area -->
-#parse("/portlets/html/ja/activity-widgets.vm")
+#parse("/portlets/html/activity-widgets.vm")

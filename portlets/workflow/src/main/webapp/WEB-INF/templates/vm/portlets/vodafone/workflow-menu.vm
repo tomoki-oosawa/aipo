@@ -17,9 +17,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($methodlist = [["$l10n.WORKFLOW_CONFIRMATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'requested')"],["$l10n.WORKFLOW_CREATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list').addQueryData('sort','create_date').addQueryData('sorttype','desc').addQueryData('submenu', 'created')"]])
-#ALcell_pagetitle($career "$l10n.WORKFLOW_WORKFLOW_HALFWIDTH")
-#ALcell_linklist($career $methodlist)
-#ALcell_hr($career '1')
-#ALtdcellFooterLink($career)
-
+#set($career = 'vodafone')
+<<<<<<< HEAD
+#parse("/portlets/cell_default/workflow-menu.vm")
+=======
+#parse("/portlets/cell_default/workflow-menu.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

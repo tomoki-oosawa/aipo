@@ -61,7 +61,7 @@ public class WorkflowFormScreen extends ALVelocityScreen {
     formData.loadRouteList(rundata, context);
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-workflow-form.vm";
+    String layout_template = "portlets/html/ajax-workflow-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

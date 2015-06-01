@@ -55,7 +55,7 @@ public class TimecardSettingsFormScreen extends ALVelocityScreen {
       setTemplate(
         rundata,
         context,
-        "portlets/html/ja/ajax-timecardsettings-form.vm");
+        "portlets/html/ajax-timecardsettings-form.vm");
 
     } catch (Exception ex) {
       logger.error("[TimecardSettingsFormScreen] Exception.", ex);

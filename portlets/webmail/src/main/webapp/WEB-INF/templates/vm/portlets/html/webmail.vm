@@ -30,4 +30,4 @@
 
 //]]>
 </script>
-#parse("/portlets/html/ja/ajax-webmail.vm")
+#parse("/portlets/html/ajax-webmail.vm")

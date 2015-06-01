@@ -18,4 +18,4 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'iphone')
-#parse("/portlets/smartphone_default/ja/msgboard-topic-detail.vm")
+#parse("/portlets/smartphone_default/msgboard-topic-detail.vm")

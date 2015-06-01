@@ -59,7 +59,7 @@ public class AddressBookCompanyFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
 
     String layout_template =
-      "portlets/html/ja/ajax-addressbook-company-form.vm";
+      "portlets/html/ajax-addressbook-company-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

@@ -56,7 +56,7 @@ public class GpdbRecordScreenPrint extends GpdbScreen {
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb-record-print.vm";
+      String layout_template = "portlets/html/ajax-gpdb-record-print.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

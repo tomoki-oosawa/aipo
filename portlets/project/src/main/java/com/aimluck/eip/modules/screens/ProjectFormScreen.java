@@ -68,7 +68,7 @@ public class ProjectFormScreen extends ProjectScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
-    String layout_template = "portlets/html/ja/ajax-project-form.vm";
+    String layout_template = "portlets/html/ajax-project-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

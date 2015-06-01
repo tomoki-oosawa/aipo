@@ -65,7 +65,7 @@ public class ExtTimecardSystemFormScreen extends ALVelocityScreen {
     setTemplate(
       rundata,
       context,
-      "portlets/html/ja/ajax-exttimecardsystem-form.vm");
+      "portlets/html/ajax-exttimecardsystem-form.vm");
   }
 
   /**

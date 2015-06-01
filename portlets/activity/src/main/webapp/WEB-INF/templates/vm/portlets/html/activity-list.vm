@@ -29,7 +29,7 @@
 </script>
 #if($!result.hasAuthority())
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-activity-all-list.vm")
+#parse("/portlets/html/ajax-activity-all-list.vm")
 #ALcontentfooter()
 #else
 #parse("/portlets/html/PermissionError.vm")

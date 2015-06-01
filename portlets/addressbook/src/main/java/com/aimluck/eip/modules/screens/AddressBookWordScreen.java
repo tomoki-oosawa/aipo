@@ -85,7 +85,7 @@ public class AddressBookWordScreen extends ALVelocityScreen {
         setTemplate(
           rundata,
           context,
-          "portlets/html/ja/ajax-addressbook-list.vm");
+          "portlets/html/ajax-addressbook-list.vm");
       }
     } catch (Exception ex) {
       logger.error("AddressBookWordScreen.doOutput", ex);
