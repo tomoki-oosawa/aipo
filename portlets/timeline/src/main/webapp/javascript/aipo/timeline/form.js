@@ -279,6 +279,8 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 			var _val = dojo.byId(objId).value;
 			if (dojo.byId("flag_" + pid).value == "none") {
 				var spritval = _val.split(/\r\n|\n/g);
+				var space = "　";
+				var spritval = _val.split(space);
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
 						if(dojo.byId("flag_" + pid).value == "none"){
@@ -612,6 +614,7 @@ aipo.timeline.addText = function(form, pid) {
 aipo.timeline.viewThumbnail = function(pid) {
 	var page = dojo.byId("TimelinePage_" + pid);
 	var value = parseInt(page.value);
+
 	if (dojo.byId("checkbox_" + pid).checked) {
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
 		dojo.addClass(dojo.byId("auiSummaryMeta_" + pid),"hide");
