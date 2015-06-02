@@ -571,7 +571,36 @@ table.tableWrapper td.tableLeft div.scroll {
 table.tableWrapper td.tableCenter {
   vertical-align: top;
 }
-
+/*//　2015.06.01 ここから　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー*/
+.tableWrapper tbody {
+  border-right: 1px solid #D2D2D2;
+}
+.tableWrapper tbody table{
+  border-collapse:separate !important;
+}
+.tableWrapper tbody table div{
+  background-color: #fff;
+}
+div.sunday,
+.tableWrapper tbody .sunday div{
+  background-color: #fef6f1 !important;
+}
+div.saturday,
+.tableWrapper tbody .saturday div{
+  background-color: #f4f7fa !important;
+}
+div.today,
+.tableWrapper tbody .today div{
+  background-color: #edfeed !important;
+}
+div.scheduleDiv,
+.tableWrapper div.scheduleDiv,
+.tableWrapper div.scheduleDivName,
+.tableWrapper div.scheduleDivLastLine,
+.tableWrapper div.scheduleDivRightLine{
+  background-color: #ffffe5 !important;
+}
+/*//　2015.06.01 ここまで　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー*/
 table.simpleTable {
 	margin-top:5px;
 	margin-bottom:5px;
