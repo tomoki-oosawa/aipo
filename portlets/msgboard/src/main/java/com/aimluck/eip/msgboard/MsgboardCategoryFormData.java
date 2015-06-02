@@ -53,7 +53,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板カテゴリのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardCategoryFormData extends ALAbstractFormData {
 
@@ -89,7 +89,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   private boolean authority_delete;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -147,8 +147,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 掲示板カテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -164,10 +164,10 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 掲示板カテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -192,7 +192,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 掲示板カテゴリをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -276,7 +276,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 掲示板カテゴリをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -353,7 +353,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている掲示板カテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -437,7 +437,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 掲示板カテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -474,7 +474,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       Database.commit();
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        MsgboardTopicSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        MsgboardTopicSelectData.class.getSimpleName()
+          + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception e) {
       Database.rollback();
@@ -485,7 +486,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -533,7 +534,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCategoryName() {
@@ -542,7 +543,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -554,7 +555,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isMember() {
@@ -563,7 +564,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -572,7 +573,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * 指定したグループ名のユーザーを取得します。
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -582,7 +583,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getGroupList() {
@@ -591,7 +592,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * ログインユーザを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getLoginUser() {
@@ -608,7 +609,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

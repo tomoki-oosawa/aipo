@@ -34,7 +34,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザー名簿のアクションクラスです。
- * 
+ *
  */
 public class UserListAction extends ALBaseAction {
 
@@ -43,7 +43,7 @@ public class UserListAction extends ALBaseAction {
     .getLogger(UserListAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -66,7 +66,7 @@ public class UserListAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -92,7 +92,7 @@ public class UserListAction extends ALBaseAction {
 
   private void clearUserListSession(RunData rundata, Context context) {
     String LIST_FILTER_STR =
-      new StringBuffer().append(UserSelectData.class.getName()).append(
+      new StringBuffer().append(UserSelectData.class.getSimpleName()).append(
         ALEipConstants.LIST_FILTER).toString();
     List<String> list = new ArrayList<String>();
     list.add(LIST_FILTER_STR);

@@ -41,17 +41,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板カテゴリの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardCategoryMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardCategoryMultiDelete.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -93,7 +92,8 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        MsgboardTopicSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        MsgboardTopicSelectData.class.getSimpleName()
+          + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
@@ -105,7 +105,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -124,7 +124,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -134,7 +134,7 @@ public class MsgboardCategoryMultiDelete extends ALAbstractCheckList {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

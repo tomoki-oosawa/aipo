@@ -48,7 +48,8 @@ public class WikiListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       if (WikiUtils.hasResetFlag(rundata, context)) {
-        WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
+        WikiUtils.resetFilter(rundata, context, WikiSelectData.class
+          .getSimpleName());
       }
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       WikiSelectData listData = new WikiSelectData();

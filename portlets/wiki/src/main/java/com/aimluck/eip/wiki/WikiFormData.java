@@ -55,7 +55,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WikiFormData extends ALAbstractFormData {
 
@@ -126,7 +126,7 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -173,10 +173,10 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -241,7 +241,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -308,7 +308,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -357,7 +357,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -425,7 +425,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているWikiを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -493,7 +493,7 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -516,10 +516,12 @@ public class WikiFormData extends ALAbstractFormData {
       if (isChild()) {
         /** set selected parent wiki */
         String filtertype =
-          ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
+          ALEipUtils.getTemp(rundata, context, WikiSelectData.class
+            .getSimpleName()
             + ALEipConstants.LIST_FILTER_TYPE);
         String fileterValue =
-          ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
+          ALEipUtils.getTemp(rundata, context, WikiSelectData.class
+            .getSimpleName()
             + ALEipConstants.LIST_FILTER);
         String wikiId =
           WikiUtils.getWikiIdFromSession(fileterValue, filtertype);
@@ -540,7 +542,7 @@ public class WikiFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -550,7 +552,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * 子ページかどうか判断します。 <BR>
-   * 
+   *
    * @return
    */
   public boolean isChild() {
@@ -563,7 +565,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getParentName() {
@@ -572,7 +574,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * メモを設定します。 <BR>
-   * 
+   *
    * @return
    */
   public void setNote(String n) {
@@ -581,7 +583,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -590,7 +592,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * トピック名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getName() {

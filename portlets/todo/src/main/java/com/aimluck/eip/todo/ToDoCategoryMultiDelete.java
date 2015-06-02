@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
 
@@ -89,7 +89,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -139,7 +139,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        ToDoSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        ToDoSelectData.class.getSimpleName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
 
     } catch (Throwable t) {
@@ -153,7 +153,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -164,7 +164,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

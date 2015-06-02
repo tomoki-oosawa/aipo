@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベースレコードの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class GpdbRecordMultiDelete extends ALAbstractCheckList {
 
@@ -48,14 +48,13 @@ public class GpdbRecordMultiDelete extends ALAbstractCheckList {
     .getLogger(GpdbRecordMultiDelete.class.getName());
 
   /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  private static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /**
    * 処理を実行します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
