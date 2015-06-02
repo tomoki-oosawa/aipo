@@ -154,7 +154,7 @@
 					<ul class="dropdown_menu">
 #if ("$!data.User.getUserName()" != "admin")
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
-						<li><a href="javascript: void(0);" onclick="aipo.notification.openDialog();">$l10n.NOTIFICATION_SETTING</a></li>
+						<li><a href="javascript: void(0);" onclick="aipo.notification.openDialog(0);">$l10n.NOTIFICATION_SETTING</a></li>
 #if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
 #end#end

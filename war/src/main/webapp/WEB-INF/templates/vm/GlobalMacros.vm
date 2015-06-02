@@ -1971,7 +1971,7 @@ $!{text}
 <div id="notificationField">
 <div class="notificationRequestField alertRecommend mr5 ml5 mb0" style="display:none">
 <div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.recommendRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
-$l10n.NOTIFICATION_REQUEST_MESSAGE<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog();setTimeout(function() { aipo.notification.requestDesktopNotification(portletId); }, 100);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。</span>
+$l10n.NOTIFICATION_REQUEST_MESSAGE<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog(1);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。</span>
 </div>
 <div class="notificationConfirmField alertRecommend mr5 ml5 mb0" style="display:none">
 <div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
@@ -1983,7 +1983,7 @@ $l10n.NOTIFICATION_SUCCESS_MESSAGE
 </div>
 <div class="notificationRecommendField alertRecommend mr5 ml5 mb0" style="display:none">
 <div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
-$utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog();setTimeout(function() { aipo.notification.requestDesktopNotification(portletId); }, 100);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。<a href="javascript: void(0)" onclick="aipo.notification.blockRequest();">$l10n.NOTIFICATION_OFF_MESSAGE</a>。</span>
+$utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog(1);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。<a href="javascript: void(0)" onclick="aipo.notification.blockRequest();">$l10n.NOTIFICATION_OFF_MESSAGE</a>。</span>
 </div>
 </div>
 #end

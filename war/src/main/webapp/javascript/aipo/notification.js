@@ -139,13 +139,13 @@ aipo.notification.blockRequest = function() {
 	aipo.notification.closeRequest();
 }
 
-aipo.notification.openDialog = function() {
+aipo.notification.openDialog = function(recommend) {
 	aipo.menu.hideDropdownAll();
 	aipo.notification.closeRequest();
 	if (window.Notification) {
-		aipo.common.showDialog("?template=ActivityNotificationFormScreen&s=1&p=" + window.Notification.permission);
+		aipo.common.showDialog("?template=ActivityNotificationFormScreen&s=1&p=" + window.Notification.permission + "&r=" + recommend);
     } else if (window.webkitNotifications) {
-    	aipo.common.showDialog("?template=ActivityNotificationFormScreen&s=1&p=" + window.webkitNotifications.checkPermission());
+    	aipo.common.showDialog("?template=ActivityNotificationFormScreen&s=1&p=" + window.webkitNotifications.checkPermission() + "&r=" + recommend);
     } else  {
     	aipo.common.showDialog("?template=ActivityNotificationFormScreen&s=0");
     }
