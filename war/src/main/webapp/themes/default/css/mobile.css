@@ -29,12 +29,9 @@
 /***************************************************
 	style denial
 --------------------------------------------------*/
-html{
-  background: #FFFFFF !important;
-}
 body {
   position: absolute;
-  background: #ffffff !important;
+  background: #ffffff;
   -webkit-text-size-adjust: 100%;
 }
 
@@ -2217,10 +2214,10 @@ div.weeklyTermRights div.weeklyTermRightR {
 	message
 --------------------------------------------------*/
 body.messageRoomList {
-  /* background-color: #333; */
+  background-color: #333;
 }
 body.messageRoomList .roundMainWrapper {
-  /* background-color: #333 !important; */
+  background-color: #333 !important;
 }
 body.messageRoomList .auiPortlet,
 body.messageRoomList .auiPortletBody {
@@ -2229,262 +2226,17 @@ body.messageRoomList .auiPortletBody {
 body.messageRoomList .dijitContentPane {
 	overflow:hidden;
 }
-body.messageRoomList .messageSummary .date,
-body.messageRoomList .messageSummary .name,
-body.messageRoomList .messageSummary .latest {
-  line-height: inherit;
-  height: auto;
-}
-body.messageRoomList .messageSummary .latest {
-  display: block;
-}
-body.messageRoomList .messageSummary .avatar,
-body.messageRoomList .messageUserlist ul .avatar {
-  padding: 7px;
-}
-body.messageRoomList .messageSummary .avatar,
-body.messageRoomList .messageUserlist ul .avatar,
-body.messageRoomList .messageSummary .avatar_s,
-body.messageRoomList .messageUserlist ul .avatar_s{
-  width: 32px;
-  height: 32px;
-}
-body.messageRoomList .messageSummaryHead .inner {
-  padding: 0;
-  margin: 10px;
-}
-body.messageRoomList .messageSummary li {
-  margin-left: 0;
-  border-top: 1px solid #f0f0f0;
-}
-body.messageRoomList .messageSummary li a {
-  padding: 5px 10px 5px 45px;
-  height: 46px;
-  border: none;
-}
-body.messageRoomList .messageSummary .nrCount {
-  margin-top: 2px;
-}
-body.messageRoomList .messageUserlist ul li {
-  margin-left: 0;
-  border-bottom: 1px solid #f0f0f0;
-}
-body.messageRoomList .messageUserlist ul li a {
-  padding: 7px 10px 7px 45px;
-  box-sizing: inherit;
-  height: auto;
-}
-body.messageRoomList .messageUserlist ul li a .name {
-  height: 32px;
-  line-height: 32px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-body.messageRoomList .messageUserlist .index {
-  margin: 0;
-  background: #f6f6f6;
-  border-bottom: 1px solid #f0f0f0;
-}
 .sideBlock {
-  /* margin: -10px -10px -20px -10px; */
-  margin: 0 -10px -20px -10px;
-}
-.sideBlock .auiTabs .tab {
-  border-top: 1px solid #f0f0f0;
-}
-.sideBlock .auiTabs .tab li a {
-  background: #f0f0f0;
-  color: #333;
-}
-.sideBlock .auiTabs .tab li.active a {
-  background: #ffffff;
-  color: #222;
-}
-.sideBlock .scroll {
-  padding-bottom: 20px;
+  margin: -10px -10px -20px -10px;
 }
 
-/* .messageOuter .inputField {
+.messageOuter .inputField {
   margin-bottom: 0;
-  margin-bottom: 5px;
-}
-.messageOuter .message {
-  border-top: none;
-}
-.messageOuter .message .time {
-  color: #999;
-}
-.messageOuter .message .time a {
-  color: #999;
-} */
-
-#messageMainBlock .contents.clearfix {
-  overflow: inherit;
-}
-#messageMainBlock .timelineOuter #messagePane.scroll{
-  overflow: inherit;
-}
-#messageMainBlock .timelineOuter .inputField {
-  margin-bottom: 5px;
-}
-#messageMainBlock .timelineOuter .message{
-  border-top: none;
-}
-#messageMainBlock .timelineOuter .message.active {
-  background: #fef6f1;
-  margin: 0 -10px;
-  padding: 10px 10px 0;
-}
-#messageMainBlock .timelineOuter .message .time {
-  color: #999;
-}
-#messageMainBlock .timelineOuter .message .time a {
-  color: #999;
 }
 
 .roomHeader {
   margin: 0 0 5px 0;
-  position: relative;
 }
-
-.auiSearch.gray {
-  margin-bottom: 10px;
-}
-.auiSearch.gray input[type="text"] {
-  width: 100%;
-  min-width: inherit;
-}
-.auiSearch.gray input[type="text"]:focus {
-  min-width: inherit;
-}
-.auiSearch.gray.focus input[type="text"],
-.auiSearch.gray.focus input[type="text"]:focus {
-  min-width: inherit;
-}
-.sideBlock .inner .auiSearch.gray {
-  margin-bottom: 0;
-}
-
-.rightBlock div.index {
-  background: #f6f6f6;
-  padding: 11px 10px 9px;
-  color: #333;
-}
-.rightBlock ul.close li {
-  display: none;
-}
-.rightBlock ul.close li.index {
-  display: block;
-}
-.rightBlock ul.user li, .rightBlock ul.room li {
-  height: 38px;
-  padding-left: 0;
-}
-.rightBlock ul.user li a, .rightBlock ul.room li a {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 38px;
-  padding: 7px 16px 7px 38px;
-  display: block;
-  text-decoration: none;
-}
-.rightBlock ul.user li:hover span, .rightBlock ul.room li:hover span {
-  text-decoration: none;
-}
-.rightBlock ul.user li .name, .rightBlock ul.room li .name,
-.rightBlock ul.user li .date,
-.rightBlock ul.room li .date {
-  line-height: 25px;
-  height: 25px;
-}
-.rightBlock ul.user li .name, .rightBlock ul.room li .name{
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.rightBlock ul.user li .date, .rightBlock ul.room li .date {
-  float: right;
-  color: #999;
-  font-size: 11px;
-}
-.rightBlock ul.user li .nrCount, .rightBlock ul.room li .nrCount {
-  background-color: #ff3333;
-  border-radius: 3px;
-  color: #ffffff;
-  display: inline-block;
-  float: left;
-  font-size: 10px;
-  line-height: 1.4;
-  margin: 5px 3px 0 0;
-  min-width: 8px;
-  padding: 0 3px;
-  text-align: center;
-  text-decoration: none;
-}
-.rightBlock ul li {
-  position: relative;
-  margin: 0 0 7px;
-  border: 1px solid #E7E7E7;
-  border-radius: 4px;
-  background: #ffffff;
-}
-.rightBlock ul li:hover {
-  border: 1px solid #999;
-  cursor: pointer;
-}
-.rightBlock ul li.index {
-  background: none;
-  color: #333;
-  border: none;
-  padding: 0;
-  margin: 10px 5px 7px;
-  cursor: auto;
-  height: auto;
-}
-.rightBlock ul li.index a {
-  height: auto;
-  padding: 0;
-  margin-right: 4px;
-}
-.rightBlock ul li.index span {
-  color: #999;
-  display: inline-block;
-  margin-left: 10px;
-  font-size: 11px;
-}
-.rightBlock ul li.index a i {
-  color: #d2d2d2;
-}
-.rightBlock ul li.index a:hover i {
-  color: #333;
-}
-.rightBlock ul li span {
-  display: block;
-}
-.rightBlock ul li .avatar {
-  left: 0;
-  padding: 7px;
-  position: absolute;
-  top: 0;
-}
-.rightBlock ul li.message {
-  padding: 7px 16px 7px 38px;
-}
-.rightBlock ul li.message .tlClipBoard {
-  border: 1px solid #f0f0f0;
-  font-size: 11px;
-  padding: 7px;
-  margin: 10px 0 5px;
-}
-.rightBlock ul li.message .time {
-  color: #999;
-}
-.rightBlock ul li.message .time a {
-  color: #999;
-}
-
 
 /***************************************************
 	mobile class - undermost
