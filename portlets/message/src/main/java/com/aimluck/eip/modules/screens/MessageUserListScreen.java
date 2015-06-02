@@ -49,7 +49,7 @@ public class MessageUserListScreen extends ALVelocityScreen {
       String keyword = null;
       Integer userId = null;
       try {
-        // keyword = rundata.getParameters().getString("k");
+        keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }

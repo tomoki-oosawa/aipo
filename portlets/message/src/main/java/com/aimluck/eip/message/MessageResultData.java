@@ -127,18 +127,6 @@ public class MessageResultData implements ALData, Serializable {
     return ALEipUtils.getFormattedTimeDetail(createDate);
   }
 
-  public ALDateTimeField getCreateDateLine() {
-    ALDateTimeField date = new ALDateTimeField("yyyy年M月d日（E）");
-    date.setValue(createDate.getValue());
-    return date;
-  }
-
-  public ALDateTimeField getCreateDateKey() {
-    ALDateTimeField date = new ALDateTimeField("yyyy-MM-dd");
-    date.setValue(createDate.getValue());
-    return date;
-  }
-
   /**
    * @param userId
    *          セットする userId

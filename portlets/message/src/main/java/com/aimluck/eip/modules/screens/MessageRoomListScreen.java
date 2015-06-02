@@ -50,6 +50,7 @@ public class MessageRoomListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
+
       Integer targetUserId = null;
       Integer roomId = null;
       boolean isNewRoom = false;
@@ -62,7 +63,7 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         // ignore
       }
       try {
-        // keyword = rundata.getParameters().getString("k");
+        keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }
