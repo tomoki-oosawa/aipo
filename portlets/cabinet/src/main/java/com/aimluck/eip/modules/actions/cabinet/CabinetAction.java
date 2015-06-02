@@ -35,7 +35,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダの取り扱いに関するアクションクラスです。 <br />
- * 
+ *
  */
 public class CabinetAction extends ALBaseAction {
 
@@ -44,28 +44,26 @@ public class CabinetAction extends ALBaseAction {
     .getLogger(CabinetAction.class.getName());
 
   static final String LIST_FILTER_STR = new StringBuffer()
-    .append(CabinetSelectData.class.getName())
+    .append(CabinetSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_FILTER)
     .toString();
 
-  static final String LIST_FILTER_TYPE_STR = new StringBuffer()
-    .append(CabinetSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER_TYPE)
-    .toString();
+  static final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
+    CabinetSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER_TYPE).toString();
 
   static final String LIST_SORT_STR = new StringBuffer()
-    .append(CabinetSelectData.class.getName())
+    .append(CabinetSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_SORT)
     .toString();
 
-  static final String LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(CabinetSelectData.class.getName())
-    .append(ALEipConstants.LIST_SORT_TYPE)
-    .toString();
+  static final String LIST_SORT_TYPE_STR = new StringBuffer().append(
+    CabinetSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_SORT_TYPE).toString();
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -99,7 +97,7 @@ public class CabinetAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述する． <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -129,7 +127,7 @@ public class CabinetAction extends ALBaseAction {
 
   /**
    * キャビネットの一覧を表示する． <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

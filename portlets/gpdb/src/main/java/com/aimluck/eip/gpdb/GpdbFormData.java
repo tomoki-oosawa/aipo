@@ -68,13 +68,13 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /** フィルタ値のキー */
   private static final String RECORD_LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
+    .append(GpdbRecordSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_FILTER)
     .toString();
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -120,7 +120,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -149,7 +149,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースのフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -194,7 +194,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -226,7 +226,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -313,7 +313,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースを更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -358,7 +358,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -408,7 +408,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * Webデータベース名を取得します。
-   * 
+   *
    * @return Webデータベース名
    */
   public ALStringField getGpdbName() {
@@ -417,7 +417,7 @@ public class GpdbFormData extends ALAbstractFormData {
 
   /**
    * メール配信フラグを取得します。
-   * 
+   *
    * @return メール配信フラグ
    */
   public ALStringField getMailFlg() {

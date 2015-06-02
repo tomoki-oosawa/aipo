@@ -40,7 +40,7 @@ public class ProjectGanttChartScreen extends ProjectScreen {
     .getLogger(ProjectGanttChartScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -72,14 +72,12 @@ public class ProjectGanttChartScreen extends ProjectScreen {
 
   private void clearSessionData(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
-    list.add(new StringBuilder()
-      .append(ProjectTaskSelectData.class.getName())
-      .append(ALEipConstants.LIST_SORT)
-      .toString());
-    list.add(new StringBuilder()
-      .append(ProjectTaskSelectData.class.getName())
-      .append(ALEipConstants.LIST_SORT_TYPE)
-      .toString());
+    list.add(new StringBuilder().append(
+      ProjectTaskSelectData.class.getSimpleName()).append(
+      ALEipConstants.LIST_SORT).toString());
+    list.add(new StringBuilder().append(
+      ProjectTaskSelectData.class.getSimpleName()).append(
+      ALEipConstants.LIST_SORT_TYPE).toString());
     ALEipUtils.removeTemp(rundata, context, list);
   }
 

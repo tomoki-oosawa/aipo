@@ -45,7 +45,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ToDoCategoryFormData extends ALAbstractFormData {
 
@@ -67,12 +67,12 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
   private String aclPortletFeature;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -123,8 +123,8 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -138,10 +138,10 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -199,7 +199,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -228,7 +228,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -265,7 +265,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているToDoカテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -307,7 +307,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -346,7 +346,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        ToDoSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        ToDoSelectData.class.getSimpleName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
 
     } catch (Throwable t) {
@@ -359,7 +359,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCategoryName() {
@@ -368,7 +368,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -378,7 +378,7 @@ public class ToDoCategoryFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

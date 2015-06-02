@@ -74,7 +74,7 @@ public class WebMailAccountSelectData extends
   private List<WebMailFolderResultData> mailFolderList;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -125,7 +125,7 @@ public class WebMailAccountSelectData extends
         .getScreen()
         .equals(WebMailAdminDetailScreen.class.getSimpleName())
         || action.getClass().getName().equals(
-          WebMailAdminAction.class.getName());
+          WebMailAdminAction.class.getSimpleName());
 
     unreadMailSumMap =
       WebMailUtils.getUnreadMailNumberMap(rundata, userId, accountId);
@@ -139,7 +139,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -162,7 +162,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -183,7 +183,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -235,7 +235,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -269,7 +269,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -280,7 +280,7 @@ public class WebMailAccountSelectData extends
 
   /**
    * フォルダ別未読メール数を取得する。
-   * 
+   *
    * @return
    */
   public int getUnReadMailSumByFolderId(int folder_id) {
@@ -309,7 +309,7 @@ public class WebMailAccountSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */

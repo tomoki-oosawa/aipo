@@ -35,7 +35,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiの内部リンクを処理するクラスです。 <br />
- * 
+ *
  */
 public class WikiInternalLinkScreen extends ALVelocityScreen {
 
@@ -44,7 +44,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
     .getLogger(WikiInternalLinkScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

@@ -57,10 +57,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
     .getLogger(GpdbRecordFormData.class.getName());
 
   /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  private static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /** 入力フォームのフィールド名の先頭文字列 */
   private static final String FIELD_PREFIX = "field_";
@@ -91,7 +90,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -133,7 +132,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -156,7 +155,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースのフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -251,7 +250,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -298,7 +297,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -496,7 +495,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースを更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -631,7 +630,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -677,7 +676,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 項目定義リストを取得します。
-   * 
+   *
    * @return 項目定義リスト
    */
   public List<GpdbItemResultData> getGpdbItemList() {
@@ -686,7 +685,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 指定した項目定義IDのレコード情報を取得します。
-   * 
+   *
    * @param gpdbItemId
    *          項目定義ID
    * @return レコード情報
@@ -701,7 +700,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 指定区分の区分値リストを取得します。
-   * 
+   *
    * @param kubunId
    *          区分マスタID
    * @return 区分値リスト
@@ -712,7 +711,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * フォルダ名を取得します。
-   * 
+   *
    * @return フォルダ名
    */
   public String getFolderName() {
@@ -721,7 +720,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースを取得します。
-   * 
+   *
    * @return Webデータベース
    */
   public EipTGpdb getGpdb() {
