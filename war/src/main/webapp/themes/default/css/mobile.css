@@ -2304,9 +2304,6 @@ body.messageRoomList .messageUserlist .index {
 .sideBlock .scroll {
   padding-bottom: 20px;
 }
-#messageSideBlock .emptyMessage{
-  padding: 0 20px;
-}
 
 /* .messageOuter .inputField {
   margin-bottom: 0;
