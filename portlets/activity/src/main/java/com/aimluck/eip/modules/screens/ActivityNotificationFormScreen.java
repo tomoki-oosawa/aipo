@@ -57,13 +57,14 @@ public class ActivityNotificationFormScreen extends ALVelocityScreen {
       || "granted".equals(permission));
     context.put("notifyPermissionDefault", "1".equals(permission)
       || "default".equals(permission));
+    String recommend = rundata.getParameters().getString("r");
+    context.put("recommend", "1".equals(recommend));
     ALEipUtils.setupContext(portletId, rundata, context);
     ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
     ActivityNotificationFormData formData = new ActivityNotificationFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
-    String layout_template =
-      "portlets/html/ajax-activity-notification-form.vm";
+    String layout_template = "portlets/html/ajax-activity-notification-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 
