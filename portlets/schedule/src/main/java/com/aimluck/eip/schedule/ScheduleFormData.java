@@ -846,6 +846,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       note.setValue(record.getNote());
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
+      // 種別
+      classification.setValue(record.getClassification());
       // メールフラグ
       mail_flag = record.getMailFlag();
       // 共有メンバーによる編集／削除フラグ
@@ -1616,6 +1618,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.setPlace(place.getValue());
         // 内容
         schedule.setNote(note.getValue());
+        // 種別
+        schedule.setClassification(classification.getValue());
         // 公開フラグ
         schedule.setPublicFlag(public_flag.getValue());
         // メールフラグ

@@ -403,6 +403,8 @@ public class ScheduleSelectData extends
       rd.setPlace(record.getPlace());
       // 内容
       rd.setNote(record.getNote());
+      // 種別
+      rd.setClassification(record.getClassification());
       // 公開するかどうか
       rd.setPublic("O".equals(record.getPublicFlag()));
       // 非表示にするかどうか
@@ -697,7 +699,7 @@ public class ScheduleSelectData extends
 
   /**
    * ログインユーザーのIDかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */

@@ -127,8 +127,12 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     return ALCommonUtils.replaceToAutoCR(place.toString());
   }
 
-  public ALStringField getClassification() {
-    return classification;
+  /**
+   * 種別を取得します。
+   */
+
+  public String getClassification() {
+    return classification.getValue();
   }
 
   /**
