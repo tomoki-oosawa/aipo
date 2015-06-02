@@ -24,6 +24,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.message.MessageListSelectData;
+import com.aimluck.eip.message.MessageRoomListSelectData;
 import com.aimluck.eip.message.MessageUserListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -31,10 +33,10 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  *
  */
-public class MessageUserListScreen extends ALVelocityScreen {
+public class MessageSearchListScreen extends ALVelocityScreen {
 
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageUserListScreen.class.getName());
+    .getLogger(MessageSearchListScreen.class.getName());
 
   /**
    * @param rundata
@@ -45,35 +47,51 @@ public class MessageUserListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-
       String keyword = null;
-      Integer userId = null;
       try {
-        // keyword = rundata.getParameters().getString("k");
+        keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }
+      Integer cursor = null;
       try {
-        userId = rundata.getParameters().getInteger("u");
+        cursor = rundata.getParameters().getInt("c");
       } catch (Throwable ignore) {
         // ignore
       }
-      context.put("currentUser", userId);
 
-      MessageUserListSelectData listData = new MessageUserListSelectData();
-      listData.initField();
-      if (!StringUtils.isEmpty(keyword)) {
-        listData.setKeyword(keyword);
-        context.put("isSearch", true);
+      if (cursor == null || cursor.intValue() == 0) {
+        MessageRoomListSelectData roomList = new MessageRoomListSelectData();
+        roomList.initField();
+        if (!StringUtils.isEmpty(keyword)) {
+          roomList.setKeyword(keyword);
+        }
+        roomList.doViewList(this, rundata, context);
+        context.put("roomList", roomList.getList());
+
+        MessageUserListSelectData userList = new MessageUserListSelectData();
+        userList.initField();
+        if (!StringUtils.isEmpty(keyword)) {
+          userList.setKeyword(keyword);
+        }
+        userList.doViewList(this, rundata, context);
+        context.put("userList", userList.getList());
+        context.put("isMore", false);
       } else {
-        context.put("isSearch", false);
+        context.put("isMore", true);
       }
-      listData.doViewList(this, rundata, context);
+      MessageListSelectData messageList = new MessageListSelectData();
+      messageList.setSearch(true);
+      messageList.initField();
+      if (!StringUtils.isEmpty(keyword)) {
+        messageList.setKeyword(keyword);
+      }
+      messageList.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-message-user-list.vm";
+      String layout_template = "portlets/html/ja/ajax-message-search-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("MessageUserListScreen.doOutput", ex);
+      logger.error("MessageRoomListScreen.doOutput", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

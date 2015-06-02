@@ -1,0 +1,105 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+#if(!$isMore)
+<div class="index">$l10n.MESSAGE_SEARCH_RESULT1$!{result.Keyword}$l10n.MESSAGE_SEARCH_RESULT2<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.clearSearchMessageList();return false;"><i class="icon-remove"></i></a></div>
+#end
+#if($userList.size() == 0 && $roomList.size() == 0 && $result.List.size() == 0)
+<div class="emptyMessage">$l10n.MESSAGE_SEARCH_EMPTY_MESSAGE</div>
+#else
+#if(!$isMore)
+<ul class="user">
+<li class="index">$l10n.MESSAGE_USER<span>$!userList.size()件</span>#if($!userList.size() > 0)<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightUser();return false;"><i class="icon-chevron-down" id="messageRightUserSwapIcon"></i></a>#end</li>
+#foreach ($record in $userList)
+  <li id="messageRightUser$!record.UserId" class="messageRightUser">
+	<a href="javascript:void(0)" onclick="aipo.message.openDirect($!record.UserId)">
+		<span class="avatar">
+		#if($!record.isHasPhoto())
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#else
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#end
+		</span>
+		<span class="name">$!record.LastName $!record.FirstName</span>
+	</a>
+</li>
+#end
+</ul>
+<ul class="room">
+<li class="index">$l10n.MESSAGE_ROOM<span>$!roomList.size()件</span>#if($!roomList.size() > 0)<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightRoom();return false;"><i class="icon-chevron-down" id="messageRightRoomSwapIcon"></i></a>#end</li>
+#foreach ($record in $roomList)
+	<li id="messageRightRoom$!record.RoomId" class="messageRightRoom">
+		<a href="javascript:void(0)" onclick="aipo.message.selectTab('room');aipo.message.selectRoom($!record.RoomId, true);">
+			<span class="avatar">
+			#if($!record.getRoomType().getValue() == "O")
+			#if($!record.isHasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+			#else
+				<img src="images/common/avatar_default3.png" alt="$!record.Name" class="avatar_s"/>
+			#end
+			#else
+			#if($!record.isHasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+			#else
+				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_s"/>
+			#end
+			#end
+			</span>
+			#if("$!record.UnreadCount" != "0")<div class="nrCount" id="messageRightRoomUnreadCount$!record.RoomId">$!record.UnreadCount</div>#end
+			<span class="date">$!record.UpdateDate</span>
+			<span class="name">$!record.Name</span>
+			<span id="messageRightRoomType$!record.RoomId" style="display:none">$!record.RoomType</span>
+		</a>
+	</li>
+#end
+</ul>
+#end
+<ul class="messages">
+#if(!$isMore)
+<li class="index">$l10n.MESSAGE_MESSAGE<span></span>#if($result.List.size() > 0)<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.swapRightMessage();return false;"><i class="icon-chevron-down" id="messageRightMessageSwapIcon"></i></a>#end</li>
+#end
+#foreach ($record in $result.List)
+<li id="messageRight$!record.MessageId" class="message messageRightMessage" >
+	<div class="avatar">
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
+		#if($!record.isHasPhoto())
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#else
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#end
+		</a>
+	</div>
+	<div class="messageContents">
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
+		<div class="body">$!record.MessageHtml
+		#if($!record.AttachmentFileList.size() != 0)
+				<div class="tlImageBlock clearfix">
+		#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('?template=FileuploadViewScreen&screen=MessageFileRawScreen&entryid=$!{record.MessageId}&attachmentIndex=$!{attachmentFile.FileId}')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="?template=MessageFileThumbnailScreen&entityid=${record.MessageId}&attachmentIndex=${attachmentFile.FileId}"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="?template=MessageFileRawScreen&entityid=$!record.MessageId&attachmentIndex=$attachmentFile.FileId&f=${attachmentFile.getURLEncodedValue()}">$result.getStringCR($attachmentFile.FileNameField)</a>
+		#end#end
+				</div>#end
+		</div>
+		<div class="time">
+			$!record.CreateDate&nbsp;
+			#if($!record.isOwner())<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageReadUserListScreen").addQueryData("m",$!record.MessageId)','$!portlet.ID',aipo.message.onLoadMessageReadUserList);" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end</a>#end
+			&nbsp;<a href="javascript:void(0)" onclick="aipo.message.jumpMessage($!record.RoomId,$!record.MessageId)">$l10n.MESSAGE_JUMP_MESSAGE</a>
+		</div>
+	</div>
+</li>
+#end
+</ul>
+#end
