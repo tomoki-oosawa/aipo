@@ -135,8 +135,8 @@ aipo.notification.recommendRequest = function() {
 }
 
 aipo.notification.blockRequest = function() {
-	aipo.setCookie("block_notification", true, "/", null);
-	setTimeout(function() { aipo.notification.closeRequest(); }, 3000);
+	aipo.setCookie("block_notification", true, "/", 365*24*60*60*1000);
+	aipo.notification.closeRequest();
 }
 
 aipo.notification.openDialog = function() {
