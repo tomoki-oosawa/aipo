@@ -22,6 +22,7 @@ package com.aimluck.eip.timeline.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -838,6 +839,10 @@ public class TimelineUtils {
   public static Document getDocument(String string, String defaultCharset) {
     DOMParser parser = new DOMParser();
     try {
+      if (string.indexOf(" ") != -1) {
+        string = string.substring(0, string.indexOf(" "));
+      }
+      string = new URI(string).toASCIIString();
       URL url = new URL(string);
       HttpURLConnection con = ALURLConnectionUtils.openUrlConnection(url);
       con.setConnectTimeout(10000);
