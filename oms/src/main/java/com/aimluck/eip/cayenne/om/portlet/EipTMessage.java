@@ -34,6 +34,8 @@ public class EipTMessage extends _EipTMessage {
 
   private Long photoModified = null;
 
+  private Integer roomId = null;
+
   public Integer getMessageId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(MESSAGE_ID_PK_COLUMN);
@@ -125,6 +127,21 @@ public class EipTMessage extends _EipTMessage {
    */
   public Long getPhotoModified() {
     return photoModified;
+  }
+
+  /**
+   * @return roomId
+   */
+  public Integer getRoomId() {
+    return roomId;
+  }
+
+  /**
+   * @param roomId
+   *          セットする roomId
+   */
+  public void setRoomId(Integer roomId) {
+    this.roomId = roomId;
   }
 
 }

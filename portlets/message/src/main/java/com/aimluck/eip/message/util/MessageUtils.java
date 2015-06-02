@@ -21,6 +21,7 @@ package com.aimluck.eip.message.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,6 +54,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.message.MessageListSelectData;
 import com.aimluck.eip.message.MessageMockPortlet;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -246,6 +248,187 @@ public class MessageUtils {
     }
 
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
+  }
+
+  public static ResultList<EipTMessage> getMessageJumpList(Integer roomId,
+      int cursor) {
+    List<Integer> roomList = new ArrayList<Integer>();
+    roomList.add(roomId);
+    ResultList<EipTMessage> resultListTop =
+      getMessageList(
+        roomList,
+        null,
+        cursor,
+        MessageListSelectData.MESSAGE_LIMIT / 2,
+        true,
+        true,
+        true);
+    ResultList<EipTMessage> resultListBottom =
+      getMessageList(
+        roomList,
+        null,
+        cursor,
+        MessageListSelectData.MESSAGE_LIMIT / 2,
+        false,
+        false,
+        false);
+    resultListTop.addAll(resultListBottom);
+    return new ResultList<EipTMessage>(resultListTop, -1, -1, resultListTop
+      .size());
+  }
+
+  public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
+      String keyword, int cursor, int limit, boolean isLatest) {
+    return getMessageList(
+      roomList,
+      keyword,
+      cursor,
+      limit,
+      isLatest,
+      false,
+      false);
+  }
+
+  public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
+      String keyword, int cursor, int limit, boolean isLatest,
+      boolean isReverse, boolean isEquals) {
+    StringBuilder select = new StringBuilder();
+
+    boolean isSearch = (keyword != null && keyword.length() > 0);
+
+    select.append("select");
+    select.append(" t1.message_id, ");
+    select.append(" t1.room_id,  ");
+    select.append(" t1.user_id, ");
+    select.append(" t1.message, ");
+    select.append(" t1.create_date, ");
+    select.append(" t1.member_count, ");
+    select.append(" t2.last_name, ");
+    select.append(" t2.first_name, ");
+    select.append(" t2.has_photo, ");
+    select.append(" t2.photo_modified, ");
+
+    select
+      .append(" (select count(*) from eip_t_message_read t3 where t3.message_id = t1.message_id and t3.room_id = t1.room_id and t3.is_read = 'F') as unread ");
+
+    StringBuilder count = new StringBuilder();
+    count.append("select count(t1.message_id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body
+      .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id IN(");
+    boolean isFirst = true;
+    for (Integer roomId : roomList) {
+      if (!isFirst) {
+        body.append(",");
+      }
+      isFirst = false;
+      body.append(roomId);
+    }
+    body.append(") ");
+    if (cursor > 0) {
+      if (isLatest) {
+        if (isEquals) {
+          body.append(" and t1.message_id >= #bind($cursor) ");
+        } else {
+          body.append(" and t1.message_id > #bind($cursor) ");
+        }
+      } else {
+        if (isEquals) {
+          body.append(" and t1.message_id <= #bind($cursor) ");
+        } else {
+          body.append(" and t1.message_id < #bind($cursor) ");
+        }
+      }
+    }
+    if (isSearch) {
+      body.append(" and t1.message like #bind($keyword) ");
+    }
+
+    StringBuilder last = new StringBuilder();
+
+    if (isReverse) {
+      last.append(" order by t1.create_date asc ");
+    } else {
+      last.append(" order by t1.create_date desc ");
+    }
+
+    if (limit > 0) {
+      last.append(" limit ");
+      last.append(limit);
+    }
+
+    SQLTemplate<EipTMessage> query =
+      Database.sql(EipTMessage.class, select.toString()
+        + body.toString()
+        + last.toString());
+    if (cursor > 0) {
+      query.param("cursor", cursor);
+    }
+    if (isSearch) {
+      query.param("keyword", "%" + keyword + "%");
+    }
+
+    List<DataRow> fetchList = query.fetchListAsDataRow();
+
+    List<EipTMessage> list = new ArrayList<EipTMessage>();
+    for (DataRow row : fetchList) {
+      Long unread = (Long) row.get("unread");
+      String lastName = (String) row.get("last_name");
+      String firstName = (String) row.get("first_name");
+      String hasPhoto = (String) row.get("has_photo");
+      Date photoModified = (Date) row.get("photo_modified");
+      Integer roomId = (Integer) row.get("room_id");
+
+      EipTMessage object = Database.objectFromRowData(row, EipTMessage.class);
+      object.setUnreadCount(unread.intValue());
+      object.setFirstName(firstName);
+      object.setLastName(lastName);
+      object.setHasPhoto(hasPhoto);
+      if (photoModified != null) {
+        object.setPhotoModified(photoModified.getTime());
+      }
+      object.setRoomId(roomId);
+      list.add(object);
+    }
+
+    if (isReverse) {
+      Collections.reverse(list);
+    }
+
+    return new ResultList<EipTMessage>(list, -1, -1, list.size());
+  }
+
+  public static List<Integer> getRoomIds(int userId) {
+    StringBuilder select = new StringBuilder();
+
+    select.append("select");
+    select.append(" t2.room_id ");
+
+    StringBuilder count = new StringBuilder();
+    count.append("select count(t2.room_id) AS c ");
+
+    StringBuilder body = new StringBuilder();
+    body
+      .append("  from eip_t_message_room_member t1, eip_t_message_room t2, turbine_user t4 where t1.user_id = #bind($user_id) and t1.room_id = t2.room_id and t1.target_user_id = t4.user_id ");
+
+    StringBuilder last = new StringBuilder();
+
+    SQLTemplate<EipTMessageRoom> query =
+      Database.sql(
+        EipTMessageRoom.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "user_id",
+        Integer.valueOf(userId));
+    List<DataRow> fetchList = query.fetchListAsDataRow();
+
+    List<Integer> list = new ArrayList<Integer>(fetchList.size());
+    for (DataRow row : fetchList) {
+      Integer roomId = (Integer) row.get("room_id");
+      list.add(roomId);
+    }
+
+    return list;
   }
 
   public static ResultList<EipTMessageRoom> getRoomList(int userId,

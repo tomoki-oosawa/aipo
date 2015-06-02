@@ -57,7 +57,11 @@
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
-					<div class="title">$l10n.MESSAGE_MESSAGE</div>
+					<div class="title clearfix">
+                      <form id="messageSearchForm" name="messageSearchForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageSearchListScreen')" onsubmit="aipo.message.searchMessageList(this); return false;" method="post" class="auiSearch gray floatRight">
+                        <input type="text" name="keyword" value="" placeholder="$l10n.MESSAGE_SEARCH" onFocus="aipo.message.onFocusSearch();" onBlur="aipo.message.onBlurSearch();"/><button type="submit"><i class="icon-search"></i></button>
+                      </form>$l10n.MESSAGE_MESSAGE
+                    </div>
 					<div class="body">
 						<div id="messageSideBlock" class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
@@ -68,23 +72,26 @@
 								<ul class="tabContents">
 									<li class="active" id="messageRoomContents">
 										<div id="messageSideBlock1">
-											<div id="messageRoomListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+											<div id="messageRoomListPane"><div class="loader"><i class="indicator"></i></div></div>
 										</div>
 									</li>
 									<li id="messageUserContents">
 										<div id="messageSideBlock2">
-											<div id="messageUserListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+											<div id="messageUserListPane"><div class="loader"><i class="indicator"></i></div></div>
 										</div>
 									</li>
 								</ul>
 							</div>
+						</div>
+						<div id="messageRightPane" class="rightBlock" style="display:none">
+				            <div class="loader"><i class="indicator"></i></div>
 						</div>
 						<div id="messageMainBlockEmpty" class="mainBlock">
 							<div class="contents">
 								#AUIEmptyMessage("icon-comment-alt" "$l10n.MESSAGE_ROOM_NO_SELECT")
 							</div>
 						</div>
-						<div id="messageMainBlock" class="mainBlock" style="display:none">
+						<div id="messageMainBlock" class="mainBlock" style="display:none;">
 							<div class="contents clearfix">
 								<div class="timelineOuter">
 									<div class="roomHeader clearfix">

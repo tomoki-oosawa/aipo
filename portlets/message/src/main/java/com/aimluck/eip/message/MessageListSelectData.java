@@ -30,6 +30,8 @@ import javax.activation.FileDataSource;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
@@ -64,7 +66,13 @@ public class MessageListSelectData extends
 
   private int lastMessageId;
 
+  private boolean jump = false;
+
   private EipTMessageRoom room;
+
+  private ALStringField keyword = null;
+
+  private boolean isSearch = false;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -72,6 +80,11 @@ public class MessageListSelectData extends
     super.init(action, rundata, context);
 
     userId = ALEipUtils.getUserId(rundata);
+  }
+
+  @Override
+  public void initField() {
+    keyword = new ALStringField();
   }
 
   /**
@@ -102,11 +115,34 @@ public class MessageListSelectData extends
     } catch (Throwable ignore) {
       // ignore
     }
-    return MessageUtils.getMessageList(
-      room.getRoomId(),
-      cursor,
-      MESSAGE_LIMIT,
-      latest);
+    try {
+      int param = rundata.getParameters().getInt("jump");
+      jump = (param == 1);
+    } catch (Throwable ignore) {
+      // ignore
+    }
+
+    List<Integer> roomIds = new ArrayList<Integer>(1);
+    if (isSearch) {
+      List<Integer> roomIds2 = MessageUtils.getRoomIds(userId);
+      if (roomIds2 != null && roomIds2.size() > 0) {
+        roomIds.addAll(roomIds2);
+      } else {
+        roomIds.add(-1);
+      }
+    } else {
+      roomIds.add(room.getRoomId());
+    }
+    if (jump) {
+      return MessageUtils.getMessageJumpList(room.getRoomId(), cursor);
+    } else {
+      return MessageUtils.getMessageList(
+        roomIds,
+        keyword.getValue(),
+        cursor,
+        MESSAGE_LIMIT,
+        latest);
+    }
   }
 
   /**
@@ -134,7 +170,7 @@ public class MessageListSelectData extends
     MessageResultData rd = new MessageResultData();
     rd.initField();
     rd.setMessageId(model.getMessageId());
-    rd.setRoomId(room.getRoomId());
+    rd.setRoomId(model.getRoomId());
     rd.setUserId(model.getUserId());
     rd.setFirstName(model.getFirstName());
     rd.setLastName(model.getLastName());
@@ -279,4 +315,35 @@ public class MessageListSelectData extends
     return id1 == (int) id2;
   }
 
+  /**
+   * @return isSearch
+   */
+  public boolean isSearch() {
+    return isSearch;
+  }
+
+  /**
+   * @param isSearch
+   *          セットする isSearch
+   */
+  public void setSearch(boolean isSearch) {
+    this.isSearch = isSearch;
+  }
+
+  /**
+   * @param keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
+  }
+
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  public boolean isSameDate(ALDateTimeField a, ALDateTimeField b) {
+    return a.getYear().equals(b.getYear())
+      && a.getMonth().equals(b.getMonth())
+      && a.getDay().equals(b.getDay());
+  }
 }
