@@ -380,16 +380,16 @@ aipo.message.openRightBlock = function(){
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageRightBlock = dojo.byId("messageRightPane");
     if (messageMainBlock　&& !aipo.message.isMobile) {
-        messageMainBlock.style["margin-right"] = "360px";
+        messageMainBlock.style["margin"] = "0 360px 0 0";
     }
     if (messageMainBlockEmpty && !aipo.message.isMobile) {
-    	messageMainBlockEmpty.style["margin-right"] = "360px";
+    	messageMainBlockEmpty.style["margin"] = "0 360px 0 0";
     }
     if(messageRightBlock) {
-    	messageRightBlock.style.display=""
+    	messageRightBlock.style.display="";
     }
     if(messageSideBlock && aipo.message.isMobile) {
-    	messageSideBlock.style.display="none"
+    	messageSideBlock.style.display="none";
     }
     aipo.message.isSearched = true;
 }
