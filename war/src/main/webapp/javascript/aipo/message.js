@@ -380,10 +380,10 @@ aipo.message.openRightBlock = function(){
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageRightBlock = dojo.byId("messageRightPane");
     if (messageMainBlock　&& !aipo.message.isMobile) {
-        messageMainBlock.style["margin"] = "0 360px 0 0";
+        messageMainBlock.style["margin"] = "0 360px 0 280px";
     }
     if (messageMainBlockEmpty && !aipo.message.isMobile) {
-    	messageMainBlockEmpty.style["margin"] = "0 360px 0 0";
+    	messageMainBlockEmpty.style["margin"] = "0 360px 0 280px";
     }
     if(messageRightBlock) {
     	messageRightBlock.style.display="";
