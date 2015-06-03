@@ -1319,7 +1319,7 @@ aipo.message.onReceiveProfileMessage = function(msg) {
 
 aipo.message.focusProfileInput = function(userId) {
     var messageForm = dojo.byId("messageForm" + userId);
-    if (messageForm && !aipo.message.isMobile) {
+    if (messageForm) {
     	try{
     		messageForm.message.focus();
     	}catch(e){
