@@ -73,6 +73,12 @@
 		#elseif($!type=="09")
 			##メール
 			<td><a href="mailto:$!record.Value">$!record.WbrValue</a></td>
+		#elseif($!type=="13")
+			##登録者
+			<td><a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a></td>
+		#elseif($!type=="14")
+			##更新者
+			<td><a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a></td>
 		#else
 			<td>$!record.WbrDispValue</td>
 		#end

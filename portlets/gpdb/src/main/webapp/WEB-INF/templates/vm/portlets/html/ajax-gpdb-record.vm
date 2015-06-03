@@ -52,6 +52,8 @@
 	#set($dateId = "")
 	#set($createDateId = "")
 	#set($updateDateId = "")
+	#set($createUserId = "")
+	#set($updateUserId = "")
 	#foreach($item in $result.GpdbItemList)
 		#if ($item.ListFlg.toString()=='t')
 			<th class="#if ("$!item.TitleFlg.toString()" != "t") mb_hide #end #if ("$!item.Type.toString()" == "08") thin #end ">
@@ -67,6 +69,10 @@
 			#set($createDateId = "$!item.GpdbItemId.toString()")
 		#elseif("$!item.Type.toString()" == ("12"))
 			#set($updateDateId = "$!item.GpdbItemId.toString()")
+		#elseif("$!item.Type.toString()" == ("13"))
+			#set($createUserId = "$!item.GpdbItemId.toString()")
+		#elseif("$!item.Type.toString()" == ("14"))
+			#set($updateUserId = "$!item.GpdbItemId.toString()")
 		#end
 	#end
 	</tr>
@@ -83,6 +89,14 @@
 		#if ($titleItemId.toString() == $record.GpdbItemId.toString())
 			#ALtdcellNowrapheader()
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
+			#ALtdcellNowrapfooter()
+		#elseif ($createUserId.toString() == $record.GpdbItemId.toString())
+			#ALtdcellNowrapheader()
+			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
+			#ALtdcellNowrapfooter()
+		#elseif ($updateUserId.toString() == $record.GpdbItemId.toString())
+			#ALtdcellNowrapheader()
+			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
 			#ALtdcellNowrapfooter()
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
