@@ -48,7 +48,11 @@
 #if(!($!result.isActivity() || $!ignore_viewdate == "true"))
 #ALtdcaption($l10n.SCHEDULE_NAME)
 #ALtditemheader()
+#if($!{result.Detail.Type} == "U")
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">$!{result.Detail.User.AliasNameHtml}</a>
+#else
+$!{result.Detail.User.AliasNameHtml}
+#end
 #ALtditemfooter()
 #end
 #ALtdcaption($l10n.SCHEDULE_DATE)
