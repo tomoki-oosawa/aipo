@@ -281,9 +281,10 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 				var spritval = _val.split(/\r\n|\n/g);
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
+						var url = spritval[i].split(" ");
 						if(dojo.byId("flag_" + pid).value == "none"){
 							dojo.byId("flag_" + pid).value = "processing";
-							aipo.timeline.getUrl(spritval[i], pid);
+							aipo.timeline.getUrl(url[0], pid);
 							aipo.timeline.revmaxlist[pid] = 0;
 						}
 					}
@@ -374,7 +375,6 @@ aipo.timeline.onReceiveMessage = function(msg) {
 		dojo.byId("messageDiv_" + pid).innerHTML = msg;
 	}
 }
-
 aipo.timeline.onReceiveMessageToList = function(msg) {
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;
 	if (!msg) {
