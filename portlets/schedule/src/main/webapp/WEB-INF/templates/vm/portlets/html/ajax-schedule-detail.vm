@@ -263,7 +263,6 @@ ${record.FacilityNameHtml}<br/>
         #end
         #end
     #end
-    @media screen
     <br>
 
     #if($!{result.hasAuthoritySelfInsert()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
