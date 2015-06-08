@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
-        <div class="contents divider clearfix">
+        <div style="width: 220px;" class="contents divider clearfix center">
             このユーザーは削除されています。
         </div>
 
