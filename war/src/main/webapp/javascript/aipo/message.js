@@ -1335,6 +1335,10 @@ aipo.message.openProfileTextarea = function(userId) {
 	card.style.display="block";
 	cardDummy.style.display="none";
 	aipo.message.focusProfileInput(userId);
+	 if(aipo.userAgent.isAndroid2()){
+	     var wrapper=dojo.byId("wrapper");
+		 dojo.style(wrapper, "display", "none");
+	}
 }
 
 aipo.message.closeProifleTextarea  = function(userId) {
