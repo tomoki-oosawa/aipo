@@ -42,7 +42,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class BlogThemaMultiDelete extends ALAbstractCheckList {
 
@@ -51,7 +51,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
     .getLogger(BlogThemaMultiDelete.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -130,7 +130,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
       }
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        BlogEntrySelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        BlogEntrySelectData.class.getSimpleName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
     } catch (Exception ex) {
       Database.rollback();
@@ -143,7 +143,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -154,7 +154,7 @@ public class BlogThemaMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

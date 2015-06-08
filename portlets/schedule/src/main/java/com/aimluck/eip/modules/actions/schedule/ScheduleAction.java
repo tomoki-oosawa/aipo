@@ -61,20 +61,20 @@ public class ScheduleAction extends ALBaseAction {
 
   // 週表示のデフォルトフィルター
   static final String LIST_FILTER_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getName()).append(
+    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER).toString();
 
   static final String LIST_FILTER_TYPE_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getName()).append(
+    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
 
   // 日表示のデフォルトフィルター
   static final String LIST_FILTER_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getName()).append(
+    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER).toString();
 
   static final String LIST_FILTER_TYPE_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getName()).append(
+    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
 
   /** <code>logger</code> logger */

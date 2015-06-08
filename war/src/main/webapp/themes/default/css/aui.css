@@ -2124,7 +2124,7 @@ button[disabled]:active {
   display: block;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 1px;
   font-family: 'FontAwesome';
   font-size: 15px;
   line-height: 24px;

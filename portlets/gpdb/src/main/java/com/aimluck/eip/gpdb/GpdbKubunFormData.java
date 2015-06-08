@@ -77,14 +77,13 @@ public class GpdbKubunFormData extends ALAbstractFormData {
   private List<EipMGpdbKubun> gpdb_kubun_list;
 
   /** 検索フィルタ名 */
-  static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbKubunSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbKubunSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -139,7 +138,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -173,7 +172,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値のフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -277,7 +276,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値をデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -314,7 +313,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値をデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -385,7 +384,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分マスタをデータベースに格納します。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -414,7 +413,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている区分を更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -482,7 +481,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値をデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -551,7 +550,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 項目定義されている区分が1つかをチェックする
-   * 
+   *
    * @param kubunId
    *          区分ID
    * @return 項目定義されている区分でかつ1件のみ区分値がある場合：TRUE
@@ -574,7 +573,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分マスタIDを取得します。
-   * 
+   *
    * @return　区分マスタID
    */
   public ALStringField getGpdbKubunId() {
@@ -583,7 +582,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分マスタ名を取得します。
-   * 
+   *
    * @return　区分マスタ名を
    */
   public ALStringField getGpdbKubunName() {
@@ -592,7 +591,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分マスタ名を取得します。(Wbr挿入)
-   * 
+   *
    * @return　区分マスタ名を
    */
   public String getWbrGpdbKubunName() {
@@ -601,7 +600,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値を取得します。
-   * 
+   *
    * @return　区分値
    */
   public ALStringField getGpdbKubunValue() {
@@ -610,7 +609,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分値を取得します。(Wbr挿入)
-   * 
+   *
    * @return　区分値
    */
   public String getWbrGpdbKubunValue() {
@@ -619,7 +618,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * 区分マスタ新規入力フラグを取得します。
-   * 
+   *
    * @return　新規入力フラグ
    */
   public boolean isNewKubun() {
@@ -628,7 +627,7 @@ public class GpdbKubunFormData extends ALAbstractFormData {
 
   /**
    * セレクトボックス用区分マスタリストを取得します。
-   * 
+   *
    * @return セレクトボックス用区分マスタリスト
    */
   public List<EipMGpdbKubun> getGpdbKubunList() {

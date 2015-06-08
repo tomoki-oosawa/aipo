@@ -83,6 +83,10 @@ $l10n.NOTIFICATION_BLOCKED_MESSAGE<br />
 #ALtablefooter()
 </div>
 
+#if($!recommend)
+<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.notification.requestDesktopNotification('$!portlet.ID');"/>
+#end
+
 #end
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
