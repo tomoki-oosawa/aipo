@@ -44,7 +44,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -56,6 +58,7 @@ import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -110,7 +113,7 @@ public class MessageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -310,7 +313,39 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+
+      // FIX_ME イベントログのために一度IDと名前を取得
+      int parentid =
+        Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID));
+
+      EipTMessage parent = Database.get(EipTMessage.class, (long) parentid);
+
+      if (parent != null) {
+        return MessageUtils.deleteMessageFromParent(
+          rundata,
+          context,
+          "Message",
+          parent);
+      } else {
+        // DBからの削除処理よりもページリロードが先に実行され,削除済みにもかかわらず表示されたままになっているトピックについて
+        // 再度 削除する が押された時には,ページリロードを行う
+        return true;
+      }
+
+    } catch (ALFileNotRemovedException fe) {
+      Database.rollback();
+      logger.error("[TimelineSelectData]", fe);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_FILE_DETELE_FAILURE"));
+      return false;
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("[TimelineSelectData]", e);
+      throw new ALDBErrorException();
+    }
   }
 
   public ALStringField getMessage() {

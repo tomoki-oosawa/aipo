@@ -38,6 +38,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -47,9 +48,12 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -61,8 +65,12 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
+import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -141,6 +149,33 @@ public class MessageUtils {
     } catch (Throwable t) {
       logger.error("MessageUtils.getRoom", t);
       return null;
+    }
+  }
+
+  public static List<EipTMessage> getEipTMessageListToDeleteAllUserMessage(
+      RunData rundata, Context context, boolean isSuperUser, int messageid)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      SelectQuery<EipTMessage> query = Database.query(EipTMessage.class);
+
+      Expression exp02 =
+        ExpressionFactory.matchDbExp(
+          EipTMessage.MESSAGE_ID_PK_COLUMN,
+          messageid);
+
+      query.andQualifier((exp02));
+
+      List<EipTMessage> messages = query.fetchList();
+      if (messages == null || messages.size() == 0) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[Message] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return messages;
+    } catch (Exception ex) {
+      logger.error("[MessageUtils]", ex);
+      throw new ALDBErrorException();
+
     }
   }
 
@@ -928,6 +963,146 @@ public class MessageUtils {
       }
     }
     return result;
+  }
+
+  public static boolean deleteMessageFromParent(RunData rundata,
+      Context context, String appId, EipTMessage parent)
+      throws ALDBErrorException, ALFileNotRemovedException {
+    try {
+      int uid = ALEipUtils.getUserId(rundata);
+      String orgId = Database.getDomainName();
+
+      // オブジェクトモデルを取得
+      List<EipTMessage> list;
+
+      list =
+        getEipTMessageListToDeleteTopic(rundata, context, ALEipUtils
+          .isAdmin(rundata), parent.getMessageId());
+
+      if (list == null) {
+        // 指定した トピック ID のレコードが見つからない場合
+        logger.debug("[MessageFormData] Not found List...");
+        throw new ALPageNotFoundException();
+      }
+
+      List<Integer> messageIdList = new ArrayList<Integer>();
+      EipTMessage message = null;
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        message = list.get(i);
+        messageIdList.add(message.getMessageId());
+      }
+
+      // メッセージを削除
+      SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(
+          EipTTimeline.TIMELINE_ID_PK_COLUMN,
+          messageIdList);
+      query.setQualifier(exp);
+
+      List<EipTTimeline> topics = query.fetchList();
+
+      List<String> fpaths = new ArrayList<String>();
+      if (topics.size() > 0) {
+        int tsize = topics.size();
+        for (int i = 0; i < tsize; i++) {
+          EipTTimeline item = topics.get(i);
+          List<?> files = item.getEipTTimelineFile();
+          if (files != null && files.size() > 0) {
+            int fsize = files.size();
+            for (int j = 0; j < fsize; j++) {
+              fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
+            }
+          }
+        }
+      }
+
+      Database.deleteAll(topics);
+      Database.commit();
+
+      ALTimelineFactoryService tlservice =
+        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
+          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
+      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
+      timelinehandler.pushToken(rundata, String.valueOf(uid));
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        message.getMessageId(),
+        ALEventlogConstants.PORTLET_TYPE_TIMELINE,
+        message.getMessage());
+    } catch (RuntimeException e) {
+      // RuntimeException
+      Database.rollback();
+      logger.error("[TimelineSelectData]", e);
+      throw new ALDBErrorException();
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("[TimelineSelectData]", e);
+      throw new ALDBErrorException();
+    }
+    return true;
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @param admin
+   * @param messageId
+   * @return
+   */
+  private static List<EipTMessage> getEipTMessageListToDeleteTopic(
+      RunData rundata, Context context, boolean admin, Integer messageId)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int userid = ALEipUtils.getUserId(rundata);
+
+      SelectQuery<EipTMessage> query = Database.query(EipTMessage.class);
+
+      Expression exp01 =
+        ExpressionFactory.matchDbExp(EipTMessage.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
+      Expression exp02 =
+        ExpressionFactory.matchDbExp(
+          EipTMessage.MESSAGE_ID_PK_COLUMN,
+          messageId);
+
+      query.andQualifier((exp01.andExp(exp02)));
+
+      List<EipTMessage> messages = query.fetchList();
+      if (messages == null || messages.size() == 0) {
+        // 指定した メッセージ ID のレコードが見つからない場合
+        logger.debug("[Message Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+
+      boolean isdelete = false;
+      // int size = messages.size();
+      // for (int i = 0; i < size; i++) {
+      // EipTMessage message = messages.get(i);
+      // // if (del_member_value != null) {
+      // // if (del_member_value.equals("0") || del_member_value.equals("1")) {
+      // // isdelete = true;
+      // // break;
+      // // }
+      // // } else if (topic.getOwnerId().intValue() == userid || isSuperUser) {
+      // // isdelete = true;
+      // // break;
+      // // }
+      // }
+      // if (!isdelete) {
+      // // 指定した メッセージID のレコードが見つからない場合
+      // logger.debug("[Message] Not found ID...");
+      // throw new ALPageNotFoundException();
+      // }
+
+      return messages;
+    } catch (Exception ex) {
+      logger.error("[MessageUtils]", ex);
+      throw new ALDBErrorException();
+
+    }
   }
 
   public static class MessageReadEntry {
