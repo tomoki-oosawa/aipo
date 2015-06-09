@@ -280,7 +280,6 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 			if (dojo.byId("flag_" + pid).value == "none") {
 				var spritval = _val.split(/\r\n|\n/g);
 				var space = "　";
-				alert("aaaa");
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
 						var url = spritval[i].split(space);
