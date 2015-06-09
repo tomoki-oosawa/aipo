@@ -17,8 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 ## ---------------------------------------------------------------------------
-#set($messagePortletId = $!globalPortlets.get('Message').getId())
-        <div style="width: 220px;" class="contents divider clearfix center">
-            このユーザーは削除されています。
-        </div>
-
+<div style="width: 220px;" class="contents divider clearfix center">
+    このユーザーは削除されています。
+</div>
