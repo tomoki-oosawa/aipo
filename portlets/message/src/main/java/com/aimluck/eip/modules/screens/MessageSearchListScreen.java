@@ -88,7 +88,7 @@ public class MessageSearchListScreen extends ALVelocityScreen {
       }
       messageList.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-message-search-list.vm";
+      String layout_template = "portlets/html/ajax-message-search-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageRoomListScreen.doOutput", ex);
