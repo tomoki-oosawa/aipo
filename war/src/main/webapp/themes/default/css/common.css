@@ -572,18 +572,18 @@ table.tableWrapper td.tableCenter {
   vertical-align: top;
 }
 /*//　2015.06.01 ここから　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー*/
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody {
+.tableWrapper.scheduleBlock tbody {
   border-right: 1px solid #D2D2D2;
 }
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody table {
+.tableWrapper.scheduleBlock tbody table {
   border-collapse: separate !important;
 }
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody table div {
+.tableWrapper.scheduleBlock tbody table div {
   background-color: #fff;
 }
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody table div[id^="termScheduleDivAdd"],
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody table div[id^="scheduleDivAdd"],
-table[id^="weeklyTableHeadWrapper"].tableWrapper tbody table div.scheduleDivFirstLine {
+.tableWrapper.scheduleBlock tbody table div[id^="termScheduleDivAdd"],
+.tableWrapper.scheduleBlock tbody table div[id^="scheduleDivAdd"],
+.tableWrapper.scheduleBlock tbody table div.scheduleDivFirstLine {
   background-color: transparent;
 }
 div.sunday,
