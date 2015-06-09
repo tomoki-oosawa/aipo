@@ -37,7 +37,9 @@ $!result.Detail.WbrGpdbName
 #ALtdcell("$l10n.GPDB_DONOT_SEND_EMAIL_DATA_REGISTRATION")
 #end
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
-#ALtditem("$!{result.Detail.WbrCreateUserName} （$!{result.Detail.CreateDate}）")
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId},arguments[0])">$!{result.Detail.WbrCreateUserName} </a>（$!{result.Detail.CreateDate})<br>
+#ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
