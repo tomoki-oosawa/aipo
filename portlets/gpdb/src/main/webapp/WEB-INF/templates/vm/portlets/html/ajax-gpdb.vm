@@ -73,7 +73,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellheaderAtt("class='mb_hide'")
-<div>$!record.WbrCreateUserName</div>
+<div><a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.CreateUserId,arguments[0])">$!record.WbrCreateUserName</a></div>
 #ALtdcellfooter()
 #ALtdcellheaderAtt("class='mb_hide'")
 <div>$!record.CreateDate</div>
