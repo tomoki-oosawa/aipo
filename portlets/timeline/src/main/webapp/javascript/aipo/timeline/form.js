@@ -280,12 +280,13 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 			if (dojo.byId("flag_" + pid).value == "none") {
 				var spritval = _val.split(/\r\n|\n/g);
 				var space = "　";
-				var spritval = _val.split(space);
+				alert("aaaa");
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
+						var url = spritval[i].split(space);
 						if(dojo.byId("flag_" + pid).value == "none"){
 							dojo.byId("flag_" + pid).value = "processing";
-							aipo.timeline.getUrl(spritval[i], pid);
+							aipo.timeline.getUrl(url[0], pid);
 							aipo.timeline.revmaxlist[pid] = 0;
 						}
 					}
