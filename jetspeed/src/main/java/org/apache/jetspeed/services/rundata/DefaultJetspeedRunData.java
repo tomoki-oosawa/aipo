@@ -40,7 +40,7 @@ import org.apache.turbine.util.security.AccessControlList;
  * <note>Several of these properties may be put in the base RunData
  * interface in future releases of Turbine</note>
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
  * @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
  * @version $Id: DefaultJetspeedRunData.java,v 1.20 2004/02/23 03:36:10 jford Exp $

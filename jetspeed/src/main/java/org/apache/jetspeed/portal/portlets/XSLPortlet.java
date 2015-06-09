@@ -23,7 +23,7 @@ import org.apache.jetspeed.portal.PortletException;
  * Simple portlet which does a basic XSLT transform with the stylesheet parameter
  * and the given portlet URL.
  * 
- * @author <A HREF="mailto:raphael@apache.org">Raphaël Luta</A>
+ * @author <A HREF="mailto:raphael@apache.org">Raphaè¬– Luta</A>
  * @version $Id: XSLPortlet.java,v 1.11 2004/02/23 04:03:34 jford Exp $
  */
 public class XSLPortlet extends GenericMVCPortlet 

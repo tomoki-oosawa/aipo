@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,29 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'docomo_foma')
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_list','1')")
-#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
-#ALcell_pagetitle($career "ｶﾃｺﾞﾘ一覧")
-#if($result.List.size() <= 0)
-複数の ToDo をグループ化することで、ToDo を分類することができます。
-『カテゴリ追加』 ボタンを押して、追加してください。 
-#else
-#if($result.PagesNum > 1)
-#ALcell_pageview($career $link $result)
-#ALcell_hr($career '1')
-#end
-<ul>
-#foreach ($record in $result.List)
-#ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_category_detail','1').addQueryData('entityid',$!record.CategoryId)">$!record.CategoryName</a>#ALcell_li_footer($career)
-#end
-</ul>
-#if($result.PagesNum > 1)
-#ALcell_hr($career '1')
-#ALcell_pageview($career $link $result)
-#end
-#end
-#ALcell_hr($career '1')
-#ALcell_linklist($career $linklist)
+#parse("/portlets/cell_default/todo-category-list.vm")

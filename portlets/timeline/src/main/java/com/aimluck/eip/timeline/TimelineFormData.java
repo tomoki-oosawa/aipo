@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.timeline;
 
 import java.io.ByteArrayInputStream;
@@ -62,7 +61,7 @@ import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class TimelineFormData extends ALAbstractFormData {
 
@@ -101,12 +100,12 @@ public class TimelineFormData extends ALAbstractFormData {
   private String folderName = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -122,8 +121,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -138,8 +137,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * タイムラインの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -151,10 +150,10 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -163,7 +162,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -209,7 +208,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -274,7 +273,7 @@ public class TimelineFormData extends ALAbstractFormData {
               new URL(String.format("%s://%s%s", uri.getScheme(), uri
                 .getAuthority(), path));
 
-            URLConnection uc = u.openConnection();
+            URLConnection uc = ALURLConnectionUtils.openUrlConnection(u);
             uc.setRequestProperty("Referer", str); // Refererを記述
             uc
               .addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
@@ -331,6 +330,27 @@ public class TimelineFormData extends ALAbstractFormData {
           parententry,
           loginName,
           targetLoginName);
+
+        List<Integer> otherlist =
+          TimelineUtils.getTimelineOtherCommentUserList(Integer
+            .valueOf(parentId));
+        for (Integer owner_id : otherlist) {
+          int parentOwnerId = parententry.getOwnerId();
+          String targetUserName =
+            ALEipUtils
+              .getALEipUser(parententry.getOwnerId())
+              .getAliasName()
+              .toString();
+          if (owner_id != parentOwnerId) {
+            String otherLoginName =
+              ALEipUtils.getALEipUser(owner_id).getName().getValue();
+            TimelineUtils.createNewOtherCommentActivity(
+              parententry,
+              loginName,
+              otherLoginName,
+              targetUserName);
+          }
+        }
       }
 
       ALTimelineFactoryService tlservice =
@@ -455,7 +475,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているトピックを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -468,7 +488,7 @@ public class TimelineFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -507,7 +527,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -531,7 +551,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -545,7 +565,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclUpdateTopicOthers() {
@@ -554,7 +574,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {
@@ -562,7 +582,7 @@ public class TimelineFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setHasPhoto(boolean bool) {
@@ -579,7 +599,7 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /**
    * タイムラインで使用したセッション情報を消去する．
-   * 
+   *
    */
   public void clearTimelineSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();

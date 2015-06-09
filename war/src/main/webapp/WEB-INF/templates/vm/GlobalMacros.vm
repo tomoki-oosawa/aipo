@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 
 ## ---------------------------------------------------------------------------
 ##
-## Aipo Common Styles ( Aipo4 )
+## Aipo Common Styles ( Aipo8 )
 ##
 ## ---------------------------------------------------------------------------
 
 #* G L O B A L *#
 #macro(ALjavascriptCache $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file"></script>
+<script type="text/javascript" src="${external_resources_url}/$file"></script>
 #end
 #macro(ALjavascript $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
+<script type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}"></script>
 #end
 
 #macro(ALjavascriptdefer $file)
-<script language="JavaScript" type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}" defer="defer"></script>
+<script type="text/javascript" src="${external_resources_url}/$file?$!{utils.CacheBust}" defer="defer"></script>
 #end
 
 
@@ -145,6 +144,12 @@ $theLink
 
 #macro(ALtableheaderCalendar $width)
 <div class="calendarWrapper">
+<table class="calendar" width="$width">
+  <tbody>
+#end
+
+#macro(ALtableheaderCalendarAtt $width $class)
+<div class="calendarWrapper $class">
 <table class="calendar" width="$width">
   <tbody>
 #end
@@ -336,6 +341,102 @@ $theLink
 #end
 
 #* F O R M *#
+
+#macro(ALprintoptionheader)
+<div id="printHeader">
+#AUIPrintWindowCloseIcon()
+$l10n.SCHEDULE_ALERT_DONOT_REFLECT
+<table>
+<tr>
+<th>$l10n.SCHEDULE_WIDTH</th>
+<td>
+<select id="print_width" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
+<option value="100%" >100%</option>
+<option value="90%">90%</option>
+<option value="80%">80%</option>
+<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
+<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
+<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
+<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
+<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
+<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
+<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
+<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
+<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
+<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
+<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
+</select>
+</td>
+</tr>
+<tr>
+<th>$l10n.SCHEDULE_WORD_SIZE</th>
+<td><select id="print_word_size" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
+<option value="8pt">8pt</option>
+<option value="9pt">9pt</option>
+<option selected="selected" value="10pt">10pt</option>
+<option value="11pt">11pt</option>
+<option value="12pt">12pt</option>
+<option value="13pt">13pt</option>
+<option value="14pt">14pt</option>
+<option value="16pt">16pt</option>
+<option value="18pt">18pt</option>
+<option value="20pt">20pt</option>
+</select>
+</td>
+</tr>
+#end
+
+#macro(ALprintoptionfooter)
+</table>
+<input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/>
+</div>
+#end
+
+#macro(ALprintformheader)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+<head>
+<base href="$clink.External" ></base>
+<meta http-equiv="Content-Language" content="ja" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+#if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
+<title>${alias}</title>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="copyright" content="${copyright}" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8,chrome=1" />
+<meta name="robots" content="noindex,follow" />
+<link type="image/x-icon" rel="shortcut icon" href="${external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/aui.css?$!{utils.CacheBust}"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/pre_print.css?$!{utils.CacheBust}"/>
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css?$!{utils.CacheBust}" />
+<!--
+#if($isXDomain == "true")
+<script type="text/javascript">
+  djConifg = {
+    xDomainBasePath: '${external_resources_url}/javascript'
+  };
+</script>
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
+#else
+<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
+#end
+<script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
+<script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
+-->
+</head>
+<body>
+#end
+
+#macro(ALprintformfooter)
+</body>
+</html>
+#end
+
 #macro(ALformheader $name $jslink $portlet)
 <form name="form$!portlet.ID" id="form$!portlet.ID" action="$!jslink.getPortletById($!portlet.ID)" method="post" onsubmit="return(aimluck.io.disableForm(this, true));">
 <input type="hidden" name="_name" value="$name" />
@@ -671,12 +772,12 @@ $item.get(0)
 ##                                                               </div>
 ## #end
 <!-- PORTLET OUTER -->
-<div class="dojoDndItem auiPortlet">
+<div class="dojoDndItem auiPortlet" id="portletsBody">
 	#if(${client} == "IPHONE")
 	<!-- Smartphone  Header -->
 		<div id="mobileHeader_v3">
 		<div class="inner">
-		<h1><span>#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
+		<h1><span id="portletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
 		<div class="mhLeft">
 			<a href="javascript:void(0)" class="auiMbBtnNavi" onClick="appsNaviSwitch()">
 				<i class="icon-reorder"></i>
@@ -690,7 +791,7 @@ $item.get(0)
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"></div></div>
+					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"><i class="indicator"></i></div></div>
 				</div>
 			</li>
 			#end
@@ -1279,27 +1380,27 @@ $link.get(0)
 		#end
       #elseif($career == "vodafone")
         #if($emoji == "1")
-            $F<
+            $F<
         #elseif($emoji == "2")
-            $F=
+            $F=
         #elseif($emoji == "3")
-            $F>
+            $F>
         #elseif($emoji == "4")
-            $F?
+            $F?
         #elseif($emoji == "5")
-            $F@
+            $F@
         #elseif($emoji == "6")
-            $FA
+            $FA
         #elseif($emoji == "7")
-            $FB
+            $FB
         #elseif($emoji == "8")
-            $FC
+            $FC
         #elseif($emoji == "9")
-            $FD
+            $FD
         #elseif($emoji == "0")
-            $FE
+            $FE
         #elseif($emoji == "keitai")
-##            $G*
+##            $G*
         #end
 	  #else
 		#if($emoji == "1")
@@ -1425,7 +1526,7 @@ $!{detail.Note}
 #end
 
 #macro(ALcell_msgboard_comment $career $comment )
-<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　##ｶﾃｺﾞﾘ：$!{comment.ParentTopic.CategoryName}
+<p class="mt0 fssmaller right">$l10n.BLOG_POSTING_DAY：$!comment.UpdateDate<br />$l10n.BLOG_POSTING_NAME：$!comment.OwnerName　##カテゴリ：$!{comment.ParentTopic.CategoryName}
 </p>
 $!{comment.Note}
 #end
@@ -1809,6 +1910,17 @@ $!{text}
 <i class="auiIcon auiIconSecret $!{class}" $option></i>
 #end
 
+#macro(AUIiconScheduleSetsAtt $record $class)
+<span class="inline-block">#if($record.isDuplicate())<i class="auiIcon auiIconOverlap $!{class}" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>#end
+#if($record.isRepeat())<i class="auiIcon auiIconRepeat $!{class}" title="$l10n.SCHEDULE_REPEAT"></i>#end
+#if($record.isTmpreserve())<i class="auiIcon auiIconTmpreserve $!{class}" titile="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end</span>
+#end
+
+
+#macro(AUIiconScheduleSets $record)
+#AUIiconScheduleSetsAtt($record "")
+#end
+
 #macro(AUIlinkList $onclick $text $public_flag $option)
 <div>
 <a href="javascript:void(0);" onclick="$onclick">#if(!$public_flag)#AUIiconSecretAtt($!option "mr5")#end$text</a>
@@ -1852,5 +1964,26 @@ $!{text}
 <div class="emptyMessage">
 #if($class != '')<i class="$class"></i>#end
 <p>$text</p>
+</div>
+#end
+
+#macro(AUINotificationCheck)
+<div id="notificationField">
+<div class="notificationRequestField alertRecommend mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.recommendRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+$l10n.NOTIFICATION_REQUEST_MESSAGE<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog(1);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。</span>
+</div>
+<div class="notificationConfirmField alertRecommend mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+$l10n.NOTIFICATION_CONFIRM_MESSAGE
+</div>
+<div class="notificationSuccessField alertInfo mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+$l10n.NOTIFICATION_SUCCESS_MESSAGE
+</div>
+<div class="notificationRecommendField alertRecommend mr5 ml5 mb0" style="display:none">
+<div class="floatRight"><a href="javascript:void(0);" onclick="aipo.notification.closeRequest();"><span class="auiWFicon"><i class="icon-remove"></i></span></a></div>
+$utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="display:inline-block;"><a href="javascript: void(0)" onclick="aipo.notification.openDialog(1);">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>。<a href="javascript: void(0)" onclick="aipo.notification.blockRequest();">$l10n.NOTIFICATION_OFF_MESSAGE</a>。</span>
+</div>
 </div>
 #end

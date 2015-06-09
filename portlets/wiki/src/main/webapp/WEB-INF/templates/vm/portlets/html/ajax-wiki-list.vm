@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -85,12 +85,16 @@
 			#else
 				<td><div>$!record.ParentName</div></td>
 			#end
-			<td><div>$!record.UpdateUser</div></td>
+			<td><div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UpdateUserId},arguments[0])">$!record.UpdateUser</div></td>
 			<td>$!record.UpdateDate</td>
 		</tr>
 		#end
 	</tbody>
 </table>
+#AUISummaryDiv()
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
+#AUIajaxpageview('WikiListScreen' $result)
+#AUISummaryDivfooter()
 #ALformfooter()
 #end
 #end
@@ -107,4 +111,4 @@
   </div>
 </div>
 
-#parse("/portlets/html/ja/wiki-widgets.vm")
+#parse("/portlets/html/wiki-widgets.vm")

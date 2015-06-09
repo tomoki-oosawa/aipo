@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import javax.servlet.http.HttpServletResponse;
@@ -92,10 +91,10 @@ public class FileuploadFormScreen extends ALVelocityScreen {
 
     String layout_template;
     if (mode.equals(ALEipConstants.MODE_FORM)) {
-      layout_template = "layouts/html/ja/fileupload.vm";
+      layout_template = "layouts/html/fileupload.vm";
       context.put("contentTemplate", getContentTemplate());
     } else {
-      layout_template = "layouts/html/ja/fileupload-mini.vm";
+      layout_template = "layouts/html/fileupload-mini.vm";
       context.put("contentTemplate", getContentTemplateMini());
     }
     setTemplate(rundata, context, layout_template);
@@ -131,10 +130,10 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     }
     String layout_template;
     if (mode.equals(ALEipConstants.MODE_UPDATE)) {
-      layout_template = "layouts/html/ja/fileupload.vm";
+      layout_template = "layouts/html/fileupload.vm";
       context.put("contentTemplate", getContentTemplate());
     } else {
-      layout_template = "layouts/html/ja/fileupload-mini.vm";
+      layout_template = "layouts/html/fileupload-mini.vm";
       context.put("contentTemplate", getContentTemplateMini());
     }
     setTemplate(rundata, context, layout_template);
@@ -150,11 +149,11 @@ public class FileuploadFormScreen extends ALVelocityScreen {
   }
 
   protected String getContentTemplate() {
-    return "portlets/html/ja/fileupload.vm";
+    return "portlets/html/fileupload.vm";
   }
 
   protected String getContentTemplateMini() {
-    return "portlets/html/ja/fileupload-mini.vm";
+    return "portlets/html/fileupload-mini.vm";
   }
 
 }

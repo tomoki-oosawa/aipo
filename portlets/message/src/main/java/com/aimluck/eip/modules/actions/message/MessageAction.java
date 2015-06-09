@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2014 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.message;
 
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
@@ -38,7 +37,7 @@ public class MessageAction extends ALBaseAction {
     .getLogger(MessageAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -51,7 +50,7 @@ public class MessageAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -59,6 +58,16 @@ public class MessageAction extends ALBaseAction {
   @Override
   protected void buildMaximizedContext(VelocityPortlet portlet,
       Context context, RunData rundata) {
+    int userId = 0;
+    try {
+      userId = rundata.getParameters().getInt("u");
+    } catch (Throwable ignore) {
+      //
+    }
+    if (userId > 0) {
+      context.put("messageUserId", userId);
+    }
+    context.put("isMessageUser", userId > 0);
     setTemplate(rundata, "message");
   }
 

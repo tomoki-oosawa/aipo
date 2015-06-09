@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,25 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
-#*
-Copyright 2004 The Apache Software Foundation
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*#
 #if ($data.User.hasLoggedIn() && "$!isError" != "true")
 <div id="auiHeader">
-	<div class="hdLogo"><a href="$!{jslink}/js_pane/$!{mypageId}?action=controls.Restore"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}" /></a></div>
+	<div class="hdLogo"><a href="$!{jslink}/js_pane/$!{mypageId}?action=controls.Restore"><img src="themes/${theme}/images/logo_aipo.png" width="72" height="30" alt="${alias}" srcset="themes/${theme}/images/logo_aipo.png 1x,themes/${theme}/images/logo_aipo@2x.png 2x"/></a></div>
 	<div class="hdPages">
 		<ul>
 #foreach ( $tab in $tabs )
@@ -48,11 +32,7 @@ limitations under the License.
 											<div class="menubar z-upper body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; display:none; top: 40px;">
 											<ul>
 												<li>
-												#if (${client} == "IPAD")
-													<a href="${action.Link}" title="${action.Alt}">設定</a>
-												#else
-													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
-					    						#end
+													<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink');#if (${client} == 'IPAD')aipo.customize.hideMenu();#end">設定</a>
 												</li>
 												#if($!tab.Title.Value != "マイページ")
 												<li class="last">
@@ -77,7 +57,11 @@ limitations under the License.
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_message" onclick='aipo.menu.toggleDropdown("message");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="メッセージ"><i class="sprite-comment"></i><span id="messageChecker"></span></a>
 				<div class="dropdown" id="dd_message">
-					<div class="title">$l10n.MESSAGE_MESSAGE<input id="messageDesktopNotifySwitch" style="display:none" type="button" class="auiButtonSmall floatRight" onclick="aipo.container.gadgetService.requestDesktopNotifyEnable();" value=""/><span id="message_val_desktop_notify_on" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_VALID}</span><span id="message_val_desktop_notify_off" style="display:none">${l10n.ACTIVITY_DESKTOP}${l10n.ACTIVITY_INVALID}</span></div>
+					<div class="title clearfix">
+                      <form id="messageSearchForm" name="messageSearchForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageSearchListScreen')" onsubmit="aipo.message.searchMessageList(this); return false;" method="post" class="auiSearch gray floatRight">
+                        <input type="text" name="keyword" value="" placeholder="$l10n.MESSAGE_SEARCH" onFocus="aipo.message.onFocusSearch();" onBlur="aipo.message.onBlurSearch();"/><button type="submit"><i class="icon-search"></i></button>
+                      </form>$l10n.MESSAGE_MESSAGE
+                    </div>
 					<div class="body">
 						<div id="messageSideBlock" class="sideBlock">
 							<div class="auiTabs" id="messageSideBlockTab">
@@ -87,43 +71,45 @@ limitations under the License.
 								</ul>
 								<ul class="tabContents">
 									<li class="active" id="messageRoomContents">
-										<div class="scroll" id="messageSideBlock1">
-											<div id="messageRoomListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+										<div id="messageSideBlock1">
+											<div id="messageRoomListPane"><div class="loader"><i class="indicator"></i></div></div>
 										</div>
 									</li>
 									<li id="messageUserContents">
-										<div class="scroll" id="messageSideBlock2">
-											<div id="messageUserListPane"><div class="loader"><i class="indicatorBlack"></i></div></div>
+										<div id="messageSideBlock2">
+											<div id="messageUserListPane"><div class="loader"><i class="indicator"></i></div></div>
 										</div>
 									</li>
 								</ul>
 							</div>
+						</div>
+						<div id="messageRightPane" class="rightBlock" style="display:none">
+				            <div class="loader"><i class="indicator"></i></div>
 						</div>
 						<div id="messageMainBlockEmpty" class="mainBlock">
 							<div class="contents">
 								#AUIEmptyMessage("icon-comment-alt" "$l10n.MESSAGE_ROOM_NO_SELECT")
 							</div>
 						</div>
-						<div id="messageMainBlock" class="mainBlock" style="display:none">
+						<div id="messageMainBlock" class="mainBlock" style="display:none;">
 							<div class="contents clearfix">
 								<div class="timelineOuter">
 									<div class="roomHeader clearfix">
-										<div class="floatLeft">
-											<span class="avatar mr5" id="messageRoomAvatar"></span><span id="messageRoomName"></span>
-										</div>
+										<ul class="userListIcon clearfix" id="roomMemberPane">
+										</ul>
 										<div class="floatRight" id="messageRoomSetting">
 											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
 										</div>
 									</div>
 									<div class="inputField">
-										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
+										<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit_callbackparams(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
 											<input type="hidden" name="_name" value="formMessage" />
 											<input type="hidden" name="secid" value="$secid" />
 											<input type="hidden" name="roomId" value="" />
 											<input type="hidden" name="userId" value="" />
  											<input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
 											<div class="tlInputMention relative">
-												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 39px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);"></textarea>
+												<textarea class="elastic" cols="10" name="message" rows="1" style="height: 43px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
 											</div>
 
 											<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
@@ -156,7 +142,7 @@ limitations under the License.
 			<li>
 				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
 				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"></div></div>
+					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"><i class="indicator"></i></div></div>
 				</div>
 			</li>
 		</ul>
@@ -175,6 +161,7 @@ limitations under the License.
 					<ul class="dropdown_menu">
 #if ("$!data.User.getUserName()" != "admin")
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'AccountPerson').addQueryData('action','controls.Restore'))">$l10n.PERSONAL</a></li>
+						<li><a href="javascript: void(0);" onclick="aipo.notification.openDialog(0);">$l10n.NOTIFICATION_SETTING</a></li>
 #if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
 #end#end
@@ -188,7 +175,7 @@ limitations under the License.
 </div>
 #else
 <div id="auiHeader">
-	<div class="hdLogo"><img src="themes/${theme}/images/logo_aipo.png" width="75" height="30" alt="${alias}" /></div>
+	<div class="hdLogo"><img src="themes/${theme}/images/logo_aipo.png" width="72" height="30" alt="${alias}" srcset="themes/${theme}/images/logo_aipo.png 1x,themes/${theme}/images/logo_aipo@2x.png 2x"/></div>
 </div>
 #end
 #if("$!{activeurlselected}"!="")
@@ -197,7 +184,7 @@ limitations under the License.
 	<input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
 #end
 #if ("$!data.User.getUserName()" != "admin")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 dojo.addOnLoad(function() {

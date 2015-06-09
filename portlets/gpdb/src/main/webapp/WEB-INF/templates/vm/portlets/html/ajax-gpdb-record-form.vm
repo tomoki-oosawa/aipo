@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  *#
-
 ## ---------------------------------------------------------------------------
 #if  ($mode=="new_form")
 #set ($action_str = "$l10n.GPDB_ADD")
@@ -91,7 +87,7 @@
 	#elseif ($type=='04' || $type=='05')
 		##選択式（択一／複数）
 		#ALtditemheader()
-		<select name="$field"#if ($type=='05') multiple size="$!item.Line"#end class="w100">
+		<select name="$field"#if ($type=='05') multiple="multiple" size="$!item.Line"#end class="w100">
 		##選択式（択一）
 		#if ($type=='04')
 		<option value="">$l10n.GPDB_NOT_SET</option>

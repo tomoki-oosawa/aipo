@@ -1,0 +1,163 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($action_str = "追加する")
+#set ($event_submit = "eventSubmit_doFileupload_insert")
+#set($tabs = [["ファイルアップロード", "",""]])
+## ---------------------------------------------------------------------------
+<script type="text/JavaScript">
+<!--
+
+function get_data(pid, keyid){
+    #if($!receiveFile && $!receiveFile == "true")
+	#if($!result.MaxSize == 1)
+	window.parent.aipo.fileuploadadv.replaceFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid, keyid);
+    #else
+    window.parent.aipo.fileuploadadv.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid, keyid);
+    #end
+    #end
+
+	initErrorMessage(keyid);
+	#if($errmsgs && !($errmsgs.size() == 0))
+		#foreach($msg in $errmsgs)
+		  showErrorMessage('$!msg', keyid);
+		#end
+	#end
+
+	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
+	indicator.style.display = "none";
+	var button = window.parent.document.getElementById("al_submit_" + pid);
+	button.disabled = ""
+}
+
+function initErrorMessage(keyid) {
+	var errorName;
+	if (keyid) {
+		errorName = "error_$!{portlet.ID}_" + keyid;
+	} else {
+		errorName = "error_$!{portlet.ID}";
+	}
+
+	var ul = window.parent.document.getElementById(errorName);
+	if(ul){
+		while (ul.lastChild) {
+			ul.removeChild(ul.lastChild);
+		}
+	}
+}
+
+function showErrorMessage(msg, keyid){
+	var errorName;
+	if (keyid) {
+		errorName = "error_$!{portlet.ID}_" + keyid;
+	} else {
+		errorName = "error_$!{portlet.ID}";
+	}
+
+	var msgName;
+	if (keyid) {
+		msgName = "messageDiv_$!{portlet.ID}_" + keyid;
+	} else {
+		msgName = "messageDiv_$!{portlet.ID}";
+	}
+
+	var ul = window.parent.document.getElementById(errorName);
+	if(!ul){
+		var div = window.parent.document.getElementById(msgName);
+		ul = document.createElement("ul");
+		ul.id = errorName;
+		div.appendChild(ul);
+	}
+	var li = document.createElement("li");
+	li.innerHTML = "<span class='caution'>" + msg + "<span>";
+	ul.appendChild(li);
+}
+
+function hideErrorMessage(){
+	var ul = window.parent.document.getElementById("error_$!portlet.ID");
+	if(ul){
+		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		div.removeChild(ul);
+	}
+}
+
+function getFileName(){
+    var filepath = document.getElementById('attachment').value;
+    if(filepath == "") return "";
+
+    var filefolder_list = filepath.split("\\");
+    var filename = filefolder_list[filefolder_list.length-1];
+    return filename;
+}
+
+
+function checkFile(){
+    var filename = getFileName();
+    if(filename == ""){
+        alert('ファイルを選択してください。');
+        return false;
+    }
+    return true;
+}
+
+function submitMini(form, portletId, keyid){
+	var indicator = window.parent.document.getElementById("indicator-dlg-" + portletId);
+	indicator.style.display = "inline";
+	var button = window.parent.document.getElementById("al_submit_" + portletId);
+	button.disabled = "disabled";
+	hideErrorMessage();
+    document.getElementById("nsize").value = getNsize(keyid);
+	form.submit();
+}
+
+function getNsize(keyid) {
+	var attachments;
+	if (keyid) {
+		attachments = 'attachments_$!{portlet.ID}_' + keyid;
+	} else {
+		attachments = 'attachments_$!{portlet.ID}';
+	}
+	var ul = window.parent.document.getElementById(attachments);
+	if (ul) {
+	    var li = ul.getElementsByTagName("li");
+	    return li.length;
+	}
+	return 0;
+}
+
+//-->
+</script>
+
+<div id="messageDiv"></div>
+<form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','FileuploadadvFormScreen').addQueryData('mode','update-mini').addQueryData('msize', $msize))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
+<input type="hidden" name="mode" value="update" />
+<input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
+<input type="hidden" name="msize" id="msize" value="$msize" />
+<input type="hidden" name="nsize" id="nsize" value="$nsize" />
+<input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="keyid" value="$!keyid" />
+<div id="uploadContainer">
+<span id="inputField">
+<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
+<span class="uploadText">ファイルを追加する</span>
+<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px;" onchange="submitMini(this.form, '$!portlet.ID', '$!keyid');">
+</div>
+</span>
+</div>
+</form>

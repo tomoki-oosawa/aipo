@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if("$!result.CurrentTab" != "corp")
 #ALdialogheader($l10n.ADDRESSBOOK_OUT_ADDRESS_DETAIL)
@@ -94,9 +93,21 @@ $!record.Name <br />
 #ALtditem($!result.Detail.Note)
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.COMMON_CREATE_USER)
+#if($!result.Detail.CreatedUserId.ValueWithInt < 4)
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreatedUserId},arguments[0])">$!{result.Detail.CreatedUser}</a>（$!result.Detail.CreateDate）
+#ALtditemfooter()
+#end
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
+#if($!result.Detail.UpdatedUserId.ValueWithInt < 4)
 #ALtditem("$!result.Detail.UpdatedUser （$!result.Detail.UpdateDate）")
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdatedUserId},arguments[0])">$!{result.Detail.UpdatedUser}</a>（$!result.Detail.UpdateDate）
+#ALtditemfooter()
+#end
 #end
 #ALtablefooter()
 #ALbuttonheader()

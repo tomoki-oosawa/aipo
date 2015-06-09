@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2014 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.message;
 
 import java.io.Serializable;
@@ -62,7 +61,7 @@ public class MessageResultData implements ALData, Serializable {
 
   private boolean isOwner = false;
 
-  private List<FileuploadBean> attachmentFileList;
+  private transient List<FileuploadBean> attachmentFileList;
 
   /**
    *
@@ -78,7 +77,7 @@ public class MessageResultData implements ALData, Serializable {
     memberCount = new ALNumberField();
     message = new ALStringField();
     message.setTrim(false);
-    createDate = new ALDateTimeField("yyyy年M月d日 H:mm");
+    createDate = new ALDateTimeField();
     attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
@@ -125,7 +124,19 @@ public class MessageResultData implements ALData, Serializable {
   }
 
   public ALDateTimeField getCreateDate() {
-    return createDate;
+    return ALEipUtils.getFormattedTimeDetail(createDate);
+  }
+
+  public ALDateTimeField getCreateDateLine() {
+    ALDateTimeField date = new ALDateTimeField("yyyy年M月d日（E）");
+    date.setValue(createDate.getValue());
+    return date;
+  }
+
+  public ALDateTimeField getCreateDateKey() {
+    ALDateTimeField date = new ALDateTimeField("yyyy-MM-dd");
+    date.setValue(createDate.getValue());
+    return date;
   }
 
   /**

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2014 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.message;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
@@ -159,9 +158,10 @@ public class MessageFormData extends ALAbstractFormData {
       if (room == null) {
         msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_NOT_FOUND"));
       }
-      if (!MessageUtils.isJoinRoom(room, (int) login_user
-        .getUserId()
-        .getValue())) {
+      if (room != null
+        && !MessageUtils.isJoinRoom(room, (int) login_user
+          .getUserId()
+          .getValue())) {
         msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_ACCESS_DENIED"));
       }
     }
@@ -230,6 +230,9 @@ public class MessageFormData extends ALAbstractFormData {
           Database.commit();
         }
       }
+      if (room == null) {
+        throw new IllegalArgumentException("room may not be null. ");
+      }
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
 
@@ -264,6 +267,8 @@ public class MessageFormData extends ALAbstractFormData {
         .getValue(), model, msgList);
 
       Database.commit();
+
+      roomId.setValue(room.getRoomId());
 
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
@@ -401,5 +406,9 @@ public class MessageFormData extends ALAbstractFormData {
       logger.error(e);
     }
     return true;
+  }
+
+  public int getRoomId() {
+    return (int) roomId.getValue();
   }
 }

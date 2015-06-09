@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -54,12 +53,12 @@ public class MessageFileuploadFormScreen extends FileuploadFormScreen {
 
   @Override
   protected String getContentTemplate() {
-    return "portlets/html/ja/message-fileupload.vm";
+    return "portlets/html/message-fileupload.vm";
   }
 
   @Override
   protected String getContentTemplateMini() {
-    return "portlets/html/ja/message-fileupload-mini.vm";
+    return "portlets/html/message-fileupload-mini.vm";
   }
 
 }

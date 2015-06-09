@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_str = $l10n.BLOG_SEND_DATA)
@@ -31,20 +30,23 @@
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
 <table class="listTable wide">
 <caption>
-<span class="floatRight" style="font-weight:normal; color:#434343;">$!{result.Detail.ThemaNameHtml}</span>
+<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 $!{result.Detail.TitleHtml}
 </cation>
 <tr>
 <td>
 <div class="clearfix">
 <div class="avatar floatLeft mr10">
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
 #if(${result.Detail.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.Detail.OwnerId}).addQueryData("t", ${result.Detail.PhotoModified}))" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #else
 <img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #end
+</a>
 </div>
-<div class="alignleft"><strong>${result.Detail.OwnerName}</strong>
+<div class="alignleft"><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.User.UserId},arguments[0])">
+<strong>${result.Detail.OwnerName}</strong></a>
 <br />
 $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.DayOfWeek} $!{result.Detail.CreateDateAlternative.time}
 </div>
@@ -61,7 +63,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 </tr>
 
 <tr>
-<td style="border-bottom:none;">
+<td style="border-top:none;" class="sentence">
 <div class="clearfix">
   <div>
   $!{result.Detail.Note}
@@ -98,13 +100,18 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   <td>
   <div class="clearfix mb10">
   <div class="avatar floatLeft mr10">
+  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">
   #if(${record.Owner.hasPhoto()})
     <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.Owner.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
   #else
     <img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
   #end
+  </a>
   </div>
-  <div class="alignleft"><strong>$!{record.OwnerName}</strong>
+  <div class="alignleft">
+  	<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">
+  	<strong>$!{record.OwnerName}</strong>
+  	</a>
   <br />
   $!{record.UpdateDateAlternative.Year}$l10n.BLOG_YEAR$!{record.UpdateDateAlternative.Month}$l10n.BLOG_MONTH$!{record.UpdateDateAlternative.Day}$l10n.BLOG_DAY$!{record.UpdateDateAlternative.DayOfWeek} $!{record.UpdateDateAlternative.time}
   </div>

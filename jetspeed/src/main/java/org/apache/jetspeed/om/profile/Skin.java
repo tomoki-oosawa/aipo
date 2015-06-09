@@ -20,7 +20,7 @@ package org.apache.jetspeed.om.profile;
 /**
  * Default bean like implementation of the skin entry in psml
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: Skin.java,v 1.2 2004/02/23 03:05:01 jford Exp $
  */
 public interface Skin extends ConfigElement 

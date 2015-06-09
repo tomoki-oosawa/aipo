@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.Date;
@@ -51,7 +50,6 @@ public class MessageRoomListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-
       Integer targetUserId = null;
       Integer roomId = null;
       boolean isNewRoom = false;
@@ -64,7 +62,7 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         // ignore
       }
       try {
-        keyword = rundata.getParameters().getString("k");
+        // keyword = rundata.getParameters().getString("k");
       } catch (Throwable ignore) {
         // ignore
       }
@@ -113,7 +111,7 @@ public class MessageRoomListScreen extends ALVelocityScreen {
         listData.getList().add(0, rd);
         context.put("currentRoom", 0);
       }
-      String layout_template = "portlets/html/ja/ajax-message-room-list.vm";
+      String layout_template = "portlets/html/ajax-message-room-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("MessageRoomListScreen.doOutput", ex);

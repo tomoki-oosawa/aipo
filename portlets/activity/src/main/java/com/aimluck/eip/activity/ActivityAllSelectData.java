@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.activity;
 
 import java.util.ArrayList;
@@ -27,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -42,6 +42,7 @@ import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityGetRequest;
 import com.aimluck.eip.util.ALEipUtils;
@@ -59,6 +60,9 @@ public class ActivityAllSelectData extends
 
   private ALStringField target_keyword;
 
+  /** 初期表示 */
+  private int table_colum_num;
+
   /** 部署一覧 */
   private List<ALEipGroup> postList;
 
@@ -68,21 +72,10 @@ public class ActivityAllSelectData extends
   /** グループ名 */
   private String postName = "";
 
-  /** 初期表示 */
-  private int table_colum_num;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-    String tabParam = rundata.getParameters().getString("category");
-    currentCategory = ALEipUtils.getTemp(rundata, context, "category");
-    if (tabParam == null && currentCategory == null) {
-      ALEipUtils.setTemp(rundata, context, "category", "all");
-      currentCategory = "all";
-    } else if (tabParam != null) {
-      ALEipUtils.setTemp(rundata, context, "category", tabParam);
-      currentCategory = tabParam;
-    }
+
     target_keyword = new ALStringField();
     postList = ALEipUtils.getMyGroups(rundata);
     super.init(action, rundata, context);
@@ -152,9 +145,18 @@ public class ActivityAllSelectData extends
     } else {
       target_keyword.setValue(ActivityUtils.getTargetKeyword(rundata, context));
     }
-
+    if (current_filterMap.containsKey("category")) {
+      List<String> category = current_filterMap.get("category");
+      currentCategory = category.get(0).toString();
+      if (!"all".equals(currentCategory)
+        && !ALPortalApplicationService.isActive(currentCategory)) {
+        currentCategory = "all";
+      }
+    } else {
+      // current_filterMapにcategoryキーの値が設定されていない場合（初期状態）のデフォルト値としてallを設定
+      currentCategory = "all";
+    }
     if (current_filterMap.containsKey("post")) {
-
       List<String> postIds = current_filterMap.get("post");
       boolean existPost = false;
       for (int i = 0; i < postList.size(); i++) {
@@ -211,6 +213,7 @@ public class ActivityAllSelectData extends
           .withPage(page)
           .withTargetLoginName(loginName)
           .withPostId(postId));
+
     // // withの否定が無いため取得してから取り除く
     // if ("other".equals(currentCategory)) {
     // ResultList<ALActivity> removeList = new ResultList<ALActivity>();
@@ -236,7 +239,7 @@ public class ActivityAllSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -258,7 +261,7 @@ public class ActivityAllSelectData extends
 
   /**
    * Activity の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getActivitySum() {
@@ -284,6 +287,16 @@ public class ActivityAllSelectData extends
     this.table_colum_num = table_colum_num;
   }
 
+  public void setFiltersFromPSML(VelocityPortlet portlet, Context context,
+      RunData rundata) {
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12f-filters"));
+    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
+      .getPortletConfig()
+      .getInitParameter("p12g-filtertypes"));
+  }
+
   @Override
   public boolean hasAuthority() {
     // TODO: アクセス権限
@@ -299,7 +312,7 @@ public class ActivityAllSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -308,7 +321,7 @@ public class ActivityAllSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {

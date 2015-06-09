@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.Date;
@@ -32,7 +28,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * WebデータベースのResultDataです。 <BR>
- * 
+ *
  */
 public class GpdbResultData implements ALData {
 
@@ -44,6 +40,9 @@ public class GpdbResultData implements ALData {
 
   /** 登録者名 */
   protected ALStringField create_user_name;
+
+  /** 登録者ID */
+  protected ALNumberField create_user_id;
 
   /** メール配信フラグ */
   protected ALStringField mail_flg;
@@ -65,6 +64,7 @@ public class GpdbResultData implements ALData {
     gpdb_id = new ALNumberField();
     gpdb_name = new ALStringField();
     create_user_name = new ALStringField();
+    create_user_id = new ALNumberField();
     mail_flg = new ALStringField();
     create_date = new ALDateTimeField("M月d日");
     update_date = new ALDateTimeField("M月d日");
@@ -73,7 +73,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * WebデータベースIDを取得する
-   * 
+   *
    * @return WebデータベースID
    */
   public ALNumberField getGpdbId() {
@@ -82,7 +82,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * WebデータベースIDを設定する
-   * 
+   *
    * @param i
    *          WebデータベースID
    */
@@ -92,7 +92,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * Webデータベース名を取得する
-   * 
+   *
    * @return Webデータベース名
    */
   public ALStringField getGpdbName() {
@@ -101,7 +101,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * Webデータベース名を取得する(Wbr挿入)
-   * 
+   *
    * @return Webデータベース名
    */
   public String getWbrGpdbName() {
@@ -110,7 +110,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * Webデータベース名を設定する
-   * 
+   *
    * @param string
    *          Webデータベース名
    */
@@ -120,7 +120,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 作成者名を取得する
-   * 
+   *
    * @return 作成者名
    */
   public ALStringField getCreateUserName() {
@@ -129,7 +129,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 作成者名を取得する(Wbr挿入)
-   * 
+   *
    * @return 作成者名
    */
   public String getWbrCreateUserName() {
@@ -138,7 +138,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 作成者名を設定する
-   * 
+   *
    * @param string
    *          作成者名
    */
@@ -147,8 +147,36 @@ public class GpdbResultData implements ALData {
   }
 
   /**
+   * 作成者IDを取得する
+   *
+   * @return 作成者ID
+   */
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
+  /**
+   * 作成者IDを取得する(Wbr挿入)
+   *
+   * @return 作成者Id
+   */
+  // public String getWbrCreateUserId() {
+  // return ALCommonUtils.replaceToAutoCR(create_user_id.toString());
+  // }
+
+  /**
+   * 作成者Idを設定する
+   *
+   * @param string
+   *          作成者Id
+   */
+  public void setCreateUserId(long i) {
+    create_user_id.setValue(i);
+  }
+
+  /**
    * メール配信フラグを取得する
-   * 
+   *
    * @return メール配信フラグ
    */
   public ALStringField getMailFlg() {
@@ -157,7 +185,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * メール配信フラグを設定する
-   * 
+   *
    * @param string
    *          メール配信フラグ
    */
@@ -167,7 +195,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 作成日を取得する
-   * 
+   *
    * @return 作成日
    */
   public ALDateTimeField getCreateDate() {
@@ -176,7 +204,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 作成日を設定する
-   * 
+   *
    * @param dt
    *          作成日
    */
@@ -186,7 +214,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 更新日を取得する
-   * 
+   *
    * @return 更新日
    */
   public ALDateTimeField getUpdateDate() {
@@ -195,7 +223,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 更新日を設定する
-   * 
+   *
    * @param dt
    *          更新日
    */
@@ -205,7 +233,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 登録データ件数を取得する
-   * 
+   *
    * @return 登録データ件数
    */
   public int getRecordCnt() {
@@ -214,7 +242,7 @@ public class GpdbResultData implements ALData {
 
   /**
    * 登録データ件数を設定する
-   * 
+   *
    * @param i
    *          登録データ件数
    */

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if ($!result.currentSubMenu == 'created')
 #set ($isCreated = true)
@@ -84,7 +83,7 @@
 </div>
 #ALtdcellfooter()
 #ALtdcell("<div>$!{record.StartDate.toString($l10n.REPORT_TIME)}&nbsp;-&nbsp;$!{record.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}</div>")
-#ALtdcell("<div>$!record.ClientName</div>")
+<td><div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.ClientId,arguments[0])">$!record.ClientName</a></div></td>
 #if($!isCreated)
 #ALtdcell("<div>$!record.ReadReport/$!record.SentReport</div>")
 #end
@@ -99,19 +98,17 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" alt="" width="1" height="1" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0){dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
-	<div class="single">
-		<p class="caption">$l10n.COMMON_GROUP</p>
-		<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
-			<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$l10n.REPORT_ALL_GROUP</a></li>
-		#foreach($record in $result.postList)
-			<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
-		#end
-		#foreach($record in $result.PostMap)
-			<li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
-		#end
-		</ul>
-	</div>
+<div class="menubar" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
+	<p class="caption">$l10n.COMMON_GROUP</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
+		<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$l10n.REPORT_ALL_GROUP</a></li>
+	#foreach($record in $result.postList)
+		<li data-param="$!record.Name" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.Name})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.AliasName</a></li>
+	#end
+	#foreach($record in $result.PostMap)
+		<li data-param="$!record.GroupName" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick="aipo.report.filterClick('$!portlet.ID',this,event)">$!record.PostName</a></li>
+	#end
+	</ul>
 </div>
 <!-- END Contents Area -->
-#parse("/portlets/html/ja/report-widgets.vm")
+#parse("/portlets/html/report-widgets.vm")

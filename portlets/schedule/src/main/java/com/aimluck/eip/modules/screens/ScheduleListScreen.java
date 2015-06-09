@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ScheduleListScreen extends ScheduleScreen {
 
@@ -54,7 +53,7 @@ public class ScheduleListScreen extends ScheduleScreen {
     .getLogger(ScheduleListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -85,6 +84,14 @@ public class ScheduleListScreen extends ScheduleScreen {
         showAll = "f";
       }
       context.put("init_s_all", showAll);
+
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
@@ -187,7 +194,7 @@ public class ScheduleListScreen extends ScheduleScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-schedule-list.vm";
+      String layout_template = "portlets/html/ajax-schedule-list.vm";
 
       setTemplate(rundata, context, layout_template);
 

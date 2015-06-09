@@ -1,1 +1,1 @@
-({"iframeTitle1": "zone d'édition", "iframeTitle2": "cadre de la zone d'édition"})
+({"iframeTitle1": "zone d'辿dition", "iframeTitle2": "cadre de la zone d'辿dition"})

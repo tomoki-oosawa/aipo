@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,7 +31,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 個人設定・ユーザー情報を処理するクラスです。 <br />
- * 
+ *
  */
 public class AccountPersonFormScreen extends ALVelocityScreen {
 
@@ -41,13 +40,20 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     .getLogger(AccountPersonFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
+    String portletId = AccountUtils.getPortletId(rundata);
+    if (portletId != null) {
+      ALEipUtils.setupContext(portletId, rundata, context);
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+        .getUser()
+        .getUserName());
+    }
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
     try {
@@ -64,7 +70,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -77,11 +83,11 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     setTemplate(
       rundata,
       context,
-      "portlets/html/ja/ajax-account-person-form.vm");
+      "portlets/html/ajax-account-person-form.vm");
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -93,7 +99,7 @@ public class AccountPersonFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
 
     String layout_template =
-      "portlets/html/ja/ajax-account-person-passwd-form.vm";
+      "portlets/html/ajax-account-person-passwd-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

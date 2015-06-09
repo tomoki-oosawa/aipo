@@ -1,1 +1,1 @@
-({"previousMessage": "Předchozí volby", "nextMessage": "Další volby"})
+({"previousMessage": "Pナ册dchozテュ volby", "nextMessage": "Dalナ。テュ volby"})

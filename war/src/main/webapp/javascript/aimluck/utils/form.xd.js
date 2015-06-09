@@ -1,8 +1,6 @@
-dojo._xdResourceLoaded({
-
-defineResource: function(dojo){/*
+/*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,9 @@ defineResource: function(dojo){/*
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+
+defineResource: function(dojo){
 
 aimluck.namespace("utils.form");
 
@@ -27,7 +28,7 @@ aimluck.utils.form.createSelect = function(selectid, divid, url, key, value, sel
         timeout: 5000,
         encoding: "utf-8",
         handleAs: "json-comment-filtered",
-        headers: { X_REQUESTED_WITH: "XMLHttpRequest" }, 
+        headers: { X_REQUESTED_WITH: "XMLHttpRequest" },
         load: function (respodatanse, ioArgs){
             var html = "";
             if (typeof att == "undefined") {

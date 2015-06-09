@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.util.List;
@@ -46,7 +45,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogThemaSelectData extends
     ALAbstractSelectData<EipTBlogThema, EipTBlogThema> implements ALData {
@@ -63,7 +62,7 @@ public class BlogThemaSelectData extends
   private int uid;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -86,7 +85,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -111,7 +110,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +129,7 @@ public class BlogThemaSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -143,7 +142,7 @@ public class BlogThemaSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -161,7 +160,7 @@ public class BlogThemaSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -173,10 +172,12 @@ public class BlogThemaSelectData extends
     rd.setThemaName(record.getThemaName());
     rd.setDescription(record.getDescription());
     if ((int) rd.getThemaId().getValue() != 1) {
+      rd.setCreateUserId(record.getCreateUserId().longValue());
       rd.setCreateUserName(BlogUtils.getUserFullName(record
         .getCreateUserId()
         .intValue()));
     }
+    rd.setUpdateUserId(record.getUpdateUserId().longValue());
     rd.setUpdateUserName(BlogUtils.getUserFullName(record
       .getUpdateUserId()
       .intValue()));
@@ -189,7 +190,7 @@ public class BlogThemaSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -213,7 +214,7 @@ public class BlogThemaSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

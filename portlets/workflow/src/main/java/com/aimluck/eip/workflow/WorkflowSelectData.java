@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.workflow;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowSelectData extends
     ALAbstractSelectData<EipTWorkflowRequest, EipTWorkflowRequest> implements
@@ -119,7 +118,7 @@ public class WorkflowSelectData extends
   private ALStringField target_keyword;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -238,7 +237,7 @@ public class WorkflowSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -247,7 +246,7 @@ public class WorkflowSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -257,7 +256,7 @@ public class WorkflowSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -290,7 +289,7 @@ public class WorkflowSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -479,7 +478,7 @@ public class WorkflowSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -521,7 +520,7 @@ public class WorkflowSelectData extends
         rd.setActivityId(activity.getId());
       }
 
-      String lastUpdateUser = null;
+      ALEipUser LastUpdateUser = new ALEipUser();
       EipTWorkflowRequestMap map = null;
       List<EipTWorkflowRequestMap> maps =
         WorkflowUtils.getEipTWorkflowRequestMap(record);
@@ -531,7 +530,7 @@ public class WorkflowSelectData extends
         // すべて承認済みの場合、最終承認者をセットする
         map = maps.get(size - 1);
         ALEipUser user = ALEipUtils.getALEipUser(map.getUserId().intValue());
-        lastUpdateUser = user.getAliasName().getValue();
+        LastUpdateUser = user;
       } else {
         for (int i = 0; i < size; i++) {
           map = maps.get(i);
@@ -539,16 +538,14 @@ public class WorkflowSelectData extends
             // 最終閲覧者を取得する
             ALEipUser user =
               ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = user.getAliasName().getValue();
+            LastUpdateUser = user;
             break;
           }
         }
       }
 
-      rd.setClientName(ALEipUtils
-        .getALEipUser(record.getTurbineUser())
-        .getAliasName()
-        .getValue());
+      ALEipUser clientUser = ALEipUtils.getALEipUser(record.getTurbineUser());
+      rd.setClientUser(clientUser);
       rd.setUpdateDateTime(record.getUpdateDate());
 
       String state = "";
@@ -560,8 +557,7 @@ public class WorkflowSelectData extends
         state = ALLocalizationUtils.getl10n("WORKFLOW_DENIAL");
       }
       rd.setStateString(state);
-
-      rd.setLastUpdateUser(lastUpdateUser);
+      rd.setLastUpdateUser(LastUpdateUser);
       rd.setCreateDateTime(record.getCreateDate());
       rd.setCreateDate(WorkflowUtils.translateDate(
         record.getCreateDate(),
@@ -575,7 +571,7 @@ public class WorkflowSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -596,7 +592,7 @@ public class WorkflowSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -607,7 +603,7 @@ public class WorkflowSelectData extends
 
   /**
    * ファイル検索のクエリを返します
-   * 
+   *
    * @return
    */
   @SuppressWarnings("unused")
@@ -623,7 +619,7 @@ public class WorkflowSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<WorkflowCategoryResultData> getCategoryList() {
@@ -636,7 +632,7 @@ public class WorkflowSelectData extends
 
   /**
    * 現在選択されているサブメニューを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentSubMenu() {
@@ -645,7 +641,7 @@ public class WorkflowSelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -654,7 +650,7 @@ public class WorkflowSelectData extends
 
   /**
    * リクエストの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getRequestSum() {
@@ -663,7 +659,7 @@ public class WorkflowSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -689,7 +685,7 @@ public class WorkflowSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -708,7 +704,7 @@ public class WorkflowSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

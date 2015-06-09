@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($tabs = [["$l10n.WORKFLOW_ROUTE_LIST", "",""]])
 #set ($indicator_id = "indicator-list-")
@@ -31,11 +30,9 @@
 #AUIwideAreaHeader()
 #end
 #AUISummaryDiv()
-#if($result.List.size() > 0)
 <div class="floatLeft">
 #AUIbuttonAction("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
 </div>
-#end
 <div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
@@ -49,7 +46,7 @@
 #AUISummaryDivfooter()
 
 #if($result.List.size() <= 0)
- #AUIbuttonActionInBlankBox("$l10n.WORKFLOW_ADD_ROUTE" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUIEmptyMessage("icon-inbox" "$l10n.WORKFLOW_NO_ROUTE_YOU_SELECT")
 #else
   <div id="listMessageDiv"></div>
   #ALajaxlistformheaderAction("$l10n.WORKFLOW_APPLICATION_ROUTE")

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.common;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,7 +32,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- * 
+ *
  */
 public class ALBaseUser extends
     org.apache.jetspeed.om.security.BaseJetspeedUser {
@@ -85,83 +85,106 @@ public class ALBaseUser extends
 
   public static final String MIGRATE_VERSION = "MIGRATE_VERSION";
 
-  @SuppressWarnings("unused")
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseUser.class.getName());
+
+  // セッションに保存されないデータ
+  transient private Map<String, Object> map = null;
 
   /**
    *
    *
    */
   public ALBaseUser() {
+    super();
+    map = new HashMap<String, Object>();
+  }
+
+  public Object getImperm(String name) {
+    return map.get(name);
+  }
+
+  public Map<String, Object> getImpermStorage() {
+    if (this.map == null) {
+      this.map = new HashMap<String, Object>();
+    }
+    return this.map;
+  }
+
+  public void setImperm(String name, Object value) {
+    if (value == null) {
+      map.put(name, "");
+    } else {
+      map.put(name, value);
+    }
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getInTelephone() {
-    return (String) getPerm(IN_TELEPHONE);
+    return (String) getImperm(IN_TELEPHONE);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setInTelephone(String str) {
-    setPerm(IN_TELEPHONE, str);
+    setImperm(IN_TELEPHONE, str);
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getOutTelephone() {
-    return (String) getPerm(OUT_TELEPHONE);
+    return (String) getImperm(OUT_TELEPHONE);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setOutTelephone(String str) {
-    setPerm(OUT_TELEPHONE, str);
+    setImperm(OUT_TELEPHONE, str);
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCellularPhone() {
-    return (String) getPerm(CELLULAR_PHONE);
+    return (String) getImperm(CELLULAR_PHONE);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCellularPhone(String str) {
-    setPerm(CELLULAR_PHONE, str);
+    setImperm(CELLULAR_PHONE, str);
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCellularMail() {
-    return (String) getPerm(CELLULAR_MAIL);
+    return (String) getImperm(CELLULAR_MAIL);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCellularMail(String str) {
-    setPerm(CELLULAR_MAIL, str);
+    setImperm(CELLULAR_MAIL, str);
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getCompanyId() {
@@ -169,7 +192,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setCompanyId(int id) {
@@ -177,7 +200,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPostId() {
@@ -185,7 +208,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setPostId(int id) {
@@ -193,7 +216,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPositionId() {
@@ -201,7 +224,7 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setPositionId(int id) {
@@ -209,43 +232,43 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getFirstNameKana() {
-    return (String) getPerm(FIRST_NAME_KANA);
+    return (String) getImperm(FIRST_NAME_KANA);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setFirstNameKana(String str) {
-    setPerm(FIRST_NAME_KANA, str);
+    setImperm(FIRST_NAME_KANA, str);
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getLastNameKana() {
-    return (String) getPerm(LAST_NAME_KANA);
+    return (String) getImperm(LAST_NAME_KANA);
   }
 
   /**
-   * 
+   *
    * @param str
    */
   public void setLastNameKana(String str) {
-    setPerm(LAST_NAME_KANA, str);
+    setImperm(LAST_NAME_KANA, str);
   }
 
   /**
-   * 
+   *
    * @return byte[]
    */
   public byte[] getPhoto() {
-    Object obj = getPerm(PHOTO);
+    Object obj = getImperm(PHOTO);
 
     if (obj instanceof byte[]) {
       return (byte[]) obj;
@@ -264,11 +287,11 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @return byte[]
    */
   public byte[] getPhotoSmartphone() {
-    Object obj = getPerm(PHOTO_SMARTPHONE);
+    Object obj = getImperm(PHOTO_SMARTPHONE);
 
     if (obj instanceof byte[]) {
       return (byte[]) obj;
@@ -287,19 +310,19 @@ public class ALBaseUser extends
   }
 
   /**
-   * 
+   *
    * @param v
    */
   public void setPhoto(byte[] v) {
-    setPerm(PHOTO, v);
+    setImperm(PHOTO, v);
   }
 
   /**
-   * 
+   *
    * @param b
    */
   public void setPhotoSmartphone(byte[] b) {
-    setPerm(PHOTO_SMARTPHONE, b);
+    setImperm(PHOTO_SMARTPHONE, b);
   }
 
   /**
@@ -360,7 +383,7 @@ public class ALBaseUser extends
 
   /**
    * 会社名を取得します。
-   * 
+   *
    * @param id
    *          会社ID
    * @return 会社名
@@ -380,19 +403,19 @@ public class ALBaseUser extends
    * 携帯電話の固有 ID を取得する．
    */
   public String getCelluarUId() {
-    return (String) getPerm(CELLULAR_UID);
+    return (String) getImperm(CELLULAR_UID);
   }
 
   /**
    *
    */
   public void setCelluarUId(String str) {
-    setPerm(CELLULAR_UID, str);
+    setImperm(CELLULAR_UID, str);
   }
 
   /**
    * 最終アクセス時間を取得します。
-   * 
+   *
    * @return
    */
   public String getLastAccessTime() {
@@ -415,7 +438,7 @@ public class ALBaseUser extends
 
   /**
    * 指定されたユーザが管理者権限を持っているかを返します。
-   * 
+   *
    * @return
    */
   public boolean isAdmin() {

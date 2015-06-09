@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.workflow.util;
 
 import java.io.StringWriter;
@@ -1056,7 +1055,8 @@ public class WorkflowUtils {
         ALAdminMailMessage message = new ALAdminMailMessage(destMember);
         message.setPcSubject(subject);
         message.setCellularSubject(subject);
-        message.setPcBody(WorkflowUtils.createMsgForPc(rundata, request));
+        // 申請時はcommentは空
+        message.setPcBody(WorkflowUtils.createMsgForPc(rundata, request, ""));
         message.setCellularBody(WorkflowUtils.createMsgForCellPhone(
           rundata,
           request));
@@ -1077,7 +1077,7 @@ public class WorkflowUtils {
 
   public static boolean sendMailForUpdate(RunData rundata,
       List<EipTWorkflowRequestMap> sendMailMaps, EipTWorkflowRequest request,
-      Type flowStatus) {
+      String comment, Type flowStatus) {
 
     String orgId = Database.getDomainName();
 
@@ -1095,9 +1095,9 @@ public class WorkflowUtils {
     mailBean.setLocalUrl(ALMailUtils.getLocalurl());
 
     String msgForPcPrefix =
-      createMsgForPcAtUpdatePrefix(request, flowStatus, mailBean);
+      createMsgForPcAtUpdatePrefix(request, comment, flowStatus, mailBean);
     String msgForCellPrefix =
-      createMsgForCellAtUpdatePrefix(request, flowStatus, mailBean);
+      createMsgForCellAtUpdatePrefix(request, comment, flowStatus, mailBean);
 
     if ("".equals(msgForPcPrefix) || "".equals(msgForCellPrefix)) {
       return false;
@@ -1133,8 +1133,8 @@ public class WorkflowUtils {
         ALAdminMailMessage message = new ALAdminMailMessage(userAddr);
         message.setPcSubject(mailBean.getSubject());
         message.setCellularSubject(mailBean.getSubject());
-        message.setPcBody(createMsgForPc(rundata, request));
-        message.setCellularBody(createMsgForPc(rundata, request));
+        message.setPcBody(createMsgForPc(rundata, request, comment));
+        message.setCellularBody(createMsgForPc(rundata, request, comment));
         messageList.add(message);
 
       }
@@ -1162,9 +1162,9 @@ public class WorkflowUtils {
     List<ALEipUserAddr> userAddressList = new ArrayList<ALEipUserAddr>();
 
     String msgForPcPrefix =
-      createMsgForPcAtUpdatePrefix(request, flowStatus, mailBean);
+      createMsgForPcAtUpdatePrefix(request, "", flowStatus, mailBean);
     String msgForCellPrefix =
-      createMsgForCellAtUpdatePrefix(request, flowStatus, mailBean);
+      createMsgForCellAtUpdatePrefix(request, "", flowStatus, mailBean);
 
     if ("".equals(msgForPcPrefix) || "".equals(msgForCellPrefix)) {
       return false;
@@ -1193,7 +1193,8 @@ public class WorkflowUtils {
   }
 
   public static String createMsgForPcAtUpdatePrefix(
-      EipTWorkflowRequest request, Type flowStatus, WorkflowMailBean mailBean) {
+      EipTWorkflowRequest request, String comment, Type flowStatus,
+      WorkflowMailBean mailBean) {
 
     ALEipUser user;
     try {
@@ -1207,7 +1208,12 @@ public class WorkflowUtils {
       StringBuilder body = new StringBuilder("");
       body.append(user.getAliasName().toString());
       body.append(getMessageHead(flowStatus, ALMailUtils.CR));
-      body.append(getMessageContent(request, ALMailUtils.CR, false, mailBean));
+      body.append(getMessageContent(
+        request,
+        comment,
+        ALMailUtils.CR,
+        false,
+        mailBean));
       return body.toString();
     } catch (Exception e) {
       logger.error("[WorkflowUtils]", e);
@@ -1217,7 +1223,8 @@ public class WorkflowUtils {
   }
 
   public static String createMsgForCellAtUpdatePrefix(
-      EipTWorkflowRequest request, Type flowStatus, WorkflowMailBean mailBean) {
+      EipTWorkflowRequest request, String comment, Type flowStatus,
+      WorkflowMailBean mailBean) {
 
     ALEipUser user;
     try {
@@ -1231,7 +1238,12 @@ public class WorkflowUtils {
       StringBuilder body = new StringBuilder("");
       body.append(user.getAliasName().toString());
       body.append(getMessageHead(flowStatus, ALMailUtils.CR));
-      body.append(getMessageContent(request, ALMailUtils.CR, true, mailBean));
+      body.append(getMessageContent(
+        request,
+        comment,
+        ALMailUtils.CR,
+        true,
+        mailBean));
       return body.toString();
     } catch (Exception e) {
       logger.error("[WorkflowUtils]", e);
@@ -1293,9 +1305,9 @@ public class WorkflowUtils {
     return body.toString();
   }
 
-  // [タイトル][申請日][申請内容]
+  // [タイトル][申請日][申請内容][コメント]
   public static String getMessageContent(EipTWorkflowRequest request,
-      String CR, boolean isCell, WorkflowMailBean mailBean) {
+      String comment, String CR, boolean isCell, WorkflowMailBean mailBean) {
 
     StringBuilder body = new StringBuilder("");
 
@@ -1335,6 +1347,12 @@ public class WorkflowUtils {
         .append("]")
         .append(CR)
         .append(request.getNote());
+
+      if (comment != null && !"".equals(comment)) {
+        body.append(CR).append("[").append(
+          ALLocalizationUtils.getl10n("WORKFLOW_COMMENT")).append("]").append(
+          CR).append(comment);
+      }
     }
     return body.toString();
   }
@@ -1345,7 +1363,7 @@ public class WorkflowUtils {
    * @return
    */
   public static String createMsgForPc(RunData rundata,
-      EipTWorkflowRequest request) {
+      EipTWorkflowRequest request, String comment) {
     VelocityContext context = new VelocityContext();
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     String CR = ALMailUtils.CR;
@@ -1405,8 +1423,13 @@ public class WorkflowUtils {
     }
     context.put("progress", progress);
 
-    // タイトル,申請日,重要度,申請内容
-    context.put("content", getMessageContent(request, CR, false, mailBean));
+    // タイトル,申請日,重要度,申請内容,コメント
+    context.put("content", getMessageContent(
+      request,
+      comment,
+      CR,
+      false,
+      mailBean));
     // サービス
     context.put("serviceAlias", ALOrgUtilsService.getAlias());
     // サービス（Aipo）へのアクセス
@@ -1506,7 +1529,7 @@ public class WorkflowUtils {
     context.put("progress", progress);
 
     // タイトル,申請日,重要度,申請内容
-    context.put("content", getMessageContent(request, CR, false, mailBean));
+    context.put("content", getMessageContent(request, "", CR, false, mailBean));
     // サービス
     context.put("serviceAlias", ALOrgUtilsService.getAlias());
     // サービス（Aipo）へのアクセス

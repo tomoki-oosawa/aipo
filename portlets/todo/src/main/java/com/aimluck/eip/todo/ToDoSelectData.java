@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
@@ -67,7 +66,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDo検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ToDoSelectData extends
     ALAbstractMultiFilterSelectData<EipTTodo, EipTTodo> implements ALData {
@@ -121,7 +120,7 @@ public class ToDoSelectData extends
   private ALStringField target_keyword;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -216,7 +215,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -226,7 +225,7 @@ public class ToDoSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -268,7 +267,7 @@ public class ToDoSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -388,7 +387,7 @@ public class ToDoSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -488,7 +487,7 @@ public class ToDoSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -508,10 +507,12 @@ public class ToDoSelectData extends
       rd.setCategoryName(ALCommonUtils.compressString(record
         .getEipTTodoCategory()
         .getCategoryName(), getStrLength()));
+      rd.setUserId(record.getUserId().longValue());
       rd.setUserName(ALEipUtils
         .getALEipUser(record.getUserId())
         .getAliasName()
         .getValue());
+      rd.setLoginUserId(login_user_id);
       rd.setTodoName(ALCommonUtils.compressString(
         record.getTodoName(),
         getStrLength()));
@@ -555,7 +556,7 @@ public class ToDoSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -592,7 +593,7 @@ public class ToDoSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -606,6 +607,7 @@ public class ToDoSelectData extends
       rd
         .setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
       rd.setCategoryName(record.getEipTTodoCategory().getCategoryName());
+      rd.setUserId(record.getUserId().longValue());
       rd.setUserName(ALEipUtils
         .getALEipUser(record.getUserId())
         .getAliasName()
@@ -622,10 +624,13 @@ public class ToDoSelectData extends
         .getPriority()
         .intValue()));
       rd.setNote(record.getNote());
+      rd.setCreateUserId(record.getCreateUserId().longValue());
       rd.setCreateUserName(ALEipUtils
         .getALEipUser(record.getCreateUserId())
         .getAliasName()
         .getValue());
+      rd.setLoginUserId(login_user_id);
+
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
@@ -658,7 +663,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ToDoCategoryResultData> getCategoryList() {
@@ -667,7 +672,7 @@ public class ToDoSelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -676,7 +681,7 @@ public class ToDoSelectData extends
 
   /**
    * ToDo の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getTodoSum() {
@@ -685,7 +690,7 @@ public class ToDoSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -706,7 +711,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -737,7 +742,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -761,7 +766,7 @@ public class ToDoSelectData extends
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   @Override
@@ -798,7 +803,7 @@ public class ToDoSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -838,7 +843,7 @@ public class ToDoSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -847,7 +852,7 @@ public class ToDoSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {

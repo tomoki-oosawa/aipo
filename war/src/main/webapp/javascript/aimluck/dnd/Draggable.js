@@ -1,8 +1,6 @@
-if(!dojo._hasResource["aimluck.dnd.DragMoveObject"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aimluck.dnd.DragMoveObject"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,8 @@ dojo._hasResource["aimluck.dnd.DragMoveObject"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if(!dojo._hasResource["aimluck.dnd.DragMoveObject"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aimluck.dnd.DragMoveObject"] = true;
 
 dojo.provide("aimluck.dnd.DragMoveObject");
 dojo.provide("aimluck.dnd.Draggable");
@@ -48,12 +48,12 @@ dojo.declare("aimluck.dnd.DragMoveObject", [dojo.dnd.Mover] , {
     },
     onMouseMove: function(e){
         this._pageX = e.pageX;
-        this._pageY = e.pageY;  
+        this._pageY = e.pageY;
         dojo.dnd.autoScroll(e);
         var m = this.marginBox;
         this.leftTop = {l: m.l + e.pageX, t: m.t + e.pageY};
     //  dojo.dnd.Mover.prototype.onMouseMove.apply(this, arguments);
-    } 
+    }
 });
 
 dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
@@ -65,7 +65,7 @@ dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
     onMouseDown: function(e){
         // summary: event processor for onmousedown, creates a Mover for the node
         // e: Event: mouse event
-                
+
         if(this.skip && dojo.dnd.isFormElement(e)){ return; }
         if(this.delay){
             this.events.push(dojo.connect(this.handle, "onmousemove", this, "onMouseMove"));
@@ -75,13 +75,13 @@ dojo.declare("aimluck.dnd.Draggable", dojo.dnd.Moveable , {
             dragObj.dragSource=this;
             dragObj.portletId = this.portletId;
         }
-        
+
         dragObj._pageX = e.pageX;
         dragObj._pageY = e.pageY;
-        
+
         this._lastX = e.pageX;
         this._lastY = e.pageY;
-        
+
         dojo.stopEvent(e);
     }
 });

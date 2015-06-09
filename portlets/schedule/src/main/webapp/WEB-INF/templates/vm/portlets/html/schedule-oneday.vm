@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 <table border="0" cellspacing="0" cellpadding="2"><tbody>
 <tr valign="middle"><td>
@@ -88,7 +87,7 @@ ${record.TodoName}
 <img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
 #if(${record.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </a>
 </div>
@@ -119,11 +118,8 @@ ${record.TodoName}
 #if($result.getResult($count).isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
-#if($result.getResult($count).isRepeat())
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
 #if($result.getResult($count).isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </div>
 </div>
@@ -159,11 +155,8 @@ ${record.TodoName}
 #if($result.getResult($count).isDuplicate())
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
 #end
-#if($result.getResult($count).isRepeat())
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
 #if($result.getResult($count).isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </div>
 </div>
@@ -199,11 +192,8 @@ ${record.TodoName}
 #AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 <i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#if($record.isRepeat())
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
 #if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 </div>
 </div>
@@ -217,7 +207,7 @@ ${record.TodoName}
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');

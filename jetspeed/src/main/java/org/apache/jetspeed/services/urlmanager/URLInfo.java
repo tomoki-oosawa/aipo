@@ -25,7 +25,7 @@ package org.apache.jetspeed.services.urlmanager;
  * also "==" </p>
  *
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: URLInfo.java,v 1.5 2004/02/23 03:30:47 jford Exp $
  */
 public class URLInfo implements java.io.Serializable {

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2013 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -60,7 +56,7 @@ public class GpdbTopScreen extends GpdbScreen {
         context).getPortletConfig().getInitParameter("p1a-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-gpdb-top.vm";
+      String layout_template = "portlets/html/ajax-gpdb-top.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception e) {

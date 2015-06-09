@@ -1,1 +1,1 @@
-({"buttonCancel": "Storno", "buttonSave": "Uložit", "buttonOk": "OK"})
+({"buttonCancel": "Storno", "buttonSave": "Ulo転it", "buttonOk": "OK"})

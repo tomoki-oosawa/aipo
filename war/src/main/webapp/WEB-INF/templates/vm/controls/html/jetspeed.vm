@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,12 +20,14 @@
 
 ## ---------------------------------------------------------------------------
 #set($beforeselected =false)
+#if($!globalPortlets)
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
+#end
 #if( ! $portlet.isClosed($data) )
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
 <!-- appsNavigation_v2 -->
-<script language="javascript">
+<script type="text/javascript">
 // ウィジェットメニュー用
 aipo.onloadSmartPhone = function(){
 	var widgets_area = dojo.byId('auiWidgetsArea');
@@ -281,12 +283,12 @@ function setWrapperHeight() {
 					#if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Maximize'))"><span class="icon"><i class="icon-cogs"></i></span>$l10n.TOP_MANAGE_SETTING</a></li>
 					#end
-    					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction("ALChangeToPC")'"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li>
+    					<li><a href="javascript:void(0)" onclick="location.href='$jslink.addQueryData("mypageId","${mypageId}").setAction("ALChangeToPC")'"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li>
     					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><i class="icon-power-off"></i></span>$l10n.TOP_LOGOUT</a></li>
 				</ul>
         </div>
         <div class="anFooter">
-                <div class="copyright">&copy; Aimluck</div>
+                <div class="copyright"> ${copyright_short}&nbsp;·&nbsp;${version} </div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->
@@ -397,7 +399,7 @@ $portlet.getContent($data)
 					#foreach ( $action in $actions)
 						<li><a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")'>$l10n.WAR_SET_UP</a></li>
 					#end
-					#if($accessControl == "true")
+					#if($accessControl == "true" && ($portlet.name != "Timeline" || ($timelineCount > 1)))
 						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); location.href='$!{jslink}'; } );">$l10n.CUSTOMIZER_DELETE</a></li>
 					#end
 					</ul>

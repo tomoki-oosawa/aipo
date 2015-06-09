@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 dojo.provide("aipo.activity");
 
 aipo.activity.setListSize = function(){
@@ -143,6 +142,47 @@ aipo.activity.filteredSearch = function(portlet_id) {
 	var params = [];
 	dojo.query("ul.filtertype_" + portlet_id).forEach(function(ul) {
 		//console.info(ul);
+		var type = ul.getAttribute("data-type");
+		types.push(type);
+
+		var activeli = dojo.query("li.selected", ul)[0];
+		if (activeli) {
+			var param = activeli.getAttribute("data-param");
+			params.push(param);
+		} else {
+			params.push(ul.getAttribute("data-defaultparam"));
+		}
+	});
+	var q = dojo.byId("q" + portlet_id);
+	var qs = [ [ "filter", params.join(",") ],
+			[ "filtertype", types.join(",") ], [ "keyword", q ? q.value : "" ] ];
+	aipo.viewPage(baseuri, portlet_id, qs);
+}
+
+/**
+ * フィルタを選択した時に発生させるイベント　クリックされたノードをフィルタに追加
+ * @param portlet_id
+ * @param thisnode
+ * @param event
+ */
+aipo.activity.filterClick=function(portlet_id,thisnode,event){
+	var li=thisnode.parentNode;
+	var ul=li.parentNode;
+	var param=li.getAttribute("data-param");//liのdata-param
+	aipo.activity.filterSelect(ul,li);
+	aipo.activity.filteredSearch(portlet_id);
+}
+
+/**
+ * widgetからアプリケーションを選択した際にグループ情報を追加
+ * @param url
+ */
+aipo.activity.setPostFilter = function(baseuri,filter,filtertype,portlet_id) {
+	var types = [];
+	var params = [];
+	types.push(filtertype);
+	params.push(filter);
+	dojo.query("ul.filtertype_" + portlet_id).forEach(function(ul) {
 		var type = ul.getAttribute("data-type");
 		types.push(type);
 

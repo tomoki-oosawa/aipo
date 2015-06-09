@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($customize-mode = $!data.PageSessionState.getAttribute("customize-mode"))
 #if  ($customize-mode == "layout")
@@ -25,7 +24,7 @@
 #set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!set.ID)"], ["$l10n.WAR_SET_UP_LAYOUT", "$jslink.Template.addPathInfo('js_peid',$!set.ID).addPathInfo('mode','layout').addQueryData('mtype', $mtype).addQueryData('action', 'controls.Customize')"], ["$l10n.WAR_ADD_APP", ""]])
 #end
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 dojo.provide("aipo.portletset");
 //]]>

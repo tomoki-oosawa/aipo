@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@
 <input type="hidden" name="_name" value="$l10n.EXTTIMECARD_USER" />
 <input type="hidden" name="secid" value="$secid" />
 #if($result.List.size() == 0)
-$l10n.EXTTIMECARD_ALERT_NO_USER<br />
+#AUIEmptyMessage("icon-time" "$l10n.EXTTIMECARD_ALERT_NO_USER")
 #else
 #AUISummaryDiv()
 #AUIajaxpageview('ExtTimecardSystemMapListScreen' $result)

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2014 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.http;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -35,8 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.CometEvent;
-import org.apache.catalina.CometProcessor;
+import org.apache.catalina.comet.CometEvent;
+import org.apache.catalina.comet.CometProcessor;
 
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALEipConstants;
@@ -88,6 +85,8 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       HttpServletResponse response = event.getHttpServletResponse();
       ALBaseUser user = getUser(request);
       if (user == null) {
+        close(response);
+        event.close();
         return;
       }
       switch (event.getEventType()) {
@@ -149,7 +148,6 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
       if (session == null) {
         return null;
       }
-
       return (ALBaseUser) session.getAttribute("turbine.user");
     } catch (Throwable ignore) {
       // ignore
@@ -157,7 +155,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     return null;
   }
 
-  public class Message {
+  public static class Message {
 
     private final List<String> recipients;
 
@@ -186,8 +184,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
 
   public class MessageSender extends Thread {
 
-    private final BlockingQueue<Message> messages =
-      new LinkedBlockingQueue<Message>();
+    protected final List<Message> messages = new ArrayList<Message>();
 
     protected boolean running = true;
 
@@ -199,8 +196,11 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
 
     public synchronized void sendMessage(List<String> recipients, String message) {
       try {
-        messages.put(new Message(recipients, message));
-      } catch (InterruptedException e) {
+        synchronized (messages) {
+          messages.add(new Message(recipients, message));
+          messages.notify();
+        }
+      } catch (Throwable ignore) {
         //
       }
     }
@@ -209,8 +209,21 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
     public void run() {
       while (running) {
         try {
-          Message message = messages.poll(1000, TimeUnit.SECONDS);
-          if (message != null) {
+          if (messages.size() == 0) {
+            try {
+              synchronized (messages) {
+                messages.wait();
+              }
+            } catch (InterruptedException ignore) {
+              // Ignore
+            }
+          }
+          Message[] pendingMessages = null;
+          synchronized (messages) {
+            pendingMessages = messages.toArray(new Message[0]);
+            messages.clear();
+          }
+          for (Message message : pendingMessages) {
             Iterator<Entry<HttpServletResponse, String>> iterator =
               connections.entrySet().iterator();
 
@@ -239,6 +252,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
                 }
               }
             }
+            pendingMessages = null;
           }
           try {
             Thread.sleep(100);

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
+import java.util.Arrays;
+
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -47,11 +49,19 @@ public class MessageFormJSONScreen extends ALJSONScreen {
       MessageFormData formData = new MessageFormData();
       formData.initField();
       if (formData.doInsert(this, rundata, context)) {
+        JSONArray json =
+          JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
+        JSONObject obj = new JSONObject();
+        obj.put("params", json);
+        result = obj.toString();
       } else {
         JSONArray json =
           JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-        result = json.toString();
+        JSONObject obj = new JSONObject();
+        obj.put("err", json);
+        result = obj.toString();
       }
+
     } catch (Exception e) {
       logger.error("MessageFormJSONScreen.getJSONString", e);
     }

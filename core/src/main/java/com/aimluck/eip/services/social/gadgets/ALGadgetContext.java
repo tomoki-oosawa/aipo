@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.social.gadgets;
 
 import java.io.BufferedReader;
@@ -30,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.shindig.common.crypto.BasicBlobCrypter;
 import org.apache.shindig.common.crypto.BlobCrypter;
@@ -131,7 +131,10 @@ public class ALGadgetContext {
         builder.append(":").append(serverPort);
       }
     }
-    return builder.append("/gadgets/").toString();
+    String containerPath = JetspeedResources.getString("aipo.container.path");
+
+    return builder.append(containerPath == null ? "" : containerPath).append(
+      "/gadgets/").toString();
   }
 
   protected boolean isLockedDomainRequired() {

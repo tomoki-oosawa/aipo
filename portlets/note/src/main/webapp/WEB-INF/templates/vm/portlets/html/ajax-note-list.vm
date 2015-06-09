@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if  ($!result.TargetUserId && ($!result.TargetUserId != "all"))
 #set ($target_username = $!result.getUserFullName($!result.TargetUserId))
@@ -38,7 +37,7 @@
 #end
 #set ($indicator_id = "indicator-list-")
 
-#parse("/portlets/html/ja/noteMacro.vm")
+#parse("/portlets/html/noteMacro.vm")
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()
@@ -114,7 +113,11 @@ unread
 
 #ALtdcellheader()<div>$!subject</div>#ALtdcellfooter()
 #if (!$isReceive)
-#ALtdcellheaderAtt('class="mb_hide"')<div>$!record.DestUserFullName.Value</div>#ALtdcellfooter()
+#ALtdcellheaderAtt('class="mb_hide"')<div>
+#foreach ($destUser in $record.DestUsers)
+#if($record.SrcUserId.toString() != $destUser.UserId.toString()) <a href="javascript: void(0)" onclick="aipo.message.popupProfile(${destUser.UserId},arguments[0])">$!destUser.AliasName</a>#end
+#end
+</div>#ALtdcellfooter()
 #ALtdcellheaderAtt('class="mb_hide"')<div>$!record.ReadNote.Value/$!record.SentNote.Value</div>#ALtdcellfooter()
 #end
 #ALtdcellAtt("#if ($isReceive) $!{record.AuiAcceptDate} #else $!{record.AuiCreateDate} #end" 'nowrap="nowrap"')

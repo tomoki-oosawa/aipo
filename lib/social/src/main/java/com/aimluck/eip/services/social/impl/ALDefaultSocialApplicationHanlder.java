@@ -1,6 +1,6 @@
 /*
-] * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.social.ALContainerConfigService;
 import com.aimluck.eip.services.social.ALSocialApplicationConstants;
 import com.aimluck.eip.services.social.ALSocialApplicationHandler;
@@ -291,7 +293,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appId
    * @param request
    */
@@ -312,7 +314,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -332,7 +334,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -341,7 +343,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -361,7 +363,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -370,7 +372,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param appIdList
    */
   @Override
@@ -448,7 +450,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param property
    * @return
    */
@@ -481,7 +483,7 @@ public class ALDefaultSocialApplicationHanlder extends
   }
 
   /**
-   * 
+   *
    * @param property
    * @param value
    */
@@ -525,11 +527,13 @@ public class ALDefaultSocialApplicationHanlder extends
       activity.setModuleId(model.getModuleId());
       try {
         ALEipUser user = ALEipUtils.getALEipUser(model.getLoginName());
-        if (model.getAppId().equals("timeline") && user == null) {
+        if (user == null && model.getAppId().equals("timeline")) {
           activity.setDisplayName(model.getLoginName());
         } else {
-          activity.setDisplayName(user.getAliasName().getValue());
-
+          if (user != null) {
+            activity.setDisplayName(user.getAliasName().getValue());
+            activity.setUserId(user.getUserId().getValueWithInt());
+          }
         }
       } catch (Throwable t) {
         //
@@ -858,6 +862,10 @@ public class ALDefaultSocialApplicationHanlder extends
           activityMap.setLoginName(recipient);
           activityMap.setActivity(activity);
           activityMap.setIsRead(priority == 1f ? 0 : 1);
+        }
+        if (priority == 1f) {
+          Map<String, String> params = new HashMap<String, String>();
+          ALPushService.pushAsync("activity", params, recipients);
         }
       } else {
         ActivityMap activityMap = Database.create(ActivityMap.class);

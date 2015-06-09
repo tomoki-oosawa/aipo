@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -34,14 +34,8 @@
     #end
 		</select>
 	</div>
-	<div class="inner">
-		<form class="search" id="messageUserSearchForm" name="messageUserSearchForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageUserListScreen')" onsubmit="aipo.message.searchUserList(); return false;" method="post">
-			<input type="text" name="keyword" onfocus="aipo.message.onFocusPlaceholder(this)" onblur="aipo.message.onBlurPlaceholder(this)" value="$!result.Keyword" id="messageUserKeywordInput" /><label class="placeholder" for="messageUserKeywordInput" #if($!result.hasKeyword())style="display:none"#end>$l10n.MESSAGE_USER_SEARCH</label>
-			<button class="submit" title="$l10n.COMMON_SEARCH"><i class="icon-search"></i></button>
-		</form>
-	</div>
 </div>
-<div class="messageUserlist">
+<div class="messageUserlist scroll" id="messageUserlist">
 #if($result.List.size() == 0)
 #if($!isSearch)
 <ul class="messageSummary">
@@ -71,7 +65,7 @@
 #set ($isFirst = false)
 #end
 #set ($currentIndex = $!record.getIndex().getValue())
-<li>
+<li id="messageUser$!record.UserId" #if("$!currentUser" == "$!record.UserId")class="active"#end>
 	<a href="javascript:void(0)" onclick="aipo.message.selectUser($!record.UserId)">
 		<span class="avatar">
 		#if($!record.isHasPhoto())

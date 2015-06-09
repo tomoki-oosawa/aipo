@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.project;
 
 import java.math.BigDecimal;
@@ -59,7 +55,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タスクの検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ProjectTaskSimpleSelectData extends
     ALAbstractMultiFilterSelectData<EipTProjectTask, EipTProjectTask> implements
@@ -135,7 +131,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -189,7 +185,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -274,7 +270,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -438,7 +434,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * ソート句を構築します。
-   * 
+   *
    * @param crt
    * @return
    */
@@ -466,7 +462,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -481,7 +477,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -551,7 +547,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -575,7 +571,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 項目情報を取得する
-   * 
+   *
    * @return 項目情報
    */
   @Override
@@ -588,7 +584,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * プロジェクトの総数を取得する
-   * 
+   *
    * @return プロジェクト総数
    */
   public int getTaskCount() {
@@ -597,7 +593,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 全プロジェクトのリストを返す
-   * 
+   *
    * @return 全プロジェクトのリスト
    */
   public List<ProjectResultData> getAllProject() {
@@ -606,7 +602,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 選択されているプロジェクトIDを取得する
-   * 
+   *
    * @return プロジェクトID
    */
   public Integer getSelectedProjectId() {
@@ -615,7 +611,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * プロジェクトメンバーリストを取得します。
-   * 
+   *
    * @return プロジェクトメンバーリスト
    */
   public List<ALEipUser> getProjectMembers() {
@@ -624,7 +620,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索したキーワードを取得します。
-   * 
+   *
    * @return 検索キーワード
    */
   public String getTargetKeyword() {
@@ -633,7 +629,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した担当者を取得します。
-   * 
+   *
    * @return 検索担当者
    */
   public String getTargetUserId() {
@@ -642,7 +638,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した分類を取得します。
-   * 
+   *
    * @return 検索分類
    */
   public String getTargetTracker() {
@@ -651,7 +647,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した優先度を取得します。
-   * 
+   *
    * @return 検索優先度
    */
   public String getTargetPriority() {
@@ -660,7 +656,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索したステータスを取得します。
-   * 
+   *
    * @return 検索ステータス
    */
   public String getTargetStatus() {
@@ -669,7 +665,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した進捗率FROMを取得します。
-   * 
+   *
    * @return 進捗率FROM
    */
   public String getTargetProgressRateFrom() {
@@ -678,7 +674,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した進捗率TOを取得します。
-   * 
+   *
    * @return 進捗率TO
    */
   public String getTargetProgressRateTo() {
@@ -687,7 +683,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 検索した進捗遅れフラグを取得します。
-   * 
+   *
    * @return 進捗遅れフラグ
    */
   public String getTargetDelay() {
@@ -696,7 +692,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * イナズマ線表示フラグを取得します。
-   * 
+   *
    * @return イナズマ線表示フラグ
    */
   public String getProgressLineChecked() {
@@ -705,7 +701,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 日付の年最大値を取得する。
-   * 
+   *
    * @return 年最大値
    */
   public int getViewDateMaxYear() {
@@ -714,7 +710,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 基準日Fromを取得する。
-   * 
+   *
    * @return 基準日From
    */
   public ALDateTimeField getBaseDateFrom() {
@@ -723,7 +719,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 基準日Toを取得する。
-   * 
+   *
    * @return 基準日To
    */
   public ALDateTimeField getBaseDateTo() {
@@ -732,7 +728,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 基準日Fromの年を取得する。
-   * 
+   *
    * @return 基準日Fromの年
    */
   public int getBaseDateFromYear() {
@@ -741,7 +737,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 基準日Toの年を取得する。
-   * 
+   *
    * @return 基準日Toの年
    */
   public int getBaseDateToYear() {
@@ -750,7 +746,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 加算日数を加えた日を取得する。
-   * 
+   *
    * @return 加算後の日
    */
   public int getDay(int days) {
@@ -761,7 +757,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 加算日数を加えた日がシステム日付かチェックする。
-   * 
+   *
    * @return TRUE:システム日付である
    */
   public boolean isToday(int days) {
@@ -776,7 +772,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 表示年月の日数を取得する。
-   * 
+   *
    * @return 日数
    */
   public int getDays() {
@@ -785,7 +781,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 表示年月の日数を取得する。
-   * 
+   *
    * @return 日数
    */
   public int getDays(Date dateTo) {
@@ -796,7 +792,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 年を取得する。
-   * 
+   *
    * @return 週番号
    */
   public int getYear(int days) {
@@ -807,7 +803,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 月を取得する。
-   * 
+   *
    * @return 月
    */
   public int getMonth(int days) {
@@ -818,7 +814,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 週を取得する。
-   * 
+   *
    * @return 週番号
    */
   public int getWeek(int days) {
@@ -829,7 +825,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 分類リストを返します。
-   * 
+   *
    * @return 分類リスト
    */
   public Map<String, String> getTrackerMap() {
@@ -838,7 +834,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * ステータスリストを返します。
-   * 
+   *
    * @return ステータスリスト
    */
   public Map<String, String> getStatusMap() {
@@ -847,7 +843,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 優先度リストを返します。
-   * 
+   *
    * @return 優先度リスト
    */
   public Map<String, String> getPriorityMap() {
@@ -856,7 +852,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 現在時刻の long 値を返します。
-   * 
+   *
    * @return 現在時刻の long 値
    */
   public long getNowTime() {
@@ -865,7 +861,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 加算日数を加えた日付が休日かをチェックする。
-   * 
+   *
    * @return TRUE:加算後の日が休日
    */
 
@@ -880,7 +876,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 加算日数を加えた日付が土曜日かをチェックする。
-   * 
+   *
    * @return TRUE:加算後の日が土曜
    */
 
@@ -892,7 +888,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * 加算日数を加えた日付が土曜日かをチェックする。
-   * 
+   *
    * @return TRUE:加算後の日が日曜
    */
 
@@ -904,7 +900,7 @@ public class ProjectTaskSimpleSelectData extends
 
   /**
    * ビュータイプを取得する
-   * 
+   *
    * @return ビュータイプ
    */
   public String getViewtype() {
@@ -981,12 +977,13 @@ public class ProjectTaskSimpleSelectData extends
       .valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
 
-    ALEipUtils.setTemp(rundata, context, new StringBuffer()
-      .append(ProjectTaskSelectData.class.getName())
-      .append(ALEipConstants.LIST_FILTER)
-      .toString(), String.valueOf(selectedProjectId));
+    ALEipUtils
+      .setTemp(rundata, context, new StringBuffer().append(
+        ProjectTaskSelectData.class.getSimpleName()).append(
+        ALEipConstants.LIST_FILTER).toString(), String
+        .valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, new StringBuffer().append(
-      ProjectTaskSelectData.class.getName()).append(
+      ProjectTaskSelectData.class.getSimpleName()).append(
       ALEipConstants.LIST_FILTER_TYPE).toString(), "project_id");
   }
 

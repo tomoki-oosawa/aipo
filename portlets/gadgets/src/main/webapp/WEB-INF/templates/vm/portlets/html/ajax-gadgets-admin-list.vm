@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -67,7 +67,7 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader($l10n.GADGETS_APP)
 #if($result.List.size() == 0)
-$l10n.GADGETS_APP_NOT_EXIST_MSG<br />
+#AUIEmptyMessage("icon-th" "$l10n.GADGETS_EMPTY_APP_MESSAGE")
 #else
 #AUISummaryDiv()
 <div class="floatLeft">

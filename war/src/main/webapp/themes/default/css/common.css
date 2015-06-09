@@ -1,3 +1,21 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @charset "UTF-8";
 .bRadius3, span.dispUser, .menubar ul li,
 ul.blockList li, .menubar > ul li a,
@@ -98,6 +116,10 @@ th label {
 a {
   color: #1b1b1b;
   text-decoration: underline;
+}
+
+a:focus {
+  outline: none;
 }
 
 th a {
@@ -267,8 +289,12 @@ table.center {
   padding: 2px;
 }
 
+.sentence {
+  font-size: 14px;
+}
+
 .small {
-  font-size: .9em;
+  font-size: 11px;
   line-height: 1.2;
 }
 
@@ -284,7 +310,7 @@ table.center {
 
 .caution {
   color: #DC0033;
-  font-size: .96em;
+  font-size: 1em;
 }
 
 .caution .em {
@@ -312,7 +338,7 @@ table.center {
 }
 
 #roundWrapper {
-  height: 100%;
+  height: auto;
 }
 
 .roundMainWrapper {
@@ -413,10 +439,16 @@ table.outer td.f08 {
   overflow: hidden;
 }
 .listTable caption {
-  background: #f0f0f0;
   padding: 5px;
   font-weight: bold;
   text-align: left;
+  font-size: 14px;
+}
+.listTable caption .subCaption {
+  display: block;
+  font-weight: normal;
+  margin-bottom: 3px;
+  font-size: 13px;
 }
 .listTable .caption {
   width: 135px;
@@ -645,16 +677,6 @@ table.simpleTable .caption {
 
 .dijit_a11y .modalDialog .closeText {
   display: inline;
-}
-
-.modalDialog input[type=checkbox],
-.modalDialog input[type=radio] {
-  vertical-align: -0.2em;
-}
-
-*:first-child + html .modalDialog input[type=checkbox],
-*:first-child + html .modalDialog input[type=radio] {
-  vertical-align: 0em;
 }
 
 .modalDialog#imageDialog {
@@ -1016,7 +1038,8 @@ table.simpleTable .caption {
   margin-bottom: 5px;
 }
 
-.memberlistToTop {
+.memberlistToTop,
+.memberlistFromTop {
   line-height: 32px;
 }
 
@@ -1263,8 +1286,12 @@ div.scheduleDiv {
   cursor: pointer;
 }
 
-.scheduleDiv .auiIcon {
+/*.scheduleDiv .auiIcon {
   margin: -1px 0 0 2px;
+}*/
+.scheduleDiv .auiIcon,
+.inline-block .auiIcon{
+  margin: 0 1px;
 }
 
 div.scheduleDivFirstLine {
@@ -1348,6 +1375,9 @@ div.termScheduleDiv {
   height: 15px;
   margin-left: 1px;
   color: #ffffff;
+}
+div.termScheduleDiv .auiIcon {
+  margin: 0 0 0 2px;
 }
 
 div.termScheduleDiv div.termScheduleDivNameDiv {
@@ -1433,19 +1463,23 @@ div.tableBorderM {
   line-height: 1px;
 }
 
-div.sunday, td.sunday {
+div.sunday, td.sunday,
+.calendar th.sunday  {
   background: #fef6f1;
 }
 
-div.saturday, td.saturday {
+div.saturday, td.saturday,
+.calendar th.saturday {
   background: #f4f7fa;
 }
 
-div.holiday, td.holiday {
+div.holiday, td.holiday,
+.calendar th.holiday {
   background: #fef6f1;
 }
 
-div.today, td.today {
+div.today, td.today,
+.calendar th.today {
   background: #edfeed;
 }
 
@@ -1463,72 +1497,75 @@ div.off, td.off {
   border-collapse: collapse;
   border-spacing: 0;
   border: 1px solid #d2d2d2;
-  border-top: 2px solid #d2d2d2;
+  font-size: 12px;
 }
 .calendar th {
+  min-width: 2em;
   border: 1px solid #ddd;
-  padding: 0;
+  padding: 3px;
   font-weight: normal;
   text-align: center;
-  font-size: 0.9em;
 }
-
-.calendar th.groupOneday {
-  width: auto;
+.calendar td {
+  border: solid 1px #d2d2d2;
+  vertical-align: top;
+  word-break: break-all;
 }
-
+.calendar tr:first-child th {
+  padding: 3px 1px;
+}
+.calendar tr.calendarWeek th {
+  width: 14.286%;
+  white-space: nowrap;
+}
+.calendar th.groupOneday .auiButtonSmall {
+  margin-top: 5px;
+}
 .calendar th.groupWeekly {
-  border: 1px solid #ddd;
-  padding: 0;
-  font-weight: normal;
-  text-align: center;
   width: 12.5%;
 }
-.calendar th.sunday {
-  background: #fef6f1;
+.calendar th.groupWeekly .auiButtonSmall {
+  margin-top: 5px;
 }
-.calendar th.saturday {
-  background: #f4f7fa;
+.calendar td.day {
+  padding: 3px 5px;
+  border-bottom: none;
 }
-.calendar th.holiday {
-  background: #fef6f1;
+.calendar td.day.sunday a {
+  color: #ff3333;
+}
+.calendar td.day.saturday a {
+  color: #049cdb;
+}
+.calendar td.day.holiday, .calendar td.day.holiday a {
+  color: #ff3333;
+}
+.calendar td.day.off, .calendar td.day.off a {
+  color: #999;
+}
+.calendar td.day.today {
+  background: #edfeed;
 }
 .calendar th.today {
   background: #edfeed;
 }
-.calendar td {
-  border: 1px solid #d2d2d2;
-  padding: 2px;
-  vertical-align: top;
-  word-break: break-all;
-}
 .calendar td.calendarHeader {
   background: #ddd;
 }
-.calendar div.calendarDay {
-  color: #666;
-  margin: 0;
-  padding: 0 2px 0 2px;
-  vertical-align: top;
+.calendar td.off {
+  color: #999;
 }
-.calendar td.day {
-  background-color: #FFFFE5;
-  border-bottom: none;
+.calendar td.off a {
+  color: #999;
 }
-.calendar td.sunday2 {
-  background-color: #FFDFD5;
+.calendar td.off a:hover {
+  color: #ff9900;
 }
-.calendar td.saturday2 {
-  background-color: #DBE0F6;
-}
-.calendar td.holiday2 {
-  background-color: #FFDFD5;
-}
-.calendar td.off2 {
-  background-color: #DDD;
+.calendar td.topNone {
+  border-top: none;
 }
 .calendar div.calendarBody {
-  height: 60px;
+  min-height: 60px;
 }
 .calendar div.calendarFooter {
   height: 17px;
@@ -1536,56 +1573,15 @@ div.off, td.off {
 .calendar div {
   overflow: hidden;
 }
-
-div.calendarScheduleDiv div.time {
-  height: 1.5em;
-  line-height: 1.5em;
-  overflow: hidden;
-  white-space: nowrap;
-}
-div.calendarScheduleDiv a:link,
-div.calendarScheduleDiv a:visited {
-  display: block;
-  text-decoration: none;
-  padding: 1px;
-}
-div.calendarScheduleDiv a:hover {
-  background-color: #FFFFE5;
-  border: 1px solid #ff9900;
-  text-decoration: none;
-  padding: 0;
-}
-div.calendarScheduleDiv .calendarTime {
-  padding-bottom: 5px;
-  vertical-align: text-bottom;
-}
-div.calendarScheduleDiv .addSchedule {
-  display: inline-block !important;
-  margin: 0 0 5px 0;
-  padding: 1px 0 !important;
-  text-decoration: underline !important;
-}
-div.calendarScheduleDiv .addSchedule:hover {
-  padding: 1px 0;
-  border: none;
-  background: none;
-}
-
-.addScheduleCell:hover {
-  background: #F5F5F5;
-  cursor: pointer;
-}
-
-.addScheduleCell:hover a.addSchedule {
-  color: #FF9900;
-  text-decoration: none !important;
-}
-
 .calendar td.term {
+  padding: 1px;
   border-top: none;
   border-bottom: none;
+  vertical-align: middle;
 }
-
+.calendar td.term.today {
+  background: #edfeed;
+}
 .calendar div.calerndarTermScheduleDiv {
   font-weight: normal;
   text-align: center;
@@ -1593,43 +1589,164 @@ div.calendarScheduleDiv .addSchedule:hover {
   background-color: #DFD;
   overflow: hidden;
 }
-
-.calendar td.topNone {
-  border-top: none;
+.calendar div.calerndarTermScheduleDiv a {
+  padding: 0 2px;
 }
-
-div.calerndarTermScheduleDiv a:link, div.calerndarTermScheduleDiv a:visited {
+.calendar div.calerndarTermScheduleDiv a:link,
+.calendar div.calerndarTermScheduleDiv a:visited {
   display: block;
   text-decoration: none;
   padding: 1px;
 }
-
-div.calerndarTermScheduleDiv a:hover {
+.calendar div.calerndarTermScheduleDiv a:hover {
   background-color: #FFFFE5;
   border: 1px solid #d2d2d2;
   text-decoration: none;
   padding: 0;
 }
-
-.calendar div.calerndarTodoDiv {
+.calendar td.calendarTodo {
+  padding: 0;
+  border-top: none;
+  border-bottom: none;
+}
+.calendar td.calendarTodo.today {
+  background: #edfeed;
+}
+.calendar td.fill {
+  background-color: #edf1f2;
+}
+.calendar .calerndarTodoDiv {
   padding: 0;
   font-weight: normal;
   text-align: center;
   border: 1px solid #f0a0a0;
   background-color: #FFE5E5;
 }
-
-div.calerndarTodoDiv a:link, div.calerndarTodoDiv a:visited {
+.calendar .calerndarTodoDiv a {
+  padding: 0 2px;
+}
+.calendar .calerndarTodoDiv a:link,
+.calendar .calerndarTodoDiv a:visited {
   display: block;
   text-decoration: none;
   padding: 1px;
 }
-
-div.calerndarTodoDiv a:hover {
+.calendar .calerndarTodoDiv a:hover {
   background-color: #FFFFE5;
   border: 1px solid #d2d2d2;
   text-decoration: none;
   padding: 0;
+}
+.calendar .calendarScheduleDiv {
+  margin: 1px;
+}
+.calendar .calendarScheduleDiv .time {
+  display: block;
+}
+.calendar .calendarScheduleDiv a:link,
+.calendar .calendarScheduleDiv a:visited {
+  display: block;
+  text-decoration: none;
+  padding: 1px;
+}
+.calendar .calendarScheduleDiv a:hover {
+  background-color: #FFFFE5;
+  border: 1px solid #ff9900;
+  text-decoration: none;
+  padding: 0;
+}
+.calendar .calendarScheduleDiv .calendarTime {
+  padding-bottom: 5px;
+  vertical-align: text-bottom;
+}
+.calendar .calendarScheduleDiv .addSchedule {
+  display: inline-block !important;
+  margin: 0 0 5px 0;
+  padding: 1px 0 !important;
+  text-decoration: underline !important;
+}
+.calendar .calendarScheduleDiv .addSchedule:hover {
+  padding: 1px 0;
+  border: none;
+  background: #F5F5F5;
+  cursor: pointer;
+}
+.calendar .calendarScheduleDiv .addSchedule:hover a.addSchedule {
+  color: #FF9900;
+  text-decoration: none !important;
+}
+.calendar .calendarScheduleDiv.overlap {
+  color: #ff3333;
+}
+.calendar .addScheduleCell {
+  border-top: none;
+}
+.calendar .addScheduleCell:hover {
+  background: #f6f6f6;
+  cursor: pointer;
+}
+.calendar .addScheduleCell.today {
+  background: #edfeed;
+}
+.calendar i[class*="icon-"] {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+}
+
+.calendarDisplayMonth .calendar th {
+  min-width: 7.5em;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv {
+  min-width: 6em;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv .time {
+  display: inline;
+  margin-right: 5px;
+}
+.calendarDisplayMonth .calendar .calendarScheduleDiv a {
+  height: 1.5em;
+  line-height: 1.6em;
+  overflow: hidden;
+}
+
+.calendarDisplayDay .calendar tr:first-child th {
+  background: #f6f6f6;
+  white-space: nowrap;
+  min-width: 0;
+  padding: 0;
+}
+.calendarDisplayDay .calendar .calerndarTermScheduleDiv,
+.calendarDisplayDay .calendar .calerndarTodoDiv {
+  margin: 1px;
+}
+
+.calendarDisplayWeek .calendar .calendarScheduleDiv a,
+.calendarDisplayDay .calendar .calendarScheduleDiv a {
+  height: auto;
+}
+
+.calendarDisplayWeek .calendar,
+.calendarDisplayMonth .calendar {
+  height: 100%;
+}
+.calendarDisplayWeek .calendar td.term,
+.calendarDisplayMonth .calendar td.term {
+  height: 100%;
+}
+.calendarDisplayWeek .calendar .calerndarTermScheduleDiv,
+.calendarDisplayMonth .calendar .calerndarTermScheduleDiv {
+  height: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: content-box !important;
+  box-sizing: border-box;
+}
+.calendarDisplayWeek .calendar .calerndarTermScheduleDiv a,
+.calendarDisplayMonth .calendar .calerndarTermScheduleDiv a {
+  height: 100%;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 /*span span span,*/
@@ -1637,7 +1754,8 @@ span.dispUser {
   display: inline-block;
   padding: 2px 4px;
   margin-top: 3px;
-  font-size: 0.9em;
+  font-size: 11px;
+  line-height: 15px;
   color: #ffffff;
 }
 
@@ -1966,7 +2084,9 @@ div.userInfo {
   z-index: 111 !important;
   top: 40px !important;
 }
-
+.menubar ul {
+  max-width: 260px;
+}
 .dijitPopup .menubar {
   position: static;
 }
@@ -1992,7 +2112,7 @@ ul.blockList li:first-child {
 .menubar.multi ul li a,
 ul.blockList li a {
   display: block;
-  padding: 4px 11px !important;
+  padding: 5px 10px !important;
   margin: 0;
   text-decoration: none;
   text-overflow: ellipsis;
@@ -2101,6 +2221,16 @@ ul.blockList li a.selected {
   color: #4862a3;
 }
 
+.menubar .caption {
+  color: #999999;
+  font-weight: bold;
+  margin: 0;
+  padding: 4px 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 /* menubar.multi **********/
 .menubar.multi {
   padding: 5px 5px 5px 0;
@@ -2111,16 +2241,6 @@ ul.blockList li a.selected {
   float: left;
   padding-left: 5px;
   overflow: hidden;
-}
-
-.menubar.multi .caption {
-  color: #999999;
-  font-weight: bold;
-  margin: 0;
-  padding: 4px 8px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .menubar.multi ul li {

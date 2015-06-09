@@ -24,7 +24,7 @@ import org.apache.turbine.util.RunData;
  * Custom Localization allows for the localization properties to changed dynamically,
  * without shutting down the application server. 
  *
- * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.it">Dessì Massimiliano</a>
+ * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.it">Dessï¿½ Massimiliano</a>
  * @version $Id: CustomLocalization.java,v 1.4 2004/02/23 03:49:33 jford Exp $
  */
 public abstract class CustomLocalization 

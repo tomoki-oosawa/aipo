@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -55,7 +54,7 @@ $l10n.CABINET_OWN_ADD_EDIE_DELET_BROWSE
 #ALtditemheader()
 #set($counter = 0)
 #foreach($record in $!result.MemberList)
-$!record.AliasName <br />
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.value},arguments[0])">$!record.AliasName</a> <br />
 #end
 #if($counter < ($!result.MemberList.size() - 1))
 #set ($hasMember = true)
@@ -67,11 +66,13 @@ $!record.AliasName <br />
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_CREATE_USER")
 #ALtditemheader()
-$!{result.Detail.CreateUser} #if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId.value},arguments[0])">$!{result.Detail.CreateUser}</a>
+#if($!{result.Detail.CreateDate} && $!{result.Detail.CreateDate.toString()} != "")（$!{result.Detail.CreateDate}）#end
 #ALtditemfooter()
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
 #ALtditemheader()
-$!{result.Detail.UpdateUser} #if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId.value},arguments[0])">$!{result.Detail.UpdateUser}</a>
+#if($!{result.Detail.UpdateDate} && $!{result.Detail.UpdateDate.toString()} != "")（$!{result.Detail.UpdateDate}）#end
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

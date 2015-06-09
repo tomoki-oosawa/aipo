@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 ## add by motegi1019 start
 #set($otherlist = [[$l10n.SCHEDULE_ANOTHER_USER_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_selectgroup','1')"]])
@@ -41,7 +40,7 @@
 <a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1').addQueryData('tab','oneday').addQueryData('view_start', $!daylist.get($daycount))">$!daylist.get($daycount).substring($yearindex).replace('-','/')$!weekdaylist.get($daycount)</a>
 #foreach($schedule in $!record)
 #ALcell_li_header($career)
-#if($schedule.Repeat)$l10n.SCHEDULE_TERM：#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
+#if($schedule.Repeat)$l10n.SCHEDULE_TERM:#else $schedule.StartDate&nbsp;-&nbsp;$schedule.EndDate #end
 <a href="$!jslink.getAction('controls.Maximize',$!portlet.ID).addQueryData('mode','detail').addQueryData('entityid', $!{schedule.ScheduleId}).addQueryData('view_date', $!daylist.get($daycount))">$schedule.Name</a>
 #if(!$schedule.Public)#ALcell_br($career) &nbsp;$l10n.SCHEDULE_SUB_CLOSE_PUBLIC#end
 #if(!$schedule.Repeat && $schedule.Pattern != 'N')#ALcell_br($career) &nbsp;$l10n.SCHEDULE_SUB_REPEAT#end

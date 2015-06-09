@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.modules.actions.gpdb;
 
 import java.util.ArrayList;
@@ -41,7 +37,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベースの管理者用アクションクラスです。
- * 
+ *
  */
 public class GpdbAction extends ALBaseAction {
 
@@ -51,42 +47,40 @@ public class GpdbAction extends ALBaseAction {
 
   /** ソート値のキー */
   private static final String LIST_SORT_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
+    .append(GpdbRecordSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_SORT)
     .toString();
 
   /** ソート項目のキー */
-  private static final String LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_SORT_TYPE)
-    .toString();
+  private static final String LIST_SORT_TYPE_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_SORT_TYPE).toString();
 
   /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  private static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /** フィルタ項目のキー */
   private static final String LIST_FILTER_TYPE_STR = new StringBuffer().append(
-    GpdbRecordSelectData.class.getName()).append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
 
   /** ソート値のキー */
   private static final String ITEM_LIST_SORT_STR = new StringBuffer()
-    .append(GpdbItemSelectData.class.getName())
+    .append(GpdbItemSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_SORT)
     .toString();
 
   /** ソート項目のキー */
   private static final String ITEM_LIST_SORT_TYPE_STR = new StringBuffer()
-    .append(GpdbItemSelectData.class.getName())
+    .append(GpdbItemSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_SORT_TYPE)
     .toString();
 
   /**
    * 通常表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    *          VelocityPortlet
    * @param context
@@ -110,7 +104,7 @@ public class GpdbAction extends ALBaseAction {
 
   /**
    * Webデータベースを一覧表示します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -132,7 +126,7 @@ public class GpdbAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    *          VelocityPortlet
    * @param context
@@ -178,7 +172,7 @@ public class GpdbAction extends ALBaseAction {
 
   /**
    * Webデータベースレコードを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -201,7 +195,7 @@ public class GpdbAction extends ALBaseAction {
 
   /**
    * セッション情報をクリアする
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context

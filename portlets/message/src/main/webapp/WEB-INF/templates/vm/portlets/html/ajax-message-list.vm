@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -21,17 +21,28 @@
 #AUIEmptyMessage("icon-comment-alt" "$l10n.MESSAGE_EMPTY_MESSAGE")
 #end
 #else
+#set($currentDate = "")
+#set($currentMessageId = "")
+#set($currentDateKey = "")
 #foreach ($record in $result.List)
+##if("$currentDate" != "" && "$!record.CreateDateLine.toString()" != "$currentDate")
+##<div id="messageLine$!record.MessageId" class="date_line messageLine$!currentDateKey"><span>$!currentDate</span></div>
+##end
+#set($currentDate = $!record.CreateDateLine.toString())
+#set($currentMessageId = $!record.MessageId)
+#set($currentDateKey = $!record.CreateDateKey.toString())
 <div id="message$!record.MessageId" class="message">
 	<div class="avatar">
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" width="50" height="50"/>
 		#end
+		</a>
 	</div>
 	<div class="messageContents">
-		<div class="name">$!record.LastName $!record.FirstName</div>
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
 		<div class="body">$!record.MessageHtml
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
@@ -46,4 +57,5 @@
 	</div>
 </div>
 #end
+##<div id="messageLine$!currentMessageId" style="display:none" class="date_line messageLineLast messageLine$!currentDateKey"><span>$!currentDate</span></div>
 #end

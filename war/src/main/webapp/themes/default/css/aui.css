@@ -1,9 +1,27 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @charset "UTF-8";
 .clearfix, #auiHeader, .hdPages > ul, .hdNavigation > ul, .dropdown .title,
 .activityPopup .title, .supportPopup .title, .dropdown .body,
 .activityPopup .body, .supportPopup .body, .dropdown .contents,
 .activityPopup .contents, .supportPopup .contents, .dropdown .foot,
-.activityPopup .foot, .supportPopup .foot, .messageSummary li a, .messageUserlist ul li a, #auiLauncher, #auiLauncher ul.launcher li a,
+.activityPopup .foot, .supportPopup .foot, .profilePopup .contents, .messageSummary li a, .messageUserlist ul li a, #auiLauncher, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab, #timelineOuter .message,
 .timelineOuter .message {
   *zoom: 1;
@@ -12,13 +30,13 @@
 .activityPopup .title:before, .supportPopup .title:before, .dropdown .body:before,
 .activityPopup .body:before, .supportPopup .body:before, .dropdown .contents:before,
 .activityPopup .contents:before, .supportPopup .contents:before, .dropdown .foot:before,
-.activityPopup .foot:before, .supportPopup .foot:before, .messageSummary li a:before, .messageUserlist ul li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
+.activityPopup .foot:before, .profilePopup .contents:before, .supportPopup .foot:before, .messageSummary li a:before, .messageUserlist ul li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
 #auiLauncher ul.setting li a:before, .auiTabs .tab:before, #timelineOuter .message:before,
 .timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
 .activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
 .activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
 .activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
-.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.activityPopup .foot:after, .profilePopup .contents:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   display: table;
@@ -29,7 +47,7 @@
 .activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
 .activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
 .activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
-.activityPopup .foot:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+.activityPopup .foot:after, .profilePopup .contents:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
 #auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
 .timelineOuter .message:after {
   clear: both;
@@ -46,7 +64,7 @@
 
 .border-box, #auiHeader, #auiHeader a, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdCommunications .num, .dropdown,
 .activityPopup, .supportPopup, .dropdown .title,
-.activityPopup .title, .supportPopup .title, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
+.activityPopup .title, .supportPopup .title, .profilePopup, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
 #auiLauncher ul.setting li a, .auiTabs .tab > li a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -54,7 +72,7 @@
 }
 
 .bRadius2, #auiLauncher ul.launcher li .name,
-#auiLauncher ul.setting li .name, .counter, .nrCount {
+#auiLauncher ul.setting li .name, .counter {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
   -ms-border-radius: 2px;
@@ -62,7 +80,7 @@
 }
 
 .bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown,
-.activityPopup, .supportPopup, .auiSearchOption, .auiAvatarList li a img, textarea,
+.activityPopup, .supportPopup, .profilePopup, .profilePopup .messageInputDummy span, .profilePopup .messageField .outer,.auiSearchOption, .auiAvatarList li a img, textarea,
 select, input[type=text],
 input[type=password], #timelineOuter #inputField,
 #timelineOuter .inputField,
@@ -79,7 +97,7 @@ input[type=password], #timelineOuter #inputField,
 
 .bRadius4, .auiPopup,
 .activityPopup, .loginAlert,
-.alert, .alertSuccess, .submenu_v2 li a, .filterInputField, #auiLauncher_1 li a, #auiLauncher_2 li a {
+.alert, .alertSuccess, .alertRecommend, .alertInfo, .submenu_v2 li a, .filterInputField, #auiLauncher_1 li a, #auiLauncher_2 li a {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -117,28 +135,10 @@ input[type=password], #timelineOuter #inputField,
 }
 
 .popupShadow, .dropdown,
-.activityPopup, .supportPopup {
+.activityPopup, .supportPopup, .profilePopup {
   -webkit-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   -moz-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-}
-
-.scrollDecoration, .scroll, .auiCheckList {
-  scrollbar-face-color: #d2d2d2;
-  scrollbar-track-color: #f6f6f6;
-  scrollbar-arrow-color: #d2d2d2;
-  scrollbar-shadow-color: #d2d2d2;
-}
-.scrollDecoration::-webkit-scrollbar, .scroll::-webkit-scrollbar, .auiCheckList::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-  background: #f6f6f6;
-}
-.scrollDecoration::-webkit-scrollbar-piece, .scroll::-webkit-scrollbar-piece, .auiCheckList::-webkit-scrollbar-piece {
-  background: #f0f0f0;
-}
-.scrollDecoration::-webkit-scrollbar-thumb, .scroll::-webkit-scrollbar-thumb, .auiCheckList::-webkit-scrollbar-thumb {
-  background: #d2d2d2;
 }
 
 @font-face {
@@ -150,7 +150,11 @@ input[type=password], #timelineOuter #inputField,
 }
 
 * {
-  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+  font-family: Arial, Helvetica, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
+}
+
+:lang(ja).dj_ie textarea {
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 
 html, body {
@@ -158,9 +162,13 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 12px;
-  line-height: 1.4;
+  font-size: 13px;
+  line-height: 1.38;
   background-color: #f0f0f0;
+}
+
+body {
+  overflow-y: scroll;
 }
 
 body#login {
@@ -177,7 +185,7 @@ h1, h2, h3, h4, h5, h6, p, span {
 }
 
 div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
-  line-height: 1.4;
+  line-height: 1.38;
 }
 
 input[type=submit], input[type=button], input[type=reset] {
@@ -379,7 +387,7 @@ input[type=submit], input[type=button], input[type=reset] {
   top: 0;
   right: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   background: none;
   filter: none;
   cursor: pointer;
@@ -389,6 +397,10 @@ input[type=submit], input[type=button], input[type=reset] {
   -moz-border-radius-bottomleft: 0;
   -webkit-border-bottom-left-radius: 0;
   border-bottom-left-radius: 0;
+}
+.search button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
 }
 .search .submit [class^="icon-"], .search .submit [class*=" icon-"] {
   display: block;
@@ -552,6 +564,15 @@ ul.hdCommunications .label {
   background-image: url(../images/common/head_icons.png);
 }
 
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+(-webkit-min-device-pixel-ratio: 1.5),
+(min-resolution: 2dppx) {
+  [class^="sprite-"] {
+    background-image: url(../images/common/head_icons_smp.png);
+    background-size: 60px;
+  }
+}
+
 .sprite-comment {
   background-position: left top;
 }
@@ -633,10 +654,9 @@ ul.hdTools .dropdown:before {
   display: none;
   position: absolute;
   z-index: 120;
-  border: solid 1px silver;
-  background-color: white;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
   line-height: 2;
-  filter: progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=0, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=90, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=180, strength=3, enabled=true), progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa, direction=270, strength=3, enabled=true);
 }
 .dropdown.open,
 .activityPopup.open, .supportPopup.open {
@@ -663,6 +683,7 @@ ul.hdTools .dropdown:before {
 .activityPopup .sideBlock, .supportPopup .sideBlock {
   float: left;
   width: 280px;
+  /*width: 240px;*/
 }
 .dropdown .contents,
 .activityPopup .contents, .supportPopup .contents {
@@ -682,10 +703,13 @@ ul.hdTools .dropdown:before {
 .dropdown .foot,
 .activityPopup .foot, .supportPopup .foot {
   padding: 8px 10px;
+  border-top: solid 1px #d2d2d2;
 }
-.dropdown .foot .count,
-.activityPopup .foot .count, .supportPopup .foot .count {
-  line-height: 24px;
+.dropdown a, .dropdown input, .dropdown button,
+.activityPopup a,
+.activityPopup input,
+.activityPopup button, .supportPopup a, .supportPopup input, .supportPopup button {
+  filter: none !important;
 }
 
 .activityPopup, .supportPopup {
@@ -726,8 +750,14 @@ ul.hdTools .dropdown:before {
 }
 .dropdown_list li {
   padding: 0;
-  border-bottom: solid 1px #ededed;
+  border-top: solid 1px #ededed;
   background-image: none;
+}
+.dropdown_list li:first-child {
+  border-top: none;
+}
+.dropdown_list li > a {
+  position: relative;
 }
 .dropdown_list li > a > .avatar {
   position: absolute;
@@ -770,50 +800,404 @@ ul.hdTools .dropdown:before {
   border-bottom: solid 1px #ededed;
 }
 
+.dividerBg {
+  background-color: #f6f6f6;
+}
+/***************************************************
+	profilePopup
+--------------------------------------------------*/
+.profilePopupWrap {
+  position: absolute;
+  z-index: 1000;
+}
+
+.profilePopup {
+  display: none;
+  position: absolute;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
+  line-height: 2;
+  min-width: 220px;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.profilePopup .contents {
+  position: relative;
+  padding: 10px;
+}
+.profilePopup .avatar_l {
+  float: left;
+  margin-right: 10px;
+}
+.profilePopup .popupInner {
+  overflow: hidden;
+}
+.profilePopup .name {
+  display: block;
+  font-weight: bold;
+}
+.profilePopup .name_kana {
+  display: block;
+  font-size: 10px;
+  padding: 2px 0 5px;
+}
+.profilePopup .post_name {
+  display: block;
+}
+.profilePopup .icon_menu {
+  width: 320px;
+}
+.profilePopup .icon_menu li {
+  padding: 0;
+  background-image: none;
+  width: 159px;
+  float: left;
+  text-align: center;
+  font-size: 10px;
+  margin-left: -1px;
+  border-left: 1px solid #ededed;
+}
+.profilePopup .icon_menu li:first-child {
+  margin-left: 0px;
+  border-left: none;
+}
+.profilePopup .icon_menu li div {
+  padding-bottom: 3px;
+}
+.profilePopup .icon_menu li a {
+  display: block;
+  padding: 6px 10px;
+  color: #a0a0a0;
+  text-decoration: none;
+}
+.profilePopup .icon_menu li a i {
+  font-size: 20px;
+  color: #a0a0a0;
+}
+.profilePopup .icon_menu li a:hover {
+  color: #313131;
+  text-decoration: none;
+  background: none;
+}
+.profilePopup .icon_menu li a:hover i {
+  color: #313131;
+}
+.profilePopup .icon_menu.icon_menu_s {
+  width: 260px;
+}
+.profilePopup .icon_menu.icon_menu_s li {
+  width: 129px;
+}
+.profilePopup .messageInputDummy span {
+  display: block;
+  padding: 5px;
+  border: 1px #d2d2d2 solid;
+  color: #d2d2d2;
+  cursor: text;
+  background: #fff;
+}
+.profilePopup .messageField .outer {
+  border: 1px #d2d2d2 solid;
+  background: #fff;
+  overflow: hidden;
+}
+.profilePopup .messageField #inputField,
+.profilePopup .messageField .inputField {
+  margin-bottom: 15px;
+  background: transparent;
+}
+.profilePopup .messageField .outer {
+  padding: 3px;
+  margin: 0 0 5px 0;
+}
+.profilePopup .messageField textarea {
+  border: none;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  font-size: 13px;
+}
+.profilePopup .messageField textarea:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.profilePopup .messageField textarea.elastic {
+  width: 99%;
+  overflow: hidden;
+  resize: none;
+  outline: 0;
+  line-height: normal;
+  height: 21px;
+  -webkit-appearance: caret;
+}
 /***************************************************
 	dd_message
 --------------------------------------------------*/
 #dd_message {
   width: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+}
+#dd_message > .body {
+  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAABCAYAAAAFILFrAAAAFUlEQVR42mMwNjb+P4pH8SgexbTAAPnyvlAL+gbgAAAAAElFTkSuQmCC);
+  background-repeat: repeat-y;
+  background-position: left; */
+  background: #eee;
+}
+#dd_message .title {
+  height: 50px;
+  line-height: 34px;
+  border-bottom: 1px solid #e5e5e5;
 }
 #dd_message .mainBlock {
-  margin-left: 280px;
-  border-left: solid 1px #d2d2d2;
+   margin-left: 280px;
+  /*border-left: solid 1px #d2d2d2; */
+  /*margin-left: 240px;*/
+}
+#dd_message .mainBlock > .contents {
+  /* padding: 10px 10px 0 10px; */
+  padding: 10px 15px 0 15px;
+}
+/* ------------------------------------------------
+   rightBlock  2015.05.11
+--------------------------------------------------- */
+#dd_message .rightBlock {
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  right: 0;
+  width: 359px;
+  background: #ffffff;
+  border-left: 1px solid #e5e5e5;
+  overflow-y: scroll;
+}
+#dd_message .rightBlock div.index {
+  background: #f6f6f6;
+  padding: 11px 20px 9px 10px;
+  color: #333;
+}
+#dd_message .rightBlock ul.close li {
+  display: none;
+}
+#dd_message .rightBlock ul.close li.index {
+  display: block;
+}
+#dd_message .rightBlock ul.user li, #dd_message .rightBlock ul.room li {
+  height: 38px;
+  border: 1px solid #E7E7E7;
+}
+#dd_message .rightBlock ul.user li:hover, #dd_message .rightBlock ul.room li:hover {
+  border: 1px solid #999;
+}
+#dd_message .rightBlock ul.user li a, #dd_message .rightBlock ul.room li a {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 38px;
+  padding: 7px 16px 7px 38px;
+  display: block;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul.user li:hover span,
+#dd_message .rightBlock ul.room li:hover span {
+  text-decoration: none;
+}
+#dd_message .rightBlock ul.user li .name,
+#dd_message .rightBlock ul.room li .name,
+#dd_message .rightBlock ul.user li .date,
+#dd_message .rightBlock ul.room li .date {
+  line-height: 25px;
+  height: 25px;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+#dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.room li .date {
+  float: right;
+  color: #999;
+  font-size: 11px;
+}
+#dd_message .rightBlock ul.user li .nrCount, #dd_message .rightBlock ul.room li .nrCount {
+  background-color: #ff3333;
+  border-radius: 3px;
+  color: #ffffff;
+  display: inline-block;
+  float: left;
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 5px 3px 0 0;
+  min-width: 8px;
+  padding: 0 3px;
+  text-align: center;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li {
+  position: relative;
+  margin: 0 15px 7px 15px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+#dd_message .rightBlock ul li.index {
+  background: none;
+  color: #333;
+  border: none;
+  padding: 0 15px 0;
+  margin: 15px 0 7px;
+  cursor: auto;
+  height: auto;
+  border: none;
+}
+#dd_message .rightBlock ul li.index a {
+  height: auto;
+  padding: 0;
+  margin-right: 4px;
+}
+#dd_message .rightBlock ul li.index a i {
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li.index:hover {
+  border: none;
+}
+#dd_message .rightBlock ul li.index span {
+  color: #999;
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 11px;
+}
+#dd_message .rightBlock ul li.index a i {
+  color: #d2d2d2;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li.index a:hover i {
+  color: #333;
+}
+#dd_message .rightBlock ul li span {
+  display: block;
+}
+#dd_message .rightBlock ul li .avatar {
+  left: 0;
+  padding: 7px;
+  position: absolute;
+  top: 0;
+}
+#dd_message .rightBlock ul li.message {
+  padding: 7px 16px 7px 38px;
+}
+#dd_message .rightBlock ul li.message .tlClipBoard {
+  border: 1px solid #f0f0f0;
+  font-size: 11px;
+  padding: 7px;
+  margin: 10px 0 5px;
+}
+#dd_message .rightBlock ul li.message .time {
+  color: #999;
+}
+#dd_message .rightBlock ul li.message .time a {
+  color: #999;
+}
+#dd_message .rightBlock ul li.message .time a:hover {
+  color: #ff9900;
+}
+/* ------------------------------------------------
+   rightBlock  END
+--------------------------------------------------- */
+#dd_message .timelineOuter .message {
+  border-top: none;
+  /* padding: 0 7px 7px; */
+  padding: 0 7px 20px;
+  margin-bottom: 0px;
+}
+#dd_message .timelineOuter .message:first-child {
+  padding-top: 0 !important;
+}
+#dd_message .timelineOuter .message:last-child {
+  margin-bottom: 30px;
+}
+#dd_message .timelineOuter .message.active {
+  background: #fef6f1;
+  border-radius: 4px;
+}
+#dd_message .timelineOuter .message .avatar {
+  margin-top: 7px;
+}
+#dd_message .timelineOuter .message .time {
+  color: #999;
+  margin-bottom: 0;
+}
+#dd_message .timelineOuter .message .time a {
+  color: #999;
+}
+#dd_message .timelineOuter .message .time a:hover {
+  color: #ff9900;
+}
+#dd_message .timelineOuter .message .name {
+  padding-top: 7px;
+}
+#dd_message .timelineOuter .timeline .messageContents {
+  margin-right: 60px;
+}
+#dd_message .contents {
+  background: #ffffff;
 }
 #dd_message .subContents {
   float: right;
-  width: 280px;
+  width: 240px;
   border-left: solid 1px #d2d2d2;
 }
 #dd_message .inputField {
   margin-bottom: 10px;
 }
-
-.nrCount {
-  margin: 0;
+.counter {
+  float: left !important;
+  font-size: 10px;
+  height: 13px;
+  min-width: 11px;
+  line-height: 13px !important;
+  padding: 0 2px;
+  text-align: center;
+  margin-top: 5px;
+  margin-right: 2px;
+  color: #FFFFFF;
+  background: #ff3333 !important;
+  text-decoration: none;
 }
 
-.messageSummary, .messageUserlist ul {
-  font-size: 11px;
+.counter.zero {
+  background: #b5b5b5 !important;
 }
+
 .messageSummary li, .messageUserlist ul li {
   position: relative;
   padding: 0;
+  margin-left: 10px;
   background-image: none;
-  border-bottom: solid 1px black;
+  /* border-bottom: solid 1px #000; */
 }
 .messageSummary li a, .messageUserlist ul li a {
   display: block;
-  height: 40px;
+  height: 38px;
+  /* height: 44px;
+  color: #999; */
   text-decoration: none;
-  color: #999999;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .messageSummary li a .name, .messageUserlist ul li a .name {
-  color: white;
+  /* color: #ffffff; */
 }
 .messageSummary li a:hover, .messageUserlist ul li a:hover {
   color: #ff9900;
-  background-color: #222222;
+  /*background-color: #222; */
+  text-decoration: none;
+}
+.messageSummary li a:hover span, .messageUserlist ul li a:hover span {
+  text-decoration: none;
 }
 .messageSummary li a:hover .name, .messageUserlist ul li a:hover .name {
   color: #ff9900;
@@ -821,15 +1205,30 @@ ul.hdTools .dropdown:before {
 .messageSummary li span, .messageUserlist ul li span {
   display: block;
 }
+.messageSummary li .latest, .messageSummary li .date, .messageUserlist ul li .latest, .messageUserlist ul li .date {
+  font-size: 11px;
+  color: #999;
+}
+.messageSummary li .latest{
+  display: none;
+}
 .messageSummary .avatar, .messageUserlist ul .avatar {
   position: absolute;
   top: 0;
   left: 0;
-  padding: 8px;
+  /* padding: 6px; */
+  padding: 7px;
 }
 
+.messageSummary {
+  position: relative;
+}
 .messageSummary li a {
-  padding: 5px 5px 5px 40px;
+  /* padding: 6px 10px 6px 45px; */
+  padding: 6px 16px 6px 40px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #eee;
 }
 .messageSummary .date {
   float: right;
@@ -837,34 +1236,58 @@ ul.hdTools .dropdown:before {
   margin-left: 5px;
 }
 .messageSummary .date, .messageSummary .name, .messageSummary .latest {
-  line-height: 16px;
-  height: 16px;
+  /* line-height: 16px;
+  height: 16px; */
+  line-height: 25px;
+  height: 25px;
 }
 .messageSummary .nrCount {
-  margin: 0 3px 0 0;
+  float: left;
+  display: inline-block;
+  height: 13px;
+  min-width: 10px;
+  line-height: 13px;
+  margin: 5px 3px 0 0;
+  padding: 0 2px;
+  font-size: 10px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #ff3333;
+  color: #ffffff;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
 }
-.messageSummary .active {
-  background-color: white;
+
+.messageSummary .active, .messageUserlist .active {
 }
-.messageSummary .active a, .messageSummary .active a:hover {
-  color: #999999 !important;
-  background-color: white;
+.messageSummary .active a, .messageSummary .active a:hover, .messageUserlist .active a, .messageUserlist .active a:hover {
+  /* color: #999 !important; */
+  background-color: #ffffff;
+  border-top: 1px solid #e7e7e7;
+  border-bottom: 1px solid #e7e7e7;
+  border-left: 1px solid #e7e7e7;
+  border-radius: 3px 0 0 3px;
 }
-.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest {
-  color: #999999 !important;
+.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest, .messageUserlist .active a .date, .messageUserlist .active a .latest, .messageUserlist .active a:hover .date, .messageUserlist .active a:hover .latest {
+  /* color: #666 !important; */
 }
-.messageSummary .active a .name, .messageSummary .active a:hover .name {
-  color: #333333;
+.messageSummary .active a .name, .messageSummary .active a:hover .name, .messageUserlist .active a .name, .messageUserlist .active a:hover .name {
+  color: #000;
 }
 
 .messageUserlist ul li a {
-  line-height: 40px;
-  padding-left: 40px;
+  /* line-height: 45px;
+  padding-left: 45px; */
+  line-height: 25px;
+  padding: 6px 16px 6px 40px;
 }
 .messageUserlist .index {
   line-height: 20px;
   padding: 0 8px;
-  background: #222222;
+  margin: 7px 0;
+  border-bottom: 1px solid #DCDCDC;
+  /* background: #222222; */
 }
 
 .searchClear {
@@ -885,17 +1308,28 @@ ul.hdTools .dropdown:before {
 }
 
 .messageSummaryHead div {
-  border-bottom: solid 1px black;
+  /* border-bottom: solid 1px black; */
 }
 
 .roomHeader {
   margin-bottom: 10px;
+}
+.roomHeader .userListIcon {
+  padding-right: 30px;
+  height: 24px;
+  margin-bottom: 0;
+  overflow: hidden;
 }
 .roomHeader .floatLeft {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 90%;
+}
+.roomHeader .floatRight {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .roomHeader .floatRight a {
   display: inline-block;
@@ -923,16 +1357,41 @@ ul.hdTools .dropdown:before {
   background-color: #f6f6f6;
 }
 
+/* ------------------------------------------------
+ date_line  2015.05.11
+--------------------------------------------------- */
+.date_line {
+  position: relative;
+  text-align: center;
+  margin: -10px 0 20px;
+  height: 30px;
+  border-bottom: 1px solid #eee;
+}
+.date_line span {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 180px;
+  margin-left: -90px;
+  display: inline-block;
+  padding: 5px 10px;ß
+  line-height: 30px;
+  background: #ffffff;
+  font-size: 16px;
+  text-align: center;
+}
+
 /***************************************************
 	sideBlock
 --------------------------------------------------*/
 .sideBlock {
   position: relative;
-  background-color: #333333;
-  color: white;
+  /* background-color: #333333;
+  color: white; */
 }
 .sideBlock .inner {
-  padding: 10px;
+  /* padding: 10px; */
+  padding: 10px 15px;
 }
 .sideBlock .search {
   background-color: #666666;
@@ -949,20 +1408,25 @@ ul.hdTools .dropdown:before {
 .sideBlock .search [class*="icon-"] {
   color: #d2d2d2;
 }
+.sideBlock .auiTabs .tab {
+  border-right: 1px solid #eee;
+}
 .sideBlock .auiTabs .tab li a, .sideBlock .auiTabs .tab li:first-child a {
   margin: 0;
-  background-color: #222222;
-  height: 45px;
-  line-height: 45px;
+  /* background-color: #000000; */
+  height: 35px;
+  line-height: 35px;
   border: none;
-  color: #d2d2d2;
+  /* color: #d2d2d2; */
+  border-radius: 0;
 }
 .sideBlock .auiTabs .tab li a:hover, .sideBlock .auiTabs .tab li:first-child a:hover {
-  color: white;
+  /* color: white; */
 }
 .sideBlock .auiTabs .tab li.active a {
-  background-color: #333333;
-  color: white !important;
+  /* background-color: #333333;
+  color: white !important; */
+  background: #eee;
 }
 .sideBlock .auiTabs .tabContents li {
   padding: 0 !important;
@@ -985,7 +1449,7 @@ ul.hdTools .dropdown:before {
   margin: 120px 0 170px;
 }
 .emptyMessage [class*=icon-] {
-  font-size: 10em;
+  font-size: 120px !important;
   color: #d2d2d2;
   text-shadow: 0 -1px 0 #b8b8b8;
 }
@@ -1000,6 +1464,13 @@ ul.hdTools .dropdown:before {
   left: 0;
   height: 160px;
   margin: auto;
+}
+
+/***************************************************
+	row & col
+--------------------------------------------------*/
+.row, .col-2, .col-3 {
+  display: inline-block;
 }
 
 /***************************************************
@@ -1235,6 +1706,25 @@ button span,
   button {
     padding: 0 6px !important;
   }
+   input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button,
+  .auiButton,
+  .auiButtonAction,
+  .auiButtonBold,
+  .auiButtonSearch,
+  .auiButtonSmall,
+  .auiButtonDisabled,
+  .auiButtonIcon,
+  .auiButtonDummy,
+  .auiButtonIconDummy,
+  .auiSelectButton a,
+  .auiSelectButtonSmall a,
+  .auiWidget .auiSelectButton a,
+  .auiWidget .auiSelectButtonSmall a {
+    line-height: -moz-block-height;
+  }
 }
 
 *:first-child + html input[type=submit],
@@ -1254,7 +1744,7 @@ button {
   padding: 0 5px;
   height: 24px !important;
   line-height: 24px !important;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 input[type=submit].auiButtonSmall,
@@ -1577,9 +2067,9 @@ button[disabled]:active {
   color: #ff9900;
 }
 
-.counter, .nrCount {
+.counter {
   float: left !important;
-  font-size: 9px;
+  font-size: 10px;
   height: 13px;
   min-width: 11px;
   line-height: 13px !important;
@@ -1592,7 +2082,7 @@ button[disabled]:active {
   text-decoration: none;
 }
 
-.counter.zero, .zero.nrCount {
+.counter.zero {
   background: #b5b5b5 !important;
 }
 
@@ -1630,7 +2120,7 @@ button[disabled]:active {
   display: block;
   position: absolute;
   top: 0;
-  left: 0;
+  left: 1px;
   font-family: 'FontAwesome';
   font-size: 15px;
   line-height: 24px;
@@ -1832,22 +2322,30 @@ button[disabled]:active {
 .rightBtn {
   text-align: right;
   margin: 0;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* imgPopup */
 .imgPopup {
   position: absolute !important;
-  /*overflow:hidden;*/
 }
-
 .imgPopup .imgBody {
   text-align: center;
 }
-
 .imgPopup img {
   max-width: 800px;
   max-height: 800px;
+}
+.imgPopup .meta {
+  position: absolute;
+  right: -10px;
+  top: -40px;
+}
+.imgPopup .meta a {
+  display: inline-block;
+}
+.imgPopup .meta [class*="icon-"] {
+  font-size: 24px;
 }
 
 /* imgPopupTutorial */
@@ -1922,17 +2420,20 @@ button[disabled]:active {
 }
 .auiPortlet .auiPortletHead .inner {
   background: url("../images/common/portlet_20140718.png") no-repeat left -100px;
+  height: 35px;
   padding: 10px;
   position: relative;
   overflow: hidden;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-.auiPortlet .auiPortletBody .auiPortletHead .inner {
+.auiPortlet .auiPortletBody .auiPortletHead > .inner {
   padding: 0 !important;
 }
 .auiPortlet .auiPortletTitle {
   float: left;
   white-space: nowrap;
-  line-height: 15px;
 }
 .auiPortlet .auiPortletTool {
   background: url("../images/common/portlet_20140718.png") no-repeat right -200px;
@@ -1947,9 +2448,9 @@ button[disabled]:active {
   float: left;
   padding: 0 5px;
   background: #ffffff;
-  -webkit-box-shadow: -5px 0 3px white;
-  -moz-box-shadow: -5px 0 3px white;
-  box-shadow: -5px 0 3px white;
+  -moz-box-shadow: -5px 0 3px #ffffff;
+  -webkit-box-shadow: -5px 0 3px #ffffff;
+  box-shadow: -5px 0 3px #ffffff;
   white-space: nowrap;
 }
 .auiPortlet .auiPortletSetting {
@@ -2228,6 +2729,10 @@ button[disabled]:active {
   margin-bottom: 50px;
 }
 
+#auiLoginBox .inlineLabel {
+  vertical-align: middle;
+}
+
 #auiLoginBox .field {
   position: relative;
   margin-bottom: 10px;
@@ -2273,7 +2778,7 @@ button[disabled]:active {
   height: 43px;
   padding: 0;
   color: #fff;
-  font-size: 1.2em;
+  font-size: 14px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   border: none;
   background: url(../images/login_btn_back.png) 0px 0px no-repeat;
@@ -2340,6 +2845,17 @@ button[disabled]:active {
   margin: 10px 0;
   padding: 10px;
   background: #f0f0f0;
+}
+.alertRecommend {
+  margin: 10px 0;
+  padding: 10px;
+  background: #FFFFE5;
+}
+
+.alertInfo {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #dff0d8;
 }
 
 /***************************************************
@@ -2508,7 +3024,7 @@ button[disabled]:active {
 
 #auiContentsArea h2, h2.caption {
   margin: 0;
-  font-size: 1.2em;
+  font-size: 16px;
 }
 
 #auiThreeClumns {
@@ -2598,6 +3114,57 @@ button[disabled]:active {
 .auiSearchMore {
   line-height: 2em;
   margin-bottom: 2em;
+}
+
+/* ------------------------------------------------
+   auiSearch.gray  2015.05.11
+--------------------------------------------------- */
+.auiSearch.gray {
+  position: relative;
+  padding-right: 30px;
+}
+.auiSearch.gray input[type="text"] {
+  border-radius: 4px 0 0 4px;
+  padding-left: 7px;
+  min-width: 230px;
+  border-color: #eee;
+  background: #eee;
+  outline: none;
+}
+.auiSearch.gray input[type="text"]:focus {
+  background: #ffffff;
+  border-color: #e5e5e5;
+  box-shadow: none;
+  /* min-width: 320px; */
+}
+.auiSearch.gray button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  border-radius: 0 4px 4px 0;
+  margin-left: -1px;
+  border-color: #eee;
+  border-left-color: #ffffff;
+  background: #eee;
+}
+.auiSearch.gray button:focus {
+  /* background: #ff9900; */
+}
+.auiSearch.gray.focus input[type="text"] {
+  background: #ffffff;
+  border-color: #e5e5e5;
+  box-shadow: none;
+}
+.auiSearch.gray.focus button,
+.auiSearch.gray.focus button:active{
+  background: #ff9900 !important;
+  border-color: #e68a00 !important;
+  text-shadow: none;
+}
+.auiSearch.gray.focus button i,
+.auiSearch.gray.focus button:active i{
+  color: #ffffff;
 }
 
 /***************************************************
@@ -2727,6 +3294,9 @@ button[disabled]:active {
   height: 35px;
   line-height: 35px;
   overflow: hidden;
+}
+.auiRowTable div a {
+	display:inline-block;
 }
 .auiRowTable .today .day {
   font-weight: bold;
@@ -3018,7 +3588,6 @@ button[disabled]:active {
   color: #999999;
 }
 .auiCalendar .today a {
-  /*background:#e0ffe0;*/
   background: #f0f0f0;
 }
 .auiCalendar .selected a {
@@ -3082,25 +3651,33 @@ button[disabled]:active {
   margin-left: 60px;
   word-break: break-all;
 }
+#auiContentsArea .entryText {
+  font-size: 14px;
+}
 
 .entryHeader {
-  padding: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .entryFooter {
-  padding: 1em 0;
+  margin: 1em 0;
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+}
+
+.dojoDndItem .entryFooter .entryText {
+  margin: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 10px 0;
+  margin: 10px 0;
+  font-size: 11px;
 }
 
-.dojoDndItem .entryFooter {
-  font-size: 8pt;
+.dojoDndItem .entryFooter .subCaption {
+  display: inline-block;
 }
 
 /***************************************************
@@ -3120,6 +3697,10 @@ form {
   max-width: 100%;
 }
 
+form label {
+  vertical-align: middle;
+}
+
 input[type=text],
 input[type=password],
 textarea,
@@ -3130,7 +3711,13 @@ select {
 
 input[type=radio],
 input[type=checkbox] {
+  position: relative;
   vertical-align: middle;
+  top:-1px;
+}
+.dj_ie input[type=radio],
+.dj_ie input[type=checkbox] {
+	top:0;
 }
 
 textarea,
@@ -3159,9 +3746,25 @@ html > body input[type=password] {
 }
 
 select {
-  min-height: 32px;
+  height: 32px;
   padding: 5px;
   max-width: 100%;
+}
+
+select[multiple="multiple"] {
+  height: auto;
+}
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
+	height: 8em;
+}
+
+*:first-child + html select {
+  height: auto;
+ }
+
+select[multiple="multiple"] option {
+  padding-bottom: 1px;
 }
 
 form textarea {
@@ -3225,15 +3828,24 @@ ul.attachments {
 
 .auiInputFileFrame {
   height: 32px;
-  width: 130px;
+  width: 142px;
+}
+
+#uploadContainer .auiButtonBold {
+  width: 142px;
 }
 
 .uploadText {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  position: absolute\9;
+  top: 0\9;
+  right: 0\9;
+  bottom: 0\9;
+  left: 0\9;
+  *position: absolute;
+  *top: 0;
+  *right: 0;
+  *bottom: 0;
+  *left: 0;
   margin: auto;
   width: 100%;
 }
@@ -3345,7 +3957,7 @@ ul.attachments {
   -ms-border-radius: 0;
   -o-border-radius: 0;
   border-radius: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 #timelineOuter textarea:focus,
 .timelineOuter textarea:focus {
@@ -3355,13 +3967,18 @@ ul.attachments {
 }
 #timelineOuter textarea.elastic,
 .timelineOuter textarea.elastic {
-  width: 99%;
+  width: 100%;
   overflow: hidden;
   resize: none;
   outline: 0;
-  line-height: normal;
+  line-height: 1.38;
   height: 21px;
+  padding-right: 1%;
   -webkit-appearance: caret;
+}
+
+#timelineOuter .timeline .commentField textarea {
+ font-size:13px;
 }
 
 .tlInputMention {
@@ -3446,12 +4063,15 @@ ul.attachments {
 }
 .timeline .messageContents {
   margin-left: 60px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 .timeline .messageContents .tlClipBoard {
   border: solid 1px #ededed;
   margin: 10px 0 5px;
   padding: 10px;
+}
+.timeline .messageContents .time {
+  margin-bottom: 10px;
 }
 .timeline .commentsBorder, .timeline .comments .message, .timeline .commentCaption, .timeline .commentInputDummy, .timeline .commentField {
   border-top: solid 1px #fff !important;
@@ -3463,6 +4083,12 @@ ul.attachments {
 }
 .timeline .comments .messageContents {
   margin-left: 42px;
+}
+.timeline .comments .messageContents .time {
+  margin-bottom: 0;
+}
+.timeline .comments .messageContents .body {
+  font-size: 13px;
 }
 .timeline .comments .message {
   margin: 0;
@@ -3478,7 +4104,7 @@ ul.attachments {
 }
 .timeline .commentCaption {
   padding: 3px 5px;
-  font-size: smaller;
+  font-size: 11px;
 }
 .timeline .commentInputDummy {
   padding: 5px;
@@ -3509,11 +4135,13 @@ ul.attachments {
 }
 .messageContents .body {
   padding: 5px 0;
-  line-height: 1.5;
+  font-size: 14px;
+}
+.messageContents .body .more {
+  margin: 0;
 }
 .messageContents .time {
-  font-size: 80%;
-  *font-size: 75%;
+  font-size: 11px;
   color: #434343;
 }
 .messageContents .time [class^="icon-"] {
@@ -3564,6 +4192,10 @@ ul.attachments {
 }
 
 /* clipBloard */
+.tlClipBoard {
+  font-size: 13px;
+}
+
 .tlClipImage {
   float: left;
   max-width: 90px;
@@ -3584,12 +4216,8 @@ ul.attachments {
   display: table-cell;
 }
 
-.tlClipTitle {
-  font-size: 12px;
-}
-
 .tlClipUrl {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .tlClipBody {
@@ -3644,7 +4272,7 @@ ul.attachments {
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -3714,7 +4342,6 @@ ul.attachments {
   height: 32px !important;
   line-height: 33px !important;
   white-space: nowrap;
-  font-size: 11px;
   cursor: pointer;
 }
 
@@ -4232,6 +4859,9 @@ ul.attachments {
 /***************************************************
 	auiWikiContent
 --------------------------------------------------*/
+.auiWikiContent {
+  font-size: 14px;
+}
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
   margin: 1em 0 !important;
 }
@@ -4391,6 +5021,27 @@ tr:first-child #gantt_task > table td {
   padding-left: 5px;
   margin: 0;
 }
+/***************************************************
+	txtIcon
+--------------------------------------------------*/
+.txtIcon {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: text-bottom;
+  background-color: #999;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 12px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  width: 16px;
+  line-height: 16px;
+}
 
 /***************************************************
 	auiIcon
@@ -4407,7 +5058,7 @@ tr:first-child #gantt_task > table td {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4651,35 +5302,47 @@ a.auiIconSearch:hover {
 
 .auiIconTmpreserve {
   background-position: 0px -688px;
+  width: 13px;
 }
 
 a.auiIconTmpreserve:hover {
   background-position: 0px -688px;
 }
+.termScheduleDivNameDiv .auiIconTmpreserve {background-position: 0px -816px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconTmpreserve:hover {background-position: 0px -816px;}
 
 .auiIconOverlap {
   background-position: 0px -704px;
+  width: 12px;
 }
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
 }
+.termScheduleDivNameDiv .auiIconOverlap {background-position: 0px -832px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconOverlap:hover {background-position: 0px -832px;}
 
 .auiIconRepeat {
   background-position: 0px -720px;
+  width: 13px;
 }
 
 a.auiIconRepeat:hover {
   background-position: 0px -720px;
 }
+.termScheduleDivNameDiv .auiIconRepeat {background-position: 0px -848px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconRepeat:hover {background-position: 0px -848px;}
 
 .auiIconSecret {
   background-position: 0px -736px;
+  width: 12px;
 }
 
 a.auiIconSecret:hover {
   background-position: 0px -736px;
 }
+.termScheduleDivNameDiv .auiIconSecret {background-position: 0px -864px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconSecret:hover {background-position: 0px -864px;}
 
 .auiIconTrash {
   background-position: 0px -752px;
@@ -4722,7 +5385,7 @@ a.auiIconMailOpen:hover {
   width: 15px;
   height: 18px;
   vertical-align: baseline;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4792,7 +5455,6 @@ a:hover .auiWFicon [class^="icon-"] {
   padding: 10px;
   height: 20px;
   line-height: 20px;
-  background: url(../images/common/indicator.gif) no-repeat center center;
   background-size: 16px;
   text-align: center;
 }
@@ -4887,7 +5549,7 @@ html > body .auiLoadWrapper .loader {
   text-align: center;
 }
 .errorbox h1 {
-  font-size: 1.2em;
+  font-size: 16px;
   margin: 1em 0;
 }
 .errorbox ul, .errorbox ol {
@@ -4957,7 +5619,6 @@ iframe.iframe_messagelist {
 	word-spacing: -1em;
 }
 :root .guideList{
-	font-size: 1px;
 	letter-spacing: -1px;
 	word-spacing: -1px;
 }
@@ -4970,7 +5631,6 @@ iframe.iframe_messagelist {
 	width: 24.75%;
 	min-width: 109px;
 	vertical-align: top;
-	font-size: 12px;
 	letter-spacing: normal;
 	word-spacing: normal;
 }
@@ -5009,4 +5669,14 @@ iframe.iframe_messagelist {
 }
 .guideList .iconBox i{
 	font-size: 70px;
+}
+
+/***************************************************
+	copyright
+--------------------------------------------------*/
+.copyright {
+  padding: 10px;
+  text-align: right;
+  font-size: 11px;
+  color: #999;
 }

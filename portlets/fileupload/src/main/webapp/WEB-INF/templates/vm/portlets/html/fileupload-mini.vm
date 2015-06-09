@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($action_str = $l10n.FILEUPLOAD_ADD)
 #set ($event_submit = "eventSubmit_doFileupload_insert")
@@ -27,7 +26,7 @@
 #set ($upload_str = $l10n.FILEUPLOAD_DO_ADD_FILE)
 #end
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 function get_data(pid){
@@ -57,6 +56,9 @@ function showErrorMessage(msg){
 	var ul = window.parent.document.getElementById("error_$!portlet.ID");
 	if(!ul){
 		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		if(!div){
+			var div = window.parent.document.getElementById("messageDiv");
+		}
 		ul = document.createElement("ul");
 		ul.id = "error_$!portlet.ID";
 		div.appendChild(ul);
@@ -70,6 +72,9 @@ function hideErrorMessage(){
 	var ul = window.parent.document.getElementById("error_$!portlet.ID");
 	if(ul){
 		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		if(!div){
+			var div = window.parent.document.getElementById("messageDiv");
+		}
 		div.removeChild(ul);
 	}
 }
@@ -122,9 +127,9 @@ function submitMini(form, portletId){
 <input type="hidden" name="secid" value="$secid" />
 <div id="uploadContainer">
 <span id="inputField">
-<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block;">
+<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
 <span class="uploadText">$upload_str</span>
-<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0);" onchange="submitMini(this.form, '$!portlet.ID');" />
+<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px;" onchange="submitMini(this.form, '$!portlet.ID');" />
 </div>
 </span>
 </div>

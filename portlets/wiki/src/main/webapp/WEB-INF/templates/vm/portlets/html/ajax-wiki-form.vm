@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if  ("$!mode"=="new_form")
 #set ($action_str = $l10n.WIKI_ADD)
@@ -76,21 +75,21 @@
             #ALtdcaption("#ALrequired($!result.getFieldName('note'))")
             #ALtditemheader()
             <div class="mb5">
-                <a onclick="aipo.wiki.bold()" href="javascript:void(0);" title="$l10n.WIKI_BOLD"><span class="auiButtonIcon"><i class="icon-bold" ></i></span></a>
-                <a onclick="aipo.wiki.italic()" href="javascript:void(0);" title="$l10n.WIKI_ITALIC"><span class="auiButtonIcon"><i class="icon-italic"　></i></span></a>
-                <a onclick="aipo.wiki.underline()" href="javascript:void(0);" title="$l10n.WIKI_UNDERLINE"><span class="auiButtonIcon"><i class="icon-underline"　></i></span></a>
-                <a onclick="aipo.wiki.strikethrough()" href="javascript:void(0);" title="$l10n.WIKI_STRIKETHROUGH"><span class="auiButtonIcon"><i class="icon-strikethrough"　></i></span></a>
-                <a onclick="aipo.wiki.header()" href="javascript:void(0);" title="$l10n.WIKI_H1"><span class="auiButtonIcon">h1</span></a>
-                <a onclick="aipo.wiki.headerTwo()" href="javascript:void(0);" title="$l10n.WIKI_H2"><span class="auiButtonIcon">h2</span></a>
-                <a onclick="aipo.wiki.headerThree()" href="javascript:void(0);" title="$l10n.WIKI_H3"><span class="auiButtonIcon">h3</span></a>
-                <a onclick="aipo.wiki.ulist()" href="javascript:void(0);" title="$l10n.WIKI_ULIST"><span class="auiButtonIcon"><i class="icon-list-ul"></i></span></a>
-                <a onclick="aipo.wiki.olist()" href="javascript:void(0);" title="$l10n.WIKI_OLIST"><span class="auiButtonIcon"><i class="icon-list-ol"></i></span></a>
-                <a onclick="aipo.wiki.externallink()" href="javascript:void(0);" title="$l10n.WIKI_EXTERNALLINK"><span class="auiButtonIcon"><i class="icon-link"></i></span></a>
-    			<a onclick="aipo.wiki.quote()" href="javascript:void(0);" title="$l10n.WIKI_QUOTE"><span class="auiButtonIcon"><i class="icon-quote-right"></i></span></a>
-    			<a onclick="aipo.wiki.pre()" href="javascript:void(0);" title="$l10n.WIKI_PRE"><span class="auiButtonIcon"><i class="icon-code"></i></span></a>
-    			<a onclick="aipo.wiki.hr()" href="javascript:void(0);" title="$l10n.WIKI_HR"><span class="auiButtonIcon"><i class="icon-minus"></i></span></a>
-    			<a onclick="aipo.wiki.table()" href="javascript:void(0);" title="$l10n.WIKI_TABLE"><span class="auiButtonIcon"><i class="icon-table"></i></span></a>
-    			<a onclick="aipo.wiki.image()" href="javascript:void(0);" title="$l10n.WIKI_IMAGE"><span class="auiButtonIcon"><i class="icon-camera"></i></span></a>
+                <a onclick="aipo.wiki.bold()" href="javascript:void(0);" title="$l10n.WIKI_BOLD"><span class="auiButtonIcon"><span><i class="icon-bold" ></i></span></span></a>
+                <a onclick="aipo.wiki.italic()" href="javascript:void(0);" title="$l10n.WIKI_ITALIC"><span class="auiButtonIcon"><span><i class="icon-italic"　></i></span></span></a>
+                <a onclick="aipo.wiki.underline()" href="javascript:void(0);" title="$l10n.WIKI_UNDERLINE"><span class="auiButtonIcon"><span><i class="icon-underline"　></i></span></span></a>
+                <a onclick="aipo.wiki.strikethrough()" href="javascript:void(0);" title="$l10n.WIKI_STRIKETHROUGH"><span class="auiButtonIcon"><span><i class="icon-strikethrough"　></i></span></span></a>
+                <a onclick="aipo.wiki.header()" href="javascript:void(0);" title="$l10n.WIKI_H1"><span class="auiButtonIcon"><span>h1</span></span></a>
+                <a onclick="aipo.wiki.headerTwo()" href="javascript:void(0);" title="$l10n.WIKI_H2"><span class="auiButtonIcon"><span>h2</span></span></a>
+                <a onclick="aipo.wiki.headerThree()" href="javascript:void(0);" title="$l10n.WIKI_H3"><span class="auiButtonIcon"><span>h3</span></span></a>
+                <a onclick="aipo.wiki.ulist()" href="javascript:void(0);" title="$l10n.WIKI_ULIST"><span class="auiButtonIcon"><span><i class="icon-list-ul"></i></span></span></a>
+                <a onclick="aipo.wiki.olist()" href="javascript:void(0);" title="$l10n.WIKI_OLIST"><span class="auiButtonIcon"><span><i class="icon-list-ol"></i></span></span></a>
+                <a onclick="aipo.wiki.externallink()" href="javascript:void(0);" title="$l10n.WIKI_EXTERNALLINK"><span class="auiButtonIcon"><span><i class="icon-link"></i></span></span></a>
+    			<a onclick="aipo.wiki.quote()" href="javascript:void(0);" title="$l10n.WIKI_QUOTE"><span class="auiButtonIcon"><span><i class="icon-quote-right"></i></span></span></a>
+    			<a onclick="aipo.wiki.pre()" href="javascript:void(0);" title="$l10n.WIKI_PRE"><span class="auiButtonIcon"><span><i class="icon-code"></i></span></span></a>
+    			<a onclick="aipo.wiki.hr()" href="javascript:void(0);" title="$l10n.WIKI_HR"><span class="auiButtonIcon"><span><i class="icon-minus"></i></span></span></a>
+    			<a onclick="aipo.wiki.table()" href="javascript:void(0);" title="$l10n.WIKI_TABLE"><span class="auiButtonIcon"><span><i class="icon-table"></i></span></span></a>
+    			<a onclick="aipo.wiki.image()" href="javascript:void(0);" title="$l10n.WIKI_IMAGE"><span class="auiButtonIcon"><span><i class="icon-camera"></i></span></span></a>
 			</div>
 
 			<textarea id="wiki_note"class="text wide" name="note" rows="20" cols="40">$!result.Note</textarea>

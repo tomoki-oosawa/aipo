@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.accessctl;
 
 import java.util.ArrayList;
@@ -451,8 +450,15 @@ public class AccessControlFormData extends ALAbstractFormData {
         logger.debug("[AccessControlUtils] Not found ID...");
         return false;
       }
+      SelectQuery<EipTAclUserRoleMap> EipTAclUserRoleMapSQL =
+        Database.query(EipTAclUserRoleMap.class);
+      EipTAclUserRoleMapSQL.andQualifier(ExpressionFactory.matchDbExp(
+        EipTAclUserRoleMap.ROLE_ID_COLUMN,
+        aclroleid));
+      List<EipTAclUserRoleMap> userRoleMaps = EipTAclUserRoleMapSQL.fetchList();
 
-      // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
+      // オブジェクトを削除
+      Database.deleteAll(userRoleMaps);
       Database.delete(aclroles.get(0));
 
       Database.commit();

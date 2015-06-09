@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if(!$result.CurrentFilter)
 #set ($filter = "")
@@ -73,16 +72,17 @@
 </div>
 
 </div>
-<div class="center loader" id="indicator-$!portlet.ID" style="display:none"></div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 
-<div class="auiSummaryMeta">
+<div class="auiSummaryMeta clearfix">
 #if(${client}!="IPHONE")
 <div class="floatRight">
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>
 #end
-<div class="auiForm">
-    <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+<div class="row">
+<div class="col-2">
+    <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0; vertical-align:middle;">
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id","none"))">$l10n.SCHEDULE_ALL_GROUP</option>
         #if($result.MyGroupList.size() > 0)
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
@@ -102,7 +102,9 @@
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","f_$!record.Name").addQueryData("target_user_id","none"))" #if ($!result.TargetGroupName && $!result.TargetGroupName == "f_$!record.Name.toString()") selected="selected" #set($filtertemp="$!record.Name") #set($filtertypetemp="facilitygroup") #end>$!record.AliasName</option>
         #end
     </select>
-    <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0 5px; vertical-align:middle;">
+</div>
+<div class="col-2">
+    <select name="target_user_id" onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0; vertical-align:middle;">
         #if( $!result.TargetGroupName.equals("Facility") || $!result.TargetGroupName.startsWith("f_") )
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","none").addQueryData("view_month",$!{result.ViewMonth.toString()}))">$l10n.SCHEDULE_PLEASE_SELECT_FACILITY</option>
         #elseif( $!result.TargetGroupName )
@@ -118,6 +120,7 @@
         <option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}"))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
     </select>
+</div>
 </div>
 </div>
 <div id="listmessageDiv"></div>
@@ -186,29 +189,21 @@
 #end
 <td #if(${client}!="IPHONE") nowrap="nowrap" #end class="time">${record.getPatternTime()}</td>
 <td><div>
-#set ($count =0)
-#if(! ${record.isPublic()})
+#if(!$!record.isPublic())
 #AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
-#set($count=$count + 1)
 #end
-#if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#set($count=$count + 1)
+#if($record.isShowDetail())
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>
+#else
+$!{record.WbrName}
 #end
-#if(${record.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#set($count=$count + 1)
-#end
-#if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
-#set($count=$count + 1)
-#end
-#if($count > 0)
-&nbsp;
-#end
-#if($record.isShowDetail())<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($scheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">$!{record.WbrName}</a>#else$!{record.WbrName}#end
+#AUIiconScheduleSets($!record)
 </div></td>
-<td class="wName mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
+<td class="wName mb_hide">
+	<div>
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.CreateUser.UserId},arguments[0])">$!{record.CreateUser.AliasName}</a>
+    </div>
+</td>
 </tr>
 #end
 #AUItablefooter()
@@ -218,7 +213,7 @@
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;

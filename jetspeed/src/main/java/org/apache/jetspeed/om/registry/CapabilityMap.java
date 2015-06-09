@@ -32,7 +32,7 @@ import java.util.Iterator;
  * </P>
  *
  * @author <a href="shesmer@raleigh.ibm.com">Stephan Hesmer</a>
- * @author <a href="raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="raphael@apache.org">Raphaè¬– Luta</a>
  * @see Capability
  * @version $Id: CapabilityMap.java,v 1.3 2004/02/23 03:11:39 jford Exp $
  */

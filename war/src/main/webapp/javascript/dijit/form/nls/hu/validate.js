@@ -1,1 +1,1 @@
-({"rangeMessage": "* Az érték kívül van a megengedett tartományon. ", "invalidMessage": "* A megadott érték érvénytelen. ", "missingMessage": "* Meg kell adni egy értéket. "})
+({"rangeMessage": "* Az 辿rt辿k k鱈v端l van a megengedett tartom叩nyon. ", "invalidMessage": "* A megadott 辿rt辿k 辿rv辿nytelen. ", "missingMessage": "* Meg kell adni egy 辿rt辿ket. "})
