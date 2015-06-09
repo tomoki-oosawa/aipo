@@ -92,7 +92,7 @@
 <div class="center loader" id="indicator-$!portlet.ID"><i class="indicator"></i></div>
 <!-- WRAPPER -->
     <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
-        <tbody>
+        <thead>
             <tr>
                 <td class="wide top">
 					<div id="error-$!portlet.ID" style="display:none">
@@ -102,7 +102,7 @@
 
                     </div>
 					#if(($!{hasAcl}) && $!{hasAcl} == "T")
-						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);">
+						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);" class = "mb5 mr5">
 							##マイグループ
                 			#foreach( $record in $result.GroupList)
                         		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname",$!record.Name))" #if($result.SelectedGroup.equals($!record.Name.Value))selected="selected" #end>$!record.AliasName</option>
@@ -136,7 +136,7 @@
 						##データ保存時に競合したためユーザー選択の保持用に別に用意
 						<select multiple="multiple" class="hide" id="picked_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#elseif(($!{hasAcl}) && $!{hasAcl} == "F")
-						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);">
+						<select id="groupselect-$!portlet.ID" onchange="aipo.schedule.groupSelectOnchange(this, event, '$!portlet.ID', ptConfig['$!portlet.ID'].DropdownMemberFacilitypicker);" class = "mb5 mr5">
                 			##設備グループ
                         	<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleCalendarUserSelectJSONScreen").addQueryData("mode","group").addQueryData("groupname","f;all"))"#if($result.SelectedGroup.equals("f;all")) selected="selected" #end>$l10n.SCHEDULE_FACILITY_LIST</option>
                             #foreach($record in $!result.FacilityGroupList)
@@ -155,8 +155,14 @@
 						<select multiple="multiple" class="hide" id="picked_memberlist-$!portlet.ID">#foreach($record in  $!member_list) <option value=#if($record.UserFacilityType == "U") "$record.UserFacilityId" #else "f$record.UserFacilityId" #end> $!utils.escapeXML($record.AliasName.toString()) </option>#end</select>
 					#end
 					<div class="message" id="calender_m_empty_$!portlet.ID" style="display:none;">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
-					<div id="weeklyTableHeadWrapper_$!portlet.ID" style="width:100%;">
-                    <table class="weeklyTableHead" id="weeklyTableHead_$!portlet.ID" cellspacing="0" cellpadding="0" border="0" width="100%">
+				</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+                <td class="wide top">
+					<div style="width: 100%; overflow: hidden; height: 53px;">
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="weeklyTableHead" style="padding-right: 0px; margin-top: 0px;">
                       <tbody>
                         <tr>
                           <td width="50">
@@ -720,7 +726,6 @@
                     </div>
                 </td>
             </tr>
-        </tbody>
     </table>
 ##</div>
 #if($!ajax_onloadimage)
