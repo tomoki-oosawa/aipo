@@ -113,7 +113,7 @@
 <img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" />
 #end
 </div>
-<div class="alignleft"><strong>$!{record.ClientName}</strong><br />$!{record.UpdateDate.toString($l10n.REPORT_TIME)}</div>
+<div class="alignleft"><strong><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.ClientId,arguments[0])">$!{record.ClientName}</a></strong><br />$!{record.UpdateDate.toString($l10n.REPORT_TIME)}</div>
 <div class="alignright">
 #if("$!{record.UserId.toString()}" == "$!{result.LoginUser.UserId.toString()}")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('report_reply_id',${record.ReportId}).addQueryData('mode', 'delete_reply')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
