@@ -23,6 +23,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.userlist.UserSelectData;
@@ -59,9 +60,14 @@ public class UserPopupScreen extends ALVelocityScreen {
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       ALEipUser user = ALEipUtils.getALEipUser(rundata);
+      TurbineUser entity_user =
+        ALEipUtils.getTurbineUser(Integer.parseInt(entityid));
+
       String layout_template = null;
       if (String.valueOf(user.getUserId().getValue()).equals(entityid)) {
         layout_template = "portlets/html/ajax-userlist-popup-owner.vm";
+      } else if (!(entity_user.getDisabled().equals("F"))) {
+        layout_template = "portlets/html/ajax-userlist-popup-disable.vm";
       } else {
         layout_template = "portlets/html/ajax-userlist-popup.vm";
       }
