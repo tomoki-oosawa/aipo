@@ -3296,7 +3296,7 @@ button[disabled]:active {
   overflow: hidden;
 }
 .auiRowTable div a {
-	display:inline-block;
+	display:inline;
 }
 .auiRowTable .today .day {
   font-weight: bold;
