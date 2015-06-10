@@ -634,10 +634,7 @@ public class AccountUtils {
       if (!timelineList.isEmpty()) {
         List<Integer> timelineIdList = new ArrayList<Integer>();
         for (EipTTimeline timeline : timelineList) {
-          Integer timelineId = timeline.getTimelineId();
-          if (timelineId != null) {
-            timelineIdList.add(timelineId);
-          }
+          timelineIdList.add(timeline.getTimelineId());
         }
         if (!timelineIdList.isEmpty()) {
           SelectQuery<EipTTimeline> EipTTimelineSQL2 =
@@ -651,10 +648,7 @@ public class AccountUtils {
           if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
             timelineList.addAll(timelineCommentList);
             for (EipTTimeline timeline : timelineCommentList) {
-              Integer timelineId = timeline.getTimelineId();
-              if (timelineId != null) {
-                timelineAllIdList.add(timelineId);
-              }
+              timelineAllIdList.add(timeline.getTimelineId());
             }
           }
           SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL =
@@ -671,18 +665,15 @@ public class AccountUtils {
               for (int j = 0; j < fileSize; j++) {
                 fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
               }
-              Integer timelineId = entry.getTimelineId();
-              if (timelineId != null) {
-                ALDeleteFileUtil.deleteFiles(
-                  entry.getTimelineId(),
-                  EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
-                  AccountUtils.getSaveDirPath(
-                    orgId,
-                    entry.getOwnerId(),
-                    "timeline"),
-                  fpaths,
-                  EipTTimelineFile.class);
-              }
+              ALDeleteFileUtil.deleteFiles(
+                entry.getTimelineId(),
+                EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
+                AccountUtils.getSaveDirPath(
+                  orgId,
+                  entry.getOwnerId(),
+                  "timeline"),
+                fpaths,
+                EipTTimelineFile.class);
             }
           }
           EipTTimelineLikeSQL.deleteAll();
