@@ -58,6 +58,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTWorkflowRequestMap;
@@ -642,9 +643,19 @@ public class AccountUtils {
                 EipTTimeline.PARENT_ID_COLUMN,
                 timelineIdList));
           List<EipTTimeline> timelineCommentList = EipTTimelineSQL2.fetchList();
+          List<Integer> timelineAllIdList =
+            new ArrayList<Integer>(timelineIdList);
           if (timelineCommentList != null && !timelineCommentList.isEmpty()) {
             timelineList.addAll(timelineCommentList);
+            for (EipTTimeline timeline : timelineCommentList) {
+              timelineAllIdList.add(timeline.getTimelineId());
+            }
           }
+          SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL =
+            Database.query(EipTTimelineLike.class);
+          EipTTimelineLikeSQL.andQualifier(ExpressionFactory.inDbExp(
+            EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+            timelineAllIdList));
 
           for (EipTTimeline entry : timelineList) {
             List<String> fpaths = new ArrayList<String>();
@@ -654,7 +665,6 @@ public class AccountUtils {
               for (int j = 0; j < fileSize; j++) {
                 fpaths.add(((EipTTimelineFile) files.get(j)).getFilePath());
               }
-
               ALDeleteFileUtil.deleteFiles(
                 entry.getTimelineId(),
                 EipTTimelineFile.EIP_TTIMELINE_PROPERTY,
@@ -664,10 +674,9 @@ public class AccountUtils {
                   "timeline"),
                 fpaths,
                 EipTTimelineFile.class);
-
             }
           }
-
+          EipTTimelineLikeSQL.deleteAll();
           EipTTimelineSQL2.deleteAll();
           EipTTimelineSQL.deleteAll();
         }
