@@ -44,6 +44,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -52,6 +53,8 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -110,7 +113,7 @@ public class MessageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -310,7 +313,33 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      EipTMessage message =
+        MessageUtils.getMessage(Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          ALEipConstants.ENTITY_ID)));// messageIdを入れたい
+      if (message == null) {
+        return false;
+      }
+      // messageIdの取得
+      int messageId = message.getMessageId();
+
+      // Todoを削除
+      Database.delete(message);
+      Database.commit();
+
+      // イベントログに保存
+      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+        messageId,
+        ALEventlogConstants.PORTLET_TYPE_MESSAGE,
+        "メッセージが削除されました。");
+
+    } catch (Throwable t) {
+      // logger.error("[MesssageFormJSONScreen]", e);eを未定義
+    }
+
+    return false;// resultを返したいが実装できていない。
   }
 
   public ALStringField getMessage() {
