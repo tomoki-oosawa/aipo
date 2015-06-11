@@ -3131,6 +3131,9 @@ button[disabled]:active {
   background: #eee;
   outline: none;
 }
+#timelineSearchForm.auiSearch.gray input[type="text"] {
+  min-width: auto;
+}
 .auiSearch.gray input[type="text"]:focus {
   background: #ffffff;
   border-color: #e5e5e5;
