@@ -87,8 +87,8 @@ input[type=password], #timelineOuter #inputField,
 #timelineOuter .outer,
 .timelineOuter #inputField,
 .timelineOuter .inputField,
-.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .newMessage,
-.timelineOuter .newMessage, .timeline .readMore, .filterTip, .auiAbsLayer {
+.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .searchClearOuter, #timelineOuter .newMessage,
+.timelineOuter .newMessage, .timelineOuter .searchClearOuter, .timeline .readMore, .filterTip, .auiAbsLayer {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -1374,7 +1374,7 @@ ul.hdTools .dropdown:before {
   width: 180px;
   margin-left: -90px;
   display: inline-block;
-  padding: 5px 10px;ß
+  padding: 5px 10px;
   line-height: 30px;
   background: #ffffff;
   font-size: 16px;
@@ -4232,19 +4232,33 @@ ul.attachments {
   margin: 0 4px 0 0;
 }
 
-#timelineOuter .newMessage,
-.timelineOuter .newMessage {
+#timelineOuter .searchClearOuter,
+.timelineOuter .newMessage,
+.timelineOuter .searchClearOuter {
   background: #f6f6f6;
   text-align: center;
   border: 1px #d2d2d2 solid;
   margin-bottom: 15px;
 }
+
+#timelineOuter .newMessage,
 #timelineOuter .newMessage a,
 #timelineOuter .readMore a,
+#timelineOuter .searchClearOuter a,
 .timelineOuter .newMessage a,
-.timelineOuter .readMore a {
+.timelineOuter .readMore a,
+.timelineOuter .searchClearOuter a  {
   display: block;
-  padding: 3px;
+  padding: 3px !important;
+}
+
+.searchClear {
+  color: #333 !important;
+  line-height: inherit;
+}
+
+.searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
+  color: #333 !important;
 }
 
 .timeline .readMore {

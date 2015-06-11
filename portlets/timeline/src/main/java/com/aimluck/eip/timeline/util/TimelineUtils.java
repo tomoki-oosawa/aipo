@@ -135,6 +135,9 @@ public class TimelineUtils {
   /** 検索キーワード変数の識別子 */
   public static final String TARGET_KEYWORD = "keyword";
 
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
   /**
    * トピックに対する返信数を返します
    *
@@ -1075,7 +1078,7 @@ public class TimelineUtils {
 
   public static ResultList<EipTTimeline> getTimelineList(Integer userId,
       List<Integer> parentIds, String type, int page, int limit, int minId,
-      List<Integer> userIds) {
+      List<Integer> userIds, String keywordParam) {
 
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
@@ -1085,6 +1088,7 @@ public class TimelineUtils {
         0);
     }
 
+    boolean hasKeyword = false;
     StringBuilder select = new StringBuilder();
 
     select.append("SELECT");
@@ -1146,6 +1150,12 @@ public class TimelineUtils {
       body.append(")");
     }
 
+    if ((keywordParam != null) && (!keywordParam.equals(""))) {
+      hasKeyword = true;
+      body.append(" AND ");
+      body.append("eip_t_timeline.note LIKE #bind($keyword) ");
+    }
+
     StringBuilder last = new StringBuilder();
 
     if ("T".equals(type)) {
@@ -1160,6 +1170,10 @@ public class TimelineUtils {
         .param("user_id", Integer.valueOf(userId));
     if (type != null) {
       countQuery.param("type", type);
+    }
+
+    if (hasKeyword) {
+      countQuery.param("keyword", "%" + keywordParam + "%");
     }
 
     int countValue = 0;
@@ -1195,6 +1209,10 @@ public class TimelineUtils {
         Integer.valueOf(userId));
     if (type != null) {
       query.param("type", type);
+    }
+
+    if (hasKeyword) {
+      query.param("keyword", "%" + keywordParam + "%");
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
@@ -1398,5 +1416,48 @@ public class TimelineUtils {
    */
   public static String compressString(String src) {
     return ALCommonUtils.compressString(src, 50);
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * フィルターを初期化する．
+   *
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetKeyword(RunData rundata, Context context) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
   }
 }

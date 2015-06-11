@@ -34,6 +34,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
@@ -115,9 +116,6 @@ public class TimelineSelectData extends
   /** <code>userList</code> 表示切り替え用のユーザリスト */
   private List<ALEipUser> userList = null;
 
-  /** <code>userid</code> ユーザーID */
-  private String userid;
-
   private final List<Integer> useridList = new ArrayList<Integer>();
 
   /** <code>target_group_name</code> 表示対象の部署名 */
@@ -166,6 +164,7 @@ public class TimelineSelectData extends
       myGroupList.add(myGroups.get(i));
     }
 
+    target_keyword = new ALStringField();
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
@@ -192,6 +191,14 @@ public class TimelineSelectData extends
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
 
+      if (TimelineUtils.hasResetFlag(rundata, context)) {
+        TimelineUtils.resetKeyword(rundata, context);
+        target_keyword.setValue("");
+      } else {
+        target_keyword.setValue(TimelineUtils
+          .getTargetKeyword(rundata, context));
+      }
+
       ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
       if ((useridList != null && useridList.size() > 0)) {
         // 表示するカラムのみデータベースから取得する．
@@ -203,7 +210,8 @@ public class TimelineSelectData extends
             current_page,
             getRowsNum(),
             0,
-            useridList);
+            useridList,
+            target_keyword.getValue());
       }
 
       return list;
@@ -232,7 +240,8 @@ public class TimelineSelectData extends
           0,
           0,
           minId,
-          useridList);
+          useridList,
+          null);
 
       return list;
     } catch (Exception ex) {
@@ -370,7 +379,7 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getComments(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0, null);
+      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0, null, null);
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -389,7 +398,15 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getActivities(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "A", -1, -1, 0, useridList);
+      TimelineUtils.getTimelineList(
+        uid,
+        parentIds,
+        "A",
+        -1,
+        -1,
+        0,
+        useridList,
+        null);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -818,10 +835,22 @@ public class TimelineSelectData extends
   }
 
   /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.target_keyword.setValue(keyword);
+  }
+
+  /**
    * @return target_keyword
    */
-  public ALStringField getTargetKeyword() {
+  public ALStringField getKeyword() {
     return target_keyword;
+  }
+
+  public boolean hasKeyword() {
+    return !StringUtils.isEmpty(target_keyword.getValue());
   }
 
   /**
