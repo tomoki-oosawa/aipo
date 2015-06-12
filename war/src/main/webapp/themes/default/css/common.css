@@ -1045,7 +1045,8 @@ table.simpleTable .caption {
 
 .indicator,
 .indicatorglay {
-  padding: 2px 0 2px 18px;
+  /*padding: 2px 0 2px 18px;*/
+  padding: 8px 0 2px 18px;
 }
 
 .indicatorGray,
