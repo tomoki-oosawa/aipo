@@ -715,6 +715,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
 		    aipo.message.scrollTo(pane, max < messageRoom.offsetTop ? max : messageRoom.offsetTop, 100);
 		}
 
+        aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
     }
