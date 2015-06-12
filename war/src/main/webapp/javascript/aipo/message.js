@@ -1338,6 +1338,8 @@ aipo.message.openProfileTextarea = function(userId) {
 	 if(aipo.userAgent.isAndroid2()){
 	     var wrapper=dojo.byId("wrapper");
 		 dojo.style(wrapper, "display", "none");
+		 popupNode.style("top", "0px");
+	     popupNode.style("margin", "0");
 	}
 }
 
