@@ -1092,6 +1092,7 @@ public class TimelineUtils {
     StringBuilder select = new StringBuilder();
 
     select.append("SELECT");
+    select.append(" DISTINCT ");
     select.append(" eip_t_timeline.app_id,");
     select.append(" eip_t_timeline.create_date,");
     select.append(" eip_t_timeline.external_id,");
@@ -1114,7 +1115,15 @@ public class TimelineUtils {
     count.append("SELECT count(eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline WHERE ");
+    body.append(" FROM eip_t_timeline ");
+
+    if ((keywordParam != null) && (!keywordParam.equals(""))) {
+      hasKeyword = true;
+      body.append(" LEFT JOIN eip_t_timeline AS comment ");
+      body.append(" ON eip_t_timeline.timeline_id = comment.parent_id ");
+    }
+    body.append(" WHERE ");
+
     if (type != null) {
       body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
     }
@@ -1150,10 +1159,10 @@ public class TimelineUtils {
       body.append(")");
     }
 
-    if ((keywordParam != null) && (!keywordParam.equals(""))) {
-      hasKeyword = true;
+    if (hasKeyword) {
       body.append(" AND ");
-      body.append("eip_t_timeline.note LIKE #bind($keyword) ");
+      body
+        .append("(eip_t_timeline.note LIKE #bind($keyword)  OR comment.note LIKE #bind($ckeyword))");
     }
 
     StringBuilder last = new StringBuilder();
@@ -1174,6 +1183,7 @@ public class TimelineUtils {
 
     if (hasKeyword) {
       countQuery.param("keyword", "%" + keywordParam + "%");
+      countQuery.param("ckeyword", "%" + keywordParam + "%");
     }
 
     int countValue = 0;
@@ -1213,6 +1223,7 @@ public class TimelineUtils {
 
     if (hasKeyword) {
       query.param("keyword", "%" + keywordParam + "%");
+      query.param("ckeyword", "%" + keywordParam + "%");
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
