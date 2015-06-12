@@ -91,7 +91,7 @@
 
 <div class="center loader" id="indicator-$!portlet.ID"><i class="indicator"></i></div>
 <!-- WRAPPER -->
-    <table class="tableWrapper hide" id="tableWrapper_$!portlet.ID">
+    <table class="tableWrapper scheduleBlock hide" id="tableWrapper_$!portlet.ID">
         <thead>
             <tr>
                 <td class="wide top">
@@ -726,7 +726,8 @@
                     </div>
                 </td>
             </tr>
-    </table>
+        </tbody>
+     </table>
 ##</div>
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="#if($client == 'IPHONE') aipo.calendar.changeDisypayPeriod('1', '$!portlet.ID'); #end initCalendar['$!{portlet.ID}'](true);" />

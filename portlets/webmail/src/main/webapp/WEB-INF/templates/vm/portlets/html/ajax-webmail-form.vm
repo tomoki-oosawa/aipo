@@ -72,6 +72,7 @@
   <div class="clearfix">
   <div>
   #IFFileUpload()
+  button
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
    #foreach($record in $!result.AttachmentFileNameList )
