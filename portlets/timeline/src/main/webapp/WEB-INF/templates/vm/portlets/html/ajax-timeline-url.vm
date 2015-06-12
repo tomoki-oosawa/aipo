@@ -28,7 +28,9 @@
   <input type="hidden" id="TimelinePage_$!{portlet.ID}_imagesMaxCount" name="TimelinePage_$!{portlet.ID}_imagesMaxCount" value="$result.Images.size()"/>
   #if($result.OgImage)
     <div id="tlClipImage_$!{portlet.ID}_1" class="tlClipImage">
-        <img src="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'ProxyScreen').addQueryData('url', $!result.OgImage))" name="$!result.OgImage" >
+      <img src="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template', 'ProxyScreen').addQueryData('url', $!result.OgImage))" name="$!result.OgImage" >
+  ##     <img src="http://gravatar.com/avatar/8ce7ecbe1ba4d1e4f45f7451437aa1a2?d=identicon&s=50&r=G" name="$!result.OgImage" >
+
     </div>
   #end
   #foreach ($record in $result.Images)
