@@ -18,5 +18,5 @@
  *#
 ## ---------------------------------------------------------------------------
 <div style="width: 220px;" class="contents divider clearfix center">
-    このユーザーは削除されています。
+$l10n.LOGINACTION_INVALIDATION_USER
 </div>
