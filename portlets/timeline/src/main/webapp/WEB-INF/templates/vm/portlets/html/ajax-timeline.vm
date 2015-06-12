@@ -74,50 +74,9 @@
 	<a href="javascript:void(0)" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}'); aipo.portletReload('timeline')">$l10n.TIMELINE_NEW_MESSAGE</a>
 </div>
 <div class="auiSummaryMeta auiFilter clearfix">
-	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen")' />
-	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
-		 *##if(!$!result.issetFilter("post"))#*
-			 *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.timeline.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TIMELINE_ALL_GROUP</span></a>#*
-		   *##else#*
-		 	 *##set($break=false)#*
-		 	 *##foreach($record in $result.myGroupList)#*
-		 		 *##if(!$break)#*
-				 *##if($!result.issetFilter("post",$!{record.Name}))#*
-					 *#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.timeline.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
-		 			 *##set($break=true)#*
-		 		 *##end#*
-		 	*##end#end#*
-
-		 	*##foreach($record in $result.PostMap)#if(!$break)#*
-				*##if($!result.issetFilter("post",$!{record.GroupName}))#*
-				*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.timeline.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
-		 			*##set($break=true)#*
-		 		*##end#*
-		 	 *##end#end#*
-		  *##end#*
-	 *#</div>
-  <div class="floatRight">
-   <div class="auiSummarySearch">
-        <form id="timelineSearchForm_$!{portlet.ID}" name="messageSearchForm" class="auiSearch gray" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineScreen')" onsubmit="aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id3}'); return false;" method="post">
-          <input type="text" placeholder="$l10n.TIMELINE_SEARCH" name="keyword" value="$!result.Keyword"　onfocus="aipo.timeline.onFocusSearch($!portlet.ID);" onblur="aipo.timeline.onBlurSearch($!portlet.ID);">
-          <button type="submit"><i class="icon-search"></i></button>
-        </form>
-   </div>
-  </div>
-</div>
-#if($!result.hasKeyword())
-<div class="searchClearOuter">
-	<a class="searchClear" onclick="aipo.timeline.displayIndicator('${clearAllUrl}', '$!{portlet.ID}', '$indicator_id3', '');" href="javascript:void(0)">
-		<i class="icon-remove"></i>$l10n.TIMELINE_SEARCH_CLEAR
-	</a>
-</div>
-#end
-#if($result.List.size() == 0)
-		<div class="tlDisplayChanger">
-			<div class="btn">
-				#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
-				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
-					<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
+				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');" class="customizeMenuIcon filterTip menubarOpenButton" >
+					<span id="tlDisplayGroup_$!{portlet.ID}">
 						#if("$!{result.TargetGroupName}" == "all")
 							$l10n.TIMELINE_ALL_GROUP
 						#else
@@ -135,63 +94,45 @@
 					</span>
 				</a>
 			</div>
-			<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
-				<ul>
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
-					#foreach( $record in $result.MyGroupList)
-					#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
-					#end
-					#foreach($record in $result.PostMap)
-					#set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
-					<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
-					#end
-				</ul>
-			</div>
-		</div><div id="messageDivList_$!portlet.ID"></div>
+  <div class="floatRight">
+   <div class="auiSummarySearch">
+        <form id="timelineSearchForm_$!{portlet.ID}" name="messageSearchForm" class="auiSearch gray" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineScreen')" onsubmit="aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id3}'); return false;" method="post">
+          <input type="text" placeholder="$l10n.TIMELINE_SEARCH" name="keyword" value="$!result.Keyword"　onfocus="aipo.timeline.onFocusSearch($!portlet.ID);" onblur="aipo.timeline.onBlurSearch($!portlet.ID);">
+          <button type="submit"><i class="icon-search"></i></button>
+        </form>
+   </div>
+  </div>
+</div>
+<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
+	<ul>
+		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
+		#foreach( $record in $result.MyGroupList)
+		#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
+		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
+		#end
+		#foreach($record in $result.PostMap)
+		#set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
+		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
+		#end
+	</ul>
+</div>
+#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
+#if($!result.hasKeyword())
+<div class="searchClearOuter">
+	<a class="searchClear" onclick="aipo.timeline.displayIndicator('${clearAllUrl}', '$!{portlet.ID}', '$indicator_id3', '');" href="javascript:void(0)">
+		<i class="icon-remove"></i>$l10n.TIMELINE_SEARCH_CLEAR
+	</a>
+</div>
+#end
+#if($result.List.size() == 0)
+<div id="messageDivList_$!portlet.ID"></div>
 	<div id="timeline_$!{portlet.ID}" class="timeline" style="clear:both; min-height:750px">
 		<div id="content">
 			#AUIEmptyMessage("" "$l10n.TIMELINE_NO_MESSAGE")
 		</div>
 	</div>
 #else
-  	<div class="tlDisplayChanger">
-		<div class="btn">
-			#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
-			<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');">
-				<span class="tlDisplayGroup" id="tlDisplayGroup_$!{portlet.ID}">
-				#if("$!{result.TargetGroupName}" == "all")
-					$l10n.TIMELINE_ALL_GROUP
-				#else
-				#foreach( $record in $result.MyGroupList)
-				#if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")
-                	$!record.AliasName
-				#end
-            	#end
-				#foreach($record in $result.PostMap)
-				#if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")
-					$!record.PostName
-				#end
-				#end
-				#end
-                </span>
-			</a>
-		</div>
-		<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
-			<ul>
-			#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
-			#foreach( $record in $result.MyGroupList)
-			#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.Name.toString()}")selected#end" id="PostName_$!{portlet.ID}_$!{record.Name.toString()}" onclick="aipo.timeline.displayIndicator('${actionmygroupUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.Name.toString()}');">$!record.AliasName</a></li>
-			#end
-			#foreach($record in $result.PostMap)
-		    #set($actionUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.GroupName}")))
-				<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
-			#end
-			</ul>
-		</div>
-	</div><div id="messageDivList_$!portlet.ID"></div>
+<div id="messageDivList_$!portlet.ID"></div>
   #if($result.ContentHeightMax == 0)
     <div id="timeline_$!{portlet.ID}" class="timeline">
   #else
