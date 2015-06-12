@@ -3132,7 +3132,7 @@ button[disabled]:active {
   outline: none;
 }
 [id^="timelineSearchForm"].auiSearch.gray input[type="text"] {
-  min-width: auto;
+min-width: auto;
 }
 .auiSearch.gray input[type="text"]:focus {
   background: #ffffff;
