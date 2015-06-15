@@ -59,6 +59,7 @@ import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -318,14 +319,14 @@ public class MessageFormData extends ALAbstractFormData {
         MessageUtils.getMessage(Integer.parseInt(ALEipUtils.getTemp(
           rundata,
           context,
-          ALEipConstants.ENTITY_ID)));// messageIdを入れたい
+          ALEipConstants.ENTITY_ID)));
       if (message == null) {
         return false;
       }
       // messageIdの取得
       int messageId = message.getMessageId();
 
-      // Todoを削除
+      // messageを削除
       Database.delete(message);
       Database.commit();
 
@@ -333,13 +334,15 @@ public class MessageFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         messageId,
         ALEventlogConstants.PORTLET_TYPE_MESSAGE,
-        "メッセージが削除されました。");
+        ALLocalizationUtils.getl10n("MESSAGE_DELETE_LOG_MESSAG"));
 
     } catch (Throwable t) {
-      // logger.error("[MesssageFormJSONScreen]", e);eを未定義
+      Database.rollback();
+      logger.error("[MessageFormData]", t);
+      return false;
     }
 
-    return false;// resultを返したいが実装できていない。
+    return true;
   }
 
   public ALStringField getMessage() {

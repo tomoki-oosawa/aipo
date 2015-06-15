@@ -60,7 +60,7 @@
 					<input type="hidden" name="secid" value="$secid" />
 					#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen').addQueryData('entityid',$record.MessageId).addQueryData('mode', 'delete'))")
 					&nbsp;
-					<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.MessageId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
+					<a href="javascript:void(0)" onclick="aipo.message.ajaxDeleteSubmit($!{record.MessageId}, dojo.byId('dummy_$!{portlet.ID}_$!{record.MessageId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.message.reloadRoomList);">$l10n.COMMON_DELETE</a>
 					<input type="hidden" id="dummy_$!{portlet.ID}_$!{record.MessageId}" value="" />
 		    #end
 		</div>

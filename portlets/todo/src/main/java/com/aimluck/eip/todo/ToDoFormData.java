@@ -446,9 +446,10 @@ public class ToDoFormData extends ALAbstractFormData {
         return false;
       }
 
-      // messageIdの取得
-      int messageId = todo.getMessageId();
-
+      // entityIdの取得
+      int entityId = todo.getTodoId();
+      // タイトルの取得
+      String todoName = todo.getTodoName();
 
       // Todoを削除
       Database.delete(todo);
@@ -460,9 +461,9 @@ public class ToDoFormData extends ALAbstractFormData {
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        messageId,
-        ALEventlogConstants.PORTLET_TYPE_MESSAGE,
-        "メッセージを削除しました");
+        entityId,
+        ALEventlogConstants.PORTLET_TYPE_TODO,
+        todoName);
 
     } catch (Throwable t) {
       Database.rollback();
