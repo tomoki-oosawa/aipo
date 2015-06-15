@@ -47,7 +47,7 @@
 					<input type="hidden" name="userId" value="$!{result.Detail.UserId}" />
 
                     <div class="outer">
-                        <textarea class="elastic" cols="10" name="message" rows="1" style="height: 60px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
+                        <textarea class="elastic" cols="10" name="message" rows="1" style="height: 43px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
                     </div>
                     <div class="right"><i class="indicator" id="indicator-dlg-profile-$!{result.Detail.UserId}-$messagePortletId" style="display: none;"></i><input type="submit" class="auiButtonAction" value="送信する" onclick="aimluck.io.setHiddenValue(this);"/>
                     </div>
