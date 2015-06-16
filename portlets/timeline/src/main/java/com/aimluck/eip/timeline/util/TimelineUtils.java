@@ -1112,7 +1112,7 @@ public class TimelineUtils {
       .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t1 WHERE t1.timeline_id = eip_t_timeline.timeline_id) AS l_count");
 
     StringBuilder count = new StringBuilder();
-    count.append("SELECT count(eip_t_timeline.timeline_id) AS c ");
+    count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
     body.append(" FROM eip_t_timeline ");
