@@ -3150,7 +3150,7 @@ min-width: inherit;
   border-color: #eee;
   border-left-color: #ffffff;
   background: #eee;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+  filter: none !important;
 }
 .auiSearch.gray button:focus {
   /* background: #ff9900; */
