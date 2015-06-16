@@ -4275,7 +4275,7 @@ ul.attachments {
   color: #666 !important;
 }
 .searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
-  color: #f90;
+  color: #f90 !important;
 }
 
 .timeline .readMore {
