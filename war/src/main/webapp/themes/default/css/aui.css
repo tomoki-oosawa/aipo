@@ -4245,7 +4245,7 @@ ul.attachments {
   background: #f6f6f6;
   text-align: center;
   /*border: 1px #d2d2d2 solid;*/
-  margin-bottom: 15px;
+  margin-bottom: 0px;
 }
 
 #timelineOuter .newMessage,
@@ -4260,7 +4260,7 @@ ul.attachments {
   text-decoration: none;
 }
 #timelineOuter .searchClearOuter{
-  margin-top: 10px;
+  margin-top: 5px;
 }
 .searchClearOuter .indicatorglay{
   position: absolute;
