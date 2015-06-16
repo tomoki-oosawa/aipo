@@ -2047,8 +2047,10 @@ table tr.caption {
 
 .filterTip {
   padding: 0 4px;
-  height: 26px !important;
-  line-height: 26px !important;
+  /*height: 26px !important;*/
+  /*line-height: 26px !important;*/
+  height: 32px !important;
+  line-height: 33px !important;
 }
 
 .filterTip > a {

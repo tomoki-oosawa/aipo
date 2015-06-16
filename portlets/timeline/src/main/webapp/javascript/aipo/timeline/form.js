@@ -769,3 +769,19 @@ aipo.timeline.activeFileAttachments = function(pid) {
 	if (obj)
 		obj.id = "folderName_" + pid;
 };
+
+aipo.timeline.onFocusSearch = function(pid) {
+	var timelineSearchForm = dojo.byId("timelineSearchForm_"+ pid);
+	if(timelineSearchForm) {
+		dojo.addClass(timelineSearchForm, "focus");
+	}
+}
+
+aipo.timeline.onBlurSearch = function(pid) {
+	var timelineSearchForm = dojo.byId("timelineSearchForm_"+ pid);
+	if(timelineSearchForm) {
+		if(!timelineSearchForm.keyword.value) {
+		    dojo.removeClass(timelineSearchForm, "focus");
+		}
+	}
+}

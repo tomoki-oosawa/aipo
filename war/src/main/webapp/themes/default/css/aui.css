@@ -87,8 +87,8 @@ input[type=password], #timelineOuter #inputField,
 #timelineOuter .outer,
 .timelineOuter #inputField,
 .timelineOuter .inputField,
-.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .newMessage,
-.timelineOuter .newMessage, .timeline .readMore, .filterTip, .auiAbsLayer {
+.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .searchClearOuter, #timelineOuter .newMessage,
+.timelineOuter .newMessage, .timelineOuter .searchClearOuter, .timeline .readMore, .filterTip, .auiAbsLayer {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -1374,7 +1374,7 @@ ul.hdTools .dropdown:before {
   width: 180px;
   margin-left: -90px;
   display: inline-block;
-  padding: 5px 10px;ß
+  padding: 5px 10px;
   line-height: 30px;
   background: #ffffff;
   font-size: 16px;
@@ -3131,6 +3131,9 @@ button[disabled]:active {
   background: #eee;
   outline: none;
 }
+[id^="timelineSearchForm"].auiSearch.gray input[type="text"] {
+min-width: inherit;
+}
 .auiSearch.gray input[type="text"]:focus {
   background: #ffffff;
   border-color: #e5e5e5;
@@ -3147,6 +3150,7 @@ button[disabled]:active {
   border-color: #eee;
   border-left-color: #ffffff;
   background: #eee;
+  filter: none !important;
 }
 .auiSearch.gray button:focus {
   /* background: #ff9900; */
@@ -3164,7 +3168,7 @@ button[disabled]:active {
 }
 .auiSearch.gray.focus button i,
 .auiSearch.gray.focus button:active i{
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /***************************************************
@@ -3980,6 +3984,9 @@ ul.attachments {
 #timelineOuter .timeline .commentField textarea {
  font-size:13px;
 }
+#timelineOuter .auiSummaryMeta{
+  margin: 0;
+}
 
 .tlInputMention {
   padding: 4px;
@@ -4232,19 +4239,43 @@ ul.attachments {
   margin: 0 4px 0 0;
 }
 
-#timelineOuter .newMessage,
-.timelineOuter .newMessage {
+#timelineOuter .searchClearOuter,
+.timelineOuter .newMessage,
+.timelineOuter .searchClearOuter {
   background: #f6f6f6;
   text-align: center;
-  border: 1px #d2d2d2 solid;
-  margin-bottom: 15px;
+  /*border: 1px #d2d2d2 solid;*/
+  margin-bottom: 0px;
 }
+
+#timelineOuter .newMessage,
 #timelineOuter .newMessage a,
 #timelineOuter .readMore a,
+#timelineOuter .searchClearOuter a,
 .timelineOuter .newMessage a,
-.timelineOuter .readMore a {
+.timelineOuter .readMore a,
+.timelineOuter .searchClearOuter a  {
   display: block;
-  padding: 3px;
+  padding: 5px !important;
+  text-decoration: none;
+}
+#timelineOuter .searchClearOuter{
+  margin-top: 5px;
+}
+.searchClearOuter .indicatorglay{
+  position: absolute;
+  right: 0;
+}
+.searchClear {
+  color: #666 !important;
+  line-height: inherit;
+}
+
+.searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
+  color: #666 !important;
+}
+.searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
+  color: #f90 !important;
 }
 
 .timeline .readMore {
