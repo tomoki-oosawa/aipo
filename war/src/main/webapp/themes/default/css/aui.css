@@ -4262,7 +4262,10 @@ ul.attachments {
 #timelineOuter .searchClearOuter{
   margin-top: 10px;
 }
-
+.searchClearOuter .indicatorglay{
+  position: absolute;
+  right: 0;
+}
 .searchClear {
   color: #666 !important;
   line-height: inherit;
