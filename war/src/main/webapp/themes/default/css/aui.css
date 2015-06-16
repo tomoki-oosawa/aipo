@@ -3168,7 +3168,7 @@ min-width: inherit;
 }
 .auiSearch.gray.focus button i,
 .auiSearch.gray.focus button:active i{
-  color: #ffffff;
+  color: #ffffff !important;
 }
 
 /***************************************************
