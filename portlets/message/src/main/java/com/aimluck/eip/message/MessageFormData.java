@@ -53,13 +53,10 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.services.eventlog.ALEventlogConstants;
-import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -315,26 +312,23 @@ public class MessageFormData extends ALAbstractFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      EipTMessage message =
-        MessageUtils.getMessage(Integer.parseInt(ALEipUtils.getTemp(
-          rundata,
-          context,
-          ALEipConstants.ENTITY_ID)));
+      // messageIdの取得
+      int messageId = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
+
+      EipTMessage message = MessageUtils.getMessage(messageId);
       if (message == null) {
         return false;
       }
-      // messageIdの取得
-      int messageId = message.getMessageId();
+      // messageがuserのものか判定
+      Integer user = ALEipUtils.getUserId(rundata);
+      Integer messageOwner = message.getUserId();
+      if (!(messageOwner.equals(user))) {
+        return false;
+      }
 
       // messageを削除
       Database.delete(message);
       Database.commit();
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        messageId,
-        ALEventlogConstants.PORTLET_TYPE_MESSAGE,
-        ALLocalizationUtils.getl10n("MESSAGE_DELETE_LOG_MESSAG"));
 
     } catch (Throwable t) {
       Database.rollback();

@@ -959,15 +959,15 @@ aipo.message.onReceiveMessageRoomDelete = function(msg) {
 };
 
 aipo.message.onReceiveMessageDelete = function(msg) {
-    if (!msg) {
-        aipo.message.reloadRoomList();
-    }
+	if (!msg) {
+		aipo.message.reloadMessageList();
+	}
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML =msg;
-    }
+	}
 };
 
-aipo.message.ajaxDeleteSubmit = function (messageId, button, url, indicator_id, portlet_id, receive) {
+aipo.message.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
 	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
 		dw_del: nlsStrings.DW_DEL,
@@ -979,7 +979,6 @@ aipo.message.ajaxDeleteSubmit = function (messageId, button, url, indicator_id, 
 		aimluck.io.disableForm(button.form, true);
 		aimluck.io.setHiddenValue(button);
 		button.form.action = url;
-		dojo.byId("message" + messageId).style.display = "none"
 		aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
 	}
 }
