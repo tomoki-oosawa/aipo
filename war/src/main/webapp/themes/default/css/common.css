@@ -1138,7 +1138,7 @@ div.weeklyScrollPane {
 }
 
 .scrollRight {
-  border-right: 1px solid #d2d2d2;
+  /*border-right: 1px solid #d2d2d2;*/
 }
 
 .scroll_width {
