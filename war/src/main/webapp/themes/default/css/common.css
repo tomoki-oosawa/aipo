@@ -1140,6 +1140,11 @@ div.weeklyScrollPane {
 .scrollRight {
   /*border-right: 1px solid #d2d2d2;*/
 }
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .scrollRight {
+    border-right: 1px solid #d2d2d2;
+  }
+}
 
 .scroll_width {
   padding-right: 1px;
