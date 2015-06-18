@@ -130,6 +130,4 @@ public class ALEventlogConstants {
 
   public static final int PORTLET_TYPE_PROJECT = 370;
 
-  public static final int PORTLET_TYPE_MESSAGE = 380;
-
 }
