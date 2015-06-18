@@ -584,7 +584,7 @@ table.tableWrapper td.tableCenter {
 .tableWrapper.scheduleBlock tbody table div[id^="termScheduleDivAdd"],
 .tableWrapper.scheduleBlock tbody table div[id^="scheduleDivAdd"],
 .tableWrapper.scheduleBlock tbody table div.scheduleDivFirstLine {
-  background-color: transparent;
+  /*background-color: transparent;*/
 }
 div.sunday,
 .tableWrapper tbody .sunday div{
