@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -30,7 +30,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiカテゴリの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class WikiListScreen extends ALVelocityScreen {
 
@@ -39,7 +39,7 @@ public class WikiListScreen extends ALVelocityScreen {
     .getLogger(WikiListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -48,15 +48,20 @@ public class WikiListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
       if (WikiUtils.hasResetFlag(rundata, context)) {
-        WikiUtils.resetFilter(rundata, context, WikiSelectData.class.getName());
+        WikiUtils.resetFilter(rundata, context, WikiSelectData.class
+          .getSimpleName());
       }
+      VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       WikiSelectData listData = new WikiSelectData();
       listData.initField();
       listData.loadTopWikiList(rundata, context);
       listData.setIsTop(true);
+      listData.setRowsNum(Integer.parseInt(portlet
+        .getPortletConfig()
+        .getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-wiki-list.vm";
+      String layout_template = "portlets/html/ajax-wiki-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[WikiListScreen] Exception.", ex);

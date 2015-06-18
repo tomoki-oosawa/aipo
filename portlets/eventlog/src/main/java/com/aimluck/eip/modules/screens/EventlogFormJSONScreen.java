@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import net.sf.json.JSONArray;
@@ -37,8 +36,8 @@ import com.aimluck.eip.eventlog.EventlogMultiDelete;
 public class EventlogFormJSONScreen extends ALJSONScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(EventlogFormJSONScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(EventlogFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -62,6 +61,16 @@ public class EventlogFormJSONScreen extends ALJSONScreen {
 
         EventlogMultiDelete delete = new EventlogMultiDelete();
         if (delete.doMultiAction(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+      } else if ("all_delete".equals(mode)) {
+
+        EventlogMultiDelete delete = new EventlogMultiDelete();
+        if (delete.doAllDelete(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray

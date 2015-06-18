@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb.util;
 
 import java.io.BufferedReader;
@@ -99,7 +95,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * Webデータベースのユーティリティクラスです。
- * 
+ *
  */
 public class GpdbUtils {
 
@@ -140,7 +136,7 @@ public class GpdbUtils {
   /** 項目定義形式：日付 */
   public static final String ITEM_TYPE_DATE = "10";
 
-  /** 項目定義形式：登録日時 */
+  /** 項目定義形式：作成日 */
   public static final String ITEM_TYPE_CREATE_DATE = "11";
 
   /** 項目定義形式：更新日時 */
@@ -182,8 +178,8 @@ public class GpdbUtils {
   /** 項目定義形式名：日付 */
   public static final String ITEM_TYPE_TITLE_DATE = "日付";
 
-  /** 項目定義形式名：登録日時 */
-  public static final String ITEM_TYPE_TITLE_CREATE_DATE = "登録日時";
+  /** 項目定義形式名：作成日 */
+  public static final String ITEM_TYPE_TITLE_CREATE_DATE = "作成日";
 
   /** 項目定義形式名：更新日時 */
   public static final String ITEM_TYPE_TITLE_UPDATE_DATE = "更新日時";
@@ -227,7 +223,7 @@ public class GpdbUtils {
         put(ITEM_TYPE_DATE, ITEM_TYPE_TITLE_DATE); // 日付
         put(ITEM_TYPE_CREATE_USER, ITEM_TYPE_TITLE_CREATE_USER); // 登録者
         put(ITEM_TYPE_UPDATE_USER, ITEM_TYPE_TITLE_UPDATE_USER); // 更新者
-        put(ITEM_TYPE_CREATE_DATE, ITEM_TYPE_TITLE_CREATE_DATE); // 登録日時
+        put(ITEM_TYPE_CREATE_DATE, ITEM_TYPE_TITLE_CREATE_DATE); // 作成日
         put(ITEM_TYPE_UPDATE_DATE, ITEM_TYPE_TITLE_UPDATE_DATE); // 更新日時
       }
     });
@@ -340,7 +336,7 @@ public class GpdbUtils {
 
   /**
    * 入力形式名を返す
-   * 
+   *
    * @param type
    *          入力形式
    * @return 入力形式名
@@ -355,7 +351,7 @@ public class GpdbUtils {
 
   /**
    * Webデータベース オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -370,7 +366,7 @@ public class GpdbUtils {
 
   /**
    * Webデータベースオブジェクトモデルを取得します。
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @return Webデータベース オブジェクトモデル
@@ -406,7 +402,7 @@ public class GpdbUtils {
 
   /**
    * 全Webデータベースを返す
-   * 
+   *
    * @return Webデータベースオブジェクト全リスト
    */
   public static List<GpdbResultData> getGpdbAllList() {
@@ -433,7 +429,7 @@ public class GpdbUtils {
 
   /**
    * WebデータベースオブジェクトよりWebデータベースResult情報を返す
-   * 
+   *
    * @param model
    *          Webデータベースオブジェクト
    * @return WebデータベースResult情報
@@ -454,7 +450,8 @@ public class GpdbUtils {
       .append(" ")
       .append(user.getFirstName())
       .toString()); // 登録者名
-    data.setCreateDate(model.getCreateDate());// 登録日
+    data.setCreateUserId(user.getUserId());
+    data.setCreateDate(model.getCreateDate());// 作成日
     data.setUpdateDate(model.getUpdateDate());// 更新日
 
     data.setRecordCnt(getRecordCount("" + model.getGpdbId())); // 登録データ件数
@@ -468,7 +465,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義 オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -483,7 +480,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義 オブジェクトモデルを取得します。
-   * 
+   *
    * @param gpdbItemId
    *          項目定義ID
    * @return 項目定義オブジェクトモデル
@@ -519,7 +516,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義オブジェクトリストより項目定義Result情報リストを返す
-   * 
+   *
    * @param gpdbItemList
    *          項目定義オブジェクトリスト
    * @return 項目定義Result情報リスト
@@ -535,7 +532,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義オブジェクトより項目定義Result情報を返す
-   * 
+   *
    * @param gpdbItem
    *          項目定義オブジェクトリスト
    * @return 項目定義Result情報
@@ -581,7 +578,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義Result情報リストを返す
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @return 項目定義Result情報リスト
@@ -611,7 +608,7 @@ public class GpdbUtils {
   /**
    * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @return レコードオブジェクトモデル
@@ -623,7 +620,7 @@ public class GpdbUtils {
   /**
    * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * タイトル項目のリストを取得します。
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @return レコードオブジェクトモデル
@@ -635,7 +632,7 @@ public class GpdbUtils {
   /**
    * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @param recordNo
@@ -650,7 +647,7 @@ public class GpdbUtils {
   /**
    * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @param recordNo
@@ -712,7 +709,7 @@ public class GpdbUtils {
   /**
    * Webデータベースレコード オブジェクトリストを取得します。 <br/>
    * 1レコード分のリストを取得します。
-   * 
+   *
    * @param gpdbId
    *          項目定義ID
    * @param recordNo
@@ -759,7 +756,7 @@ public class GpdbUtils {
 
   /**
    * WebデータベースレコードオブジェクトよりWebデータベースレコードResult情報を返す
-   * 
+   *
    * @param model
    *          Webデータベースレコードオブジェクト
    * @return WebデータベースレコードResult情報
@@ -769,6 +766,7 @@ public class GpdbUtils {
 
     try {
       String value = model.getValue();
+      Integer userid = null;
       List<String> valueList = new ArrayList<String>();
       if (value != null) {
 
@@ -801,9 +799,9 @@ public class GpdbUtils {
 
         } else if (ITEM_TYPE_CREATE_USER.equals(type)
           || ITEM_TYPE_UPDATE_USER.equals(type)) {
-          // 登録者、更新者の場合、名称をセットする
+          // 登録者、更新者の場合、名称・ユーザーIDをセットする
           if (!"".equals(value.trim())) {
-            Integer userid = Integer.valueOf(value);
+            userid = Integer.valueOf(value);
             value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
           }
         } else if (ITEM_TYPE_DATE.equals(type)) {
@@ -823,7 +821,7 @@ public class GpdbUtils {
           }
         } else if (ITEM_TYPE_CREATE_DATE.equals(type)
           || ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録日、更新日の場合、フォーマットを変換する。
+          // 作成日、更新日の場合、フォーマットを変換する。
           SimpleDateFormat sdf_data =
             new SimpleDateFormat(ALLocalizationUtils
               .getl10n("GPDB_TIMESTAMP_FORMAT_DATA"));
@@ -848,6 +846,9 @@ public class GpdbUtils {
       rd.setValue(model.getValue());
       rd.setDispValue(value);
       rd.setValueList(valueList);
+      if (userid != null) {
+        rd.setUserId(userid);
+      }
       return rd;
     } catch (RuntimeException ex) {
       logger.error("RuntimeException", ex);
@@ -860,19 +861,26 @@ public class GpdbUtils {
 
   /**
    * Webデータベースレコードのマップを返す
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @param recordNo
    *          レコードNo
    * @return Webデータベースレコードのマップ
+   * @throws ALPageNotFoundException
    */
   public static Map<String, GpdbRecordResultData> getGpdbRecordMap(
-      String gpdbId, String recordNo) {
+      String gpdbId, String recordNo) throws ALPageNotFoundException {
     Map<String, GpdbRecordResultData> map =
       new HashMap<String, GpdbRecordResultData>();
 
     List<EipTGpdbRecord> recordList = getEipTGpdbRecord(gpdbId, recordNo);
+
+    // 指定したgpdbIDのレコードが見つからない場合
+    if (recordList == null || recordList.size() == 0) {
+      logger.error("[GpdbUtils] Not found record.");
+      throw new ALPageNotFoundException();
+    }
 
     List<GpdbRecordResultData> list = new ArrayList<GpdbRecordResultData>();
     for (EipTGpdbRecord rec : recordList) {
@@ -889,7 +897,7 @@ public class GpdbUtils {
 
   /**
    * Webデータベースレコードの登録件数を取得します
-   * 
+   *
    * @param gpdbId
    *          WebデータベースID
    * @return レコード登録件数
@@ -926,7 +934,7 @@ public class GpdbUtils {
 
   /**
    * 指定の区分値を使用しているWebデータベースレコードの登録件数を取得します
-   * 
+   *
    * @param gpdbKubunValueId
    *          区分値スID
    * @return レコード登録件数
@@ -991,7 +999,7 @@ public class GpdbUtils {
 
   /**
    * 区分マスタ オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -1030,7 +1038,7 @@ public class GpdbUtils {
 
   /**
    * 区分マスタ オブジェクトモデルを取得します。
-   * 
+   *
    * @param gpdbKubunId
    *          区分マスタID
    * @return 区分マスタオブジェクトモデル
@@ -1064,7 +1072,7 @@ public class GpdbUtils {
 
   /**
    * 区分値 オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -1080,7 +1088,7 @@ public class GpdbUtils {
 
   /**
    * 区分値 オブジェクトモデルを取得します。
-   * 
+   *
    * @param gpdbKubunValueId
    *          区分値ID
    * @return 区分値オブジェクトモデル
@@ -1117,7 +1125,7 @@ public class GpdbUtils {
 
   /**
    * 全区分のリストを返す
-   * 
+   *
    * @return 全区分リスト
    */
   public static List<GpdbKubunResultData> getGpdbKubunAllList() {
@@ -1145,7 +1153,7 @@ public class GpdbUtils {
 
   /**
    * 指定区分の区分値リストを返す
-   * 
+   *
    * @param gpdbKubunId
    *          区分ID
    * @return 全区分値リスト
@@ -1187,7 +1195,7 @@ public class GpdbUtils {
 
   /**
    * 全区分値のリストを返す
-   * 
+   *
    * @return 全区分値リスト
    */
   public static List<GpdbKubunValueResultData> getGpdbKubunValueAllList() {
@@ -1196,7 +1204,7 @@ public class GpdbUtils {
 
   /**
    * 区分IDをキーとした全区分値のマップを返す
-   * 
+   *
    * @return 全区分値のマップ
    */
   public static Map<String, List<GpdbKubunValueResultData>> getKubunMap() {
@@ -1228,7 +1236,7 @@ public class GpdbUtils {
 
   /**
    * 区分値オブジェクトリストより区分値Result情報リストを返す
-   * 
+   *
    * @param gpdbKubunValueList
    *          区分値オブジェクトリスト
    * @return 区分値Result情報リスト
@@ -1245,7 +1253,7 @@ public class GpdbUtils {
 
   /**
    * 区分値オブジェクトより区分値Result情報を返す
-   * 
+   *
    * @param model
    *          区分値オブジェクト
    * @return 区分値Result情報
@@ -1266,7 +1274,7 @@ public class GpdbUtils {
 
   /**
    * Webデータベースに紐づく項目定義を削除する
-   * 
+   *
    * @param gpdb
    *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
@@ -1299,7 +1307,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義に紐づくレコードを削除する
-   * 
+   *
    * @param rundata
    *          RunData
    * @param gpdbItem
@@ -1337,7 +1345,7 @@ public class GpdbUtils {
   /**
    * 添付ファイルを削除する<br/>
    * DBのデータとともに実際のファイルも削除
-   * 
+   *
    * @param rundata
    *          RunData
    * @param gpdbRecordList
@@ -1385,7 +1393,7 @@ public class GpdbUtils {
 
   /**
    * 区分値を持たない区分を削除する
-   * 
+   *
    * @return TRUE 成功 FALSE 失敗
    */
   public static boolean removeGpdbKubunNoValue() {
@@ -1422,7 +1430,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義でタイトル指定されているものをOFFにする
-   * 
+   *
    * @param gpdb
    *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
@@ -1448,7 +1456,7 @@ public class GpdbUtils {
 
   /**
    * 項目定義でデフォルトソート指定されているものをOFFにする
-   * 
+   *
    * @param gpdb
    *          Webデータベースオブジェクト
    * @return TRUE 成功 FALSE 失敗
@@ -1479,7 +1487,7 @@ public class GpdbUtils {
 
   /**
    * rundata.getParameters().getStrings()などで取得した文字列のエンコードを行う
-   * 
+   *
    * @param str
    *          変換前文字列
    * @return 変換後文字列
@@ -1501,7 +1509,7 @@ public class GpdbUtils {
 
   /**
    * 選択肢の入力値から区分値の登録値を取得する。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param field
@@ -1529,7 +1537,7 @@ public class GpdbUtils {
 
   /**
    * 入力項目が出力対象の入力形式かどうかを判定する
-   * 
+   *
    * @param field
    *          入力項目フィールド名
    * @param type
@@ -1549,7 +1557,7 @@ public class GpdbUtils {
 
   /**
    * URL形式であるかを判定します。
-   * 
+   *
    * @param str
    *          チェック対象文字列
    * @return URL形式であればtrue、それ以外はfalse。
@@ -1569,7 +1577,7 @@ public class GpdbUtils {
 
   /**
    * メールを送信します
-   * 
+   *
    * @param rundata
    *          RunData
    * @param destUser
@@ -1632,9 +1640,9 @@ public class GpdbUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @param gpdbItemList
-   * 
+   *
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTGpdb gpdb,
@@ -1699,9 +1707,9 @@ public class GpdbUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   * 
+   *
    * @param gpdbItemList
-   * 
+   *
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata, EipTGpdb gpdb,
@@ -1716,7 +1724,7 @@ public class GpdbUtils {
 
   /**
    * ファイルをアップロードする
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -1851,7 +1859,7 @@ public class GpdbUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    *          ユーザーID
    * @return パス
@@ -1864,7 +1872,7 @@ public class GpdbUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param fileName
    *          ファイル名
    * @return パス
@@ -1875,7 +1883,7 @@ public class GpdbUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param keyid
@@ -2006,7 +2014,7 @@ public class GpdbUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    *          RunData
    * @return ファイルオブジェクトモデル
@@ -2050,7 +2058,7 @@ public class GpdbUtils {
 
   /**
    * 添付ファイルリストを取得する
-   * 
+   *
    * @param gpdbRecordId
    *          WebデータベースレコードID
    * @return 添付ファイルリスト
@@ -2070,7 +2078,7 @@ public class GpdbUtils {
 
   /**
    * 添付ファイル一覧を取得する
-   * 
+   *
    * @param gpdbRecordId
    *          WebデータベースレコードID
    * @return 添付ファイル一覧
@@ -2108,10 +2116,10 @@ public class GpdbUtils {
   }
 
   /**
-   * 
+   *
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
-   * 
-   * 
+   *
+   *
    * @param rundata
    * @param context
    * @param config

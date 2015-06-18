@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.msgboard;
 
 import java.util.ArrayList;
@@ -38,8 +37,10 @@ import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
@@ -53,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板カテゴリ検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardCategorySelectData extends
     ALAbstractSelectData<EipTMsgboardCategoryMap, EipTMsgboardCategory>
@@ -75,6 +76,9 @@ public class MsgboardCategorySelectData extends
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
 
+  /** 他人のカテゴリ詳細表示権限 */
+  private boolean authority_detail;
+
   /** 他人のカテゴリ編集権限 */
   private boolean authority_edit;
 
@@ -82,7 +86,7 @@ public class MsgboardCategorySelectData extends
   private boolean authority_delete;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -98,6 +102,13 @@ public class MsgboardCategorySelectData extends
     }
 
     uid = ALEipUtils.getUserId(rundata);
+
+    authority_detail =
+      MsgboardUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DETAIL,
+        ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_CATEGORY_OTHER);
 
     authority_edit =
       MsgboardUtils.checkPermission(
@@ -117,7 +128,7 @@ public class MsgboardCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -128,7 +139,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -155,7 +166,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -228,7 +239,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -242,7 +253,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -268,6 +279,7 @@ public class MsgboardCategorySelectData extends
         .getTurbineUser()
         .getUserId()
         .intValue()));
+      rd.setLoginUserId(uid);
     } catch (Exception e) {
       logger.error("[MsgboardCategorySelectData]", e);
       throw new ALDBErrorException();
@@ -277,7 +289,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -339,6 +351,7 @@ public class MsgboardCategorySelectData extends
         .intValue()));
       rd.setCreateDate(ALDateUtil.format(record.getCreateDate(), "yyyy年M月d日"));
       rd.setUpdateDate(ALDateUtil.format(record.getUpdateDate(), "yyyy年M月d日"));
+      rd.setLoginUserId(uid);
 
       if (public_flag) {
         if ((MsgboardUtils.STAT_VALUE_ALL).equals(loginUserStatus)) {
@@ -360,8 +373,69 @@ public class MsgboardCategorySelectData extends
     return rd;
   }
 
+  @Override
+  public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
+      action.setMode(ALEipConstants.MODE_DETAIL);
+      EipTMsgboardCategory obj = selectDetail(rundata, context);
+      if (obj != null) {
+        data = getResultDataDetail(obj);
+
+        // 公開区分
+        boolean public_flag =
+          (MsgboardUtils.PUBLIC_FLG_VALUE_PUBLIC).equals(obj.getPublicFlag());
+
+        boolean isMember = false;
+
+        // このカテゴリを共有しているメンバーを取得
+        SelectQuery<EipTMsgboardCategoryMap> mapquery =
+          Database.query(EipTMsgboardCategoryMap.class);
+        Expression mapexp =
+          ExpressionFactory.matchDbExp(
+            EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN,
+            obj.getCategoryId());
+        mapquery.setQualifier(mapexp);
+
+        List<EipTMsgboardCategoryMap> list = mapquery.fetchList();
+
+        List<Integer> users = new ArrayList<Integer>();
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardCategoryMap map = list.get(i);
+          users.add(map.getUserId());
+          if (uid == map.getUserId().intValue()) {
+            isMember = true;
+          }
+        }
+
+        // 自分がメンバーではない非公開のカテゴリで、他人のカテゴリの詳細表示権限がない場合はエラー
+        if (!public_flag && !isMember && !authority_detail) {
+          throw new ALPermissionException();
+        }
+      }
+
+      action.setResultData(this);
+      action.putData(rundata, context);
+      return (data != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+  }
+
   /**
-   * 
+   *
    * @return
    */
   public List<MsgboardCategoryResultData> getCategoryList() {
@@ -370,7 +444,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -399,7 +473,7 @@ public class MsgboardCategorySelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -417,7 +491,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -426,7 +500,7 @@ public class MsgboardCategorySelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

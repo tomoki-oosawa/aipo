@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュール詳細表示の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
@@ -124,7 +123,7 @@ public class ScheduleSelectData extends
   private ScheduleDetailOnedaySelectData ondaySelectData = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -245,7 +244,7 @@ public class ScheduleSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -257,7 +256,7 @@ public class ScheduleSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -271,7 +270,7 @@ public class ScheduleSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -282,7 +281,7 @@ public class ScheduleSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -499,7 +498,7 @@ public class ScheduleSelectData extends
         .getUpdateUserId()
         .intValue()));
       createuser = rd.getCreateUser();
-      // 登録日時
+      // 作成日
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());
@@ -573,7 +572,7 @@ public class ScheduleSelectData extends
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -628,7 +627,7 @@ public class ScheduleSelectData extends
 
   /**
    * 状態を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -637,7 +636,7 @@ public class ScheduleSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewDate() {
@@ -650,7 +649,7 @@ public class ScheduleSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -669,7 +668,7 @@ public class ScheduleSelectData extends
 
   /**
    * ユーザーを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getUser() {
@@ -678,7 +677,7 @@ public class ScheduleSelectData extends
 
   /**
    * ユーザーを設定します。
-   * 
+   *
    * @param user
    */
   public void setUser(ALEipUser user) {
@@ -688,7 +687,7 @@ public class ScheduleSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -697,9 +696,19 @@ public class ScheduleSelectData extends
   }
 
   /**
+   * ログインユーザーのIDかどうかを返します。
+   * 
+   * @param id
+   * @return
+   */
+  public boolean isLoginUserID(long id) {
+    return id == loginuserid;
+  }
+
+  /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   * 
+   *
    * @return
    */
   public boolean hasAuthorityOtherEdit() {

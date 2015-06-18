@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($DefTypeCompany = $!result.TypeCompany.toString())
 #set ($subtitle = $l10n.WEBMAIL_ADDRESSBOOK)
@@ -26,7 +25,7 @@
 <div class="auiPopup clearfix">
 	<div class="auiPopupHead clearfix">
 		<div class="auiPopupTool">
-			<a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.close();">
+			<a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.COMMON_CLOSE" onclick="aipo.webmail.close();">
 				<span><i class="icon-remove"></i></span>
 			</a>
 		</div>
@@ -79,7 +78,7 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_to' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_to' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_to_recipients)')</div>
 #ALtditemfooter()
 <td  class="caption">CC</td>
 #ALtditemheader()
@@ -88,7 +87,7 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_cc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_cc' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_cc_recipients)')</div>
 #ALtditemfooter()
 <td  class="caption">BCC</td>
 #ALtditemheader()
@@ -97,13 +96,13 @@
 <option value="$record.toString()">$record.toString()</option>
 #end
 </select>
-<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_bcc' $l10n.WEBMAIL_DELETE 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
+<div class="right">$l10n.WEBMAIL_SELECTED_ADDRESS #ALbutton('del_bcc' "$l10n.COMMON_DELETE" 'aimluck.io.removeOptions(this.form.detail_bcc_recipients)')</div>
 #ALtditemfooter()
 </tr>
 #ALtablefooter()
 #ALbuttonheader()
 #ALauibutton('addAddresses' $l10n.WEBMAIL_DO_DECIDE 'aipo.webmail.insertData()')
-<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.WEBMAIL_CLOSE1" onclick="aipo.webmail.close();" />
+<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.webmail.close();" />
 #ALbuttonfooter()
 <input type="hidden" id="urlUserlist$!portlet.ID" name="urlUserlist$!portlet.ID" value="$internalScreenlink" />
 <input type="hidden" id="urlAddrlist$!portlet.ID" name="urlAddrlist$!portlet.ID" value="$externalScreenlink" />

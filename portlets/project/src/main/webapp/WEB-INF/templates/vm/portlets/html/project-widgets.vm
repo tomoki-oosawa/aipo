@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,9 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  *#
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskFormScreen").addQueryData("entityid","new").addQueryData("projectid","$!result.SelectedProjectId")))
@@ -25,15 +22,21 @@
 ## ---------------------------------------------------------------------------
 <div id="auiWidgetsArea" #if("${clientVer}" == "4") style="position:static" #elseif("${client}" == "IPHONE") style="position:fixed" #end>
 <div class="auiWidget clearfix">
+#if($!result.AllProject && $!result.AllProject.size() == 0)
+#AUIDisableButton("$l10n.PROJECT_DO_TASK_ADD")
+#else
 #if ($!result.SelectedProjectId)
 #AUIbuttonAction("$l10n.PROJECT_DO_TASK_ADD" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.project.onLoadProjectTaskDialog);")
 #else
 #AUIbutton("$l10n.PROJECT_DO_TASK_ADD" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.project.onLoadProjectTaskDialog);")
 #end
+#end
 </div>
 <div class="auiWidget clearfix">
 <ul>
+#if($!result.AllProject && $!result.AllProject.size() != 0)
 <li #if ($!result.SelectedProjectId && $!result.SelectedProjectId.toString() == "0") class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter", "0").addQueryData("filtertype","project_id").addQueryData('tab','list').addQueryData('reset_condition','true'))','$!portlet.ID');">$l10n.PROJECT_ALL_PROJECT</a></li>
+#end
 #foreach($record in $!result.AllProject )
 <li #if ($!result.SelectedProjectId && $!result.SelectedProjectId.toString() == $!record.ProjectId.toString()) class="active" #end><a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter",$!record.ProjectId).addQueryData("filtertype","project_id").addQueryData('tab','list').addQueryData('reset_condition','true'))','$!portlet.ID');">$!{record.ProjectName}</a></li>
 #end

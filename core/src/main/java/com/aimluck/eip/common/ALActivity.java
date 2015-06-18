@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.common;
 
 import java.io.Serializable;
@@ -44,6 +43,8 @@ public class ALActivity implements ALData, Serializable {
   private int id;
 
   private ALStringField displayName;
+
+  private ALNumberField userId;
 
   private ALStringField appId;
 
@@ -80,6 +81,7 @@ public class ALActivity implements ALData, Serializable {
   public void initField() {
     displayName = new ALStringField();
     displayName.setValue("_");
+    userId = new ALNumberField();
     appId = new ALStringField();
     loginname = new ALStringField();
     title = new ALStringField();
@@ -176,6 +178,17 @@ public class ALActivity implements ALData, Serializable {
 
   public ALStringField getDisplayName() {
     return displayName;
+  }
+
+  public void setUserId(Integer userId) {
+    this.userId.setValue(userId);
+  }
+
+  /**
+   * @return userId
+   */
+  public ALNumberField getUserId() {
+    return userId;
   }
 
   public ALStringField getExternalId() {
@@ -275,7 +288,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * external_id毎の直近のアクティビティを返す。存在しない場合null。
-   * 
+   *
    * @param appid
    *          ex Schedule
    * @param external_id
@@ -295,7 +308,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報をReplaceするか
-   * 
+   *
    * @param activity
    * @param loginname
    * @return
@@ -307,7 +320,7 @@ public class ALActivity implements ALData, Serializable {
 
   /**
    * 更新情報を消す。
-   * 
+   *
    * @param activity
    * @param loginname
    * @return

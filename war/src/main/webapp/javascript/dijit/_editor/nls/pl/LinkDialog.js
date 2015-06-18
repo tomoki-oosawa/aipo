@@ -1,1 +1,1 @@
-({"set": "Ustaw", "text": "Tekst:", "title": "Adres URL odsyłacza", "url": "Adres URL:", "urlInvalidMessage": "Nieprawidłowy adres URL. Wprowadź pełny adres URL, na przykład http://www.dojotoolkit.org."})
+({"set": "Ustaw", "text": "Tekst:", "title": "Adres URL odsyナＢcza", "url": "Adres URL:", "urlInvalidMessage": "NieprawidナＰwy adres URL. Wprowadナコ peナＯy adres URL, na przykナＢd http://www.dojotoolkit.org."})

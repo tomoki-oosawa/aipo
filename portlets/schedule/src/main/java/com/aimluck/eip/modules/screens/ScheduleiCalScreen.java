@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2012 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.Arrays;
@@ -184,11 +183,44 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
-          recur.setUntil(new DateTime(cEnd.getTime()));
-          cEnd.set(Calendar.YEAR, cStart.get(Calendar.YEAR));
-          cEnd.set(Calendar.MONTH, cStart.get(Calendar.MONTH));
-          cEnd.set(Calendar.DATE, cStart.get(Calendar.DATE));
-          dEnd = new DateTime(cEnd.getTime());
+          if (endDate.compareTo(cStart.getTime()) < 0
+            || cEnd.getTime().compareTo(startDate) < 0) {
+            // 期間指定の繰り返しスケジュールで、前後３ヶ月の範囲外のスケジュールは表示しない
+            continue;
+          }
+          if (endDate.compareTo(cEnd.getTime()) < 0) {
+            recur.setUntil(new DateTime(endDate));
+          } else {
+            recur.setUntil(new DateTime(cEnd.getTime()));
+          }
+          if (cStart.getTime().compareTo(startDate) < 0) {
+            int hour = cStart.get(Calendar.HOUR_OF_DAY);
+            int min = cStart.get(Calendar.MINUTE);
+            cStart.setTime(currentStartDate);
+            cStart.set(Calendar.HOUR_OF_DAY, hour);
+            cStart.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(currentStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
+            dEnd = new DateTime(cEnd.getTime());
+          } else {
+            java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
+            int hour = cStart.get(Calendar.HOUR_OF_DAY);
+            int min = cStart.get(Calendar.MINUTE);
+            cStart.setTime(RepeatStartDate);
+            cStart.set(Calendar.HOUR_OF_DAY, hour);
+            cStart.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(RepeatStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
+            dEnd = new DateTime(cEnd.getTime());
+          }
         } else {
           recur.setUntil(new DateTime(endDate.getTime()));
           int hour = cStart.get(Calendar.HOUR_OF_DAY);
@@ -267,7 +299,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     Calendar cal = Calendar.getInstance();
     cal.setTime(startDate);
 
-    if (isView(cal.getTime(), ptn)) {
+    if (isView(cal, ptn)) {
       return startDate;
     } else {
       cal.add(Calendar.DATE, 1);
@@ -275,10 +307,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     }
   }
 
-  private boolean isView(java.util.Date date, String ptn) {
+  private boolean isView(Calendar cal, String ptn) {
     boolean result = false;
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(date);
     // 毎日
     if (ptn.charAt(0) == 'D') {
       result = true;

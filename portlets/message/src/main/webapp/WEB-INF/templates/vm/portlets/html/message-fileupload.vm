@@ -1,0 +1,85 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($action_str = $l10n.FILEUPLOAD_ADD)
+#set ($event_submit = "eventSubmit_doFileupload_insert")
+#set($tabs = [[$l10n.FILEUPLOAD_FILEUPLOAD, "",""]])
+## ---------------------------------------------------------------------------
+<script type="text/JavaScript">
+<!--
+
+function get_data(pid){
+    #if($!receiveFile && $!receiveFile == "true")
+	#if($!result.MaxSize == 1)
+	window.opener.aipo.fileupload.replaceFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #else
+    window.opener.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #end
+	window.parent.close();
+    #end
+}
+
+function getFileName(){
+    var filepath = dojo.byId('attachment').value;
+    if(filepath == "") return "";
+
+    var filefolder_list = filepath.split("\\");
+    var filename = filefolder_list[filefolder_list.length-1];
+    return filename;
+}
+
+
+function checkFile(){
+    var filename = getFileName();
+    if(filename == ""){
+        alert("$l10n.FILEUPLOAD_SELECT_FILE");
+        return false;
+    }
+    return true;
+}
+
+//-->
+</script>
+<div class="spaceAll roundBlockContent">
+##ALajaxtabheader($tabs "")
+#ALspacebothheader()
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+<h3>$l10n.FILEUPLOAD_ADD_ATTACHMENT</h3>
+<form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','update'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
+<input type="hidden" name="mode" value="update" />
+<input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
+<input type="hidden" name="msize" id="msize" value="$msize" />
+<input type="hidden" name="nsize" id="nsize" value="$nsize" />
+<input type="hidden" name="secid" value="$secid" />
+<div id="uploadContainer">
+<div style="padding:2px 0px 5px 0px">$l10n.FILEUPLOAD_SELECT_FILE_ADD</div>
+<span id="inputField">
+<input type="file" id="attachment" name="attachment"/>
+</span>
+</div>
+<div style="padding:10px 0px 3px 0px">
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALbutton("cancel" "$l10n.COMMON_CLOSE" 'window.close()')
+#ALbuttonfooter()
+</div>
+</form>
+#ALspacebothfooter()
+##ALajaxtabfooter()
+</div>

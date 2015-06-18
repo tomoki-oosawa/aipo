@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
@@ -60,11 +59,11 @@ function swapRadio(id) {
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_1');return false;">
 <input id="radio_1" name="del_flag" type="radio" value="1">
-参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+参加者全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
-参加ユーザー全員のこの予定を完全に
+参加者全員のこの予定を完全に
 </a></p>
 #elseif($hasMember && ! $!{result.Detail.isRepeat()})
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
@@ -73,7 +72,7 @@ function swapRadio(id) {
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
-参加ユーザー全員のこの予定を完全に
+参加者全員のこの予定を完全に
 </a></p>
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
@@ -103,11 +102,11 @@ function swapRadio(id) {
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_1');return false;">
 <input id="radio_1" name="del_flag" type="radio" value="1">
-参加ユーザー全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
+参加者全員の $!{result.ViewDate.Year}年$!{result.ViewDate.Month}月$!{result.ViewDate.Day}日 の予定のみ
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
-参加ユーザー全員のこの予定を完全に
+参加者全員のこの予定を完全に
 </a></p>
 #elseif($hasMember && ! $!{result.Detail.isRepeat()})
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_2');return false;">
@@ -116,7 +115,7 @@ function swapRadio(id) {
 </a></p>
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_0');return false;">
 <input id="radio_0" name="del_flag" type="radio" value="0">
-参加ユーザー全員のこの予定を完全に
+参加者全員のこの予定を完全に
 </a></p>
 #elseif(! $hasMember && $!{result.Detail.isRepeat()})
 <p><a href="javascript:void(0);" onclick="swapRadio('radio_3');return false;">
@@ -155,7 +154,7 @@ function swapRadio(id) {
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
 <p class="center">
-#ALcell_submit($career 'eventSubmit_doSchedule_delete' '削除する')
+#ALcell_submit($career 'eventSubmit_doSchedule_delete' "$l10n.COMMON_DELETE")
 </p>
 #ALcell_formfooter()
 #ALcell_contents_footer($career)

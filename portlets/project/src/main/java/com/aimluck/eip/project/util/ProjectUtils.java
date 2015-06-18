@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.project.util;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
@@ -246,7 +242,7 @@ public class ProjectUtils {
       data.setAdminUserName(adminUser.getAliasName().getValue()); // 管理者名
       data.setProgressFlg(model.getProgressFlg()); // 進捗率入力フラグ
       data.setProgressRate(model.getProgressRate()); // 進捗率
-      data.setCreateDate(model.getCreateDate()); // 登録日
+      data.setCreateDate(model.getCreateDate()); // 作成日
       data.setUpdateDate(model.getUpdateDate()); // 更新日
       data.setTaskUpdateDate(model.getUpdateDate()); // タスク更新日（初期値）
       return data;
@@ -785,7 +781,7 @@ public class ProjectUtils {
     }
     data.setPlanWorkload(new BigDecimal(df.format(model.getPlanWorkload()))); // 計画工数
     data.setProgressRate(model.getProgressRate()); // 進捗率
-    data.setCreateDate(model.getCreateDate());// 登録日
+    data.setCreateDate(model.getCreateDate());// 作成日
     data.setUpdateDate(model.getUpdateDate());// 更新日
 
     // 担当者

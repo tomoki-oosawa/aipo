@@ -7,11 +7,20 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTProjectMember extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String PROJECT_ID_PROPERTY = "projectId";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TPROJECT_PROPERTY = "eipTProject";
 
     public static final String ID_PK_COLUMN = "ID";
 
+    public void setProjectId(Integer projectId) {
+        writeProperty("projectId", projectId);
+    }
+    public Integer getProjectId() {
+        return (Integer)readProperty("projectId");
+    }
+    
+    
     public void setUserId(Integer userId) {
         writeProperty("userId", userId);
     }

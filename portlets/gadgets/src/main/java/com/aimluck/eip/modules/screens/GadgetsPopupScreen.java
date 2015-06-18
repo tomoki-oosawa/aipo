@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     if (app == null) {
       context.put("isActive", false);
       context.put("title", "");
-      String template = "portlets/html/ja/gadgets-popup.vm";
+      String template = "portlets/html/gadgets-popup.vm";
       setTemplate(rundata, context, template);
       return;
     }
@@ -135,7 +134,7 @@ public class GadgetsPopupScreen extends ALVelocityScreen {
     context.put("nocache", "true".equals(ALContainerConfigService
       .get(Property.CACHE_GADGET_XML)) ? "0" : "1");
 
-    String template = "portlets/html/ja/gadgets-popup.vm";
+    String template = "portlets/html/gadgets-popup.vm";
     setTemplate(rundata, context, template);
 
   }

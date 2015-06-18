@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($tabs = [["$l10n.CABINET_SHARED_FILE", "", ""]])
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileFormScreen").addQueryData("entityid","new")))
@@ -34,25 +33,19 @@
 <input type="hidden" name="baseuri_$!{portlet.ID}" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen")' />
 <div class="filters" id="filters_$!portlet.ID">#*
 *##if("$!result.SelectedPostName" != ""&&"$!result.SelectedPostName" != "0")#*
-	*#<span class="filterTip">#*
 	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))#*
-		*#<span>$!result.SelectedPostAliasName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeGroup("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.SelectedPostAliasName "aipo.cabinet.onChangeGroup('$url','$!portlet.ID','');")#*
 *##end#*
 *##if("$!result.SelectedFolderInfo.FolderId" != "" && "$!result.SelectedFolderInfo.FolderId" != "0")#*
-	*#<span class="filterTip">#*
 	*##set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("folder_id","0")))#*
-		*#<span>$!result.SelectedFolderInfo.FolderName</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.cabinet.onChangeFolder("$url","$!portlet.ID","");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!result.SelectedFolderInfo.FolderName "aipo.cabinet.onChangeGroup('$url','$!portlet.ID','');")#*
 *##end#*
 *#</div>
 
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.cabinet.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
 </div>
-#AUIButtonSearch("$l10n.CABINET_SEARCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
@@ -66,12 +59,12 @@
 <div id="listmessageDiv"></div>
 
 #if($result.List.size() && $result.List.size() == 0)
-<div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
+#AUIEmptyMessage("icon-folder-open" "$l10n.CABINET_NOTHING_FILE")
 #else
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
 #if($result.isEditable())
-#AUIajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
@@ -91,8 +84,8 @@
 
 #ALtdheadAtt("#ALajaxsort('file_name' $l10n.CABINET_FILE $result 'CabinetListScreen')" "class='mb_hide'")
 #ALtdhead("#ALajaxsort('file_title' $l10n.CABINET_TITLE $result 'CabinetListScreen')")
-#ALtdheadAtt("#ALajaxsort('update_user' $l10n.CABINET_MODIFIED $result 'CabinetListScreen')" "class='thin mb_hide wName'")
-#ALtdheadAtt("#ALajaxsort('update_date' $l10n.CABINET_UPDATE_DATE $result 'CabinetListScreen')" "class='thin mb_hide center'")
+#ALtdheadAtt("#ALajaxsort('update_user' $l10n.COMMON_UPDATE_USER $result 'CabinetListScreen')" "class='thin mb_hide wName'")
+#ALtdheadAtt("#ALajaxsort('update_date' $l10n.COMMON_UPDATE_DATE $result 'CabinetListScreen')" "class='thin mb_hide center'")
 #ALtdheadAtt("#ALajaxsort('counter' $l10n.CABINET_DL_TIME $result 'CabinetListScreen')" "class='thin mb_hide center'")
 #ALtdheadAtt("#ALajaxsort('file_size' $l10n.CABINET_CAPACITY_KB $result 'CabinetListScreen')" "class='thin mb_hide'")
 </tr>
@@ -116,7 +109,7 @@
 <div><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetFileDetailScreen").addQueryData("entityid",$record.FileId))');">$!record.FileTitleHtml</a></div>
 #ALtdcellfooter()
 ##更新者
-#ALtdcellAtt("$!{record.updateUser}" 'class="mb_hide left" nowrap="nowrap"')
+<td class="mb_hide left" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UpdateUserId.value},arguments[0])">$!{record.updateUser}</a></td>
 ##更新日
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="mb_hide right" nowrap="nowrap"')
 ##ダウンロード数
@@ -129,7 +122,7 @@
 <div class="auiSummaryMeta clearfix">
 <div class="floatLeft">
 #if($result.isEditable())
-#AUIajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.cabinet.onListReceiveMessage")
 #end
 </div>
 #AUIajaxpageview('CabinetListScreen' $result)
@@ -183,4 +176,4 @@ $l10n.CABINET_NOT_PERMISSION_VIEW
 	</div>
 </div>
 
-#parse("/portlets/html/ja/cabinet-widgets.vm")
+#parse("/portlets/html/cabinet-widgets.vm")

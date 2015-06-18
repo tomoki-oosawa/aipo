@@ -41,7 +41,7 @@ import org.apache.ecs.xml.*;
  *
  * @deprecated This layout is not used anymore in Jetspeed
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Lute</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Lute</a>
  * @version $Id: JetspeedLayout.java,v 1.13 2004/02/23 02:59:30 jford Exp $
  */
 public class JetspeedLayout extends Layout

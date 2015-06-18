@@ -23,7 +23,7 @@ package org.apache.jetspeed.util;
 utility manipulation methods.</p>
 <p>Added Content-Encoding capability, with defaults
 
-@author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+@author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
 @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
 @version $Id: MimeType.java,v 1.8 2004/02/23 03:23:42 jford Exp $
 */

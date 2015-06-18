@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -36,7 +35,7 @@
 #ALtdcaption($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtditem("$result.getStringCR($!result.Detail.Address)")
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.Telephone)")
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #ALtdcaption($l10n.ADDRESSBOOK_FAX_NUMBER)
 #ALtditem("$!result.Detail.FaxNumber")
 #ALtdcaption($l10n.ADDRESSBOOK_URL)

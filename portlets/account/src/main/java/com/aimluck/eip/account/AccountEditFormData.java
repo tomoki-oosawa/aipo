@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
@@ -200,7 +199,7 @@ public class AccountEditFormData extends ALAbstractFormData {
     // 新しいパスワード（確認用）
     new_password_confirm = new ALStringField();
     new_password_confirm.setFieldName(ALLocalizationUtils
-      .getl10nFormat("ACCOUNT_PASSWORDCONFIRMMSG"));
+      .getl10nFormat("ACCOUNT_PASSWORDCONFIRMMSG_NOT_INDENTION"));
     new_password_confirm.setTrim(true);
 
     // メールアドレス

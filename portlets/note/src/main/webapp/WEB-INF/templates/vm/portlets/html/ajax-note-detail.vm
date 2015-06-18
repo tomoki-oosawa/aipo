@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if($!result.currentTab == "received_notes")
 #set($person_key = $l10n.NOTE_SRC_USER)
@@ -38,7 +37,7 @@
 #ALtdcaption($person_key)
 #ALtditemheader()
 #if($!result.currentTab == "received_notes")
-$person_value
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.SrcUserId.Value},arguments[0])">$person_value</a>
 #else
 #foreach($record in $!result.MemberList)
 #if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
@@ -49,7 +48,7 @@ $person_value
 #else
 <img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
 #end
-$!record.AliasName
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!record.AliasName</a>
 <br/>
 #end
 #end
@@ -60,7 +59,7 @@ $!record.AliasName
 #ALtdcaption($l10n.NOTE_CLIENT_CAMPANY)
 #ALtditem($!result.Detail.CompanyName)
 #ALtdcaption($l10n.NOTE_CLIENT_CELLILAR_PHONE)
-#ALtditem($!result.Detail.Telephone)
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #ALtdcaption($l10n.NOTE_CLIENT_EMAIL)
 #ALtditem($!result.Detail.EmailAddress)
 #set($count = 0)
@@ -83,7 +82,7 @@ $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
 #ALtditem($!subject)
 #ALtdcaption($l10n.NOTE_MESSAGE)
 #ALtditem($!result.Detail.Message)
-#ALtdcaption($l10n.NOTE_CREATE_TIME)
+#ALtdcaption($l10n.COMMON_CREATE_DATE)
 #ALtditem("$!{result.Detail.CreateDate.Year}$l10n.NOTE_YEAR$!{result.Detail.CreateDate.Month}$l10n.NOTE_MONTH$!{result.Detail.CreateDate.Day}$l10n.NOTE_DAY$!{result.Detail.CreateDate.DayOfWeek} $!{result.Detail.CreateDate.time}")
 #if($!{result.Detail.ConfirmDate})
 #ALtdcaption($l10n.NOTE_CHECK_TIME)
@@ -91,7 +90,7 @@ $!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
 #end
 #ALtablefooter()
 #ALbuttonheader()
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.NOTE_CLOSE" onclick="aipo.note.hideDialog();" />
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','NoteFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.note.onReceiveMessage")<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.note.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 <img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.IfrGadgetService.prototype.requestCheckActivity();"/>

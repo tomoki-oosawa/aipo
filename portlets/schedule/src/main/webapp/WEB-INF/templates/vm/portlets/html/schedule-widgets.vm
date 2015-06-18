@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 #ALjavascript("javascript/aipo/calendar/monthly.js")
 ## ---------------------------------------------------------------------------
 #set ($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid','new')")
@@ -44,8 +43,8 @@
     		<div class="floatLeft"><span id="mc_year">$!{result.MonthlyCalendarViewMonth.Year}</span>$l10n.SCHEDULE_YEAR<span id="mc_month">$!{result.MonthlyCalendarViewMonth.Month}</span>$l10n.SCHEDULE_MONTH</div>
 			<div class="floatRight">
     		<div class="auiSelectButton">
-    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()" title="$l10n.SCHEDULE_PREV_MONTH"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a></div>
-    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()" title="$l10n.SCHEDULE_NEXT_MONTH"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a></div>
+    			<div><a href="javascript:void(0);" class="first arrow" onclick="aipo.calendar.showPreviousMonthlyCalendar()" title="$l10n.SCHEDULE_PREV_MONTH"><i class="icon-caret-left"></i></a></div>
+    			<div><a href="javascript:void(0);" class="last arrow" onclick="aipo.calendar.showNextMonthlyCalendar()" title="$l10n.SCHEDULE_NEXT_MONTH"><i class="icon-caret-right"></i></a></div>
     		</div>
 			</div>
     	</th>

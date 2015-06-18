@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.Date;
@@ -49,7 +48,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   /** <code>updateUser</code> 更新ユーザー */
   private ALEipUser updateUser;
 
-  /** <code>createDate</code> 登録日時 */
+  /** <code>createDate</code> 作成日 */
   private ALDateTimeField createDate;
 
   /** <code>updateDate</code> 更新日時 */
@@ -85,7 +84,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     // テキスト
     text = new ALStringField();
     text.setValue("");
-    // 登録日時
+    // 作成日
     createDate =
       new ALDateTimeField(ALLocalizationUtils
         .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
@@ -160,7 +159,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
-   * 登録日時を取得します。
+   * 作成日を取得します。
    * 
    * @return
    */
@@ -196,7 +195,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
-   * 登録日時を設定します。
+   * 作成日を設定します。
    * 
    * @param date
    */

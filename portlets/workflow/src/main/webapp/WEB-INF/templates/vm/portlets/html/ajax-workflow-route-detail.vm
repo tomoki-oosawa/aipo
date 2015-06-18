@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -33,9 +32,9 @@ $!{result.Detail.RouteV}
 #ALtditemfooter()
 #ALtdcaption("$l10n.WORKFLOW_MEMO")
 #ALtditem($!result.Detail.Note)
-#ALtdcaption("$l10n.WORKFLOW_DATE_ADD")
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate)
-#ALtdcaption("$l10n.WORKFLOW_DATE_UPDATE")
+#ALtdcaption("$l10n.COMMON_UPDATE_DATE")
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
 #ALbuttonheader()

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardTopicFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryFormScreen").addQueryData("entityid","new")))
@@ -35,15 +34,18 @@
 <div id="auiContentsAreaInner">
 <h2>$l10n.MSGBOARD_MANAGEMENT</h2>
 #if($result.List.size() > 0)
-<div class="auiSummaryMeta clearfix"><p>
+<div class="auiSummaryMeta clearfix">
 #AUIbuttonAction("$l10n.MSGBOARD_CATEGORY_ADD" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
-</p></div>
+</div>
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALformheaderAction($l10n.MSGBOARD_PORTLET_CATEGORY $jslink $portlet)
 #end
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.MSGBOARD_CATEGORY_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+<div class="auiSummaryMeta clearfix">
+#AUIbuttonAction("$l10n.MSGBOARD_CATEGORY_ADD" "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',aipo.msgboard.onLoadCategoryDialog);")
+</div>
+#AUIEmptyMessage("icon-picture" "$l10n.COMMON_NO_CATEGORY")
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIajaxpageview('MsgboardCategoryListScreen' $result)
@@ -51,19 +53,19 @@
 #AUIrowTableWide()
 <tr>
 #ALtdheadW75("#ALajaxsort('category_name' $l10n.MSGBOARD_CATEGORY_NAME $result 'MsgboardCategoryListScreen')")
-#ALtdheadAtt("#ALajaxsort('create_user' $l10n.MSGBOARD_CREATE_USER_NAME $result 'MsgboardCategoryListScreen')" 'class="mb_hide wName"')
+#ALtdheadAtt("#ALajaxsort('create_user' $l10n.COMMON_CREATE_USER $result 'MsgboardCategoryListScreen')" 'class="mb_hide wName"')
 </tr>
 #foreach ($record in $result.List)
 <tr>
 #ALtdcellheader()
 <div>
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'")
+#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'" "")
 #end
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","MsgboardCategoryDetailScreen").addQueryData("entityid",$record.CategoryId))');">$!record.CategoryName</a>
 </div>
 #ALtdcellfooter()
-#ALtdcellAtt("$!{record.OwnerName}" "class='mb_hide'")
+<td class='mb_hide'><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.OwnerId},arguments[0])">$!record.OwnerName</a></td>
 </tr>
 #end
 #AUItablefooter()
@@ -75,4 +77,4 @@
 #ALformfooter()
 </div>
 </div>
-#parse("/portlets/html/ja/msgboard-category-widgets.vm")
+#parse("/portlets/html/msgboard-category-widgets.vm")

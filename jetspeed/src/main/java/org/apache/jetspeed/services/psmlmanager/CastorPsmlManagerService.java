@@ -87,7 +87,7 @@ import org.apache.jetspeed.cache.FileCacheEntry;
 /**
  * This service is responsible for loading and saving PSML documents.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  * @author <a href="mailto:sgala@apache.org">Santiago Gala</a>
  * @version $Id: CastorPsmlManagerService.java,v 1.44 2004/03/31 00:23:02 jford Exp $

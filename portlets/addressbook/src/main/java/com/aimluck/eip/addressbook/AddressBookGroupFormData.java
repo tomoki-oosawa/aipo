@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.addressbook;
 
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
 
     create_date = new ALDateField();
     create_date.setFieldName(ALLocalizationUtils
-      .getl10n("ADDRESSBOOK_CREATE_DATE"));
+      .getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateField();
     update_date.setFieldName(ALLocalizationUtils

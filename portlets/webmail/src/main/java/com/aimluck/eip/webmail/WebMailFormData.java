@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
@@ -61,6 +60,7 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.webmail.beans.WebmailAccountLiteBean;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -124,6 +124,9 @@ public class WebMailFormData extends ALAbstractFormData {
   /**  */
   private int accountId = -1;
 
+  /** メールアカウント一覧 */
+  private List<WebmailAccountLiteBean> mailAccountList = null;
+
   private String orgId;
 
   @Override
@@ -145,6 +148,8 @@ public class WebMailFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     orgId = Database.getDomainName();
+
+    mailAccountList = WebMailUtils.getMailAccountList(rundata, context);
   }
 
   /**
@@ -217,7 +222,7 @@ public class WebMailFormData extends ALAbstractFormData {
    */
   @Override
   public boolean validate(List<String> msgList) {
-    String delim = ",";
+    String delim = ",;";
     if (to.validate(msgList)
       && !WebMailUtils.checkAddress(to.getValue(), delim)) {
       msgList.add("『 <span class='em'>宛先</span> 』を正しく入力してください。");
@@ -350,7 +355,7 @@ public class WebMailFormData extends ALAbstractFormData {
         map = null;
       }
 
-      String delim = ",";
+      String delim = ",;";
 
       // オブジェクトモデルを取得
       EipMMailAccount account = ALMailUtils.getMailAccount(userId, accountId);
@@ -761,4 +766,11 @@ public class WebMailFormData extends ALAbstractFormData {
     return addrbuf.toString();
   }
 
+  public boolean isExistsAccount() {
+    if (mailAccountList != null && mailAccountList.size() > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

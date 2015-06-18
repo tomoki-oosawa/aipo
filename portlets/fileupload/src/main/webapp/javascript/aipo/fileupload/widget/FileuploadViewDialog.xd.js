@@ -1,12 +1,6 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.fileupload.widget.FileuploadViewDialog"],
-["provide", "aipo.fileupload.widget.FileuploadViewDialogUnderlay"],
-["require", "aimluck.widget.Dialog"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.FileuploadViewDialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.FileuploadViewDialog"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,6 +16,12 @@ dojo._hasResource["aipo.widget.FileuploadViewDialog"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.fileupload.widget.FileuploadViewDialog"],
+["provide", "aipo.fileupload.widget.FileuploadViewDialogUnderlay"],
+["require", "aimluck.widget.Dialog"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.FileuploadViewDialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.FileuploadViewDialog"] = true;
 
 dojo.provide("aipo.fileupload.widget.FileuploadViewDialog");
 dojo.provide("aipo.fileupload.widget.FileuploadViewDialogUnderlay");
@@ -32,7 +32,7 @@ dojo.declare(
     "aipo.fileupload.widget.FileuploadViewDialogUnderlay",
     [aimluck.widget.DialogUnderlay],
     {
-       templateString: "<div class='fileuploadViewDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
+       templateString: "<div class='fileuploadViewDialogUnderlayWrapper modalDialogUnderlayWrapper' id='${id}_underlay' onclick='aipo.fileupload.hideImageDialog()'><div class='fileuploadViewDialogUnderlay modalDialogUnderlay' dojoAttachPoint='node'></div></div>"
     }
 
 );
@@ -43,7 +43,7 @@ dojo.declare(
     {
         loadingMessage:"<div class='indicator'>読み込み中...</div>",
         templateCssString:"auiPopup imgPopup fileuploadViewDialog",
-        templateString:"<div id='fileuploadViewDialog' class='${templateCssString}' dojoattachpoint='wrapper' onclick='aipo.fileupload.hideImageDialog()'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
+        templateString:"<div id='fileuploadViewDialog' class='${templateCssString}' dojoattachpoint='wrapper'><span dojoattachpoint='tabStartOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap'tabindex='0'></span><span dojoattachpoint='tabStart' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><div dojoattachpoint='containerNode' style='position: relative; z-index: 2;'></div><span dojoattachpoint='tabEnd' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span><span dojoattachpoint='tabEndOuter' dojoonfocus='trapTabs' dojoonblur='clearTrap' tabindex='0'></span></div>",
         _setup: function(){
 
             this._modalconnects = [];

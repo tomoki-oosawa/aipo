@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 dojo.provide("aipo.wiki");
 
 aipo.wiki.onLoadWikiDialog = function (portlet_id) {
@@ -500,6 +499,17 @@ aipo.wiki.image = function () {
   aipo.wiki.insertTag("!", "!", text, true);
 }
 
+aipo.wiki.showPreviewDialog = function(url){
+	var target=dojo.byId("wikiPreview");
+	target.style.display = "block";
+
+	var note = dojo.byId("wiki_note").value;
+
+	var request={"note": note };
+
+	var outerHTML=false;
+	aipo.asyncLoad(target, url,request, outerHTML);
+}
 
 
 

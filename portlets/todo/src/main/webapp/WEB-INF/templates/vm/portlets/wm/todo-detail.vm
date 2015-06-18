@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
 #if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
@@ -38,7 +37,7 @@
 <dd>$!{result.Detail.StateString}</dd>
 <dt>優先度</dt>
 <dd>$!{result.Detail.PriorityString}</dd>
-<dt>登録日</dt>
+<dt>作成日</dt>
 <dd>$!{result.Detail.CreateDate}</dd>
 <dt>更新日</dt>
 <dd>$!{result.Detail.UpdateDate}</dd>

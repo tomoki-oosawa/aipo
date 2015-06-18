@@ -12,6 +12,7 @@ public class _EipTProjectFile extends org.apache.cayenne.CayenneDataObject {
     public static final String FILE_PATH_PROPERTY = "filePath";
     public static final String FILE_THUMBNAIL_PROPERTY = "fileThumbnail";
     public static final String OWNER_ID_PROPERTY = "ownerId";
+    public static final String PROJECT_ID_PROPERTY = "projectId";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TPROJECT_PROPERTY = "eipTProject";
 
@@ -54,6 +55,14 @@ public class _EipTProjectFile extends org.apache.cayenne.CayenneDataObject {
     }
     public Integer getOwnerId() {
         return (Integer)readProperty("ownerId");
+    }
+    
+    
+    public void setProjectId(Integer projectId) {
+        writeProperty("projectId", projectId);
+    }
+    public Integer getProjectId() {
+        return (Integer)readProperty("projectId");
     }
     
     

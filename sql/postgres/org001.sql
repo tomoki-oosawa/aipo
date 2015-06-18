@@ -1,6 +1,6 @@
 --
 -- Aipo is a groupware program developed by Aimluck,Inc.
--- Copyright (C) 2004-2011 Aimluck,Inc.
+-- Copyright (C) 2004-2015 Aimluck,Inc.
 -- http://www.aipo.com
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -184,6 +184,7 @@ CREATE TABLE EIP_M_POST
     OUT_TELEPHONE VARCHAR (15),
     FAX_NUMBER VARCHAR (15),
     GROUP_NAME VARCHAR (99),
+    SORT INTEGER,
     CREATE_DATE DATE,
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(POST_ID),
@@ -198,6 +199,7 @@ CREATE TABLE EIP_M_POSITION
 (
     POSITION_ID INTEGER NOT NULL,
     POSITION_NAME VARCHAR (64) NOT NULL,
+    SORT INTEGER,
     CREATE_DATE DATE,
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(POSITION_ID)
@@ -215,6 +217,8 @@ CREATE TABLE EIP_M_USER_POSITION
     POSITION INTEGER,
     PRIMARY KEY(ID)
 );
+
+CREATE INDEX eip_m_user_position_index ON EIP_M_USER_POSITION(POSITION);
 
 -----------------------------------------------------------------------------
 -- EIP_T_COMMON_CATEGORY
@@ -257,7 +261,7 @@ CREATE TABLE EIP_T_SCHEDULE
     PRIMARY KEY(SCHEDULE_ID)
 );
 
-CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE (START_DATE, END_DATE, UPDATE_DATE);
+CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE(START_DATE, END_DATE, UPDATE_DATE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_SCHEDULE_MAP
@@ -543,6 +547,8 @@ CREATE TABLE EIP_T_NOTE_MAP
    PRIMARY KEY(ID)
 );
 
+CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_CATEGORY
 -----------------------------------------------------------------------------
@@ -592,6 +598,8 @@ CREATE TABLE EIP_T_MSGBOARD_TOPIC
     FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_MSGBOARD_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(TOPIC_ID)
 );
+
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON EIP_T_MSGBOARD_TOPIC(CATEGORY_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_FILE
@@ -788,6 +796,7 @@ CREATE TABLE EIP_FACILITY_GROUP
     ID INTEGER NOT NULL,
     FACILITY_ID INTEGER NOT NULL,
     GROUP_ID INTEGER NOT NULL,
+    SORT INTEGER,
     PRIMARY KEY(ID),
     FOREIGN KEY (FACILITY_ID) REFERENCES EIP_M_FACILITY (FACILITY_ID) ON DELETE CASCADE,
     FOREIGN KEY (GROUP_ID) REFERENCES TURBINE_GROUP (GROUP_ID)
@@ -858,6 +867,8 @@ CREATE TABLE EIP_T_EXT_TIMECARD
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(TIMECARD_ID)
 );
+
+CREATE INDEX eip_t_ext_timecard_user_id_index ON EIP_T_EXT_TIMECARD(USER_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_EXT_TIMECARD_SYSTEM
@@ -1040,7 +1051,8 @@ CREATE TABLE EIP_T_EVENTLOG
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(EVENTLOG_ID)
 );
-
+CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
+CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_ROLE
 -----------------------------------------------------------------------------
@@ -1056,6 +1068,8 @@ CREATE TABLE EIP_T_ACL_ROLE
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(ROLE_ID)
 );
+
+CREATE INDEX eip_t_acl_role_acl_type_index ON EIP_T_ACL_ROLE(ACL_TYPE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_PORTLET_FEATURE
@@ -1082,7 +1096,7 @@ CREATE TABLE EIP_T_ACL_USER_ROLE_MAP
     PRIMARY KEY(ID)
 );
 
-
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON EIP_T_ACL_USER_ROLE_MAP(ROLE_ID);
 
 CREATE TABLE jetspeed_group_profile (
     COUNTRY varchar(2) NULL,
@@ -1252,6 +1266,7 @@ CREATE TABLE EIP_M_FACILITY_GROUP
 (
     GROUP_ID INTEGER NOT NULL,
     GROUP_NAME VARCHAR (64),
+    SORT INTEGER,
     PRIMARY KEY(GROUP_ID)
 );
 
@@ -1382,7 +1397,7 @@ CREATE TABLE EIP_T_TIMELINE_LIKE
     TIMELINE_ID INTEGER NOT NULL,
     OWNER_ID INTEGER,
     CREATE_DATE TIMESTAMP DEFAULT now(),
-    FOREIGN KEY (TIMELINE_LIKE_ID) REFERENCES EIP_T_TIMELINE_LIKE (TIMELINE_LIKE_ID) ON DELETE CASCADE,
+    FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
     PRIMARY KEY(TIMELINE_LIKE_ID),
     UNIQUE (TIMELINE_ID, OWNER_ID)
 );
@@ -1499,6 +1514,7 @@ CREATE TABLE EIP_T_GPDB_RECORD
 );
 
 CREATE INDEX eip_t_gpdb_record_record_no_index ON EIP_T_GPDB_RECORD (RECORD_NO);
+CREATE INDEX eip_t_gpdb_record_gpdb_id_index ON EIP_T_GPDB_RECORD (GPDB_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_GPDB_RECORD_FILE
@@ -1758,6 +1774,104 @@ CREATE TABLE EIP_M_PROJECT_KUBUN_VALUE (
 );
 
 -----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM
+(
+    ROOM_ID INTEGER NOT NULL,
+    NAME VARCHAR (255),
+    ROOM_TYPE VARCHAR(1) DEFAULT 'G',
+    AUTO_NAME VARCHAR(1) DEFAULT 'F',
+    LAST_MESSAGE TEXT,
+    LAST_UPDATE_DATE TIMESTAMP DEFAULT NULL,
+    CREATE_USER_ID INTEGER NOT NULL,
+    PHOTO bytea,
+    PHOTO_SMARTPHONE bytea,
+    PHOTO_MODIFIED TIMESTAMP,
+    HAS_PHOTO VARCHAR (1) DEFAULT 'F',
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY (ROOM_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE
+(
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    MESSAGE TEXT,
+    MEMBER_COUNT INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (MESSAGE_ID)
+);
+
+
+create index eip_t_message_room_id_create_date ON EIP_T_MESSAGE(ROOM_ID,CREATE_DATE);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM_MEMBER
+(
+    ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    LOGIN_NAME VARCHAR (32) NOT NULL,
+    TARGET_USER_ID INTEGER NOT NULL,
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+
+create index eip_t_message_room_member_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(TARGET_USER_ID);
+create index eip_t_message_room_member_user_id_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(USER_ID,TARGET_USER_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    MESSAGE_ID INTEGER,
+    ROOM_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_READ
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_READ
+(
+    ID INTEGER NOT NULL,
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    IS_READ VARCHAR(1) DEFAULT 'F',
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_READ);
+create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
+
+-----------------------------------------------------------------------------
 -- CREATE SEQUENCE
 -----------------------------------------------------------------------------
 
@@ -1863,6 +1977,11 @@ CREATE SEQUENCE pk_eip_t_project_task_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_project_task_comment_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_project_kubun INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_project_kubun_value INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_room INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_room_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_read INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1954,7 +2073,11 @@ ALTER SEQUENCE pk_eip_t_project_task_file OWNED BY EIP_T_PROJECT_TASK_FILE.FILE_
 ALTER SEQUENCE pk_eip_t_project_task_comment_file OWNED BY EIP_T_PROJECT_TASK_COMMENT_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_m_project_kubun OWNED BY EIP_M_PROJECT_KUBUN.PROJECT_KUBUN_ID;
 ALTER SEQUENCE pk_eip_m_project_kubun_value OWNED BY EIP_M_PROJECT_KUBUN_VALUE.PROJECT_KUBUN_VALUE_ID;
-
+ALTER SEQUENCE pk_eip_t_message_room OWNED BY EIP_T_MESSAGE_ROOM.ROOM_ID;
+ALTER SEQUENCE pk_eip_t_message OWNED BY EIP_T_MESSAGE.MESSAGE_ID;
+ALTER SEQUENCE pk_eip_t_message_room_member OWNED BY EIP_T_MESSAGE_ROOM_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_message_file OWNED BY EIP_T_MESSAGE_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_message_read OWNED BY EIP_T_MESSAGE_READ.ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------

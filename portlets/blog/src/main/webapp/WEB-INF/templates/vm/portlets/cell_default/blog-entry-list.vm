@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_latest','1')")
 ##set($methodlist = [["$l10n.BLOG_ADD_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_ADD_THEME", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_thema_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_LOOK_ALL_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["$l10n.BLOG_DO_ENTRY_SEARCH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
@@ -37,7 +36,7 @@ $l10n.BLOG_NOTHING_ENTRY_SELECT_THEME
 <ul>
 #foreach ($record in $result.List)
 #ALcell_li_header($career)
-<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId})">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a>&nbsp;
+<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId})">${record.Title} #if($record.CommentsNum > 0)($record.CommentsNum)#end</a>&nbsp;
 ${record.OwnerName}&nbsp;
 (${record.TitleDate})
 #ALcell_li_footer($career)
@@ -59,7 +58,7 @@ $l10n.BLOG_COMMENT_CELL_HISTORY<br />
 #foreach ($record2 in $result.CommentHistoryList)
 <tr>
 <td>${record2.TitleDate}</td>
-<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))');">${record2.Title}</a> （${record2.CommentsNum}） &nbsp;</td>
+<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record2.EntryId).addQueryData('view_uid',${record2.OwnerId}))');">${record2.Title}</a> (${record2.CommentsNum}) &nbsp;</td>
 <td>${record2.OwnerName}</td>
 </tr>
 #end

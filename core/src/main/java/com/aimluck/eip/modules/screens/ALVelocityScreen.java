@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -45,6 +43,7 @@ import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
@@ -111,7 +110,8 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       String portletName = getPortletName();
       if (portletName == null
         || "".equals(portletName)
-        || ALPortalApplicationService.isActive(portletName)) {
+        || (ALPortalApplicationService.isActive(portletName) && CustomizeUtils
+          .isAdminUserView(portletName, rundata))) {
         this.doOutput(rundata, context);
       } else {
         context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
@@ -230,10 +230,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
       ALEipConstants.SECURE_ID));
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
 
     if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
       "changeToPc"))) { // PC表示切り替え用

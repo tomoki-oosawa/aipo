@@ -1,0 +1,67 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+ <div class="messageSummaryHead">
+	<div class="inner">
+		<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageRoomFormScreen").addQueryData("entityid","new")','$!portlet.ID',aipo.message.onLoadMessageRoomDialog);" class="auiButton w100">$l10n.MESSAGE_ADD_ROOM</a>
+	</div>
+</div>
+#if($result.List.size() == 0)
+#if($!isSearch)
+<ul class="messageSummary scroll" id="messageSummary">
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
+#AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE")
+#else
+#AUIEmptyMessage("icon-arrow-up" "$l10n.MESSAGE_ROOM_EMPTY_MESSAGE_FIRST")
+#end
+#else
+<ul class="messageSummary scroll" id="messageSummary">
+#if($!isSearch)
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchRoomList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+#end
+#foreach ($record in $result.List)
+	<li id="messageRoom$!record.RoomId" #if("$!currentRoom" == "$!record.RoomId")class="active"#end #if($!record.RoomId.toString() == "0")style="display:none"#end>
+		<a href="javascript:void(0)" onclick="aipo.message.selectRoom($!record.RoomId);">
+			<span class="avatar">
+			#if($!record.getRoomType().getValue() == "O")
+			#if($!record.isHasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+			#else
+				<img src="images/common/avatar_default3.png" alt="$!record.Name" class="avatar_s"/>
+			#end
+			#else
+			#if($!record.isHasPhoto())
+				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+			#else
+				<img src="themes/default/images/common/group_default.png" alt="$!record.Name" class="avatar_s"/>
+			#end
+			#end
+			</span>
+			#if("$!record.UnreadCount" != "0")<div class="nrCount" id="messageRoomUnreadCount$!record.RoomId">$!record.UnreadCount</div>#end
+			<span class="date">$!record.UpdateDate</span>
+			<span class="name">$!record.Name</span>
+			<span class="latest">$!record.LastMessage</span>
+			<span id="messageRoomType$!record.RoomId" style="display:none">$!record.RoomType</span>
+		</a>
+	</li>
+#end
+</ul>
+#end
+<span id="messageTotalUnreadCountValue" style="display:none">$!result.TotalUnreadCount</span>
+<span id="messageCurrentRoomValue" style="display:none">$!currentRoom</span>

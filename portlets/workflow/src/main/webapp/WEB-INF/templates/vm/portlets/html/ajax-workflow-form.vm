@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 ##set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WorkflowFormScreen")))
 #set ($RouteChangeFlag = "isChangedRoute")
@@ -78,7 +77,7 @@
 #ALtditemfooter()
 ##ALtdcaption("$!result.getFieldName('price')")
 ##ALtditemheader()
-##ALtextfield('price' $!result.Price '35%' 16 'disabled')&nbsp;円&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caution">￥、カンマ（,）は不要</span>
+##ALtextfield('price' $!result.Price '35%' 16 'disabled')&nbsp;円&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="caution">¥、カンマ（,）は不要</span>
 ##ALtditemfooter()
 #ALtdcaption("#ALrequired($l10n.WORKFLOW_APPLICATION_ROUTE)")
 #ALtditemheader()
@@ -108,7 +107,8 @@
     memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
     changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowUserLiteJSONScreen').addQueryData('mode','group')">
 </div>
-<select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+#set($workflowRecordIndex = 1)
+<select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!{workflowRecordIndex}. $!record.AliasName</option>#set($workflowRecordIndex = ${workflowRecordIndex}+1)#end</select>
 </div>
 </div>
 <div id="workflowRouteSelectField" #if(!$!{result.isSavedRoute})style="display:none"#end>
@@ -133,7 +133,7 @@
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
   	#foreach($record in $!result.AttachmentFileNameList )
-  	<li data-fileid="s${record.FileId}" data-filename="$!record.FileName"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.WORKFLOW_REMOVE</span></li>
+  	<li data-fileid="s${record.FileId}" data-filename="$!record.FileName"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.COMMON_DELETE</span></li>
   	#end
   </ul>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="" />

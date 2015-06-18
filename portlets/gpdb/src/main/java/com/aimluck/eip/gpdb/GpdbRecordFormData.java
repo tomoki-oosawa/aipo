@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2013 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.Calendar;
@@ -61,10 +57,9 @@ public class GpdbRecordFormData extends ALAbstractFormData {
     .getLogger(GpdbRecordFormData.class.getName());
 
   /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  private static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /** 入力フォームのフィールド名の先頭文字列 */
   private static final String FIELD_PREFIX = "field_";
@@ -95,7 +90,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -137,7 +132,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -160,7 +155,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースのフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -178,7 +173,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
           || GpdbUtils.ITEM_TYPE_UPDATE_USER.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)
           || GpdbUtils.ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録者、更新者、登録日時、更新日時、自動採番はチェックしない
+          // 登録者、更新者、作成日、更新日時、自動採番はチェックしない
           continue;
 
         } else if (GpdbUtils.ITEM_TYPE_SELECT_MULTI.equals(type)) {
@@ -255,7 +250,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -302,7 +297,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -416,7 +411,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
         } else if (GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)
           || GpdbUtils.ITEM_TYPE_UPDATE_DATE.equals(type)) {
-          // 登録日時、更新日時
+          // 作成日、更新日時
           ALDateTimeField dt = new ALDateTimeField();
           dt.setValue(Calendar.getInstance().getTime());
           value = dt.toStringDateTime();
@@ -500,7 +495,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースを更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -598,7 +593,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
         } else if (GpdbUtils.ITEM_TYPE_SEQ.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_USER.equals(type)
           || GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)) {
-          // 登録者、登録日時、自動採番
+          // 登録者、作成日、自動採番
           value = gpdbRecord.getValue(); // 変更なし（更新日のみ変更する）
 
         } else {
@@ -635,7 +630,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースをデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -681,7 +676,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 項目定義リストを取得します。
-   * 
+   *
    * @return 項目定義リスト
    */
   public List<GpdbItemResultData> getGpdbItemList() {
@@ -690,7 +685,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 指定した項目定義IDのレコード情報を取得します。
-   * 
+   *
    * @param gpdbItemId
    *          項目定義ID
    * @return レコード情報
@@ -705,7 +700,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * 指定区分の区分値リストを取得します。
-   * 
+   *
    * @param kubunId
    *          区分マスタID
    * @return 区分値リスト
@@ -716,7 +711,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * フォルダ名を取得します。
-   * 
+   *
    * @return フォルダ名
    */
   public String getFolderName() {
@@ -725,7 +720,7 @@ public class GpdbRecordFormData extends ALAbstractFormData {
 
   /**
    * Webデータベースを取得します。
-   * 
+   *
    * @return Webデータベース
    */
   public EipTGpdb getGpdb() {

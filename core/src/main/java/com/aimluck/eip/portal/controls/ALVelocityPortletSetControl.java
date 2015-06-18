@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.portal.controls;
 
 // Turbine stuff
@@ -51,13 +50,14 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet control designed for handling a PortletSet child
- * 
+ *
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
- * 
+ *
  */
 public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
@@ -71,7 +71,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
 
   /**
    * This method adds the control specific objects to the context
-   * 
+   *
    * @param rundata
    *          the RunData object for this request
    * @param context
@@ -79,6 +79,11 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
    */
   @Override
   public void buildContext(RunData rundata, Context context) {
+    ALOrgUtilsService.assignCommonContext(context);
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
+    }
     if (getPortlet() instanceof PortletSet) {
 
       PortletSet set = (PortletSet) getPortlet();
@@ -106,16 +111,17 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
         }
       }
       context.put("mypageId", mypageId);
+      context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     }
   }
 
   /**
    * Populate a list of tabs that should be displayed by this control. Each tab
    * represents a child portlet.
-   * 
+   *
    * This method works best if the child of this control is a PortletSet whose
    * controller implements the PanedPortletController interface.
-   * 
+   *
    * @param portlet
    *          the base portlet to explore for children @
    */
@@ -156,7 +162,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
     for (Enumeration<?> en = portlets.getPortlets(); en.hasMoreElements();) {
       Portlet p = (Portlet) en.nextElement();
       PortalResource portalResource = new PortalResource(p);
-      if ("Activity".equals(p.getName())
+      if (("Activity".equals(p.getName()) || "Message".equals(p.getName()))
         && !portlets.getController().getConfig().getName().equals(
           "MenuController")) {
         continue;
@@ -322,7 +328,7 @@ public class ALVelocityPortletSetControl extends ALVelocityPortletControl {
       Serializable {
 
     /**
-     * 
+     *
      * @param o1
      * @param o2
      * @return

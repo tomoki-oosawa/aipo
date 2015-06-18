@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,9 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
@@ -27,23 +24,13 @@
 #AUIcontentsAreaHeader()
 <h2>$l10n.PROJECT_PROJECT_MANAGEMENT</h2>
 #AUISummaryDiv()
-#if($result.ProjectCount != 0)
 	#AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
-#end
 #AUISummaryDivfooter()
 
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("$l10n.PROJECT_PROJECT")
 #if($result.ProjectCount == 0)
-    #AUIrowTableWide()
-    <tr>
-	<td colspan="4" class="auiNoData">
-    <p class="mh10">
-    #AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
-    </p>
-    </td>
-	</tr>
-    #AUItablefooter()
+#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_EMPTY_SHORT_MESSAGE")
 #else
     #AUISummaryDiv()
     #AUIajaxpageview('ProjectListScreen' $result)
@@ -58,7 +45,7 @@
     #ALtdhead("$l10n.PROJECT_EXPECTED_WORKLOAD")
     #ALtdhead("$l10n.PROJECT_REST_OF_TASK_")
     #ALtdhead("$l10n.PROJECT_ADMIN_USER")
-    #ALtdhead("$l10n.PROJECT_UPDATE_DATE")
+    #ALtdhead("$l10n.COMMON_UPDATE_DATE")
 			</tr>
     #foreach ($record in $result.List)
     	#if($!{record.planProgressRate.toString()} == "")
@@ -100,7 +87,7 @@
     		<div>$!{record.ReminderTask}</div>
     	#ALtdcellfooter()
     	#ALtdcellheader()
-    		<div>$!record.AdminUserName</div>
+    		<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.AdminUserId,arguments[0])">$!record.AdminUserName</a></div>
     	#ALtdcellfooter()
     	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
     		<div>$!{record.TaskUpdateDate}</div>
@@ -115,4 +102,4 @@
 #ALformfooter()
 #AUIcontentsAreaFooter()
 
-#parse("/portlets/html/ja/project-widgets.vm")
+#parse("/portlets/html/project-widgets.vm")

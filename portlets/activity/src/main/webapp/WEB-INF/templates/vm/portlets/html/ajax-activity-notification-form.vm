@@ -1,0 +1,96 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($action_str = $l10n.NOTIFICATION_UPDATE)
+#set ($subtitle = $l10n.NOTIFICATION_SETTING)
+#set ($event_submit = "eventSubmit_doActivityNotification_update")
+#set ($modesrv = "update")
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#ALajaxscreenformheader($l10n.NOTIFICATION_SETTING $jslink $portlet "ActivityNotificationFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.notification.onReceiveMessage)")
+<input type="hidden" name="mode" value="$!modesrv" />
+<h3>$l10n.NOTIFICATION_DESKTOP</h3>
+
+#if(!$!notifySupport)
+
+<div class="p spaceBottom">
+<div class="section">
+<div class="alertSuccess">
+$l10n.NOTIFICATION_NOT_SUPPORTED_MESSAGE
+</div>
+</div>
+</div>
+
+#else
+
+<div class="notificationRequestField spaceBottom" #if(!$!notifyPermissionDefault)style="display:none"#end>
+<div class="section">
+<div class="alertSuccess">
+$l10n.NOTIFICATION_SUPPORTED_MESSAGE<br />
+<a href="javascript: void(0);" onclick="aipo.notification.requestDesktopNotification('$!portlet.ID');">$l10n.NOTIFICATION_REQUEST_PERMISSION_MESSAGE</a>
+</div>
+</div>
+</div>
+
+<div class="notificationConfirmField spaceBottom" style="display:none">
+<div class="section">
+<div class="alertSuccess">
+$l10n.NOTIFICATION_CONFIRM_MESSAGE
+</div>
+</div>
+</div>
+
+<div class="notificationBlockField spaceBottom" #if($!notifyPermissionDefault || $!notifyPermission)style="display:none"#end>
+<div class="section">
+<div class="alertSuccess">
+$l10n.NOTIFICATION_BLOCKED_MESSAGE<br />
+</div>
+</div>
+</div>
+
+
+<div class="notificationSuccessField" #if(!$!notifyPermission)style="display:none"#end>
+#ALtableheaderWide()
+#ALtdcaption("$l10n.NOTIFICATION_SETTING")
+#ALtditemheader()
+<p><input type="radio" checked="checked" id="desktopNotification$!{portlet.ID}_T" value="T" name="desktopNotification" #if($result.DesktopNotification.Value == "T")checked="checked"#end/>
+<label for="desktopNotification$!{portlet.ID}_T">$l10n.NOTIFICATION_ON</label></p>
+<p><input type="radio" id="desktopNotification$!{portlet.ID}_F" value="F" name="desktopNotification" #if($result.DesktopNotification.Value == "F")checked="checked"#end/>
+<label for="desktopNotification$!{portlet.ID}_F">$l10n.NOTIFICATION_OFF</label></p>
+#ALtditemfooter()
+#ALtablefooter()
+</div>
+
+#if($!recommend)
+<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.notification.requestDesktopNotification('$!portlet.ID');"/>
+#end
+
+#end
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

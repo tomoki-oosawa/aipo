@@ -29,7 +29,7 @@ import java.util.Enumeration;
  * interface suitable for Castor XML serialization
  *
  * @see org.apache.jetspeed.om.registry.PortletInfoEntry
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BasePortletInfoEntry.java,v 1.9 2004/03/29 19:28:24 jford Exp $
  */
 public abstract class BasePortletInfoEntry extends BaseRegistryEntry

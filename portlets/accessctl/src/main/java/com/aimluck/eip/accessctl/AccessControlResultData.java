@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.accessctl;
 
 import java.util.ArrayList;
@@ -60,7 +59,7 @@ public class AccessControlResultData implements ALData {
   /** ユーザー名一覧 */
   private List<String> unamelist;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -70,6 +69,7 @@ public class AccessControlResultData implements ALData {
    *
    *
    */
+  @Override
   public void initField() {
     acl_role_id = new ALNumberField();
     acl_role_name = new ALStringField();

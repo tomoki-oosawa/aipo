@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.fileio;
 
 import java.util.ArrayList;
@@ -161,10 +160,10 @@ public class FileIOScheduleCsvSelectData extends
     int i, j;
     int line = 0;
     String ErrorCode = "";
-    StringBuffer e_line = new StringBuffer();
 
     while (reader.eof != -1) {
       line++;
+      StringBuffer e_line = new StringBuffer();
       List<String> errmsg = new ArrayList<String>();
       FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
       formData.initField();
@@ -215,8 +214,9 @@ public class FileIOScheduleCsvSelectData extends
 
         if (errmsg.size() > 0) {
           ErrorCode += e_line.toString();
-          ErrorCode += "," + Integer.toString(line);
+          ErrorCode += "," + Integer.toString(line) + ",false";
           ErrorCode += "\n";
+          data.setIsError(true);
         }
         if (!formData.getUserFullName().toString().equals(
           ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
@@ -317,7 +317,89 @@ public class FileIOScheduleCsvSelectData extends
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    return null;
+    int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
+
+    ALCsvTokenizer reader = new ALCsvTokenizer();
+    if (!reader.setStartLine(filepath, line_index)) {
+      return null;
+    }
+
+    List<FileIOScheduleCsvData> list = new ArrayList<FileIOScheduleCsvData>();
+
+    String token;
+    int i, j;
+    int line = 0;
+
+    while (reader.eof != -1) {
+      boolean iserror = false;
+      line++;
+      List<String> errmsg = new ArrayList<String>();
+      FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
+      formData.initField();
+      formData.setIsAutoTime(autotime_flg);
+
+      for (j = 0; j < sequency.size(); j++) {
+        token = reader.nextToken();
+
+        i = Integer.parseInt((String) sequency.get(j));
+        formData.addItemToken(token, i);
+        if (reader.eof == -1) {
+          break;
+        }
+        if (reader.line) {
+          break;
+        }
+
+        if (j == sequency.size() - 1) {
+          if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
+            token = reader.nextToken();
+            line = Integer.parseInt(token);
+          }
+        }
+      }
+      if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
+        token = reader.nextToken();
+      }
+
+      while ((!reader.line) && (reader.eof != -1)) {
+        reader.nextToken();
+      }
+
+      if (formData.getUserFullName().toString().equals(
+        ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
+        continue;
+      }
+
+      if (reader.eof == -1 && j == 0) {
+        break;
+      }
+
+      formData.adjust();
+      formData.adjustUser(errmsg);
+      formData.setValidator();
+      if (!formData.validate(errmsg)) {
+        iserror = true;
+      }
+      if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
+        iserror = true;
+      }
+
+      try {
+
+        FileIOScheduleCsvData data = setupData(formData, errmsg, line);
+        data.setIsError(iserror);
+        list.add(data);
+
+      } catch (Exception e) {
+        logger.error("readError", e);
+      }
+      if (reader.eof == -1) {
+        break;
+      }
+    }
+
+    return list;
+
   }
 
   /**

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 dojo.provide("aipo.customize.form");
 
 aipo.customize.positionInitialize=function(){
@@ -103,7 +102,7 @@ aipo.customize.showMenuForTab = function(tab_id) {
         }else{
         	menuNode.style("left",rect.right-menuNode[0].clientWidth+scroll.left+"px");
         }
-       	 menuNode.style("top",rect.bottom+scroll.top+"px");
+        menuNode.style("top",rect.bottom+scroll.top-20+"px");
         menuNode.style("opacity","1");
     } else {
         aipo.customize.hideMenu(tab_id);
@@ -179,8 +178,8 @@ aipo.customize.refixMenuSchedule = function(portlet_id){
     	dojo.query("#tableWrapper_" + portlet_id).style("z-index","1");
     	current_portlet_id = portlet_id;
     } else {
-    	left = html.getBoundingClientRect().left;
-    	top = html.getBoundingClientRect().top;
+    	left = html.getBoundingClientRect().left+window.scrollX;
+    	top = html.getBoundingClientRect().top+window.scrollY;
     }
     menuNode.style('left', left + "px");
     menuNode.style('top', top + html.offsetHeight + "px");

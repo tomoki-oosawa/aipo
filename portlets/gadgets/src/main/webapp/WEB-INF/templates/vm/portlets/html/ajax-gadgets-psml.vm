@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($subtitle = $l10n.GADGETS_SET_APPSETTING)
 #set ($action_str = $l10n.GADGETS_SET_AS_DEFAULT_SETTING)
@@ -29,7 +28,14 @@
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 
-#ALajaxscreenformheader("psmlForm" $jslink $portlet "GadgetsPsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.gadgets_admin.onReceiveMessageUpdate);aipo.gadgets_admin.submit(this,'$indicator_id','$!js_peid',function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=controls.Maximize' });return false;")
+#if($maximized == "true")
+    #set ($callback_action = "controls.Restore")
+#else
+    #set ($callback_action = "controls.Maximize")
+#end
+
+#ALajaxscreenformheader("psmlForm" $jslink $portlet "GadgetsPsmlFormJSONScreen" "aipo.gadgets_admin.submit(this,'$indicator_id','$!portlet.ID', function(){ location.href='$!{jslink}/js_pane/$!{js_peid}?action=$!callback_action' });return false;")
+
 <div class="p">
 <input type="hidden" value="" id="$!{portlet.ID}-mode" name="mode">
 </div>
@@ -64,7 +70,7 @@
 </div>
 <div align="center">
 <input type="submit" onclick="aimluck.io.setHiddenValue(this)" value="$l10n.GADGETS_CHANGE_SETTING" class="auiButtonAction" name="$event_submit">
-<input type="button" onclick="aipo.common.hideDialog();" value="$l10n.GADGETS_CLOSE2" class="button" name="ajaxbuttonClose">
+<input type="button" onclick="aipo.common.hideDialog();" value="$l10n.COMMON_CLOSE" class="button" name="ajaxbuttonClose">
 </div>
 #ALbuttonfooter()
 #ALformfooter()

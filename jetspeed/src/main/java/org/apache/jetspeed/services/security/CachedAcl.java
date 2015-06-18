@@ -16,7 +16,8 @@
 
 
 package org.apache.jetspeed.services.security;
-import java.util.HashMap;
+
+import java.util.HashMap;
 import java.util.Iterator;
 
 import org.apache.jetspeed.om.security.BaseJetspeedGroup;

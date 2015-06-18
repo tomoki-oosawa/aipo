@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 dojo.provide("aipo.gpdb");
 
 dojo.require("aipo.widget.DropdownDatepicker");
@@ -54,7 +50,7 @@ aipo.gpdb.ITEM_TYPE_MAIL = "09";
 /** 項目定義形式：日付 */
 aipo.gpdb.ITEM_TYPE_DATE = "10";
 
-/** 項目定義形式：登録日時 */
+/** 項目定義形式：作成日 */
 aipo.gpdb.ITEM_TYPE_CREATE_DATE = "11";
 
 /** 項目定義形式：更新日時 */

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($tabs = [["$l10n.CABINET_SHARED_FILE", "", ""]])
 ## ---------------------------------------------------------------------------
@@ -57,15 +56,15 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 <input type="hidden" name="_name" value="$l10n.CABINET_FILE" />
 <input type="hidden" name="secid" value="$secid" />
 #ALtableheaderSimpleWide()
-#ALtdcaption("$l10n.CABINET_SEARCH")
+#ALtdcaption("$l10n.COMMON_SEARCH")
 #ALtditemheader()
 #ALtextfield('sword' "$!result.SearchWord" "120px" 100 'active')
-#ALsubmitJS('submit' "$l10n.CABINET_SEARCH" 'setHiddenValue(this)')
+#ALsubmitJS('submit' "$l10n.COMMON_SEARCH" 'setHiddenValue(this)')
 <span class="middle">$l10n.CABINET_SEARCH_TITLE_FILE_MEMO</span>
 #ALtditemfooter()
 #ALtablefooter()
 #if($result.List.size() == 0)
-<div class="message">$l10n.CABINET_NOTHING_SELECT_FILE</div>
+#AUIEmptyMessage("icon-folder-open" "$l10n.CABINET_NOTHING_FILE")
 #else
 #ALajaxpageview('CabinetFileSearchListScreen' $result)
 #ALtableheader("100%")
@@ -73,8 +72,8 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALtdheadAtt("#ALswitchCheckbox()" "class='thin auiMTCheck'")
 #ALtdheadW33("#ALajaxsort('file_title' "$l10n.CABINET_TITLE" $result 'CabinetFileSearchListScreen')")
 #ALtdheadW33("#ALajaxsort('file_name' "$l10n.CABINET_FILE_NAME" $result 'CabinetFileSearchListScreen')")
-##ALtdheadThin("#ALajaxsort('update_user' "$l10n.CABINET_MODIFIED" $result 'CabinetListScreen')")
-#ALtdheadW25("#ALajaxsort('update_date' "$l10n.CABINET_UPDATE_DATE" $result 'CabinetFileSearchListScreen')")
+##ALtdheadThin("#ALajaxsort('update_user' "$l10n.COMMON_UPDATE_USER" $result 'CabinetListScreen')")
+#ALtdheadW25("#ALajaxsort('update_date' "$l10n.COMMON_UPDATE_DATE" $result 'CabinetFileSearchListScreen')")
 #ALtdheadThin("#ALajaxsort('file_size' "$l10n.CABINET_CAPACITY_KB" $result 'CabinetFileSearchListScreen')")
 #ALtdheadW33("#ALajaxsort('folder_name' "$l10n.WEBMAIL_FOLDER_NAME"  $result 'CabinetFileSearchListScreen')")
 #ALtdheadThin(' ')
@@ -108,7 +107,7 @@ $l10n.CABINET_SEARCH_RESULT_FILE_LIST
 #ALtablefooter()
 #ALbuttonheaderRight()
 $l10n.CABINET_THE_SELECTED_FILE
-#ALajaxbuttonCheckboxDelete("$l10n.CABINET_DO_DELET" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator.id" "$!portlet.ID" "aipo.cabinet.onReceiveMessage")
+#ALajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','CabinetFileFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator.id" "$!portlet.ID" "aipo.cabinet.onReceiveMessage")
 #ALbuttonfooterRight()
 #ALajaxpageviewFooter('CabinetFileSearchListScreen' $result)
 #ALformfooter()

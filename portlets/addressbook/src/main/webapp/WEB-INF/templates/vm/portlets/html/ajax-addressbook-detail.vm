@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if("$!result.CurrentTab" != "corp")
 #ALdialogheader($l10n.ADDRESSBOOK_OUT_ADDRESS_DETAIL)
@@ -33,7 +32,7 @@
 #ALtditemheader()
 $!result.Detail.Name
 #if($!result.Detail.PublicFlag.toString() == 'F')
-#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'")
+#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'" "")
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.ADDRESSBOOK_NAME_KANA)
@@ -42,15 +41,15 @@ $!result.Detail.Name
 #ALtditem($result.getStringCR($!result.Detail.Email))
 #if("$!result.CurrentTab" != "corp")
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.Telephone)")
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #else
 #ALtdcaption($l10n.ADDRESSBOOK_OUT_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.Telephone)")
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #ALtdcaption($l10n.ADDRESSBOOK_IN_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.Telephone)")
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
 #end
 #ALtdcaption($l10n.ADDRESSBOOK_CELLULAR_PHONE)
-#ALtditem("#ALtelLink($!result.Detail.CellularPhone)")
+#ALtditem("#ALtelLink($!result.Detail.CellularPhone $!utils.replaceToTelLink($!result.Detail.CellularPhone.toString()))")
 #ALtdcaption($l10n.ADDRESSBOOK_CELLULAR_MAIL)
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
 
@@ -69,7 +68,7 @@ $!result.Detail.Name
 #ALtdcaption($l10n.ADDRESSBOOK_COMPANY_ADDRESS)
 #ALtditem($result.getStringCR($!result.Detail.CompanyAddress))
 #ALtdcaption($l10n.ADDRESSBOOK_TELEPHONE)
-#ALtditem("#ALtelLink($!result.Detail.CompanyTelephone)")
+#ALtditem("#ALtelLink($!result.Detail.CompanyTelephone $!utils.replaceToTelLink($!result.Detail.CompanyTelephone.toString()))")
 #ALtdcaption($l10n.ADDRESSBOOK_FAX_NUMBER)
 #ALtditem($!result.Detail.CompanyFaxNumber)
 #ALtdcaption($l10n.ADDRESSBOOK_URL)
@@ -93,10 +92,22 @@ $!record.Name <br />
 #ALtdcaption($l10n.ADDRESSBOOK_NOTE)
 #ALtditem($!result.Detail.Note)
 #if("$!result.CurrentTab" != "corp")
-#ALtdcaption($l10n.ADDRESSBOOK_CREATE_USER_NAME)
+#ALtdcaption($l10n.COMMON_CREATE_USER)
+#if($!result.Detail.CreatedUserId.ValueWithInt < 4)
 #ALtditem("$!result.Detail.CreatedUser （$!result.Detail.CreateDate）")
-#ALtdcaption($l10n.ADDRESSBOOK_UPDATE_USER_NAME)
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreatedUserId},arguments[0])">$!{result.Detail.CreatedUser}</a>（$!result.Detail.CreateDate）
+#ALtditemfooter()
+#end
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
+#if($!result.Detail.UpdatedUserId.ValueWithInt < 4)
 #ALtditem("$!result.Detail.UpdatedUser （$!result.Detail.UpdateDate）")
+#else
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdatedUserId},arguments[0])">$!{result.Detail.UpdatedUser}</a>（$!result.Detail.UpdateDate）
+#ALtditemfooter()
+#end
 #end
 #ALtablefooter()
 #ALbuttonheader()

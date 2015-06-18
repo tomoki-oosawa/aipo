@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cabinet;
 
 import java.util.List;
@@ -47,7 +46,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイル検索用データ．
- * 
+ *
  */
 public class CabinetFileWordSelectData extends
     ALAbstractSelectData<EipTCabinetFile, EipTCabinetFile> {
@@ -70,7 +69,7 @@ public class CabinetFileWordSelectData extends
   private RunData rundata;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -116,7 +115,7 @@ public class CabinetFileWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -167,7 +166,7 @@ public class CabinetFileWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -206,6 +205,7 @@ public class CabinetFileWordSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -215,7 +215,7 @@ public class CabinetFileWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -244,7 +244,7 @@ public class CabinetFileWordSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -278,7 +278,7 @@ public class CabinetFileWordSelectData extends
 
   /**
    * 検索ワードを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getSearchWord() {
@@ -300,11 +300,12 @@ public class CabinetFileWordSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE;
   }
+
 }

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,28 +16,148 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
+#macro(ALsetCategoryFilterList $category $title)
+#if($category=='all'||  $utils.isActive($category))
+<li #if($!result.CurrentCategory == $category) class="selected" #end data-param=$!{category}><a href="javascript:void(0)"  #if($!result.CurrentCategory == $!{category}) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$title</a></li>
+#end
+#end
+
+<div class="auiSummaryMeta auiFilter clearfix">
+	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllScreen")' />
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
+		#if(!$!result.issetFilter("post"))
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_ALL_GROUP</span></a>
+		#else
+		#set($break=false)
+			#foreach($record in $result.postList)
+				#if(!$break)
+					#if($!result.issetFilter("post",$!{record.Name}))
+						<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
+						#set($break=true)
+					#end
+				#end
+			#end
+
+			#foreach($record in $result.PostMap)
+				#if(!$break)
+					#if($!result.issetFilter("post",$!{record.GroupName}))
+						<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>
+						#set($break=true)
+					#end
+				#end
+			#end
+		#end
+		#if($!result.CurrentCategory == 'all')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_ALL_APP</span></a>
+		#elseif($!result.CurrentCategory == 'Schedule')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_SCHEDULE</span></a>
+		#elseif($!result.CurrentCategory == 'Msgboard')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_MSGBOARD</span></a>
+		#elseif($!result.CurrentCategory == 'Blog')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_BLOG</span></a>
+		#elseif($!result.CurrentCategory == 'ToDo')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_TODO</span></a>
+		#elseif($!result.CurrentCategory == 'Cabinet')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_CABINET</span></a>
+		#elseif($!result.CurrentCategory == 'Gadget')
+			<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.activity.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.ACTIVITY_AIPO_APP</span></a>
+		#end
+	</div>
+	<div class="floatRight">
+	#if($result.List.size() != 0)
+	#AUIajaxpageview('ActivityAllScreen' $result)
+	#end
+	</div>
+</div>
+<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
+	<div>
+		<p class="caption">$l10n.COMMON_GROUP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$l10n.ACTIVITY_ALL_GROUP</a></li>
+
+			#foreach($record in $result.postList)
+			<li #if ($!result.issetFilter("post",$record.Name)) class="selected" #end  data-param="$record.Name"><a href="javascript:void(0)"  #if ($!result.issetFilter("post",$record.Name)) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)' >$record.AliasName</a></li>
+			#end
+			#foreach($record in $result.PostMap)
+			<li #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end data-param="$!{record.GroupName}" ><a href="javascript:void(0)" #if ($!result.issetFilter("post",$!{record.GroupName})) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$!record.PostName</a></li>
+			#end
+		</ul>
+	</div>
+	<div>
+		<p class="caption">$l10n.ACTIVITY_APP</p>
+		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
+			#ALsetCategoryFilterList('all' $l10n.ACTIVITY_ALL_APP)
+			#ALsetCategoryFilterList('Schedule' $l10n.ACTIVITY_SCHEDULE)
+			#ALsetCategoryFilterList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
+			#ALsetCategoryFilterList('Blog' $l10n.ACTIVITY_BLOG)
+			#ALsetCategoryFilterList('ToDo' $l10n.ACTIVITY_TODO)
+			#ALsetCategoryFilterList('Cabinet' $l10n.ACTIVITY_CABINET)
+			#ALsetCategoryFilterList('Gadget' $l10n.ACTIVITY_AIPO_APP)
+		</ul>
+	</div>
+</div>
+
 #if ($result.List.size() == 0)
-<div class="message">$l10n.ACTIVITY_NO_DATA</div>
+#AUIEmptyMessage("" "$l10n.ACTIVITY_NO_DATA")
 #else
+#if($result.TableColumNum == 4)
 #ALformheader('Activity' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
-#AUIajaxpageview('ActivityAllScreen' $result)
 </div>
-<table class="activityTable">
+<table class="auiRowTable wide">
+<colgroup />
+<colgroup style="width:20%;" />
+<colgroup style="width:6em;" />
 <tbody>
 #foreach ($record in $result.List)
 <tr>
-<td>
-<span class="date">$!record.UpdateDate &nbsp; $!{record.DisplayName}</span>
+#ALtdcellheader()
+<div>
 #if($!$record.Icon.toString() != "")
 <img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
 #end
-<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+</div>
+#ALtdcellfooter()
+<td>
+	<div>
+		#if($!{record.UserId})
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId},arguments[0])">$!{record.DisplayName}</a>
+		#else
+		$!{record.DisplayName}
+		#end
+	</div>
 </td>
+#ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end
-</tbody></table>
+</tbody>
+</table>
 #ALformfooter()
+#else
+#ALformheader('Activity' $jslink $portlet)
+<div class="auiSummaryMeta clearfix">
+</div>
+<table class="auiRowTable wide">
+<colgroup />
+<colgroup style="width:6em;" />
+<tbody>
+#foreach ($record in $result.List)
+<tr>
+#ALtdcellheader()
+<div>
+#if($!$record.Icon.toString() != "")
+<img src="$!record.Icon" width="16" height="16" alt="" align="absmiddle" />
+#end
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">$!record.TitleText</a>
+</div>
+#ALtdcellfooter()
+#ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
+</tr>
+#end
+</tbody>
+</table>
+#ALformfooter()
+#end
 #end

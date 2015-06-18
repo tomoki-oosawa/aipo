@@ -24,7 +24,7 @@ package org.apache.jetspeed.portal;
  * whether to add directly a portlet to the controller or to wrap it inside
  * a set.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PortletSetController.java,v 1.2 2004/02/23 04:05:35 jford Exp $
  */
 public interface PortletSetController

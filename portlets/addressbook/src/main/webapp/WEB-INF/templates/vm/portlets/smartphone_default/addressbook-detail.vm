@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($linklist = [["社外アドレス一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_list', '1')"], ["アドレス帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle_iphone($career "社外アドレス詳細")
@@ -60,7 +59,7 @@
 #ALthtd('部署名' $!{result.Detail.PostName})
 #ALthtd('郵便番号' $!{result.Detail.Zipcode})
 #ALthtd('住所' $!{result.Detail.CompanyAddress})
-#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} != '')
+#if($!{result.Detail.CompanyTelephone} && $!{result.Detail.CompanyTelephone.Value} && $!{result.Detail.CompanyTelephone.Value} != '')
 #if($!{result.Detail.CompanyTelephone.Value.length()} > 3 || $!{result.Detail.CompanyTelephone.Value.length()} < 26)
 #ALthtd('電話番号' "<a href='tel:$!{result.Detail.CompanyTelephone}'>$!{result.Detail.CompanyTelephone}</a>")
 #else
@@ -69,8 +68,8 @@
 #end
 #ALthtd('FAX番号' $!{result.Detail.CompanyFaxNumber})
 #ALthtd('URL' "<a href='$!{result.Detail.CompanyUrl}'>$!{result.Detail.CompanyUrl}</a>")
-#ALthtd('登録者名' "$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})")
-#ALthtd('更新者名' "$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})")
+#ALthtd('登録者' "$!{result.Detail.CreatedUser}($!{result.Detail.CreateDate})")
+#ALthtd('更新者' "$!{result.Detail.UpdatedUser}($!{result.Detail.UpdateDate})")
 #ALtablefooterBorder()
 
 #ALcell_contents_footer($career)

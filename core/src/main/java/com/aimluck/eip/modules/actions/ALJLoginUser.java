@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions;
 
 import java.io.UnsupportedEncodingException;
@@ -52,10 +51,11 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.ALTimelineUtils;
 
 /**
  * ログイン処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALJLoginUser extends ActionEvent {
 
@@ -134,6 +134,16 @@ public class ALJLoginUser extends ActionEvent {
       data.setMessage(ALLocalizationUtils.getl10n("LOGINACTION_LOGIN_ONLY_PC"));
       data.getUser().setHasLoggedIn(Boolean.FALSE);
       return;
+    }
+
+    if ("admin".equals(username)
+      && "T".equals(ALConfigService.get(Property.FIRST_ADMIN_LOGIN))) {
+      // アップデート時には自動投稿しない
+      if (!ALTimelineUtils.hasTimelinePost()) {
+        // ID=2 をガイドユーザーとする
+        ALTimelineUtils.postTimeline(data, 2);
+      }
+      ALConfigService.put(Property.FIRST_ADMIN_LOGIN, "F");
     }
 
     boolean newUserApproval =
@@ -215,7 +225,7 @@ public class ALJLoginUser extends ActionEvent {
       user = JetspeedSecurity.login(username, password);
       JetspeedSecurity.saveUser(user);
 
-      // 運営からのお知らせ用のクッキ－削除
+      // 運営からのお知らせ用のクッキ−削除
       if (rundata.getRequest().getCookies() != null) {
         for (Cookie cookie : rundata.getRequest().getCookies()) {
           String cookieName = cookie.getName();
@@ -434,9 +444,9 @@ public class ALJLoginUser extends ActionEvent {
   }
 
   /**
-   * 
+   *
    * 指定したchar型文字が記号であるかを判断します。
-   * 
+   *
    * @param ch
    * @return
    */
@@ -481,5 +491,4 @@ public class ALJLoginUser extends ActionEvent {
     }
     return disabled;
   }
-
 }

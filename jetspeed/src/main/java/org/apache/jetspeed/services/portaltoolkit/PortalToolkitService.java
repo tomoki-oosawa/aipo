@@ -35,7 +35,7 @@ import org.apache.jetspeed.om.profile.Profile;
  * It handles all the portal specific objects except Portlet which are 
  * handled by a separate PortletFactory service
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: PortalToolkitService.java,v 1.5 2004/02/23 03:34:14 jford Exp $
  */
 public interface PortalToolkitService extends Service

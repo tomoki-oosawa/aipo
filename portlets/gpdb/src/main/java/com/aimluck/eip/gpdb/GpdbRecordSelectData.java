@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.ArrayList;
@@ -52,7 +48,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベースレコードの検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class GpdbRecordSelectData extends
     ALAbstractSelectData<EipTGpdbRecord, EipTGpdbRecord> implements ALData {
@@ -84,7 +80,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -100,7 +96,6 @@ public class GpdbRecordSelectData extends
       ALEipUtils
         .setTemp(rundata, context, LIST_SORT_STR, GpdbUtils.SORT_STRING);
     }
-
     searchWord = new ALStringField();
     super.init(action, rundata, context);
 
@@ -110,7 +105,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -196,7 +191,6 @@ public class GpdbRecordSelectData extends
           nullSort = " = '' ";
         }
       }
-
       if (GpdbUtils.hasResetKeywordFlag(rundata, context)) {
         GpdbUtils.resetKeyword(rundata, context, this.getClass().getName());
       }
@@ -214,11 +208,10 @@ public class GpdbRecordSelectData extends
         ascDesc = current_sort_type;
       }
 
-      StringBuilder sql = new StringBuilder();
       // -----------------------
       // レコード情報を取得
       // -----------------------
-
+      StringBuilder sql = new StringBuilder();
       if (searchValue != "") {
 
         sql
@@ -306,7 +299,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * フィルタ項目、ソート項目を保持する
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -326,7 +319,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -361,15 +354,17 @@ public class GpdbRecordSelectData extends
 
   /**
    * 詳細データを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
    *          Context
    * @return 項目定義オブジェクト
+   * @throws ALPageNotFoundException
    */
   @Override
-  protected EipTGpdbRecord selectDetail(RunData rundata, Context context) {
+  protected EipTGpdbRecord selectDetail(RunData rundata, Context context)
+      throws ALPageNotFoundException {
     // セッション情報を設定
     setCurrentFilterAndSort(rundata, context);
 
@@ -390,7 +385,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ）
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -402,7 +397,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ）
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -433,7 +428,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 項目情報を取得する
-   * 
+   *
    * @return 項目情報
    */
   @Override
@@ -445,7 +440,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * WebデータベースIDを取得する
-   * 
+   *
    * @return WebデータベースID
    */
   public String getGpdbId() {
@@ -454,7 +449,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * WebデータベースIDの設定
-   * 
+   *
    */
 
   public void setGpdbId(Context context, RunData rundata) {
@@ -495,7 +490,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * Webデータベース全リストを取得する
-   * 
+   *
    * @return Webデータベース全リスト
    */
   public List<GpdbResultData> getGpdbAllList() {
@@ -504,7 +499,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 項目定義リストを取得します。
-   * 
+   *
    * @return 項目定義リスト
    */
   public List<GpdbItemResultData> getGpdbItemList() {
@@ -512,15 +507,8 @@ public class GpdbRecordSelectData extends
   }
 
   /**
-   * @return target_keyword
-   */
-  public ALStringField getSearchWord() {
-    return searchWord;
-  }
-
-  /**
    * 項目定義リストを取得します。
-   * 
+   *
    * @return 項目定義リスト
    */
   public GpdbResultData getGpdb() {
@@ -529,7 +517,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 指定した項目定義IDのレコード情報を取得します。
-   * 
+   *
    * @param gpdbItemId
    *          項目定義ID
    * @return レコード情報
@@ -540,7 +528,7 @@ public class GpdbRecordSelectData extends
 
   /**
    * 指定区分の区分値リストを取得します。
-   * 
+   *
    * @param kubunId
    *          区分マスタID
    * @return 区分値リスト
@@ -556,5 +544,12 @@ public class GpdbRecordSelectData extends
       }
     }
     return false;
+  }
+
+  /**
+   * @return target_keyword
+   */
+  public ALStringField getSearchWord() {
+    return searchWord;
   }
 }

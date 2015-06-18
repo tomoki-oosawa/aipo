@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 dojo.require("aipo.widget.MemberNormalSelectList");
 
 dojo.provide("aipo.timeline");
@@ -173,7 +172,11 @@ aipo.timeline.refreshImageList = function(pid, i) {
 			if (aipo.timeline.revmaxlist.hasOwnProperty(pid)) {
 				revmax = aipo.timeline.revmaxlist[pid];
 			}
-			revmax++;
+			if(revmax==0&&document.getElementById("tlClipImage_"+pid+"_1")!=null){
+				revmax = 1;
+			} else {
+				revmax++;
+			}
 			aipo.timeline.revmaxlist[pid] = revmax;
 
 			var info = dojo.byId("tlClipImage_" + pid + "_1_untiview");
@@ -199,7 +202,11 @@ aipo.timeline.refreshImageList = function(pid, i) {
 		if (aipo.timeline.revmaxlist.hasOwnProperty(pid)) {
 			revmax = aipo.timeline.revmaxlist[pid];
 		}
-		revmax++;
+		if(revmax==0&&document.getElementById("tlClipImage_"+pid+"_1")!=null){
+			revmax = 1;
+		} else {
+			revmax++;
+		}
 		aipo.timeline.revmaxlist[pid] = revmax;
 
 		var info = dojo.byId("tlClipImage_" + pid + "_1_untiview");
@@ -274,8 +281,12 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 				var spritval = _val.split(/\r\n|\n/g);
 				for (i in spritval) {
 					if (spritval[i].match(/^https?:\/\/[^ 	]/i)) {
-						aipo.timeline.getUrl(spritval[i], pid);
-						aipo.timeline.revmaxlist[pid] = 0;
+						var url = spritval[i].replace(/　/g, " ").split(" ");
+						if(dojo.byId("flag_" + pid).value == "none"){
+							dojo.byId("flag_" + pid).value = "processing";
+							aipo.timeline.getUrl(url[0], pid);
+							aipo.timeline.revmaxlist[pid] = 0;
+						}
 					}
 				}
 			}
@@ -306,23 +317,25 @@ aipo.timeline.onKeyUp = function(pid, tid, e) {
 	shadow.style.left = "-1000";
 	shadow.style.border = "0";
 	shadow.style.outline = "0";
-	shadow.style.lineHeight = "normal";
+	shadow.style.fontSize = "14px";
+    shadow.style.lineHeight = "1.38";
 	shadow.style.height = "auto";
 	shadow.style.resize = "none";
-	shadow.cols = "10"
+	shadow.cols = "10";
 	// これが呼ばれる際の入力はまだ入ってこないので、適当に1文字追加
 	shadow.innerHTML = shadowVal + "あ";
 
 	var objBody = document.getElementsByTagName("body").item(0);
 	objBody.appendChild(shadow);
-	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth
-			+ "px";
+	dojo.byId("shadow").style.width = document.getElementById(objId).offsetWidth + "px";
 
 	var shadowHeight = document.getElementById("shadow").offsetHeight;
 
-	if (shadowHeight < 18)
-		shadowHeight = 18;
-	dojo.byId(objId).style.height = shadowHeight * 1.2 + 21 + "px";
+    // 文字サイズを14pxに設定したため、"あ"の高さが18→20に変更
+    if (shadowHeight < 20) {
+        shadowHeight = 20;
+    }
+	dojo.byId(objId).style.height = shadowHeight * 1.0 + 23 + "px";
 	objBody.removeChild(shadow);
 }
 
@@ -332,6 +345,16 @@ aipo.timeline.onPaste = function(pid, tid, e) {
 	}, 100);
 }
 
+aipo.timeline.onkeydown =function(pid){
+	if(dojo.isSafari){
+		var keycode = window.event.keyCode;
+		if(keycode== dojo.keys.TAB){
+		var	submit =dojo.byId("al_submit_"+pid);
+		dojo.stopEvent(window.event);
+		 submit.focus();
+		}
+	}
+}
 aipo.timeline.lock = false;
 aipo.timeline.onReceiveMessage = function(msg) {
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;
@@ -352,7 +375,6 @@ aipo.timeline.onReceiveMessage = function(msg) {
 		dojo.byId("messageDiv_" + pid).innerHTML = msg;
 	}
 }
-
 aipo.timeline.onReceiveMessageToList = function(msg) {
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;
 	if (!msg) {
@@ -590,6 +612,7 @@ aipo.timeline.addText = function(form, pid) {
 aipo.timeline.viewThumbnail = function(pid) {
 	var page = dojo.byId("TimelinePage_" + pid);
 	var value = parseInt(page.value);
+
 	if (dojo.byId("checkbox_" + pid).checked) {
 		dojo.byId("tlClipImage_" + pid + "_" + page.value).style.display = "none";
 		dojo.addClass(dojo.byId("auiSummaryMeta_" + pid),"hide");
@@ -619,7 +642,6 @@ aipo.timeline.submit = function(form, indicator_id, pid, callback, cnt) {
 }
 
 aipo.timeline.write = function(inthis, indicator_id, pid) {
-	dojo.removeClass(inthis, 'auiButtonAction');
 	aipo.timeline.addText(dojo.byId('form' + pid), pid);
 	aipo.timeline.addHiddenValue(dojo.byId('form' + pid), 'mode', 'insert');
 	aimluck.io.setHiddenValue(inthis);
@@ -747,3 +769,19 @@ aipo.timeline.activeFileAttachments = function(pid) {
 	if (obj)
 		obj.id = "folderName_" + pid;
 };
+
+aipo.timeline.onFocusSearch = function(pid) {
+	var timelineSearchForm = dojo.byId("timelineSearchForm_"+ pid);
+	if(timelineSearchForm) {
+		dojo.addClass(timelineSearchForm, "focus");
+	}
+}
+
+aipo.timeline.onBlurSearch = function(pid) {
+	var timelineSearchForm = dojo.byId("timelineSearchForm_"+ pid);
+	if(timelineSearchForm) {
+		if(!timelineSearchForm.keyword.value) {
+		    dojo.removeClass(timelineSearchForm, "focus");
+		}
+	}
+}

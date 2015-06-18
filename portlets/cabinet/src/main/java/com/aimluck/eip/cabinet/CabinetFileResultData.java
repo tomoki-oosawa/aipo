@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cabinet;
 
 import java.util.Date;
@@ -30,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 共有フォルダのファイルのResultDataです。 <BR>
- * 
+ *
  */
 public class CabinetFileResultData implements ALData {
 
@@ -55,13 +54,19 @@ public class CabinetFileResultData implements ALData {
   /** メモ */
   private ALStringField note;
 
+  /** 登録者 ID */
+  private ALNumberField create_user_id;
+
   /** 登録者名 */
   private ALStringField create_user;
+
+  /** 更新者 ID */
+  private ALNumberField update_user_id;
 
   /** 更新者名 */
   private ALStringField update_user;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -89,7 +94,9 @@ public class CabinetFileResultData implements ALData {
     counter = new ALNumberField();
     note = new ALStringField();
     note.setTrim(false);
+    create_user_id = new ALNumberField();
     create_user = new ALStringField();
+    update_user_id = new ALNumberField();
     update_user = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALDateTimeField();
@@ -219,6 +226,42 @@ public class CabinetFileResultData implements ALData {
 
   public void setUpdateUser(String str) {
     update_user.setValue(str);
+  }
+
+  /**
+   * 登録者IDのの取得
+   *
+   * @return
+   */
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
+  /**
+   * 登録者IDの設定
+   *
+   * @param i
+   */
+  public void setCreateUserId(long i) {
+    create_user_id.setValue(i);
+  }
+
+  /**
+   * 更新者IDのの取得
+   *
+   * @return
+   */
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
+  }
+
+  /**
+   * 更新者IDの設定
+   *
+   * @param i
+   */
+  public void setUpdateUserId(long i) {
+    update_user_id.setValue(i);
   }
 
   /**

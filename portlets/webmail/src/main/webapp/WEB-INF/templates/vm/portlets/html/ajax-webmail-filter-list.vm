@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ##-------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterFormScreen").addQueryData("entityid","new")))
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailFilterOrderFormScreen")))
@@ -36,12 +35,15 @@
 
 #else
 #if($result.List.size() <= 0)
-#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+#AUISummaryDiv()
+#AUIbuttonAction($l10n.WEBMAIL_DO_ADD_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormScreen')');")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-envelope" "$l10n.WEBMAIL_FILTER_EMPTY_MESSAGE")
 #else
 #ALajaxlistformheader($l10n.WEBMAIL_FILTER)
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDelete($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton($l10n.WEBMAIL_DO_SORT_APPLY_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">
@@ -74,7 +76,7 @@ $!{record.FilterType}$l10n.WEBMAIL_IS$!{record.FilterString}$l10n.WEBMAIL_CONTAI
 #AUItablefooter()
 #AUISummaryDiv()
 <div class="floatLeft auiForm">
-#AUIajaxbuttonCheckboxDelete($l10n.WEBMAIL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #AUIbutton($l10n.WEBMAIL_DO_SORT_APPLY_FILTER "javascript:aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFilterOrderFormScreen')');")
 </div>
 <div class="floatRight">
@@ -87,4 +89,4 @@ $!{record.FilterType}$l10n.WEBMAIL_IS$!{record.FilterString}$l10n.WEBMAIL_CONTAI
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/webmail-nonaction-widgets.vm")
+#parse("/portlets/html/webmail-nonaction-widgets.vm")

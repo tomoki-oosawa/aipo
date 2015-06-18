@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,62 +16,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-<div id="printHeader">
-#AUIPrintWindowCloseIcon()
-$l10n.SCHEDULE_ALERT_DONOT_REFLECT
-<table>
-<tr>
-<th>$l10n.SCHEDULE_WIDTH</th>
-<td>
-<select id="print_width" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="100%" >100%</option>
-<option value="90%">90%</option>
-<option value="80%">80%</option>
-<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
-<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
-<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
-<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
-<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
-<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
-<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
-<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
-<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
-<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
-<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
-</select>
-</td>
-</tr>
-<tr>
-<th>$l10n.SCHEDULE_WORD_SIZE</th>
-<td><select id="print_word_size" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="8pt">8pt</option>
-<option value="9pt">9pt</option>
-<option selected="selected" value="10pt">10pt</option>
-<option value="11pt">11pt</option>
-<option value="12pt">12pt</option>
-<option value="13pt">13pt</option>
-<option value="14pt">14pt</option>
-<option value="16pt">16pt</option>
-<option value="18pt">18pt</option>
-<option value="20pt">20pt</option>
-</select>
-</td>
-</tr>
+#ALprintoptionheader()
 <tr>
 <th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
 <label><input id=print_icon type="checkbox" checked="checked" onclick="change_print_form()" />$l10n.SCHEDULE_DISPLAY_ICON</label><br />
 </td>
 </tr>
-<tr>
-<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
-</tr>
-</table>
-</div>
+#ALprintoptionfooter()
 
-<script type="text/javascript" language="JavaScript">
+
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
@@ -113,7 +69,7 @@ if(document.all!=undefined){
 <tr>
 <th #if(${client}=="IPHONE")class="w50"#else class="w30" #end>$l10n.SCHEDULE_DATE</th>
 <th #if(${client}=="IPHONE")class="w50"#else class="w40" #end>$l10n.SCHEDULE_TITLE</th>
-<th class="w30 mb_hide">$l10n.SCHEDULE_CREATE_USER</th>
+<th class="w30 mb_hide">$l10n.COMMON_CREATE_USER</th>
 </tr>
 #foreach ($record in $result.ScheduleList)
 ##set($scheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.ViewDate.toString()})")
@@ -121,17 +77,10 @@ if(document.all!=undefined){
 <td  #if(${client}!="IPHONE")nowrap="nowrap" #end>${record.DateFull}</td>
 <td><div>$!{record.WbrName}&nbsp;
 #if(! ${record.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
-#if($record.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#end
-#if(${record.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
-#end
-#if($record.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
-#end</div></td>
+#AUIiconScheduleSets($record)
+</div></td>
 <td class="mb_hide"><div>$!{record.CreateUser.AliasName}</div></td>
 </tr>
 #end
@@ -141,7 +90,7 @@ if(document.all!=undefined){
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');

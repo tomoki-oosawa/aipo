@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,31 +17,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
-#*
-Copyright 2004 The Apache Software Foundation
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*#
 
 #**
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
 @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
-@version $Id: role-browser.vm,v 1.5 2004/03/17 19:19:02 jford Exp $
+@version $Id: role-browser.vm,v 1.2 2004/04/27 13:53:13 shinsuke Exp $
 
 *#
 
-#set ( $headings = ["Role Name", "Actions"] )
+#set ( $headings = ["$l10n.ACCESSCTL_ROLE_NAME", "$l10n.CUSTOMIZER_ACTION"] )
 
 <table>
 
@@ -59,7 +44,7 @@ limitations under the License.
           #entryCell ($role.Name)
           <td>
               <a href="$jslink.getPaneByName("RolePermissionForm").addPathInfo("entityid",$role.Name)">${l10n.ROLE_BROWSER_PERMISSIONS_VM}</a>
-              #if ($config.getVector("services.JetspeedSecurity.system.roles").contains($role.Name) == false)              
+              #if ($config.getVector("services.JetspeedSecurity.system.roles").contains($role.Name) == false)
               <a href="$jslink.getPaneByName("RoleForm").addPathInfo("entityid",$role.Name).addQueryData("mode","delete")">${l10n.ROLE_BROWSER_REMOVE_VM}</a>
               #else
               &nbsp;

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
@@ -77,7 +76,11 @@ public class ToDoMultiDelete extends ALAbstractCheckList {
     Expression exp2 =
       ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, values);
 
-    if (Database.query(EipTTodo.class, exp1).andQualifier(exp2).getCount() > 0) {
+    if (Database
+      .query(EipTTodo.class)
+      .andQualifier(exp1)
+      .andQualifier(exp2)
+      .getCount() > 0) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
     } else {

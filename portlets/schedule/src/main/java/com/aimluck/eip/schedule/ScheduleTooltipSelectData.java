@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -313,6 +312,11 @@ public class ScheduleTooltipSelectData extends
           facilityIds.add(map.getUserId());
         }
       }
+
+      if (users.isEmpty()) {
+        users.add(-1);
+      }
+
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
@@ -456,7 +460,7 @@ public class ScheduleTooltipSelectData extends
       rd.setUpdateUser(ALEipUtils.getALEipUser(record
         .getUpdateUserId()
         .intValue()));
-      // 登録日時
+      // 作成日
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
       rd.setUpdateDate(record.getUpdateDate());

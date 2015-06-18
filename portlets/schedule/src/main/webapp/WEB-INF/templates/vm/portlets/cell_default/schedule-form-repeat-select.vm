@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
 #set($linklist = [[$l10n.SCHEDULE_ONEDAY_LIST, "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], [$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
 
 #ALcell_pagetitle($career $l10n.SCHEDULE_EDIT_REPEAT_SCHEDULE)
 #ALcell_formheader($career $jslink $portlet)
-$l10n.SCHEDULE_EDIT_RANGE：#ALcell_br($career)
+$l10n.SCHEDULE_EDIT_RANGE:#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="0" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) checked="checked" #end>
 $l10n.SCHEDULE_ALL_SCHEDULE#ALcell_br($career)
 <input name="edit_repeat_flag" type="radio" value="1" #if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 1) checked="checked" #end>

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.wiki;
 
 import info.bliki.wiki.model.WikiModel;
@@ -40,7 +39,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class WikiResultData implements ALData {
 
@@ -79,7 +78,10 @@ public class WikiResultData implements ALData {
   /** 更新者名 */
   private ALStringField update_user;
 
-  /** 登録日 */
+  /** 更新者ID */
+  private ALNumberField update_user_id;
+
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */
@@ -109,6 +111,7 @@ public class WikiResultData implements ALData {
     owner_id = new ALNumberField();
     create_user = new ALStringField();
     update_user = new ALStringField();
+    update_user_id = new ALNumberField();
     create_date = new ALDateTimeField();
     update_date = new ALDateTimeField();
     note = new ALStringField();
@@ -292,7 +295,7 @@ public class WikiResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -330,12 +333,20 @@ public class WikiResultData implements ALData {
     return parent_id;
   }
 
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
+  }
+
   public void setOwnerId(long i) {
     this.owner_id.setValue(i);
   }
 
   public void setParentId(long i) {
     this.parent_id.setValue(i);
+  }
+
+  public void setUpdateUserId(long i) {
+    this.update_user_id.setValue(i);
   }
 
   public ALStringField getParentName() {
@@ -361,4 +372,5 @@ public class WikiResultData implements ALData {
   public boolean isChild() {
     return 0 != this.parent_id.getValue();
   }
+
 }

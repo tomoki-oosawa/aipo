@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-")
 ## ---------------------------------------------------------------------------
@@ -44,7 +43,7 @@
 <span class="caution">#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #elseif($!result.Detail.Progress.Value == "R" || $!result.Detail.Progress.Value == "D") $l10n.WORKFLOW_DENIAL #else $l10n.WORKFLOW_WAITING_DECISION #end</span>
 #end
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
-&nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' $l10n.WORKFLOW_DO_REMOVE "aipo.workflow.onDelete('$!portlet.ID');aimluck.io.ajaxDeleteSubmit(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})','$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage)")
+&nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' "$l10n.COMMON_DELETE" "aipo.workflow.onDelete('$!portlet.ID');aimluck.io.ajaxDeleteSubmit(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})','$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage)")
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.WORKFLOW_REQUEST_NAME)
@@ -119,7 +118,8 @@ $!{record.StatusString}
 $!{record.UpdateDate}
 #end
 </span>
-<span class="floatLeft">$!{record.UserAliasName}</span>
+
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.Value},arguments[0])" class="floatLeft">$!{record.UserAliasName}</a>
 </div>
 
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
@@ -132,7 +132,7 @@ $!{record.UpdateDate}
 &nbsp;
 #else
 <span id="order_field">
-#ALselectpdheader("passback_order" "70%" "" )
+#ALselectpdheader("passback_order" "65%" "" )
 #if($!result.Detail.CanRemandApplicant)
 <option value='0'>$l10n.WORKFLOW_APPLICANT</option>
 #end

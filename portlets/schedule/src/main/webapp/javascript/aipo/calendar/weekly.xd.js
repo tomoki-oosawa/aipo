@@ -1,14 +1,6 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.calendar.weekly"],
-["require", "aimluck.dnd.Draggable"],
-["require", "aipo.widget.ToolTip"],
-["require", "aipo.widget.MemberNormalSelectList"],
-["require", "aipo.widget.GroupNormalSelectList"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.calendar.weekly"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +16,14 @@ dojo._hasResource["aipo.calendar.weekly"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.calendar.weekly"],
+["require", "aimluck.dnd.Draggable"],
+["require", "aipo.widget.ToolTip"],
+["require", "aipo.widget.MemberNormalSelectList"],
+["require", "aipo.widget.GroupNormalSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.calendar.weekly"] = true;
 
 dojo.provide("aipo.calendar.weekly");
 
@@ -58,9 +58,6 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
     var childrenBody = dojo.byId("weeklyRights-" + pid).children;
 	dojo.byId("view_type_" + pid).value = period;
 	var dateCell = dojo.byId("indicateDate_" + pid);
-	if(dateCell == null){
-		return;
-	}
 	for(var i = 0; i < 7; i++){
 		var child = children[i];
 		var childBody = childrenBody[i];
@@ -68,7 +65,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 		var add = dojo.byId("scheduleDivAdd0" + i + "_" + pid)
 		switch(period){
 		case '1':
-			dateCell.innerHTML = "<span>1日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>1日</span>";
 			childBody.className = "weeklyRight";
 			if(i == 0) {
 				child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
@@ -91,7 +88,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '4':
-			dateCell.innerHTML = "<span>4日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>4日</span>";
 			if(i == 0){
 				removeClass(childTerm, "weeklyTermRightR");
 			}
@@ -129,7 +126,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '7':
-			dateCell.innerHTML = "<span>7日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>7日</span>";
 			child.style.left = i * (100.0 / 7.0) + "%";
 			child.style.display = "";
 			child.style.width = "14.2857%";
@@ -207,7 +204,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     if(dojo.byId('groupselect-' + _portletId).value.indexOf("pickup") != -1){
     	_params += "&pickup=true";
     }
-
 
     if(ptConfig[_portletId].xhrUrl != ptConfig[_portletId].jsonUrl + _params){
 	    ptConfig[_portletId].xhrUrl = ptConfig[_portletId].jsonUrl + _params;
@@ -296,7 +292,7 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	            }
 
 	            termTableHtml += "<table id=\"termTable_" + this.portletId + "\" style=\"width:100%;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>";
-
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
 	            var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
 	//            if(Element.clientWidth == Element.offsetWidth){
 	//              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
@@ -368,9 +364,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                l_count++;
 	            });
 	            termTableHtml += "</tbody></table>"
+
+	            var tempTermHeight = (17 * (l_count - m_count + 1));
+	            var tempTermTop = (-(17 * (l_count - m_count + 1)));
 	            dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
-	            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
-	            dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
 	            dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
 	            dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
 
@@ -486,17 +483,19 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                }
 
 	                if(!item['public']) {
-	                    name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
+	                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
 	                }
+	                name += '\n<span class="inline-block">\n';
 	                if(item.duplicate) {
-	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
+	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
 	                }
 	                if(item.repeat) {
-	                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
+	                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
 	                }
 	                if(item.tmpreserve) {
-	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
+	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
 	                }
+	                name += '</span>';
 	                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
 	                count++;
 	            });
@@ -530,9 +529,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                scheduleDiv[item.index].push(draggable);
 	                if(item['public'] || item.member){
 	                    dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
+		                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 	                }
 
-	                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
 
 	                count++;
 	            });
@@ -611,21 +610,24 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                            str_tmpflgmb   =  "[共有]";
 	                        }
 	                    }
+	                    name = str_tmpflgmb + name;
 
-	                    if(!item['public']) {
-	                        name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
-	                    }
-	                    if(item.duplicate) {
-	                        name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
-	                    }
-	                    if(item.repeat) {
-	                        name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
-	                    }
-	                    if(item.tmpreserve) {
-	                        name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
-	                    }
+		                if(!item['public']) {
+		                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
+		                }
+		                name += '\n<span class="inline-block">\n';
+		                if(item.duplicate) {
+		                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
+		                }
+		                if(item.repeat) {
+		                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
+		                }
+		                if(item.tmpreserve) {
+		                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
+		                }
+		                name += '</span>';
 	                    if(width==100)width='99.99999';
-	                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
+	                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
 	                    count++;
 	                }
 	                dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;
@@ -689,8 +691,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                            dojo.style(draggable3, "cursor", "pointer");
 	                            draggable3.style.zIndex = 1;
 	                        }
-	                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
-	                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+
+	                        if(item.member || item.loginuser || item.owner || item['public']){
+		                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
+		                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+	                        }
 
 	                        if(item.member || item.loginuser || item.owner || item['public']){
 	                            tmpDraggable.setDraggable(true);
@@ -803,6 +808,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                ptConfig[_portletId].isScroll = true;
 	            }
 	            ptConfig[_portletId].isTooltipEnable = true;
+
+	            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = tempTermHeight + "px";
+	            dojo.byId('termScheduleDivAdd_' + _portletId).style.top = tempTermTop + "px";
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "");
 	        }
 	    });
     }
@@ -1138,7 +1147,6 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
 	            }
 
 	            var tooltiphtml = "<h4>" + data.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
-
 	            containerNode.innerHTML = tooltiphtml;
 	        }
 	    });
@@ -1955,7 +1963,7 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 				html += ' ';
 			}
 			params+="&m_id="+data[i].name;
-            var j = i % aipo.calendar.maximum_to;
+			var j = i % aipo.calendar.maximum_to;
 			html+="<span class=\"dispUser color" + j +"\">" + aliasName+ "</span>";
 			aimluck.io.addOption(dojo.byId("member_to-"+_portletId), data[i].name, aliasName, true);
 		}

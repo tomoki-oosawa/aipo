@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログテーマのResultDataです。 <BR>
- * 
+ *
  */
 public class BlogThemaResultData implements ALData {
 
@@ -44,12 +43,18 @@ public class BlogThemaResultData implements ALData {
   private ALStringField description;
 
   /** 作成ユーザーID */
+  private ALNumberField create_user_id;
+
+  /** 作成ユーザー名 */
   private ALStringField create_user_name;
 
   /** 更新ユーザーID */
+  private ALNumberField update_user_id;
+
+  /** 更新ユーザー名 */
   private ALStringField update_user_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -70,7 +75,9 @@ public class BlogThemaResultData implements ALData {
     thema_id = new ALNumberField();
     thema_name = new ALStringField();
     description = new ALStringField();
+    create_user_id = new ALNumberField();
     create_user_name = new ALStringField();
+    update_user_id = new ALNumberField();
     update_user_name = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
@@ -128,6 +135,20 @@ public class BlogThemaResultData implements ALData {
   /**
    * @return
    */
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
+  /**
+   * @param i
+   */
+  public void setCreateUserId(long i) {
+    create_user_id.setValue(i);
+  }
+
+  /**
+   * @return
+   */
   public ALStringField getCreateUserName() {
     return create_user_name;
   }
@@ -137,6 +158,20 @@ public class BlogThemaResultData implements ALData {
    */
   public void setCreateUserName(String str) {
     create_user_name.setValue(str);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getUpdateUserId() {
+    return update_user_id;
+  }
+
+  /**
+   * @param i
+   */
+  public void setUpdateUserId(long i) {
+    update_user_id.setValue(i);
   }
 
   /**

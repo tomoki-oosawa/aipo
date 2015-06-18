@@ -1,6 +1,6 @@
 --
 -- Aipo is a groupware program developed by Aimluck,Inc.
--- Copyright (C) 2004-2011 Aimluck,Inc.
+-- Copyright (C) 2004-2015 Aimluck,Inc.
 -- http://www.aipo.com
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -84,6 +84,7 @@ CREATE TABLE `eip_facility_group` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `facility_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL,
+  `sort` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -223,6 +224,7 @@ INSERT INTO `eip_m_mail_notify_conf` VALUES (1,1,1,3,'07:00:00',now(),now()),(2,
 CREATE TABLE `eip_m_position` (
   `position_id` int(11) NOT NULL AUTO_INCREMENT,
   `position_name` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`position_id`)
@@ -238,6 +240,7 @@ CREATE TABLE `eip_m_post` (
   `out_telephone` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `fax_number` varchar(15) COLLATE utf8_unicode_ci DEFAULT NULL,
   `group_name` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sort` int(11) DEFAULT NULL,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`post_id`),
@@ -248,7 +251,8 @@ CREATE TABLE `eip_m_user_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL,
   `position` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_m_user_position_index` (`position`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_acl_portlet_feature` (
@@ -269,8 +273,9 @@ CREATE TABLE `eip_t_acl_role` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  PRIMARY KEY (`role_id`),
+  KEY `eip_t_acl_role_acl_type_index` (`acl_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `eip_t_acl_role` VALUES (1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(2,'スケジュール（他ユーザーの予定）',112,3,NULL,NULL,NULL),(3,'スケジュール（設備の予約）管理者',113,12,NULL,NULL,NULL),(4,'ブログ（自分の記事）管理者',121,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(5,'ブログ（他ユーザーの記事）管理者',122,3,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(6,'ブログ（記事へのコメント）管理者',123,20,NULL,NULL,NULL),(7,'ブログ（テーマ）管理者',124,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(8,'掲示板（トピック）管理者',131,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(9,'掲示板（トピック返信）管理者',132,20,NULL,NULL,NULL),(10,'掲示板（自分のカテゴリ）管理者',133,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません',NULL,NULL),(12,'ToDo（自分のToDo）管理者',141,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(13,'ToDo（他ユーザーのToDo）管理者',142,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(14,'ToDo（カテゴリ）管理者',143,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(15,'ワークフロー（自分の依頼）管理者',151,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません ＊承認、再申請や差し戻しは編集の権限が必要です',NULL,NULL),(16,'ワークフロー（他ユーザーの依頼）管理者',152,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません',NULL,NULL),(17,'ユーザー名簿管理者',161,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません',NULL,NULL),(18,'アドレス帳（社外アドレス）管理者',162,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(19,'アドレス帳（会社情報）管理者',163,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(20,'アドレス帳（社外グループ）管理者',164,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(21,'タイムカード（自分のタイムカード）管理者',171,47,'＊追加、編集、外部出力は一覧表示の権限を持っていないと使用できません',NULL,NULL),(22,'タイムカード（他人のタイムカード）管理者',172,33,'＊自分のタイムカード一覧表示の権限を持っていないと使用できません\n＊外部出力は一覧表示の権限を持っていないと使用できません',NULL,NULL),(23,'共有フォルダ（ファイル）管理者',181,31,'＊詳細表示、追加、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(24,'共有フォルダ（フォルダ）管理者',182,30,'＊編集、削除は詳細表示の権限を持っていないと使用できません',NULL,NULL),(29,'アプリ配置管理者',201,29,NULL,NULL,NULL),(30,'ToDo（他ユーザのカテゴリ）管理者',144,27,'＊詳細表示、編集、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL),(31, '報告書（自分の報告書）管理者',211,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', NULL, NULL),(32,'報告書（他ユーザーの報告書）管理者',212,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', NULL, NULL),(33,'報告書（報告書への返信）管理者',213,20,NULL, NULL, NULL);
 
@@ -278,7 +283,8 @@ CREATE TABLE `eip_t_acl_user_role_map` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `role_id` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_acl_user_role_map_role_id_index` (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_addressbook_group_map` (
@@ -418,7 +424,9 @@ CREATE TABLE `eip_t_eventlog` (
   `note` text COLLATE utf8_unicode_ci,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`eventlog_id`)
+  PRIMARY KEY (`eventlog_id`),
+  KEY `eip_t_eventlog_event_type_index` (`event_type`),
+  KEY `eip_t_eventlog_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard` (
@@ -442,7 +450,8 @@ CREATE TABLE `eip_t_ext_timecard` (
   `remarks` text COLLATE utf8_unicode_ci,
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`timecard_id`)
+  PRIMARY KEY (`timecard_id`),
+  KEY `eip_t_ext_timecard_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_ext_timecard_system` (
@@ -574,7 +583,8 @@ CREATE TABLE `eip_t_msgboard_topic` (
   `update_user_id` int(11) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`topic_id`)
+  PRIMARY KEY (`topic_id`),
+  KEY `eip_t_msgboard_topic_category_id_index` (`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_note` (
@@ -601,7 +611,8 @@ CREATE TABLE `eip_t_note_map` (
   `del_flg` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `note_stat` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `confirm_date` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `eip_t_note_map_user_id_index` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `eip_t_schedule` (
@@ -677,6 +688,7 @@ CREATE TABLE `eip_t_timeline_like` (
   `timeline_id` int(11) NOT NULL,
   `owner_id` int(11) NOT NULL,
   `create_date` datetime DEFAULT NULL,
+  FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE,
   PRIMARY KEY (`timeline_like_id`),
   UNIQUE KEY `eip_t_timeline_timelineid_ownerid_key` (`timeline_id`, `owner_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -1006,6 +1018,7 @@ CREATE TABLE eip_m_facility_group
 (
     `group_id` int(11) NOT NULL AUTO_INCREMENT,
     `group_name` varchar (64) COLLATE utf8_unicode_ci,
+    `sort` int(11) DEFAULT NULL,
     PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -1301,6 +1314,65 @@ CREATE TABLE `eip_m_project_kubun_value` (
 
 INSERT INTO eip_m_project_kubun_value  VALUES(1,1,'1','機能',1, now(), now()),(2,1,'2','バグ',2, now(), now()),(3,1,'3','サポート',3, now(), now()),(4,2,'1','新規',1, now(), now()),(5,2,'2','進行中',2, now(), now()),(6,2,'3','フィードバック',3, now(), now()),(7,2,'4','完了',4, now(), now()),(8,2,'5','却下',5, now(), now()),(9,2,'6','停止',6, now(), now()),(10,3,'1','高',1, now(), now()),(11,3,'2','中',2, now(), now()),(12,3,'3','低',3, now(), now());
 
+CREATE TABLE `eip_t_message_room` (
+    `room_id` int(11) NOT NULL AUTO_INCREMENT,
+    `name` varchar(255),
+    `room_type` varchar(1) DEFAULT 'G',
+    `auto_name` varchar(1) DEFAULT 'F',
+    `last_message` TEXT COLLATE utf8_unicode_ci,
+    `last_update_date` datetime DEFAULT NULL,
+    `create_user_id` int(11) NOT NULL,
+    `photo` blob,
+    `photo_smartphone` blob,
+    `photo_modified` datetime DEFAULT NULL,
+    `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
+    `create_date` datetime DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`room_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message` (
+    `message_id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `message` TEXT COLLATE utf8_unicode_ci,
+    `member_count` int(11) NOT NULL,
+    `create_date` datetime DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_room_member` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `login_name` varchar(32) NOT NULL,
+    `target_user_id` int(11),
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_file` (
+    `file_id` int(11) NOT NULL AUTO_INCREMENT,
+    `owner_id` int(11),
+    `message_id` int(11),
+    `room_id` int(11),
+    `file_name` varchar(128) NOT NULL,
+    `file_path` text NOT NULL,
+    `file_thumbnail` blob,
+    `create_date` date DEFAULT NULL,
+    `update_date` datetime DEFAULT NULL,
+    PRIMARY KEY (`file_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `eip_t_message_read` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `message_id` int(11) NOT NULL,
+    `room_id` int(11) NOT NULL,
+    `user_id` int(11) NOT NULL,
+    `is_read` varchar(1) DEFAULT 'F',
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 ALTER TABLE `oauth_consumer` ADD FOREIGN KEY (  `app_id` ) REFERENCES  `application` (`id`) ON DELETE CASCADE ;
 
 ALTER TABLE `activity_map` ADD FOREIGN KEY (  `activity_id` ) REFERENCES  `activity` (`id`) ON DELETE CASCADE ;
@@ -1375,6 +1447,8 @@ ALTER TABLE `container_config` ADD INDEX (`name`);
 
 ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`record_no`);
 
+ALTER TABLE `eip_t_gpdb_record` ADD INDEX (`gpdb_id`);
+
 ALTER TABLE `eip_t_wiki_file` ADD FOREIGN KEY (  `wiki_id` ) REFERENCES  `eip_t_wiki` (`wiki_id`) ON DELETE CASCADE ;
 
 ALTER TABLE `eip_t_wiki` ADD INDEX (`wiki_name`, `parent_id`);
@@ -1394,3 +1468,21 @@ ALTER TABLE `eip_t_project_file` ADD INDEX (`project_id`);
 ALTER TABLE `eip_t_project_task_file` ADD INDEX (`task_id`);
 
 ALTER TABLE `eip_t_project_task_comment_file` ADD INDEX (`comment_id`);
+
+ALTER TABLE `eip_t_message` ADD FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message` ADD INDEX (`room_id`, `create_date`);
+
+ALTER TABLE `eip_t_message_room_member` ADD FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_room_member` ADD INDEX (`target_user_id`);
+
+ALTER TABLE `eip_t_message_room_member` ADD INDEX (`user_id`, `target_user_id`);
+
+ALTER TABLE `eip_t_message_file` ADD FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_read` ADD FOREIGN KEY (`message_id`) REFERENCES `eip_t_message` (`message_id`) ON DELETE CASCADE;
+
+ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `user_id`, `is_read`);
+
+ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `is_read`);

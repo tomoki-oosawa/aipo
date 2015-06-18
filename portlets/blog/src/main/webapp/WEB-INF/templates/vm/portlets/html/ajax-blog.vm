@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -90,7 +90,7 @@
 ## </div>
 
 #if($result.List && $result.List.size() == 0)
-<div class="message">$l10n.BLOG_NOTHING_ENTRY_SELECT_THEME</div>
+#AUIEmptyMessage("" "$l10n.BLOG_EMPTY_SHORT_MESSAGE")
 <div id="messageDivList_$!portlet.ID"></div>
 #else
 <div id="auiBlogEntries">
@@ -107,8 +107,7 @@
 </div>
 <div class="entryBody">
 <div class="entryHeader"><a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","BlogDetailScreen").addQueryData("entityid",$record.EntryId))', '$!portlet.ID', aipo.blog.onLoadBlogDetailDialog );">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a></div>
-<div class='entryText'>$!{record.CompressedNote}</div>
-<div class="entryFooter floatRight">${record.TitleDate}｜${record.OwnerName}</div>
+<div class="entryFooter">${record.TitleDate}｜<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">${record.OwnerName}</a></div>
 </div>
 </div>
 #end

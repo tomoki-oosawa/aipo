@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
 #if($result.currentSubMenu=="requested")
@@ -44,7 +43,7 @@
 <p><a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))"><strong>【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end </strong><br>
 <small>
 ##[$!{record.PriceStr}&nbsp;円]/
-[作成：$!record.CreateDate]/[最終更新：$!record.LastUpdateUser]/[進捗：$!record.StateString]</small></a></p>
+[作成：$!record.CreateDate]/[最終更新：$!record.LastUpdateUser.AliasName]/[進捗：$!record.StateString]</small></a></p>
 #end
 #ALcell_radius_footer($career)
 #if($result.PagesNum > 1)

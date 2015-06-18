@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 
 import org.apache.jetspeed.om.security.JetspeedUser;
@@ -33,6 +33,7 @@ import org.apache.turbine.modules.ActionEvent;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -41,7 +42,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ログアウト処理用のクラスです。 <br />
- * 
+ *
  */
 public class ALJLogoutUser extends ActionEvent {
 
@@ -119,13 +120,29 @@ public class ALJLogoutUser extends ActionEvent {
 
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
     if ("".equals(externalLoginUrl)) {
+      // 　ガラケーのログアウト時はifの中を通っている。
       if (ALEipUtils.isCellularPhone(data)) {
-        data.setRedirectURI(jsLink
-          .getHomePage()
-          .addQueryData("logout", "T")
-          .toString());
+
+        // contextPathの取得
+        ServletContext servletContext = ServletContextLocator.get();
+        String contextPath = servletContext.getContextPath(); // "" "/"
+        // contextPath = "" なら contextPath = "/"にする。
+        if ("".equals(contextPath)) {
+          contextPath = "/";
+        }
+
+        // contextPathをsetする。
+        data.setRedirectURI(contextPath.concat("?logout=T"));
       } else {
-        data.setRedirectURI(jsLink.getHomePage().toString());
+        // contextPathの取得
+        ServletContext servletContext = ServletContextLocator.get();
+        String contextPath = servletContext.getContextPath(); // "" "/"
+        // contextPath = "" なら contextPath = "/"にする。
+        if ("".equals(contextPath)) {
+          contextPath = "/";
+        }
+        // contextPathをsetする。
+        data.setRedirectURI(contextPath);
       }
     } else {
       data.setRedirectURI(externalLoginUrl);
@@ -143,5 +160,4 @@ public class ALJLogoutUser extends ActionEvent {
       }
     }
   }
-
 }

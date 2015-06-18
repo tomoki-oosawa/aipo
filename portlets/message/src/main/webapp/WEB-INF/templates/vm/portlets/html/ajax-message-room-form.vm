@@ -1,0 +1,123 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#if($mode=="new_form")
+#set ($action_str = $l10n.MESSAGE_ADD)
+#set ($event_submit = "eventSubmit_doMessageRoom_insert")
+#set ($subtitle = $l10n.MESSAGE_ROOM_ADDING)
+#set ($modesrv = "insert")
+#else
+#set ($action_str = $l10n.MESSAGE_UPDATE)
+#set ($subtitle = $l10n.MESSAGE_ROOM_EDIT)
+#set ($event_submit = "eventSubmit_doMessageRoom_update")
+#set ($modesrv = "update")
+#end
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+
+<div id="messageDiv"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#if($mode=="new_form" || !$result.isFileUploadable())
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#else
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#end
+<input type="hidden" name="mode" value="$!modesrv" />
+#if($mode!="new_form")
+<input type="hidden" name="entityid" value="$!result.RoomId" />
+#end
+
+#ALtableheaderWide()
+
+#ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
+#ALtditemheader()
+<div id="memberFieldDisplay">
+	<table class="w100">
+		<tbody>
+			<tr class="member">
+				<td style="border:none;"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="memberField">
+<table class="none">
+  <tr><td>
+    <div class="spaceTop spaceLeft small">$l10n.MESSAGE_ADD_ENTRY_USER</div>
+    <div dojoType="aipo.widget.MemberNormalSelectList"
+        id="membernormalselect"
+        widgetId="membernormalselect"
+        buttonAddId="button_member_add"
+        buttonRemoveId="button_member_remove"
+        memberFromId="tmp_member_from"
+        memberToTitle="$l10n.MESSAGE_ENTRY_USER_LIST"
+        memberToId="member_to"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+        memberFromOptionKey="name"
+        memberFromOptionValue="aliasName"
+        groupSelectId="tmp_group"
+        groupSelectPreOptionKey="LoginUser"
+        groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"
+        groupSelectOptionKey="groupId"
+        groupSelectOptionValue="name"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
+        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
+    </div>
+    <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+  </td></tr>
+</table>
+</div>
+#ALtditemfooter()
+
+#ALtdcaption($l10n.MESSAGE_ROOM_NAME)
+#ALtditemheader()
+#ALtextfieldw100('name' $!result.Name 50 'active')
+#ALtditemfooter()
+
+#if($mode!="new_form")
+#if($result.isFileUploadable())
+#ALtdcaption($l10n.MESSAGE_ROOM_ICON)
+#ALtditemheader()
+#IFFileUpload()
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+	#foreach($record in $!result.AttachmentFileNameList )
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MESSAGE_DELETION</span>
+	<img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!result.RoomId).addQueryData("t", $record.PhotoModified)" alt="$l10n.MESSAGE_ROOM_ICON" style="display:block" />
+	</li>
+	#end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+#ALtditemfooter()
+#end
+#end
+
+#ALtablefooter()
+
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)
+#if($mode!="new_form")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

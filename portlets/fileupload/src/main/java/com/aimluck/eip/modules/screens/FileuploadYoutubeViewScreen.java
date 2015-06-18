@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.List;
 
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -35,16 +32,12 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
- * 
+ *
  */
 public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
 
-  /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TutorialScreen.class.getName());
-
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -78,7 +71,7 @@ public class FileuploadYoutubeViewScreen extends ALVelocityScreen {
     }
     context.put("scheme", scheme);
 
-    String layout_template = "portlets/html/ja/fileupload-youtube.vm";
+    String layout_template = "portlets/html/fileupload-youtube.vm";
     setTemplate(rundata, context, layout_template);
   }
 

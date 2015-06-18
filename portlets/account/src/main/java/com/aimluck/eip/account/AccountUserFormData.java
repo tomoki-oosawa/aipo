@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
@@ -32,10 +31,7 @@ import javax.imageio.ImageIO;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.JetspeedUser;
-import org.apache.jetspeed.om.security.UserNamePrincipal;
 import org.apache.jetspeed.services.JetspeedSecurity;
-import org.apache.jetspeed.services.PsmlManager;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
@@ -47,15 +43,9 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
-import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlog;
-import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
-import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
-import com.aimluck.eip.cayenne.om.portlet.EipTTodoCategory;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -77,7 +67,6 @@ import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
@@ -85,7 +74,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザーアカウントのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccountUserFormData extends ALAbstractFormData {
 
@@ -204,12 +193,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -228,8 +217,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -344,7 +333,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -411,8 +400,8 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -474,10 +463,10 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -673,7 +662,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -757,7 +746,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -937,7 +926,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1142,12 +1131,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を無効化します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * 
+   *
    */
   public boolean disableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1237,12 +1226,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を有効化します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
    * @return
-   * 
+   *
    */
   public boolean enableFormData(RunData rundata, Context context,
       List<String> msgList) {
@@ -1311,7 +1300,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1322,162 +1311,26 @@ public class AccountUserFormData extends ALAbstractFormData {
       List<String> msgList) {
 
     try {
-      // WebAPIのDBへ接続できるか確認
-      logger.debug("deleteFormData");
-      if (!ALDataSyncFactoryService
-        .getInstance()
-        .getDataSyncHandler()
-        .checkConnect()) {
-        msgList.add(ALLocalizationUtils
-          .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
-        return false;
-      }
-      logger.debug("enddeleteFormData");
       String user_name =
         ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-
       if (user_name == null) {
         return false;
       }
 
-      // ユーザーを論理削除
       TurbineUser user =
         Database.get(
           TurbineUser.class,
           TurbineUser.LOGIN_NAME_COLUMN,
           user_name);
 
-      if (user.getLoginName().equals(rundata.getUser().getUserName())) {
-        msgList.add(ALLocalizationUtils
-          .getl10nFormat("ACCOUNT_ALERT_DELETE_LOGINUSER"));
-        return false;
-      }
+      List<TurbineUser> userList = new ArrayList<TurbineUser>();
+      userList.add(user);
 
-      if (ALEipUtils.isAdmin(user.getUserId())
-        && !AccountUtils.isAdminDeletable()) {
-        msgList.add(ALLocalizationUtils.getl10nFormat(
-          "ACCOUNT_ALERT_DELETE_USER",
-          user.getLoginName(),
-          Integer.valueOf(ALConfigService
-            .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
-        return false;
-      }
-
-      user.setPositionId(Integer.valueOf(0));
-      user.setDisabled("T");
-
-      // ユーザーIDを取得する
-      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-      Expression exp1 =
-        ExpressionFactory.matchExp(TurbineUser.LOGIN_NAME_PROPERTY, user_name);
-      query.setQualifier(exp1);
-      List<TurbineUser> list3 = query.fetchList();
-
-      int userNum = list3.size();
-      if (userNum != 1) {
-        return false;
-      }
-      TurbineUser deleteuser = list3.get(0);
-      String userId;
-      userId = deleteuser.getUserId().toString();
-
-      // 対象ユーザのユーザーグループロールをすべて削除する
-      SelectQuery<TurbineUserGroupRole> query2 =
-        Database.query(TurbineUserGroupRole.class);
-      Expression exp2 =
-        ExpressionFactory.matchExp(
-          TurbineUserGroupRole.TURBINE_USER_PROPERTY,
-          userId);
-      query2.setQualifier(exp2);
-      List<TurbineUserGroupRole> list4 = query2.fetchList();
-
-      TurbineUserGroupRole ugr = null;
-      for (int i = 0; i < list4.size(); i++) {
-        ugr = list4.get(i);
-        Database.delete(ugr);
-      }
-
-      // ToDoを削除する
-      String sql4 = "DELETE FROM eip_t_todo WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodo.class, sql4).execute();
-
-      String sql5 =
-        "DELETE FROM eip_t_todo_category WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTTodoCategory.class, sql5).execute();
-
-      // ブログを削除する
-      String sql6 = "DELETE FROM eip_t_blog WHERE OWNER_ID = '" + userId + "'";
-      Database.sql(EipTBlog.class, sql6).execute();
-
-      // ブログの足跡を削除する
-      String sql7 =
-        "DELETE FROM eip_t_blog_footmark_map WHERE USER_ID = '" + userId + "'";
-      Database.sql(EipTBlogFootmarkMap.class, sql7).execute();
-
-      // ワークフロー自動承認
-      AccountUtils.acceptWorkflow(deleteuser.getUserId());
-
-      // ソーシャルアプリ関連データ削除
-      ALApplicationService.deleteUserData(user_name);
-
-      Database.commit();
-
-      // 他のユーザの順番を変更する．
-      SelectQuery<EipMUserPosition> p_query =
-        Database.query(EipMUserPosition.class);
-      p_query.orderAscending(EipMUserPosition.POSITION_PROPERTY);
-      List<EipMUserPosition> userPositions = p_query.fetchList();
-      if (userPositions != null && userPositions.size() > 0) {
-        EipMUserPosition userPosition = null;
-        int index = -1;
-        int size = userPositions.size();
-        for (int i = 0; i < size; i++) {
-          userPosition = userPositions.get(i);
-          if (userId.equals(userPosition.getTurbineUser().toString())) {
-            // 指定したユーザを削除する．
-            Database.delete(userPosition);
-            index = i;
-            break;
-          }
-        }
-        if (index >= 0) {
-          for (int i = index + 1; i < size; i++) {
-            userPosition = userPositions.get(i);
-            userPosition.setPosition(Integer.valueOf(i));
-          }
-        }
-      }
-
-      // PSMLを削除
-      JetspeedUser juser =
-        JetspeedSecurity.getUser(new UserNamePrincipal(user_name));
-      PsmlManager.removeUserDocuments(juser);
-
-      // ユーザー名の先頭に"dummy_userid_"を追加
-      String dummy_user_name =
-        ALEipUtils.dummy_user_head + userId + "_" + user_name;
-      user.setLoginName(dummy_user_name);
-
-      Database.commit();
-
-      // イベントログに保存
-      ALEventlogFactoryService.getInstance().getEventlogHandler().log(
-        user.getUserId(),
-        ALEventlogConstants.PORTLET_TYPE_ACCOUNT,
-        "ユーザー「"
-          + new StringBuffer().append(user.getLastName()).append(" ").append(
-            user.getFirstName()).toString()
-          + "」を削除");
-
-      // WebAPIとのDB同期
-      if (!ALDataSyncFactoryService
-        .getInstance()
-        .getDataSyncHandler()
-        .deleteUser(user_name)) {
-        return false;
-      }
-
-      return true;
+      return AccountUtils.deleteUserList(rundata, userList, msgList);
+    } catch (RuntimeException e) {
+      Database.rollback();
+      logger.error("AccountUserFormData.deleteFormData", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("AccountUserFormData.deleteFormData", e);
@@ -1487,7 +1340,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularMail() {
@@ -1496,7 +1349,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCompanyId() {
@@ -1505,7 +1358,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * アカウント有効/無効フラグを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getDisabled() {
@@ -1514,7 +1367,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEmail() {
@@ -1523,7 +1376,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -1532,7 +1385,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstName() {
@@ -1541,7 +1394,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -1550,7 +1403,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -1559,7 +1412,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastName() {
@@ -1568,7 +1421,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -1577,7 +1430,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -1586,7 +1439,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -1595,7 +1448,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -1604,7 +1457,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -1613,7 +1466,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -1622,7 +1475,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワードを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPassword() {
@@ -1631,7 +1484,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * パスワード2を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPassword2() {
@@ -1640,7 +1493,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPositionId() {
@@ -1649,7 +1502,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPostId() {
@@ -1658,7 +1511,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getUserName() {
@@ -1667,7 +1520,7 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /**
    * 役職リストを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipPosition> getPositionList() {
@@ -1675,7 +1528,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<UserGroupLiteBean> getPostList() {
@@ -1683,7 +1536,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1691,7 +1544,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
@@ -1699,7 +1552,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public AccountPostFormData getPost() {
@@ -1707,7 +1560,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public AccountPositionFormData getPosition() {
@@ -1715,7 +1568,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isNewPost() {
@@ -1723,7 +1576,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isNewPosition() {

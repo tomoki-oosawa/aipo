@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.MetaInfo;
@@ -38,6 +39,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -46,16 +48,11 @@ import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * カスタマイズの一覧を処理するクラスです。
- * 
+ *
  */
 public class CustomizeFormScreen extends ALVelocityScreen {
 
-  private static final String USER_SELECTIONS =
-    "session.portlets.user.selections";
-
   private static final String UI_PORTLETS_SELECTED = "portletsSelected";
-
-  private static final String PORTLET_LIST = "session.portlets.list";
 
   public static final String FILTER_FIELDS = "filter_fields";
 
@@ -69,7 +66,7 @@ public class CustomizeFormScreen extends ALVelocityScreen {
     .getLogger(CustomizeFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -130,13 +127,17 @@ public class CustomizeFormScreen extends ALVelocityScreen {
 
     context.put("isMypage", "マイページ".equals(pageTitle.getValue()));
     context.put("mypageId", mypageId);
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     context.put("pageTitle", pageTitle);
 
     int start = rundata.getParameters().getInt("start", -1);
     if (start < 0) {
       start = 0;
-      PortletSessionState.clearAttribute(rundata, USER_SELECTIONS);
-      PortletSessionState.clearAttribute(rundata, PORTLET_LIST);
+      HttpServletRequest request = HttpServletRequestLocator.get();
+      if (request != null) {
+        request.removeAttribute("portlets.list");
+        request.removeAttribute("portlets.selections");
+      }
     }
 
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
@@ -175,8 +176,9 @@ public class CustomizeFormScreen extends ALVelocityScreen {
 
     context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
     context.put("utils", new ALCommonUtils());
+    context.put("client", ALEipUtils.getClient(rundata));
 
-    String layout_template = "portlets/html/ja/ajax-customize-form.vm";
+    String layout_template = "portlets/html/ajax-customize-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

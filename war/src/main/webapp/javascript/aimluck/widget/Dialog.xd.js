@@ -1,8 +1,6 @@
-if(!dojo._hasResource["aimluck.widget.Dialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aimluck.widget.Dialog"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,8 @@ dojo._hasResource["aimluck.widget.Dialog"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if(!dojo._hasResource["aimluck.widget.Dialog"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aimluck.widget.Dialog"] = true;
 
 dojo.provide("aimluck.widget.Dialog");
 dojo.provide("aimluck.widget.DialogSub");
@@ -236,6 +236,15 @@ dojo.declare(
             		}
             	});
         	}
+        	//android時、長い詳細画面を最後までスクロールできない問題の対策
+        	if(aipo.userAgent.isAndroid()){
+        		var modalDialog = document.getElementById('modalDialog');
+        		if(modalDialog) {
+        			var wrapper = document.getElementById('wrapper');
+        			wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+        		}
+
+        	}
 
             var focusNode = dojo.byId( this.widgetId );
             if ( focusNode ) {
@@ -350,6 +359,8 @@ dojo.declare(
                 return err;
             });
         },
+        _onKey: function(/*Event*/ evt){
+		},
         hide:function(){
         	var wrapper = document.getElementById('wrapper');
         	if(wrapper) {

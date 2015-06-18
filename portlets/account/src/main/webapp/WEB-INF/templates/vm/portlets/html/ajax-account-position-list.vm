@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($newUrl1 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPostFormScreen").addQueryData("entityid","new")))
 #set ($newAfterFunction1 = "aipo.account_company.onLoadPostDialog")
@@ -28,7 +27,10 @@
 #AUIcontentsAreaHeader()
 #end
 #if($result.List.size() == 0)
-#AUIbuttonActionInBlankBox($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.ACCOUNT_POSITION_ADD "javascript:aipo.common.showDialog('$newUrl2','$!portlet.ID',$newAfterFunction2);")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-tag" "$l10n.ACCOUNT_POSITION_EMPTY_MESSAGE")
 #else
 #AUIwideAreaHeader()
 #AUISummaryDiv()
@@ -38,7 +40,7 @@
 #ALajaxlistformheader($l10n.ACCOUNT_POSITION)
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()
@@ -65,7 +67,7 @@
 #ALtablefooter()
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete($l10n.ACCOUNT_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPositionFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
 </div>
 #AUIajaxpageview('AccountPositionListScreen' $result)
 #AUISummaryDivfooter()

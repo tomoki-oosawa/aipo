@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.List;
@@ -43,7 +39,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベースレコードの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class GpdbRecordMultiDelete extends ALAbstractCheckList {
 
@@ -52,14 +48,13 @@ public class GpdbRecordMultiDelete extends ALAbstractCheckList {
     .getLogger(GpdbRecordMultiDelete.class.getName());
 
   /** フィルタ値のキー */
-  private static final String LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
-    .append(ALEipConstants.LIST_FILTER)
-    .toString();
+  private static final String LIST_FILTER_STR = new StringBuffer().append(
+    GpdbRecordSelectData.class.getSimpleName()).append(
+    ALEipConstants.LIST_FILTER).toString();
 
   /**
    * 処理を実行します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context

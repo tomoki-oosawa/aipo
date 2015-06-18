@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,22 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
-#*
-Copyright 2004 The Apache Software Foundation
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*#
 
 ## $Id: card-customize.vm,v 1.16 2004/03/17 19:17:27 jford Exp $
 <!-- WEB-INF\templates\vm\controllers\html\card-customize.vm -->
@@ -72,7 +56,7 @@ limitations under the License.
 #end
 ##
 #if ($title=="*")
-  #if ($entry.Parent) 
+  #if ($entry.Parent)
     #set ($title=$entry.Parent)
   #else
     #set ($title=$entry.Name)
@@ -101,8 +85,8 @@ limitations under the License.
       <b>$title</b>
     </a>
   #else
-    <b>$title</b>  
-  #end    
+    <b>$title</b>
+  #end
     </td>
     <td valign="top" align="center">
       <form action="#psmlLink($jslink.Template)" method="post">

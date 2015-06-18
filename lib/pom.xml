@@ -6,13 +6,13 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>7.0.2</version>
+    <version>8.0.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>lib</artifactId>
-  <version>7.0.2</version>
+  <version>8.0.1</version>
   <packaging>pom</packaging>
 
   <name>Aipo Libraries</name>
@@ -31,6 +31,7 @@
     <module>storage</module>
     <module>portal</module>
     <module>preexecute</module>
+    <module>push</module>
   </modules>
 
   <dependencies>

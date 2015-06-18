@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.note;
 
 import java.io.IOException;
@@ -159,7 +158,7 @@ public class NoteFormData extends ALAbstractFormData {
   /** 確認日時 */
   private ALDateTimeField confirm_date;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日時 */
@@ -431,7 +430,7 @@ public class NoteFormData extends ALAbstractFormData {
       note.setMessage(message.getValue());
       // 受付日時
       note.setAcceptDate(accept_date.getValue());
-      // 作成日時
+      // 作成日
       note.setCreateDate(nowDate);
       // 更新日時
       note.setUpdateDate(nowDate);
@@ -679,10 +678,10 @@ public class NoteFormData extends ALAbstractFormData {
     confirm_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CHECK_TIME"));
 
     create_date = new ALDateTimeField(NoteUtils.CREATED_DATE_FORMAT);
-    create_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CREATE_TIME"));
+    create_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    update_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_UPDATE_TIME"));
+    update_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_DATE"));
 
     // 現在の年
     currentYear = Calendar.getInstance().get(Calendar.YEAR);

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.report;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書のResultDataです。 <BR>
- * 
+ *
  */
 public class ReportResultData implements ALData {
 
@@ -55,10 +54,10 @@ public class ReportResultData implements ALData {
   /** 開始時間 */
   private ALDateTimeField end_date;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
-  /** 登録日 */
+  /** 作成日 */
   protected ALDateTimeField createDate;
 
   /** 添付ファイルリスト */
@@ -84,6 +83,12 @@ public class ReportResultData implements ALData {
   /** <code>statusList</code> メンバーの状態 */
   private Map<Integer, String> statusList;
 
+  /** 送信した報告書数 */
+  private ALNumberField sent_report;
+
+  /** 既読報告書数 */
+  private ALNumberField read_report;
+
   /**
    *
    *
@@ -108,6 +113,8 @@ public class ReportResultData implements ALData {
     mapList = new ArrayList<ALEipUser>();
     is_self_report = false;
     statusList = new HashMap<Integer, String>();
+    sent_report = new ALNumberField();
+    read_report = new ALNumberField();
   }
 
   /**
@@ -253,7 +260,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param date
    */
   public void setStartDate(Date date) {
@@ -261,7 +268,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -269,7 +276,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param date
    */
   public void setEndDate(Date date) {
@@ -277,7 +284,7 @@ public class ReportResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -293,5 +300,21 @@ public class ReportResultData implements ALData {
 
   public String getStatus(long id) {
     return statusList.get(Integer.valueOf((int) id));
+  }
+
+  public ALNumberField getSentReport() {
+    return sent_report;
+  }
+
+  public void setSentReport(long value) {
+    sent_report.setValue(value);
+  }
+
+  public ALNumberField getReadReport() {
+    return read_report;
+  }
+
+  public void setReadReport(long value) {
+    read_report.setValue(value);
   }
 }

@@ -1,7 +1,6 @@
-//TimelineUtils.jav
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +22,7 @@ package com.aimluck.eip.timeline.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,12 +72,13 @@ import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.TimelineUrlBeans;
 import com.aimluck.eip.timeline.TimelineUserResultData;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * タイムラインのユーティリティクラス <BR>
- * 
+ *
  */
 public class TimelineUtils {
 
@@ -134,9 +135,12 @@ public class TimelineUtils {
   /** 検索キーワード変数の識別子 */
   public static final String TARGET_KEYWORD = "keyword";
 
+  /** パラメータリセットの識別子 */
+  private static final String RESET_FLAG = "reset_params";
+
   /**
    * トピックに対する返信数を返します
-   * 
+   *
    * @param timeline_id
    * @return
    */
@@ -155,7 +159,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -194,7 +198,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -272,7 +276,7 @@ public class TimelineUtils {
 
   /**
    * いいねオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -342,7 +346,7 @@ public class TimelineUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   * 
+   *
    * @param org_id
    * @param groupname
    * @return
@@ -419,6 +423,34 @@ public class TimelineUtils {
     return list;
   }
 
+  /**
+   * コメントした投稿に対してこれまでコメントしていたユーザーを取得する
+   *
+   * @param parent_id
+   * @return List
+   */
+  public static List<Integer> getTimelineOtherCommentUserList(int parent_id) {
+    List<Integer> resultList = new ArrayList<Integer>();
+    try {
+      String query =
+        "SELECT DISTINCT OWNER_ID FROM eip_t_timeline WHERE PARENT_ID = #bind($parent_id)";
+      List<EipTTimeline> list =
+        Database
+          .sql(EipTTimeline.class, query)
+          .param("parent_id", parent_id)
+          .fetchList();
+      int recordNum = list.size();
+      for (int i = 0; i < recordNum; i++) {
+        Integer ownerId;
+        ownerId = list.get(i).getOwnerId();
+        resultList.add(ownerId);
+      }
+    } catch (Exception ex) {
+      logger.error("[timelineUtils]", ex);
+    }
+    return resultList;
+  }
+
   public static void createNewCommentActivity(EipTTimeline timeline,
       String loginName, String targetLoginName) {
     if (loginName.equals(targetLoginName)) {
@@ -427,6 +459,30 @@ public class TimelineUtils {
     List<String> recipients = new ArrayList<String>();
     recipients.add(targetLoginName);
     String title = new StringBuilder("あなたの投稿にコメントしました。").toString();
+    String portletParams =
+      new StringBuilder("?template=TimelineDetailScreen")
+        .append("&entityid=")
+        .append(timeline.getTimelineId())
+        .toString();
+    ALActivityService.create(new ALActivityPutRequest()
+      .withAppId("timeline")
+      .withLoginName(loginName)
+      .withPortletParams(portletParams)
+      .withRecipients(recipients)
+      .withTitle(title)
+      .withPriority(1f)
+      .withExternalId(String.valueOf(timeline.getTimelineId())));
+  }
+
+  public static void createNewOtherCommentActivity(EipTTimeline timeline,
+      String loginName, String otherLoginName, String targetUserName) {
+    if (loginName.equals(otherLoginName)) {
+      return;
+    }
+    List<String> recipients = new ArrayList<String>();
+    recipients.add(otherLoginName);
+    String title =
+      new StringBuilder(targetUserName + "さんの投稿にコメントしました。").toString();
     String portletParams =
       new StringBuilder("?template=TimelineDetailScreen")
         .append("&entityid=")
@@ -467,7 +523,7 @@ public class TimelineUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -513,7 +569,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -523,7 +579,7 @@ public class TimelineUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -650,7 +706,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -690,7 +746,7 @@ public class TimelineUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -729,7 +785,7 @@ public class TimelineUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -741,7 +797,7 @@ public class TimelineUtils {
 
   /**
    * ファイル検索のクエリを返します
-   * 
+   *
    * @param requestid
    *          ファイルを検索するリクエストのid
    * @return query
@@ -786,8 +842,12 @@ public class TimelineUtils {
   public static Document getDocument(String string, String defaultCharset) {
     DOMParser parser = new DOMParser();
     try {
+      if (string.indexOf(" ") != -1) {
+        string = string.substring(0, string.indexOf(" "));
+      }
+      string = new URI(string).toASCIIString();
       URL url = new URL(string);
-      HttpURLConnection con = (HttpURLConnection) url.openConnection();
+      HttpURLConnection con = ALURLConnectionUtils.openUrlConnection(url);
       con.setConnectTimeout(10000);
       con.setUseCaches(false);
       con.addRequestProperty("_", UUID.randomUUID().toString());
@@ -826,11 +886,14 @@ public class TimelineUtils {
 
       // documentからmetaタグのcharsetを読み込む
       Document document = parser.getDocument();
+      if (document == null) {
+        logger.error("[TimelineUtils] parser.getDocument() is Null");
+      }
       String metaTagCharset = getMetaTagCharset(document);
       if (metaTagCharset != null && !metaTagCharset.equals(contentTypeCharset)) {
         // デフォルトのcharsetと異なっていた場合、新しいcharsetで再読み込み
         HttpURLConnection reconnection =
-          (HttpURLConnection) url.openConnection();
+          ALURLConnectionUtils.openUrlConnection(url);
         reconnection.setConnectTimeout(10000);
         reconnection.setUseCaches(false);
         reconnection.addRequestProperty("_", UUID.randomUUID().toString());
@@ -848,6 +911,9 @@ public class TimelineUtils {
         parser.setFeature("http://xml.org/sax/features/namespaces", false);
         parser.parse(source);
         document = parser.getDocument();
+        if (document == null) {
+          logger.error("[TimelineUtils] parser.getDocument() is Null");
+        }
       }
 
       reader.close();
@@ -856,15 +922,17 @@ public class TimelineUtils {
       if (!"UTF-8".equals(defaultCharset)) {
         return getDocument(string, "UTF-8");
       }
+      logger.error("[TimelineUtils]", e);
       return null;
     } catch (Exception ex) {
+      logger.error("[TimelineUtils]", ex);
       return null;
     }
   }
 
   /**
    * 読み込んだdocumentからmetaタグ内のcharset属性を読み取るメソッド
-   * 
+   *
    * @param document
    * @return
    */
@@ -902,7 +970,7 @@ public class TimelineUtils {
   }
 
   /**
-   * 
+   *
    * @param url_str
    * @return
    * @throws Exception
@@ -927,11 +995,25 @@ public class TimelineUtils {
         tub.setYoutubeFlag(true);
       }
 
+      List<String> images = new ArrayList<String>();
+      NodeList nodeListProperty = document.getElementsByTagName("meta");
+      String ogimage = null;
+      for (int i = 0; i < nodeListProperty.getLength(); i++) {
+        Element element = (Element) nodeListProperty.item(i);
+        String property = element.getAttribute("property");
+        if ("og:image".equals(property)) {
+          ogimage = element.getAttribute("content");
+        }
+      }
+      if (ogimage != null) {
+        tub.setOgImage(ogimage);
+        images.add(ogimage);
+      }
       String protocolString =
         url_str.substring(0, url_str.lastIndexOf(':') + 1);
 
       NodeList nodeListImage = document.getElementsByTagName("img");
-      List<String> images = new ArrayList<String>();
+
       for (int i = 0; i < nodeListImage.getLength(); i++) {
         Element element = (Element) nodeListImage.item(i);
         String src = element.getAttribute("src");
@@ -948,6 +1030,8 @@ public class TimelineUtils {
         } else if (!src.startsWith("http")) {
           src = (new StringBuilder()).append(pagePath).append(src).toString();
         }
+        src = src.replaceAll("\n", "");
+        src = src.replaceAll("\t", "");
         if (src != null) {
           images.add(src);
         }
@@ -957,7 +1041,14 @@ public class TimelineUtils {
       NodeList nodeListTitle = document.getElementsByTagName("title");
       for (int i = 0; i < nodeListTitle.getLength(); i++) {
         Element element = (Element) nodeListTitle.item(i);
-        String title = element.getFirstChild().getNodeValue();
+
+        String title;
+        if (element.getFirstChild() != null) {
+          title = element.getFirstChild().getNodeValue();
+        } else {
+          title = url_str;
+        }
+
         if (title != null) {
           tub.setTitle(title);
           break;
@@ -987,7 +1078,7 @@ public class TimelineUtils {
 
   public static ResultList<EipTTimeline> getTimelineList(Integer userId,
       List<Integer> parentIds, String type, int page, int limit, int minId,
-      List<Integer> userIds) {
+      List<Integer> userIds, String keywordParam) {
 
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
@@ -997,9 +1088,11 @@ public class TimelineUtils {
         0);
     }
 
+    boolean hasKeyword = false;
     StringBuilder select = new StringBuilder();
 
     select.append("SELECT");
+    select.append(" DISTINCT ");
     select.append(" eip_t_timeline.app_id,");
     select.append(" eip_t_timeline.create_date,");
     select.append(" eip_t_timeline.external_id,");
@@ -1019,10 +1112,18 @@ public class TimelineUtils {
       .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t1 WHERE t1.timeline_id = eip_t_timeline.timeline_id) AS l_count");
 
     StringBuilder count = new StringBuilder();
-    count.append("SELECT count(eip_t_timeline.timeline_id) AS c ");
+    count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline WHERE ");
+    body.append(" FROM eip_t_timeline ");
+
+    if ((keywordParam != null) && (!keywordParam.equals(""))) {
+      hasKeyword = true;
+      body.append(" LEFT JOIN eip_t_timeline AS comment ");
+      body.append(" ON eip_t_timeline.timeline_id = comment.parent_id ");
+    }
+    body.append(" WHERE ");
+
     if (type != null) {
       body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
     }
@@ -1058,6 +1159,12 @@ public class TimelineUtils {
       body.append(")");
     }
 
+    if (hasKeyword) {
+      body.append(" AND ");
+      body
+        .append("(eip_t_timeline.note LIKE #bind($keyword)  OR comment.note LIKE #bind($ckeyword))");
+    }
+
     StringBuilder last = new StringBuilder();
 
     if ("T".equals(type)) {
@@ -1072,6 +1179,11 @@ public class TimelineUtils {
         .param("user_id", Integer.valueOf(userId));
     if (type != null) {
       countQuery.param("type", type);
+    }
+
+    if (hasKeyword) {
+      countQuery.param("keyword", "%" + keywordParam + "%");
+      countQuery.param("ckeyword", "%" + keywordParam + "%");
     }
 
     int countValue = 0;
@@ -1107,6 +1219,11 @@ public class TimelineUtils {
         Integer.valueOf(userId));
     if (type != null) {
       query.param("type", type);
+    }
+
+    if (hasKeyword) {
+      query.param("keyword", "%" + keywordParam + "%");
+      query.param("ckeyword", "%" + keywordParam + "%");
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
@@ -1235,7 +1352,7 @@ public class TimelineUtils {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         parent.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
-        parent.getNote());
+        compressString(parent.getNote()));
     } catch (ALFileNotRemovedException e) {
       // ALFileNotRemovedException
       Database.rollback();
@@ -1299,5 +1416,59 @@ public class TimelineUtils {
       Database.deleteAll(tParent);
       Database.commit();
     }
+  }
+
+  /**
+   * 50文字に引数の文字列を丸める。
+   *
+   * @param src
+   *          元の文字列
+   * @return 処理後の文字列
+   */
+  public static String compressString(String src) {
+    return ALCommonUtils.compressString(src, 50);
+  }
+
+  /**
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static String getTargetKeyword(RunData rundata, Context context) {
+    String target_keyword = null;
+    String keywordParam = rundata.getParameters().getString(TARGET_KEYWORD);
+    target_keyword = ALEipUtils.getTemp(rundata, context, TARGET_KEYWORD);
+
+    if (keywordParam == null && (target_keyword == null)) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+      target_keyword = "";
+    } else if (keywordParam != null) {
+      ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, keywordParam.trim());
+      target_keyword = keywordParam;
+    }
+    return target_keyword;
+  }
+
+  /**
+   * フィルターを初期化する．
+   *
+   * @param rundata
+   * @param context
+   * @param className
+   */
+  public static void resetKeyword(RunData rundata, Context context) {
+    ALEipUtils.setTemp(rundata, context, TARGET_KEYWORD, "");
+  }
+
+  /**
+   * 表示切り替えのリセットフラグがあるかを返す．
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static boolean hasResetFlag(RunData rundata, Context context) {
+    String resetflag = rundata.getParameters().getString(RESET_FLAG);
+    return resetflag != null;
   }
 }

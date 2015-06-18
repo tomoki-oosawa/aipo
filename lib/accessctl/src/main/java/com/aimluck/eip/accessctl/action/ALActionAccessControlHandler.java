@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.accessctl.action;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.cayenne.DataRow;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -251,19 +249,33 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
    */
   @Override
   public void insertDefaultRole(int uid) throws Exception {
-
-    int role = ALAccessControlConstants.ROLE_NUM;
     TurbineUser tuser = Database.get(TurbineUser.class, Integer.valueOf(uid));
-    List<Integer> integerList = new ArrayList<Integer>(role);
-    for (int i = 0; i < role; i++) {
-      integerList.add(Integer.valueOf(i + 1));
+
+    // デフォルトロールはcreat_dateがない
+    StringBuilder sql =
+      new StringBuilder().append("SELECT * FROM eip_t_acl_role ").append(
+        " WHERE create_date IS NULL");
+    SQLTemplate<EipTAclRole> sqltemp =
+      Database.sql(EipTAclRole.class, String.valueOf(sql));
+
+    // リレーションを行う
+    List<DataRow> fetchList = sqltemp.fetchListAsDataRow();
+    List<EipTAclRole> list = new ArrayList<EipTAclRole>();
+    for (DataRow row : fetchList) {
+      EipTAclRole object = Database.objectFromRowData(row, EipTAclRole.class);
+      // objectIDを同期する一手間
+      EipTAclRole eipTAclRole =
+        Database.get(EipTAclRole.class, object.getRoleId());
+      // EipTAclPortletFeatureのデータをeipTAclRoleにマージ
+      EipTAclPortletFeature feature =
+        Database.get(EipTAclPortletFeature.class, row.get("feature_id"));
+      eipTAclRole.setEipTAclPortletFeature(feature);
+      list.add(eipTAclRole);
     }
-    Expression exp =
-      ExpressionFactory.inDbExp(EipTAclRole.ROLE_ID_PK_COLUMN, integerList);
-    List<EipTAclRole> list = Database.query(EipTAclRole.class, exp).fetchList();
-    for (EipTAclRole role2 : list) {
+
+    for (EipTAclRole role : list) {
       EipTAclUserRoleMap map = Database.create(EipTAclUserRoleMap.class);
-      map.setEipTAclRole(role2);
+      map.setEipTAclRole(role);
       map.setTurbineUser(tuser);
     }
   }

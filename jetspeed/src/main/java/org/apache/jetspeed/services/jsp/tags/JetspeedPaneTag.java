@@ -38,7 +38,7 @@ import org.apache.jetspeed.util.template.JetspeedTool;
  * Builds the output of a PSML config file and insert it within the 
  * current JSP page
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
  * @version $Id: JetspeedPaneTag.java,v 1.6 2004/02/23 03:59:40 jford Exp $
  */

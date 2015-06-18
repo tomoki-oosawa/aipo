@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.text.DateFormat;
@@ -124,7 +123,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb =
-          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\"");
+          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\",\"件名\"");
         EventlogResultData data;
         for (ListIterator<EipTEventlog> iterator =
           list.listIterator(list.size()); iterator.hasPrevious();) {
@@ -140,6 +139,8 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
           sb.append(data.getEventName());
           sb.append("\",\"");
           sb.append(data.getIpAddr());
+          sb.append("\",\"");
+          sb.append(data.getNote());
           sb.append("\"");
         }
         return sb.toString();

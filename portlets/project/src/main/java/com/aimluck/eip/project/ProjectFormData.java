@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2013 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.project;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
@@ -44,7 +40,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTProjectMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
@@ -113,7 +108,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -125,8 +120,6 @@ public class ProjectFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    rundata.getUser().setTemp(ALEipConstants.MYGROUP, null);
 
     loginUser = ALEipUtils.getALEipUser(rundata);
     myGroupList = ALEipUtils.getMyGroups(rundata);
@@ -183,7 +176,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * データに値を設定します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -220,7 +213,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトのフォームに入力されたデータの妥当性検証を行います。
-   * 
+   *
    * @param msgList
    *          エラーメッセージリスト
    * @return TRUE 成功 FALSE 失敗
@@ -242,7 +235,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトをデータベースから読み出します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -303,7 +296,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトをデータベースに格納します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -415,7 +408,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトを更新します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -558,7 +551,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクトをデータベースから削除します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -632,7 +625,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * プロジェクト名を取得します。
-   * 
+   *
    * @return プロジェクト名
    */
   public ALStringField getProjectName() {
@@ -641,7 +634,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 説明を取得します。
-   * 
+   *
    * @return 説明
    */
   public ALStringField getExplanation() {
@@ -650,7 +643,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 管理者IDを取得します。
-   * 
+   *
    * @return 管理者ID
    */
   public ALNumberField getAdminUserId() {
@@ -659,7 +652,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 進捗率自動計算フラグを取得します。
-   * 
+   *
    * @return 進捗率自動計算フラグ
    */
   public ALStringField getProgressFlg() {
@@ -668,7 +661,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 進捗率を取得します。
-   * 
+   *
    * @return 進捗率
    */
   public ALNumberField getProgressRate() {
@@ -677,7 +670,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 自ユーザーのグループリストを取得します。
-   * 
+   *
    * @return 自ユーザーのグループリスト
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -686,7 +679,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * 部署情報を取得する
-   * 
+   *
    * @return 部署情報
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -695,7 +688,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * ログインユーザーIDを返します。
-   * 
+   *
    * @return ログインユーザーID
    */
   public int getLoginUserId() {
@@ -704,7 +697,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * アップロードファイルリストを返します。
-   * 
+   *
    * @return アップロードファイルリスト
    */
   public List<FileuploadBean> getAttachmentFileNameList() {
@@ -720,7 +713,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -729,7 +722,7 @@ public class ProjectFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */

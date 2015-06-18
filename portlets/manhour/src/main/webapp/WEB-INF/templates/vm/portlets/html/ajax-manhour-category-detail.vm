@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,27 +16,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #ALdialogheader("共有カテゴリ詳細")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
 #ALajaxdetailformheader("共有カテゴリ")
 #ALtableheaderWide()
 #ALtdcaption('共有カテゴリ名')
 #ALtditem($!result.Detail.Name)
 ##ALtdcaption('メモ')
 ##ALtditem($!result.Detail.Note)
-#ALtdcaption('登録日')
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption('更新日')
 #ALtditem($!result.Detail.UpdateDate)
 #ALtablefooter()
-#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}))
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.manhour.onLoadManhourDialog")#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.manhour.onReceiveMessage")#ALajaxbuttonClose()
-#ALbuttonfooter()
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}) || $!result.AuthorityEdit)
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.manhour.onLoadManhourDialog")
 #end
+#if($!result.isMatch($!{result.UserId} , $!{result.Detail.CreateUserId.Value}) || $!result.AuthorityDelete)
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourCategoryFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.manhour.onReceiveMessage")
+#end
+#ALajaxbuttonClose()
+#ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

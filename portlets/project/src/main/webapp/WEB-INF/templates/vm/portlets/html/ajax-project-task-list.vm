@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,21 +15,18 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * Project Management Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
 #set ($orderProjectTask = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskChangeTurnFormScreen").addQueryData("projectid","$result.SelectedProjectId"))
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')")
 #set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectListScreen")))
 
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
-
-#if(!$result.AllProject)
-	<div class="message">$l10n.PROJECT_NOT_FOUND</div>
+#if(!$result.AllProject || $result.AllProject.size() == 0)
+#AUIEmptyMessage("icon-tasks" $utils.getl10nFormat1("PROJECT_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
 #elseif(!$result.List)
 	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
 #else
@@ -40,34 +37,22 @@
     <div class="filterInputField">
     	<div class="filters" id="filters_$!portlet.ID">
     	#if("$!result.TargetUserId"!="")
-        <span class="filterTip">
-        <span>$!result.TargetUserName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_user_id");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+        #ALfilterTip($!result.TargetUserName "aipo.project.filterSetDefault('$!portlet.ID','target_user_id');")
         #end
         #if("$!result.TargetTracker"!="")
-        <span class="filterTip">
-        <span>$!result.TargetTrackerName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_tracker");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+        #ALfilterTip($!result.TargetTrackerName "aipo.project.filterSetDefault('$!portlet.ID','target_tracker');")
         #end
         #if("$!result.TargetPriority"!="")
-        <span class="filterTip">
-        <span>$!result.TargetPriorityName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_priority");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+        #ALfilterTip($!result.TargetPriorityName "aipo.project.filterSetDefault('$!portlet.ID','target_priority');")
         #end
         #if("$!result.TargetStatus"!="")
-        <span class="filterTip">
-        <span>$!result.TargetStatusName</span>
-        <a href="javascript:void(0);" class="btn" onclick='aipo.project.filterSetDefault("$!portlet.ID","target_status");'><i class="auiIcon auiIconDelete"></i></a>
-        </span>
+        #ALfilterTip($!result.TargetStatusName "aipo.project.filterSetDefault('$!portlet.ID','target_status');")
         #end
     	</div>
     	<a href="javascript:void(0)" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="$l10n.PROJECT_FILTER"><i class="auiIcon auiIconArwBottom"></i></a>
     	<input class="text floatLeft long" type="text" name="target_keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
     </div>
-    #AUIButtonSearch("$l10n.TODO_SEARCH")
+    #AUIButtonSearch("$l10n.COMMON_SEARCH")
     #AUISearchIndicator()
     #AUISearchFooter()
     #AUISummaryFilterDivFooter()
@@ -83,7 +68,7 @@
     	</div>
     </div>
     </div>
-    <div class="center loader" id="indicator-$!portlet.ID" style="display:none"></div>
+    <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 <div id="content-$!portlet.ID" style="visibility:visible">
 
     #AUISummaryDiv()
@@ -104,7 +89,7 @@
     #end
 	#AUISummaryDivfooter()
     #if($result.List.size() == 0)
-		<div class="message">$l10n.PROJECT_NO_RECORD</div>
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
     #else
         #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
         <div id="messageDiv-$!portlet.ID"></div>
@@ -129,7 +114,13 @@
         		#ALtdcellfooter()
         		#ALtdcellAtt("$!record.TrackerString" 'nowrap="nowrap" class="mb_hide"')
 				#ALtdcellAtt("$!record.StatusString" 'nowrap="nowrap"')
-        		#ALtdcellAtt("<div>$!record.MemberListString</div>" '')
+				#ALtdcellheader()
+				<div>
+				#foreach ($member in $record.MemberList)
+        		<a href="javascript: void(0)" onclick="aipo.message.popupProfile($member.UserId,arguments[0])">$member.UserName</a>
+        		#end
+        		</div>
+        		#ALtdcellfooter()
         		#ALtdcellheaderAtt('class="mb_hide"')
         		#if(!$!record.HasChildrenForForm && $!record.isEditable())
             		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
@@ -164,9 +155,10 @@
     	#AUISummaryDivfooter()
 		#end
     #end
-#end
 </div>
+#end
 #AUIcontentsAreaFooter()
+#if($result.AllProject && $result.AllProject.size() > 0)
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
   <div>
@@ -206,6 +198,6 @@
     </ul>
   </div>
 </div>
-
-#parse("/portlets/html/ja/project-widgets.vm")
+#end
+#parse("/portlets/html/project-widgets.vm")
 

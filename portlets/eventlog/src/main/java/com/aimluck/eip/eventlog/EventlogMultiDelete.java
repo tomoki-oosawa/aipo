@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.eventlog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -30,8 +30,11 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.common.ALAbstractCheckList;
+import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * イベントログの複数削除を行うためのクラスです。 <BR>
@@ -69,6 +72,61 @@ public class EventlogMultiDelete extends ALAbstractCheckList {
       // イベントログを削除
       Database.deleteAll(logs);
       Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("eventlog", ex);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * @param action
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public boolean doAllDelete(ALAction action, RunData rundata, Context context) {
+    try {
+      if (!doCheckSecurity(rundata, context)) {
+        return false;
+      }
+      doCheckAclPermission(rundata, context, getDefineAclType());
+
+      List<String> msgList = new ArrayList<String>();
+      boolean res = false;
+
+      res = allDeleteAction(rundata, context, msgList);
+
+      action.setResultData(this);
+      action.setErrorMessages(msgList);
+      action.putData(rundata, context);
+      return res;
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    }
+  }
+
+  /**
+   * 
+   * @param rundata
+   * @param context
+   * @param msgList
+   * @return
+   */
+  protected boolean allDeleteAction(RunData rundata, Context context,
+      List<String> msgList) {
+    try {
+
+      String sql = "DELETE FROM eip_t_eventlog WHERE EVENTLOG_ID > 0";
+      Database.sql(EipTEventlog.class, sql).execute();
+
+      Database.commit();
+    } catch (RuntimeException ex) {
+      Database.rollback();
+      logger.error("eventlog", ex);
+      return false;
     } catch (Exception ex) {
       Database.rollback();
       logger.error("eventlog", ex);

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,9 +15,6 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  *#
 ## ---------------------------------------------------------------------------
 #set ($newUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordFormScreen").addQueryData("entityid","new")))
@@ -30,9 +27,15 @@
 #AUIbuttonAction("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
 #else
+#if(!$result.GpdbAllList || $result.GpdbAllList.size()==0)
+<div class="auiWidget clearfix widgetButton">
+#AUIDisableButton("$l10n.GPDB_ADD_DATA")
+</div>
+#else
 <div class="auiWidget clearfix widgetButton">
 #AUIbutton("$l10n.GPDB_ADD_DATA" "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.gpdb.onLoadGpdbDialog);")
 </div>
+#end
 #end
 
 <div id="subNavigation">

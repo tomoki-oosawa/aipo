@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($receiveUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("mode","recieve")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
 ## ---------------------------------------------------------------------------
 #if($!result.AccountId && $!result.AccountId != 0)
 	<div class="auiSummaryMeta auiFilter clearfix">
@@ -32,7 +32,7 @@
 			#end
 		</div>
 		<div class="floatLeft pl5">
-			<a class="auiButton" style="width:auto;" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span><img src="themes/$!theme/images/icon/icon_reload.gif" width="18" height="18" alt="$l10n.WEBMAIL_NO_REFRESH" /></span></a>
+			<a class="auiButton" style="width:auto;" href="javascript:void(0)" onclick="aipo.viewPage('$receiveUrl','$!portlet.ID');aipo.webmail.onProcessingTimer();"><span>#AUIajaxbuttonReload()</span></a>
 		</div>
 		<div class="floatRight">
 			#if($!result.List && $!result.List.size() > 0)
@@ -62,7 +62,7 @@
 		<div class="spaceBottom"><div class="indicator" id="indicator-$!portlet.ID">$StatStr</div></div>
 	#end
 	#if($!result.List && $!result.List.size() <= 0)
-		<div class="message">$l10n.WEBMAIL_NO_RECEIVEDMAIL</div>
+		#AUIEmptyMessage("" "$l10n.WEBMAIL_MAIL_EMPTY_MESSAGE")
 	#else
 		<table class="auiRowTable wide">
 			<colgroup style="width:10em;" />
@@ -107,5 +107,5 @@
 	#end
 
 #else
-	#AUIbuttonActionInBlankBox($l10n.WEBMAIL_DO_ADD_ACCOUNT "javascript:aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailAccountFormScreen').addQueryData('entityid','new'))');")
+		#AUIEmptyMessage("" "$utils.getl10nFormat1('WEBMAIL_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
 #end

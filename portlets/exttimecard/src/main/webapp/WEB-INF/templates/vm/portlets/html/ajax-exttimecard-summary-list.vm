@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($meisaiflag = 1)
 ## ---------------------------------------------------------------------------
@@ -51,10 +50,10 @@
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.CurrentMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_CURRENT_MONTH" class="btn" style="width:4em;"><span>$l10n.EXTTIMECARD_CURRENT_MONTH</span></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_PREV_MONTH" class="first arrow"><span><i class="auiIconArrow auiIconArrowLeft"></i></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.PrevMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_PREV_MONTH" class="first arrow"><i class="icon-caret-left"></i></a>
 </li>
 <li>
-<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_NEXT_MONTH" class="last arrow"><span><i class="auiIconArrow auiIconArrowRight"></i></span></a>
+<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSummaryListScreen").addQueryData("view_month",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.EXTTIMECARD_TO_NEXT_MONTH" class="last arrow"><i class="icon-caret-right"></i></a>
 </li>
 </ul>
 </div>
@@ -105,8 +104,10 @@
 #ALtdheadAtt($l10n.EXTTIMECARD_NOT_INPUT "class='center'")
 </tr>
 <tr>
-#ALtdcellAtt("$!{key.UserNameHtml}" "")
-#ALtdcellAtt("$!{key.SystemNameHtml}" "class='wType'")
+<td>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${key.OwnerId},arguments[0])">$!{key.UserNameHtml}</a>
+</td>
+#ALtdcellAtt("$!{key.SystemNameHtml}" "align='center' class='wType'")
 #ALtdcellAtt("$!{key.WorkDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.WorkHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OvertimeDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OvertimeHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.OffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.OffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
@@ -124,5 +125,5 @@
 
 #end
 #AUIcontentsAreaFooter()
-#parse("/portlets/html/ja/exttimecard-widget.vm")
+#parse("/portlets/html/exttimecard-widget.vm")
 

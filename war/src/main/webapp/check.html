@@ -1,15 +1,31 @@
+<!--
+
+    Aipo is a groupware program developed by Aimluck,Inc.
+    Copyright (C) 2004-2015 Aimluck,Inc.
+    http://www.aipo.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <html>
 <head>
-<script type="text/javascript" src="/gadgets/js/core:rpc.js?c=0"></script>
+<script type="text/javascript" src="/container/gadgets/js/core:rpc:jquery.js?c=0"></script>
 <script type="text/javascript">
 
-function CronTask(task, interval, isDecay) {
+function CronTask(task, interval) {
   this.task = task;
-  this.isDecay = isDecay;
   this.interval = interval;
-  this.decayRate = 1;
-  this.decayMultiplier = 1.5;
-  this.maxDecayTime = 5 * 60 * 1000; // 3 minutes
 }
 
 CronTask.prototype = {
@@ -29,12 +45,7 @@ CronTask.prototype = {
   run: function() {
     var cronTask = this;
     this.task(function() {
-      cronTask.decayRate = cronTask.isDecay ? Math.max(1, cronTask.decayRate / cronTask.decayMultiplier) : cronTask.decayRate * cronTask.decayMultiplier;
-      var expire = cronTask.interval * cronTask.decayRate;
-      if(!cronTask.isDecay) {
-          expire = (expire >= cronTask.maxDecayTime) ? cronTask.maxDecayTime : expire;
-      }
-      expire = Math.floor(expire);
+      var expire = Math.floor(cronTask.interval);
       cronTask.worker = window.setTimeout(
           function () {
             cronTask.run.call(cronTask);
@@ -55,20 +66,77 @@ CronTask.prototype = {
   }
 };
 
-function update(decay) {
-  gadgets.rpc.call(null, "requestCheckActivity");
-  decay();
+var retryCount = 0;
+var isConnect = false;
+var isPush = 0;
+function join() {
+    if(isConnect) {
+        return;
+    }
+    isConnect = true;
+    var params = {
+       url: "push/",
+       timeout: 10 * 60 * 1000 ,
+       cache: false,
+       contentType: "application/javascript",
+       success: function(data, status) {
+           isConnect = false;
+           retryCount = 0;
+           var type = data.type;
+           if("messagev2" == type) {
+               gadgets.rpc.call(null, "requestCheckMessage", null, data);
+           }
+           if("messagev2_read" == type) {
+               gadgets.rpc.call(null, "requestCheckMessageRead", null, data);
+           }
+           if("activity" == type) {
+               gadgets.rpc.call(null, "requestCheckActivity");
+           }
+           join();
+       },
+       error: function(data, status) {
+           isConnect = false;
+           if(retryCount < 10) {
+               retryCount++;
+               if(retryCount == 1) {
+                   join();
+               } else {
+                   setTimeout(join, 1000);
+               }
+           }
+       }
+    }
+    jQuery.ajax(params);
 }
 
 function init() {
-	var interval = gadgets.util.getUrlParameters()['interval'];
-    if(interval) {
-        var task = new CronTask(update, 1 * interval * 1000, true);
+    gadgets.rpc.call(null, "requestCheckActivity");
+    isPush = gadgets.util.getUrlParameters()['push'];
+    if(isPush == 1) {
+        var task = new CronTask(update, 5 * 60 * 1000);
         task.start();
-    } else {
-        gadgets.rpc.call(null, "requestCheckActivity");
     }
     return false;
+}
+
+function update(decay) {
+	retryCount = 0;
+    refresh();
+    decay();
+}
+
+function refresh() {
+    if(isPush == 1) {
+        if(!isConnect) {
+            join();
+            setTimeout(function() {
+                try {
+                    window.parent.aipo.message.reloadRoomList();
+                } catch(ignore) {
+                }
+              }, 3000);
+        }
+    }
 }
 
 gadgets.util.registerOnLoadHandler(init);
@@ -76,5 +144,6 @@ gadgets.util.registerOnLoadHandler(init);
 </script>
 </head>
 <body>
-<script type="text/javascript">gadgets.util.runOnLoadHandlers();</script></body>
+    <script type="text/javascript">gadgets.util.runOnLoadHandlers();</script>
+</body>
 </html>

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.commons.utils;
 
 import java.io.UnsupportedEncodingException;
@@ -38,6 +37,12 @@ public class ALStringUtil {
 
   /** 半角カナの終了コード */
   public static final int HANKAKU_KANA_LAST = 0xff9f;
+
+  /** 濁音 */
+  private static final String DAKUON = "がぎぐげござじずぜぞだぢづでどばびぶべぼぱぴぷぺぽ";
+
+  /** 清音 */
+  private static final String SEION = "かきくけこさしすせそたちつてとはひふへほはひふへほ";
 
   /**
    * メールアドレス形式であるかを判定します。
@@ -117,6 +122,19 @@ public class ALStringUtil {
     return buf.toString();
   }
 
+  public static String convertKatakana2Hiragana(String str) {
+    StringBuffer buf = new StringBuffer();
+    for (int i = 0; i < str.length(); i++) {
+      char code = str.charAt(i);
+      if ((code >= 0x30a1) && (code <= 0x30f3)) {
+        buf.append((char) (code - 0x60));
+      } else {
+        buf.append(code);
+      }
+    }
+    return buf.toString();
+  }
+
   /**
    * 指定文字列に含まれる半角カナを全角カナに変換します。
    * 
@@ -159,7 +177,7 @@ public class ALStringUtil {
       char[] res;
       if (pos < maxPos) {
         char nextChar = nChars[pos];
-        if (nextChar == 'ﾞ' || nextChar == 'ﾟ') {
+        if (nextChar == '゛' || nextChar == '゜') {
           pos++;
           daku[ALKanaMapTable.INDEX_HANKAKU_BASE] = currChar;
           daku[ALKanaMapTable.INDEX_HANKAKU_DAKUTEN] = nextChar;
@@ -354,4 +372,14 @@ public class ALStringUtil {
     return "";
   }
 
+  public static String convertDakuon2Seion(String str) {
+    int size = DAKUON.length();
+    String result = str;
+    for (int i = 0; i < size; i++) {
+      String s1 = DAKUON.substring(i, i + 1);
+      String s2 = SEION.substring(i, i + 1);
+      result = result.replaceAll(s1, s2);
+    }
+    return result;
+  }
 }

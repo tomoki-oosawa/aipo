@@ -1,3 +1,21 @@
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 @charset "utf-8";
 .bRadius4, .roundMainWrapper noscript .alert, .alertCount, #mobileHeader .mhLeft,
 #mobileHeader .mhRight, #mobileHeader .auiMbBtn, #mobileHeader_v2 .auiMbBtn, #mobileHeader_v3 .auiMbBtn {
@@ -11,11 +29,16 @@
 /***************************************************
 	style denial
 --------------------------------------------------*/
+html{
+  background: #FFFFFF !important;
+}
 body {
   position: absolute;
+  background: #ffffff !important;
+  -webkit-text-size-adjust: 100%;
 }
 
-.hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
+#auiHeader, .hdSign, .hdUserName, .hdLogout, #auiTabs, #footer {
   display: none;
 }
 
@@ -77,7 +100,9 @@ select {
   max-width: 100%;
 }
 
-select[multiple] {
+select[multiple],
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
   height:auto;
 }
 
@@ -117,6 +142,7 @@ input[type=password] {
 --------------------------------------------------*/
 #roundWrapper .roundMainWrapper {
   padding: 45px 0 0;
+  background: #ffffff;
 }
 
 #roundWrapper .roundTopBlock, #roundWrapper .roundRightBlock, #roundWrapper .roundBottomBlock, #roundWrapper .roundLeftBlock, #roundWrapper .roundTopLeftBlock, #roundWrapper .roundTopRightBlock, #roundWrapper .roundBottomRightBlock, #roundWrapper .roundBottomLeftBlock {
@@ -164,7 +190,7 @@ input[type=password] {
   margin: 0;
 }
 .auiPortlet .auiPortletHead {
-  position: absolute;
+  position: fixed;
   top: 0;
   width: 100%;
   height: 45px;
@@ -200,11 +226,11 @@ input[type=password] {
   display: none;
 }
 .auiPortlet .auiPortletBody {
-  margin-top: 6px;
+  margin-top: 10px;
   border: none;
 }
-.auiPortlet .auiPortletBody .inner {
-  padding: 0 5px;
+.auiPortlet .auiPortletBody > .inner {
+  padding: 0 10px;
 }
 
 /***************************************************
@@ -222,19 +248,19 @@ input[type=password] {
 --------------------------------------------------*/
 .auiMbTable {
   display: block;
-  margin: 0 -5px;
-  padding: 0 5px;
+  margin: 0 -10px;
+  padding: 0 10px;
   border-top: solid 1px #ededed;
 }
 .auiMbTable tbody {
-  margin: 0 -5px;
+  margin: 0 -10px;
   display: block;
 }
 .auiMbTable tr:first-child {
   display: none;
 }
 .auiMbTable tr {
-  padding: 5px 5px 7px 5px;
+  padding: 5px 10px 7px 10px;
   display: block;
   overflow: hidden;
   border-bottom: solid 1px #ededed;
@@ -266,7 +292,7 @@ input[type=password] {
   float: left;
   width: auto;
   margin: 0;
-  padding: 4px 10px 0 5px;
+  padding: 4px 10px 0 0;
   vertical-align: middle;
 }
 .auiMbTable .auiMTCheck input[type=checkbox] {
@@ -715,17 +741,14 @@ input[type=password] {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 110;
   width: 100%;
   height: 45px;
-  -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background: white -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), color-stop(0.2, rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.05)));
-  border-bottom: solid 1px #d0d0d0;
-  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  -moz-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+  border-bottom: solid 1px #d2d2d2;
 }
 #mobileHeader_v3 .inner {
   position: relative;
@@ -757,6 +780,29 @@ input[type=password] {
 #mobileHeader_v3 .mhRight {
   float: right;
 }
+#mobileHeader_v3 .mhLeft [class^="icon-"],
+#mobileHeader_v3 .mhLeft [class*=" icon-"], #mobileHeader_v3 .mhRight [class^="icon-"],
+#mobileHeader_v3 .mhRight [class*=" icon-"] {
+  color: #999999;
+  font-size: 20px;
+  line-height: 42px;
+  cursor: pointer;
+}
+#mobileHeader_v3 .mhLeft .active [class^="icon-"],
+#mobileHeader_v3 .mhLeft .active [class*=" icon-"], #mobileHeader_v3 .mhRight .active [class^="icon-"],
+#mobileHeader_v3 .mhRight .active [class*=" icon-"] {
+  color: #333333;
+}
+#mobileHeader_v3 .mhLeft .zero ~ span [class^="icon-"],
+#mobileHeader_v3 .mhLeft .zero ~ span [class*=" icon-"], #mobileHeader_v3 .mhRight .zero ~ span [class^="icon-"],
+#mobileHeader_v3 .mhRight .zero ~ span [class*=" icon-"] {
+  opacity: 0.4;
+}
+#mobileHeader_v3 .mhLeft .active .zero ~ span [class^="icon-"],
+#mobileHeader_v3 .mhLeft .active .zero ~ span [class*=" icon-"], #mobileHeader_v3 .mhRight .active .zero ~ span [class^="icon-"],
+#mobileHeader_v3 .mhRight .active .zero ~ span [class*=" icon-"] {
+  opacity: 1;
+}
 #mobileHeader_v3 #auiMbBtnActivity > .dijitDropDownButton {
   width: 100%;
   display: block !important;
@@ -766,6 +812,7 @@ input[type=password] {
 #mobileHeader_v3 .hdActivity,
 #mobileHeader_v3 .hdInformation,
 #mobileHeader_v3 .auiMbBtnNavi {
+  float: left;
   display: block;
   position: relative;
   padding: 0;
@@ -775,28 +822,7 @@ input[type=password] {
   text-align: center;
   vertical-align: middle;
   text-decoration: none;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-#mobileHeader_v3 [class^="icon-"],
-#mobileHeader_v3 [class*=" icon-"] {
-  color: #999999;
-  font-size: 20px;
-  line-height: 42px;
-  cursor: pointer;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-}
-#mobileHeader_v3 .active [class^="icon-"],
-#mobileHeader_v3 .active [class*=" icon-"] {
-  color: #333333;
-  text-shadow: 0 -1px 0 black;
-}
-#mobileHeader_v3 .zero ~ span [class^="icon-"],
-#mobileHeader_v3 .zero ~ span [class*=" icon-"] {
-  opacity: 0.4;
-}
-#mobileHeader_v3 .active .zero ~ span [class^="icon-"],
-#mobileHeader_v3 .active .zero ~ span [class*=" icon-"] {
-  opacity: 1;
+  -webkit-tap-highlight-color: transparent;
 }
 #mobileHeader_v3 .icon-bell-alt {
   font-size: 18px;
@@ -824,17 +850,17 @@ input[type=password] {
   margin: 0;
   padding: 0 5px;
   font-size: 14px;
-  color: white !important;
-  -webkit-box-sizing: border-box;
+  color: #ffffff !important;
   -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 0 white, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 1px 0 #ffffff, inset 0 1px 2px rgba(0, 0, 0, 0.3);
   text-decoration: none;
   text-align: center;
-  background: #f0f0f0 -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, 0.1)));
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background: #f0f0f0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.1)));
+  -webkit-tap-highlight-color: transparent;
 }
 #mobileHeader_v3 .auiMbBtn span {
   display: table-cell;
@@ -866,6 +892,40 @@ input[type=password] {
 #mobileHeader_v3 #activitychecker {
   background: none;
   height: auto !important;
+}
+
+/***************************************************
+	hdNavigation
+--------------------------------------------------*/
+.hdNavigation {
+  position: static;
+  float: right;
+  margin-right: 1.5%;
+  background: none;
+}
+.hdNavigation > ul > li {
+  line-height: 42px;
+}
+
+ul.hdCommunications {
+  padding: 0;
+}
+ul.hdCommunications > li > a {
+  height: 42px;
+  min-width: 40px;
+  padding: 0;
+}
+ul.hdCommunications .num {
+  top: 4px;
+  right: 4px;
+}
+
+[class^="sprite-"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/common/head_icons_smp.png);
+  background-size: 60px;
 }
 
 /***************************************************
@@ -1170,7 +1230,9 @@ input[type=password] {
 #appsNavigation_v2 .anFooter .copyright {
   padding: 0 10px;
   line-height: 43px;
-  color: white;
+  font-size: inherit;
+  text-align: inherit;
+  color: #ffffff;
 }
 
 #appsNavigation_v2.anOpen {
@@ -1290,7 +1352,7 @@ input[type=password] {
 
 .widgetButton {
   position: absolute;
-  padding: 5px;
+  padding: 5px 10px !important;
 }
 
 .snDrawer {
@@ -1405,7 +1467,11 @@ input[type=password] {
 /***************************************************
 	loader
 --------------------------------------------------*/
-.loader {
+.loader .indicatorBlack {
+  background: url(../images/common/loading_smp.gif) no-repeat center center;
+  background-size: 16px;
+}
+.loader .indicator {
   background: url(../images/common/loading_smp_white.gif) no-repeat center center;
   background-size: 16px;
 }
@@ -1448,6 +1514,12 @@ input[type=password] {
 .timeline .comments {
   margin-left: 42px;
 }
+.timeline .comments .name {
+  font-size: 13px;
+}
+/*.timeline .comments .body {
+  padding-top: 0;
+}*/
 
 .timeline .message > .more {
   margin-left: 42px;
@@ -1455,7 +1527,7 @@ input[type=password] {
 
 .iconLike,
 .iconComment {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -1469,7 +1541,6 @@ input[type=password] {
   margin: 45px 0 0 0;
   top: 0 !important;
   left: 0 !important;
-  z-index: 9998;
 }
 .modalDialog input[type=checkbox],
 .modalDialog input[type=radio] {
@@ -1497,10 +1568,6 @@ input[type=password] {
 .modalDialog .listTable .caption,
 .modalDialog .subTable .caption {
   width: auto !important;
-}
-
-.modalDialogUnderlayWrapper {
-  display: none !important;
 }
 
 .memberlistToTop,
@@ -1617,7 +1684,7 @@ input[type=password] {
 	alert
 --------------------------------------------------*/
 .roundMainWrapper .alert {
-  margin: 5px 5px 0 5px;
+  margin: 10px 10px 0 10px;
 }
 
 /***************************************************
@@ -1877,6 +1944,9 @@ table tr.caption {
 .calendarWrapper {
   overflow-x: visible;
 }
+.calendarWrapper.calendarDisplayDay {
+  overflow-x: auto;
+}
 
 /***************************************************
 	addressbookDialog
@@ -1973,13 +2043,14 @@ table tr.caption {
 }
 
 .filters {
-  /*line-height: 38px;*/
 }
 
 .filterTip {
   padding: 0 4px;
-  height: 26px !important;
-  line-height: 26px !important;
+  /*height: 26px !important;*/
+  /*line-height: 26px !important;*/
+  height: 32px !important;
+  line-height: 33px !important;
 }
 
 .filterTip > a {
@@ -1989,12 +2060,6 @@ table tr.caption {
 
 .filterInputField .filters {
   height: 32px;
-}
-
-.filterDropDrawer {
-  width: 20px;
-  height: 30px;
-  margin: 1px;
 }
 
 /***************************************************
@@ -2120,6 +2185,313 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	dropdown
+--------------------------------------------------*/
+.dropdown {
+  width: 98% !important;
+  margin: 0 1%;
+}
+
+.dropdown_list {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+/***************************************************
+	profilePopup
+--------------------------------------------------*/
+.profilePopupWrap {
+  width: 100%;
+}
+.profilePopupWrap .profilePopup {
+  width: auto;
+  margin: 0 5px;
+  position: relative;
+}
+.profilePopupWrap .profilePopup .icon_menu {
+  width: auto;
+}
+.profilePopupWrap .profilePopup .icon_menu li {
+  width: 50%;
+}
+
+/***************************************************
+	message
+--------------------------------------------------*/
+body.messageRoomList {
+  /* background-color: #333; */
+}
+body.messageRoomList .roundMainWrapper {
+  /* background-color: #333 !important; */
+}
+body.messageRoomList .auiPortlet,
+body.messageRoomList .auiPortletBody {
+  background-color: transparent !important;
+}
+body.messageRoomList .dijitContentPane {
+	overflow:hidden;
+}
+body.messageRoomList .messageSummary .date,
+body.messageRoomList .messageSummary .name,
+body.messageRoomList .messageSummary .latest {
+  line-height: inherit;
+  height: auto;
+}
+body.messageRoomList .messageSummary .latest {
+  display: block;
+}
+body.messageRoomList .messageSummary .avatar,
+body.messageRoomList .messageUserlist ul .avatar {
+  padding: 7px;
+}
+body.messageRoomList .messageSummary .avatar,
+body.messageRoomList .messageUserlist ul .avatar,
+body.messageRoomList .messageSummary .avatar_s,
+body.messageRoomList .messageUserlist ul .avatar_s{
+  width: 32px;
+  height: 32px;
+}
+body.messageRoomList .messageSummaryHead .inner {
+  padding: 0;
+  margin: 10px;
+}
+body.messageRoomList .messageSummary li {
+  margin-left: 0;
+  border-top: 1px solid #f0f0f0;
+}
+body.messageRoomList .messageSummary li a {
+  padding: 5px 10px 5px 45px;
+  height: 46px;
+  border: none;
+}
+body.messageRoomList .messageSummary .nrCount {
+  margin-top: 2px;
+}
+body.messageRoomList .messageUserlist ul li {
+  margin-left: 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+body.messageRoomList .messageUserlist ul li a {
+  padding: 7px 10px 7px 45px;
+  box-sizing: inherit;
+  height: auto;
+}
+body.messageRoomList .messageUserlist ul li a .name {
+  height: 32px;
+  line-height: 32px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+body.messageRoomList .messageUserlist .index {
+  margin: 0;
+  background: #f6f6f6;
+  border-bottom: 1px solid #f0f0f0;
+}
+.sideBlock {
+  /* margin: -10px -10px -20px -10px; */
+  margin: 0 -10px -20px -10px;
+}
+.sideBlock .auiTabs .tab {
+  border-top: 1px solid #f0f0f0;
+}
+.sideBlock .auiTabs .tab li a {
+  background: #f0f0f0;
+  color: #333;
+}
+.sideBlock .auiTabs .tab li.active a {
+  background: #ffffff;
+  color: #222;
+}
+.sideBlock .scroll {
+  padding-bottom: 20px;
+}
+#messageSideBlock .emptyMessage{
+  padding: 0 20px;
+}
+
+/* .messageOuter .inputField {
+  margin-bottom: 0;
+  margin-bottom: 5px;
+}
+.messageOuter .message {
+  border-top: none;
+}
+.messageOuter .message .time {
+  color: #999;
+}
+.messageOuter .message .time a {
+  color: #999;
+} */
+
+#messageMainBlock .contents.clearfix {
+  overflow: inherit;
+}
+#messageMainBlock .timelineOuter #messagePane.scroll{
+  overflow: inherit;
+}
+#messageMainBlock .timelineOuter .inputField {
+  margin-bottom: 5px;
+}
+#messageMainBlock .timelineOuter .message{
+  border-top: none;
+}
+#messageMainBlock .timelineOuter .message.active {
+  background: #fef6f1;
+  margin: 0 -10px;
+  padding: 10px 10px 0;
+}
+#messageMainBlock .timelineOuter .message .time {
+  color: #999;
+}
+#messageMainBlock .timelineOuter .message .time a {
+  color: #999;
+}
+
+.roomHeader {
+  margin: 0 0 5px 0;
+  position: relative;
+}
+
+.auiSearch.gray {
+  margin-bottom: 10px;
+}
+.auiSearch.gray input[type="text"] {
+  width: 100%;
+  min-width: inherit;
+}
+.auiSearch.gray input[type="text"]:focus {
+  min-width: inherit;
+}
+.auiSearch.gray.focus input[type="text"],
+.auiSearch.gray.focus input[type="text"]:focus {
+  min-width: inherit;
+}
+.sideBlock .inner .auiSearch.gray {
+  margin-bottom: 0;
+}
+
+.rightBlock div.index {
+  background: #f6f6f6;
+  padding: 11px 10px 9px;
+  color: #333;
+}
+.rightBlock ul.close li {
+  display: none;
+}
+.rightBlock ul.close li.index {
+  display: block;
+}
+.rightBlock ul.user li, .rightBlock ul.room li {
+  height: 38px;
+  padding-left: 0;
+}
+.rightBlock ul.user li a, .rightBlock ul.room li a {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 38px;
+  padding: 7px 16px 7px 38px;
+  display: block;
+  text-decoration: none;
+}
+.rightBlock ul.user li:hover span, .rightBlock ul.room li:hover span {
+  text-decoration: none;
+}
+.rightBlock ul.user li .name, .rightBlock ul.room li .name,
+.rightBlock ul.user li .date,
+.rightBlock ul.room li .date {
+  line-height: 25px;
+  height: 25px;
+}
+.rightBlock ul.user li .name, .rightBlock ul.room li .name{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.rightBlock ul.user li .date, .rightBlock ul.room li .date {
+  float: right;
+  color: #999;
+  font-size: 11px;
+}
+.rightBlock ul.user li .nrCount, .rightBlock ul.room li .nrCount {
+  background-color: #ff3333;
+  border-radius: 3px;
+  color: #ffffff;
+  display: inline-block;
+  float: left;
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 5px 3px 0 0;
+  min-width: 8px;
+  padding: 0 3px;
+  text-align: center;
+  text-decoration: none;
+}
+.rightBlock ul li {
+  position: relative;
+  margin: 0 0 7px;
+  border: 1px solid #E7E7E7;
+  border-radius: 4px;
+  background: #ffffff;
+}
+.rightBlock ul li:hover {
+  border: 1px solid #999;
+  cursor: pointer;
+}
+.rightBlock ul li.index {
+  background: none;
+  color: #333;
+  border: none;
+  padding: 0;
+  margin: 10px 5px 7px;
+  cursor: auto;
+  height: auto;
+}
+.rightBlock ul li.index a {
+  height: auto;
+  padding: 0;
+  margin-right: 4px;
+}
+.rightBlock ul li.index span {
+  color: #999;
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 11px;
+}
+.rightBlock ul li.index a i {
+  color: #d2d2d2;
+}
+.rightBlock ul li.index a:hover i {
+  color: #333;
+}
+.rightBlock ul li span {
+  display: block;
+}
+.rightBlock ul li .avatar {
+  left: 0;
+  padding: 7px;
+  position: absolute;
+  top: 0;
+}
+.rightBlock ul li.message {
+  padding: 7px 16px 7px 38px;
+}
+.rightBlock ul li.message .tlClipBoard {
+  border: 1px solid #f0f0f0;
+  font-size: 11px;
+  padding: 7px;
+  margin: 10px 0 5px;
+}
+.rightBlock ul li.message .time {
+  color: #999;
+}
+.rightBlock ul li.message .time a {
+  color: #999;
+}
+
+
+/***************************************************
 	mobile class - undermost
 --------------------------------------------------*/
 .mb_hide {display:none !important;}
@@ -2149,9 +2521,10 @@ div.weeklyTermRights div.weeklyTermRightR {
 	auiIcon
 --------------------------------------------------*/
 .auiIcon {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
+  width: 16px;
 }
 
 .auiIconIndicator {
@@ -2170,7 +2543,7 @@ div.weeklyTermRights div.weeklyTermRightR {
 	auiIcon
 --------------------------------------------------*/
 .auiIconArrow {
-  background-image: url(../images/icon/auiIconSpritesMobile20131205.png);
+  background-image: url(../images/icon/auiIconSpritesMobile20150318.png);
   background-repeat: no-repeat;
   background-size: 16px auto;
 }
@@ -2188,6 +2561,9 @@ div.weeklyTermRights div.weeklyTermRightR {
   background-size: 20px;
 }
 
+.auiMbIconTimecard {
+  background-position: 0px -180px;
+}
 #appsNavigation li .auiMbIcon {
     margin:8px 10px 12px 10px;
 }
@@ -2217,4 +2593,35 @@ div.weeklyTermRights div.weeklyTermRightR {
 
 .hdSetting {
   display:none;
+}
+
+/***************************************************
+	row & col
+--------------------------------------------------*/
+.row {
+  display: block;
+  margin-right: -5px;
+}
+
+[class*=col-] {
+  display: block;
+  position: relative;
+  float: left;
+  padding-right: 5px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+[class*=col-] input[type=text],
+[class*=col-] input[type=password],
+[class*=col-] select {
+  width: 100%;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-3 {
+  width: 33.3%;
 }

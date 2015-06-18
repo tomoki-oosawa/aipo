@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($navilist = [["$l10n.ACTIVITY_TOP", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["$l10n.ACTIVITY_LIST", ""]])
 ## ---------------------------------------------------------------------------
 #ALjavascript("javascript/aipo/activity/form.js")
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"activity", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ActivityAllListScreen"))', reloadFunction:aipo.reloadPage };
@@ -30,7 +29,7 @@
 </script>
 #if($!result.hasAuthority())
 #ALcontentheader($!utils.escapeXML($!{portletInstanceTitle}) $navilist)
-#parse("/portlets/html/ja/ajax-activity-all-list.vm")
+#parse("/portlets/html/ajax-activity-all-list.vm")
 #ALcontentfooter()
 #else
 #parse("/portlets/html/PermissionError.vm")

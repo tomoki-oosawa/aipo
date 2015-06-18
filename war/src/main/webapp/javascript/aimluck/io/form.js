@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 aimluck.namespace("aimluck.io");
 dojo.provide("aimluck.io");
 
@@ -122,19 +121,18 @@ aimluck.io.submit_callbackparams = function (form, indicator_id, portlet_id, cal
           X_REQUESTED_WITH: "XMLHttpRequest"
         },
         load: function (response, ioArgs) {
-          var params = [];
+          var result = {};
           var html = "";
           if (response.err) {
             html = createErrorHTML(response.err);
           }
-          params.push(html);
-
-          if (dojo.isArray(response.params)) {
-            dojo.forEach(response.params, function (param) {
-              params.push(param);
-            });
+          result["error"] = html;
+          var params = "";
+          if (response.params) {
+              params = response.params;
           }
-          callback.apply(callback, params);
+          result["params"] = params;
+          callback.call(callback, result);
 
           obj_indicator = dojo.byId(indicator_id + portlet_id);
           if (obj_indicator) {
@@ -298,7 +296,7 @@ aimluck.io.disableForm = function (form, bool) {
     var elements = form.elements;
     for (var i = 0; i < elements.length; i++) {
       if ((elements[i].type == 'submit' || elements[i].type == 'button')
-        && elements[i].style.display != "none") {
+        && elements[i].style.display != "none" && elements[i].value) {
         var uuid = guid();
         var span = document.createElement("span");
         span.id = uuid;
@@ -462,6 +460,22 @@ aimluck.io.ajaxMultiDeleteSubmit = function (button, url, indicator_id, portlet_
     aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
   }
 }
+
+aimluck.io.ajaxAllDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWA_STR, {
+	    dwa_del: nlsStrings.DWA_DEL,
+	    dwa_sel: nlsStrings.DWA_SEL,
+	    dwa_name: button.form._name.value
+	  });
+	  // すべての'+button.form._name.value+'を削除してよろしいですか？
+	  if (confirm(confirmString)) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
 
 aimluck.io.ajaxMultiEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
@@ -677,6 +691,7 @@ aimluck.io.addFileToList = function (ul, fileid, filename) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   if (ul.parentNode.style.display == "none") {
     ul.parentNode.style.display = "";
+    dojo.addClass( ul.parentNode, 'displayChangedFromNone' );
   }
   if (document.all) {
     var li = document.createElement("li");
@@ -729,6 +744,10 @@ aimluck.io.replaceFileToList = function (ul, fileid, filename) {
 
 aimluck.io.removeFileFromList = function (ul, li) {
   ul.removeChild(li);
+  if(ul.children.length==0&&ul.parentNode.className.indexOf("displayChangedFromNone")!=-1){
+    ul.parentNode.style.display = "none";
+    dojo.removeClass( ul.parentNode, 'displayChangedFromNone' );
+  }
   var modalDialog = document.getElementById('modalDialog');
   if (modalDialog) {
     var wrapper = document.getElementById('wrapper');
