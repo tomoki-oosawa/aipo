@@ -1,1 +1,1 @@
-({"loadingState": "Betöltés...", "errorState": "Sajnálom, hiba történt"})
+({"loadingState": "Bet旦lt辿s...", "errorState": "Sajn叩lom, hiba t旦rt辿nt"})

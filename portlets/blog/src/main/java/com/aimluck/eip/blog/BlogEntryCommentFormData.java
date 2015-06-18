@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.io.IOException;
@@ -152,7 +151,7 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
   public void initField() {
     // コメント
     comment = new ALStringField();
-    comment.setFieldName("コメント");
+    comment.setFieldName(ALLocalizationUtils.getl10n("BLOG_COMMENT"));
     comment.setTrim(false);
 
   }
@@ -584,11 +583,17 @@ public class BlogEntryCommentFormData extends ALAbstractFormData {
 
       ArrayList<String> msgList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
-          rundata,
-          context,
-          msgList));
+      boolean res = false;
+      if (isOverQuota()) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());

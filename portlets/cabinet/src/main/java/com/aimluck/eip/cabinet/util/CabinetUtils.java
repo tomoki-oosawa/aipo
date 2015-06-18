@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cabinet.util;
 
 import java.util.ArrayList;
@@ -53,7 +52,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * キャビネットのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class CabinetUtils {
 
@@ -115,7 +114,7 @@ public class CabinetUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -153,7 +152,7 @@ public class CabinetUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -191,7 +190,7 @@ public class CabinetUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -275,6 +274,7 @@ public class CabinetUtils {
         info.setFolderName(folder.getFolderName());
         info.setUpdateDate(folder.getUpdateDate());
         try {
+          info.setUpdateUserId(folder.getUpdateUserId());
           info.setUpdateName(ALEipUtils.getALEipUser(folder
             .getUpdateUserId()
             .intValue()));
@@ -360,7 +360,7 @@ public class CabinetUtils {
 
   /**
    * リスト中のフォルダに対し、閲覧権限の有無により、可視、不可視を設定します
-   * 
+   *
    * @param folder_list
    * @param rundata
    */
@@ -440,7 +440,7 @@ public class CabinetUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -452,7 +452,7 @@ public class CabinetUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -462,7 +462,7 @@ public class CabinetUtils {
 
   /**
    * 現在ログインしているユーザーは指定したIDのフォルダを閲覧する権限を持つかを返します
-   * 
+   *
    * @param folder_id
    * @param rundata
    * @return
@@ -543,7 +543,7 @@ public class CabinetUtils {
 
   /**
    * 現在ログインしているユーザーは指定したIDのフォルダを編集する権限を持つかを返します
-   * 
+   *
    * @param folder_id
    * @param rundata
    * @return
@@ -620,7 +620,7 @@ public class CabinetUtils {
 
   /**
    * フォームで使用するフォルダのリストに対し、権限的に不可視なフォルダを設定します
-   * 
+   *
    * @param folder_list
    * @param rundata
    */
@@ -655,7 +655,7 @@ public class CabinetUtils {
 
   /**
    * 権限的に閲覧可能な全フォルダのIDを返します。
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -675,7 +675,7 @@ public class CabinetUtils {
 
   /**
    * 上位でアクセスコントロールを行っているフォルダを再帰的に検索します
-   * 
+   *
    * @param parentId
    * @return
    */
@@ -743,12 +743,13 @@ public class CabinetUtils {
   }
 
   /**
-   * 
+   *
    * @param file
    * @param loginName
    */
   public static void createCabinetActivity(EipTCabinetFile file,
       String loginName, List<String> recipients, boolean isNew) {
+
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Cabinet", file.getFileId(), 0f);
     boolean isDeletePrev =
@@ -785,7 +786,6 @@ public class CabinetUtils {
         .withExternalId(String.valueOf(file.getFileId())));
     }
 
-    Database.commit();
     if (isDeletePrev) {
       RecentActivity.delete();
     }
@@ -793,7 +793,7 @@ public class CabinetUtils {
 
   /**
    * <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -864,7 +864,7 @@ public class CabinetUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -876,7 +876,7 @@ public class CabinetUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -896,7 +896,7 @@ public class CabinetUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return

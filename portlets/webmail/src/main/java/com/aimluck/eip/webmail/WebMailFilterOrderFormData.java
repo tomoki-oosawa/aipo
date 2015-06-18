@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
@@ -120,7 +120,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("フィルタリスト");
+    positions.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_FILTER_LIST"));
     positions.setTrim(true);
   }
 
@@ -256,6 +256,7 @@ public class WebMailFilterOrderFormData extends ALAbstractFormData {
         Database.commit();
       }
     } catch (Exception e) {
+      Database.rollback();
       logger.error("webmail", e);
       res = false;
     }

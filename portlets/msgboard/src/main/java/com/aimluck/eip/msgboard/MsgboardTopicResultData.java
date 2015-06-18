@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.msgboard;
 
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板トピックのResultData <BR>
- * 
+ *
  */
 public class MsgboardTopicResultData implements ALData {
 
@@ -76,7 +75,7 @@ public class MsgboardTopicResultData implements ALData {
   /** 更新者名 */
   private ALStringField update_user;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */
@@ -87,6 +86,9 @@ public class MsgboardTopicResultData implements ALData {
 
   /** 顔写真フラグ */
   private boolean has_photo;
+
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
 
   /**
    *
@@ -116,6 +118,8 @@ public class MsgboardTopicResultData implements ALData {
     new_topic = false;
 
     has_photo = false;
+
+    login_user_id = new ALNumberField();
   }
 
   /**
@@ -293,7 +297,7 @@ public class MsgboardTopicResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -335,6 +339,14 @@ public class MsgboardTopicResultData implements ALData {
    */
   public void setOwnerHasPhoto(boolean hasPhoto) {
     this.has_photo = hasPhoto;
+  }
+
+  public void setLoginUserId(int i) {
+    login_user_id.setValue(i);
+  }
+
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
   }
 
 }

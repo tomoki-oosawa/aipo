@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.common;
 
 import java.lang.reflect.Field;
@@ -177,6 +176,7 @@ public abstract class ALAbstractFormData implements ALData {
    * @return TRUE 成功 FALSE 失敗
    */
   public boolean doInsert(ALAction action, RunData rundata, Context context) {
+    List<String> msgList = new ArrayList<String>();
     try {
       if (!doCheckSecurity(rundata, context)) {
         return false;
@@ -194,7 +194,6 @@ public abstract class ALAbstractFormData implements ALData {
       rundata.getParameters().add(
         ALEipConstants.MODE,
         ALEipConstants.MODE_INSERT);
-      List<String> msgList = new ArrayList<String>();
       setValidator();
 
       boolean res = false;
@@ -229,7 +228,9 @@ public abstract class ALAbstractFormData implements ALData {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
     } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_INSERT_FAILURE"));
+      action.addErrorMessages(msgList);
+      action.putData(rundata, context);
       return false;
     }
   }
@@ -243,6 +244,7 @@ public abstract class ALAbstractFormData implements ALData {
    * @return TRUE 成功 FALSE 失敗
    */
   public boolean doUpdate(ALAction action, RunData rundata, Context context) {
+    List<String> msgList = new ArrayList<String>();
     try {
       if (!doCheckSecurity(rundata, context)) {
         return false;
@@ -260,7 +262,6 @@ public abstract class ALAbstractFormData implements ALData {
       rundata.getParameters().add(
         ALEipConstants.MODE,
         ALEipConstants.MODE_UPDATE);
-      List<String> msgList = new ArrayList<String>();
       setValidator();
 
       boolean res = false;
@@ -296,7 +297,9 @@ public abstract class ALAbstractFormData implements ALData {
       ALEipUtils.redirectPageNotFound(rundata);
       return false;
     } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
+      msgList.add(ALLocalizationUtils.getl10n("ERROR_UPDATE_FAILURE"));
+      action.addErrorMessages(msgList);
+      action.putData(rundata, context);
       return false;
     }
   }

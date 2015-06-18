@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.orm;
 
 import java.sql.SQLException;
@@ -487,41 +486,37 @@ public class Database {
   public static boolean isJdbcPostgreSQL() {
 
     DataContext dataContext = DataContext.getThreadDataContext();
-    String url = null;
+    String adapterName = null;
     try {
-      url =
-        dataContext
-          .getParentDataDomain()
-          .getNode(Database.getDomainName() + "domainNode")
-          .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL();
-    } catch (SQLException e) {
+      adapterName =
+        ((AutoAdapter) dataContext.getParentDataDomain().getNode(
+          Database.getDomainName() + "domainNode").getAdapter())
+          .getAdapter()
+          .getClass()
+          .getName();
+    } catch (Exception e) {
       logger.warn(e.getMessage(), e);
     }
 
-    return url != null && url.startsWith("jdbc:postgresql");
+    return adapterName != null && adapterName.endsWith("PostgresAdapter");
   }
 
   public static boolean isJdbcMySQL() {
 
     DataContext dataContext = DataContext.getThreadDataContext();
-    String url = null;
+    String adapterName = null;
     try {
-      url =
-        dataContext
-          .getParentDataDomain()
-          .getNode(Database.getDomainName() + "domainNode")
-          .getDataSource()
-          .getConnection()
-          .getMetaData()
-          .getURL();
-    } catch (SQLException e) {
+      adapterName =
+        ((AutoAdapter) dataContext.getParentDataDomain().getNode(
+          Database.getDomainName() + "domainNode").getAdapter())
+          .getAdapter()
+          .getClass()
+          .getName();
+    } catch (Exception e) {
       logger.warn(e.getMessage(), e);
     }
 
-    return url != null && url.startsWith("jdbc:mysql");
+    return adapterName != null && adapterName.endsWith("MySQLAdapter");
   }
 
   protected static DBCPDataSourceFactory createDataSourceFactory() {

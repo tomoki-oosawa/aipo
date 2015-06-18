@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -17,21 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 
-#*
-Copyright 2004 The Apache Software Foundation
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*#
 
 #**
 
@@ -39,7 +24,7 @@ Display the details of a user.
 
 @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
 @author <a href="mailto:paulsp@apache.org">Paul Spencer</a>
-@version $Id: user-form.vm,v 1.9 2004/03/17 19:19:02 jford Exp $
+@version $Id: user-form.vm,v 1.3 2004/04/29 10:30:24 shinsuke Exp $
 *#
 
 <form method="post" action="$jslink.getPaneByName("UserBrowser").addPathInfo($jslink.ActionKey,"portlets.security.UserUpdateAction")">
@@ -75,27 +60,27 @@ Display the details of a user.
           #set ($lname = $user.LastName)
           #set ($email = $user.Email)
           #set ($disabled = $user.Disabled)
-        #end 
+        #end
         #if (($mode == "delete") || ($mode=="update"))
-          #formReadOnlyCell ("Username" "username" $name)
+          #formReadOnlyCell ("$l10n.USER_BROWSER_USER_NAME_VM" "username" $name)
         #else
-          #formCell ("Username" "username" $name)
+          #formCell ("$l10n.USER_BROWSER_USER_NAME_VM" "username" $name)
         #end
       </tr>
-      <tr>        
-        #formPasswordCell ("Password" "password" $pw)
+      <tr>
+        #formPasswordCell ("$l10n.WEBMAIL_PASSWORD" "password" $pw)
       </tr>
       <tr>
-        #formCell ("First Name" "firstname" $fname)
+        #formCell ("$l10n.USER_BROWSER_LAST_NAME_VM" "lastname" $lname)
       </tr>
       <tr>
-        #formCell ("Last Name" "lastname" $lname)
+        #formCell ("$l10n.ADDRESSBOOK_SETFIELDNAME_FIRSTNAME" "firstname" $fname)
       </tr>
       <tr>
-        #formCell ("Email" "email" $email)
+        #formCell ("$l10n.WAR_EMAIL" "email" $email)
       </tr>
       <tr>
-        #formCheckBox2 ("Disabled" "disabled" $disabled)
+        #formCheckBox2 ("$l10n.ACTIVITY_INVALID" "disabled" $disabled)
       </tr>
 #if ($user.Confirmed != "PENDING")
       <tr>
@@ -109,10 +94,10 @@ Display the details of a user.
 #end
 #if (($mode == "delete") || ($mode=="update"))
       <tr>
-        <td><b>${l10n.USER_FORM_PASSWORD_LAST_CHANGE_VM}</b></td>      
+        <td><b>${l10n.USER_FORM_PASSWORD_LAST_CHANGE_VM}</b></td>
         <td>$!user.PasswordChanged</td>
       </tr>
-#end      
+#end
   </table>
 
  #if ( $config.getBoolean("newuser.approval.enable") == true )
@@ -145,7 +130,7 @@ Display the details of a user.
           #*
             Check for a mode, the update and delete buttons
             shouldn't appear when inserting a new user.
-          *#            
+          *#
 
           #if ($mode == "update")
             <input type="submit" name="eventSubmit_doUpdate" value="${l10n.USER_FORM_UPDATE_USER_VM}"/>
@@ -156,11 +141,11 @@ Display the details of a user.
           #end
       </td>
       <td>
-         $!msg         
+         $!msg
       </td>
     </tr>
   </table>
-    
+
   <input type="hidden" name="entityid" value="$!user.UserName"/>
 </div>
 </form>

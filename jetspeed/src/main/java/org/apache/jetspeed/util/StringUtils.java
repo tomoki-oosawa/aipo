@@ -23,7 +23,7 @@ import java.util.Map;
  * This class provides static util methods for String manaipulation that 
  * aren't part of the default JDK functionalities.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
  * @version $Id: StringUtils.java,v 1.9 2004/02/23 03:23:42 jford Exp $
  */

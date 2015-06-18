@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($action_str = $l10n.SYSTEM_APPLY)
 #set ($subtitle = $l10n.SYSTEM_SETTING_MAILINFO)
@@ -32,6 +31,7 @@
 $l10n.SYSTEM_SETTING_MAILINFO_MSG
 </div>
 #ALtableheaderWide()
+#if($result.isActiveBlog())
 #ALtdcaption($l10n.SYSTEM_COMMENT_OTHERS)
 #ALtditemheader()
 <input name="pc_flg_blog" type="checkbox" value="1" id="pc_flg_blog_id" #if ($result.PcFlgBlog.toString() == "1") checked="checked" #end/>
@@ -39,6 +39,11 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_blog" type="checkbox" value="1" id="cell_flg_blog_id" #if ($result.CellFlgBlog.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_blog_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
+#else
+<input name="pc_flg_blog" type="hidden" value="$result.PcFlgBlog.toString()" id="pc_flg_blog_id" >
+<input name="cell_flg_blog" type="hidden" value="$result.CellFlgBlog.toString()" id="cell_flg_blog_id" >
+#end
+#if($result.isActiveSchedule())
 #ALtdcaption($l10n.SYSTEM_ADD_SCHEDULE_OTHERS)
 #ALtditemheader()
 <input name="pc_flg_schedule" type="checkbox" value="1" id="pc_flg_schedule_id" #if ($result.PcFlgSchedule.toString() == "1") checked="checked" #end/>
@@ -46,6 +51,11 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_schedule" type="checkbox" value="1" id="cell_flg_schedule_id" #if ($result.CellFlgSchedule.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_schedule_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
+#else
+<input name="pc_flg_schedule" type="hidden" value="$result.PcFlgSchedule.toString()" id="pc_flg_schedule_id" >
+<input name="cell_flg_schedule" type="hidden" value="$result.CellFlgSchedule.toString()" id="cell_flg_schedule_id">
+#end
+#if($result.isActiveMsgboard())
 #ALtdcaption($l10n.SYSTEM_REPLY_OTHERS)
 #ALtditemheader()
 <input name="pc_flg_msgboard" type="checkbox" value="1" id="pc_flg_msgboard_id" #if ($result.PcFlgMsgboard.toString() == "1") checked="checked" #end/>
@@ -53,6 +63,11 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_msgboard" type="checkbox" value="1" id="cell_flg_msgboard_id" #if ($result.CellFlgMsgboard.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_msgboard_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
+#else
+<input name="pc_flg_msgboard" type="hidden" value="$result.PcFlgMsgboard.toString()" id="pc_flg_msgboard_id" />
+<input name="cell_flg_msgboard" type="hidden" value="$result.CellFlgMsgboard.toString()"  id="cell_flg_msgboard_id" />
+#end
+#if($result.isActiveWorkflow())
 #ALtdcaption($l10n.SYSTEM_REQUEST_WORKFLOW)
 #ALtditemheader()
 <input name="pc_flg_workflow" type="checkbox" value="1" id="pc_flg_workflow_id" #if ($result.PcFlgWorkflow.toString() == "1") checked="checked" #end/>
@@ -60,7 +75,11 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_workflow" type="checkbox" value="1" id="cell_flg_workflow_id" #if ($result.CellFlgWorkflow.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_workflow_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
-
+#else
+<input name="pc_flg_workflow" type="hidden" value="$result.PcFlgWorkflow.toString()" id="pc_flg_workflow_id" />
+<input name="cell_flg_workflow" type="hidden" value="$result.CellFlgWorkflow.toString()"  id="cell_flg_workflow_id" />
+#end
+#if($result.isActiveReport())
 #ALtdcaption($l10n.SYSTEM_ADD_REPORT_OTHERS)
 #ALtditemheader()
 <input name="pc_flg_report" type="checkbox" value="1" id="pc_flg_report_id" #if ($result.PcFlgReport.toString() == "1") checked="checked" #end/>
@@ -68,7 +87,10 @@ $l10n.SYSTEM_SETTING_MAILINFO_MSG
 <input name="cell_flg_report" type="checkbox" value="1" id="cell_flg_report_id" #if ($result.CellFlgReport.toString() == "1") checked="checked" #end/>
 <label for="cell_flg_report_id">$l10n.SYSTEM_INFORM_CELLPHONE</label>
 #ALtditemfooter()
-
+#else
+<input name="pc_flg_report" type="hidden" value="$result.PcFlgReport.toString()" id="pc_flg_report_id" />
+<input name="cell_flg_report" type="hidden" value="$result.CellFlgReport.toString()"  id="cell_flg_report_id" />
+#end
 #*
 #ALtdcaption($l10n.SYSTEM_INFORM_TIME)
 #ALtditemheader()

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,55 +16,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1')")
-#set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
-#if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
-#ALcell_pagetitle($career "$pagetitle")
-#if ($result.List.size() == 0)
-<div class="message">ToDoはありません。</div>
-#else
-#if($result.PagesNum > 1)
-#ALcell_pageview($career $link $result)
-#ALcell_hr($career '1')
-#end
-<ul>
-#foreach ($record in $result.List)
-#set($limitState = ${record.limitState.Value})
-#if($result.isMatch(0, $limitState)) 
-#set($color = "#FF6633")
-#elseif($result.isMatch(1, $limitState))
-#set($color = "#FF0000")
-#else
-#set($color = "#0000FF")
-#end
-#ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.TodoId)"><font color="$color">$!record.TodoName</font></a>
-#if(! ${record.isPublic()})
-（非公開）
-##<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開">
-#end
-#ALcell_li_footer($career)
-#end
-</ul>
-#if($result.PagesNum > 1)
-#ALcell_hr($career '1')
-#ALcell_pageview($career $link $result)
-#end
-#end
-#*
-<hr>
-ｶﾃｺﾞﾘ選択
-<select name="filter">
-<option value="">（全体）
-#foreach( $record in $result.CategoryList )
-<option value="$!record.CategoryId" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected #end>$!record.CategoryName
-#end
-</select>
-<input type="hidden" name="filtertype" value="category" >
-#submit("eventSubmit_doTodo_list" "表示切替")
-*#
-##ALcell_formfooter()
-#ALcell_hr($career '1')
-#ALcell_linklist($career $linklist)
+<<<<<<< HEAD
+#parse("/portlets/cell_default/todo-list.vm")
+=======
+#parse("/portlets/cell_default/todo-list.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

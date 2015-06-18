@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.commons.field;
 
 import java.io.UnsupportedEncodingException;
@@ -110,6 +109,22 @@ public class ALNumberField extends ALAbstractField {
       }
     }
     return longValue;
+  }
+
+  /**
+   * 入力フィールド値（数字）を取得します。
+   * 
+   * @return
+   */
+  public int getValueWithInt() {
+    int value = 0;
+    if (isNumberValue()) {
+      try {
+        value = Integer.parseInt(this.value);
+      } catch (NumberFormatException ignore) {
+      }
+    }
+    return value;
   }
 
   /**

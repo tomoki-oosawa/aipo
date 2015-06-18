@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import gnu.inet.encoding.Punycode;
@@ -24,7 +23,6 @@ import gnu.inet.encoding.Punycode;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -37,7 +35,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiの内部リンクを処理するクラスです。 <br />
- * 
+ *
  */
 public class WikiInternalLinkScreen extends ALVelocityScreen {
 
@@ -46,7 +44,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
     .getLogger(WikiInternalLinkScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -54,6 +52,7 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     String name = rundata.getParameters().getString("name", "");
+    String existwidget = rundata.getParameters().getString("existwidgets", "");
     name = Punycode.decode(name);
     String parentId = rundata.getParameters().getString("parentId", "");
 
@@ -79,11 +78,12 @@ public class WikiInternalLinkScreen extends ALVelocityScreen {
         detailData.initField();
         detailData.loadTopWikiList(rundata, context);
         detailData.doViewDetail(this, rundata, context);
-        JetspeedRunData jdata = (JetspeedRunData) rundata;
-        String layout_template = "portlets/html/ja/ajax-wiki.vm";
-        String jspeid = (String) jdata.getUser().getTemp("js_peid");
-        if (jspeid != null) {
-          layout_template = "portlets/html/ja/ajax-wiki-view.vm";
+        String layout_template = "portlets/html/ajax-wiki.vm";
+        // JetspeedRunData jdata = (JetspeedRunData) rundata;
+        // String jspeid = (String) jdata.getUser().getTemp("js_peid");
+        // if (jspeid != null) {
+        if (existwidget.equals("true")) {
+          layout_template = "portlets/html/ajax-wiki-view.vm";
         }
         setTemplate(rundata, context, layout_template);
       } else {

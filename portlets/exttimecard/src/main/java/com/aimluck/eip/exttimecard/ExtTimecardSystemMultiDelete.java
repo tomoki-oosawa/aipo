@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.exttimecard;
 
 import java.util.ArrayList;
@@ -45,9 +44,8 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardSystemMultiDelete.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardSystemMultiDelete.class.getName());
 
   /**
    * 
@@ -104,26 +102,31 @@ public class ExtTimecardSystemMultiDelete extends ALAbstractCheckList {
   }
 
   private void setAllTimecardMapDefault(EipTExtTimecardSystem work) {
-    Expression exp1 =
-      ExpressionFactory.matchExp(
-        EipTExtTimecardSystemMap.EIP_TEXT_TIMECARD_SYSTEM_PROPERTY,
-        work);
-    List<EipTExtTimecardSystemMap> list =
-      Database
-        .query(EipTExtTimecardSystemMap.class)
-        .setQualifier(exp1)
-        .fetchList();
-    if (list.size() > 0) {
-      EipTExtTimecardSystem system =
-        Database.get(EipTExtTimecardSystem.class, 1);
-      if (system != null) {
-        Date now = new Date();
-        for (EipTExtTimecardSystemMap item : list) {
-          item.setEipTExtTimecardSystem(system);
-          item.setUpdateDate(now);
+    try {
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecardSystemMap.EIP_TEXT_TIMECARD_SYSTEM_PROPERTY,
+          work);
+      List<EipTExtTimecardSystemMap> list =
+        Database
+          .query(EipTExtTimecardSystemMap.class)
+          .setQualifier(exp1)
+          .fetchList();
+      if (list.size() > 0) {
+        EipTExtTimecardSystem system =
+          Database.get(EipTExtTimecardSystem.class, 1);
+        if (system != null) {
+          Date now = new Date();
+          for (EipTExtTimecardSystemMap item : list) {
+            item.setEipTExtTimecardSystem(system);
+            item.setUpdateDate(now);
+          }
         }
       }
       Database.commit();
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("exttimecard", ex);
     }
   }
 }

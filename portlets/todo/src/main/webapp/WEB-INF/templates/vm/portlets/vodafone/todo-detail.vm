@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,38 +16,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'vodafone')
-#if($!result.currentTab == "list") #set($pagetitle = "未完了ToDo一覧") #else #set($pagetitle = "完了ToDo一覧") #end
-#set($linklist = [["${pagetitle}へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1')"], ["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"], ["TOPへ", "$!jslink.getAction('controls.Restore',$!portlet.ID)"], ["ﾛｸﾞｱｳﾄ", "$jslink.setAction($config.getString('action.logout'))"]])
-#ALcell_pagetitle($career "ToDo詳細")
-#ALcell_dl_header($career)
-#ALcell_dt($career 'ｶﾃｺﾞﾘ')
-#ALcell_dd_header($career)
-#if ($!result.Detail.CategoryId.toString() != "1") <a href="$!jslink.getPortletById($!portlet.ID).addQueryData("eventSubmit_doTodo_category_detail","1").addQueryData("entityid",$!result.Detail.CategoryId)">$!result.Detail.CategoryName</a> #else $!result.Detail.CategoryName #end
-#ALcell_dd_footer($career)
-#ALcell_dt($career 'ToDo名')
-#ALcell_dd_header($career)
-$!result.Detail.TodoName
-#if(! ${result.Detail.isPublic()})
-(非公開)
-#end
-#ALcell_dd_footer($career)
-#ALcell_dt($career '開始日')#ALcell_dd($career "$!{result.Detail.StartDate}")
-#ALcell_dt($career '締切日')#ALcell_dd($career "$!{result.Detail.EndDate}")
-#ALcell_dt($career '進捗')#ALcell_dd($career "$!{result.Detail.StateString}")
-#ALcell_dt($career '優先度')#ALcell_dd($career "$!{result.Detail.PriorityString}")
-#ALcell_dt($career '登録日')#ALcell_dd($career "$!{result.Detail.CreateDate}")
-#ALcell_dt($career '更新日')#ALcell_dd($career "$!{result.Detail.UpdateDate}")
-#ALcell_dt($career 'ﾒﾓ')#ALcell_dd($career "$!{result.Detail.Note}")
-#ALcell_dt($career '公開区分')#ALcell_dd($career "#if($!{result.Detail.isPublic()}) 公開 #else 非公開 #end")
-#ALcell_dt($career 'ｽｹｼﾞｭｰﾙへの表示')#ALcell_dd($career "#if($!{result.Detail.addonScheduleFlg()}) 表示 #else 非表示 #end")
-#ALcell_dl_footer($career)
-#if($!result.ScheduleUrl && $!result.ScheduleUrl != "")
-#set($backlinklist = [["前のページに戻る", "$!result.ScheduleUrl"]])
-#ALcell_hr($career '1')
-#ALcell_linklist($career $backlinklist)
-#end
-#ALcell_hr($career '1')
-#ALcell_linklist($career $linklist)
+<<<<<<< HEAD
+#parse("/portlets/cell_default/todo-detail.vm")
+=======
+#parse("/portlets/cell_default/todo-detail.vm")
+>>>>>>> refs/remotes/origin/features/refactor-template-ja

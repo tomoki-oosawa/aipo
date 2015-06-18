@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.text.SimpleDateFormat;
@@ -168,8 +167,12 @@ public class ScheduleListContainer implements ALData {
       if (!repeat_del) {
         // 繰り返しスケジュールの変更／削除が無い場合
 
-        if (!rd.isDummy() && !rd2.isDummy()) {
-          // ダミースケジュールではないときに
+        if (!rd.isDummy()
+          && !rd2.isDummy()
+          && !rd.getPattern().equals("S")
+          && !rd2.getPattern().equals("S")) {
+          // 終日スケジュール・期間スケジュールではなく、
+          // ダミースケジュールでもないときに
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(

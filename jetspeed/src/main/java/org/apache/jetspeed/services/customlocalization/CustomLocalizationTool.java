@@ -30,9 +30,9 @@ import org.apache.turbine.util.RunData;
 /**
  * Custom localization tool.
  *
- * @author <a href="mailto:desmax74@yahoo.it">Dessì Massimiliano</a>
- * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.it">Dessì Massimiliano</a>
- * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.com">Dessì Massimiliano</a>
+ * @author <a href="mailto:desmax74@yahoo.it">Dessï¿½ Massimiliano</a>
+ * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.it">Dessï¿½ Massimiliano</a>
+ * @author <a href="mailto:massimiliano.dessi@gruppoatlantis.com">Dessï¿½ Massimiliano</a>
  * @version $Id: CustomLocalizationTool.java,v 1.5 2004/02/23 03:49:33 jford Exp $
  */
 public class CustomLocalizationTool implements ApplicationTool

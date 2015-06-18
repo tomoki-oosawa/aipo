@@ -1,33 +1,179 @@
-@charset "utf-8";
+/*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+@charset "UTF-8";
+.clearfix, #auiHeader, .hdPages > ul, .hdNavigation > ul, .dropdown .title,
+.activityPopup .title, .supportPopup .title, .dropdown .body,
+.activityPopup .body, .supportPopup .body, .dropdown .contents,
+.activityPopup .contents, .supportPopup .contents, .dropdown .foot,
+.activityPopup .foot, .supportPopup .foot, .profilePopup .contents, .messageSummary li a, .messageUserlist ul li a, #auiLauncher, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .auiTabs .tab, #timelineOuter .message,
+.timelineOuter .message {
+  *zoom: 1;
+}
+.clearfix:before, #auiHeader:before, .hdPages > ul:before, .hdNavigation > ul:before, .dropdown .title:before,
+.activityPopup .title:before, .supportPopup .title:before, .dropdown .body:before,
+.activityPopup .body:before, .supportPopup .body:before, .dropdown .contents:before,
+.activityPopup .contents:before, .supportPopup .contents:before, .dropdown .foot:before,
+.activityPopup .foot:before, .profilePopup .contents:before, .supportPopup .foot:before, .messageSummary li a:before, .messageUserlist ul li a:before, #auiLauncher:before, #auiLauncher ul.launcher li a:before,
+#auiLauncher ul.setting li a:before, .auiTabs .tab:before, #timelineOuter .message:before,
+.timelineOuter .message:before, .clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
+.activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
+.activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
+.activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
+.activityPopup .foot:after, .profilePopup .contents:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+#auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
+.timelineOuter .message:after {
+  display: table;
+  content: "";
+  line-height: 0;
+}
+.clearfix:after, #auiHeader:after, .hdPages > ul:after, .hdNavigation > ul:after, .dropdown .title:after,
+.activityPopup .title:after, .supportPopup .title:after, .dropdown .body:after,
+.activityPopup .body:after, .supportPopup .body:after, .dropdown .contents:after,
+.activityPopup .contents:after, .supportPopup .contents:after, .dropdown .foot:after,
+.activityPopup .foot:after, .profilePopup .contents:after, .supportPopup .foot:after, .messageSummary li a:after, .messageUserlist ul li a:after, #auiLauncher:after, #auiLauncher ul.launcher li a:after,
+#auiLauncher ul.setting li a:after, .auiTabs .tab:after, #timelineOuter .message:after,
+.timelineOuter .message:after {
+  clear: both;
+}
+
+.inline-block {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+}
+
+.border-box, #auiHeader, #auiHeader a, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body, ul.hdCommunications .num, .dropdown,
+.activityPopup, .supportPopup, .dropdown .title,
+.activityPopup .title, .supportPopup .title, .profilePopup, #dd_message .subContents, .scroll, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .auiTabs .tab > li a {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.bRadius2, #auiLauncher ul.launcher li .name,
+#auiLauncher ul.setting li .name, .counter {
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  border-radius: 2px;
+}
+
+.bRadius3, .search, .hdSearch form, ul.hdCommunications .num, .dropdown,
+.activityPopup, .supportPopup, .profilePopup, .profilePopup .messageInputDummy span, .profilePopup .messageField .outer,.auiSearchOption, .auiAvatarList li a img, textarea,
+select, input[type=text],
+input[type=password], #timelineOuter #inputField,
+#timelineOuter .inputField,
+#timelineOuter .outer,
+.timelineOuter #inputField,
+.timelineOuter .inputField,
+.timelineOuter .outer, .timeline .commentInputDummy span, .name .avatar, #timelineOuter .searchClearOuter, #timelineOuter .newMessage,
+.timelineOuter .newMessage, .timelineOuter .searchClearOuter, .timeline .readMore, .filterTip, .auiAbsLayer {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.bRadius4, .auiPopup,
+.activityPopup, .loginAlert,
+.alert, .alertSuccess, .alertRecommend, .alertInfo, .submenu_v2 li a, .filterInputField, #auiLauncher_1 li a, #auiLauncher_2 li a {
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.bRadius50p {
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+}
+
+.ellipsis, .hdPages a.name, .hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, ul.hdTools .name, .messageSummary .date, .messageSummary .name, .messageSummary .latest, .messageUserlist .name, #auiLauncher ul.launcher li a,
+#auiLauncher ul.setting li a, .auiTabs .tab > li a {
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+
+.transition01 {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+}
+
+.transition02 {
+  -webkit-transition: 0.2s;
+  -moz-transition: 0.2s;
+  -o-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.popupShadow, .dropdown,
+.activityPopup, .supportPopup, .profilePopup {
+  -webkit-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("fontawesome-webfont.eot");
+  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: "メイリオ", Meiryo, Verdana, "ヒラギノ角ゴPro W3", "Hiragino Kaku Gothic Pro", sans-serif;
+  font-family: Arial, Helvetica, "lucida grande", tahoma, verdana, arial, "hiragino kaku gothic pro", meiryo, "ms pgothic", sans-serif;
+}
+
+:lang(ja).dj_ie textarea {
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
 }
 
 html, body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  font-size: 100%;
+  font-size: 13px;
+  line-height: 1.38;
+  background-color: #f0f0f0;
 }
 
 body {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  font-size: .75em;
-  line-height: 1.4;
-  background: #fff;
+  overflow-y: scroll;
 }
 
 body#login {
+  position: relative;
   background: #eeeeee url(../images/body.png) left top repeat-x;
-}
-
-* html body {
-  font-size: .8em;
-}
-
-* + html body {
-  font-size: .75em;
 }
 
 p {
@@ -38,135 +184,1855 @@ h1, h2, h3, h4, h5, h6, p, span {
   outline: none;
 }
 
+div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, textarea, p, th, td {
+  line-height: 1.38;
+}
+
+input[type=submit], input[type=button], input[type=reset] {
+  outline: none;
+}
+
 /***************************************************
 	auiHeader
 --------------------------------------------------*/
-#header {
-  padding-top: 5px;
-  height: 35px;
+#auiHeader {
+  position: fixed;
+  width: 100%;
+  min-width: 960px;
+  padding: 0 0 0 10px;
+  background-color: white;
+  border-bottom: solid 1px #d2d2d2;
+  z-index: 110;
+}
+#auiHeader ul li {
+  padding: 0;
+  background-image: none;
 }
 
-#header .inner {
-  height: 30px;
-  padding: 0 20px;
-}
-
-.hdSign {
+.hdLogo {
   float: left;
 }
-
-.hdNavi {
-  float: right;
-  padding-top: 3px;
+.hdLogo a {
+  display: inline-block;
+  padding: 15px 10px;
 }
 
-.hdMessege,
-.hdActivity,
-.hdUserName,
-.hdSetting,
-.hdInformation {
+.hdPages {
   float: left;
-  line-height: 23px;
-  padding-right: 8px;
-  padding-left: 8px;
-  font-size: 11px;
-  vertical-align: middle;
-  white-space: nowrap;
+  padding-left: 20px;
 }
-
-.hdMessege a,
-.hdActivity a,
-.hdUserName a,
-.hdSetting a,
-.hdInformation a {
+.hdPages > ul > li {
+  position: relative;
+  display: block;
+  float: left;
+}
+.hdPages > ul > li > a {
+  display: block;
+  float: left;
+  line-height: 60px;
+  padding: 0 30px 0 15px;
+  color: #d2d2d2;
   text-decoration: none;
+}
+.hdPages > ul > li > a [class*=icon-] {
+  color: #d2d2d2;
+}
+.hdPages > ul > li > a:hover {
+  color: #333333;
+  text-decoration: none;
+}
+.hdPages > ul > li > a:hover [class*=icon-] {
+  color: #333333;
+}
+.hdPages > ul > li [class^="icon-"], .hdPages > ul > li [class*=" icon-"] {
+  line-height: 60px;
+}
+.hdPages > ul > li:hover a.setting {
   display: block;
 }
-
-.hdLogo a:hover img {
-  opacity: 0.75;
-  filter: alpha(opacity=75);
+.hdPages a.name {
+  max-width: 12em;
 }
-
-.hdActivity,
-.hdInformation {
-  cursor: pointer;
+.hdPages a.setting {
+  position: absolute;
+  right: 0;
+  width: 25px;
+  padding: 0;
 }
-
-.hdActivity span,
-.hdInformation span {
-  line-height: 23px;
+.hdPages a.setting.active [class*=icon-] {
+  color: #333333;
 }
-
-.hdActivity:hover .mb_hide,
-.hdInformation:hover .mb_hide {
-  color: #FF9900;
+.hdPages a.plus {
+  padding: 0 15px;
 }
-
-.hdUserName {
+.hdPages a.plus [class*=icon-] {
+  color: #d2d2d2;
+}
+.hdPages .current {
   position: relative;
-  padding-right: 0;
+}
+.hdPages .current:after {
+  position: absolute;
+  display: block;
+  content: "";
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+  background-color: #333333;
+}
+.hdPages .current a {
+  color: #333333;
 }
 
-.hdUserName .auiIcon,
-.hdUserName .auiWFicon {
-  margin-bottom: 2px;
+.hdNavigation {
+  position: absolute;
+  right: 10px;
+  background: white;
+}
+.hdNavigation > ul {
+  float: left;
+}
+.hdNavigation > ul > li {
+  display: block;
+  float: left;
+  list-style: none;
+  line-height: 60px;
+}
+.hdNavigation > ul > li > a {
+  position: relative;
+  display: block !important;
+  height: 60px;
+  padding: 0 10px;
+  min-width: 50px;
+  text-align: center;
+  text-decoration: none;
+  color: #999999;
+  border-top: solid 1px transparent;
+  border-right: solid 1px transparent;
+  border-left: solid 1px transparent;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+}
+.hdNavigation > ul > li > a [class^="icon-"], .hdNavigation > ul > li > a [class*=" icon-"] {
+  line-height: 60px;
+  vertical-align: middle;
+  font-size: 18px;
+  color: #d2d2d2;
+}
+.hdNavigation > ul > li > a [class*="sprite-"] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: auto;
+}
+.hdNavigation > ul > li > a:hover {
+  text-decoration: none;
+}
+.hdNavigation > ul > li > a:hover [class^="icon-"], .hdNavigation > ul > li > a:hover [class*=" icon-"] {
+  color: #333333;
+}
+.hdNavigation > ul > li > a.active {
+  position: relative;
+  border-top: solid 1px silver;
+  border-right: solid 1px silver;
+  border-left: solid 1px silver;
+  background-color: white;
+}
+.hdNavigation > ul > li > a.active [class^="icon-"], .hdNavigation > ul > li > a.active [class*=" icon-"] {
+  color: #333333;
+}
+.hdNavigation > ul > li > a.active:before {
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 1px;
+  background-color: white;
+  z-index: 121;
+}
+
+.search {
+  position: relative;
+  border: solid 1px #d2d2d2;
+  background-color: white;
+}
+.search:hover {
+  border: solid 1px #999999;
+}
+.search input[type=text], .search .submit {
+  height: 30px;
+  border: none;
+  vertical-align: middle;
+  outline: none;
+}
+.search input[type=text] {
+  width: 100%;
+  padding: 0 30px 0 3px;
+}
+.search input[type=text]:hover, .search input[type=text]:focus {
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.search .submit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0 !important;
+  background: none;
+  filter: none;
+  cursor: pointer;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.search button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
+}
+.search .submit [class^="icon-"], .search .submit [class*=" icon-"] {
+  display: block;
+  width: 30px;
+  color: #999999;
+}
+.search .submit:hover [class^="icon-"], .search .submit:hover [class*=" icon-"] {
+  color: #333333;
+}
+.search .placeholder {
+  top: 7px !important;
+  line-height: 1.6;
+}
+
+.hdSearch {
+  position: relative;
+  float: left;
+  margin: 10px;
+}
+.hdSearch form {
+  border: solid 1px #d2d2d2;
+  background-color: white;
+}
+.hdSearch form:hover {
+  border: solid 1px #999999;
+}
+.hdSearch input[type=text], .hdSearch .submit {
+  height: 20px;
+  border: none;
+  vertical-align: middle;
+  outline: none;
+}
+.hdSearch input[type=text] {
+  width: 160px;
+  margin: 0 3px;
+}
+.hdSearch input[type=text]:hover, .hdSearch input[type=text]:focus {
+  border: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.hdSearch .submit {
+  height: 38px;
+  margin: 0;
+  padding: 0;
+  background: none;
+  filter: none;
+  cursor: pointer;
+  border-left: solid 1px #ededed;
+  -moz-border-radius-topleft: 0;
+  -webkit-border-top-left-radius: 0;
+  border-top-left-radius: 0;
+  -moz-border-radius-bottomleft: 0;
+  -webkit-border-bottom-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.hdSearch .submit [class^="icon-"], .hdSearch .submit [class*=" icon-"] {
+  display: block;
+  width: 30px;
+  color: #999999;
+}
+.hdSearch .submit:hover {
+  background-color: #f6f6f6;
+}
+.hdSearch .submit:hover [class^="icon-"], .hdSearch .submit:hover [class*=" icon-"] {
+  color: #333333;
+}
+.hdSearch .dropdown_menu a, .hdSearch .dropdown_list ul a, .dropdown_list .hdSearch ul a {
+  line-height: 1.5;
+}
+.hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date, .hdSearch .dropdown_menu .body, .hdSearch .dropdown_list ul .body, .dropdown_list .hdSearch ul .body {
+  width: 100%;
+}
+.hdSearch .dropdown_menu .date, .hdSearch .dropdown_list ul .date, .dropdown_list .hdSearch ul .date {
+  color: #999999;
+}
+.hdSearch #preSearch {
+  width: 100%;
+}
+.hdSearch #preSearch li {
+  border-top: solid 1px #ededed;
+}
+.hdSearch .placeholder {
+  top: 7px !important;
+  line-height: 1.6;
+}
+
+.searchCategory {
+  display: inline-block;
+  float: left;
+  width: 60px;
+  border-right: solid 1px #ededed;
+  color: #999999;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  -ms-border-radius: 3px 0 0 3px;
+  -o-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+}
+.searchCategory .name {
+  line-height: 38px;
+  text-align: center;
+}
+.searchCategory [class^="icon-"], .searchCategory [class*=" icon-"] {
+  margin-left: 5px;
+}
+.searchCategory:hover, .searchCategory .active {
+  color: #333333;
+  background-color: #f6f6f6;
+}
+.searchCategory:hover [class^="icon-"], .searchCategory:hover [class*=" icon-"], .searchCategory .active [class^="icon-"], .searchCategory .active [class*=" icon-"] {
+  color: #333333;
+}
+
+ul.hdCommunications {
+  padding: 5px 0;
+}
+ul.hdCommunications > li {
+  position: static;
+  padding: 0;
+  background-image: none;
+}
+ul.hdCommunications > li > a {
+  display: table-cell;
+  vertical-align: middle;
+  height: 50px;
+}
+ul.hdCommunications > li > a [class^="icon-"], ul.hdCommunications > li > a [class*=" icon-"] {
+  line-height: 50px;
+}
+ul.hdCommunications .num {
+  display: block;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: auto;
+  height: 13px;
+  min-width: 13px;
+  line-height: 13px;
+  padding: 0 3px;
+  font-size: 10px;
+  text-align: center;
+  background-color: #ff3333;
+  color: white;
+  white-space: nowrap;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+ul.hdCommunications .label {
+  text-wrap: nowrap;
+}
+
+[class^="sprite-"] {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/common/head_icons.png);
+}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+(-webkit-min-device-pixel-ratio: 1.5),
+(min-resolution: 2dppx) {
+  [class^="sprite-"] {
+    background-image: url(../images/common/head_icons_smp.png);
+    background-size: 60px;
+  }
+}
+
+.sprite-comment {
+  background-position: left top;
+}
+a:hover .sprite-comment, a.active .sprite-comment {
+  background-position: left bottom;
+}
+
+.sprite-notification {
+  background-position: center top;
+}
+a:hover .sprite-notification, a.active .sprite-notification {
+  background-position: center bottom;
+}
+
+.sprite-support {
+  background-position: right top;
+}
+a:hover .sprite-support, a.active .sprite-support {
+  background-position: right bottom;
+}
+
+.tweet textarea {
+  width: 100%;
+}
+
+ul.hdTools {
+  padding: 5px 0;
+}
+ul.hdTools > li {
+  position: relative;
+  min-width: 120px;
+  line-height: 50px;
+}
+ul.hdTools > li > a {
+  height: 50px;
+  text-decoration: none;
+  text-align: left;
+}
+ul.hdTools > li > a:hover, ul.hdTools > li > a:hover .name {
+  color: #333333;
+}
+ul.hdTools > li > a [class^="icon-"], ul.hdTools > li > a [class*=" icon-"] {
+  line-height: 50px;
+}
+ul.hdTools .name {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 10em;
+  margin: 0 5px;
+}
+ul.hdTools .dropdown {
+  min-width: 100%;
+  -webkit-border-radius: 0 0 3px 3px;
+  -moz-border-radius: 0 0 3px 3px;
+  -ms-border-radius: 0 0 3px 3px;
+  -o-border-radius: 0 0 3px 3px;
+  border-radius: 0 0 3px 3px;
+}
+ul.hdTools .dropdown:before {
+  width: 100%;
+}
+
+.hdLauncher {
+  border-left: solid 1px #f0f0f0;
+}
+.hdLauncher a {
+  width: 60px;
+  margin-right: -10px;
+}
+.hdLauncher a.launcherActive [class^="icon-"], .hdLauncher a.launcherActive [class*=" icon-"] {
+  color: #333333;
+}
+
+/***************************************************
+	dropdown
+--------------------------------------------------*/
+.dropdown,
+.activityPopup, .supportPopup {
+  display: none;
+  position: absolute;
+  z-index: 120;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
+  line-height: 2;
+}
+.dropdown.open,
+.activityPopup.open, .supportPopup.open {
+  display: block;
+}
+.hdCommunications .dropdown, .hdTools .dropdown, .tools .dropdown, .hdCommunications
+.activityPopup, .hdTools
+.activityPopup, .tools
+.activityPopup, .hdCommunications .supportPopup, .hdTools .supportPopup, .tools .supportPopup {
+  right: 0;
+}
+.hdCommunications .dropdown, .hdCommunications
+.activityPopup, .hdCommunications .supportPopup {
+  width: 320px;
+}
+.dropdown .title,
+.activityPopup .title, .supportPopup .title {
+  height: 40px;
+  padding: 8px 10px;
+  line-height: 24px;
+  border-bottom: solid 1px #d2d2d2;
+}
+.dropdown .sideBlock,
+.activityPopup .sideBlock, .supportPopup .sideBlock {
+  float: left;
+  width: 280px;
+  /*width: 240px;*/
+}
+.dropdown .contents,
+.activityPopup .contents, .supportPopup .contents {
+  position: relative;
+  padding: 10px;
+}
+.dropdown h2,
+.activityPopup h2, .supportPopup h2 {
+  margin: 0 0 10px 0;
+  font-weight: normal;
+  line-height: 24px;
+}
+.dropdown h2:first-child,
+.activityPopup h2:first-child, .supportPopup h2:first-child {
+  border-top: none;
+}
+.dropdown .foot,
+.activityPopup .foot, .supportPopup .foot {
+  padding: 8px 10px;
+  border-top: solid 1px #d2d2d2;
+}
+.dropdown a, .dropdown input, .dropdown button,
+.activityPopup a,
+.activityPopup input,
+.activityPopup button, .supportPopup a, .supportPopup input, .supportPopup button {
+  filter: none !important;
+}
+
+.activityPopup, .supportPopup {
+  display: block;
+  padding: 0 !important;
+}
+.activityPopup.auiPopup h2, .supportPopup.auiPopup h2 {
+  padding: 0;
+  border: none;
+}
+
+.dropdown_menu li, .dropdown_list ul li {
+  padding: 0;
+  background-image: none;
+}
+.dropdown_menu a, .dropdown_list ul a {
+  display: block;
+  padding: 6px 10px;
+  color: #333333;
+  text-decoration: none;
+}
+#auiHeader .dropdown_menu a, #auiHeader .dropdown_list ul a, .dropdown_list #auiHeader ul a {
+  min-width: 118px;
+}
+.dropdown_menu a:hover, .dropdown_list ul a:hover {
+  text-decoration: none;
+  background-color: #f6f6f6;
+}
+.dropdown_menu .active a, .dropdown_list ul .active a {
+  background-color: #f6f6f6;
+}
+
+.dropdown_list {
+  position: relative;
+}
+.dropdown_list ul {
+  font-size: 11px;
+}
+.dropdown_list li {
+  padding: 0;
+  border-top: solid 1px #ededed;
+  background-image: none;
+}
+.dropdown_list li:first-child {
+  border-top: none;
+}
+.dropdown_list li > a {
+  position: relative;
+}
+.dropdown_list li > a > .avatar {
+  position: absolute;
+}
+.dropdown_list li > a > .avatar + .body {
+  padding-left: 30px;
+}
+.dropdown_list .name {
+  margin-bottom: 5px;
+}
+.dropdown_list .date {
+  float: right;
+  color: #999999;
+}
+.dropdown_list .new {
+  background-color: #f6f6f6;
+}
+.dropdown_list .new .date, .dropdown_list .new .name {
+  color: #333333;
+  font-weight: bold;
+}
+.dropdown_list .new:hover a {
+  background-color: #ededed;
+}
+
+.contentList li {
+  padding: 6px 10px !important;
+  line-height: 1.5;
+  border-top: solid 1px #ededed;
+}
+.contentList li:first-child {
+  border-top: none;
+}
+.contentList .date {
+  margin-bottom: 3px;
+  color: #999999;
+}
+
+.divider {
+  border-bottom: solid 1px #ededed;
+}
+
+.dividerBg {
+  background-color: #f6f6f6;
+}
+/***************************************************
+	profilePopup
+--------------------------------------------------*/
+.profilePopupWrap {
+  position: absolute;
+  z-index: 1000;
+}
+
+.profilePopup {
+  display: none;
+  position: absolute;
+  border: solid 1px #c0c0c0;
+  background-color: #ffffff;
+  line-height: 2;
+  min-width: 220px;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+.profilePopup .contents {
+  position: relative;
+  padding: 10px;
+}
+.profilePopup .avatar_l {
+  float: left;
+  margin-right: 10px;
+}
+.profilePopup .popupInner {
+  overflow: hidden;
+}
+.profilePopup .name {
+  display: block;
+  font-weight: bold;
+}
+.profilePopup .name_kana {
+  display: block;
+  font-size: 10px;
+  padding: 2px 0 5px;
+}
+.profilePopup .post_name {
+  display: block;
+}
+.profilePopup .icon_menu {
+  width: 320px;
+}
+.profilePopup .icon_menu li {
+  padding: 0;
+  background-image: none;
+  width: 159px;
+  float: left;
+  text-align: center;
+  font-size: 10px;
+  margin-left: -1px;
+  border-left: 1px solid #ededed;
+}
+.profilePopup .icon_menu li:first-child {
+  margin-left: 0px;
+  border-left: none;
+}
+.profilePopup .icon_menu li div {
+  padding-bottom: 3px;
+}
+.profilePopup .icon_menu li a {
+  display: block;
+  padding: 6px 10px;
+  color: #a0a0a0;
+  text-decoration: none;
+}
+.profilePopup .icon_menu li a i {
+  font-size: 20px;
+  color: #a0a0a0;
+}
+.profilePopup .icon_menu li a:hover {
+  color: #313131;
+  text-decoration: none;
+  background: none;
+}
+.profilePopup .icon_menu li a:hover i {
+  color: #313131;
+}
+.profilePopup .icon_menu.icon_menu_s {
+  width: 260px;
+}
+.profilePopup .icon_menu.icon_menu_s li {
+  width: 129px;
+}
+.profilePopup .messageInputDummy span {
+  display: block;
+  padding: 5px;
+  border: 1px #d2d2d2 solid;
+  color: #d2d2d2;
+  cursor: text;
+  background: #fff;
+}
+.profilePopup .messageField .outer {
+  border: 1px #d2d2d2 solid;
+  background: #fff;
+  overflow: hidden;
+}
+.profilePopup .messageField #inputField,
+.profilePopup .messageField .inputField {
+  margin-bottom: 15px;
+  background: transparent;
+}
+.profilePopup .messageField .outer {
+  padding: 3px;
+  margin: 0 0 5px 0;
+}
+.profilePopup .messageField textarea {
+  border: none;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-radius: 0;
+  font-size: 13px;
+}
+.profilePopup .messageField textarea:focus {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+.profilePopup .messageField textarea.elastic {
+  width: 99%;
+  overflow: hidden;
+  resize: none;
+  outline: 0;
+  line-height: normal;
+  height: 21px;
+  -webkit-appearance: caret;
+}
+/***************************************************
+	dd_message
+--------------------------------------------------*/
+#dd_message {
+  width: 100%;
+  overflow: hidden;
+  border-radius: 3px;
+}
+#dd_message > .body {
+  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAABCAYAAAAFILFrAAAAFUlEQVR42mMwNjb+P4pH8SgexbTAAPnyvlAL+gbgAAAAAElFTkSuQmCC);
+  background-repeat: repeat-y;
+  background-position: left; */
+  background: #eee;
+}
+#dd_message .title {
+  height: 50px;
+  line-height: 34px;
+  border-bottom: 1px solid #e5e5e5;
+}
+#dd_message .mainBlock {
+   margin-left: 280px;
+  /*border-left: solid 1px #d2d2d2; */
+  /*margin-left: 240px;*/
+}
+#dd_message .mainBlock > .contents {
+  /* padding: 10px 10px 0 10px; */
+  padding: 10px 15px 0 15px;
+}
+/* ------------------------------------------------
+   rightBlock  2015.05.11
+--------------------------------------------------- */
+#dd_message .rightBlock {
+  position: absolute;
+  top: 50px;
+  bottom: 0;
+  right: 0;
+  width: 359px;
+  background: #ffffff;
+  border-left: 1px solid #e5e5e5;
+  overflow-y: scroll;
+}
+#dd_message .rightBlock div.index {
+  background: #f6f6f6;
+  padding: 11px 20px 9px 10px;
+  color: #333;
+}
+#dd_message .rightBlock div.index a {
+  text-decoration: none !important;
+}
+#dd_message .rightBlock ul.close li {
+  display: none;
+}
+#dd_message .rightBlock ul.close li.index {
+  display: block;
+}
+#dd_message .rightBlock ul.user li, #dd_message .rightBlock ul.room li {
+  height: 38px;
+  border: 1px solid #E7E7E7;
+}
+#dd_message .rightBlock ul.user li:hover, #dd_message .rightBlock ul.room li:hover {
+  border: 1px solid #999;
+}
+#dd_message .rightBlock ul.user li a, #dd_message .rightBlock ul.room li a {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 38px;
+  padding: 7px 16px 7px 38px;
+  display: block;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul.user li:hover span,
+#dd_message .rightBlock ul.room li:hover span {
+  text-decoration: none;
+}
+#dd_message .rightBlock ul.user li .name,
+#dd_message .rightBlock ul.room li .name,
+#dd_message .rightBlock ul.user li .date,
+#dd_message .rightBlock ul.room li .date {
+  line-height: 25px;
+  height: 25px;
+  white-space: nowrap;
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+}
+#dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.room li .date {
+  float: right;
+  color: #999;
+  font-size: 11px;
+}
+#dd_message .rightBlock ul.user li .nrCount, #dd_message .rightBlock ul.room li .nrCount {
+  background-color: #ff3333;
+  border-radius: 3px;
+  color: #ffffff;
+  display: inline-block;
+  float: left;
+  font-size: 10px;
+  line-height: 1.4;
+  margin: 5px 3px 0 0;
+  min-width: 8px;
+  padding: 0 3px;
+  text-align: center;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li {
+  position: relative;
+  margin: 0 15px 7px 15px;
+  border-radius: 4px;
+  background: #ffffff;
+}
+#dd_message .rightBlock ul li.index {
+  background: none;
+  color: #333;
+  border: none;
+  padding: 0 15px 0;
+  margin: 15px 0 7px;
+  cursor: auto;
+  height: auto;
+  border: none;
+}
+#dd_message .rightBlock ul li.index a {
+  height: auto;
+  padding: 0;
+  margin-right: 4px;
+  text-decoration: none !important;
+}
+#dd_message .rightBlock ul li.index a i {
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li.index:hover {
+  border: none;
+}
+#dd_message .rightBlock ul li.index span {
+  color: #999;
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 11px;
+}
+#dd_message .rightBlock ul li.index a i {
+  color: #d2d2d2;
+  text-decoration: none;
+}
+#dd_message .rightBlock ul li.index a:hover i {
+  color: #333;
+}
+#dd_message .rightBlock ul li span {
+  display: block;
+}
+#dd_message .rightBlock ul li .avatar {
+  left: 0;
+  padding: 7px;
+  position: absolute;
+  top: 0;
+}
+#dd_message .rightBlock ul li.message {
+  padding: 7px 16px 7px 38px;
+}
+#dd_message .rightBlock ul li.message .tlClipBoard {
+  border: 1px solid #f0f0f0;
+  font-size: 11px;
+  padding: 7px;
+  margin: 10px 0 5px;
+}
+#dd_message .rightBlock ul li.message .time {
+  color: #999;
+}
+#dd_message .rightBlock ul li.message .time a {
+  color: #999;
+}
+#dd_message .rightBlock ul li.message .time a:hover {
+  color: #ff9900;
+}
+/* ------------------------------------------------
+   rightBlock  END
+--------------------------------------------------- */
+#dd_message .timelineOuter .message {
+  border-top: none;
+  /* padding: 0 7px 7px; */
+  padding: 0 7px 20px;
+  margin-bottom: 0px;
+}
+#dd_message .timelineOuter .message:first-child {
+  padding-top: 0 !important;
+}
+#dd_message .timelineOuter .message:last-child {
+  margin-bottom: 30px;
+}
+#dd_message .timelineOuter .message.active {
+  background: #fef6f1;
+  border-radius: 4px;
+}
+#dd_message .timelineOuter .message .avatar {
+  margin-top: 7px;
+}
+#dd_message .timelineOuter .message .time {
+  color: #999;
+  margin-bottom: 0;
+}
+#dd_message .timelineOuter .message .time a {
+  color: #999;
+}
+#dd_message .timelineOuter .message .time a:hover {
+  color: #ff9900;
+}
+#dd_message .timelineOuter .message .name {
+  padding-top: 7px;
+}
+#dd_message .timelineOuter .timeline .messageContents {
+  margin-right: 60px;
+}
+#dd_message .contents {
+  background: #ffffff;
+}
+#dd_message .subContents {
+  float: right;
+  width: 240px;
+  border-left: solid 1px #d2d2d2;
+}
+#dd_message .inputField {
+  margin-bottom: 10px;
+}
+.counter {
+  float: left !important;
+  font-size: 10px;
+  height: 13px;
+  min-width: 11px;
+  line-height: 13px !important;
+  padding: 0 2px;
+  text-align: center;
+  margin-top: 5px;
+  margin-right: 2px;
+  color: #FFFFFF;
+  background: #ff3333 !important;
+  text-decoration: none;
+}
+
+.counter.zero {
+  background: #b5b5b5 !important;
+}
+
+.messageSummary li, .messageUserlist ul li {
+  position: relative;
+  padding: 0;
+  margin-left: 10px;
+  background-image: none;
+  /* border-bottom: solid 1px #000; */
+}
+.messageSummary li a, .messageUserlist ul li a {
+  display: block;
+  height: 38px;
+  /* height: 44px;
+  color: #999; */
+  text-decoration: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.messageSummary li a .name, .messageUserlist ul li a .name {
+  /* color: #ffffff; */
+}
+.messageSummary li a:hover, .messageUserlist ul li a:hover {
+  color: #ff9900;
+  /*background-color: #222; */
+  text-decoration: none;
+}
+.messageSummary li a:hover span, .messageUserlist ul li a:hover span {
+  text-decoration: none;
+}
+.messageSummary li a:hover .name, .messageUserlist ul li a:hover .name {
+  color: #ff9900;
+}
+.messageSummary li span, .messageUserlist ul li span {
+  display: block;
+}
+.messageSummary li .latest, .messageSummary li .date, .messageUserlist ul li .latest, .messageUserlist ul li .date {
+  font-size: 11px;
+  color: #999;
+}
+.messageSummary li .latest{
+  display: none;
+}
+.messageSummary .avatar, .messageUserlist ul .avatar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* padding: 6px; */
+  padding: 7px;
+}
+
+.messageSummary {
+  position: relative;
+}
+.messageSummary li a {
+  /* padding: 6px 10px 6px 45px; */
+  padding: 6px 16px 6px 40px;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  border-left: 1px solid #eee;
+}
+.messageSummary .date {
+  float: right;
+  white-space: nowrap;
+  margin-left: 5px;
+}
+.messageSummary .date, .messageSummary .name, .messageSummary .latest {
+  /* line-height: 16px;
+  height: 16px; */
+  line-height: 25px;
+  height: 25px;
+}
+.messageSummary .nrCount {
+  float: left;
+  display: inline-block;
+  height: 13px;
+  min-width: 10px;
+  line-height: 13px;
+  margin: 5px 3px 0 0;
+  padding: 0 2px;
+  font-size: 10px;
+  text-align: center;
+  text-decoration: none;
+  background-color: #ff3333;
+  color: #ffffff;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+}
+
+.messageSummary .active, .messageUserlist .active {
+}
+.messageSummary .active a, .messageSummary .active a:hover, .messageUserlist .active a, .messageUserlist .active a:hover {
+  /* color: #999 !important; */
+  background-color: #ffffff;
+  border-top: 1px solid #e7e7e7;
+  border-bottom: 1px solid #e7e7e7;
+  border-left: 1px solid #e7e7e7;
+  border-radius: 3px 0 0 3px;
+}
+.messageSummary .active a .date, .messageSummary .active a .latest, .messageSummary .active a:hover .date, .messageSummary .active a:hover .latest, .messageUserlist .active a .date, .messageUserlist .active a .latest, .messageUserlist .active a:hover .date, .messageUserlist .active a:hover .latest {
+  /* color: #666 !important; */
+}
+.messageSummary .active a .name, .messageSummary .active a:hover .name, .messageUserlist .active a .name, .messageUserlist .active a:hover .name {
+  color: #000;
+}
+
+.messageUserlist ul li a {
+  /* line-height: 45px;
+  padding-left: 45px; */
+  line-height: 25px;
+  padding: 6px 16px 6px 40px;
+}
+.messageUserlist .index {
+  line-height: 20px;
+  padding: 0 8px;
+  margin: 7px 0;
+  border-bottom: 1px solid #DCDCDC;
+  /* background: #222222; */
+}
+
+.searchClear {
+  padding: 0 !important;
+  line-height: 40px;
+  text-align: center;
+  color: white !important;
+}
+.searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
+  color: white;
+  margin-right: 5px;
+}
+.searchClear:hover {
+  color: #ff9900 !important;
+}
+.searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
+  color: #ff9900;
+}
+
+.messageSummaryHead div {
+  /* border-bottom: solid 1px black; */
+}
+
+.roomHeader {
+  margin-bottom: 10px;
+}
+.roomHeader .userListIcon {
+  padding-right: 30px;
+  height: 24px;
+  margin-bottom: 0;
+  overflow: hidden;
+}
+.roomHeader .floatLeft {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 90%;
+}
+.roomHeader .floatRight {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.roomHeader .floatRight a {
+  display: inline-block;
+}
+.roomHeader .floatRight a [class*=icon-] {
+  display: inline-block;
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #d2d2d2;
+}
+.roomHeader .floatRight a:hover [class*=icon-] {
+  color: #333333;
+}
+
+#messageTimeline {
+  margin: 0 -10px;
+}
+#messageTimeline .message {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+#messageTimeline .message.invite {
+  background-color: #f6f6f6;
+}
+
+/* ------------------------------------------------
+ date_line  2015.05.11
+--------------------------------------------------- */
+.date_line {
+  position: relative;
+  text-align: center;
+  margin: -10px 0 20px;
+  height: 30px;
+  border-bottom: 1px solid #eee;
+}
+.date_line span {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 180px;
+  margin-left: -90px;
+  display: inline-block;
+  padding: 5px 10px;
+  line-height: 30px;
+  background: #ffffff;
+  font-size: 16px;
+  text-align: center;
+}
+
+/***************************************************
+	sideBlock
+--------------------------------------------------*/
+.sideBlock {
+  position: relative;
+  /* background-color: #333333;
+  color: white; */
+}
+.sideBlock .inner {
+  /* padding: 10px; */
+  padding: 10px 15px;
+}
+.sideBlock .search {
+  background-color: #666666;
+  border-color: #666666;
+}
+.sideBlock .search input[type=text] {
+  background-color: #666666;
+  color: #ffffff;
+}
+.sideBlock .search button {
+  text-shadow: none;
+}
+.sideBlock .search label,
+.sideBlock .search [class*="icon-"] {
+  color: #d2d2d2;
+}
+.sideBlock .auiTabs .tab {
+  border-right: 1px solid #eee;
+}
+.sideBlock .auiTabs .tab li a, .sideBlock .auiTabs .tab li:first-child a {
+  margin: 0;
+  /* background-color: #000000; */
+  height: 35px;
+  line-height: 35px;
+  border: none;
+  /* color: #d2d2d2; */
+  border-radius: 0;
+}
+.sideBlock .auiTabs .tab li a:hover, .sideBlock .auiTabs .tab li:first-child a:hover {
+  /* color: white; */
+}
+.sideBlock .auiTabs .tab li.active a {
+  /* background-color: #333333;
+  color: white !important; */
+  background: #eee;
+}
+.sideBlock .auiTabs .tabContents li {
+  padding: 0 !important;
+}
+
+/***************************************************
+	scroll
+--------------------------------------------------*/
+.scroll {
+  overflow: auto;
+}
+
+/***************************************************
+	emptyMessage
+--------------------------------------------------*/
+.emptyMessage {
+  margin: auto;
+  text-align: center;
+  color: #999999;
+  margin: 120px 0 170px;
+}
+.emptyMessage [class*=icon-] {
+  font-size: 120px !important;
+  color: #d2d2d2;
+  text-shadow: 0 -1px 0 #b8b8b8;
+}
+.dropdown_list .emptyMessage, .tableWrapper .emptyMessage, .auiPopup .emptyMessage {
+  margin: 15px 0;
+}
+#dd_message .emptyMessage {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 160px;
+  margin: auto;
+}
+
+/***************************************************
+	row & col
+--------------------------------------------------*/
+.row, .col-2, .col-3 {
+  display: inline-block;
+}
+
+/***************************************************
+	auiButton
+--------------------------------------------------*/
+input[type=submit],
+input[type=button],
+input[type=reset],
+button,
+.auiButton,
+.auiButtonAction,
+.auiButtonBold,
+.auiButtonSearch,
+.auiButtonSmall,
+.auiButtonDisabled,
+.auiButtonIcon,
+.auiButtonDummy,
+.auiButtonIconDummy,
+.auiSelectButton a,
+.auiSelectButtonSmall a,
+.auiWidget .auiSelectButton a,
+.auiWidget .auiSelectButtonSmall a {
+  display: inline-block;
+  height: 32px;
+  line-height: 32px;
+  margin: 0;
+  padding: 0 8px;
+  color: #333333;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f6f6f6;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f0f0f0));
+  background-image: -webkit-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -moz-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: -o-linear-gradient(top, #ffffff, #f0f0f0);
+  background-image: linear-gradient(top, #ffffff, #f0f0f0);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFFFFF', endColorstr='#FFF0F0F0');
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: solid 1px #d2d2d2;
+  border-bottom-color: #b3b3b3;
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -ms-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  box-sizing: border-box !important;
+}
+input[type=submit]:hover, input[type=submit]:focus, input[type=submit]:active, input[type=submit].active,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=button]:active,
+input[type=button].active,
+input[type=reset]:hover,
+input[type=reset]:focus,
+input[type=reset]:active,
+input[type=reset].active,
+button:hover,
+button:focus,
+button:active,
+button.active,
+.auiButton:hover,
+.auiButton:focus,
+.auiButton:active,
+.auiButton.active,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonAction:active,
+.auiButtonAction.active,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonBold:active,
+.auiButtonBold.active,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSearch:active,
+.auiButtonSearch.active,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonSmall:active,
+.auiButtonSmall.active,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonDisabled:active,
+.auiButtonDisabled.active,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonIcon:active,
+.auiButtonIcon.active,
+.auiButtonDummy:hover,
+.auiButtonDummy:focus,
+.auiButtonDummy:active,
+.auiButtonDummy.active,
+.auiButtonIconDummy:hover,
+.auiButtonIconDummy:focus,
+.auiButtonIconDummy:active,
+.auiButtonIconDummy.active,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiSelectButton a:active,
+.auiSelectButton a.active,
+.auiSelectButtonSmall a:hover,
+.auiSelectButtonSmall a:focus,
+.auiSelectButtonSmall a:active,
+.auiSelectButtonSmall a.active,
+.auiWidget .auiSelectButton a:hover,
+.auiWidget .auiSelectButton a:focus,
+.auiWidget .auiSelectButton a:active,
+.auiWidget .auiSelectButton a.active,
+.auiWidget .auiSelectButtonSmall a:hover,
+.auiWidget .auiSelectButtonSmall a:focus,
+.auiWidget .auiSelectButtonSmall a:active,
+.auiWidget .auiSelectButtonSmall a.active {
+  border: solid 1px #999999;
+  color: #333333;
+  text-decoration: none;
+}
+input[type=submit]:active,
+input[type=button]:active,
+input[type=reset]:active,
+button:active,
+.auiButton:active,
+.auiButtonAction:active,
+.auiButtonBold:active,
+.auiButtonSearch:active,
+.auiButtonSmall:active,
+.auiButtonDisabled:active,
+.auiButtonIcon:active,
+.auiButtonDummy:active,
+.auiButtonIconDummy:active,
+.auiSelectButton a:active,
+.auiSelectButtonSmall a:active,
+.auiWidget .auiSelectButton a:active,
+.auiWidget .auiSelectButtonSmall a:active {
+  background-image: none !important;
+  -webkit-filter: none !important;
+  -moz-filter: none !important;
+  filter: none !important;
+  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2) !important;
+  background-color: #d2d2d2 !important;
+}
+input[type=submit]:hover, input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus,
+input[type=reset]:hover,
+input[type=reset]:focus,
+button:hover,
+button:focus,
+.auiButton:hover,
+.auiButton:focus,
+.auiButtonAction:hover,
+.auiButtonAction:focus,
+.auiButtonBold:hover,
+.auiButtonBold:focus,
+.auiButtonSearch:hover,
+.auiButtonSearch:focus,
+.auiButtonSmall:hover,
+.auiButtonSmall:focus,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:focus,
+.auiButtonIcon:hover,
+.auiButtonIcon:focus,
+.auiButtonDummy:hover,
+.auiButtonDummy:focus,
+.auiButtonIconDummy:hover,
+.auiButtonIconDummy:focus,
+.auiSelectButton a:hover,
+.auiSelectButton a:focus,
+.auiSelectButtonSmall a:hover,
+.auiSelectButtonSmall a:focus,
+.auiWidget .auiSelectButton a:hover,
+.auiWidget .auiSelectButton a:focus,
+.auiWidget .auiSelectButtonSmall a:hover,
+.auiWidget .auiSelectButtonSmall a:focus {
+  border: solid 1px #999999;
+  color: #333333;
+  text-decoration: none;
+}
+input[type=submit]:focus,
+input[type=button]:focus,
+input[type=reset]:focus,
+button:focus,
+.auiButton:focus,
+.auiButtonAction:focus,
+.auiButtonBold:focus,
+.auiButtonSearch:focus,
+.auiButtonSmall:focus,
+.auiButtonDisabled:focus,
+.auiButtonIcon:focus,
+.auiButtonDummy:focus,
+.auiButtonIconDummy:focus,
+.auiSelectButton a:focus,
+.auiSelectButtonSmall a:focus,
+.auiWidget .auiSelectButton a:focus,
+.auiWidget .auiSelectButtonSmall a:focus {
+  outline: none;
+}
+input[type=submit] span,
+input[type=button] span,
+input[type=reset] span,
+button span,
+.auiButton span,
+.auiButtonAction span,
+.auiButtonBold span,
+.auiButtonSearch span,
+.auiButtonSmall span,
+.auiButtonDisabled span,
+.auiButtonIcon span,
+.auiButtonDummy span,
+.auiButtonIconDummy span,
+.auiSelectButton a span,
+.auiSelectButtonSmall a span,
+.auiWidget .auiSelectButton a span,
+.auiWidget .auiSelectButtonSmall a span {
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
   vertical-align: middle;
 }
 
-*:first-child + html .hdUserName .auiIcon,
-*:first-child + html .hdUserName .auiWFicon {
-  margin-bottom: 1px;
+@-moz-document url-prefix() {
+  /*Fx*/
+  input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button {
+    padding: 0 6px !important;
+  }
+   input[type=submit],
+  input[type=button],
+  input[type=reset],
+  button,
+  .auiButton,
+  .auiButtonAction,
+  .auiButtonBold,
+  .auiButtonSearch,
+  .auiButtonSmall,
+  .auiButtonDisabled,
+  .auiButtonIcon,
+  .auiButtonDummy,
+  .auiButtonIconDummy,
+  .auiSelectButton a,
+  .auiSelectButtonSmall a,
+  .auiWidget .auiSelectButton a,
+  .auiWidget .auiSelectButtonSmall a {
+    line-height: -moz-block-height;
+  }
 }
 
-.hdUserName a:hover .auiIcon {
-  background-color: #999999;
+*:first-child + html input[type=submit],
+*:first-child + html input[type=button],
+*:first-child + html input[type=reset],
+*:first-child + html button {
+  height: 32px;
+  line-height: 26px;
 }
 
-* html .hdUserName a:hover .auiIcon {
-  background-color: transparent;
+button.auiButton,
+button {
+  padding: 0 0.55em;
 }
 
-/*IE6*/
-.hdUserName a:hover .auiIconSetting {
-  background-position: 0px -16px;
+.auiButtonSmall {
+  padding: 0 5px;
+  height: 24px !important;
+  line-height: 24px !important;
+  font-size: 11px;
 }
 
-* html .hdUserName a:hover .auiIconSetting {
-  background-position: 0px 0px;
+input[type=submit].auiButtonSmall,
+input[type=button].auiButtonSmall,
+input[type=reset].auiButtonSmall,
+button.auiButtonSmall {
+  line-height: 1em !important;
 }
 
-.hdUserName .avatar {
+.auiButtonAction,
+input.auiButtonAction {
+  background-color: #ff9900;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffa31a), color-stop(100%, #ff8400));
+  background-image: -webkit-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: -moz-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: -o-linear-gradient(top, #ffa31a, #ff8400);
+  background-image: linear-gradient(top, #ffa31a, #ff8400);
+  *zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFFA31A', endColorstr='#FFFF8400');
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.2);
+  color: white;
+  border: solid 1px #e68a00 !important;
+}
+.auiButtonAction:hover, .auiButtonAction:focus,
+input.auiButtonAction:hover,
+input.auiButtonAction:focus {
+  color: white;
+  border: solid 1px #804d00 !important;
+}
+.auiButtonAction:active,
+input.auiButtonAction:active {
+  background-color: #ff6e00 !important;
+  border: solid 1px #804d00 !important;
+}
+.auiButtonAction .fa, .auiButtonAction [class*="icon-"], .auiButtonAction [class^="icon-"],
+input.auiButtonAction .fa,
+input.auiButtonAction [class*="icon-"],
+input.auiButtonAction [class^="icon-"] {
+  color: white;
+}
+
+.auiButtonDisabled,
+.auiButtonDisabled:hover,
+.auiButtonDisabled:active,
+input[disabled],
+input[disabled]:hover,
+input[disabled]:active,
+button[disabled],
+button[disabled]:hover,
+button[disabled]:active {
+  color: #999999 !important;
+  background-image: none !important;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+  background-color: #f0f0f0 !important;
+  border: solid 1px #d2d2d2 !important;
+  cursor: default;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  text-shadow: 0 1px 0 white;
+}
+
+.auiButton span {
+  display: table-cell;
+  min-width: 20px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.auiButton i {
+  color: #333333;
+}
+
+.auiButtonSmall span {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.auiButton img,
+.auiButtonSmall img {
+  display: inline;
+  vertical-align: middle;
+}
+
+.auiButtonIcon,
+.auiButtonIconDummy {
+  min-width: 24px;
+  height: 24px;
+  line-height: 24px;
+  padding: 3px;
+}
+.auiButtonIcon span,
+.auiButtonIconDummy span {
+  display: table-cell;
+  min-width: 16px;
+  height: 16px;
+  line-height: 16px;
+  text-align: center;
+  cursor: pointer;
+  vertical-align: baseline;
+}
+.auiButtonIcon [class*="icon-"],
+.auiButtonIconDummy [class*="icon-"] {
+  display: inline-block;
+  color: #666;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+}
+
+[class^="auiButton"] [class^="icon-"] {
+  line-height: 16px;
+}
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
+  line-height: 15px !important;
+}
+
+.auiButtonDummy,
+.auiButtonDummy span,
+.auiButtonDummy i,
+.auiButtonIconDummy,
+.auiButtonIconDummy span,
+.auiButtonIconDummy i {
+  cursor: default !important;
+}
+
+/***************************************************
+	auiSelectButton
+--------------------------------------------------*/
+.auiSelectButton,
+.auiSelectButtonSmall {
+  background: #fff;
+}
+.auiSelectButton ul,
+.auiSelectButtonSmall ul {
+  display: inline;
+}
+.auiSelectButton li,
+.auiSelectButton div,
+.auiSelectButtonSmall li,
+.auiSelectButtonSmall div {
   float: left;
-  width: 23px;
-  height: 23px;
-  margin: 0 4px 0 0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+  background: none;
+  padding: 0;
+  line-height: 1;
+}
+.auiSelectButton a, .auiWidget .auiSelectButton a,
+.auiSelectButtonSmall a, .auiWidget
+.auiSelectButtonSmall a {
+  display: block;
+  margin: 0 -1px;
+  padding: 0 !important;
+  line-height: 30px;
+  min-width: 27px;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  border-color: #d2d2d2 #d2d2d2 silver;
+}
+.auiSelectButton a [class*=icon-],
+.auiSelectButtonSmall a [class*=icon-] {
+  line-height: 30px;
+}
+.auiSelectButton a .icon-backward,
+.auiSelectButton a .icon-forward,
+.auiSelectButtonSmall a .icon-backward,
+.auiSelectButtonSmall a .icon-forward {
+  font-size: 10px;
+}
+.auiSelectButton a .icon-backward,
+.auiSelectButtonSmall a .icon-backward {
+  margin-right: 2px;
+}
+.auiSelectButton a .icon-forward,
+.auiSelectButtonSmall a .icon-forward {
+  margin-left: 1px;
+}
+.auiSelectButton a:hover, .auiSelectButton a:active, .auiSelectButton a:focus,
+.auiSelectButtonSmall a:hover,
+.auiSelectButtonSmall a:active,
+.auiSelectButtonSmall a:focus {
+  position: relative;
+}
+.auiSelectButton a.first,
+.auiSelectButton a.btn,
+.auiSelectButtonSmall a.first,
+.auiSelectButtonSmall a.btn {
+  margin-left: 0;
+  -moz-border-radius-topleft: 4px;
+  -webkit-border-top-left-radius: 4px;
+  border-top-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  -webkit-border-bottom-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.auiSelectButton a.last,
+.auiSelectButton a.btn,
+.auiSelectButtonSmall a.last,
+.auiSelectButtonSmall a.btn {
+  margin-right: 0;
+  -moz-border-radius-topright: 4px;
+  -webkit-border-top-right-radius: 4px;
+  border-top-right-radius: 4px;
+  -moz-border-radius-bottomright: 4px;
+  -webkit-border-bottom-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.auiSelectButton a:hover span,
+.auiSelectButtonSmall a:hover span {
+  color: #333333;
+}
+.auiSelectButton span i,
+.auiSelectButton span img,
+.auiSelectButtonSmall span i,
+.auiSelectButtonSmall span img {
+  margin: 6px 0;
+}
+.auiSelectButton .active a,
+.auiSelectButtonSmall .active a {
+  background: #d2d2d2;
+  border-color: #d2d2d2 #d2d2d2 silver;
+  cursor: default;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
+}
+.auiSelectButton .active a:focus,
+.auiSelectButton .active a:active,
+.auiSelectButtonSmall .active a:focus,
+.auiSelectButtonSmall .active a:active {
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.auiSelectButton .active a:hover span,
+.auiSelectButtonSmall .active a:hover span {
+  cursor: default;
+}
+.auiSelectButton .auiIconArrowLeft,
+.auiSelectButtonSmall .auiIconArrowLeft {
+  margin-left: -4px !important;
+}
+.auiWidget .auiSelectButton span, .auiWidget
+.auiSelectButtonSmall span {
+  padding: 0;
+  background-image: none;
+}
+.auiSelectButton .count,
+.auiSelectButtonSmall .count {
+  line-height: 30px;
 }
 
-img.avatar,
-.avatar img {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+.auiSelectButtonSmall a, .auiWidget .auiSelectButtonSmall a {
+  height: 24px;
+  line-height: 24px;
+  min-width: 24px;
+}
+.auiSelectButtonSmall a [class*=icon-] {
+  line-height: 22px;
 }
 
-.hdUserName .menubar {
-  right: 0;
+.selectCount {
+  display: inline-block;
+  line-height: 100%;
 }
 
-*:first-child + html .hdUserName .menubar {
-  /* IE7 */
-  top: 23px;
+/***************************************************
+	icon
+--------------------------------------------------*/
+[class^="auiButton"] .icon-remove {
+  font-size: 15px !important;
+  line-height: 15px !important;
 }
 
-*:first-child + html .hdUserName .menubar ul li a {
-  min-width: 5em;
-  overflow: visible;
+@font-face {
+  font-family: 'FontAwesome';
+  src: url("fontawesome-webfont.eot");
+  src: url("fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("fontawesome-webfont.woff") format("woff"), url("fontawesome-webfont.ttf") format("truetype"), url("fontawesome-webfont.svg#fontawesomeregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
 }
 
 /***************************************************
@@ -178,10 +2044,6 @@ img.avatar,
   height: 18px;
   padding: 5px 6px 0;
   cursor: pointer;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
 }
 
 .hdActivity div,
@@ -189,9 +2051,29 @@ img.avatar,
   outline: 0;
 }
 
-.counter {
-  float: left;
+.hdIcon {
+  float: left !important;
   font-size: 9px;
+  height: 13px;
+  line-height: 13px !important;
+  padding: 0 2px 0 1px;
+  text-align: center;
+  margin-top: 5px;
+  margin-right: 2px;
+}
+.hdIcon i {
+  font-size: 15px;
+  text-align: center;
+  line-height: 13px;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  color: #ff9900;
+}
+
+.counter {
+  float: left !important;
+  font-size: 10px;
   height: 13px;
   min-width: 11px;
   line-height: 13px !important;
@@ -199,13 +2081,8 @@ img.avatar,
   text-align: center;
   margin-top: 5px;
   margin-right: 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   color: #FFFFFF;
-  background: #e63439 !important;
+  background: #ff3333 !important;
   text-decoration: none;
 }
 
@@ -219,19 +2096,13 @@ img.avatar,
 .dijitPopup {
   display: block;
   z-index: 9999 !important;
-  /*background:#FFF;*/
 }
 
 .auiPopup,
 .activityPopup {
-  background: #FFF;
+  background: white;
   padding: 9px;
-  border: 1px solid #c0c0c0;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  border: 1px solid silver;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -245,21 +2116,38 @@ img.avatar,
 }
 
 .auiPopupHead {
+  position: relative;
   padding-left: 20px;
   margin-bottom: 10px;
-  background: transparent url(../images/common/icon_p.gif) no-repeat left center;
+}
+.auiPopupHead:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 1px;
+  font-family: 'FontAwesome';
+  font-size: 15px;
+  line-height: 24px;
+  content: "\f138";
+  color: #d2d2d2;
 }
 
-
-.borderAuiHead .auiPopupHead {
-  margin-bottom: 0px;
+.auiPopupHead {
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
 }
-
-.borderAuiHead .roundBlockContent {
-  margin-top:5px;
-  border-top: solid 1px #c0c0c0;
+.auiPopupHead:before {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: 'FontAwesome';
+  font-size: 15px;
+  line-height: 24px;
+  content: "\f138";
+  color: #d2d2d2;
 }
-
 .auiPopupHead .auiPopupTitle {
   line-height: 24px;
   white-space: nowrap;
@@ -316,7 +2204,7 @@ img.avatar,
 .auiPopup h2,
 #activityListPane h2 {
   padding: 0 0 5px;
-  border-bottom: solid 1px #c0c0c0;
+  border-bottom: solid 1px silver;
 }
 
 .auiPopup .roundBlockWrapperTop,
@@ -337,7 +2225,9 @@ img.avatar,
   white-space: nowrap;
 }
 
-.auiPopupButtons .auiButton,
+.auiPopupButtons .auiButton, .auiPopupButtons .auiSelectButton a, .auiSelectButton .auiPopupButtons a,
+.auiPopupButtons .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiPopupButtons a,
 .auiPopupButtons .auiButtonAction,
 .auiPopupButtons .auiButtonBold,
 .auiPopupButtons .auiButtonSearch,
@@ -362,7 +2252,7 @@ img.avatar,
 }
 
 .activityTable tr:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityTable td {
@@ -417,7 +2307,7 @@ img.avatar,
 }
 
 .activityList li:hover {
-  background: #F5F5F5;
+  background: #f6f6f6;
 }
 
 .activityList .meta {
@@ -436,22 +2326,30 @@ img.avatar,
 .rightBtn {
   text-align: right;
   margin: 0;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* imgPopup */
 .imgPopup {
   position: absolute !important;
-  /*overflow:hidden;*/
 }
-
 .imgPopup .imgBody {
   text-align: center;
 }
-
 .imgPopup img {
   max-width: 800px;
   max-height: 800px;
+}
+.imgPopup .meta {
+  position: absolute;
+  right: -10px;
+  top: -40px;
+}
+.imgPopup .meta a {
+  display: inline-block;
+}
+.imgPopup .meta [class*="icon-"] {
+  font-size: 24px;
 }
 
 /* imgPopupTutorial */
@@ -469,7 +2367,6 @@ img.avatar,
   max-height: 1000px;
 }
 
-/* startPopup */
 .startPopup {
   width: 600px;
   padding: 45px 50px 30px;
@@ -484,7 +2381,7 @@ img.avatar,
 
 .startPopupHead {
   margin-bottom: 35px;
-  font-size:32px;
+  font-size: 32px;
   text-align: center;
 }
 
@@ -492,33 +2389,58 @@ img.avatar,
   text-align: left;
 }
 
+.startPopup img.middle {
+  vertical-align: -0.2em !important;
+}
+
+.startPopup input[type=checkbox],
+.startPopup input[type=radio] {
+  vertical-align: -0.18em;
+  vertical-align: 0\9;
+  *vertical-align: 0;
+}
+
+/***************************************************
+	auiColumns
+--------------------------------------------------*/
+.auiColumnWrapper {
+  padding: 10px;
+}
+
+.auiColumn {
+  float: left;
+}
+
 /***************************************************
 	auiPortlet
 --------------------------------------------------*/
 .auiPortlet {
-  background: white;
-  background: white url("../images/common/portlet_20140116.gif") repeat-x left bottom;
+  background: white url("../images/common/portlet_20140718.png") repeat-x left bottom;
   margin: 10px 5px;
 }
 .auiPortlet .auiPortletHead {
   border-bottom: solid 1px #ededed;
-  background: url("../images/common/portlet_20140116.gif") repeat-x left top;
+  background: url("../images/common/portlet_20140718.png") repeat-x left top;
 }
 .auiPortlet .auiPortletHead .inner {
-  background: url("../images/common/portlet_20140116.gif") no-repeat left -100px;
-  padding: 9px 10px;
+  background: url("../images/common/portlet_20140718.png") no-repeat left -100px;
+  height: 35px;
+  padding: 10px;
   position: relative;
   overflow: hidden;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
 }
-.auiPortlet .auiPortletBody .auiPortletHead .inner {
-  padding: 9px 10px !important;
+.auiPortlet .auiPortletBody .auiPortletHead > .inner {
+  padding: 0 !important;
 }
 .auiPortlet .auiPortletTitle {
   float: left;
   white-space: nowrap;
 }
 .auiPortlet .auiPortletTool {
-  background: url("../images/common/portlet_20140116.gif") no-repeat right -200px;
+  background: url("../images/common/portlet_20140718.png") no-repeat right -200px;
   top: 0;
   right: 0;
   float: right;
@@ -530,9 +2452,9 @@ img.avatar,
   float: left;
   padding: 0 5px;
   background: #ffffff;
-  -webkit-box-shadow: -5px 0 3px white;
-  -moz-box-shadow: -5px 0 3px white;
-  box-shadow: -5px 0 3px white;
+  -moz-box-shadow: -5px 0 3px #ffffff;
+  -webkit-box-shadow: -5px 0 3px #ffffff;
+  box-shadow: -5px 0 3px #ffffff;
   white-space: nowrap;
 }
 .auiPortlet .auiPortletSetting {
@@ -540,11 +2462,6 @@ img.avatar,
 }
 .auiPortlet .auiPortletSetting .menubar {
   right: 15px;
-}
-.auiPortlet *:first-child + html .auiPortletSetting .menubar {
-  top: 30px;
-  z-index: 9999;
-  zoom: 1;
 }
 .auiPortlet .auiPortletDelete a {
   background: none;
@@ -564,7 +2481,7 @@ img.avatar,
   border-left: solid 1px #d2d2d2;
   border-right: solid 1px #d2d2d2;
 }
-.auiPortlet .auiPortletBody .inner {
+.auiPortlet .auiPortletBody > .inner {
   padding: 10px 10px 0 10px;
 }
 .auiPortlet .auiPortletBody .inner:after {
@@ -575,11 +2492,11 @@ img.avatar,
   visibility: hidden;
 }
 .auiPortlet .auiPortletFoot {
-  background: url("../images/common/portlet_20140116.gif") no-repeat left -390px;
+  background: url("../images/common/portlet_20140718.png") no-repeat left -390px;
 }
 .auiPortlet .auiPortletFoot .inner {
   height: 10px;
-  background: url("../images/common/portlet_20140116.gif") no-repeat right -490px;
+  background: url("../images/common/portlet_20140718.png") no-repeat right -490px;
 }
 .auiPortlet .auiPortletBody .auiPortletFoot .inner {
   padding: 0 !important;
@@ -635,6 +2552,9 @@ img.avatar,
   width: 24px;
 }
 
+.userListIcon {
+  margin-bottom: 5px;
+}
 .userListIcon li {
   display: block;
   float: left;
@@ -642,9 +2562,17 @@ img.avatar,
   margin: 0 4px 5px 0;
   padding: 0;
 }
-.userListIcon .avatar img {
+.userListIcon .avatar img,
+.userListIcon [class*=icon-] {
+  display: block;
   width: 24px;
   height: 24px;
+  line-height: 24px;
+  text-align: center;
+  color: #d2d2d2;
+}
+.userListIcon a:hover [class*=icon-] {
+  color: #333333;
 }
 
 /***************************************************
@@ -689,7 +2617,7 @@ img.avatar,
   height: 30px;
   line-height: 30px;
   padding: 0 1em;
-  border-left: solid 1px #c0c0c0;
+  border-left: solid 1px silver;
 }
 
 #footer div.copyright {
@@ -704,8 +2632,8 @@ img.avatar,
   width: 100%;
   height: 130px;
   overflow: hidden;
-  -webkit-animation-name: fadeIn;
-  -webkit-animation-duration: 1s;
+  animation: 1s fadeIn;
+  -webkit-animation: 1s fadeIn;
 }
 
 #startGuide a {
@@ -737,139 +2665,52 @@ img.avatar,
 /***************************************************
 	auiTabs
 --------------------------------------------------*/
-#auiTabs {
-  white-space: nowrap;
-  height: 25px;
-  padding: 0;
-  margin: 0;
-  background: white url("../images/tab.png") left bottom repeat-x;
-  overflow: hidden;
+.auiTabs .tab {
+  border-bottom: solid 1px #d2d2d2;
 }
-#auiTabs ul {
-  position: relative;
-  padding: 0 20px;
-  margin: 0;
-  white-space: nowrap;
-}
-#auiTabs li {
-  display: block;
+.auiTabs .tab > li {
   float: left;
-  height: 25px;
+  margin-bottom: -1px;
   padding: 0;
-  font-size: 11px;
   background: none;
 }
-#auiTabs li a {
-  margin: 0 5px;
-  white-space: nowrap;
-  text-decoration: none;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.75);
-}
-#auiTabs .tab {
-  height: 100%;
-}
-#auiTabs .title {
-  float: left;
-  height: 25px;
-  line-height: 25px;
-  padding-left: 20px;
-  background: url("../images/tab.png") left -180px no-repeat;
-}
-#auiTabs .setting {
-  float: left;
-  height: 25px;
-  background: url("../images/tab.png") left -270px no-repeat;
-}
-#auiTabs .setting a {
-  display: inline-block;
-  margin-top: 4px;
-}
-#auiTabs .first .title {
-  background: url("../images/tab.png") left -120px no-repeat;
-}
-#auiTabs .first .active .title {
-  background: url("../images/tab.png") left 0px no-repeat;
-}
-#auiTabs .last .setting {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -150px no-repeat;
-}
-#auiTabs .last .active {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -30px no-repeat;
-}
-#auiTabs .last .active .setting {
-  padding-right: 0;
-}
-#auiTabs .last .activeNext {
-  background: url("../images/tab.png") left -90px no-repeat;
-}
-#auiTabs .active .title {
-  background: url("../images/tab.png") left -60px no-repeat;
-}
-#auiTabs .active .setting {
-  background: url("../images/tab.png") left -240px no-repeat;
-}
-#auiTabs .activeNext {
-  padding-left: 20px;
-  background: url("../images/tab.png") left -90px no-repeat;
-}
-#auiTabs .activeNext .title {
-  padding-left: 0;
-  background: url("../images/tab.png") left -270px no-repeat;
-}
-#auiTabs .store {
-  padding-right: 20px;
-  background: url("../images/tab.png") right -150px no-repeat;
-}
-#auiTabs li.selectedMenu {
-  height: 25px;
-  background: url("../images/tab.png") right -25px no-repeat;
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu .title {
-  background: url("../images/tab.png") left 0px no-repeat;
-}
-#auiTabs li.selectedMenu .title a {
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu a {
-  white-space: nowrap;
-  text-decoration: none;
-}
-#auiTabs li.selectedMenu .menuIcon {
-  float: left;
-  height: 25px;
-  background: url("../images/tab.png") right 0px no-repeat;
-}
-#auiTabs .singleTab {
-  height: 25px;
-  line-height: 25px;
-  background: url("../images/tab.png") left -100px no-repeat;
-}
-#auiTabs .singleTab a {
-  text-decoration: none;
-}
-#auiTabs .addTab a {
+.auiTabs .tab > li a {
   display: block;
-  margin: 0 0 0 -5px;
-  width: 25px;
-  height: 25px;
-  line-height: 25px;
-  font-size: 11px;
-  font-weight: bold;
+  line-height: 30px;
+  margin: 0 5px 0 0;
+  padding: 0 20px;
   text-align: center;
-  background: url(../images/addtab.png) 0 0 no-repeat;
+  text-decoration: none;
+  background-color: white;
+  color: #999999;
+  border: solid 1px #d2d2d2;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
 }
-#auiTabs .addTab a:hover {
-  background: url(../images/addtab.png) 0 -25px no-repeat;
+.auiTabs .tab > li a:hover {
+  color: #ff9900;
 }
-#auiTabs .addTab span {
+.auiTabs .tab > li:first-child a {
+  margin: 0 5px;
+}
+.auiTabs .tab > li.active a {
+  color: #333333;
+  border-bottom-color: transparent;
+}
+.auiTabs .tab > li.active a:hover {
+  color: #333333;
+  cursor: default;
+}
+.auiTabs .tabContents > li {
   display: none;
+  padding: 10px 0 !important;
+  background: none;
 }
-
-.tooltip_gray {
-  display: none;
+.auiTabs .tabContents > li.active {
+  display: block;
 }
 
 /***************************************************
@@ -883,13 +2724,17 @@ img.avatar,
 }
 
 #auiLoginInner {
-  padding: 15px 50px;
-  background: url(../images/lobin_body.png) no-repeat;
+  padding: 45px 50px 15px 50px;
+  background: url(../images/login_body.png) no-repeat;
 }
 
 #auiLoginBox .logo {
   text-align: center;
   margin-bottom: 50px;
+}
+
+#auiLoginBox .inlineLabel {
+  vertical-align: middle;
 }
 
 #auiLoginBox .field {
@@ -905,10 +2750,6 @@ img.avatar,
   top: 0;
   left: 5px;
   color: #999999;
-}
-
-*:first-child + html #auiLoginBox .guide {
-  margin: 0.75em 0 0 0;
 }
 
 #auiLoginBox input.text {
@@ -941,7 +2782,7 @@ img.avatar,
   height: 43px;
   padding: 0;
   color: #fff;
-  font-size: 1.2em;
+  font-size: 14px;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
   border: none;
   background: url(../images/login_btn_back.png) 0px 0px no-repeat;
@@ -959,48 +2800,81 @@ img.avatar,
 #auiLoginBox input.button:focus,
 #auiLoginBox input.button[disabled] {
   background: url(../images/login_btn_back.png) 0px -100px no-repeat !important;
+  color: white !important;
 }
 
+/***************************************************
+	alert
+--------------------------------------------------*/
 .loginAlert,
 .alert {
   margin: 10px 0;
   padding: 10px;
   background: #ffcccc;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-  -webkit-animation-name: fadeIn;
-  -webkit-animation-duration: 1s;
+  animation: 1s fadeIn;
+  -webkit-animation: 1s fadeIn;
+}
+.loginAlert .alertTool,
+.alert .alertTool {
+  float: right;
+}
+.loginAlert .alertTool a i,
+.alert .alertTool a i {
+  display: -moz-inline-stack;
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  zoom: 1;
+  *display: inline;
+  text-decoration: none;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+}
+.loginAlert .alertHead,
+.alert .alertHead {
+  border-bottom: solid 1px #d2d2d2;
+  padding-bottom: 9px;
+  margin-bottom: 10px;
+  font-weight: bold;
+  line-height: 20px;
+}
+.roundMainWrapper > .loginAlert, .roundMainWrapper >
+.alert {
+  margin: 10px 5px 0 5px;
 }
 
 .alertSuccess {
   margin: 10px 0;
   padding: 10px;
   background: #f0f0f0;
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
+}
+.alertRecommend {
+  margin: 10px 0;
+  padding: 10px;
+  background: #FFFFE5;
+}
+
+.alertInfo {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #dff0d8;
 }
 
 /***************************************************
 	dialogTable
 --------------------------------------------------*/
 .dialogTable {
-  margin: 15px 0;
+  margin: 10px 0;
   border-top: solid 1px #ededed;
   border-collapse: collapse;
 }
-
 .dialogTable th,
 .dialogTable td {
   padding: 10px;
   border-bottom: solid 1px #ededed;
 }
-
 .dialogTable .caption {
   font-weight: bold;
 }
@@ -1020,7 +2894,7 @@ img.avatar,
 
 .auiWidget {
   clear: both;
-  padding: 0.8em 0;
+  padding: 10px 0;
   border-bottom: solid 1px #ededed;
 }
 .auiWidget h2 {
@@ -1033,12 +2907,14 @@ img.avatar,
   padding: 0;
   background: none;
 }
+
 .auiWidget li span {
   display: block;
   line-height: 1.8em;
   padding: 0.3em 0 0.3em 18px;
   background: url("../images/common/li_icon.gif") no-repeat scroll 5px 1em;
 }
+
 .auiWidget li a {
   display: block;
   line-height: 1.8em;
@@ -1089,15 +2965,15 @@ img.avatar,
   clear: both;
   width: 200px;
   overflow: hidden;
-  background: url("../images/common/bg_submenu_20140116.gif") no-repeat left top;
+  background: url("../images/common/bg_submenu_20140903.gif") no-repeat left top;
 }
 .submenu_v2 > ul {
-  background: url("../images/common/bg_submenu_20140116.gif") no-repeat right bottom;
+  background: url("../images/common/bg_submenu_20140903.gif") no-repeat right bottom;
   padding: 6px 0;
 }
 .submenu_v2 li {
   padding: 0 5px;
-  background: none;
+  background: #ffffff;
   border-right: solid 1px #d2d2d2;
   border-left: solid 1px #d2d2d2;
 }
@@ -1117,11 +2993,6 @@ img.avatar,
   width: auto;
   text-overflow: ellipsis;
   white-space: nowrap;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
 }
 .submenu_v2 li a:hover {
   color: #000;
@@ -1151,12 +3022,13 @@ img.avatar,
 }
 
 #auiContentsAreaInner {
+  position: relative;
   margin-left: 200px;
 }
 
 #auiContentsArea h2, h2.caption {
   margin: 0;
-  font-size: 1.2em;
+  font-size: 16px;
 }
 
 #auiThreeClumns {
@@ -1184,651 +3056,10 @@ img.avatar,
 }
 
 /***************************************************
-	auiButton
---------------------------------------------------*/
-input[type=submit],
-input[type=button],
-input[type=reset],
-button,
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonSearch,
-.auiButtonSmall,
-.auiButtonDisabled,
-.auiButtonIcon,
-.auiButtonDummy,
-.auiButtonIconDummy,
-.auiSelectButton a,
-.auiWidget .auiSelectButton a {
-  display: inline-block;
-  *display: inline;
-  padding: 4px 12px;
-  margin-bottom: 0;
-  *margin-left: .3em;
-  line-height: 20px;
-  color: #333333;
-  text-align: center;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
-  vertical-align: middle;
-  cursor: pointer;
-  background-color: #f5f5f5;
-  background-image: -moz-linear-gradient(top, white, #e6e6e6);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(white), to(#e6e6e6));
-  background-image: -webkit-linear-gradient(top, white, #e6e6e6);
-  background-image: -o-linear-gradient(top, white, #e6e6e6);
-  background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff', endColorstr='#ffe6e6e6', GradientType=0);
-  border: 1px solid #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
-  border-bottom-color: #b3b3b3;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  *zoom: 1;
-  white-space: nowrap;
-  text-decoration: none;
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-@-moz-document url-prefix() {
-  /*Fx*/
-  input[type=submit],
-  input[type=button],
-  input[type=reset],
-  button {
-    padding: 0 6px !important;
-  }
-}
-
-input[type=submit]:hover,
-input[type=submit]:focus,
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:hover,
-input[type=button]:focus,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:hover,
-input[type=reset]:focus,
-input[type=reset]:active,
-input[type=reset].active,
-button:hover,
-button:focus,
-button:active,
-button.active,
-.auiButton:hover,
-.auiButton:focus,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:hover,
-.auiButtonBold:focus,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:hover,
-.auiButtonSmall:focus,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:focus,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:hover,
-.auiButtonIcon:focus,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:hover,
-.auiSelectButton a:focus,
-.auiSelectButton a:active {
-  color: #333333;
-  background-color: #e6e6e6;
-}
-
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:active,
-input[type=reset].active,
-button:active,
-button.active,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:active {
-  background-color: #cccccc \9;
-}
-
-input[type=submit]:first-child,
-input[type=button]:first-child,
-input[type=reset]:first-child,
-button:first-child,
-.auiButton:first-child,
-.auiButtonAction:first-child,
-.auiButtonBold:first-child,
-.auiButtonSearch:first-child,
-.auiButtonSmall:first-child,
-.auiButtonDisabled:first-child,
-.auiButtonIcon:first-child,
-.auiButtonDummy:first-child,
-.auiButtonIconDummy:first-child,
-.auiSelectButton a:first-child {
-  *margin-left: 0;
-}
-
-input[type=submit]:hover,
-input[type=submit]:focus,
-input[type=button]:hover,
-input[type=button]:focus,
-input[type=reset]:hover,
-input[type=reset]:focus,
-button:hover,
-button:focus,
-.auiButton:hover,
-.auiButton:focus,
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonBold:hover,
-.auiButtonBold:focus,
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSmall:hover,
-.auiButtonSmall:focus,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:focus,
-.auiButtonIcon:hover,
-.auiButtonIcon:focus,
-.auiSelectButton a:hover,
-.auiSelectButton a:focus {
-  color: #333333;
-  text-decoration: none;
-  background-position: 0 -15px;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-}
-
-input[type=submit]:focus,
-input[type=button]:focus,
-input[type=reset]:focus,
-button:focus,
-.auiButton:focus,
-.auiButtonAction:focus,
-.auiButtonBold:focus,
-.auiButtonSearch:focus,
-.auiButtonSmall:focus,
-.auiButtonDisabled:focus,
-.auiButtonIcon:focus,
-.auiSelectButton a:focus {
-  outline: thin dotted #333;
-  outline: 5px auto -webkit-focus-ring-color;
-  outline-offset: -2px;
-}
-
-input[type=submit]:active,
-input[type=submit].active,
-input[type=button]:active,
-input[type=button].active,
-input[type=reset]:active,
-input[type=reset].active,
-button:active,
-button.active,
-.auiButton:active,
-.auiButton.active,
-.auiButtonAction:active,
-.auiButtonAction.active,
-.auiButtonBold:active,
-.auiButtonBold.active,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-.auiButtonSmall:active,
-.auiButtonSmall.active,
-.auiButtonDisabled:active,
-.auiButtonDisabled.active,
-.auiButtonIcon:active,
-.auiButtonIcon.active,
-.auiSelectButton a:active {
-  background-image: none;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  outline: 0;
-  -webkit-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  -moz-box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
-}
-
-.auiButton,
-.auiButtonAction,
-.auiButtonBold,
-.auiButtonDisabled,
-.auiButtonIcon,
-.auiButtonDummy,
-.auiButtonIconDummy,
-.auiButtonSearch,
-.auiSelectButton a,
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  height: 30px;
-  line-height: 30px;
-  padding: 0 8px;
-}
-
-*:first-child + html input[type=submit],
-*:first-child + html input.auiButton,
-*:first-child + html input.auiButtonAction,
-*:first-child + html input.auiButtonIcon,
-*:first-child + html .auiButtonDummy,
-*:first-child + html .auiButtonIconDummy,
-*:first-child + html input.auiButtonBold,
-*:first-child + html input.auiButtonSearch {
-  padding: 0 2px;
-}
-
-input[type=submit],
-input[type=button],
-input[type=reset],
-button {
-  -webkit-box-sizing: content-box;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-}
-
-*:first-child + html input[type=submit],
-*:first-child + html input[type=button],
-*:first-child + html input[type=reset],
-*:first-child + html button {
-  height: 32px;
-  line-height: 26px;
-}
-
-button.auiButton,
-button {
-  padding: 0 0.55em;
-}
-
-*:first-child + html button.auiButton,
-*:first-child + html button {
-  padding: 0 0.15em;
-}
-
-.auiButtonSmall {
-  padding: 0 5px;
-  height: 16px !important;
-  line-height: 16px !important;
-  font-size: 10px;
-}
-
-input[type=submit].auiButtonSmall,
-input[type=button].auiButtonSmall,
-input[type=reset].auiButtonSmall,
-button.auiButtonSmall {
-  line-height: 1em !important;
-}
-
-/* auiButtonAction */
-.auiButtonAction,
-input.auiButtonAction {
-  color: #ffffff;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
-  background-color: #ffb133;
-  background-color: #fa9828;
-  background-image: -moz-linear-gradient(top, #ffb133, #f37318);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffb133), to(#f37318));
-  background-image: -webkit-linear-gradient(top, #ffb133, #f37318);
-  background-image: -o-linear-gradient(top, #ffb133, #f37318);
-  background-image: linear-gradient(to bottom, #ffb133, #f37318);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFFB133', endColorstr='#FFF37318', GradientType=0);
-  background-repeat: repeat-x;
-  border-color: #f39600 #e15e04 #e15e04;
-  *background-color: #f37318;
-  *border: 1px solid #e15e04;
-}
-
-.auiButtonAction:hover,
-.auiButtonAction:focus,
-.auiButtonAction:active,
-.auiButtonAction.active,
-input.auiButtonAction:hover,
-input.auiButtonAction:focus,
-input.auiButtonAction:active,
-input.auiButtonAction.active {
-  color: #ffffff;
-  background-color: #f37318;
-  *background-color: #f37318;
-}
-
-.auiButtonAction:active,
-.auiButtonAction.active {
-  background-color: #c67605 \9;
-}
-
-/* auiButtonDisabled */
-.auiButtonDisabled,
-.auiButtonDisabled:hover,
-.auiButtonDisabled:active,
-input[disabled],
-input[disabled]:hover,
-input[disabled]:active,
-button[disabled],
-button[disabled]:hover,
-button[disabled]:active {
-  color: #999999;
-  background-image: none !important;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
-  background-color: #f0f0f0;
-  border: solid 1px #d2d2d2;
-  cursor: default;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-  text-shadow: 0 1px 0 white;
-}
-
-/* auiButtonSearch */
-.auiButtonSearch,
-input.auiButtonSearch {
-  background-color: #d0d0d0;
-  background-color: #e2e2e2;
-  background-image: -moz-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#eeeeee), to(#d0d0d0));
-  background-image: -webkit-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: -o-linear-gradient(top, #eeeeee, #d0d0d0);
-  background-image: linear-gradient(to bottom, #eeeeee, #d0d0d0);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFEEEEEE', endColorstr='#FFD0D0D0', GradientType=0);
-  background-repeat: repeat-x;
-}
-
-.auiButtonSearch:hover,
-.auiButtonSearch:focus,
-.auiButtonSearch:active,
-.auiButtonSearch.active,
-input.auiButtonSearch:hover,
-input.auiButtonSearch:focus,
-input.auiButtonSearch:active,
-input.auiButtonSearch.active {
-  background-color: #d0d0d0;
-}
-
-.auiButtonSearch:active,
-.auiButtonSearch.active {
-  background-color: #c0c0c0 \9;
-}
-
-.auiButton span {
-  display: table-cell;
-  min-width: 20px;
-  height: 30px;
-  line-height: 30px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-*:first-child + html .auiButton span,
-*:first-child + html .auiButtonSmall span {
-  display: block;
-  padding-top: 4px;
-  height: 22px;
-}
-
-.auiButton i {
-  color: #333333;
-}
-
-*:first-child + html .auiButton i {
-  margin-top: 4px !important;
-}
-
-*:first-child + html button.auiButton i {
-  margin-top: 1px !important;
-}
-
-.auiButtonSmall span {
-  display: table-cell;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.auiButton img,
-.auiButtonSmall img {
-  display: inline;
-  vertical-align: middle;
-}
-
-*:first-child + html .auiButton img,
-*:first-child + html .auiButtonSmall img {
-  padding: 2px 0;
-}
-
-/* auiButtonIcon */
-.auiButtonIcon,
-.auiButtonIconDummy {
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  padding: 3px !important;
-  font-size: 14px;
-  color: #666666 !important;
-}
-.auiButtonIcon:hover i,
-.auiButtonIconDummy:hover i {
-  color: #666666 !important;
-}
-.auiButtonIcon span,
-.auiButtonIconDummy span {
-  display: table-cell;
-  width: 16px;
-  height: 16px;
-  line-height: 16px;
-  text-align: center;
-  vertical-align: middle;
-}
-.auiButtonIcon span,
-.auiButtonIcon i,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: pointer;
-  vertical-align: baseline;
-}
-.auiButtonIcon [class^=auiButton],
-.auiButtonIcon [class^=icon-],
-.auiButtonIconDummy [class^=auiButton],
-.auiButtonIconDummy [class^=icon-] {
-  font-size: 14px;
-}
-
-[class^="auiButton"] [class^="icon-"] {
-  line-height: 16px;
-}
-[class^="auiButton"] .icon-remove {
-  font-size: 15px !important;
-  line-height: 15px !important;
-}
-
-*:first-child + html .auiButtonIcon span,
-*:first-child + html .auiButtonIconDummy span {
-  display: block;
-}
-*:first-child + html .auiButtonIcon i,
-*:first-child + html .auiButtonIconDummy i {
-  width: 16px;
-}
-
-.auiButtonDummy,
-.auiButtonDummy span,
-.auiButtonDummy i,
-.auiButtonIconDummy,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: default !important;
-}
-
-.auiButtonDummy,
-.auiButtonDummy span,
-.auiButtonDummy i,
-.auiButtonIconDummy,
-.auiButtonIconDummy span,
-.auiButtonIconDummy i {
-  cursor: default !important;
-}
-.auiButtonGroup {
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  border-radius: 10px;
-}
-
-.auiButtonGroup .auiButton {
-  margin: 0 -1px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  border-radius: 0;
-}
-
-.auiButtonGroup .auiButton:hover {
-  border: solid 1px #c0c0c0;
-}
-
-.auiButtonGroup .left {
-  -webkit-border-radius: 2px 0 0 2px;
-  -moz-border-radius: 2px 0 0 2px;
-  -ms-border-radius: 2px 0 0 2px;
-  border-radius: 2px 0 0 2px;
-}
-
-.auiButtonGroup .right {
-  -webkit-border-radius: 0 2px 2px 0;
-  -moz-border-radius: 0 2px 2px 0;
-  -ms-border-radius: 0 2px 2px 0;
-  border-radius: 0 2px 2px 0;
-}
-
-/***************************************************
-	auiSelectButton
---------------------------------------------------*/
-.auiSelectButton {
-  background: #fff;
-}
-
-.auiSelectButton ul {
-  display: inline;
-}
-
-.auiSelectButton li,
-.auiSelectButton div {
-  float: left;
-  background: none;
-  padding: 0;
-  line-height: 1;
-}
-
-.auiSelectButton a,
-.auiWidget .auiSelectButton a {
-  display: block;
-  margin: 0 -1px;
-  padding: 0 !important;
-  line-height: 30px;
-  min-width: 27px;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
-}
-
-.auiSelectButton a.first,
-.auiSelectButton a.btn {
-  margin-left: 0;
-  -moz-border-radius-topleft: 4px;
-  -webkit-border-top-left-radius: 4px;
-  border-top-left-radius: 4px;
-  -moz-border-radius-bottomleft: 4px;
-  -webkit-border-bottom-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-
-.auiSelectButton a.last,
-.auiSelectButton a.btn {
-  margin-right: 0;
-  -moz-border-radius-topright: 4px;
-  -webkit-border-top-right-radius: 4px;
-  border-top-right-radius: 4px;
-  -moz-border-radius-bottomright: 4px;
-  -webkit-border-bottom-right-radius: 4px;
-  border-bottom-right-radius: 4px;
-}
-
-.auiSelectButton a:hover span {
-  color: #333333;
-}
-
-.auiSelectButton span i,
-.auiSelectButton span img {
-  margin: 6px 0;
-}
-
-.auiSelectButton .active a {
-  background: #d2d2d2;
-  border-color: #d2d2d2 #d2d2d2 #c0c0c0;
-  cursor: default;
-  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false) !important;
-}
-
-.auiSelectButton .active a:focus,
-.auiSelectButton .active a:active {
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-}
-
-.auiSelectButton .active a:hover span {
-  cursor: default;
-}
-
-.auiSelectButton .auiIconArrowLeft {
-  margin-left: -4px !important;
-}
-
-.auiWidget .auiSelectButton span {
-  padding: 0;
-  background-image: none;
-}
-
-/***************************************************
 	auiMultiSelector
 --------------------------------------------------*/
 .auiMultiSelector.auiSummaryMeta {
   margin-top: -5px;
-}
-
-*:first-child + html .auiMultiSelector.auiSummaryMeta {
-  margin: 0 0 10px 0;
 }
 
 .auiMultiSelector .floatLeft,
@@ -1859,11 +3090,7 @@ input.auiButtonSearch.active {
   left: 0px;
   width: 360px;
   padding: 10px;
-  border: solid 1px #c0c0c0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+  border: solid 1px silver;
   background: #fff;
   overflow: hidden;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -1893,13 +3120,68 @@ input.auiButtonSearch.active {
   margin-bottom: 2em;
 }
 
+/* ------------------------------------------------
+   auiSearch.gray  2015.05.11
+--------------------------------------------------- */
+.auiSearch.gray {
+  position: relative;
+  padding-right: 30px;
+}
+.auiSearch.gray input[type="text"] {
+  border-radius: 4px 0 0 4px;
+  padding-left: 7px;
+  min-width: 230px;
+  border-color: #eee;
+  background: #eee;
+  outline: none;
+}
+[id^="timelineSearchForm"].auiSearch.gray input[type="text"] {
+min-width: inherit;
+}
+.auiSearch.gray input[type="text"]:focus {
+  background: #ffffff;
+  border-color: #e5e5e5;
+  box-shadow: none;
+  /* min-width: 320px; */
+}
+.auiSearch.gray button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  border-radius: 0 4px 4px 0;
+  margin-left: -1px;
+  border-color: #eee;
+  border-left-color: #ffffff;
+  background: #eee !important;
+  filter: none !important;
+}
+.auiSearch.gray button:focus {
+  /* background: #ff9900; */
+}
+.auiSearch.gray.focus input[type="text"] {
+  background: #ffffff;
+  border-color: #e5e5e5;
+  box-shadow: none;
+}
+.auiSearch.gray.focus button,
+.auiSearch.gray.focus button:active{
+  background: #ff9900 !important;
+  border-color: #e68a00 !important;
+  text-shadow: none;
+}
+.auiSearch.gray.focus button i,
+.auiSearch.gray.focus button:active i{
+  color: #ffffff !important;
+}
+
 /***************************************************
 	auiSummaryMeta
 --------------------------------------------------*/
 .auiSummaryMeta {
   position: relative;
   width: 100%;
-  line-height: 2em;
+  line-height: 32px;
   margin: 10px 0;
   vertical-align: middle;
 }
@@ -1910,15 +3192,13 @@ input.auiButtonSearch.active {
 .auiSummaryMeta form {
   line-height: 32px;
 }
-
-*:first-child + html .auiSummaryMeta {
-  overflow: hidden;
+.auiSummaryMeta .icon-print {
+  font-size: 17px;
 }
 
 .count {
   float: left;
-  height: 32px;
-  line-height: 32px !important;
+  line-height: 32px;
   margin: 0 5px;
   white-space: nowrap;
 }
@@ -1946,17 +3226,17 @@ input.auiButtonSearch.active {
 .auiGridTable th {
   padding: 8px 5px;
   white-space: nowrap;
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
   background: #f0f0f0;
 }
 
 .auiGridTable td {
   padding: 8px 5px;
-  border: 1px solid #c0c0c0;
+  border: 1px solid silver;
 }
 
 .auiGridTable .even {
-  background: #f0f0f0 url(../images/common/bg_slash.gif) repeat left top;
+  background: #f0f0f0;
 }
 
 .auiGridTable .sunday td,
@@ -2023,8 +3303,8 @@ input.auiButtonSearch.active {
   line-height: 35px;
   overflow: hidden;
 }
-.auiRowTable .auiMTCaption div a {
-  display: inline;
+.auiRowTable div a {
+	display:inline;
 }
 .auiRowTable .today .day {
   font-weight: bold;
@@ -2049,14 +3329,6 @@ input.auiButtonSearch.active {
 }
 .auiRowTable.scheduleList td {
   border-bottom: none;
-}
-
-/*IE7*/
-*:first-child + html .auiRowTable .day {
-  width: 120px;
-}
-*:first-child + html .auiRowTable .time {
-  width: 80px;
 }
 
 /***************************************************
@@ -2102,6 +3374,7 @@ input.auiButtonSearch.active {
 .auiDirectoryList a {
   display: block;
   width: 100%;
+  min-height: 26px;
   text-decoration: none;
   overflow: hidden;
 }
@@ -2112,10 +3385,19 @@ input.auiButtonSearch.active {
   background: #f6f6f6;
 }
 .auiDirectoryList a:hover span {
+  position: absolute;
+  padding-right: 5px;
   color: #000;
+  background: #f6f6f6;
 }
-.auiDirectoryList .active a {
+.auiDirectoryList .active {
   font-weight: bold;
+  background: #f0f0f0;
+}
+.auiDirectoryList .active a:hover {
+  background: #f0f0f0;
+}
+.auiDirectoryList .active a:hover span {
   background: #f0f0f0;
 }
 .auiDirectoryList .directory {
@@ -2123,6 +3405,7 @@ input.auiButtonSearch.active {
   line-height: 26px;
   height: 26px;
   padding-left: 5px;
+  overflow: hidden;
 }
 .auiDirectoryList .directory [class^="icon-"], .auiDirectoryList .directory [class*=" icon-"] {
   color: #d2d2d2;
@@ -2131,6 +3414,10 @@ input.auiButtonSearch.active {
   display: inline-block;
   height: 26px;
   line-height: 26px;
+}
+
+.auiDirectoryList .d1 span {
+  margin-left: 0px;
 }
 
 .auiDirectoryList .d2 span {
@@ -2242,6 +3529,26 @@ input.auiButtonSearch.active {
 }
 
 /***************************************************
+	auiScheduleWeekly
+--------------------------------------------------*/
+.auiScheduleWeek {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.auiScheduleWeek td {
+  width: 14.28571%;
+  border: solid 1px #d2d2d2;
+}
+.auiScheduleWeek .weekDay td {
+  text-align: center;
+}
+.auiScheduleWeek .dayTop, .auiScheduleWeek .dayBottom {
+  height: 17px;
+  line-height: 17px;
+}
+
+/***************************************************
 	auiCalendar
 --------------------------------------------------*/
 .auiCalendar {
@@ -2269,7 +3576,9 @@ input.auiButtonSearch.active {
 .auiCalendar td a:hover {
   background: #f0f0f0;
 }
-.auiCalendar .auiButton {
+.auiCalendar .auiButton, .auiCalendar .auiSelectButton a, .auiSelectButton .auiCalendar a,
+.auiCalendar .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiCalendar a {
   padding: 0 0.7em;
 }
 .auiCalendar .sunday {
@@ -2287,7 +3596,6 @@ input.auiButtonSearch.active {
   color: #999999;
 }
 .auiCalendar .today a {
-  /*background:#e0ffe0;*/
   background: #f0f0f0;
 }
 .auiCalendar .selected a {
@@ -2320,11 +3628,6 @@ input.auiButtonSearch.active {
 .auiAvatarList li a img {
   vertical-align: middle;
   margin-right: 5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
 }
 
 /***************************************************
@@ -2356,25 +3659,33 @@ input.auiButtonSearch.active {
   margin-left: 60px;
   word-break: break-all;
 }
+#auiContentsArea .entryText {
+  font-size: 14px;
+}
 
 .entryHeader {
-  padding: 0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 
 .entryFooter {
-  padding: 1em 0;
+  margin: 1em 0;
 }
 
 .dojoDndItem .entryHeader {
-  padding: 0 0 5px 0;
+  margin: 0 0 5px 0;
+}
+
+.dojoDndItem .entryFooter .entryText {
+  margin: 10px 0;
 }
 
 .dojoDndItem .entryFooter {
-  padding: 10px 0;
+  margin: 10px 0;
+  font-size: 11px;
 }
 
-.dojoDndItem .entryFooter {
-  font-size: 8pt;
+.dojoDndItem .entryFooter .subCaption {
+  display: inline-block;
 }
 
 /***************************************************
@@ -2394,21 +3705,32 @@ form {
   max-width: 100%;
 }
 
-input,
+form label {
+  vertical-align: middle;
+}
+
+input[type=text],
+input[type=password],
 textarea,
 select {
   margin: 0;
   vertical-align: middle;
 }
 
+input[type=radio],
+input[type=checkbox] {
+  position: relative;
+  vertical-align: middle;
+  top:-1px;
+}
+.dj_ie input[type=radio],
+.dj_ie input[type=checkbox] {
+	top:0;
+}
+
 textarea,
 select {
-  border: solid 1px #c0c0c0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  border: solid 1px silver;
 }
 
 input[type=text],
@@ -2416,16 +3738,12 @@ input[type=password] {
   height: 32px;
   padding: 4px 2px;
   vertical-align: middle;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   border: 1px solid #d2d2d2;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   background-color: #ffffff;
+  -webkit-appearance: none;
 }
 
 /*IE8Hack*/
@@ -2435,28 +3753,26 @@ html > body input[type=password] {
   padding/*\**/: 0 2px \9;
 }
 
-/*IE7Hack*/
-*:first-child + html input[type=text],
-*:first-child + html input[type=password] {
-  height: 30px;
-  line-height: 30px;
-  max-width: 99.2%;
-  padding: 0 2px;
-}
-
 select {
-  min-height: 32px;
-  min-height: 20px \9; /* IE8 and below */
+  height: 32px;
   padding: 5px;
   max-width: 100%;
 }
 
-*:first-child + html select {
-  padding: 0;
+select[multiple="multiple"] {
+  height: auto;
+}
+#memberPopupDiv select[multiple="multiple"],
+#groupPopupDiv select[multiple="multiple"] {
+	height: 8em;
 }
 
-*:first-child + html select[multiple] {
+*:first-child + html select {
   height: auto;
+ }
+
+select[multiple="multiple"] option {
+  padding-bottom: 1px;
 }
 
 form textarea {
@@ -2506,31 +3822,40 @@ ul.attachments {
   margin: 5px 0;
 }
 
-.attachments span.deletebutton {
+.attachments .deletebutton {
   margin-left: 10px;
   cursor: pointer;
   text-decoration: underline;
   color: #1b1b1b;
 }
 
-.attachments span.deletebutton:hover {
+.attachments .deletebutton:hover {
   text-decoration: none;
   color: #ff9900;
 }
 
 .auiInputFileFrame {
   height: 32px;
-  width: 130px;
+  width: 142px;
+}
+
+#uploadContainer .auiButtonBold {
+  width: 142px;
 }
 
 .uploadText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 9em;
-  line-height: 2em;
-  margin-top: -1em;
-  margin-left: -4.5em;
+  position: absolute\9;
+  top: 0\9;
+  right: 0\9;
+  bottom: 0\9;
+  left: 0\9;
+  *position: absolute;
+  *top: 0;
+  *right: 0;
+  *bottom: 0;
+  *left: 0;
+  margin: auto;
+  width: 100%;
 }
 
 .singleFile li {
@@ -2589,63 +3914,82 @@ ul.attachments {
 /***************************************************
 	timeline
 --------------------------------------------------*/
-#timelineOuter {
+#timelineOuter,
+.timelineOuter {
   position: relative;
 }
-#timelineOuter .message {
+#timelineOuter .message,
+.timelineOuter .message {
   margin: 0;
   padding: 10px 0 0;
   clear: both;
   border-top: 1px solid #ededed;
 }
 #timelineOuter .message:first-child,
-#timelineOuter .message.first {
+#timelineOuter .message.first,
+.timelineOuter .message:first-child,
+.timelineOuter .message.first {
   border-top: none !important;
-  padding-top: 0 !important;
-  margin-top: 0 !important;
 }
-#timelineOuter .on {
+#timelineOuter .on,
+.timelineOuter .on {
   border-top: 1px solid #999999;
 }
 #timelineOuter #inputField,
-#timelineOuter .outer {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+#timelineOuter .inputField,
+#timelineOuter .outer,
+.timelineOuter #inputField,
+.timelineOuter .inputField,
+.timelineOuter .outer {
   border: 1px #d2d2d2 solid;
   background: #fff;
   overflow: hidden;
 }
-#timelineOuter #inputField {
+#timelineOuter #inputField,
+#timelineOuter .inputField,
+.timelineOuter #inputField,
+.timelineOuter .inputField {
   margin-bottom: 15px;
   background: transparent;
 }
-#timelineOuter .outer {
+#timelineOuter .outer,
+.timelineOuter .outer {
   padding: 3px;
   margin: 0 0 5px 0;
 }
-#timelineOuter textarea {
+#timelineOuter textarea,
+.timelineOuter textarea {
   border: none;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
+  -o-border-radius: 0;
   border-radius: 0;
-  font-size: 13px;
+  font-size: 14px;
 }
-#timelineOuter textarea:focus {
+#timelineOuter textarea:focus,
+.timelineOuter textarea:focus {
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   box-shadow: none;
 }
-#timelineOuter textarea.elastic {
-  width: 99%;
+#timelineOuter textarea.elastic,
+.timelineOuter textarea.elastic {
+  width: 100%;
   overflow: hidden;
   resize: none;
   outline: 0;
-  line-height: normal;
+  line-height: 1.38;
   height: 21px;
+  padding-right: 1%;
   -webkit-appearance: caret;
+}
+
+#timelineOuter .timeline .commentField textarea {
+ font-size:13px;
+}
+#timelineOuter .auiSummaryMeta{
+  margin: 0;
 }
 
 .tlInputMention {
@@ -2685,16 +4029,10 @@ ul.attachments {
   margin-left: 5px;
 }
 
-*:first-child + html .tlInputControls .floatRight .indicatorglay {
-  display: inline;
-  /*IE7*/
-}
-
 .tlDisplayChanger {
   position: relative;
-  height: 10px;
-  line-height: 10px;
-  /*text-align:right;*/
+  height: 5px;
+  line-height: 15px;
   border-top: 1px solid #ededed;
   z-index: 1;
 }
@@ -2705,18 +4043,6 @@ ul.attachments {
   top: -9px;
   right: 15px;
 }
-
-*:first-child + html .tlDisplayChanger .btn {
-  /*IE7*/
-  top: -10px;
-}
-
-.tlDisplayChanger .indicator {
-  vertical-align: middle;
-  float: left;
-  margin: 1px 0;
-}
-
 .tlDisplayChanger .btn a {
   font-size: 11px;
 }
@@ -2724,46 +4050,94 @@ ul.attachments {
   height: 20px;
   line-height: 20px;
 }
-
-.tlDisplayGroup {
-  cursor: pointer;
+.tlDisplayChanger .indicator {
+  vertical-align: middle;
+  float: left;
+  margin: 1px 0;
 }
-
 .tlDisplayChanger .menubar {
   top: 10px;
   right: 0;
   width: 12em;
 }
 
+.tlDisplayGroup {
+  cursor: pointer;
+  /*IE7*/
+}
+
+.timeline {
+  position: relative;
+}
 .timeline .avatar {
-  float: left;
-  margin: 0 10px 0 0;
+  position: absolute;
 }
 .timeline .messageContents {
   margin-left: 60px;
-  margin-bottom: 10px;
+  /*margin-bottom: 10px;*/
 }
 .timeline .messageContents .tlClipBoard {
   border: solid 1px #ededed;
   margin: 10px 0 5px;
   padding: 10px;
 }
+.timeline .messageContents .time {
+  margin-bottom: 10px;
+}
+.timeline .commentsBorder, .timeline .comments .message, .timeline .commentCaption, .timeline .commentInputDummy, .timeline .commentField {
+  border-top: solid 1px #fff !important;
+}
 .timeline .comments {
   margin: 0 0 10px 60px;
   background: #f6f6f6;
   overflow: hidden;
 }
+.timeline .comments .messageContents {
+  margin-left: 42px;
+}
+.timeline .comments .messageContents .time {
+  margin-bottom: 0;
+}
+.timeline .comments .messageContents .body {
+  font-size: 13px;
+}
+.timeline .comments .message {
+  margin: 0;
+  padding: 5px !important;
+  border: none;
+}
 .timeline .message .comments {
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
-.timeline .comments .messageContents {
+.timeline .message .comments .avatar {
+  margin: 0 10px 0 0;
+}
+.timeline .commentCaption {
+  padding: 3px 5px;
+  font-size: 11px;
+}
+.timeline .commentInputDummy {
+  padding: 5px;
+}
+.timeline .commentInputDummy span {
+  display: block;
+  padding: 5px;
+  border: 1px #d2d2d2 solid;
+  color: #d2d2d2;
+  cursor: text;
+  background: #fff;
+}
+.timeline .commentField {
+  padding: 5px;
+}
+.timeline .commentField form {
   margin-left: 42px;
 }
-
-.timeline .comments .avatar {
-  margin: 0 10px 0 0;
+.timeline .timeline {
+  width: 100%;
+  word-break: break-all;
+  word-wrap: break-word;
 }
 
 .messageContents .name {
@@ -2772,11 +4146,20 @@ ul.attachments {
 }
 .messageContents .body {
   padding: 5px 0;
+  font-size: 14px;
+}
+.messageContents .body .more {
+  margin: 0;
 }
 .messageContents .time {
-  font-size: 80%;
-  *font-size: 75%;
+  font-size: 11px;
   color: #434343;
+}
+.messageContents .time [class^="icon-"] {
+  vertical-align: middle;
+}
+.messageContents .time [class="icon-star"] {
+  color: #ffc40d;
 }
 
 .tlActivity,
@@ -2795,27 +4178,6 @@ ul.attachments {
   padding: 0;
 }
 
-.timeline .commentCaption {
-  padding: 3px 5px;
-  font-size: smaller;
-  border-top: solid 1px #fff;
-  border-bottom: solid 1px #e6e6e6;
-}
-
-.timeline .comments .message {
-  margin: 0;
-  padding: 5px !important;
-  border: none;
-  border-bottom: solid 1px #e6e6e6;
-  border-top: solid 1px #fff !important;
-}
-
-.timeline .timeline {
-  width: 100%;
-  word-break: break-all;
-  word-wrap: break-word;
-}
-
 /* tlImageBox */
 .tlImageBlock {
   margin: 10px 0;
@@ -2832,7 +4194,7 @@ ul.attachments {
   max-height: 200px;
   height: auto;
   padding: 4px;
-  border: solid 1px #c0c0c0;
+  border: solid 1px silver;
 }
 
 .tlImageBlock a:hover img,
@@ -2841,6 +4203,10 @@ ul.attachments {
 }
 
 /* clipBloard */
+.tlClipBoard {
+  font-size: 13px;
+}
+
 .tlClipImage {
   float: left;
   max-width: 90px;
@@ -2857,22 +4223,12 @@ ul.attachments {
   -ms-interpolation-mode: bicubic;
 }
 
-.tlClipImage .freeSizeHidden {
-  max-width: none;
-  max-height: none;
-  visibility: hidden;
-}
-
 .tlClipContents {
   display: table-cell;
 }
 
-.tlClipTitle {
-  font-size: 12px;
-}
-
 .tlClipUrl {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .tlClipBody {
@@ -2885,41 +4241,52 @@ ul.attachments {
   width: 23px;
   height: 23px;
   margin: 0 4px 0 0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
 }
 
-#timelineOuter .newMessage {
+#timelineOuter .searchClearOuter,
+.timelineOuter .newMessage,
+.timelineOuter .searchClearOuter {
   background: #f6f6f6;
   text-align: center;
-  border: 1px #d2d2d2 solid;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  margin-bottom: 15px;
+  /*border: 1px #d2d2d2 solid;*/
+  margin-bottom: 0px;
+}
+
+#timelineOuter .newMessage,
+#timelineOuter .newMessage a,
+#timelineOuter .readMore a,
+#timelineOuter .searchClearOuter a,
+.timelineOuter .newMessage a,
+.timelineOuter .readMore a,
+.timelineOuter .searchClearOuter a  {
+  display: block;
+  padding: 5px !important;
+  text-decoration: none;
+}
+#timelineOuter .searchClearOuter{
+  margin-top: 5px;
+}
+.searchClearOuter .indicatorglay{
+  position: absolute;
+  right: 0;
+}
+.searchClear {
+  color: #666 !important;
+  line-height: inherit;
+}
+
+.searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
+  color: #666 !important;
+}
+.searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
+  color: #f90 !important;
 }
 
 .timeline .readMore {
-  margin-top: 10px;
+  margin: 10px 0;
   background: #f0f0f0;
   text-align: center;
   border: 1px #d2d2d2 solid;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-}
-
-#timelineOuter .newMessage a,
-.timeline .readMore a {
-  display: block;
-  padding: 3px;
 }
 
 .timeline .message > .more {
@@ -2927,40 +4294,9 @@ ul.attachments {
   margin: 0 0 10px 60px;
 }
 
-.timeline .commentInputDummy {
-  padding: 5px;
-  border-top: solid 1px #fff;
-  border-bottom: solid 1px #ededed;
-}
-
-.timeline .commentInputDummy span {
-  display: block;
-  padding: 5px;
-  border: 1px #d2d2d2 solid;
-  color: #d2d2d2;
-  cursor: text;
-  background: #fff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-}
-
-.timeline .commentField {
-  padding: 5px;
-  border-top: solid 1px #fff;
-  border-bottom: solid 1px #ededed;
-}
-
-.timeline .commentField form {
-  margin-left: 42px;
-}
-
-.timeline .text_exposed_show.ellipsis {
-  display: none;
-}
-
+.timeline .text_exposed_show.ellipsis, .timeline .hdPages a.text_exposed_show.name, .hdPages .timeline a.text_exposed_show.name, .timeline .hdSearch .dropdown_menu .text_exposed_show.date, .hdSearch .dropdown_menu .timeline .text_exposed_show.date, .timeline .hdSearch .dropdown_list ul .text_exposed_show.date, .hdSearch .dropdown_list ul .timeline .text_exposed_show.date, .timeline .dropdown_list .hdSearch ul .text_exposed_show.date, .dropdown_list .hdSearch ul .timeline .text_exposed_show.date, .timeline ul.hdTools .text_exposed_show.name, ul.hdTools .timeline .text_exposed_show.name, .timeline .messageSummary .text_exposed_show.date, .messageSummary .timeline .text_exposed_show.date, .timeline .messageSummary .text_exposed_show.name, .messageSummary .timeline .text_exposed_show.name, .timeline .messageSummary .text_exposed_show.latest, .messageSummary .timeline .text_exposed_show.latest, .timeline .messageUserlist .text_exposed_show.name, .messageUserlist .timeline .text_exposed_show.name, .timeline #auiLauncher ul.launcher li a.text_exposed_show, #auiLauncher ul.launcher li .timeline a.text_exposed_show,
+.timeline #auiLauncher ul.setting li a.text_exposed_show,
+#auiLauncher ul.setting li .timeline a.text_exposed_show, .timeline .auiTabs .tab > li a.text_exposed_show, .auiTabs .tab > li .timeline a.text_exposed_show,
 .timeline .message .more.opened {
   display: none;
 }
@@ -2971,13 +4307,7 @@ ul.attachments {
   width: 14px;
   height: 14px;
   vertical-align: middle;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
-  background-repeat: no-repeat;
-}
-
-* html .iconLike,
-* html .iconComment {
-  background-image: url(../images/icon/auiIconSprites20131205.gif);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -3005,7 +4335,7 @@ ul.attachments {
 .dijitCalendarTimeContainer {
   text-align: center;
   padding: 5px 0;
-  border-bottom: solid 1px #c0c0c0;
+  border-bottom: solid 1px silver;
   -webkit-box-shadow: 0 1px 0 #f9f9f9;
   -moz-box-shadow: 0 1px 0 #f9f9f9;
   box-shadow: 0 1px 0 #f9f9f9;
@@ -3025,50 +4355,33 @@ ul.attachments {
   box-sizing: border-box;
 }
 
-.auiFilter .auiButton {
+.auiFilter .auiButton, .auiFilter .auiSelectButton a, .auiSelectButton .auiFilter a,
+.auiFilter .auiSelectButtonSmall a,
+.auiSelectButtonSmall .auiFilter a {
   float: left;
   width: 16px;
 }
 
 .filters {
-  /*white-space:nowrap;*/
   color: #999999;
   line-height: 30px;
   cursor: text;
 }
 
 .filterTip {
-  display: block;
-  float: left;
+  display: inline-block;
   background: #f0f0f0;
   color: #000;
   margin: 0 2px 4px !important;
   padding: 0 5px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   height: 32px !important;
   line-height: 33px !important;
   white-space: nowrap;
-  font-size: 11px;
   cursor: pointer;
 }
 
 .auiSearch .filterTip {
   margin: 2px !important;
-}
-
-*:first-child + html .filterTip {
-  /* IE7 Hack */
-  white-space: normal;
-  overflow: hidden;
-}
-
-*:first-child + html .filterTip > span {
-  /* IE7 Hack */
-  white-space: normal;
 }
 
 .filterInputField .filterTip {
@@ -3095,7 +4408,7 @@ ul.attachments {
 
 .filterTip > a {
   position: absolute;
-  margin: 6px -3px 0 3px;
+  margin: 6px -5px 0 5px;
 }
 
 *:first-child + html .filterTip > a {
@@ -3107,12 +4420,8 @@ ul.attachments {
   position: relative;
   border: solid 1px #d2d2d2;
   height: 30px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
   background: #ffffff;
+  overflow: hidden;
 }
 
 *:first-child + html .filterInputField {
@@ -3123,7 +4432,7 @@ ul.attachments {
   position: absolute;
   height: 30px;
   overflow: hidden;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .filterInputField input[type=text] {
@@ -3142,21 +4451,24 @@ ul.attachments {
   position: absolute;
   display: block;
   right: 0;
-  width: 20px;
+  width: 24px;
   height: 26px;
   top: 2px;
-  right: 2px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
+  -webkit-border-radius: 0 2px 2px 0;
+  -moz-border-radius: 0 2px 2px 0;
+  -ms-border-radius: 0 2px 2px 0;
+  -o-border-radius: 0 2px 2px 0;
+  border-radius: 0 2px 2px 0;
+  -webkit-box-shadow: -3px 0 3px 0px white;
+  -moz-box-shadow: -3px 0 3px 0px white;
+  box-shadow: -3px 0 3px 0px white;
   vertical-align: middle;
   background: #ffffff;
+  text-decoration: none;
 }
-
-*:first-child + html .filterDropDrawer {
-  top: 1px;
+.filterDropDrawer i[class*=icon-] {
+  line-height: 26px;
+  margin-left: 7px;
 }
 
 .filterDropDrawer i {
@@ -3169,16 +4481,23 @@ ul.attachments {
   padding-right: 20px;
 }
 
-*:first-child + html .filterInputField input[type=text] {
-  padding-right: 15px;
-}
-
 .filterInputField .menubar.multi {
   top: 30px;
 }
 
 .auiFilter .auiSearch .auiButtonSearch {
   margin-left: 5px;
+}
+
+.filters.colors .filterTip {
+  color: white !important;
+  cursor: default;
+}
+
+.filters.colors .filterTip > a {
+  color: white !important;
+  position: static;
+  margin: 0 0 0 6px;
 }
 
 /***************************************************
@@ -3337,17 +4656,11 @@ ul.attachments {
 .auiWLCover a {
   display: block;
   height: 100%;
-  background: #ffffff\9;
-  /*IE7*/
+  background: white \9;
+  /*IE8*/
   -ms-filter: "alpha(opacity=0)";
-  /*IE7*/
+  /*IE8*/
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-*:first-child + html .auiWLCover a {
-  /*IE7*/
-  background: #ffffff;
-  filter: alpha(opacity=0);
 }
 
 .auiWideList.useCheck .row {
@@ -3451,6 +4764,44 @@ ul.attachments {
 }
 
 /***************************************************
+	auiUserChecklist
+--------------------------------------------------*/
+.auiCheckList {
+  margin: 5px 0;
+  overflow: auto !important;
+}
+.auiCheckList li {
+  display: block;
+  float: left;
+  padding: 0;
+  background: none;
+}
+.auiCheckList label {
+  display: block;
+  padding: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.auiCheckList label:hover {
+  background: #f0f0f0;
+}
+.auiCheckList .avatar {
+  width: 23px;
+  height: 23px;
+  vertical-align: middle;
+  margin: 0 5px;
+}
+
+.auiCL2 li {
+  width: 50%;
+}
+
+.auiCL3 li {
+  width: 33.3%;
+}
+
+/***************************************************
 	auiDispChanger
 --------------------------------------------------*/
 .auiDispChanger {
@@ -3466,8 +4817,6 @@ ul.attachments {
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
-  text-shadow: 0 1px 0 black;
-  border-top: solid 1px rgba(255, 255, 255, 0.3);
   border-bottom: solid 1px rgba(0, 0, 0, 0.8);
 }
 .auiDispChanger .icon {
@@ -3504,10 +4853,6 @@ ul.attachments {
   display: block;
 }
 
-*:first-child + html .auiRowList li {
-  display: inline;
-}
-
 /***************************************************
 	auiWebdbTable
 --------------------------------------------------*/
@@ -3516,8 +4861,42 @@ ul.attachments {
 }
 
 /***************************************************
+	webdbFelds
+--------------------------------------------------*/
+.webdbFelds th {
+  text-align: left;
+}
+.webdbFelds input[type=text] {
+  width: 100%;
+}
+
+.webdbFieldType {
+  width: 120px;
+}
+.webdbFieldType select {
+  width: 120px;
+}
+
+.webdbFieldCheck {
+  text-align: center;
+  width: 50px;
+}
+.webdbFieldCheck label {
+  width: 100%;
+  display: block;
+}
+.webdbFieldCheck label input[type=radio],
+.webdbFieldCheck label input[type=checkbox] {
+  height: 32px;
+  cursor: pointer;
+}
+
+/***************************************************
 	auiWikiContent
 --------------------------------------------------*/
+.auiWikiContent {
+  font-size: 14px;
+}
 .auiWikiContent h1, .auiWikiContent h2, .auiWikiContent h3 {
   margin: 1em 0 !important;
 }
@@ -3556,6 +4935,149 @@ ul.attachments {
   color: #ff9900;
 }
 
+.wikiPreview {
+  border: solid 1px #d2d2d2;
+  background: #f6f6f6;
+  padding: 10px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/***************************************************
+	project
+--------------------------------------------------*/
+#gantt_task {
+  float: left;
+  border: solid 1px #d2d2d2;
+  border-top: none;
+}
+#gantt_task > table th {
+  height: 40px;
+  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_task > table td {
+  height: 30px;
+  padding: 0 5px;
+  border-top: solid 1px #ededed;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_task > table td > div {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+tr:first-child #gantt_task > table td {
+  border-top: none;
+}
+
+#gantt_table {
+  border-bottom: solid 1px #d2d2d2;
+}
+
+#gantt_area {
+  position: relative;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+#gantt_area > div {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+#gantt_area td {
+  table-layout: fixed;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#gantt_area .gantt_area_month td,
+#gantt_area .gantt_area_day td {
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  font-size: 10px;
+  border: solid 1px #d2d2d2;
+  border-left: none;
+  text-align: center;
+}
+#gantt_area .gantt_area_day td div {
+  margin-left: -1px;
+}
+#gantt_area .gantt_area_cell td {
+  text-align: center;
+  font-size: 8px;
+  height: 30px;
+  border-right: 1px solid #d2d2d2;
+}
+#gantt_area .gantt_area_month td.today,
+#gantt_area .gantt_area_day td.today,
+#gantt_area .gantt_area_cell td.today {
+  border-right: solid 1px #ff3333;
+}
+#gantt_area .gantt_tip {
+  position: absolute;
+  height: 10px;
+  font-size: 10px;
+  border: 1px solid #999999;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: #f0f0f0;
+  z-index: 1;
+}
+#gantt_area .gantt_tip > div {
+  width: 0%;
+  height: 100%;
+  background: #999999;
+}
+#gantt_area .gantt_link {
+  cursor: pointer;
+  position: absolute;
+  font-size: 10px;
+  height: 10px;
+  line-height: 10px;
+  z-index: 4;
+}
+#gantt_area .gantt_link span {
+  display: block;
+  position: absolute;
+  width: 30px;
+  right: -35px;
+  height: 10px;
+  line-height: 10px;
+  padding-left: 5px;
+  margin: 0;
+}
+/***************************************************
+	txtIcon
+--------------------------------------------------*/
+.txtIcon {
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  border-radius: 2px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: text-bottom;
+  background-color: #999;
+  color: #ffffff;
+  display: inline-block;
+  font-size: 12px;
+  height: 16px;
+  padding: 0;
+  text-align: center;
+  width: 16px;
+  line-height: 16px;
+}
+
 /***************************************************
 	auiIcon
 --------------------------------------------------*/
@@ -3571,29 +5093,8 @@ ul.attachments {
   -ms-border-radius: 2px;
   -o-border-radius: 2px;
   border-radius: 2px;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
-}
-
-* html .auiIcon {
-  background-image: url(../images/icon/auiIconSprites20131205.gif);
-  background-repeat: no-repeat;
-}
-
-.auiButton .auiIcon,
-.auiButtonAction .auiIcon,
-.auiButtonBold .auiIcon,
-.auiButtonSearch .auiIcon,
-.auiButtonSmall .auiIcon,
-.auiButtonDisabled .auiIcon,
-.auiButtonIcon .auiIcon,
-.auiButtonDummy .auiIcon,
-.auiButtonIconDummy .auiIcon,
-input[type=submit] .auiIcon,
-input[type=button] .auiIcon,
-input[type=reset] .auiIcon,
-button .auiIcon {
-  vertical-align: middle;
 }
 
 .auiIcon span {
@@ -3602,15 +5103,6 @@ button .auiIcon {
 
 a.auiIcon:hover {
   background-color: #999999;
-}
-
-* html a.auiIcon:hover {
-  background-color: transparent;
-}
-
-/*IE6*/
-*:first-child + html .auiIcon + .auiIcon {
-  margin-left: 2px;
 }
 
 .auiIconClear {
@@ -3631,16 +5123,6 @@ a.auiIconSetting:hover {
   background-position: 0px -16px;
 }
 
-* html .auiIconSetting {
-  background-position: 0px 0px;
-}
-
-/*IE6*/
-* html a.auiIconSetting:hover {
-  background-position: 0px 0px;
-}
-
-/*IE6*/
 .auiIconFile {
   background-position: 0px -32px;
 }
@@ -3653,16 +5135,6 @@ a.auiIconFile:hover {
   background-position: 0px -48px;
 }
 
-* html .auiIconFile {
-  background-position: 0px -32px;
-}
-
-/*IE6*/
-* html a.auiIconFile:hover {
-  background-position: 0px -32px;
-}
-
-/*IE6*/
 .auiIconUser {
   background-position: 0px -64px;
 }
@@ -3675,16 +5147,6 @@ a.auiIconUser:hover {
   background-position: 0px -80px;
 }
 
-* html .auiIconUser {
-  background-position: 0px -64px;
-}
-
-/*IE6*/
-* html a.auiIconUser:hover {
-  background-position: 0px -64px;
-}
-
-/*IE6*/
 .auiIconCreate {
   background-position: 0px -96px;
 }
@@ -3697,16 +5159,6 @@ a.auiIconCreate:hover {
   background-position: 0px -112px;
 }
 
-* html .auiIconCreate {
-  background-position: 0px -96px;
-}
-
-/*IE6*/
-* html a.auiIconCreate:hover {
-  background-position: 0px -96px;
-}
-
-/*IE6*/
 .auiIconClock {
   background-position: 0px -128px;
 }
@@ -3719,16 +5171,6 @@ a.auiIconClock:hover {
   background-position: 0px -144px;
 }
 
-* html .auiIconClock {
-  background-position: 0px -128px;
-}
-
-/*IE6*/
-* html a.auiIconClock:hover {
-  background-position: 0px -128px;
-}
-
-/*IE6*/
 .auiIconCalendar {
   background-position: 0px -160px;
 }
@@ -3741,16 +5183,6 @@ a.auiIconCalendar:hover {
   background-position: 0px -176px;
 }
 
-* html .auiIconCalendar {
-  background-position: 0px -160px;
-}
-
-/*IE6*/
-* html a.auiIconCalendar:hover {
-  background-position: 0px -160px;
-}
-
-/*IE6*/
 .auiIconLock {
   background-position: 0px -192px;
 }
@@ -3763,16 +5195,6 @@ a.auiIconLock:hover {
   background-position: 0px -208px;
 }
 
-* html .auiIconLock {
-  background-position: 0px -192px;
-}
-
-/*IE6*/
-* html a.auiIconLock:hover {
-  background-position: 0px -192px;
-}
-
-/*IE6*/
 .auiIconReload {
   background-position: 0px -224px;
 }
@@ -3785,16 +5207,6 @@ a.auiIconReload:hover {
   background-position: 0px -240px;
 }
 
-* html .auiIconReload {
-  background-position: 0px -224px;
-}
-
-/*IE6*/
-* html a.auiIconReload:hover {
-  background-position: 0px -224px;
-}
-
-/*IE6*/
 .auiIconPrint {
   background-position: 0px -256px;
 }
@@ -3803,16 +5215,6 @@ a.auiIconPrint:hover {
   background-position: 0px -256px;
 }
 
-* html .auiIconPrint {
-  background-position: 0px -256px;
-}
-
-/*IE6*/
-* html a.auiIconPrint:hover {
-  background-position: 0px -256px;
-}
-
-/*IE6*/
 .auiIconDelete {
   background-position: 0px -272px;
 }
@@ -3825,16 +5227,6 @@ a.auiIconDelete:hover {
   background-position: 0px -288px;
 }
 
-* html .auiIconDelete {
-  background-position: 0px -272px;
-}
-
-/*IE6*/
-* html a.auiIconDelete:hover {
-  background-position: 0px -272px;
-}
-
-/*IE6*/
 .auiIconPlus {
   background-position: 0px -304px;
 }
@@ -3847,16 +5239,6 @@ a.auiIconPlus:hover {
   background-position: 0px -320px;
 }
 
-* html .auiIconPlus {
-  background-position: 0px -304px;
-}
-
-/*IE6*/
-* html a.auiIconPlus:hover {
-  background-position: 0px -304px;
-}
-
-/*IE6*/
 .auiIconMinus {
   background-position: 0px -336px;
 }
@@ -3869,16 +5251,6 @@ a.auiIconMinus:hover {
   background-position: 0px -352px;
 }
 
-* html .auiIconMinus {
-  background-position: 0px -336px;
-}
-
-/*IE6*/
-* html a.auiIconMinus:hover {
-  background-position: 0px -336px;
-}
-
-/*IE6*/
 .auiIconArwLeft {
   background-position: 0px -368px !important;
 }
@@ -3891,16 +5263,6 @@ a.auiIconArwLeft:hover {
   background-position: 0px -384px !important;
 }
 
-* html .auiIconArwLeft {
-  background-position: 0px -368px !important;
-}
-
-/*IE6*/
-* html a.auiIconArwLeft:hover {
-  background-position: 0px -368px !important;
-}
-
-/*IE6*/
 .auiIconArwRight {
   background-position: 0px -400px !important;
 }
@@ -3913,16 +5275,6 @@ a.auiIconArwRight:hover {
   background-position: 0px -416px !important;
 }
 
-* html .auiIconArwRight {
-  background-position: 0px -400px !important;
-}
-
-/*IE6*/
-* html a.auiIconArwRight:hover {
-  background-position: 0px -400px !important;
-}
-
-/*IE6*/
 .auiIconArwBottom {
   background-position: 0px -432px !important;
 }
@@ -3935,16 +5287,6 @@ a.auiIconArwBottom:hover {
   background-position: 0px -448px !important;
 }
 
-* html .auiIconArwBottom {
-  background-position: 0px -432px !important;
-}
-
-/*IE6*/
-* html a.auiIconArwBottom:hover {
-  background-position: 0px -432px !important;
-}
-
-/*IE6*/
 .auiIconArwTop {
   background-position: 0px -464px !important;
 }
@@ -3957,16 +5299,6 @@ a.auiIconArwTop:hover {
   background-position: 0px -480px !important;
 }
 
-* html .auiIconArwTop {
-  background-position: 0px -464px !important;
-}
-
-/*IE6*/
-* html a.auiIconArwTop:hover {
-  background-position: 0px -464px !important;
-}
-
-/*IE6*/
 .auiIconImage {
   background-position: 0px -496px;
 }
@@ -3979,16 +5311,6 @@ a.auiIconImage:hover {
   background-position: 0px -512px;
 }
 
-* html .auiIconImage {
-  background-position: 0px -496px;
-}
-
-/*IE6*/
-* html a.auiIconImage:hover {
-  background-position: 0px -496px;
-}
-
-/*IE6*/
 .auiIconUsers {
   background-position: 0px -528px;
 }
@@ -4001,16 +5323,6 @@ a.auiIconUsers:hover {
   background-position: 0px -544px;
 }
 
-* html .auiIconUsers {
-  background-position: 0px -528px;
-}
-
-/*IE6*/
-* html a.auiIconUsers:hover {
-  background-position: 0px -528px;
-}
-
-/*IE6*/
 .auiIconSearch {
   background-position: 0px -560px;
 }
@@ -4023,88 +5335,50 @@ a.auiIconSearch:hover {
   background-position: 0px -576px;
 }
 
-* html .auiIconSearch {
-  background-position: 0px -560px;
-}
-
-/*IE6*/
-* html a.auiIconSearch:hover {
-  background-position: 0px -560px;
-}
-
-/*IE6*/
 .auiIconTmpreserve {
   background-position: 0px -688px;
+  width: 13px;
 }
 
 a.auiIconTmpreserve:hover {
   background-position: 0px -688px;
 }
+.termScheduleDivNameDiv .auiIconTmpreserve {background-position: 0px -816px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconTmpreserve:hover {background-position: 0px -816px;}
 
-* html .auiIconTmpreserve {
-  background-position: 0px -688px;
-}
-
-/*IE6*/
-* html a.auiIconTmpreserve:hover {
-  background-position: 0px -688px;
-}
-
-/*IE6*/
 .auiIconOverlap {
   background-position: 0px -704px;
+  width: 12px;
 }
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
 }
+.termScheduleDivNameDiv .auiIconOverlap {background-position: 0px -832px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconOverlap:hover {background-position: 0px -832px;}
 
-* html .auiIconOverlap {
-  background-position: 0px -704px;
-}
-
-/*IE6*/
-* html a.auiIconOverlap:hover {
-  background-position: 0px -704px;
-}
-
-/*IE6*/
 .auiIconRepeat {
   background-position: 0px -720px;
+  width: 13px;
 }
 
 a.auiIconRepeat:hover {
   background-position: 0px -720px;
 }
+.termScheduleDivNameDiv .auiIconRepeat {background-position: 0px -848px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconRepeat:hover {background-position: 0px -848px;}
 
-* html .auiIconRepeat {
-  background-position: 0px -720px;
-}
-
-/*IE6*/
-* html a.auiIconRepeat:hover {
-  background-position: 0px -720px;
-}
-
-/*IE6*/
 .auiIconSecret {
   background-position: 0px -736px;
+  width: 12px;
 }
 
 a.auiIconSecret:hover {
   background-position: 0px -736px;
 }
+.termScheduleDivNameDiv .auiIconSecret {background-position: 0px -864px; margin-top: 1px !important;}
+.termScheduleDivNameDiv .auiIconSecret:hover {background-position: 0px -864px;}
 
-* html .auiIconSecret {
-  background-position: 0px -736px;
-}
-
-/*IE6*/
-* html a.auiIconSecret:hover {
-  background-position: 0px -736px;
-}
-
-/*IE6*/
 .auiIconTrash {
   background-position: 0px -752px;
 }
@@ -4117,16 +5391,6 @@ a.auiIconTrash:hover {
   background-position: 0px -768px;
 }
 
-* html .auiIconTrash {
-  background-position: 0px -752px;
-}
-
-/*IE6*/
-* html a.auiIconTrash:hover {
-  background-position: 0px -752px;
-}
-
-/*IE6*/
 .auiIconMail {
   background-position: 0px -784px;
 }
@@ -4135,16 +5399,6 @@ a.auiIconMail:hover {
   background-position: 0px -784px;
 }
 
-* html .auiIconMail {
-  background-position: 0px -784px;
-}
-
-/*IE6*/
-* html a.auiIconMail:hover {
-  background-position: 0px -784px;
-}
-
-/*IE6*/
 .auiIconMailOpen {
   background-position: 0px -800px;
 }
@@ -4153,16 +5407,6 @@ a.auiIconMailOpen:hover {
   background-position: 0px -800px;
 }
 
-* html .auiIconMailOpen {
-  background-position: 0px -800px;
-}
-
-/*IE6*/
-* html a.auiIconMailOpen:hover {
-  background-position: 0px -800px;
-}
-
-/*IE6*/
 .auiIconIndicator {
   background-image: url(../images/common/indicator.gif);
   background-repeat: no-repeat;
@@ -4176,12 +5420,7 @@ a.auiIconMailOpen:hover {
   width: 15px;
   height: 18px;
   vertical-align: baseline;
-  background-image: url(../images/icon/auiIconSprites20131205.png);
-  background-repeat: no-repeat;
-}
-
-* html .auiIconArrow {
-  background-image: url(../images/icon/auiIconSprites20131205.gif);
+  background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
 
@@ -4220,14 +5459,6 @@ a.auiIconMailOpen:hover {
 /***************************************************
 	auiWFicon
 --------------------------------------------------*/
-.auiWFicon {
-  -webkit-border-radius: 2px;
-  -moz-border-radius: 2px;
-  -ms-border-radius: 2px;
-  -o-border-radius: 2px;
-  border-radius: 2px;
-}
-
 .auiWFicon,
 .auiWFicon [class^="icon-"] {
   display: inline-block;
@@ -4249,6 +5480,7 @@ a:hover .auiWFicon [class^="icon-"] {
 [class^="icon-"] {
   font-size: 14px;
   color: #666666;
+  text-decoration: none !important;
 }
 
 /***************************************************
@@ -4257,27 +5489,44 @@ a:hover .auiWFicon [class^="icon-"] {
 .loader {
   padding: 10px;
   height: 20px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px;
-  background: url(../images/common/indicator.gif) no-repeat center center;
+  line-height: 20px;
   background-size: 16px;
+  text-align: center;
 }
 .loader img {
   vertical-align: middle;
+}
+.loader [class*=icon-] {
+  font-size: 18px;
+}
+
+.auiLoadWrapper {
+  position: relative;
+}
+.auiLoadWrapper .loader {
+  position: absolute;
+  padding: 0;
+  height: auto;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  zoom: 1;
+}
+
+/*IE8Hack*/
+html > body .auiLoadWrapper .loader {
+  background-color/*\**/: white \9;
+  filter: alpha(opacity=80);
+  -ms-filter: "alpha(opacity=80)";
 }
 
 /* auiAbsLayer ********************/
 .auiAbsLayer {
   position: absolute;
   background: #fff;
-  border: solid 1px #c0c0c0;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  border-radius: 3px;
+  border: solid 1px silver;
   z-index: 999;
 }
 
@@ -4297,6 +5546,20 @@ a:hover .auiWFicon [class^="icon-"] {
 /***************************************************
 	CSS3 transition
 --------------------------------------------------*/
+@keyframes fadeIn {
+  0% {
+    filter: alpha(opacity=0);
+    -moz-opacity: 0;
+    opacity: 0;
+  }
+
+  100% {
+    filter: alpha(opacity=100);
+    -moz-opacity: 1;
+    opacity: 1;
+  }
+}
+
 @-webkit-keyframes fadeIn {
   0% {
     filter: alpha(opacity=0);
@@ -4321,7 +5584,7 @@ a:hover .auiWFicon [class^="icon-"] {
   text-align: center;
 }
 .errorbox h1 {
-  font-size: 1.2em;
+  font-size: 16px;
   margin: 1em 0;
 }
 .errorbox ul, .errorbox ol {
@@ -4364,13 +5627,91 @@ iframe.iframe_messagelist {
   position: fixed;
   bottom: 0;
   right: 10px;
-  width: 300px;
+  height: 400px;
+  width: 400px;
   z-index: 9000;
   background: white;
   border-top: 1px solid #d2d2d2;
   border-left: 1px solid #d2d2d2;
   border-right: 1px solid #d2d2d2;
   border-bottom: none;
-  border-radius: 5px 5px 0 0;
+  -webkit-border-radius: 4px 4px 0 0;
+  -moz-border-radius: 4px 4px 0 0;
+  -ms-border-radius: 4px 4px 0 0;
+  -o-border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0;
   overflow: hidden;
+}
+
+/***************************************************
+	guideList
+--------------------------------------------------*/
+.guideList{
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	letter-spacing: -1em;
+	word-spacing: -1em;
+}
+:root .guideList{
+	letter-spacing: -1px;
+	word-spacing: -1px;
+}
+.guideList li{
+	@extend .border-box;
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+	background: none;
+	width: 24.75%;
+	min-width: 109px;
+	vertical-align: top;
+	letter-spacing: normal;
+	word-spacing: normal;
+}
+.guideList li > a{
+	@extend .bRadius4;
+	display: block;
+	text-align: center;
+	padding: 10px 5px;
+	text-decoration: none;
+}
+.guideList li > a p{
+	text-decoration: underline;
+}
+.guideList li > a:hover{
+	background: $grayHightLight;
+}
+.guideList li > a:hover p{
+	text-decoration: none;
+}
+.guideList i{
+	font-size: 50px;
+}
+.guideList.wide li{
+	width: 100%;
+	padding: 10px 0 0 120px;
+	margin-bottom: 20px;
+	position: relative;
+}
+.guideList.wide .iconBox{
+	position: absolute;
+	display: inline-block;
+	width: 110px;
+	top: 15px;
+	left: 0px;
+	text-align: center;
+}
+.guideList .iconBox i{
+	font-size: 70px;
+}
+
+/***************************************************
+	copyright
+--------------------------------------------------*/
+.copyright {
+  padding: 10px;
+  text-align: right;
+  font-size: 11px;
+  color: #999;
 }

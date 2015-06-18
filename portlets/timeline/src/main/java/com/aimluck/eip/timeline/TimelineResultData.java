@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.timeline;
 
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class TimelineResultData implements ALData {
   /** 登録者名 */
   private ALStringField create_user;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */
@@ -259,7 +258,7 @@ public class TimelineResultData implements ALData {
       }
     } else {
       if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(timeline_type)) {
-        return note.getValue();
+        return note.toString();
       } else {
         return getNote();
       }

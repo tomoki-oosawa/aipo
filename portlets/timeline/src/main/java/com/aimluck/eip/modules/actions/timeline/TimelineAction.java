@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.timeline;
 
 import java.util.ArrayList;
@@ -38,7 +37,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムラインのアクションクラス <BR>
- * 
+ *
  */
 public class TimelineAction extends ALBaseAction {
 
@@ -48,7 +47,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -79,7 +78,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -98,7 +97,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -119,7 +118,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * トピックを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -136,7 +135,7 @@ public class TimelineAction extends ALBaseAction {
 
   /**
    * タイムラインで使用したセッション情報を消去する．
-   * 
+   *
    */
   public void clearTimelineSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
@@ -164,5 +163,8 @@ public class TimelineAction extends ALBaseAction {
 
     context.put("token", token);
     context.put("jsapiUrl", timelinehandler.getApiUrl());
+    if (rundata.getUserAgent().trim().indexOf("Mac") != -1) {
+      context.put("isMacOS", "true");
+    }
   }
 }

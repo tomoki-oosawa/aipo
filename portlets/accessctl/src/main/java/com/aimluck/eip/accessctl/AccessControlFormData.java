@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.accessctl;
 
 import java.util.ArrayList;
@@ -451,8 +450,15 @@ public class AccessControlFormData extends ALAbstractFormData {
         logger.debug("[AccessControlUtils] Not found ID...");
         return false;
       }
+      SelectQuery<EipTAclUserRoleMap> EipTAclUserRoleMapSQL =
+        Database.query(EipTAclUserRoleMap.class);
+      EipTAclUserRoleMapSQL.andQualifier(ExpressionFactory.matchDbExp(
+        EipTAclUserRoleMap.ROLE_ID_COLUMN,
+        aclroleid));
+      List<EipTAclUserRoleMap> userRoleMaps = EipTAclUserRoleMapSQL.fetchList();
 
-      // オブジェクトを削除（Cayenneのカスケード設定でEipTAclUserRoleMapも同時に削除）
+      // オブジェクトを削除
+      Database.deleteAll(userRoleMaps);
       Database.delete(aclroles.get(0));
 
       Database.commit();
@@ -462,7 +468,8 @@ public class AccessControlFormData extends ALAbstractFormData {
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           role.getRoleId(),
           ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-          "ロール 「" + role.getRoleName() + "」 削除");
+          ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_DELETE", role
+            .getRoleName()));
       }
 
     } catch (Exception ex) {
@@ -500,7 +507,7 @@ public class AccessControlFormData extends ALAbstractFormData {
           .valueOf((int) feature_id.getValue()));
       aclrole.setEipTAclPortletFeature(feature);
 
-      // 登録日
+      // 作成日
       aclrole.setCreateDate(now);
       // 更新日
       aclrole.setUpdateDate(now);
@@ -521,7 +528,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        "ロール 「" + aclrole.getRoleName() + "」 追加");
+        ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_ADD", aclrole
+          .getRoleName()));
 
     } catch (Exception ex) {
       Database.rollback();
@@ -578,8 +586,8 @@ public class AccessControlFormData extends ALAbstractFormData {
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         aclrole.getRoleId(),
         ALEventlogConstants.PORTLET_TYPE_ACCESSCTL,
-        "ロール 「" + aclrole.getRoleName() + "」 更新");
-
+        ALLocalizationUtils.getl10nFormat("ACCESSCTL_EVENTLOG_UPDATE", aclrole
+          .getRoleName()));
     } catch (Exception ex) {
       Database.rollback();
       logger.error("AccessControlFormData.updateFormData", ex);

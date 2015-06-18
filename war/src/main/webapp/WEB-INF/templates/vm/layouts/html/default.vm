@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,8 +25,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 #if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
 <title>${alias}</title>
-<meta name="description" content="" />
-<meta name="keywords" content="" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
@@ -37,7 +35,9 @@
 	<meta name="format-detection" content="telephone=no"/>
 #end
 <link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
-<link type="image/x-icon" rel="icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+#if($!utils.isAndroidBrowser($data) && "${client}" == "PCIPHONE")
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-for-pc-page.css?$!{utils.CacheBust}" />
+#end
 #if("${client}" == "IPHONE")<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/mobile-all.css?$!{utils.CacheBust}" />
 #else<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/aui-all.css?$!{utils.CacheBust}" />
 #end
@@ -48,8 +48,7 @@
 	<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-2.x.css?$!{utils.CacheBust}" />
 #end
 <link rel="apple-touch-icon-precomposed" href="$!{external_resources_url}/themes/iphone/img/apple-touch-icon-precomposed.png" />
-<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css" />
-<!--[if IE 7]><link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome-ie7.min.css" /><![endif]-->
+<link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css?$!{utils.CacheBust}" />
 </head>
 <body onload="aipo.container.renderGadgets()">
 <div id="modalDialog" class="modalDialog" style="display:none"></div>
@@ -99,12 +98,12 @@ function androidLocale(){
 <div id="wrapper" class="mb30">
 #elseif (${start_guide_popup})
 #if($data.User.isAdmin())
-<div id="wrapper"  style="margin-bottom : 156px">
+<div id="wrapper">
 #else
-<div id="wrapper"  style="margin-bottom : 26px">
+<div id="wrapper">
 #end
 #else
-<div id="wrapper"  style="margin-bottom : 26px">
+<div id="wrapper">
 #end
 
 ##if("$!{client}" != "IPHONE")
@@ -117,23 +116,30 @@ $!jnavigation.setTemplate($config.getString("bottomnav.vm"))
 
 </div>
 <!-- /WRAPPER -->
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
 dojo.require("aimluck.widget.Dialog");
 
 dojo.addOnLoad(function() {
 	aipo.customize.positionInitialize();
-    #if (!${tutorialForbid} && $data.User.hasLoggedIn())
-    aipo.tutorial.showDialog('$jslink.getTemplate("TutorialScreen")');
-    #end
+	aipo.notification.setUp();
 #if ($data.User.hasLoggedIn() && "$!checkUrl" != "" && "$!relayUrl" != "" && "$!rpctoken" != "")
     gadgets.rpc.setRelayUrl("sharedStateIframe", "$relayUrl");
     gadgets.rpc.setAuthToken("sharedStateIframe", "$rpctoken");
     dojo.byId('sharedStateIframe').src='$checkUrl';
-    if(window.webkitNotifications) {
+    if(window.webkitNotifications || window.Notification) {
       aipo.container.gadgetService.requestDesktopNotifyEnable();
     }
+    dojo.connect(window, "onfocus", null, function(e) {
+        var sharedStateIframe = document.getElementById('sharedStateIframe').contentWindow;
+        if(sharedStateIframe) {
+            try {
+                sharedStateIframe.refresh();
+            } catch(ignore) {
+            }
+        }
+    });
 #end
 });
 
@@ -162,6 +168,8 @@ var dispChanger = false;
 	dispChanger = true;
 #end
 #if ("$!{client}" != "IPAD")
+#if($!hasAuthorityCustomize)
+
 dojo.require("dojo.dnd.Source");
 dojo.require("aipo.customize.form");
 
@@ -262,6 +270,15 @@ dojo.addOnLoad(function() {
     });
     underlay.show();
 });
+#else
+dojo.require("dojo.dnd.Source");
+dojo.require("aipo.customize.form");
+
+dojo.addOnLoad(function() {
+
+	aipo.customize.addAutoHideMenuTrigger();
+	});
+#end
 #end
 function activitySwitch(){
     var wrapper = document.getElementById('wrapper');

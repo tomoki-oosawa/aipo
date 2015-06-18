@@ -1,13 +1,6 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.widget.ActivityList"],
-["require", "dijit._Widget"],
-["require", "dijit._Templated"],
-["require", "aimluck.widget.Contentpane"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.ActivityList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.ActivityList"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -23,6 +16,13 @@ dojo._hasResource["aipo.widget.ActivityList"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.widget.ActivityList"],
+["require", "dijit._Widget"],
+["require", "dijit._Templated"],
+["require", "aimluck.widget.Contentpane"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.ActivityList"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.ActivityList"] = true;
 
 dojo.provide("aipo.widget.ActivityList");
 
@@ -43,6 +43,8 @@ dojo.declare("aipo.widget.ActivityList", [dijit._Widget, dijit._Templated], {
     	}
     	if(window.webkitNotifications) {
             content.viewPage("?template=ActivityListScreen&s=1&p=" + window.webkitNotifications.checkPermission());
+     	} else if(window.Notification){
+    		content.viewPage("?template=ActivityListScreen&s=1&p=" + window.Notification.permission);
      	} else {
             content.viewPage("?template=ActivityListScreen&s=0");
         }

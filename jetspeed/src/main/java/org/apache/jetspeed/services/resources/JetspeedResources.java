@@ -28,7 +28,7 @@ import org.apache.turbine.services.resources.TurbineResources;
  * an array of values.  In these cases, we let the first value override all the others and use it.
  *
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:tom@PIsoftware.com">Tom Adams</a>
  * @author <a href="mailto:kimptoc_mail@yahoo.com">Chris Kimpton</a>
  * @author <a href="mailto:ggolden@apache.org">Glenn R. Golden</a>

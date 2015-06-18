@@ -1,0 +1,203 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+#set ($orderProjectTask = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskChangeTurnFormScreen").addQueryData("projectid","$result.SelectedProjectId"))
+#set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')")
+#set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectListScreen")))
+
+## ---------------------------------------------------------------------------
+#AUIcontentsAreaHeader()
+#if(!$result.AllProject || $result.AllProject.size() == 0)
+#AUIEmptyMessage("icon-tasks" $utils.getl10nFormat1("PROJECT_EMPTY_LONG_MESSAGE_ONCLICK","aipo.viewPage('$adminTab', '$!portlet.ID');"))
+#elseif(!$result.List)
+	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
+#else
+    #AUISummaryFilterDivHeader()
+    #AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+    <input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen")' />
+    <input type="hidden" name="template" value="ProjectTaskListScreen"/>
+    <div class="filterInputField">
+    	<div class="filters" id="filters_$!portlet.ID">
+    	#if("$!result.TargetUserId"!="")
+        #ALfilterTip($!result.TargetUserName "aipo.project.filterSetDefault('$!portlet.ID','target_user_id');")
+        #end
+        #if("$!result.TargetTracker"!="")
+        #ALfilterTip($!result.TargetTrackerName "aipo.project.filterSetDefault('$!portlet.ID','target_tracker');")
+        #end
+        #if("$!result.TargetPriority"!="")
+        #ALfilterTip($!result.TargetPriorityName "aipo.project.filterSetDefault('$!portlet.ID','target_priority');")
+        #end
+        #if("$!result.TargetStatus"!="")
+        #ALfilterTip($!result.TargetStatusName "aipo.project.filterSetDefault('$!portlet.ID','target_status');")
+        #end
+    	</div>
+    	<a href="javascript:void(0)" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="$l10n.PROJECT_FILTER"><i class="auiIcon auiIconArwBottom"></i></a>
+    	<input class="text floatLeft long" type="text" name="target_keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" />
+    </div>
+    #AUIButtonSearch("$l10n.COMMON_SEARCH")
+    #AUISearchIndicator()
+    #AUISearchFooter()
+    #AUISummaryFilterDivFooter()
+    <div class="auiSummaryMeta clearfix">
+    <div class="floatRight">
+    	<div class="auiSelectButton">
+    		<ul>
+    			#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+    			<li class="active"><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+    			#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+    			<li><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+    		</ul>
+    	</div>
+    </div>
+    </div>
+    <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
+<div id="content-$!portlet.ID" style="visibility:visible">
+
+    #AUISummaryDiv()
+    <select name="target_progress_rate_from" id="target_progress_rate_from" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')">
+    #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    	<option value="${rate}" #if ("$!result.TargetProgressRateFrom" == "${rate}") selected="selected" #end>${rate}%</option>
+    #end
+    </select>
+    -
+    <select name="target_progress_rate_to" id="target_progress_rate_to" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')">
+    #foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    	<option value="${rate}" #if ("$!result.TargetProgressRateTo" == "$rate" || (!$!result.TargetProgressRateTo && $rate == 100)) selected="selected" #end>${rate}%</option>
+    #end
+    </select>
+    <label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay_checkbox', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end />&nbsp;$l10n.PROJECT_TASK_ONLY_DELAYED</label>
+    #if("$result.List.size()" != "0")
+		#AUIajaxpageview('ProjectTaskListScreen' $result)
+    #end
+	#AUISummaryDivfooter()
+    #if($result.List.size() == 0)
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
+    #else
+        #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+        <div id="messageDiv-$!portlet.ID"></div>
+        #AUIrowMTableWide()
+        	<tr>
+        		#ALtdhead("#ALajaxsort('task_name' $l10n.PROJECT_TASK_NAME $result 'ProjectTaskListScreen')")
+        		#ALtdheadAtt("$l10n.PROJECT_CATEGORY" "class='thin'")
+        		#ALtdheadAtt("#ALajaxsort('status' $l10n.PROJECT_STATUS $result 'ProjectTaskListScreen')" "class='thin'")
+        		#ALtdheadAtt("$l10n.PROJECT_MEMBER" "class='wName'")
+        		#ALtdheadAtt("#ALajaxsort('progress_rate' $l10n.PROJECT_PROGRESS_RATE $result 'ProjectTaskListScreen')" "class='thin'")
+        		#ALtdheadAtt("$l10n.PROJECT_ACTUAL_WORKLOAD" "class='thin'")
+        		#ALtdheadAtt("$l10n.PROJECT_EXPECTED_WORKLOAD" "class='thin'")
+                #ALtdheadAtt("#ALajaxsort('start_plan_date' $l10n.PROJECT_START_DATE $result 'ProjectTaskListScreen')" "class='w10'")
+        		#ALtdheadAtt("#ALajaxsort('end_plan_date' $l10n.PROJECT_END_PLAN_DATE $result 'ProjectTaskListScreen')" "class='w10'")
+        	</tr>
+        	#foreach ($record in $result.List)
+        	<tr class="#if($!{record.Delay})bgRed #end #if($!{record.FinishStatus})bgGray #end">
+        		#ALtdcellheaderAtt('class="auiMTCaption"')
+        		<div>
+        			$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');" style="display:inline;">$!record.TaskNameHtml</a>
+        		</div>
+        		#ALtdcellfooter()
+        		#ALtdcellAtt("$!record.TrackerString" 'nowrap="nowrap" class="mb_hide"')
+				#ALtdcellAtt("$!record.StatusString" 'nowrap="nowrap"')
+				#ALtdcellheader()
+				<div>
+				#foreach ($member in $record.MemberList)
+        		<a href="javascript: void(0)" onclick="aipo.message.popupProfile($member.UserId,arguments[0])">$member.UserName</a>
+        		#end
+        		</div>
+        		#ALtdcellfooter()
+        		#ALtdcellheaderAtt('class="mb_hide"')
+        		#if(!$!record.HasChildrenForForm && $!record.isEditable())
+            		<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
+            		#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+            			<option #if($!{record.ProgressRate.toString()} == "${rate}") selected="selected" #end value="${rate}">${rate}%</option>
+            		#end
+            		</select>
+        		#else
+                    <span>$!{record.ProgressRate.toString()}%</span>
+        		#end
+        		#ALtdcellfooter()
+        		#ALtdcellAtt("$!{record.Workload}h" 'class="center mb_hide" nowrap="nowrap"')
+        		#ALtdcellAtt("$!{record.PlanWorkload}h" 'class="center mb_hide" nowrap="nowrap"')
+				#if($!{record.StartPlanDate.toString()} != "")
+				#set ($StartPlanDate = "$!{record.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.StartPlanDate.Day}${l10n.PROJECT_DATE}")
+				#else
+				#set ($StartPlanDate = "")
+				#end
+        		#ALtdcellAtt("$StartPlanDate" 'class="mb_hide" nowrap="nowrap"')
+				#if($!{record.EndPlanDate.toString()} != "")
+				#set ($EndPlanDate = "$!{record.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{record.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{record.EndPlanDate.Day}${l10n.PROJECT_DATE}")
+				#else
+				#set ($EndPlanDate = "")
+				#end
+        		#ALtdcellAtt("$EndPlanDate" 'nowrap="nowrap"')
+        	</tr>
+        	#end
+    	#AUItablefooter()
+		#if("$result.List.size()" != "0")
+    	#AUISummaryDiv()
+    	#AUIajaxpageview('ProjectTaskListScreen' $result)
+    	#AUISummaryDivfooter()
+		#end
+    #end
+</div>
+#end
+#AUIcontentsAreaFooter()
+#if($result.AllProject && $result.AllProject.size() > 0)
+<img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
+  <div>
+	<p class="caption">$l10n.PROJECT_MEMBER</p>
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="target_user_id" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetUserId" == "" || "$!result.TargetUserId" == "0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_USER</a></li>
+    #foreach($record in $result.projectMembers)
+      <li data-param="$!record.UserId" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_CATEGORY</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_tracker" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_CATEGORY</a></li>
+    #foreach($record in $result.TrackerMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_PRIORITY</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_priority" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_STATUS</a></li>
+    #foreach($record in $result.PriorityMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_STATUS</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_status" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_STATUS</a></li>
+    #foreach($record in $result.StatusMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetStatus" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus" == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+</div>
+#end
+#parse("/portlets/html/project-widgets.vm")
+

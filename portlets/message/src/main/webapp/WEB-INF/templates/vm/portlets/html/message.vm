@@ -1,0 +1,111 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+ #if(${client}=="IPHONE")
+#ALcontentheader($!portlet.Title '')
+#end
+<form id="messageSearchForm" name="messageSearchForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageSearchListScreen')" onsubmit="aipo.message.searchMessageList(this); return false;" method="post" class="auiSearch gray">
+<input type="text" name="keyword" value="" placeholder="$l10n.MESSAGE_SEARCH" onFocus="aipo.message.onFocusSearch();" onBlur="aipo.message.onBlurSearch();"/><button type="submit"><i class="icon-search"></i></button>
+</form>
+<div id="messageSideBlock" class="sideBlock" #if($isMessageUser)style="display:none"#end>
+	<div class="auiTabs" id="messageSideBlockTab">
+		<ul class="tab">
+			<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">$l10n.MESSAGE_ROOM</a></li>
+			<li class="w50" id="messageUserTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('user');">$l10n.MESSAGE_USER</a></li>
+		</ul>
+		<ul class="tabContents">
+			<li class="active" id="messageRoomContents">
+				<div id="messageSideBlock1">
+					<div id="messageRoomListPane"><div class="loader"><i class="indicator"></i></div></div>
+				</div>
+			</li>
+			<li id="messageUserContents">
+				<div id="messageSideBlock2">
+					<div id="messageUserListPane"><div class="loader"><i class="indicator"></i></div></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div id="messageRightPane" class="rightBlock" style="display:none">
+　　<div class="loader"><i class="indicator"></i></div>
+</div>
+<div id="messageMainBlock" class="mainBlock" #if(!$isMessageUser)style="display:none"#end>
+	<div class="contents clearfix">
+		<div class="timelineOuter">
+			<div class="roomHeader clearfix">
+				<ul class="userListIcon clearfix" id="roomMemberPane">
+				</ul>
+				<div class="floatRight" id="messageRoomSetting">
+					<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+				</div>
+			</div>
+			<div class="inputField">
+				<form name="messageForm" id="messageForm" action="$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.createSelectFromFileList(this, 'global-${messagePortletId}');aimluck.io.submit_callbackparams(this,'indicator-dlg-global-','$messagePortletId',aipo.message.onReceiveMessage);return false;">
+					<input type="hidden" name="_name" value="formMessage"/>
+					<input type="hidden" name="secid" value="$secid"/>
+					<input type="hidden" name="roomId" value=""/>
+					<input type="hidden" name="userId" value=""/>
+					 <input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
+					<div class="tlInputMention relative">
+						<textarea class="elastic" cols="10" name="message" rows="1" style="height: 43px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
+					</div>
+
+					<div class="tlInputAttachment" id="messageInputAttachment" style="display: none">
+						<p class="tlInputAttachmentTitle">$l10n.MESSAGE_ATTACHMENT</p>
+						<ul id="attachments_global-$messagePortletId" class="attachments #if(!$!utils.isFileUploadable($data))mb_hide#end">
+						</ul>
+					</div>
+
+					<div class="tlInputControls clearfix">
+						<div class="floatRight">
+							<i class="indicator" id="indicator-dlg-global-$messagePortletId" style="display:none"></i>
+							<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
+						</div>
+						<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
+							<iframe name="if_fileupload_$messagePortletId" id="if_fileupload_$messagePortletId" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById("global-${messagePortletId}").addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div id="messagePane" class="timeline scroll">
+			</div>
+		</div>
+	</div>
+</div>
+<span id="message_val_read" style="display:none">$l10n.MESSAGE_READ_COUNT</span>
+<span id="message_val_all_read" style="display:none">$l10n.MESSAGE_ALL_READ</span>
+
+<script type="text/javascript">
+//<![CDATA[
+
+#if(!$isMessageUser)document.body.className = "messageRoomList";#end
+dojo.addOnLoad(function() {
+    #if($isMessageUser)
+    aipo.message.isDirect = true;
+	aipo.message.currentUserId = ${messageUserId};
+	aipo.menu.toggleDropdown("message");
+	#end
+    aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
+});
+
+
+//]]>
+</script>
+
+#ALcontentfooter()

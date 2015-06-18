@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,15 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.note;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -48,6 +50,9 @@ public class NoteResultData implements ALData {
 
   /** 宛先ユーザ名 */
   private ALStringField dest_user_fullname;
+
+  /** <code>members</code> 送信先メンバー */
+  private List<ALEipUser> dest_users = null;
 
   /** 依頼者名 */
   private ALStringField client_name;
@@ -97,7 +102,7 @@ public class NoteResultData implements ALData {
   /** 確認日時 */
   private ALDateTimeField confirm_date;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日時 */
@@ -122,6 +127,7 @@ public class NoteResultData implements ALData {
     dest_user_id = new ALStringField();
     src_user_fullname = new ALStringField();
     dest_user_fullname = new ALStringField();
+    dest_users = new ArrayList<ALEipUser>();
     client_name = new ALStringField();
     company_name = new ALStringField();
     telephone = new ALStringField();
@@ -258,6 +264,13 @@ public class NoteResultData implements ALData {
    */
   public ALDateTimeField getUpdateDate() {
     return ALEipUtils.getFormattedTime(update_date);
+  }
+
+  /**
+   * @return
+   */
+  public List<ALEipUser> getDestUsers() {
+    return dest_users;
   }
 
   /**
@@ -423,7 +436,7 @@ public class NoteResultData implements ALData {
 
   /**
    * 新着／未読／既読の画像ファイルへのパスを返す．
-   * 
+   *
    * @return
    */
   public void setNoteStatImage(String noteStatImagePath) {
@@ -432,7 +445,7 @@ public class NoteResultData implements ALData {
 
   /**
    * 新着／未読／既読の画像ファイルへのパスを返す．
-   * 
+   *
    * @return
    */
   public String getNoteStatImage() {
@@ -440,7 +453,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param noteStatImageDescription
    */
   public void setNoteStatImageDescription(String noteStatImageDescription) {
@@ -448,7 +461,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getNoteStatImageDescription() {
@@ -456,7 +469,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getSrcUserFullName() {
@@ -464,7 +477,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getDestUserFullName() {
@@ -472,7 +485,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param field
    */
   public void setSrcUserFullName(String field) {
@@ -480,7 +493,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param field
    */
   public void setDestUserFullName(String field) {
@@ -488,7 +501,7 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean hasMemo() {
@@ -496,11 +509,19 @@ public class NoteResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param hasMemo
    */
   public void setHasMemo(boolean hasMemo) {
     this.hasMemo = hasMemo;
+  }
+
+  /**
+   *
+   * @param
+   */
+  public void setDestUsers(List<ALEipUser> dest_users) {
+    this.dest_users = dest_users;
   }
 
 }

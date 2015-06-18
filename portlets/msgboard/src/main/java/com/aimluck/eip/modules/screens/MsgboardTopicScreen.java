@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックの一覧を処理するクラスです。
@@ -88,7 +88,7 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
         .getInitParameter("p1e-rows")));
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-msgboard-topic.vm";
+      String layout_template = "portlets/html/ajax-msgboard-topic.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
@@ -102,7 +102,7 @@ public class MsgboardTopicScreen extends ALVelocityScreen {
     // エラーメッセージ
     List<String> msgList = new ArrayList<String>();
     ALNumberField state = new ALNumberField();
-    state.setFieldName("状態");
+    state.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_STATUS"));
     // 0 から 100 まで
     state.limitValue(0, 100);
     // 必須項目

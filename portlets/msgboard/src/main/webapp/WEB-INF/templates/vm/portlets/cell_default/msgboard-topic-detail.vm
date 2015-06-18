@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if($!resultOnTopicDetail)
 #set($methodlist = [["返信する", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_reply_form','1').addQueryData('entityid',${result.ParentTopic.TopicId}).addQueryData('mode','reply')"] ,["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
@@ -24,7 +23,7 @@
 #set($methodlist = [["ﾄﾋﾟｯｸ追加", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_form','1').addQueryData('entityid','new')"]])
 #end
 #set($linklist = [["ﾄﾋﾟｯｸ一覧へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doMsgboard_topic_list','1')"]])
-#ALcell_pagetitle($career "トピック詳細")
+#ALcell_pagetitle($career "ﾄﾋﾟｯｸ詳細")
 #ALcell_dl_header($career)
 #ALcell_dt($career 'ﾄﾋﾟｯｸﾀｲﾄﾙ')
 #ALcell_dd($career $!{result.ParentTopic.TopicName})
@@ -37,7 +36,7 @@
 #ALcell_dt($career "内容")
 #ALcell_dd($career $!{result.ParentTopic.Note})
 #if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size()>0)
-#ALcell_dt($career "添付ファイル")
+#ALcell_dt($career "添付ﾌｧｲﾙ")
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
@@ -51,7 +50,7 @@
 <input type="hidden" name="mode" value="delete">
 <input type="hidden" name="secid" value="$secid" />
 ##<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_form" value="編集する">
-<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="削除する">
+<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_delete" value="$l10n.COMMON_DELETE">
 </form>
 #end
 #ALcell_dl_footer($career)
@@ -71,7 +70,7 @@
 #ALcell_dt($career "書き込み")
 #ALcell_dd($career $!{record.Note})
 #if($!record.AttachmentFileList && $!record.AttachmentFileList.size()>0)
-#ALcell_dt($career "添付ファイル")
+#ALcell_dt($career "添付ﾌｧｲﾙ")
 #foreach( $attachmentFile in $!record.AttachmentFileList )
 #ALcell_dd($career "<a href='$jslink.getTemplate('MsgboardTopicFileRawScreen').addQueryData('ownerid', $!{result.ParentTopic.OwnerId}).addQueryData('entityid', $!result.ParentTopic.TopicId).addQueryData('attachmentIndex', $attachmentFile.FileId)'>$result.getStringCR($attachmentFile.FileNameField)</a>")
 #if($attachmentFile.isImage())
@@ -93,7 +92,7 @@
 <input type="hidden" name="topic_reply_id" value=${record.TopicId}>
 <input type="hidden" name="mode" value="delete_reply">
 <input type="hidden" name="secid" value="$secid" />
-<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="削除する">
+<input type="submit" class="submit" name="eventSubmit_doMsgboard_topic_reply_delete" value="$l10n.COMMON_DELETE">
 </form>
 #end
 #ALcell_dl_footer($career)

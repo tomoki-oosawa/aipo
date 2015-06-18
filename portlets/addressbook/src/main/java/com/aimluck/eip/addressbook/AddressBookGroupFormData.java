@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.addressbook;
 
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アドレス帳グループの入力用フォームデータです。
@@ -99,17 +99,21 @@ public class AddressBookGroupFormData extends ALAbstractFormData {
     addresses = new ArrayList<AddressBookResultData>();
 
     group_name = new ALStringField();
-    group_name.setFieldName("グループ名");
+    group_name.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_GROUP_NAME"));
     group_name.setTrim(true);
 
     public_flag = new ALStringField();
-    public_flag.setFieldName("公開区分");
+    public_flag.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_SETFIELDNAME_PUBLIC"));
 
     create_date = new ALDateField();
-    create_date.setFieldName("登録日");
+    create_date.setFieldName(ALLocalizationUtils
+      .getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateField();
-    update_date.setFieldName("最終更新日");
+    update_date.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_SETFIELDNAME_LAST_UPDATE_DATE"));
 
   }
 

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.mail.file;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -96,6 +95,30 @@ public class ALFileMailHandler extends ALMailHandler {
     key.append(account_id);
 
     return ALStorageService.deleteFolder(ALMailUtils.rootFolderPath, key
+      .toString());
+  }
+
+  /**
+   * アカウントフォルダ容量計算
+   * 
+   * @param userRootFolderName
+   * @param accountName
+   * @return
+   */
+  @Override
+  public long getFolderSize(String org_id, int user_id, int account_id) {
+    StringBuilder key = new StringBuilder();
+    String categoryKeytmp = getCategoryKey();
+
+    if (categoryKeytmp != null && !"".equals(categoryKeytmp)) {
+      key.append(categoryKeytmp);
+    }
+    key.append(ALStorageService.separator());
+    key.append(user_id);
+    key.append(ALStorageService.separator());
+    key.append(account_id);
+
+    return ALStorageService.getFolderSize(ALMailUtils.rootFolderPath, key
       .toString());
   }
 

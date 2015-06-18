@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,16 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.activity.ActivityAllSelectData;
 import com.aimluck.eip.activity.util.ActivityUtils;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -45,14 +46,19 @@ public class ActivityAllListScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
+      ParameterParser parser = rundata.getParameters();
 
+      ActivityUtils.passPSML(rundata, context, "p12f-filters", parser
+        .getString(ALEipConstants.LIST_FILTER));
+      ActivityUtils.passPSML(rundata, context, "p12g-filtertypes", parser
+        .getString(ALEipConstants.LIST_FILTER_TYPE));
       ActivityAllSelectData listData = new ActivityAllSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
         rundata,
         context).getPortletConfig().getInitParameter("p1b-rows")));
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-activity-all-list.vm";
+      String layout_template = "portlets/html/ajax-activity-all-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("ActivityAllListScreen.doOutput", ex);

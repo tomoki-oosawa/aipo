@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.portaltoolkit;
 
 import java.util.Iterator;
@@ -38,6 +37,7 @@ import org.apache.jetspeed.services.portaltoolkit.JetspeedPortalToolkitService;
 import org.apache.jetspeed.util.JetspeedException;
 
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  *
@@ -108,15 +108,18 @@ public class ALPortalToolkitService extends JetspeedPortalToolkitService {
 
             PortletControl control = getControl(psmlEntry.getControl(), entry);
 
-            if (ALPortalApplicationService.isActive(p.getName())) {
+            if (ALPortalApplicationService.isActive(p.getName())
+              && CustomizeUtils.isAdminUserView(entry)) {
               set.addPortlet(initControl(control, p), controller
                 .getConstraints(constraints), position);
             }
           }
         } else {
-          logger.error(" The portlet "
-            + psmlEntry.getParent()
-            + " does not exist in the Registry ");
+          if (!"ScheduleAdmin".equals(psmlEntry.getParent())) {
+            logger.error(" The portlet "
+              + psmlEntry.getParent()
+              + " does not exist in the Registry ");
+          }
           continue;
         }
       } catch (JetspeedException e) {

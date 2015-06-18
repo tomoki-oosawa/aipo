@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2013 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.Calendar;
@@ -52,6 +48,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -145,60 +142,64 @@ public class GpdbItemFormData extends ALAbstractFormData {
   public void initField() {
     // 項目定義名
     gpdb_item_name = new ALStringField();
-    gpdb_item_name.setFieldName("項目名");
+    gpdb_item_name.setFieldName(ALLocalizationUtils.getl10n("GPDB_ITEM_NAME"));
     gpdb_item_name.setTrim(true);
     // タイトルフラグ
     title_flg = new ALStringField();
-    title_flg.setFieldName("タイトル");
+    title_flg.setFieldName(ALLocalizationUtils.getl10n("GPDB_TITLE"));
     title_flg.setTrim(false);
     title_flg.setValue(GpdbUtils.FLG_OFF);
     // 必須フラグ
     required_flg = new ALStringField();
-    required_flg.setFieldName("必須");
+    required_flg.setFieldName(ALLocalizationUtils.getl10n("GPDB_ESSENTIAL"));
     required_flg.setTrim(false);
     required_flg.setValue(GpdbUtils.FLG_OFF);
     // 入力形式
     type = new ALStringField();
-    type.setFieldName("入力形式");
+    type.setFieldName(ALLocalizationUtils.getl10n("GPDB_INPUT_FORM"));
     type.setTrim(false);
     type.setNotNull(true);
     // 区分ID
     gpdb_kubun_id = new ALNumberField();
-    gpdb_kubun_id.setFieldName("選択項目");
+    gpdb_kubun_id.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_SELECTION_ITEMS"));
     gpdb_kubun_id.setNotNull(true);
     // 一覧画面表示フラグ
     list_flg = new ALStringField();
-    list_flg.setFieldName("一覧画面表示");
+    list_flg.setFieldName(ALLocalizationUtils.getl10n("GPDB_DISPLAY_LIST"));
     list_flg.setTrim(false);
     list_flg.setValue(GpdbUtils.FLG_OFF);
     // 詳細画面表示フラグ
     detail_flg = new ALStringField();
-    detail_flg.setFieldName("詳細画面表示");
+    detail_flg.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_DISPLAY_DETAIL_SCREEN1"));
     detail_flg.setTrim(false);
     detail_flg.setValue(GpdbUtils.FLG_ON);
     // 表示サイズ（横）
     size_col = new ALNumberField();
-    size_col.setFieldName("表示サイズ（横）");
+    size_col.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_DISPLAY_SIZE_WIDTH"));
     size_col.setNotNull(true);
     size_col.limitValue(1, 999);
     // 表示サイズ（縦）
     size_row = new ALNumberField();
-    size_row.setFieldName("表示サイズ（縦）");
+    size_row.setFieldName(ALLocalizationUtils
+      .getl10n("GPDB_DISPLAY_SIZE_HEIGHT"));
     size_row.setNotNull(true);
     size_row.limitValue(1, 999);
     // 表示行数
     line = new ALNumberField();
-    line.setFieldName("表示行数");
+    line.setFieldName(ALLocalizationUtils.getl10n("GPDB_NUMBER_OF_LINES"));
     line.setNotNull(true);
     line.limitValue(1, 99);
     // デフォルトソートフラグ
     default_sort_flg = new ALStringField();
-    default_sort_flg.setFieldName("ソート");
+    default_sort_flg.setFieldName(ALLocalizationUtils.getl10n("GPDB_SORT"));
     default_sort_flg.setTrim(false);
     default_sort_flg.setValue(GpdbUtils.FLG_OFF);
     // ソート順
     asc_desc = new ALStringField();
-    asc_desc.setFieldName("ソート順");
+    asc_desc.setFieldName(ALLocalizationUtils.getl10n("GPDB_SORT_ORDER"));
     asc_desc.setTrim(false);
   }
 
@@ -511,7 +512,7 @@ public class GpdbItemFormData extends ALAbstractFormData {
             gpdbRecord.setValue("" + record.getUpdateUserId());
 
           } else if (GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(type)) {
-            // 登録日時
+            // 作成日
             ALDateTimeField t = new ALDateTimeField();
             t.setValue(record.getCreateDate());
             gpdbRecord.setValue(t.toStringDateTime());

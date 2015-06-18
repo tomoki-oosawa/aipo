@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,62 +16,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-<div id="printHeader">
-#AUIPrintWindowCloseIcon()
-$l10n.SCHEDULE_ALERT_DONOT_REFLECT
-<table>
-<tr>
-<th>$l10n.SCHEDULE_WIDTH</th>
-<td>
-<select id="print_width" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="100%" >100%</option>
-<option value="90%">90%</option>
-<option value="80%">80%</option>
-<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
-<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
-<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
-<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
-<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
-<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
-<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
-<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
-<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
-<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
-<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
-</select>
-</td>
-</tr>
-<tr>
-<th>$l10n.SCHEDULE_WORD_SIZE</th>
-<td><select id="print_word_size" onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="8pt">8pt</option>
-<option value="9pt">9pt</option>
-<option selected="selected" value="10pt">10pt</option>
-<option value="11pt">11pt</option>
-<option value="12pt">12pt</option>
-<option value="13pt">13pt</option>
-<option value="14pt">14pt</option>
-<option value="16pt">16pt</option>
-<option value="18pt">18pt</option>
-<option value="20pt">20pt</option>
-</select>
-</td>
-</tr>
+#ALprintoptionheader()
 <tr>
 <th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
 <label><input id=print_icon type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_ICON</label><br />
 </td>
 </tr>
-<tr>
-<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
-</tr>
-</table>
-</div>
+#ALprintoptionfooter()
 
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
@@ -132,21 +87,12 @@ $!{result.Detail.Date2}
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #end
-#if(! ${result.Detail.isPublic()})
-#AUIiconSecretAtt('title="$l10n.SCHEDULE_CLOSE_PUBLIC_WORD" border="0" width="16" height="16" align="absmiddle"')
-#end
-#if($!{result.Detail.isDuplicate()})
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
-#end
-#if($!{result.Detail.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT" border="0" width="16" height="16" align="absmiddle"></i>
-#end
-#if($!{result.Detail.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
-#end
+#AUIiconScheduleSets($!{result.Detail})
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
-#ALtditem($!{result.Detail.Name})
+#ALtditemheader()
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.Name}
+#ALtditemfooter()
 
 #* 共有カテゴリ連携（ここから）  *#
 
@@ -176,7 +122,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
     #if(!($!{record.Name.toString()} == $!{result.Detail.User.Name.toString()}) || $!result.isActivity())
     $!record.AliasName
         #if($result.getStatus($record.UserId.Value) == "T")
-        <i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE" border="0" width="16" height="16" align="absmiddle"></i>
+        <i class="auiIcon auiIconTmpreserve"></i>
         #elseif($result.getStatus($record.UserId.Value) == "R" || $result.getStatus($record.UserId.Value) == "D")
         #set($counter = $counter + 1)
         <i class="icon-remove fcRed" title="$l10n.SCHEDULE_DELETED"></i>
@@ -210,9 +156,9 @@ ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption($l10n.SCHEDULE_CREATE_USER)
+#ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
-#ALtdcaption($l10n.SCHEDULE_UPDATE_USER)
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_PERIOD)}）")
 
 
@@ -223,7 +169,7 @@ ${record.FacilityName}<br/>
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');

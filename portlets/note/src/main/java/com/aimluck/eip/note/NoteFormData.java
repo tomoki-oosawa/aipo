@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.note;
 
 import java.io.IOException;
@@ -159,7 +158,7 @@ public class NoteFormData extends ALAbstractFormData {
   /** 確認日時 */
   private ALDateTimeField confirm_date;
 
-  /** 作成日時 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日時 */
@@ -299,12 +298,11 @@ public class NoteFormData extends ALAbstractFormData {
       && dest_user_id.getValue().equals("all")) {
       // 選択されたグループにログインユーザ以外のユーザが登録されていない場合，エラーを表示する．
       if (memberList == null || memberList.size() <= 1) {
-        msgList
-          .add("ユーザーが登録されている『 <span class='em'> 宛先のグループ </span> 』を選択してください。");
+        msgList.add(ALLocalizationUtils.getl10n("NOTE_ALERT_NO_USER_IN_GROUP"));
       }
     } else {
       if (memberList == null || memberList.size() <= 1) {
-        msgList.add("『 <span class='em'> 宛先のユーザー </span> 』を正しく選択してください。");
+        msgList.add(ALLocalizationUtils.getl10n("NOTE_ALERT_NO_COLLECT_USER"));
       }
     }
 
@@ -324,7 +322,8 @@ public class NoteFormData extends ALAbstractFormData {
         || emptyTelephone1
         || emptyTelephone2
         || emptyTelephone3) {
-        msgList.add("『 <span class='em'> 依頼者電話番号 </span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils
+          .getl10n("NOTE_ALERT_NO_CLIENT_PHONE_NUMBER"));
       }
     }
 
@@ -332,7 +331,7 @@ public class NoteFormData extends ALAbstractFormData {
     email_address.validate(msgList);
     if (email_address.getValue().trim().length() > 0
       && !ALStringUtil.isCellPhoneMailAddress(email_address.getValue())) {
-      msgList.add("『 <span class='em'> 依頼者メールアドレス </span>』を正しく入力してください。");
+      msgList.add(ALLocalizationUtils.getl10n("NOTE_ALERT_NO_CLIENT_EMEIL"));
     }
 
     // 追加送信先タイプ
@@ -431,7 +430,7 @@ public class NoteFormData extends ALAbstractFormData {
       note.setMessage(message.getValue());
       // 受付日時
       note.setAcceptDate(accept_date.getValue());
-      // 作成日時
+      // 作成日
       note.setCreateDate(nowDate);
       // 更新日時
       note.setUpdateDate(nowDate);
@@ -469,6 +468,7 @@ public class NoteFormData extends ALAbstractFormData {
       NoteUtils.sendNoteActivity(note, user.getName().getValue(), recipients);
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("note", ex);
       return false;
     }
@@ -476,7 +476,11 @@ public class NoteFormData extends ALAbstractFormData {
     if (add_dest_type_int > 0) {
       // 携帯電話やパソコンに伝言メモをメールで送信する場合の処理
       try {
-        String subject = "[" + ALOrgUtilsService.getAlias() + "]伝言メモ";
+        String subject =
+          "["
+            + ALOrgUtilsService.getAlias()
+            + "]"
+            + ALLocalizationUtils.getl10n("NOTE_NOTE");
         List<ALEipUserAddr> destMemberList =
           ALMailUtils.getALEipUserAddrs(memberList, (int) loginUser
             .getUserId()
@@ -509,7 +513,7 @@ public class NoteFormData extends ALAbstractFormData {
         msgList.addAll(tempMsgList);
 
       } catch (Exception ex) {
-        msgList.add("メールを送信できませんでした。");
+        msgList.add(ALLocalizationUtils.getl10n("NOTE_DONOT_SEND_MAIL"));
         logger.error("note", ex);
         return false;
       }
@@ -595,86 +599,95 @@ public class NoteFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     note_id = new ALNumberField();
-    note_id.setFieldName("伝言メモID");
+    note_id.setFieldName(ALLocalizationUtils.getl10n("NOTE_ID"));
 
     src_user_id = new ALStringField();
-    src_user_id.setFieldName("送信者");
+    src_user_id.setFieldName(ALLocalizationUtils.getl10n("NOTE_SRC_USER"));
     src_user_id.setTrim(true);
 
     dest_user_id = new ALStringField();
-    dest_user_id.setFieldName("宛先");
+    dest_user_id.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_TO"));
     dest_user_id.setTrim(true);
 
     dest_user_name = new ALStringField();
-    dest_user_name.setFieldName("宛先ユーザ名");
+    dest_user_name.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_SEND_NOTE_TO_NAME"));
     dest_user_name.setTrim(true);
 
     dest_post_id = new ALNumberField();
-    dest_post_id.setFieldName("宛先部署 ID");
+    dest_post_id.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_SEND_NOTE_POSITION_ID"));
 
     client_name = new ALStringField();
-    client_name.setFieldName("依頼者名");
+    client_name.setFieldName(ALLocalizationUtils.getl10n("NOTE_CLIENT_NAME"));
     client_name.setTrim(true);
 
     company_name = new ALStringField();
-    company_name.setFieldName("依頼者所属");
+    company_name.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_CLIENT_CAMPANY"));
     company_name.setTrim(true);
 
     telephone1 = new ALStringField();
-    telephone1.setFieldName("依頼者電話番号");
+    telephone1.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_CLIENT_CELLILAR_PHONE"));
     telephone1.setTrim(true);
     telephone2 = new ALStringField();
-    telephone2.setFieldName("依頼者電話番号");
+    telephone2.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_CLIENT_CELLILAR_PHONE"));
     telephone2.setTrim(true);
     telephone3 = new ALStringField();
-    telephone3.setFieldName("依頼者電話番号");
+    telephone3.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_CLIENT_CELLILAR_PHONE"));
     telephone3.setTrim(true);
 
     email_address = new ALStringField();
-    email_address.setFieldName("依頼者メールアドレス");
+    email_address
+      .setFieldName(ALLocalizationUtils.getl10n("NOTE_CLIENT_EMAIL"));
     email_address.setTrim(true);
 
     add_dest_type_pc = new ALStringField();
-    add_dest_type_pc.setFieldName("メール通知先");
+    add_dest_type_pc.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_MAILINFORM_POSITION"));
     add_dest_type_pc.setTrim(true);
 
     add_dest_type_cellphone = new ALStringField();
-    add_dest_type_cellphone.setFieldName("メール通知先");
+    add_dest_type_cellphone.setFieldName(ALLocalizationUtils
+      .getl10n("NOTE_MAILINFORM_POSITION"));
     add_dest_type_cellphone.setTrim(true);
 
     subject_type = new ALStringField();
-    subject_type.setFieldName("用件");
+    subject_type.setFieldName(ALLocalizationUtils.getl10n("NOTE_SUBJECT"));
     subject_type.setTrim(true);
 
     custom_subject = new ALStringField();
-    custom_subject.setFieldName("用件");
+    custom_subject.setFieldName(ALLocalizationUtils.getl10n("NOTE_SUBJECT"));
     custom_subject.setTrim(true);
 
     note_stat = new ALStringField();
-    note_stat.setFieldName("状態");
+    note_stat.setFieldName(ALLocalizationUtils.getl10n("NOTE_STATE"));
     note_stat.setTrim(true);
 
     message = new ALStringField();
-    message.setFieldName("本文");
+    message.setFieldName(ALLocalizationUtils.getl10n("NOTE_MESSAGE"));
     message.setTrim(false);
 
     accept_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    accept_date.setFieldName("受付日時");
+    accept_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CLERK_TIME"));
 
     confirm_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    confirm_date.setFieldName("確認日時");
+    confirm_date.setFieldName(ALLocalizationUtils.getl10n("NOTE_CHECK_TIME"));
 
     create_date = new ALDateTimeField(NoteUtils.CREATED_DATE_FORMAT);
-    create_date.setFieldName("作成日時");
+    create_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_DATE"));
 
     update_date = new ALDateTimeField(NoteUtils.DATE_TIME_FORMAT);
-    update_date.setFieldName("更新日時");
+    update_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_DATE"));
 
     // 現在の年
     currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
     view_type = new ALStringField();
-    view_type.setFieldName("表示タイプ");
+    view_type.setFieldName(ALLocalizationUtils.getl10n("NOTE_EXPRESS_TYPE"));
     view_type.setTrim(true);
   }
 

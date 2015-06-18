@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($event_submit = "eventSubmit_doSchedule_form")
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
@@ -95,8 +94,8 @@ ${record.FacilityName}
 #ALcell_dd_footer($career)
 #end
 
-#ALcell_dt($career $l10n.SCHEDULE_CREATE_USER)#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
-#ALcell_dt($career $l10n.SCHEDULE_UPDATE_USER)#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
+#ALcell_dt($career $l10n.COMMON_CREATE_USER)#ALcell_dd($career "$!{result.Detail.CreateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.CreateDate})")
+#ALcell_dt($career $l10n.COMMON_UPDATE_USER)#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
 #ALcell_dl_footer($career)
 ###ALcell_hr($career '1')
 ###ALcell_formheader($career $jslink $portlet)

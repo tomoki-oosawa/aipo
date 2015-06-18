@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.io.InputStream;
@@ -74,7 +73,7 @@ public class WebMailFileScreen extends RawScreen {
           WebMailUtils.ACCOUNT_ID));
       int mailindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
       int attachmentIndex = rundata.getParameters().getInt("attachmentIndex");
-      if (attachmentIndex < 0) {
+      if (mailindex < 0 || attachmentIndex < 0) {
         return;
       }
 
@@ -87,6 +86,9 @@ public class WebMailFileScreen extends RawScreen {
         ALMailFactoryService.getInstance().getMailHandler();
       ALFolder folder = handler.getALFolder(type_mail, orgId, uid, accountid);
       ALLocalMailMessage msg = (ALLocalMailMessage) folder.getMail(mailindex);
+      if (msg == null) {
+        return;
+      }
 
       String fileName;
       boolean isMsie = ALEipUtils.isMsieBrowser(rundata);

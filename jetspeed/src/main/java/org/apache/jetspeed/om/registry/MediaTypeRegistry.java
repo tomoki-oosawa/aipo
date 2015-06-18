@@ -21,7 +21,7 @@ import java.util.Iterator;
 /**
     Represents a media-type registry.
 
-    @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+    @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
     @version $Id: MediaTypeRegistry.java,v 1.7 2004/02/23 03:11:39 jford Exp $
 */
 

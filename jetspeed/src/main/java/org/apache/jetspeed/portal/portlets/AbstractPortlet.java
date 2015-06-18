@@ -65,7 +65,7 @@ to generate output.
 </p>
 
 @author <A HREF="mailto:burton@apache.org">Kevin A. Burton</A>
-@author <A HREF="mailto:raphael@apache.org">Raphaël Luta</A>
+@author <A HREF="mailto:raphael@apache.org">Raphaè¬– Luta</A>
 @author <A HREF="mailto:sgala@apache.org">Santiago Gala</A>
 @author <A HREF="mailto:paulsp@apache.org">Paul Spencer</A>
 @author <A HREF="mailto:morciuch@apache.org">Mark Orciuch</A>

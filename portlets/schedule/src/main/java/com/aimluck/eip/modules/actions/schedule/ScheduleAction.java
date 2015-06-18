@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.schedule;
 
 import java.util.ArrayList;
@@ -56,26 +55,26 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのアクションクラスです。
- * 
+ *
  */
 public class ScheduleAction extends ALBaseAction {
 
   // 週表示のデフォルトフィルター
   static final String LIST_FILTER_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getName()).append(
+    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER).toString();
 
   static final String LIST_FILTER_TYPE_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getName()).append(
+    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
 
   // 日表示のデフォルトフィルター
   static final String LIST_FILTER_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getName()).append(
+    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER).toString();
 
   static final String LIST_FILTER_TYPE_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getName()).append(
+    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
     ALEipConstants.LIST_FILTER_TYPE).toString();
 
   /** <code>logger</code> logger */
@@ -86,7 +85,7 @@ public class ScheduleAction extends ALBaseAction {
   private static final String AFTER_BEHAVIOR = "afterbehavior";
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -122,6 +121,14 @@ public class ScheduleAction extends ALBaseAction {
       // 表示形式（トップページ）を取得する．
       String top_form = portlet.getPortletConfig().getInitParameter("p19-rows");
       context.put("top_form", top_form);
+
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
 
       // 表示開始時間を取得する．
       String time_start =
@@ -178,6 +185,13 @@ public class ScheduleAction extends ALBaseAction {
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
+      if (has_acl_other.equals("F")) {
+        if (rundata.getParameters().get("filter") == null
+          || rundata.getParameters().get("filter").equals("Facility")) {
+          rundata.getParameters().add("filter", "null");
+          rundata.getParameters().remove("filtertype");
+        }
+      }
 
       if (("".equals(template)) || (!done)) {
         template = "schedule-calendar";
@@ -264,8 +278,18 @@ public class ScheduleAction extends ALBaseAction {
           memberList.add(login_user);
         } else {
           String selected_users[] = selected_user.split(",");
-          List<UserFacilityLiteBean> ulist =
-            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          List<UserFacilityLiteBean> ulist;
+          if ("F".equals(has_acl_other)) {
+            ulist = ScheduleUtils.getALEipFacility(selected_users, rundata);
+            if (selected_user.contains(String.valueOf(ALEipUtils
+              .getUserId(rundata)))) {
+              UserFacilityLiteBean login_user =
+                UserFacilityUtils.getUserFacilityLiteBean(rundata);
+              ulist.add(login_user);
+            }
+          } else {
+            ulist = ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          }
           if (ulist == null || ulist.size() == 0) {
             UserFacilityLiteBean login_user =
               UserFacilityUtils.getUserFacilityLiteBean(rundata);
@@ -337,7 +361,7 @@ public class ScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -350,6 +374,14 @@ public class ScheduleAction extends ALBaseAction {
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
 
     context.put("theme", ALOrgUtilsService.getTheme());
+
+    // 表示形式（月間）を取得する
+    String display_month =
+      portlet.getPortletConfig().getInitParameter("p195-rows");
+    if (display_month == null || "".equals(display_month)) {
+      display_month = "detail";
+    }
+    context.put("display_month", display_month);
 
     // 表示開始時間を取得する．
     String time_start = portlet.getPortletConfig().getInitParameter("p1a-rows");
@@ -404,6 +436,13 @@ public class ScheduleAction extends ALBaseAction {
 
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);
+      if (has_acl_other.equals("F")) {
+        if (rundata.getParameters().get("filter") == null
+          || rundata.getParameters().get("filter").equals("Facility")) {
+          rundata.getParameters().add("filter", "null");
+          rundata.getParameters().remove("filtertype");
+        }
+      }
 
       if (ALEipConstants.MODE_FORM.equals(mode)) {
         doSchedule_form(rundata, context);
@@ -425,7 +464,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -455,7 +494,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -500,7 +539,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -546,7 +585,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -587,7 +626,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -701,7 +740,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -725,7 +764,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -762,7 +801,7 @@ public class ScheduleAction extends ALBaseAction {
 
   /**
    * 編集画面でキャンセルを押したときの処理．
-   * 
+   *
    * @param rundata
    * @param context
    */

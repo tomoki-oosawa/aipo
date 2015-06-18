@@ -1,0 +1,130 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($action_str = $l10n.FILEUPLOAD_ADD)
+#set ($event_submit = "eventSubmit_doFileupload_insert")
+#set($tabs = [[$l10n.FILEUPLOAD_FILEUPLOAD, "",""]])
+#if(($edit_str) && ("$edit_str" == "edit"))
+#set ($upload_str = $l10n.FILEUPLOAD_DO_CHANGE_FILE)
+#else
+#set ($upload_str = $l10n.FILEUPLOAD_DO_ADD_FILE)
+#end
+## ---------------------------------------------------------------------------
+<script type="text/JavaScript">
+<!--
+
+function get_data(pid){
+    #if($!receiveFile && $!receiveFile == "true")
+	#if($!result.MaxSize == 1)
+	window.parent.aipo.fileupload.replaceFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #else
+    window.parent.aipo.fileupload.onAddFileInfo('$!result.NewAttachmentFile.FolderName','$!result.NewAttachmentFile.FileId','$!result.NewAttachmentFile.FileNameEscape', pid);
+    #end
+    #end
+
+	#if($errmsgs && !($errmsgs.size() == 0))
+	#foreach($msg in $errmsgs)
+	  showErrorMessage('$!msg');
+	#end
+	#end
+
+	var indicator = window.parent.document.getElementById("indicator-dlg-" + pid);
+	indicator.style.display = "none";
+	var parentForm = window.parent.dojo.query(".auiPopup form")[0];
+	if(parentForm != null) {
+		window.parent.aimluck.io.disableForm(parentForm, false);
+	}
+}
+
+function showErrorMessage(msg){
+	var ul = window.parent.document.getElementById("error_$!portlet.ID");
+	if(!ul){
+		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		ul = document.createElement("ul");
+		ul.id = "error_$!portlet.ID";
+		div.appendChild(ul);
+	}
+	var li = document.createElement("li");
+	li.innerHTML = msg;
+	ul.appendChild(li);
+}
+
+function hideErrorMessage(){
+	var ul = window.parent.document.getElementById("error_$!portlet.ID");
+	if(ul){
+		var div = window.parent.document.getElementById("messageDiv_$!portlet.ID");
+		div.removeChild(ul);
+	}
+}
+
+function getFileName(){
+    var filepath = document.getElementById('attachment').value;
+    if(filepath == "") return "";
+
+    var filefolder_list = filepath.split("\\");
+    var filename = filefolder_list[filefolder_list.length-1];
+    return filename;
+}
+
+
+function checkFile(){
+    var filename = getFileName();
+    if(filename == ""){
+        alert("$l10n.FILEUPLOAD_SELECT_FILE");
+        return false;
+    }
+    return true;
+}
+
+function submitMini(form, portletId){
+	var indicator = window.parent.document.getElementById("indicator-dlg-" + portletId);
+	indicator.style.display = "inline";
+	var parentForm = window.parent.dojo.query(".auiPopup form")[0];
+	if(parentForm != null) {
+		window.parent.aimluck.io.disableForm(parentForm, true);
+	}
+	var button = document.getElementById("uploadContainer");
+	var span = document.createElement("span");
+	button.parentNode.insertBefore(span, button);
+	span.appendChild(document.createTextNode("$upload_str"))
+	window.parent.dojo.addClass(span, "auiButtonDisabled");
+	button.style.display = "none";
+	hideErrorMessage();
+	form.submit();
+}
+
+//-->
+</script>
+
+<div id="messageDiv"></div>
+<form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','update-mini').addQueryData('msize', $msize))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
+<input type="hidden" name="mode" value="update" />
+<input type="hidden" name="folderName" id="folderName" value="$result.folderName" />
+<input type="hidden" name="msize" id="msize" value="$msize" />
+<input type="hidden" name="nsize" id="nsize" value="$nsize" />
+<input type="hidden" name="secid" value="$secid" />
+<div id="uploadContainer">
+<span id="inputField">
+<div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
+<span class="uploadText">$upload_str</span>
+<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px;" onchange="submitMini(this.form, '$!portlet.ID');" />
+</div>
+</span>
+</div>
+</form>

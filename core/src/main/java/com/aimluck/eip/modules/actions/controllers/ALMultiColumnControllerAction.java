@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.controllers;
 
 // Jetspeed stuff
@@ -61,11 +60,12 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * This action builds a context suitable for controllers handling grid
  * positioned layout using PortletSet.Constraints
- * 
+ *
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta </a>
  * @author <a href="mailto:paulsp@apache.org">Paul Spencer </a>
  */
@@ -228,9 +228,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       ALEipUtils.getHasAuthority(rundata, context, aclType);
     context.put("authority", hasAuthority);
 
-    // get the customization state for this page
-    SessionState customizationState = jdata.getPageSessionState();
-
     super.buildCustomizeContext(controller, context, rundata);
 
     List<?>[] columns = null;
@@ -254,12 +251,11 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
     String columnClasses =
       controller.getConfig().getInitParameter("col_classes");
     context.put("col_classes", getCellClasses(columnClasses));
-
-    columns = (List[]) customizationState.getAttribute("customize-columns");
     PortletSet customizedSet = (PortletSet) jdata.getCustomized();
     Portlets set =
       jdata.getCustomizedProfile().getDocument().getPortletsById(
         customizedSet.getID());
+    columns = CustomizeUtils.buildCustomizeColumns(rundata, context, set);
 
     if (logger.isDebugEnabled()) {
       logger.debug("MultiCol: columns "
@@ -295,7 +291,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       columns = buildColumns(set, colNum);
     }
 
-    customizationState.setAttribute("customize-columns", columns);
     context.put("portlets", columns);
 
     Map<String, String> titles = new HashMap<String, String>();
@@ -380,7 +375,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     context.put("titles", titles);
     context.put("descriptions", descriptions);
-    context.put("action", "controllers.MultiColumnControllerAction");
+    context.put("action", "controllers.ALMultiColumnControllerAction");
     context.put("utils", new ALCommonUtils());
 
   }
@@ -393,7 +388,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   public void doCancel(RunData data, Context context) {
     // move one level back in customization
     ((JetspeedRunData) data).setCustomized(null);
-
     // if we are all done customization
     if (((JetspeedRunData) data).getCustomized() == null) {
       try {
@@ -406,13 +400,21 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
   @SuppressWarnings("rawtypes")
   public void doSave(RunData data, Context context) {
-    // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
+
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
+
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
 
     // update the changes made here to the profile being edited
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     for (int col = 0; col < columns.length; col++) {
       for (int row = 0; row < columns[col].size(); row++) {
         setPosition((IdentityElement) columns[col].get(row), col, row);
@@ -434,6 +436,8 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       // the profile after a references is removed (otherwise it will
       // continue
       // being displayed)
+      SessionState customizationState =
+        ((JetspeedRunData) data).getPageSessionState();
       String referencesRemoved =
         (String) customizationState.getAttribute(REFERENCES_REMOVED);
       if (referencesRemoved != null && referencesRemoved.equals("true")) {
@@ -461,17 +465,23 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       context,
       ALAccessControlConstants.VALUE_ACL_DELETE);
 
-    // get the customization state for this page
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
+
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
+
     SessionState customizationState = jdata.getPageSessionState();
-
-    PortletSet customizedSet = (PortletSet) jdata.getCustomized();
-
     customizationState.setAttribute(REFERENCES_REMOVED, "false");
 
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     if (columns == null) {
       return;
     }
@@ -481,10 +491,6 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
         IdentityElement identityElement =
           (IdentityElement) columns[col].get(row);
         columns[col].remove(row);
-
-        Portlets portlets =
-          jdata.getCustomizedProfile().getDocument().getPortletsById(
-            customizedSet.getID());
 
         if (portlets != null) {
           if (identityElement instanceof Entry) {
@@ -509,6 +515,17 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
           e);
       }
     }
+    for (col = 0; col < columns.length; col++) {
+      for (row = 0; row < columns[col].size(); row++) {
+        setPosition((IdentityElement) columns[col].get(row), col, row);
+      }
+    }
+    try {
+      ((JetspeedRunData) data).getCustomizedProfile().store();
+      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
+    } catch (Exception e) {
+      logger.error("Unable to save profile ", e);
+    }
   }
 
   @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -518,13 +535,19 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       data,
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
 
-    // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
 
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
     if (columns == null) {
@@ -533,6 +556,17 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     if ((col > 0) && (row > -1)) {
       move(columns, col, row, col - 1, row);
+    }
+    for (col = 0; col < columns.length; col++) {
+      for (row = 0; row < columns[col].size(); row++) {
+        setPosition((IdentityElement) columns[col].get(row), col, row);
+      }
+    }
+    try {
+      ((JetspeedRunData) data).getCustomizedProfile().store();
+      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
+    } catch (Exception e) {
+      logger.error("Unable to save profile ", e);
     }
   }
 
@@ -544,12 +578,19 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
+
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
 
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
     if (columns == null) {
@@ -558,6 +599,17 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     if ((col > -1) && (row > -1) && (col < columns.length - 1)) {
       move(columns, col, row, col + 1, row);
+    }
+    for (col = 0; col < columns.length; col++) {
+      for (row = 0; row < columns[col].size(); row++) {
+        setPosition((IdentityElement) columns[col].get(row), col, row);
+      }
+    }
+    try {
+      ((JetspeedRunData) data).getCustomizedProfile().store();
+      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
+    } catch (Exception e) {
+      logger.error("Unable to save profile ", e);
     }
   }
 
@@ -569,12 +621,19 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
+
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
 
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
     if (columns == null) {
@@ -583,6 +642,17 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     if ((col > -1) && (row > 0)) {
       move(columns, col, row, col, row - 1);
+    }
+    for (col = 0; col < columns.length; col++) {
+      for (row = 0; row < columns[col].size(); row++) {
+        setPosition((IdentityElement) columns[col].get(row), col, row);
+      }
+    }
+    try {
+      ((JetspeedRunData) data).getCustomizedProfile().store();
+      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
+    } catch (Exception e) {
+      logger.error("Unable to save profile ", e);
     }
   }
 
@@ -594,12 +664,20 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       context,
       ALAccessControlConstants.VALUE_ACL_UPDATE);
 
-    // get the customization state for this page
-    SessionState customizationState =
-      ((JetspeedRunData) data).getPageSessionState();
+    String js_peid = data.getParameters().get("js_peid");
+    // Profile set = (Profile) ((JetspeedRunData) data).getProfile();
+    Portlets portlets =
+      ((JetspeedRunData) data)
+        .getCustomizedProfile()
+        .getDocument()
+        .getPortletsById(js_peid);
+
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    jdata.setCustomized(CustomizeUtils.getCustomizePortlet(data, js_peid));
 
     List[] columns =
-      (List[]) customizationState.getAttribute("customize-columns");
+      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
+
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
     if (columns == null) {
@@ -608,6 +686,17 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     if ((col > -1) && (row > -1) && (row < columns[col].size() - 1)) {
       move(columns, col, row, col, row + 1);
+    }
+    for (col = 0; col < columns.length; col++) {
+      for (row = 0; row < columns[col].size(); row++) {
+        setPosition((IdentityElement) columns[col].get(row), col, row);
+      }
+    }
+    try {
+      ((JetspeedRunData) data).getCustomizedProfile().store();
+      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
+    } catch (Exception e) {
+      logger.error("Unable to save profile ", e);
     }
   }
 
@@ -801,7 +890,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
   /**
    * Parses the size config info and returns a list of size values for the
    * current set
-   * 
+   *
    * @param sizeList
    *          java.lang.String a comma separated string a values
    * @return a List of values
@@ -836,7 +925,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
    * Add an element to the "table" or "work" objects. If the element is
    * unconstrained, and the position is within the number of columns, then the
    * element is added to "table". Othewise the element is added to "work"
-   * 
+   *
    * @param element
    *          to add
    * @param table

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.ArrayList;
@@ -34,7 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベースレコード情報のResultDataです。 <BR>
- * 
+ *
  */
 public class GpdbRecordResultData implements ALData {
 
@@ -56,6 +52,9 @@ public class GpdbRecordResultData implements ALData {
   /** 値(表示用) */
   protected ALStringField disp_value;
 
+  /** ユーザーID */
+  protected ALNumberField user_id;
+
   /** 値リスト */
   protected List<String> value_list;
 
@@ -73,13 +72,14 @@ public class GpdbRecordResultData implements ALData {
     record_no = new ALNumberField();
     value = new ALStringField();
     disp_value = new ALStringField();
+    user_id = new ALNumberField();
     value_list = new ArrayList<String>();
     attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
   /**
    * レコードIDを取得する
-   * 
+   *
    * @return レコードID
    */
   public ALNumberField getGpdbRecordId() {
@@ -88,7 +88,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * レコードIDを設定する
-   * 
+   *
    * @param i
    *          レコードID
    */
@@ -98,7 +98,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * WebデータベースIDを取得する
-   * 
+   *
    * @return WebデータベースID
    */
   public ALNumberField getGpdbId() {
@@ -107,7 +107,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * WebデータベースIDを設定する
-   * 
+   *
    * @param i
    *          WebデータベースID
    */
@@ -117,7 +117,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 項目定義IDを取得する
-   * 
+   *
    * @return 項目定義ID
    */
   public ALNumberField getGpdbItemId() {
@@ -126,7 +126,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 項目定義IDを設定する
-   * 
+   *
    * @param i
    *          項目定義ID
    */
@@ -136,7 +136,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * レコードNoを取得する
-   * 
+   *
    * @return レコードNo
    */
   public ALNumberField getRecordNo() {
@@ -145,7 +145,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * レコードNoを設定する
-   * 
+   *
    * @param i
    *          レコードNo
    */
@@ -155,7 +155,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値を取得する
-   * 
+   *
    * @return 値
    */
   public ALStringField getValue() {
@@ -164,7 +164,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値を取得する(Wbr挿入)
-   * 
+   *
    * @return 値
    */
   public String getWbrValue() {
@@ -173,7 +173,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値を設定する
-   * 
+   *
    * @param s
    *          値
    */
@@ -183,7 +183,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値（表示用）を取得する
-   * 
+   *
    * @return 値（表示用）
    */
   public ALStringField getDispValue() {
@@ -192,7 +192,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値（表示用）を取得する(Wbr挿入)
-   * 
+   *
    * @return 値（表示用）
    */
   public String getWbrDispValue() {
@@ -201,7 +201,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値（表示用）を設定する
-   * 
+   *
    * @param s
    *          値（表示用）
    */
@@ -210,8 +210,27 @@ public class GpdbRecordResultData implements ALData {
   }
 
   /**
+   * ユーザーIDを取得する
+   *
+   * @return ユーザーID
+   */
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  /**
+   * ユーザーIDを設定する
+   *
+   * @param i
+   *          ユーザーID
+   */
+  public void setUserId(long i) {
+    user_id.setValue(i);
+  }
+
+  /**
    * 値をリスト化したものを設定する
-   * 
+   *
    * @param val
    *          値のリスト
    */
@@ -221,7 +240,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 値をリスト化したものを取得する
-   * 
+   *
    * @return 値のリスト
    */
   public List<String> getValueList() {
@@ -231,7 +250,7 @@ public class GpdbRecordResultData implements ALData {
   /**
    * 値を取得する<br/>
    * 改行コードを&lt;br/&gt;に変換する
-   * 
+   *
    * @return 値
    */
   public String getValueBr() {
@@ -240,7 +259,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 添付ファイルリストを取得する
-   * 
+   *
    * @return 添付ファイルリスト
    */
   public List<FileuploadBean> getAttachmentFileList() {
@@ -249,7 +268,7 @@ public class GpdbRecordResultData implements ALData {
 
   /**
    * 添付ファイルリストを設定する
-   * 
+   *
    * @param list
    *          添付ファイルリスト
    */

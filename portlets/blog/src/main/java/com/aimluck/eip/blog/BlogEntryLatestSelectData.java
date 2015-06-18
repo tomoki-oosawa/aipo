@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.text.SimpleDateFormat;
@@ -317,17 +316,38 @@ public class BlogEntryLatestSelectData extends
 
       List<String> postIds = current_filterMap.get("post");
 
-      HashSet<Integer> userIds = new HashSet<Integer>();
-      for (String post : postIds) {
-        List<Integer> userId = ALEipUtils.getUserIds(post);
-        userIds.addAll(userId);
+      boolean existPost = false;
+      for (int i = 0; i < postList.size(); i++) {
+        String pid = postList.get(i).getName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
       }
-      if (userIds.isEmpty()) {
-        userIds.add(-1);
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+        String pid = item.getValue().getGroupName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
       }
-      Expression exp =
-        ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, userIds);
-      query.andQualifier(exp);
+
+      if (existPost) {
+        HashSet<Integer> userIds = new HashSet<Integer>();
+        for (String post : postIds) {
+          List<Integer> userId = ALEipUtils.getUserIds(post);
+          userIds.addAll(userId);
+        }
+        if (userIds.isEmpty()) {
+          userIds.add(-1);
+        }
+        Expression exp =
+          ExpressionFactory.inExp(EipTBlogEntry.OWNER_ID_PROPERTY, userIds);
+        query.andQualifier(exp);
+      } else {
+        current_filterMap.remove("post");
+      }
     }
 
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);

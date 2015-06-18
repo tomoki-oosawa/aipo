@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
@@ -32,16 +31,13 @@
 <div class="filters" id="filters_$!portlet.ID">#*
 *##foreach($record in $result.CategoryList)#*
 *##if("$!result.CurrentFilter"=="$!record.CategoryId")#*
-	*#<span class="filterTip">#*
-		*#<span>$!{record.CategoryName}</span>#*
-		*#<a href="javascript:void(0);" class="btn" onclick='aipo.workflow.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>#*
-	*#</span>#*
+	*##ALfilterTip($!{record.CategoryName} "aipo.workflow.filterSetDefault('$!portlet.ID','category');")#*
 *##end#end#*
 *#</div>
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.workflow.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.workflow.initFilterSearch("$!portlet.ID");' onblur='aipo.workflow.finFilterSearch("$!portlet.ID");' />
 </div>
-#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit();" "$l10n.WORKFLOW_SAERCH")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
 #AUISearchFooter()
 #AUISummaryDivFooter()
@@ -49,7 +45,7 @@
 <div id="listmessageDiv"></div>
 #ALajaxlistformheaderAction('Workflow')
 #if($result.List.size() == 0)
-<div class="message">$l10n.WORKFLOW_NO_WORKFLOW_YOU_SELECT</div>
+#AUIEmptyMessage("icon-inbox" "$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU")
 #else
 <div class="auiSummaryMeta clearfix">
 #AUIsearchresult($!result.targetKeyword.toString())
@@ -71,8 +67,13 @@
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("$!record.StateString" 'class="center" nowrap="nowrap"')
-#ALtdcellAtt("$!record.ClientName" 'class="left" nowrap="nowrap"')
-#ALtdcellAtt("$!record.LastUpdateUser" 'class="left mb_hide" nowrap="nowrap"')
+
+#ALtdcellheaderAtt('class="left" nowrap="nowrap"')
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.ClientUser.UserId},arguments[0])">$!record.ClientUser.AliasName</a>
+#ALtdcellfooter()
+#ALtdcellheaderAtt('class="left" nowrap="nowrap"')
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.LastUpdateUser.UserId},arguments[0])">$!record.LastUpdateUser.AliasName</a>
+#ALtdcellfooter()
 #ALtdcellAtt("$!record.CreateDateTime" 'class="right" nowrap="nowrap"')
 </tr>
 #end
@@ -82,9 +83,9 @@
 </div>
 #end
 #ALformfooter()
+#AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:200px; display:none;">
-  <div class="single">
+<div class="menubar" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
     <p class="caption">$l10n.WORKFLOW_CLASSIFICATION</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"==""||"$!result.CurrentFilter"=="0") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$l10n.WORKFLOW_ALL_CATEGORY</a></li>
@@ -92,8 +93,6 @@
       <li data-param="$!record.CategoryId" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end><a href="javascript:void(0);" #if("$!result.CurrentFilter"=="$!record.CategoryId") class="selected" #end onclick='aipo.workflow.filterClick("$!portlet.ID",this,event)'>$!{record.CategoryName}</a></li>
     #end
     </ul>
-  </div>
 </div>
-#AUIcontentsAreaFooter()
 <!-- END Contents Area -->
-#parse("/portlets/html/ja/workflow-widgets.vm")
+#parse("/portlets/html/workflow-widgets.vm")

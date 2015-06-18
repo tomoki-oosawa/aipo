@@ -1,8 +1,6 @@
-if(!dojo._hasResource["aipo.widget.DropdownMemberFacilitypicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.widget.DropdownMemberFacilitypicker"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,6 +16,8 @@ dojo._hasResource["aipo.widget.DropdownMemberFacilitypicker"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+if(!dojo._hasResource["aipo.widget.DropdownMemberFacilitypicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.widget.DropdownMemberFacilitypicker"] = true;
 
 dojo.provide("aipo.widget.DropdownMemberFacilitypicker");
 
@@ -183,7 +183,11 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         var dropDown = this.dropDown;
         var oldWidth=dropDown.domNode.style.width;
         var self = this;
-
+        var scrollTop;
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if(userAgent.indexOf("chrome") > -1){
+        	scrollTop=document.body.scrollTop;
+        }
         dijit.popup.open({
             parent: this,
             popup: dropDown,
@@ -222,12 +226,19 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         }
 
         //For google chrome and Firefox 3.6 or higher
-        var userAgent = window.navigator.userAgent.toLowerCase();
         if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
             var pNode = this.dropDown.domNode.parentNode;
             var top = pNode.style.top.replace("px","");
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
+           if(  userAgent.indexOf("chrome")> -1){
+        	   var focusNode =  document.activeElement;
+        	   	document.activeElement.blur();
+                focusNode.focus();
+        	  top_new =dojo.byId("adduser-"+this.tmpPortretId).getBoundingClientRect().top+document.body.scrollTop+20;
+        	  pNode.style.top = top_new + "px";
+        	  document.body.scrollTop =scrollTop;
+           }
         }
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
     },

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ManHourListScreen')")
 ## ---------------------------------------------------------------------------
@@ -114,7 +113,7 @@
 #ALtdcellheader()
 $!record.Name
 #if(! $!record.Public)
-<img src="images/schedule/schedule_secret.gif" border="0" width="16" height="16" align="absmiddle" alt="非公開" title="非公開"/>
+#AUIiconSecretAtt("title='非公開'" "")
 #end
 #if($!record.Duplicate)
 <img src="images/schedule/schedule_duplicate.gif" border="0" width="16" height="16" align="absmiddle" alt="重複スケジュール" title="重複スケジュール"/>

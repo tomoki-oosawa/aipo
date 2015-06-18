@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
@@ -53,6 +52,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -66,7 +66,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDo検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ToDoSelectData extends
     ALAbstractMultiFilterSelectData<EipTTodo, EipTTodo> implements ALData {
@@ -98,6 +98,12 @@ public class ToDoSelectData extends
 
   private int login_user_id;
 
+  private String aclPortletFeature;
+
+  private boolean hasAclListTodoOther;
+
+  private boolean hasAclDetailTodoOther;
+
   private boolean hasAclEditTodoOther;
 
   private boolean hasAclDeleteTodoOther;
@@ -114,7 +120,7 @@ public class ToDoSelectData extends
   private ALStringField target_keyword;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -126,6 +132,13 @@ public class ToDoSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
 
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+
+    if (rundata.getParameters().getString("entityid") != null) {
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, rundata
+        .getParameters()
+        .getString("entityid"));
+    }
+
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(
         rundata,
@@ -156,6 +169,31 @@ public class ToDoSelectData extends
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
+    int view_uid = ToDoUtils.getViewId(rundata, context, login_user_id);
+
+    // アクセス権
+    if (view_uid == login_user_id) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+    }
+
+    // アクセス権(他人のToDo一覧表示)
+    hasAclListTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    // アクセス権(他人のToDo詳細表示)
+    hasAclDetailTodoOther =
+      aclhandler.hasAuthority(
+        login_user_id,
+        ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DETAIL);
+
     // アクセス権(他人のToDo編集)
     hasAclEditTodoOther =
       aclhandler.hasAuthority(
@@ -177,7 +215,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -187,7 +225,7 @@ public class ToDoSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -229,7 +267,7 @@ public class ToDoSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -337,12 +375,19 @@ public class ToDoSelectData extends
       query.andQualifier(exp5);
     }
 
+    // 他人のToDoの一覧表示権限がない場合にはユーザーIDが一致していれば閲覧可能
+    if (!hasAclListTodoOther) {
+      Expression exp8 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, login_user_id);
+      query.andQualifier(exp8);
+    }
+
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -374,17 +419,39 @@ public class ToDoSelectData extends
 
       List<String> postIds = current_filterMap.get("post");
 
-      HashSet<Integer> userIds = new HashSet<Integer>();
-      for (String post : postIds) {
-        List<Integer> userId = ALEipUtils.getUserIds(post);
-        userIds.addAll(userId);
+      boolean existPost = false;
+
+      for (int i = 0; i < postList.size(); i++) {
+        String pid = postList.get(i).getName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
       }
-      if (userIds.isEmpty()) {
-        userIds.add(-1);
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+        String pid = item.getValue().getGroupName().toString();
+        if (pid.equals(postIds.get(0).toString())) {
+          existPost = true;
+          break;
+        }
       }
-      Expression exp =
-        ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY, userIds);
-      query.andQualifier(exp);
+
+      if (existPost) {
+        HashSet<Integer> userIds = new HashSet<Integer>();
+        for (String post : postIds) {
+          List<Integer> userId = ALEipUtils.getUserIds(post);
+          userIds.addAll(userId);
+        }
+        if (userIds.isEmpty()) {
+          userIds.add(-1);
+        }
+        Expression exp =
+          ExpressionFactory.inExp(EipTTodo.USER_ID_PROPERTY, userIds);
+        query.andQualifier(exp);
+      } else {
+        current_filterMap.remove("post");
+      }
     }
 
     // String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
@@ -420,7 +487,7 @@ public class ToDoSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -440,10 +507,12 @@ public class ToDoSelectData extends
       rd.setCategoryName(ALCommonUtils.compressString(record
         .getEipTTodoCategory()
         .getCategoryName(), getStrLength()));
+      rd.setUserId(record.getUserId().longValue());
       rd.setUserName(ALEipUtils
         .getALEipUser(record.getUserId())
         .getAliasName()
         .getValue());
+      rd.setLoginUserId(login_user_id);
       rd.setTodoName(ALCommonUtils.compressString(
         record.getTodoName(),
         getStrLength()));
@@ -471,6 +540,11 @@ public class ToDoSelectData extends
       // 期限状態を設定する．
       rd.setLimitState(ToDoUtils.getLimitState(record.getEndDate()));
 
+      // 自身のToDoかを設定する
+      rd.setIsSelfTodo(record.getUserId() == login_user_id);
+
+      rd.setAclListTodoOther(hasAclListTodoOther);
+      rd.setAclDetailTodoOther(hasAclDetailTodoOther);
       rd.setAclEditTodoOther(hasAclEditTodoOther);
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
       return rd;
@@ -482,7 +556,7 @@ public class ToDoSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -519,7 +593,7 @@ public class ToDoSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -533,6 +607,7 @@ public class ToDoSelectData extends
       rd
         .setCategoryId(record.getEipTTodoCategory().getCategoryId().longValue());
       rd.setCategoryName(record.getEipTTodoCategory().getCategoryName());
+      rd.setUserId(record.getUserId().longValue());
       rd.setUserName(ALEipUtils
         .getALEipUser(record.getUserId())
         .getAliasName()
@@ -549,10 +624,13 @@ public class ToDoSelectData extends
         .getPriority()
         .intValue()));
       rd.setNote(record.getNote());
+      rd.setCreateUserId(record.getCreateUserId().longValue());
       rd.setCreateUserName(ALEipUtils
         .getALEipUser(record.getCreateUserId())
         .getAliasName()
         .getValue());
+      rd.setLoginUserId(login_user_id);
+
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       rd.setAddonScheduleFlg("T".equals(record.getAddonScheduleFlg()));
@@ -563,9 +641,21 @@ public class ToDoSelectData extends
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);
 
+      rd.setAclListTodoOther(hasAclListTodoOther);
+      rd.setAclDetailTodoOther(hasAclDetailTodoOther);
       rd.setAclEditTodoOther(hasAclEditTodoOther);
       rd.setAclDeleteTodoOther(hasAclDeleteTodoOther);
+
+      // もし自分のToDoではない場合に、他人のToDoの詳細表示権限がないときはエラー
+      if (record.getUserId() != login_user_id && !hasAclDetailTodoOther) {
+        throw new ALPermissionException();
+      }
+
       return rd;
+
+    } catch (RuntimeException ex) {
+      logger.error("todo", ex);
+      return null;
     } catch (Exception ex) {
       logger.error("todo", ex);
       return null;
@@ -573,7 +663,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ToDoCategoryResultData> getCategoryList() {
@@ -582,7 +672,7 @@ public class ToDoSelectData extends
 
   /**
    * 現在選択されているタブを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentTab() {
@@ -591,7 +681,7 @@ public class ToDoSelectData extends
 
   /**
    * ToDo の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getTodoSum() {
@@ -600,7 +690,7 @@ public class ToDoSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -621,7 +711,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -652,7 +742,7 @@ public class ToDoSelectData extends
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -675,14 +765,50 @@ public class ToDoSelectData extends
   }
 
   /**
+   * アクセス権限をチェックします。
+   *
+   * @return
+   */
+  @Override
+  protected boolean doCheckAclPermission(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    String pfeature = getAclPortletFeature();
+    if (pfeature == null || "".equals(pfeature)) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthority =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        pfeature,
+        defineAclType);
+
+    if (!hasAuthority) {
+      throw new ALPermissionException();
+    }
+
+    return true;
+  }
+
+  /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    return aclPortletFeature;
   }
 
   public void setMyGroupList(List<ALEipGroup> myGroupList) {
@@ -717,7 +843,7 @@ public class ToDoSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -726,7 +852,7 @@ public class ToDoSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {

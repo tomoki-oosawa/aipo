@@ -1,14 +1,6 @@
-dojo._xdResourceLoaded({
-depends: [["provide", "aipo.calendar.weekly"],
-["require", "aimluck.dnd.Draggable"],
-["require", "aipo.widget.ToolTip"],
-["require", "aipo.widget.MemberNormalSelectList"],
-["require", "aipo.widget.GroupNormalSelectList"]],
-defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
-dojo._hasResource["aipo.calendar.weekly"] = true;
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +16,14 @@ dojo._hasResource["aipo.calendar.weekly"] = true;
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+dojo._xdResourceLoaded({
+depends: [["provide", "aipo.calendar.weekly"],
+["require", "aimluck.dnd.Draggable"],
+["require", "aipo.widget.ToolTip"],
+["require", "aipo.widget.MemberNormalSelectList"],
+["require", "aipo.widget.GroupNormalSelectList"]],
+defineResource: function(dojo){if(!dojo._hasResource["aipo.calendar.weekly"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
+dojo._hasResource["aipo.calendar.weekly"] = true;
 
 dojo.provide("aipo.calendar.weekly");
 
@@ -58,9 +58,6 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
     var childrenBody = dojo.byId("weeklyRights-" + pid).children;
 	dojo.byId("view_type_" + pid).value = period;
 	var dateCell = dojo.byId("indicateDate_" + pid);
-	if(dateCell == null){
-		return;
-	}
 	for(var i = 0; i < 7; i++){
 		var child = children[i];
 		var childBody = childrenBody[i];
@@ -68,7 +65,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 		var add = dojo.byId("scheduleDivAdd0" + i + "_" + pid)
 		switch(period){
 		case '1':
-			dateCell.innerHTML = "<span>1日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>1日</span>";
 			childBody.className = "weeklyRight";
 			if(i == 0) {
 				child.className = "weeklyHeadRightR" + " weeklyHeadRightborder" + i + "_" + pid;
@@ -91,7 +88,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '4':
-			dateCell.innerHTML = "<span>4日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>4日</span>";
 			if(i == 0){
 				removeClass(childTerm, "weeklyTermRightR");
 			}
@@ -129,7 +126,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 			}
 			break;
 		case '7':
-			dateCell.innerHTML = "<span>7日</span>";
+			if(dateCell)dateCell.innerHTML = "<span>7日</span>";
 			child.style.left = i * (100.0 / 7.0) + "%";
 			child.style.display = "";
 			child.style.width = "14.2857%";
@@ -208,600 +205,616 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     	_params += "&pickup=true";
     }
 
-    dojo.xhrGet({
-        portletId: _portletId,
-        url: ptConfig[_portletId].jsonUrl + _params,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        load: function(data, event) {
-        	//月カレンダーを更新
-        	if(aipo.calendar.reloadMonthlyCalendar!=null){
-        		aipo.calendar.reloadMonthlyCalendar();
-        	}
-            //権限チェック
-            obj_error = dojo.byId('error-'+_portletId);
-            dojo.style(obj_error, "display" , "none");
-            if("PermissionError" == data[0]){
-               dojo.style(obj_error, "display" , "block");
-               obj_error.innerHTML = data[1];
-               obj_content = dojo.byId('content-'+_portletId);
-               dojo.style(obj_content,  "display" , "none");
-               obj_indicator = dojo.byId('indicator-'+_portletId);
-               dojo.style(obj_indicator, "display" , "none")
-               return;
-            } else if(data["errList"]){
-               if("duplicate_facility" == data.errList[0]){
-                    if(confirm('既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？')) {
-                        var new_param = _params + '&ign_dup_f=true'
-                        aipo.calendar.populateWeeklySchedule(_portletId, new_param);
-                        aipo.portletReload('schedule', _portletId);
-                        return;
-                    }
-               }
+    if(ptConfig[_portletId].xhrUrl != ptConfig[_portletId].jsonUrl + _params){
+	    ptConfig[_portletId].xhrUrl = ptConfig[_portletId].jsonUrl + _params;
+	    dojo.xhrGet({
+	        portletId: _portletId,
+	        url: ptConfig[_portletId].jsonUrl + _params,
+	        encoding: "utf-8",
+	        handleAs: "json-comment-filtered",
+	        load: function(data, event) {
+	        	ptConfig[_portletId].xhrUrl = "";
+	        	//月カレンダーを更新
+	        	if(aipo.calendar.reloadMonthlyCalendar!=null){
+	        		aipo.calendar.reloadMonthlyCalendar();
+	        	}
+	            //権限チェック
+	            obj_error = dojo.byId('error-'+_portletId);
+	            dojo.style(obj_error, "display" , "none");
+	            if("PermissionError" == data[0]){
+	               dojo.style(obj_error, "display" , "block");
+	               obj_error.innerHTML = data[1];
+	               obj_content = dojo.byId('content-'+_portletId);
+	               dojo.style(obj_content,  "display" , "none");
+	               obj_indicator = dojo.byId('indicator-'+_portletId);
+	               dojo.style(obj_indicator, "display" , "none")
+	               return;
+	            } else if(data["errList"]){
+	               if("duplicate_facility" == data.errList[0]){
+	                    if(confirm('既に同じ時間帯に設備が予約されています。スケジュールを登録しますか？')) {
+	                        var new_param = _params + '&ign_dup_f=true'
+	                        aipo.calendar.populateWeeklySchedule(_portletId, new_param);
+	                        aipo.portletReload('schedule', _portletId);
+	                        return;
+	                    }
+	               }
 
-               if("UpdateError" == data.errList[0]){
-                     dojo.style(obj_error, "display" , "block");
-                     obj_error.innerHTML = "<ul><li><span class=\"caution\">"+data.errList[1]+"</span></li></ul>";
-                     obj_content = dojo.byId('content-'+_portletId);
-                     dojo.style(obj_content, "visibility" , "visible");
-                     obj_indicator = dojo.byId('indicator-'+_portletId);
-                     dojo.style(obj_indicator, "display" , "none")
-                }
-            }
-            //オブジェクト削除
-            var i;
-            if(!!aipo.calendar.objectlist){
-                var o_size = aipo.calendar.objectlist.length;
-                for(i = 0; i < o_size; i++){
-                    var obj = aipo.calendar.objectlist[i];
-                    if(obj.portletId == _portletId){
-                        obj.destroy();
-                    }
-                }
-            }
+	               if("UpdateError" == data.errList[0]){
+	                     dojo.style(obj_error, "display" , "block");
+	                     obj_error.innerHTML = "<ul><li><span class=\"caution\">"+data.errList[1]+"</span></li></ul>";
+	                     obj_content = dojo.byId('content-'+_portletId);
+	                     dojo.style(obj_content, "visibility" , "visible");
+	                     obj_indicator = dojo.byId('indicator-'+_portletId);
+	                     dojo.style(obj_indicator, "display" , "none")
+	                }
+	            }
+	            //オブジェクト削除
+	            var i;
+	            if(!!aipo.calendar.objectlist){
+	                var o_size = aipo.calendar.objectlist.length;
+	                for(i = 0; i < o_size; i++){
+	                    var obj = aipo.calendar.objectlist[i];
+	                    if(obj.portletId == _portletId){
+	                        obj.destroy();
+	                    }
+	                }
+	            }
 
-            if (!aipo.errorTreatment(data, ptConfig[_portletId].thisUrl)) {
-                return;
-            }
-            ptConfig[_portletId].jsonData = data;
-            var scheduleDiv = Array(ptConfig[_portletId].scheduleDivDaySum);
-            for(var i=0;i<ptConfig[_portletId].scheduleDivDaySum;i++) {
-                scheduleDiv[i] = Array();
-            }
-            var count = 0;
-            var l_count = 0;
-            var m_count = 0;
-            var html = '';
-            var termHtml = '';
-            var termTableHtml = '';
-            var termScheduleItemGarageHtml = '';
-            var tmpHeight = [];
-            var tmpNode1, tmpNode2, tmpNode3, tmpNode4;
-            var startEnd = data.startDate.substring(0,4) + "年" + parseInt(data.startDate.substring(5,7),10) + "月" + parseInt(data.startDate.substring(8,10),10) + "日" + data.dayOfWeek[0];
-            dojo.byId('viewWeekly-' + _portletId).innerHTML = startEnd;
+	            if (!aipo.errorTreatment(data, ptConfig[_portletId].thisUrl)) {
+	                return;
+	            }
+	            ptConfig[_portletId].jsonData = data;
+	            var scheduleDiv = Array(ptConfig[_portletId].scheduleDivDaySum);
+	            for(var i=0;i<ptConfig[_portletId].scheduleDivDaySum;i++) {
+	                scheduleDiv[i] = Array();
+	            }
+	            var count = 0;
+	            var l_count = 0;
+	            var m_count = 0;
+	            var html = '';
+	            var termHtml = '';
+	            var termTableHtml = '';
+	            var termScheduleItemGarageHtml = '';
+	            var tmpHeight = [];
+	            var tmpNode1, tmpNode2, tmpNode3, tmpNode4;
+	            var startEnd = data.startDate.substring(0,4) + "年" + parseInt(data.startDate.substring(5,7),10) + "月" + parseInt(data.startDate.substring(8,10),10) + "日" + data.dayOfWeek[0];
+	            dojo.byId('viewWeekly-' + _portletId).innerHTML = startEnd;
 
-            var simpleStyleFirst = "";
-            var simpleStyle = "";
-            var isSimple = dojo.byId("top_form_" + this.portletId).value == "simple";
-            var isOneSpan = dojo.byId("view_type_" + this.portletId).value == "1";
-            var isFourSpan = dojo.byId("view_type_" + this.portletId).value == "4";
-            var isIPad = window.navigator.userAgent.toLowerCase().indexOf("ipad") >= 0;
-            if(isSimple && isOneSpan){
-                simpleStyleFirst = "width: 100%;";
-            	simpleStyle = "width: 0%;display: none;";
-            }
+	            var simpleStyleFirst = "";
+	            var simpleStyle = "";
+	            var isSimple = dojo.byId("top_form_" + this.portletId).value == "simple";
+	            var isOneSpan = dojo.byId("view_type_" + this.portletId).value == "1";
+	            var isFourSpan = dojo.byId("view_type_" + this.portletId).value == "4";
+	            var isIPad = window.navigator.userAgent.toLowerCase().indexOf("ipad") >= 0;
+	            if(isSimple && isOneSpan){
+	                simpleStyleFirst = "width: 100%;";
+	            	simpleStyle = "width: 0%;display: none;";
+	            }
 
-            termTableHtml += "<table id=\"termTable_" + this.portletId + "\" style=\"width:100%;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>";
+	            termTableHtml += "<table id=\"termTable_" + this.portletId + "\" style=\"width:100%;\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tbody>";
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
+	            var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
+	//            if(Element.clientWidth == Element.offsetWidth){
+	//              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
+	//              	if(dojo.byId('isMac').value != 0){
+	//              	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+	//              	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+	//              	}
+	//            }
 
-            var Element = dojo.byId("weeklyScrollPane_" + this.portletId );
-//            if(Element.clientWidth == Element.offsetWidth){
-//              	dojo.byId('weeklySpan-'+_portletId).style.display = "none";
-//              	if(dojo.byId('isMac').value != 0){
-//              	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
-//              	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-//              	}
-//            }
+	            	dojo.forEach(data.termSchedule, function(itemList) {
+	                var simpleDisplay = "";
+	                var simpleDisplayR = "";
+	                if(isSimple && ( isOneSpan || isFourSpan)){
+	                  simpleDisplay = ' style="display: none;"';
+	                  m_count++;
+	                  for (k = 0; k < itemList.length ; k++){
+	                    item = itemList[k];
+	                    if(item.index==0 || ( isSimple && isFourSpan && item.index < 4 )){
+	                    	simpleDisplay = "";
+	                    	simpleDisplayR = " weeklyTermRightR";
+	                        m_count--;
+	                    	break;
+	                    }
+	                  }
+	                }
 
-            	dojo.forEach(data.termSchedule, function(itemList) {
-                var simpleDisplay = "";
-                var simpleDisplayR = "";
-                if(isSimple && ( isOneSpan || isFourSpan)){
-                  simpleDisplay = ' style="display: none;"';
-                  m_count++;
-                  for (k = 0; k < itemList.length ; k++){
-                    item = itemList[k];
-                    if(item.index==0 || ( isSimple && isFourSpan && item.index < 4 )){
-                    	simpleDisplay = "";
-                    	simpleDisplayR = " weeklyTermRightR";
-                        m_count--;
-                    	break;
-                    }
-                  }
-                }
-
-//                if(Element.clientWidth == Element.offsetWidth){
-//                  	simpleDisplayR = " weeklyTermRightRnone";
-//                  	if(dojo.byId('isMac').value != 0){
-//                  	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
-//                  	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
-//                  	}
-//                }
-
-
-                var item = null;
-
-
-                //IPADはスクロールバーを表示しないので表示調節用の列を削除
-                var ipad_border= scheduleTooltipEnable !==true && isSimple && isOneSpan ? "border-right:0":"";
-                if(scheduleTooltipEnable!==true && isSimple && isOneSpan )
-                	termTableHtml += '<tr'+simpleDisplay+'><td colspan="2" nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
-                else
-                	termTableHtml += '<tr'+simpleDisplay+'><td nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
-
-                if(isSimple && isFourSpan){
-	                termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay3-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 75%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-	                termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' +  (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
-                }else{
-                	termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
-                    termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' + (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
-                }
-
-                var weeklyTermtailHtml;
-                termTableHtml += "</div></td></tr>";
-
-                l_count++;
-            });
-            termTableHtml += "</tbody></table>"
-            dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
-            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = (17 * (l_count - m_count + 1)) + "px";
-            dojo.byId('termScheduleDivAdd_' + _portletId).style.top =  (-(17 * (l_count - m_count + 1))) + "px";
-            dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
-            dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
-
-            for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
-                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
-                tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
-                tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
-                tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
-                var tmpNode1_a = dojo.byId('weeklyDay' + i + '_element_a-' + _portletId);
-                tmpNode1_a.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
-                if(location.href.toString().toLowerCase().indexOf((_portletId+"?action=controls.Maximize").toLowerCase())>0){
-                	tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10)).split("ScheduleScreen").join("ScheduleListScreen");
-                }else{
-                    tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10));
-                }
-                tmpNode2.innerHTML = data.holiday[i];
-                var temptoday = data.today + "-00-00";
-                if (data.dayOfWeek[i] == "(土)") {
-                    dojo.addClass(tmpNode1, "saturday");
-                    dojo.addClass(tmpNode2, "saturday");
-                    dojo.addClass(tmpNode3, "saturday");
-                    dojo.addClass(tmpNode4, "saturday");
-                } else {
-                    dojo.removeClass(tmpNode1, "saturday");
-                    dojo.removeClass(tmpNode2, "saturday");
-                    dojo.removeClass(tmpNode3, "saturday");
-                    dojo.removeClass(tmpNode4, "saturday");
-                }
-                if (data.dayOfWeek[i] == "(日)") {
-                    dojo.addClass(tmpNode1, "sunday");
-                    dojo.addClass(tmpNode2, "sunday");
-                    dojo.addClass(tmpNode3, "sunday");
-                    dojo.addClass(tmpNode4, "sunday");
-                } else {
-                    dojo.removeClass(tmpNode1, "sunday");
-                    dojo.removeClass(tmpNode2, "sunday");
-                    dojo.removeClass(tmpNode3, "sunday");
-                    dojo.removeClass(tmpNode4, "sunday");
-                }
-                if (data.holiday[i]) {
-                    dojo.addClass(tmpNode1, "holiday");
-                    dojo.addClass(tmpNode2, "holiday");
-                    dojo.addClass(tmpNode3, "holiday");
-                    dojo.addClass(tmpNode4, "holiday");
-                } else {
-                    dojo.removeClass(tmpNode1, "holiday");
-                    dojo.removeClass(tmpNode2, "holiday");
-                    dojo.removeClass(tmpNode3, "holiday");
-                    dojo.removeClass(tmpNode4, "holiday");
-                }
-                if (temptoday==data.date[i]) {
-                    dojo.addClass(tmpNode1, "today");
-                    dojo.addClass(tmpNode2, "today");
-                    dojo.addClass(tmpNode3, "today");
-                    dojo.addClass(tmpNode4, "today");
-                } else {
-                    dojo.removeClass(tmpNode1, "today");
-                    dojo.removeClass(tmpNode2, "today");
-                    dojo.removeClass(tmpNode3, "today");
-                    dojo.removeClass(tmpNode4, "today");
-                }
-            }
-
-            dojo.forEach(data.schedule, function(item) {
-                var rowHeight = ptConfig[_portletId].rowHeight;
-                var top = item.startDateHour * rowHeight * 2 + item.startDateMinute * rowHeight / 30;
-                var height = item.endDateHour * rowHeight * 2 + item.endDateMinute * rowHeight / 30 - top;
-                if(height <= rowHeight) {
-                    tmpHeight[count] = height;
-                    height = rowHeight;
-                } else {
-                    tmpHeight[count] = -1;
-                }
-                var left = 100 /  ptConfig[_portletId].scheduleDivDaySum * item.index;
-                var width = 100 / ptConfig[_portletId].scheduleDivDaySum * 0.99;
-                var name = item.name;
-                var startDate = tmpHeight[count] == -1 ? ((item.startDateHour > 9) ? item.startDate : "0" +item.startDate) : item.name;
-                var endDate = tmpHeight[count] == -1 ? ((item.endDateHour > 9) ? item.endDate : "0" +item.endDate) : '';
-                var sepalater = tmpHeight[count] == -1 ? '-' : '';
-                var scheduleId = item.scheduleId;
-
-                var str_tmp = "0";
-                var str_tmpflgmb = "";
-                var member_to = dojo.byId('member_to-' + _portletId);
-                if(member_to) {
-                     var t_o = member_to.options;
-                     for(i = 0 ; i < t_o.length; i++ ) {
-                       if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
-                           str_tmp = i %  aipo.calendar.maximum_to;
-                       }
-                       /*
-                       if(item.memberList){
-                           var ucount = 0;
-                           var fcount = 0;
-                           for (j = 0 ; j < item.memberList.length ; j ++){
-                               if(item.memberList[j].charAt(0) == 'f'){
-                                  fcount++;
-                               }else{
-                                  ucount++;
-                               }
-                           }
-                       }
-                       */
-                    }
-                    var str_tmpflgmb;
-                    if(item.userCount > 1){
-                     str_tmpflgmb   =  "[共有]";
-                    }
-                    if(item.facilityCount > 0){
-                     str_tmpflgmb   += "[設備]";
-                    }
-
-                }
-
-                if(!item['public']) {
-                    name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
-                }
-                if(item.duplicate) {
-                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
-                }
-                if(item.repeat) {
-                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
-                }
-                if(item.tmpreserve) {
-                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
-                }
-                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
-                count++;
-            });
-            html += "<div id=\"dummy_div_" +  _portletId + "\" class=\"scheduleDivAdd dummy_div\" style=\" position:absolute; width: 0px; height : 0px; left: 0px; top: -10000px; Filter: Alpha(Opacity=10);opacity:.10; background-color:#FFFFFF; \">&nbsp;</div>"
-            dojo.byId('scheduleGarage-' + _portletId).innerHTML = html;
-
-            var tmpDraggable = null;
-            var draggable, draggable2;
-            var objs = [];
-            count = 0;
-            dojo.forEach(data.schedule, function(item) {
-                draggable = dojo.byId('schedule-' + count + '-' + _portletId);
-                var scheduleId = item.scheduleId;
-                tmpDraggable = new aipo.calendar.WeeklyScheduleDraggable(draggable, {pid:_portletId , sid:'"schedule-' + count + '-' + _portletId +'"' , handle: '"dummy_div_-' + _portletId +'"' });
-                aipo.calendar.objectlist.push(tmpDraggable);
-
-                if(item.member || item.loginuser || item.owner || item['public']){
-                    tmpDraggable.setDraggable(true);
-                } else {
-                    tmpDraggable.setDraggable(false);
-                }
-
-                tmpDraggable.schedule = item;
-                tmpDraggable.tmpIndex = item.index;
-                tmpDraggable.count = count;
-                tmpDraggable.tmpHeight = tmpHeight[count];
-                tmpDraggable.position = 0;
-                tmpDraggable.division = 1;
-                tmpDraggable.portletId = _portletId;
-
-                scheduleDiv[item.index].push(draggable);
-                if(item['public'] || item.member){
-                    dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
-                }
-
-                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
-
-                count++;
-            });
-
-            for(var i=0;i<ptConfig[_portletId].scheduleDivDaySum;i++) {
-                aipo.calendar.relocation(_portletId, scheduleDiv[i].length, scheduleDiv[i], 100 /  ptConfig[_portletId].scheduleDivDaySum * i);
-                scheduleDiv[i] = Array();
-            }
-            count = 0;
-             l_count = 0;
-            dojo.forEach(data.termSchedule, function(itemList) {
-                var item = null;
-                var temptoday =　data.today + "-00-00";
-                termHtml = "";
-                for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
-                   tmpNode5 = dojo.byId('termDay' + i + '-' + l_count + '-' + _portletId);
-                   if (data.dayOfWeek[i] == "(土)") {
-                       dojo.addClass(tmpNode5, "saturday");
-                   } else {
-                       dojo.removeClass(tmpNode5, "saturday");
-                   }
-                   if (data.dayOfWeek[i] == "(日)") {
-                       dojo.addClass(tmpNode5, "sunday");
-                   } else {
-                       dojo.removeClass(tmpNode5, "sunday");
-                   }
-                   if (data.holiday[i]) {
-                       dojo.addClass(tmpNode5, "holiday");
-                   } else {
-                       dojo.removeClass(tmpNode5, "holiday");
-                   }
-                   if (temptoday==data.date[i]) {
-                       dojo.addClass(tmpNode5, "today");
-                   } else {
-                       dojo.removeClass(tmpNode5, "today");
-                   }
-                }
-                for (k = 0; k < itemList.length ; k++){
-                    item = itemList[k];
-
-                    if(isSimple && isFourSpan){
-                    	var rowspanday = item.rowspan;
-                    	if(item.rowspan + item.index > 4){
-                    		rowspanday = rowspanday - (item.rowspan + item.index - 4);
-                    	}
-                    	var width = 25 * rowspanday;
-                    	var left = 25 * item.index;
-                    	if(item.index > 4){
-                    		width = 0 ;
-                    	}
-                    }else{
-                    	var width = 100 / ptConfig[_portletId].scheduleDivDaySum * item.rowspan;
-                    	var left = 100 / ptConfig[_portletId].scheduleDivDaySum * item.index;
-                    }
-
-                    var simpleDisplay = "";
-                    if(isSimple && isOneSpan){
-                    	width = 100;
-                        simpleDisplay = ((item.index==0) ? "" : "display: none;");
-                    }
-                    var name = item.name;
-                    var scheduleId = item.scheduleId;
-
-                    var str_tmp = "0";
-                    var str_tmpflgmb = "";
-                    var member_to = dojo.byId('member_to-' + _portletId);
-                    if(member_to) {
-                         var t_o = member_to.options;
-                         for(i = 0 ; i < t_o.length; i++ ) {
-                           if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
-                               str_tmp = i %  aipo.calendar.maximum_to;
-                           }
-                        }
-                        var str_tmpflgmb;
-                        if(item.userCount > 1){
-                            str_tmpflgmb   =  "[共有]";
-                        }
-                    }
-
-                    if(!item['public']) {
-                        name += '<i class="auiIcon auiIconSecret" title="非公開"></i>';
-                    }
-                    if(item.duplicate) {
-                        name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>';
-                    }
-                    if(item.repeat) {
-                        name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>';
-                    }
-                    if(item.tmpreserve) {
-                        name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>';
-                    }
-                    if(width==100)width='99.99999';
-                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + str_tmpflgmb + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
-                    count++;
-                }
-                dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;
-                l_count++;
-            });
-
-            tableLeft = dojo.byId('weeklyTermLeft_'+_portletId);
-
-            tmpDraggable = null;
-            count = 0;
-            l_count = 0;
-            dojo.forEach(data.termSchedule, function(itemList) {
-                var item = null;
-                    for (k = 0; k < itemList.length ; k++){
-                        item = itemList[k];
-                        var scheduleId = item.scheduleId;
-                        draggable = dojo.byId('termSchedule-' + count + '-' + _portletId);
-                        draggable2 = dojo.byId('termScheduleDivHandleLeft-' + count + '-' + _portletId);
-                        draggable3 = dojo.byId('termScheduleDivHandleRight-' + count + '-' + _portletId);
-                        tmpDraggable = new aipo.calendar.WeeklyTermScheduleDraggable(draggable,{pid:_portletId , sid:  'termSchedule-' + count + '-' + _portletId});
-
-                        aipo.calendar.objectlist.push(tmpDraggable);
-                        tmpDraggable.schedule = item;
-                        tmpDraggable.scheduleNode = draggable;
-                        tmpDraggable.portletId = _portletId;
-                        tmpDraggable.termType = 'center';
-
-                        dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
-                        draggable.style.zIndex = 1;
-
-                        if (item.indexReal >= 0) {
-                            tmpDraggable2 = new aipo.calendar.WeeklyTermScheduleDraggable(draggable2, {pid:_portletId , sid: 'termScheduleDivHandleLeft-' + count + '-' + _portletId});
-                            aipo.calendar.objectlist.push(tmpDraggable2);
-                            tmpDraggable2.schedule = item;
-                            tmpDraggable2.scheduleNode = draggable;
-                            tmpDraggable2.portletId = _portletId;
-                            tmpDraggable2.termType = 'left';
-                            if(item.member || item.loginuser || item.owner || item['public']){
-                                tmpDraggable2.setDraggable(true);
-                            } else {
-                                tmpDraggable2.setDraggable(false);
-                            }
-                        } else {
-                            dojo.style(draggable2, "cursor", "pointer");
-                            draggable2.style.zIndex = 1;
-                        }
-                        dojo.connect(draggable2,"onclick", tmpDraggable, "onScheduleClick");
-                        if (item.indexReal + item.colspanReal <= ptConfig[_portletId].scheduleDivDaySum ) {
-                            tmpDraggable3 = new aipo.calendar.WeeklyTermScheduleDraggable(draggable3, {pid:_portletId , sid: 'termScheduleDivHandleRight-' + count + '-' + _portletId});
-                            aipo.calendar.objectlist.push(tmpDraggable3);
-                            tmpDraggable3.schedule = item;
-                            tmpDraggable3.scheduleNode = draggable;
-                            tmpDraggable3.portletId = _portletId;
-                            tmpDraggable3.termType = 'right';
-                            if(item.member || item.loginuser || item.owner || item['public']){
-                                tmpDraggable3.setDraggable(true);
-                            } else {
-                                tmpDraggable3.setDraggable(false);
-                            }
-                        } else {
-                            dojo.style(draggable3, "cursor", "pointer");
-                            draggable3.style.zIndex = 1;
-                        }
-                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
-                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
-
-                        if(item.member || item.loginuser || item.owner || item['public']){
-                            tmpDraggable.setDraggable(true);
-                        } else {
-                            tmpDraggable.setDraggable(false);
-                        }
-                        count++;
-                    }
-				l_count++;
-            });
+	//                if(Element.clientWidth == Element.offsetWidth){
+	//                  	simpleDisplayR = " weeklyTermRightRnone";
+	//                  	if(dojo.byId('isMac').value != 0){
+	//                  	dojo.byId('weeklyHeadRightborder-'+_portletId).style.borderRight = "none";
+	//                  	dojo.byId('termDay0-'+_portletId).style.borderRight = "none";
+	//                  	}
+	//                }
 
 
-
-            obj_content = dojo.byId('content-'+_portletId);
-            dojo.style(obj_content, "visibility" , "visible");
-            obj_indicator = dojo.byId('indicator-'+_portletId);
-            dojo.style(obj_indicator, "display" , "none");
-            dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
-            var Element = dojo.byId("weeklyScrollPane_" + _portletId);
-
-            if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
-            	if(dojo.byId("weeklySpan-" + _portletId) != null){
-            		dojo.byId("weeklySpan-" + _portletId).style.display = "none";
-            	}
-            	dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
-            	if(dojo.byId("termTable_" + _portletId) != null){
-            		dojo.query('termTable_' + _portletId).style("width", "99.9999%");
-            	}
-
-                	if(isSimple && isOneSpan){
-                		dojo.query('.weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
-                		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
-                		dojo.byId("weeklyRight0-" + _portletId).style.borderRightStyle = "";
-                    	if(isIPad){
-                    		if(dojo.byId("weeklyRight0-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight0-" + _portletId).className.indexOf("saturday")  >= 0){
-                    			dojo.query('.scroll_width').style("padding-right", "1px");
-        					}else{
-        						dojo.query('.scroll_width').style("padding-right", "0px");
-        					}
-                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
-                    	}else{
-                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
-                    	}
-                	} else if(isSimple && isFourSpan){
-
-                    	if(isIPad){
-                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
-                    		dojo.query('.scroll_width').style("padding-right", "0px");
-                    	}else{
-                    		dojo.byId("weeklyRight3-" + _portletId).style.borderRightStyle = "none";
-                    		dojo.query('.weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
-                    		dojo.query('._weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
-                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
-                    	}
-                	}else{
-
-                    	if(isIPad){
-                    		dojo.query('.scroll_width').style("padding-right", "0px");
-                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
-                    	}else{
-                    		if(window.navigator.userAgent.toLowerCase().indexOf("chrome") >= 0 && (dojo.byId("weeklyRight6-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight6-" + _portletId).className.indexOf("saturday"))  >= 0){
-                    			dojo.query('.scroll_width').style("padding-right", "1px");
-                    			dojo.query('.weeklyTableHead').style("padding-right", "1px");
-                    		}else{
-                    			dojo.query('.scroll_width').style("padding-right", "0px");
-                    			dojo.query('.weeklyTableHead').style("padding-right", "0px");
-                    		}
-                    		dojo.byId("weeklyRight6-" + _portletId).style.borderRightStyle = "none";
-                    		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
-                    		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
-
-                    	}
-                	}
+	                var item = null;
 
 
-            }else if(Element.clientWidth != Element.offsetWidth && Element.offsetWidth - Element.clientWidth != 18){
-            	if(dojo.byId("weeklySpan-" + _portletId) != null){
-            		dojo.byId("weeklySpan-" + _portletId).width = (Element.offsetWidth - Element.clientWidth  + 1) + "px";
-            	}
-            	dojo.query(".weeklyTermTailTd_" + _portletId).width = (Element.offsetWidth - Element.clientWidth + 1) + "px";
-            	dojo.query(".weeklyTermTail").style("width",  ((Element.offsetWidth - Element.clientWidth + 1) + "px"));
-            }
+	                //IPADはスクロールバーを表示しないので表示調節用の列を削除
+	                var ipad_border= scheduleTooltipEnable !==true && isSimple && isOneSpan ? "border-right:0":"";
+	                if(scheduleTooltipEnable!==true && isSimple && isOneSpan )
+	                	termTableHtml += '<tr'+simpleDisplay+'><td colspan="2" nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
+	                else
+	                	termTableHtml += '<tr'+simpleDisplay+'><td nowrap="nowrap" width="100%" height="17px" valign="top"><div class="weeklyTermRights">';
 
-            if(l_count == 0){
-            	dojo.byId("termScheduleContainer-" + _portletId).style.height = "0px";
-            }else{
-            }
+	                if(isSimple && isFourSpan){
+		                termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 25%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 50%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay3-'+ l_count + '-' +_portletId+'" style="width: 25%;left: 75%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;display:none;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+		                termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' +  (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
+	                }else{
+	                	termTableHtml += '<div class="_weeklyHeadRightborder0_' + _portletId + ' weeklyTermRight weeklyTermRightL'+simpleDisplayR+'" id="termDay0-'+ l_count + '-' +_portletId+'" style="left: 0%;'+simpleStyleFirst+ipad_border+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder1_' + _portletId + ' weeklyTermRight" id="termDay1-'+ l_count + '-' +_portletId+'" style="left: 14.2857%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder2_' + _portletId + ' weeklyTermRight" id="termDay2-'+ l_count + '-' +_portletId+'" style="left: 28.5714%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder3_' + _portletId + ' weeklyTermRight" id="termDay3-'+ l_count + '-' +_portletId+'" style="left: 42.8571%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder4_' + _portletId + ' weeklyTermRight" id="termDay4-'+ l_count + '-' +_portletId+'" style="left: 57.1429%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder5_' + _portletId + ' weeklyTermRight" id="termDay5-'+ l_count + '-' +_portletId+'" style="left: 71.4286%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termTableHtml += '<div class="_weeklyHeadRightborder6_' + _portletId + ' weeklyTermRight weeklyTermRightR" id="termDay6-'+ l_count + '-' +_portletId+'" style="left: 85.7143%;'+simpleStyle+'"><div class="weeklyTermRightTop">&nbsp;</div></div>';
+	                    termScheduleItemGarageHtml += '<div id="termScheduleItemGarage-' + l_count + '-' + _portletId + '" class="weeklyTermRights" style="top:' + (-(17 * (l_count - m_count + 1))) + 'px"> </div>'
+	                }
 
-            dojo.byId("weeklyTableHead_" + _portletId).style.marginTop = "5px";
-            var headHeight = dojo.byId("weeklyTableHead_" + _portletId).offsetHeight;
-            var trHeight = dojo.byId("weeklyTermTr_" + _portletId).offsetHeight;
-        	headHeight += 5;
-            headHeight -= trHeight;
-            trHeight -= trHeight % 17;
-            headHeight += trHeight;
-            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.overflow = "hidden";
-            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.height = headHeight + "px"
+	                var weeklyTermtailHtml;
+	                termTableHtml += "</div></td></tr>";
 
-            if(l_count > 0){
-            	var day_index = 0;
-            	for(day_index = 0; day_index < 7; day_index++){
-            		if(dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("saturday")  >= 0){
-            			dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).style.height = "95%";
-            		}
-            	}
-            }
+	                l_count++;
+	            });
+	            termTableHtml += "</tbody></table>"
 
-            if (!ptConfig[_portletId].isScroll) {
-                dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
-                ptConfig[_portletId].isScroll = true;
-            }
-            ptConfig[_portletId].isTooltipEnable = true;
-        }
-    });
+	            var tempTermHeight = (17 * (l_count - m_count + 1));
+	            var tempTermTop = (-(17 * (l_count - m_count + 1)));
+	            dojo.byId('termScheduleGarage-'+_portletId).innerHTML = termTableHtml;
+	            dojo.byId('termScheduleContainer-' + _portletId).innerHTML = termScheduleItemGarageHtml;
+	            dojo.byId('weeklyTermLeftTopTall-' +  _portletId).style.height = (17 * (l_count - m_count)) + "px";
 
+	            for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
+	                tmpNode1 = dojo.byId('weeklyDay' + i + '-' + _portletId);
+	                tmpNode2 = dojo.byId('weeklyHoliday' + i + '-' + _portletId);
+	                tmpNode3 = dojo.byId('weeklyRight' + i + '-' + _portletId);
+	                tmpNode4 = dojo.byId('termDay' + i + '-' + _portletId);
+	                var tmpNode1_a = dojo.byId('weeklyDay' + i + '_element_a-' + _portletId);
+	                tmpNode1_a.innerHTML = parseInt(data.date[i].substring(8,10),10) + data.dayOfWeek[i];
+	                if(location.href.toString().toLowerCase().indexOf((_portletId+"?action=controls.Maximize").toLowerCase())>0){
+	                	tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10)).split("ScheduleScreen").join("ScheduleListScreen");
+	                }else{
+	                    tmpNode1_a.outerHTML = tmpNode1_a.outerHTML.toString().split(/[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/).join(data.date[i].substring(0,10));
+	                }
+	                tmpNode2.innerHTML = data.holiday[i];
+	                var temptoday = data.today + "-00-00";
+	                if (data.dayOfWeek[i] == "(土)") {
+	                    dojo.addClass(tmpNode1, "saturday");
+	                    dojo.addClass(tmpNode2, "saturday");
+	                    dojo.addClass(tmpNode3, "saturday");
+	                    dojo.addClass(tmpNode4, "saturday");
+	                } else {
+	                    dojo.removeClass(tmpNode1, "saturday");
+	                    dojo.removeClass(tmpNode2, "saturday");
+	                    dojo.removeClass(tmpNode3, "saturday");
+	                    dojo.removeClass(tmpNode4, "saturday");
+	                }
+	                if (data.dayOfWeek[i] == "(日)") {
+	                    dojo.addClass(tmpNode1, "sunday");
+	                    dojo.addClass(tmpNode2, "sunday");
+	                    dojo.addClass(tmpNode3, "sunday");
+	                    dojo.addClass(tmpNode4, "sunday");
+	                } else {
+	                    dojo.removeClass(tmpNode1, "sunday");
+	                    dojo.removeClass(tmpNode2, "sunday");
+	                    dojo.removeClass(tmpNode3, "sunday");
+	                    dojo.removeClass(tmpNode4, "sunday");
+	                }
+	                if (data.holiday[i]) {
+	                    dojo.addClass(tmpNode1, "holiday");
+	                    dojo.addClass(tmpNode2, "holiday");
+	                    dojo.addClass(tmpNode3, "holiday");
+	                    dojo.addClass(tmpNode4, "holiday");
+	                } else {
+	                    dojo.removeClass(tmpNode1, "holiday");
+	                    dojo.removeClass(tmpNode2, "holiday");
+	                    dojo.removeClass(tmpNode3, "holiday");
+	                    dojo.removeClass(tmpNode4, "holiday");
+	                }
+	                if (temptoday==data.date[i]) {
+	                    dojo.addClass(tmpNode1, "today");
+	                    dojo.addClass(tmpNode2, "today");
+	                    dojo.addClass(tmpNode3, "today");
+	                    dojo.addClass(tmpNode4, "today");
+	                } else {
+	                    dojo.removeClass(tmpNode1, "today");
+	                    dojo.removeClass(tmpNode2, "today");
+	                    dojo.removeClass(tmpNode3, "today");
+	                    dojo.removeClass(tmpNode4, "today");
+	                }
+	            }
+
+	            dojo.forEach(data.schedule, function(item) {
+	                var rowHeight = ptConfig[_portletId].rowHeight;
+	                var top = item.startDateHour * rowHeight * 2 + item.startDateMinute * rowHeight / 30;
+	                var height = item.endDateHour * rowHeight * 2 + item.endDateMinute * rowHeight / 30 - top;
+	                if(height <= rowHeight) {
+	                    tmpHeight[count] = height;
+	                    height = rowHeight;
+	                } else {
+	                    tmpHeight[count] = -1;
+	                }
+	                var left = 100 /  ptConfig[_portletId].scheduleDivDaySum * item.index;
+	                var width = 100 / ptConfig[_portletId].scheduleDivDaySum * 0.99;
+	                var name = item.name;
+	                var startDate = tmpHeight[count] == -1 ? ((item.startDateHour > 9) ? item.startDate : "0" +item.startDate) : item.name;
+	                var endDate = tmpHeight[count] == -1 ? ((item.endDateHour > 9) ? item.endDate : "0" +item.endDate) : '';
+	                var sepalater = tmpHeight[count] == -1 ? '-' : '';
+	                var scheduleId = item.scheduleId;
+
+	                var str_tmp = "0";
+	                var str_tmpflgmb = "";
+	                var member_to = dojo.byId('member_to-' + _portletId);
+	                if(member_to) {
+	                     var t_o = member_to.options;
+	                     for(i = 0 ; i < t_o.length; i++ ) {
+	                       if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
+	                           str_tmp = i %  aipo.calendar.maximum_to;
+	                       }
+	                       /*
+	                       if(item.memberList){
+	                           var ucount = 0;
+	                           var fcount = 0;
+	                           for (j = 0 ; j < item.memberList.length ; j ++){
+	                               if(item.memberList[j].charAt(0) == 'f'){
+	                                  fcount++;
+	                               }else{
+	                                  ucount++;
+	                               }
+	                           }
+	                       }
+	                       */
+	                    }
+	                    var str_tmpflgmb;
+	                    if(item.userCount > 1){
+	                     str_tmpflgmb   =  "[共有]";
+	                    }
+	                    if(item.facilityCount > 0){
+	                     str_tmpflgmb   += "[設備]";
+	                    }
+
+	                }
+
+	                if(!item['public']) {
+	                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
+	                }
+	                name += '\n<span class="inline-block">\n';
+	                if(item.duplicate) {
+	                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
+	                }
+	                if(item.repeat) {
+	                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
+	                }
+	                if(item.tmpreserve) {
+	                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
+	                }
+	                name += '</span>';
+	                html += '<div id="schedule-' + count + '-' + _portletId+'" class="scheduleDiv color'+str_tmp+'" style="top: '+ top +'px; left: ' + left + '%; height: '+ (height-1) + 'px; width: '+ width + '%;z-index: 0; visibility: hidden; border-right-style:none;"><div class="scheduleDivFirstLine color'+str_tmp+'"><span id="scheduleDivStartTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + str_tmpflgmb + startDate + '</span><span id="scheduleDivSepalater-'+ count + '-' + _portletId + '"  class="scheduleDivSepalater color'+str_tmp+'">' + sepalater + '</span><span id="scheduleDivEndTime-'+ count + '-' + _portletId + '" class="scheduleDivTime color'+str_tmp+'">' + endDate + '</span></div><div class="scheduleDivRightLine color'+str_tmp+'"></div><div style="overflow: hidden;" class="scheduleDivName color'+str_tmp+'">'  + name  + '</div><div class="scheduleDivLastLine color'+str_tmp+'"><div class="scheduleDivRightLine color'+str_tmp+'"></div><center><div class="handleDiv color'+str_tmp+'" align="center">&nbsp;</div></center></div></div>';
+	                count++;
+	            });
+	            html += "<div id=\"dummy_div_" +  _portletId + "\" class=\"scheduleDivAdd dummy_div\" style=\" position:absolute; width: 0px; height : 0px; left: 0px; top: -10000px; Filter: Alpha(Opacity=10);opacity:.10; background-color:#FFFFFF; \">&nbsp;</div>"
+	            dojo.byId('scheduleGarage-' + _portletId).innerHTML = html;
+
+	            var tmpDraggable = null;
+	            var draggable, draggable2;
+	            var objs = [];
+	            count = 0;
+	            dojo.forEach(data.schedule, function(item) {
+	                draggable = dojo.byId('schedule-' + count + '-' + _portletId);
+	                var scheduleId = item.scheduleId;
+	                tmpDraggable = new aipo.calendar.WeeklyScheduleDraggable(draggable, {pid:_portletId , sid:'"schedule-' + count + '-' + _portletId +'"' , handle: '"dummy_div_-' + _portletId +'"' });
+	                aipo.calendar.objectlist.push(tmpDraggable);
+
+	                if(item.member || item.loginuser || item.owner || item['public']){
+	                    tmpDraggable.setDraggable(true);
+	                } else {
+	                    tmpDraggable.setDraggable(false);
+	                }
+
+	                tmpDraggable.schedule = item;
+	                tmpDraggable.tmpIndex = item.index;
+	                tmpDraggable.count = count;
+	                tmpDraggable.tmpHeight = tmpHeight[count];
+	                tmpDraggable.position = 0;
+	                tmpDraggable.division = 1;
+	                tmpDraggable.portletId = _portletId;
+
+	                scheduleDiv[item.index].push(draggable);
+	                if(item['public'] || item.member){
+	                    dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
+		                dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+	                }
+
+
+	                count++;
+	            });
+
+	            for(var i=0;i<ptConfig[_portletId].scheduleDivDaySum;i++) {
+	                aipo.calendar.relocation(_portletId, scheduleDiv[i].length, scheduleDiv[i], 100 /  ptConfig[_portletId].scheduleDivDaySum * i);
+	                scheduleDiv[i] = Array();
+	            }
+	            count = 0;
+	             l_count = 0;
+	            dojo.forEach(data.termSchedule, function(itemList) {
+	                var item = null;
+	                var temptoday =　data.today + "-00-00";
+	                termHtml = "";
+	                for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
+	                   tmpNode5 = dojo.byId('termDay' + i + '-' + l_count + '-' + _portletId);
+	                   if (data.dayOfWeek[i] == "(土)") {
+	                       dojo.addClass(tmpNode5, "saturday");
+	                   } else {
+	                       dojo.removeClass(tmpNode5, "saturday");
+	                   }
+	                   if (data.dayOfWeek[i] == "(日)") {
+	                       dojo.addClass(tmpNode5, "sunday");
+	                   } else {
+	                       dojo.removeClass(tmpNode5, "sunday");
+	                   }
+	                   if (data.holiday[i]) {
+	                       dojo.addClass(tmpNode5, "holiday");
+	                   } else {
+	                       dojo.removeClass(tmpNode5, "holiday");
+	                   }
+	                   if (temptoday==data.date[i]) {
+	                       dojo.addClass(tmpNode5, "today");
+	                   } else {
+	                       dojo.removeClass(tmpNode5, "today");
+	                   }
+	                }
+	                for (k = 0; k < itemList.length ; k++){
+	                    item = itemList[k];
+
+	                    if(isSimple && isFourSpan){
+	                    	var rowspanday = item.rowspan;
+	                    	if(item.rowspan + item.index > 4){
+	                    		rowspanday = rowspanday - (item.rowspan + item.index - 4);
+	                    	}
+	                    	var width = 25 * rowspanday;
+	                    	var left = 25 * item.index;
+	                    	if(item.index > 4){
+	                    		width = 0 ;
+	                    	}
+	                    }else{
+	                    	var width = 100 / ptConfig[_portletId].scheduleDivDaySum * item.rowspan;
+	                    	var left = 100 / ptConfig[_portletId].scheduleDivDaySum * item.index;
+	                    }
+
+	                    var simpleDisplay = "";
+	                    if(isSimple && isOneSpan){
+	                    	width = 100;
+	                        simpleDisplay = ((item.index==0) ? "" : "display: none;");
+	                    }
+	                    var name = item.name;
+	                    var scheduleId = item.scheduleId;
+
+	                    var str_tmp = "0";
+	                    var str_tmpflgmb = "";
+	                    var member_to = dojo.byId('member_to-' + _portletId);
+	                    if(member_to) {
+	                         var t_o = member_to.options;
+	                         for(i = 0 ; i < t_o.length; i++ ) {
+	                           if(((item.type == "U") && (item.ownerId == t_o[i].value)) || ((item.type == "F") && (item.ownerId == t_o[i].value))){
+	                               str_tmp = i %  aipo.calendar.maximum_to;
+	                           }
+	                        }
+	                        var str_tmpflgmb;
+	                        if(item.userCount > 1){
+	                            str_tmpflgmb   =  "[共有]";
+	                        }
+	                    }
+	                    name = str_tmpflgmb + name;
+
+		                if(!item['public']) {
+		                    name = '<i class="auiIcon auiIconSecret" title="非公開"></i>\n' + name;
+		                }
+		                name += '\n<span class="inline-block">\n';
+		                if(item.duplicate) {
+		                    name += '<i class="auiIcon auiIconOverlap" title="重複スケジュール"></i>\n';
+		                }
+		                if(item.repeat) {
+		                    name += '<i class="auiIcon auiIconRepeat" title="繰り返し"></i>\n';
+		                }
+		                if(item.tmpreserve) {
+		                    name += '<i class="auiIcon auiIconTmpreserve" title="仮スケジュール"></i>\n';
+		                }
+		                name += '</span>';
+	                    if(width==100)width='99.99999';
+	                    termHtml += '<div id="termSchedule-' + count + '-' + _portletId +'" class="termScheduleDiv termColor'+str_tmp+'" style="left: ' + left + '%; width: '+ width + '%;'+simpleDisplay+'"><div class="termScheduleDivHandleLeft" id="termScheduleDivHandleLeft-' + count + '-' + _portletId +'">&nbsp;</div><div class="termScheduleDivNameDiv">' + name + '</div><div class="termScheduleDivHandleRight" id="termScheduleDivHandleRight-' + count + '-' + _portletId +'">&nbsp;</div></div>';
+	                    count++;
+	                }
+	                dojo.byId('termScheduleItemGarage-' + l_count + '-' + _portletId).innerHTML = termHtml;
+	                l_count++;
+	            });
+
+	            tableLeft = dojo.byId('weeklyTermLeft_'+_portletId);
+
+	            tmpDraggable = null;
+	            count = 0;
+	            l_count = 0;
+	            dojo.forEach(data.termSchedule, function(itemList) {
+	                var item = null;
+	                    for (k = 0; k < itemList.length ; k++){
+	                        item = itemList[k];
+	                        var scheduleId = item.scheduleId;
+	                        draggable = dojo.byId('termSchedule-' + count + '-' + _portletId);
+	                        draggable2 = dojo.byId('termScheduleDivHandleLeft-' + count + '-' + _portletId);
+	                        draggable3 = dojo.byId('termScheduleDivHandleRight-' + count + '-' + _portletId);
+	                        tmpDraggable = new aipo.calendar.WeeklyTermScheduleDraggable(draggable,{pid:_portletId , sid:  'termSchedule-' + count + '-' + _portletId});
+
+	                        aipo.calendar.objectlist.push(tmpDraggable);
+	                        tmpDraggable.schedule = item;
+	                        tmpDraggable.scheduleNode = draggable;
+	                        tmpDraggable.portletId = _portletId;
+	                        tmpDraggable.termType = 'center';
+
+	                        dojo.connect(draggable,"onclick", tmpDraggable, "onScheduleClick");
+	                        draggable.style.zIndex = 1;
+
+	                        if (item.indexReal >= 0) {
+	                            tmpDraggable2 = new aipo.calendar.WeeklyTermScheduleDraggable(draggable2, {pid:_portletId , sid: 'termScheduleDivHandleLeft-' + count + '-' + _portletId});
+	                            aipo.calendar.objectlist.push(tmpDraggable2);
+	                            tmpDraggable2.schedule = item;
+	                            tmpDraggable2.scheduleNode = draggable;
+	                            tmpDraggable2.portletId = _portletId;
+	                            tmpDraggable2.termType = 'left';
+	                            if(item.member || item.loginuser || item.owner || item['public']){
+	                                tmpDraggable2.setDraggable(true);
+	                            } else {
+	                                tmpDraggable2.setDraggable(false);
+	                            }
+	                        } else {
+	                            dojo.style(draggable2, "cursor", "pointer");
+	                            draggable2.style.zIndex = 1;
+	                        }
+	                        dojo.connect(draggable2,"onclick", tmpDraggable, "onScheduleClick");
+	                        if (item.indexReal + item.colspanReal <= ptConfig[_portletId].scheduleDivDaySum ) {
+	                            tmpDraggable3 = new aipo.calendar.WeeklyTermScheduleDraggable(draggable3, {pid:_portletId , sid: 'termScheduleDivHandleRight-' + count + '-' + _portletId});
+	                            aipo.calendar.objectlist.push(tmpDraggable3);
+	                            tmpDraggable3.schedule = item;
+	                            tmpDraggable3.scheduleNode = draggable;
+	                            tmpDraggable3.portletId = _portletId;
+	                            tmpDraggable3.termType = 'right';
+	                            if(item.member || item.loginuser || item.owner || item['public']){
+	                                tmpDraggable3.setDraggable(true);
+	                            } else {
+	                                tmpDraggable3.setDraggable(false);
+	                            }
+	                        } else {
+	                            dojo.style(draggable3, "cursor", "pointer");
+	                            draggable3.style.zIndex = 1;
+	                        }
+
+	                        if(item.member || item.loginuser || item.owner || item['public']){
+		                        dojo.connect(draggable3,"onclick", tmpDraggable, "onScheduleClick");
+		                        dojo.connect(draggable,"onmouseover", tmpDraggable, "onScheduleOver");
+	                        }
+
+	                        if(item.member || item.loginuser || item.owner || item['public']){
+	                            tmpDraggable.setDraggable(true);
+	                        } else {
+	                            tmpDraggable.setDraggable(false);
+	                        }
+	                        count++;
+	                    }
+					l_count++;
+	            });
+
+
+
+	            obj_content = dojo.byId('content-'+_portletId);
+	            dojo.style(obj_content, "visibility" , "visible");
+	            obj_indicator = dojo.byId('indicator-'+_portletId);
+	            dojo.style(obj_indicator, "display" , "none");
+	            dojo.removeClass(dojo.byId('tableWrapper_'+_portletId), "hide");
+	            var Element = dojo.byId("weeklyScrollPane_" + _portletId);
+
+	            if((Element.clientWidth == Element.offsetWidth) && !(isIPad && !isSimple)){
+	            	if(dojo.byId("weeklySpan-" + _portletId) != null){
+	            		dojo.byId("weeklySpan-" + _portletId).style.display = "none";
+	            	}
+	            	dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "none");
+	            	if(dojo.byId("termTable_" + _portletId) != null){
+	            		dojo.query('termTable_' + _portletId).style("width", "99.9999%");
+	            	}
+
+	                	if(isSimple && isOneSpan){
+	                		dojo.query('.weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
+	                		dojo.query('._weeklyHeadRightborder0_' + _portletId).style("border-right-style", "none");
+	                		dojo.byId("weeklyRight0-" + _portletId).style.borderRightStyle = "";
+	                    	if(isIPad){
+	                    		if(dojo.byId("weeklyRight0-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight0-" + _portletId).className.indexOf("saturday")  >= 0){
+	                    			dojo.query('.scroll_width').style("padding-right", "1px");
+	        					}else{
+	        						dojo.query('.scroll_width').style("padding-right", "0px");
+	        					}
+	                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+	                    	}else{
+	                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+	                    	}
+	                	} else if(isSimple && isFourSpan){
+
+	                    	if(isIPad){
+	                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
+	                    		dojo.query('.scroll_width').style("padding-right", "0px");
+	                    	}else{
+	                    		dojo.byId("weeklyRight3-" + _portletId).style.borderRightStyle = "none";
+	                    		dojo.query('.weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
+	                    		dojo.query('._weeklyHeadRightborder3_' + _portletId).style("border-right-style", "none");
+	                    		dojo.query('.weeklyTableHead').style("padding-right", "1px");
+	                    	}
+	                	}else{
+
+	                    	if(isIPad){
+	                    		dojo.query('.scroll_width').style("padding-right", "0px");
+	                    		dojo.query('.weeklyTableHead').style("padding-right", "0px");
+	                    	}else{
+	                    		if(window.navigator.userAgent.toLowerCase().indexOf("chrome") >= 0 && (dojo.byId("weeklyRight6-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("weeklyRight6-" + _portletId).className.indexOf("saturday"))  >= 0){
+	                    			dojo.query('.scroll_width').style("padding-right", "1px");
+	                    			dojo.query('.weeklyTableHead').style("padding-right", "1px");
+	                    		}else{
+	                    			dojo.query('.scroll_width').style("padding-right", "0px");
+	                    			dojo.query('.weeklyTableHead').style("padding-right", "0px");
+	                    		}
+	                    		dojo.byId("weeklyRight6-" + _portletId).style.borderRightStyle = "none";
+	                    		dojo.query('.weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
+	                    		dojo.query('._weeklyHeadRightborder6_' + _portletId).style("border-right-style", "none");
+
+	                    	}
+	                	}
+
+
+	            }else if(Element.clientWidth != Element.offsetWidth && Element.offsetWidth - Element.clientWidth != 18){
+	            	if(dojo.byId("weeklySpan-" + _portletId) != null){
+	            		dojo.byId("weeklySpan-" + _portletId).width = (Element.offsetWidth - Element.clientWidth  + 1) + "px";
+	            	}
+	            	dojo.query(".weeklyTermTailTd_" + _portletId).width = (Element.offsetWidth - Element.clientWidth + 1) + "px";
+	            	dojo.query(".weeklyTermTail").style("width",  ((Element.offsetWidth - Element.clientWidth + 1) + "px"));
+	            }
+
+	            if(l_count == 0){
+	            	dojo.byId("termScheduleContainer-" + _portletId).style.height = "0px";
+	            }else{
+	            }
+
+	            dojo.byId("weeklyTableHead_" + _portletId).style.marginTop = "5px";
+	            var headHeight = dojo.byId("weeklyTableHead_" + _portletId).offsetHeight;
+	            var trHeight = dojo.byId("weeklyTermTr_" + _portletId).offsetHeight;
+	        	headHeight += 5;
+	            headHeight -= trHeight;
+	            trHeight -= trHeight % 17;
+	            headHeight += trHeight;
+	            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.overflow = "hidden";
+	            dojo.byId("weeklyTableHeadWrapper_" + _portletId).style.height = headHeight + "px"
+
+	            if(l_count > 0){
+	            	var day_index = 0;
+	            	for(day_index = 0; day_index < 7; day_index++){
+	            		if(dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("sunday")  >= 0 || dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).className.indexOf("saturday")  >= 0){
+	            			dojo.byId("termDay" + day_index + "-" + (l_count - 1) + "-" + _portletId).style.height = "95%";
+	            		}
+	            	}
+	            }
+
+	            if (!ptConfig[_portletId].isScroll) {
+	                dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
+	                ptConfig[_portletId].isScroll = true;
+	            }
+	            ptConfig[_portletId].isTooltipEnable = true;
+
+	            dojo.byId('termScheduleDivAdd_' + _portletId).style.height = tempTermHeight + "px";
+	            dojo.byId('termScheduleDivAdd_' + _portletId).style.top = tempTermTop + "px";
+	            dojo.query(".weeklyTermTailTd_" + _portletId).style("display", "");
+	        }
+	    });
+    }
 
 };
 
@@ -1088,53 +1101,56 @@ aipo.calendar.showTooltip = function(url, portlet_id, containerNode) {
          return String(value).replace(/[<>&"']/g, replaceChars);
     };
     dojo.style(containerNode, "display", "block");
-    dojo.xhrGet({
-        portletId: portlet_id,
-        url: url,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        load: function(data, event) {
-            if (!data.id) {
-                dojo.style(containerNode, "display", "none");
-                return;
-            }
+    if(ptConfig[portlet_id].xhrUrl != url){
+        ptConfig[portlet_id].xhrUrl = url;
+	    dojo.xhrGet({
+	        portletId: portlet_id,
+	        url: url,
+	        encoding: "utf-8",
+	        handleAs: "json-comment-filtered",
+	        load: function(data, event) {
+	        	ptConfig[portlet_id].xhrUrl = "";
+	            if (!data.id) {
+	                dojo.style(containerNode, "display", "none");
+	                return;
+	            }
 
-            if (!data.isSpan) {
-                datehtml = "<span style=\"font-size: 0.90em;\">" + data.date + "</span><br/>";
-            }
+	            if (!data.isSpan) {
+	                datehtml = "<span style=\"font-size: 0.90em;\">" + data.date + "</span><br/>";
+	            }
 
 
-            if (data.memberList) {
-                var memberSize = data.memberList.length;
-                for (var i = 0 ; i < memberSize ; i++) {
-                    mbhtml += "<li>" + escapeHTML(data.memberList[i].aliasName.value) + "</li>";
-                }
-            }
+	            if (data.memberList) {
+	                var memberSize = data.memberList.length;
+	                for (var i = 0 ; i < memberSize ; i++) {
+	                    mbhtml += "<li>" + escapeHTML(data.memberList[i].aliasName.value) + "</li>";
+	                }
+	            }
 
-            if (data.facilityList) {
-                var facilitySize = data.facilityList.length;
-                for (var i = 0 ; i < facilitySize ; i++) {
-                    mbfhtml += "<li>" + escapeHTML(data.facilityList[i].facilityName.value) + "</li>";
-                }
-            }
+	            if (data.facilityList) {
+	                var facilitySize = data.facilityList.length;
+	                for (var i = 0 ; i < facilitySize ; i++) {
+	                    mbfhtml += "<li>" + escapeHTML(data.facilityList[i].facilityName.value) + "</li>";
+	                }
+	            }
 
-            if(data.place != ""){
-                placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + data.place + "</li></ul>";
-            }
+	            if(data.place != ""){
+	                placehtml = "<span style=\"font-size: 0.90em;\">場所</span><br/><ul><li>" + data.place + "</li></ul>";
+	            }
 
-            if(mbhtml != ""){
-                mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
-            }
+	            if(mbhtml != ""){
+	                mbhtml = "<span style=\"font-size: 0.90em;\">参加者</span><br/><ul>" + mbhtml + "</ul>";
+	            }
 
-            if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">設備</span><br/><ul>" + mbfhtml + "</ul>";
-            }
+	            if(mbfhtml != ""){
+	                mbfhtml = "<span style=\"font-size: 0.90em;\">設備</span><br/><ul>" + mbfhtml + "</ul>";
+	            }
 
-            var tooltiphtml = "<h4>" + data.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
-
-            containerNode.innerHTML = tooltiphtml;
-        }
-    });
+	            var tooltiphtml = "<h4>" + data.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
+	            containerNode.innerHTML = tooltiphtml;
+	        }
+	    });
+    }
 };
 
 dojo.declare("aipo.calendar.DummyDivObject", null, {
@@ -1947,7 +1963,7 @@ aipo.schedule.groupSelectOnchange=function(obj, e, _portletId, mp){
 				html += ' ';
 			}
 			params+="&m_id="+data[i].name;
-            var j = i % aipo.calendar.maximum_to;
+			var j = i % aipo.calendar.maximum_to;
 			html+="<span class=\"dispUser color" + j +"\">" + aliasName+ "</span>";
 			aimluck.io.addOption(dojo.byId("member_to-"+_portletId), data[i].name, aliasName, true);
 		}

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.userlist;
 
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザー名簿のアクションクラスです。
- * 
+ *
  */
 public class UserListAction extends ALBaseAction {
 
@@ -44,7 +43,7 @@ public class UserListAction extends ALBaseAction {
     .getLogger(UserListAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -67,7 +66,7 @@ public class UserListAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -93,7 +92,7 @@ public class UserListAction extends ALBaseAction {
 
   private void clearUserListSession(RunData rundata, Context context) {
     String LIST_FILTER_STR =
-      new StringBuffer().append(UserSelectData.class.getName()).append(
+      new StringBuffer().append(UserSelectData.class.getSimpleName()).append(
         ALEipConstants.LIST_FILTER).toString();
     List<String> list = new ArrayList<String>();
     list.add(LIST_FILTER_STR);

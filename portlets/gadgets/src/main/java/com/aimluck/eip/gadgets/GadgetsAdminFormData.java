@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.gadgets;
 
 import java.util.ArrayList;
@@ -72,6 +71,11 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   private ALStringField sendActivity;
 
   /**
+   * データの更新時に一時的にappIdを保存しておくための変数
+   */
+  private String appId;
+
+  /**
    *
    */
   @Override
@@ -105,8 +109,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     boolean res = super.setFormData(rundata, context, msgList);
     if (this.getMode().equals(ALEipConstants.MODE_UPDATE)) {
-      String appId =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      appId = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
       ALApplication app =
         ALApplicationService.get(new ALApplicationGetRequest()
           .withAppId(appId)
@@ -258,9 +261,6 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-
-    String appId =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
     try {
 

@@ -1,1 +1,1 @@
-({"iframeTitle1": "área de edición", "iframeTitle2": "marco del área de edición"})
+({"iframeTitle1": "叩rea de edici坦n", "iframeTitle2": "marco del 叩rea de edici坦n"})

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -80,7 +79,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   private int userid;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -208,15 +207,20 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     Integer targetId = null;
     boolean isFacility = false;
     if ((target_user_id != null) && (!target_user_id.equals(""))) {
-      if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
-        String fid =
-          target_user_id.substring(
-            ScheduleUtils.TARGET_FACILITY_ID.length(),
-            target_user_id.length());
-        targetId = Integer.valueOf(fid);
-        isFacility = true;
+      if (!hasAclviewOther
+        && !target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
+        targetId = userid;
       } else {
-        targetId = Integer.valueOf(target_user_id);
+        if (target_user_id.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
+          String fid =
+            target_user_id.substring(
+              ScheduleUtils.TARGET_FACILITY_ID.length(),
+              target_user_id.length());
+          targetId = Integer.valueOf(fid);
+          isFacility = true;
+        } else {
+          targetId = Integer.valueOf(target_user_id);
+        }
       }
     } else {
       // 表示できるユーザがいない場合の処理
@@ -229,7 +233,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -315,7 +319,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -325,7 +329,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -335,7 +339,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -345,7 +349,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 前の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevDate() {
@@ -354,7 +358,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 前の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevWeek() {
@@ -363,7 +367,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 次の日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextDate() {
@@ -372,7 +376,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 次の週を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextWeek() {
@@ -397,6 +401,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       getViewEnd().getYear(),
       getViewEnd().getMonth(),
       getViewEnd().getDay());
+  }
+
+  public boolean isLoginUserID(Long id) {
+    return id == userid;
   }
 
 }

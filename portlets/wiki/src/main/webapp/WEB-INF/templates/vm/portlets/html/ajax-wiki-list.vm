@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,12 @@
 ## ---------------------------------------------------------------------------
 #AUIcontentsAreaHeader()
 <h2>$l10n.WIKI_MANAGEMENT</h2>
+#if($result.TopWikiList.size() <=0)
+#AUISummaryDiv()
+	#AUIbuttonAction($l10n.WIKI_CREATE "javascript:aipo.common.showDialog('$newUrl','$!portlet.ID',aipo.wiki.onLoadWikiDialog);")
+#AUISummaryDivfooter()
+#AUIEmptyMessage("icon-edit-sign" "$l10n.WIKI_EMPTY_MESSAGE")
+#else
 #AUISummaryFilterDivHeader()
 <form class="auiSearch" style="margin-right:1em;" id="searchForm_$!{portlet.ID}" action="$!jslink.getPortletById($!portlet.ID)" onsubmit='aimluck.io.postViewPage(this, "$!{portlet.ID}", "search-${indicator_id}"); return false;'>
 <div class="filterInputField">
@@ -32,28 +38,25 @@
 <input type="hidden" name="template" value="WikiListScreen"/>
 <div class="filters" id="filters_$!portlet.ID">
 #if("$!result.CategoryName"!="")
-<span class="filterTip">
-<span>$!result.CategoryName</span>
-<a href="javascript:void(0);" class="btn" onclick='aipo.wiki.filterSetDefault("$!portlet.ID","category");'><i class="auiIcon auiIconDelete"></i></a>
-</span>
+#ALfilterTip($!result.CategoryName "aipo.wiki.filterSetDefault('$!portlet.ID','category');")
 #end
 </div>
 
 <a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.wiki.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="フィルタ"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text" style="width:320px;" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.wiki.initFilterSearch("$!portlet.ID");' onblur='aipo.wiki.finFilterSearch("$!portlet.ID");' />
 </div>
-#AUIButtonSearch("dojo.byId('searchForm_$!{portlet.ID}').onsubmit(); return false;" $l10n.WIKI_SEARCH)
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
 <div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")</div>
 #AUISearchFooter()
 #AUISummaryFilterDivFooter()
 #ALajaxlistformheaderAction('Wiki')
 #if($result.List.size() <= 0)
-<div class="message">$l10n.WIKI_NOTHING_DATA</div>
+#AUIEmptyMessage("icon-edit-sign" "$l10n.WIKI_EMPTY_MESSAGE")
 #else
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #AUISummaryDiv()
-#AUIajaxbuttonCheckboxDelete($l10n.WIKI_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
 #AUIajaxpageview('WikiListScreen' $result)
 #AUISummaryDivfooter()
 <table class="auiRowTable auiMbTable wide">
@@ -64,8 +67,8 @@
 			#ALtdheadAtt("#ALswitchCheckbox()" "class='center auiMTCheck'")
 			#ALtdheadAtt("#ALajaxsort('wiki_name' $l10n.WIKI_TITLE $result 'WikiListScreen')" "")
 			#ALtdheadAtt("#ALajaxsort('parent_name' $l10n.WIKI_PARENT $result 'WikiListScreen')" "")
-			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.WIKI_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
-			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.WIKI_UPDATE_DATE $result 'WikiListScreen')" "")
+			#ALtdheadAtt("#ALajaxsort('update_user' $l10n.COMMON_UPDATE_USER $result 'WikiListScreen')" "class='wName'")
+			#ALtdheadAtt("#ALajaxsort('update_date' $l10n.COMMON_UPDATE_DATE $result 'WikiListScreen')" "")
 		</tr>
 		#foreach ($record in $result.List)
 		<tr>
@@ -77,22 +80,27 @@
 					<a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WikiViewScreen").addQueryData("entityid",$record.Id))', '$!portlet.ID');" >$!record.NameHtml</a>
 				</div>
 			#ALtdcellfooter()
-			#if($!record.getParentId().getValue() == 0)
+			#if($!record.getParentId().getValueWithInt() == 0)
 				<td></td>
 			#else
 				<td><div>$!record.ParentName</div></td>
 			#end
-			<td><div>$!record.UpdateUser</div></td>
+			<td><div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UpdateUserId},arguments[0])">$!record.UpdateUser</div></td>
 			<td>$!record.UpdateDate</td>
 		</tr>
 		#end
 	</tbody>
 </table>
+#AUISummaryDiv()
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WikiFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.wiki.onListReceiveMessage")
+#AUIajaxpageview('WikiListScreen' $result)
+#AUISummaryDivfooter()
 #ALformfooter()
+#end
 #end
 #AUIcontentsAreaFooter()
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:130px; display:none;">
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="display:none;">
   <div>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="category" data-defaultparam="">
       <li data-param="" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.CategoryId"==""||"$!result.CategoryId"=="0") class="selected" #end onclick='aipo.wiki.filterClick("$!portlet.ID",this,event)'>$l10n.WIKI_ALL_CATEGORY</a></li>
@@ -103,4 +111,4 @@
   </div>
 </div>
 
-#parse("/portlets/html/ja/wiki-widgets.vm")
+#parse("/portlets/html/wiki-widgets.vm")

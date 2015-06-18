@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.timecard;
 
 import java.math.BigDecimal;
@@ -65,8 +64,8 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の一覧を処理するクラスです。
- * 
- * 
+ *
+ *
  */
 
 public class TimecardSummaryListSelectData extends
@@ -176,7 +175,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -287,7 +286,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -318,7 +317,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -332,7 +331,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -376,7 +375,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -398,7 +397,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws ALDBErrorException
@@ -424,7 +423,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -450,7 +449,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -503,7 +502,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -513,8 +512,8 @@ public class TimecardSummaryListSelectData extends
     SelectQuery<EipTTimecard> query = Database.query(EipTTimecard.class);
 
     Expression exp1 =
-      ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, new Integer(
-        target_user_id));
+      ExpressionFactory.matchExp(EipTTimecard.USER_ID_PROPERTY, Integer
+        .valueOf(target_user_id));
     query.setQualifier(exp1);
 
     Calendar cal = Calendar.getInstance();
@@ -603,7 +602,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -726,7 +725,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替え時に指定するグループ名
-   * 
+   *
    * @return
    */
   public String getTargetGroupName() {
@@ -735,7 +734,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   * 
+   *
    * @return
    */
   public String getTargetUserId() {
@@ -744,7 +743,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -764,7 +763,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -777,7 +776,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * My グループの一覧を取得する．
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -790,7 +789,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * ログインユーザの ID を取得する．
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -798,7 +797,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -922,7 +921,7 @@ public class TimecardSummaryListSelectData extends
   }
 
   /**
-   * 
+   *
    * @param minute
    * @return
    */
@@ -936,7 +935,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * 表示する年の最大値を返します。
-   * 
+   *
    * @return
    */
   public int getEndYear() {
@@ -946,7 +945,7 @@ public class TimecardSummaryListSelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -66,23 +66,27 @@ aipo.calendar.initMonthlyCalendar = function(portlet_id,json_url,oneday_link,mon
 
 	// 表示するデータをAjaxで取得
 
-    dojo.xhrGet({
-        portletId: mc_data.portlet_id,
-        url: json_url,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        /**
-         * 読み込み完了
-         */
-        load: function(data, event) {
-        	var result = data;
-        	/*
-        	 * 先月、翌月を保存しておく
-        	 */
-        	mc_data.next_month = result.next_month;
-        	mc_data.prev_month = result.prev_month;
-        }
-    });
+    if(ptConfig[mc_data.portlet_id].xhrUrl != json_url){
+        ptConfig[mc_data.portlet_id].xhrUrl = json_url;
+	    dojo.xhrGet({
+	        portletId: mc_data.portlet_id,
+	        url: json_url,
+	        encoding: "utf-8",
+	        handleAs: "json-comment-filtered",
+	        /**
+	         * 読み込み完了
+	         */
+	        load: function(data, event) {
+	        	ptConfig[mc_data.portlet_id].xhrUrl = "";
+	        	var result = data;
+	        	/*
+	        	 * 先月、翌月を保存しておく
+	        	 */
+	        	mc_data.next_month = result.next_month;
+	        	mc_data.prev_month = result.prev_month;
+	        }
+	    });
+    }
 };
 /**
  * カレンダーを再描画
@@ -99,119 +103,123 @@ aipo.calendar.createMonthlyCalendar = function(json_url){
 
 	// 表示するデータをAjaxで取得
 	var mc_data = aipo.calendar.monthly_calendar_data;
-    dojo.xhrGet({
-        portletId: mc_data.portlet_id,
-        url: json_url,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        /**
-         * 読み込み完了
-         */
-        load: function(data, event) {
-        	var result = data;
-        	if(result.error == 1){
-        		//セッションタイムアウトエラー発生時
-        		location.reload();
-        	}
-        	/*
-        	 * 日付表示
-        	 */
-        	if(dojo.byId("mc_year").innerText){
-            	dojo.byId("mc_year").innerText = result.year;
-            	dojo.byId("mc_month").innerText = result.month;
-        	}else{
-            	dojo.byId("mc_year").innerHTML = result.year;
-            	dojo.byId("mc_month").innerHTML = result.month;
-        	}
-        	/*
-        	 * 先月、翌月を保存しておく
-        	 */
-        	mc_data.next_month = result.next_month;
-        	mc_data.prev_month = result.prev_month;
-
-        	/*
-        	 * カレンダーの作成
-        	 */
-        	var table = dojo.byId("mc_table");
-        	// 前回作成したカレンダーを削除
-        	if(!aipo.calendar.monthly_calendar_data.is_first){
-	        	var elems = new Array();
-	        	for(var i=0; i<table.childNodes.length; i++){
-	        		var elem = table.childNodes[i];
-	        		if(elem.className == "monthlyCalendarAutoTr"){
-	        			elems.push(elem);
-	        		}
+    if(ptConfig[mc_data.portlet_id].xhrUrl != json_url){
+        ptConfig[mc_data.portlet_id].xhrUrl = json_url;
+	    dojo.xhrGet({
+	        portletId: mc_data.portlet_id,
+	        url: json_url,
+	        encoding: "utf-8",
+	        handleAs: "json-comment-filtered",
+	        /**
+	         * 読み込み完了
+	         */
+	        load: function(data, event) {
+	        	ptConfig[mc_data.portlet_id].xhrUrl ="";
+	        	var result = data;
+	        	if(result.error == 1){
+	        		//セッションタイムアウトエラー発生時
+	        		location.reload();
 	        	}
-	        	for(var i=0; i<elems.length; i++){
-	    			table.removeChild(elems[i]);
+	        	/*
+	        	 * 日付表示
+	        	 */
+	        	if(dojo.byId("mc_year").innerText){
+	            	dojo.byId("mc_year").innerText = result.year;
+	            	dojo.byId("mc_month").innerText = result.month;
+	        	}else{
+	            	dojo.byId("mc_year").innerHTML = result.year;
+	            	dojo.byId("mc_month").innerHTML = result.month;
 	        	}
+	        	/*
+	        	 * 先月、翌月を保存しておく
+	        	 */
+	        	mc_data.next_month = result.next_month;
+	        	mc_data.prev_month = result.prev_month;
 
-	        	// カレンダーを作成
-	        	for(var i=0; i<result.monthly_container.length; i++){
-	        		// 週
-	        		var weekly_container = result.monthly_container[i];
+	        	/*
+	        	 * カレンダーの作成
+	        	 */
+	        	var table = dojo.byId("mc_table");
+	        	// 前回作成したカレンダーを削除
+	        	if(!aipo.calendar.monthly_calendar_data.is_first){
+		        	var elems = new Array();
+		        	for(var i=0; i<table.childNodes.length; i++){
+		        		var elem = table.childNodes[i];
+		        		if(elem.className == "monthlyCalendarAutoTr"){
+		        			elems.push(elem);
+		        		}
+		        	}
+		        	for(var i=0; i<elems.length; i++){
+		    			table.removeChild(elems[i]);
+		        	}
 
-	        		var elem_tr = document.createElement("tr");
-	        		table.appendChild(elem_tr);
-	        		elem_tr.className = "monthlyCalendarAutoTr"; // 削除用
+		        	// カレンダーを作成
+		        	for(var i=0; i<result.monthly_container.length; i++){
+		        		// 週
+		        		var weekly_container = result.monthly_container[i];
 
-	        		for(var j=0; j<weekly_container.length; j++){
-	            		// 日
-	        			var day_container = weekly_container[j];
+		        		var elem_tr = document.createElement("tr");
+		        		table.appendChild(elem_tr);
+		        		elem_tr.className = "monthlyCalendarAutoTr"; // 削除用
 
-	        			// <td>
-	        			var elem_td = document.createElement("td");
-	        			elem_tr.appendChild(elem_td);
-	        			/*
-	        			 * <td>にstyleの追加
-	        			 */
-	        			if(day_container.is_holiday){// 休日
-	        				elem_td.className = elem_td.className+" holiday";
-	        			}else{
-		        			if(j==0){// 日曜
-		        				elem_td.className = elem_td.className+" sunday";
+		        		for(var j=0; j<weekly_container.length; j++){
+		            		// 日
+		        			var day_container = weekly_container[j];
+
+		        			// <td>
+		        			var elem_td = document.createElement("td");
+		        			elem_tr.appendChild(elem_td);
+		        			/*
+		        			 * <td>にstyleの追加
+		        			 */
+		        			if(day_container.is_holiday){// 休日
+		        				elem_td.className = elem_td.className+" holiday";
+		        			}else{
+			        			if(j==0){// 日曜
+			        				elem_td.className = elem_td.className+" sunday";
+			        			}
+			        			if(j==6){// 土曜
+			        				elem_td.className = elem_td.className+" saturday";
+			        			}
 		        			}
-		        			if(j==6){// 土曜
-		        				elem_td.className = elem_td.className+" saturday";
+		        			if(day_container.month!=result.month){// 今月以外の日
+		        				elem_td.className = elem_td.className+" out";
 		        			}
-	        			}
-	        			if(day_container.month!=result.month){// 今月以外の日
-	        				elem_td.className = elem_td.className+" out";
-	        			}
-	        			if(day_container.today==result.today){// 今日
-	        				elem_td.className += " today";
-	        			}
-	        			if(day_container.month==mc_data.selected_month
-	        					&& day_container.day==mc_data.selected_day){// 選択されている日
-	        				elem_td.className += " selected";
-	        			}
+		        			if(day_container.today==result.today){// 今日
+		        				elem_td.className += " today";
+		        			}
+		        			if(day_container.month==mc_data.selected_month
+		        					&& day_container.day==mc_data.selected_day){// 選択されている日
+		        				elem_td.className += " selected";
+		        			}
 
-	        			// <a>
-	        			var elem_a = document.createElement("a");
-	        			elem_td.appendChild(elem_a);
-	        			/*
-	        			 * <a>にリンクの追加
-	        			 */
-	        			elem_a.setAttribute("href","javascript:void(0);");
+		        			// <a>
+		        			var elem_a = document.createElement("a");
+		        			elem_td.appendChild(elem_a);
+		        			/*
+		        			 * <a>にリンクの追加
+		        			 */
+		        			elem_a.setAttribute("href","javascript:void(0);");
 
-	        			elem_a.setAttribute("data-date",day_container.today);
-	        			elem_a.setAttribute("data-link",mc_data.oneday_link+"&view_start="+day_container.today);
+		        			elem_a.setAttribute("data-date",day_container.today);
+		        			elem_a.setAttribute("data-link",mc_data.oneday_link+"&view_start="+day_container.today);
 
-	        			dojo.query(elem_a).onclick(function(){
-	        				aipo.schedule.setIndicator(mc_data.portlet_id);
-	        				aipo.viewPage(this.getAttribute("data-link"),mc_data.portlet_id);
-	        			});
+		        			dojo.query(elem_a).onclick(function(){
+		        				aipo.schedule.setIndicator(mc_data.portlet_id);
+		        				aipo.viewPage(this.getAttribute("data-link"),mc_data.portlet_id);
+		        			});
 
-	        			//日付のテキスト
-	        			if(elem_a.innerText){
-	        				elem_a.innerText = day_container.day;
-	        			}else{
-	        				elem_a.innerHTML = day_container.day;
-	        			}
-	        		}
+		        			//日付のテキスト
+		        			if(elem_a.innerText){
+		        				elem_a.innerText = day_container.day;
+		        			}else{
+		        				elem_a.innerHTML = day_container.day;
+		        			}
+		        		}
+		        	}
 	        	}
-        	}
-            aipo.calendar.monthly_calendar_data.is_first=false;
-        }
-    });
+	            aipo.calendar.monthly_calendar_data.is_first=false;
+	        }
+	    });
+    }
 };

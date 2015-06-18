@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   private ALStringField description;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -97,7 +96,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -141,19 +140,15 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
     return (ResultList<VEipTScheduleList>) ScheduleUtils.getScheduleList(
       Integer.valueOf(userid),
-      null,
-      null,
       tmpUsers,
       tmpFacilities,
       target_keyword.getValue(),
       getCurrentPage(),
-      getRowsNum(),
-      true,
-      false);
+      getRowsNum());
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -242,7 +237,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -259,11 +254,15 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
 
   /**
    * 内容を設定します。
-   * 
+   *
    * @param string
    */
   public void setDescription(String string) {
     description.setValue(string);
+  }
+
+  public boolean isLoginUserID(Long id) {
+    return id == userid;
   }
 
 }

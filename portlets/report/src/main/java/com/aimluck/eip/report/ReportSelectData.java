@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.report;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.exp.Expression;
@@ -38,10 +41,13 @@ import com.aimluck.eip.cayenne.om.portlet.EipTReportFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTReportMemberMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipGroup;
+import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -59,10 +65,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ReportSelectData extends
-    ALAbstractSelectData<EipTReport, EipTReport> implements ALData {
+    ALAbstractMultiFilterSelectData<EipTReport, EipTReport> implements ALData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -76,6 +82,9 @@ public class ReportSelectData extends
 
   /** サブメニュー（全て） */
   public static final String SUBMENU_ALL = "all";
+
+  /** 部署一覧 */
+  private List<ALEipGroup> postList;
 
   /** 親レポートオブジェクト */
   private Object parentReport;
@@ -111,7 +120,7 @@ public class ReportSelectData extends
   private boolean isAdmin;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -186,6 +195,9 @@ public class ReportSelectData extends
         ALAccessControlConstants.POERTLET_FEATURE_REPORT_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
+    // My グループの一覧を取得する．
+    postList = ALEipUtils.getMyGroups(rundata);
+
     // hasAuthorityOther = true;
     showReplyForm = true;
     target_keyword = new ALStringField();
@@ -198,7 +210,7 @@ public class ReportSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -226,8 +238,56 @@ public class ReportSelectData extends
   }
 
   /**
+   * パラメータをマップに変換します。
+   *
+   * @param key
+   * @param val
+   */
+  @Override
+  protected void parseFilterMap(String key, String val) {
+    super.parseFilterMap(key, val);
+
+    Set<String> unUse = new HashSet<String>();
+
+    for (Entry<String, List<String>> pair : current_filterMap.entrySet()) {
+      if (pair.getValue().contains("0")) {
+        unUse.add(pair.getKey());
+      }
+    }
+    for (String unusekey : unUse) {
+      current_filterMap.remove(unusekey);
+    }
+  }
+
+  @Override
+  protected SelectQuery<EipTReport> buildSelectQueryForFilter(
+      SelectQuery<EipTReport> query, RunData rundata, Context context) {
+
+    super.buildSelectQueryForFilter(query, rundata, context);
+
+    if (current_filterMap.containsKey("post")) {
+      // 部署を含んでいる場合デフォルトとは別にフィルタを用意
+
+      List<String> postIds = current_filterMap.get("post");
+
+      HashSet<Integer> userIds = new HashSet<Integer>();
+      for (String post : postIds) {
+        List<Integer> userId = ALEipUtils.getUserIds(post);
+        userIds.addAll(userId);
+      }
+      if (userIds.isEmpty()) {
+        userIds.add(-1);
+      }
+      Expression exp =
+        ExpressionFactory.inExp(EipTReport.USER_ID_PROPERTY, userIds);
+      query.andQualifier(exp);
+    }
+    return query;
+  }
+
+  /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -355,7 +415,7 @@ public class ReportSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -377,6 +437,31 @@ public class ReportSelectData extends
         Integer.valueOf((int) login_user.getUserId().getValue());
       rd.setIsSelfReport(record.getUserId().intValue() == login_user_id
         .intValue());
+
+      List<Integer> users = new ArrayList<Integer>();
+      EipTReportMap map = null;
+      List<EipTReportMap> tmp_maps = ReportUtils.getEipTReportMap(record);
+      HashMap<Integer, String> statusList = new HashMap<Integer, String>();
+
+      if (record.getParentId().intValue() == 0) {
+        int size = tmp_maps.size();
+        for (int i = 0; i < size; i++) {
+          map = tmp_maps.get(i);
+          users.add(map.getUserId());
+          statusList.put(map.getUserId(), map.getStatus());
+        }
+        rd.setStatusList(statusList);
+      }
+
+      // メッセージを既読した人数
+      Integer readNotes = 0;
+      for (EipTReportMap reportmap : tmp_maps) {
+        if (reportmap.getStatus().equals(ReportUtils.DB_STATUS_READ)) {
+          readNotes++;
+        }
+      }
+      rd.setSentReport(tmp_maps.size());
+      rd.setReadReport(readNotes.longValue());
       return rd;
     } catch (Exception ex) {
       logger.error("report", ex);
@@ -386,7 +471,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -401,7 +486,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -443,7 +528,7 @@ public class ReportSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -508,7 +593,7 @@ public class ReportSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -529,6 +614,7 @@ public class ReportSelectData extends
       rd.setNote(record.getNote());
       ALEipUser client = ALEipUtils.getALEipUser(record.getUserId().intValue());
       rd.setClientName(client.getAliasName().getValue());
+      rd.setClientId(client.getUserId().getValue());
       // 自身の報告書かを設定する
       Integer login_user_id =
         Integer.valueOf((int) login_user.getUserId().getValue());
@@ -611,6 +697,7 @@ public class ReportSelectData extends
 
       return rd;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("report", ex);
       return null;
     }
@@ -618,7 +705,7 @@ public class ReportSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -633,7 +720,7 @@ public class ReportSelectData extends
 
   /**
    * 現在選択されているサブメニューを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getCurrentSubMenu() {
@@ -657,9 +744,26 @@ public class ReportSelectData extends
   }
 
   /**
+   * 部署一覧を取得します
+   *
+   * @return postList
+   */
+  public List<ALEipGroup> getPostList() {
+    return postList;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public Map<Integer, ALEipPost> getPostMap() {
+    return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

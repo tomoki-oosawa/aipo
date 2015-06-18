@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,10 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #if ($result.List.size() == 0)
-<div class="message">$l10n.REPORT_REPORT$l10n.REPORT_NO_INFO_TO_YOU</div>
+#AUIEmptyMessage("" "$l10n.REPORT_EMPTY_SHORT_MESSAGE")
 #else
 #ALformheaderAction('Report' $jslink $portlet)
 <div class="auiSummaryMeta clearfix">
@@ -30,7 +29,7 @@
 #foreach ($record in $result.List)
 <tr>
 <td>
-<span class="date">$!record.CreateDateTime &nbsp; $!record.ClientName</span>
+<span class="date">$!record.CreateDateTime &nbsp; <a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.ClientId.Value},arguments[0])">$!record.ClientName</a></span>
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ReportDetailScreen").addQueryData('entityid',$record.ReportId))', '$!portlet.ID', aipo.report.onLoadReportDetail);">
 $l10n.REPORT_REPORT「$!{record.ReportName}」 $l10n.REPORT_INFO_TO_YOU
 </a>

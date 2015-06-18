@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.report;
 
 import java.util.ArrayList;
@@ -421,6 +420,7 @@ public class ReportReplyFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
+      Database.rollback();
       logger.error("[ReportreportReplyFormData]", e);
       throw new ALDBErrorException();
     }
@@ -525,11 +525,17 @@ public class ReportReplyFormData extends ALAbstractFormData {
       action.setMode(ALEipConstants.MODE_INSERT);
       List<String> reportList = new ArrayList<String>();
       setValidator();
-      boolean res =
-        (setFormData(rundata, context, reportList) && validate(reportList) && insertFormData(
-          rundata,
-          context,
-          reportList));
+      boolean res = false;
+      if (isOverQuota()) {
+        reportList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+      } else {
+        res =
+          (setFormData(rundata, context, reportList) && validate(reportList) && insertFormData(
+            rundata,
+            context,
+            reportList));
+      }
       if (!res) {
         action.setMode(ALEipConstants.MODE_NEW_FORM);
         setMode(action.getMode());

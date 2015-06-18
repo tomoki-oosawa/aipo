@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.addressbook;
 
 import java.util.List;
@@ -260,6 +259,10 @@ public class AddressBookWordSelectData extends
         ExpressionFactory.likeExp(EipMAddressbook.CELLULAR_MAIL_PROPERTY, "%"
           + word
           + "%");
+      Expression exp19 =
+        ExpressionFactory.likeExp(EipMAddressbook.NOTE_PROPERTY, "%"
+          + word
+          + "%");
 
       Expression exp21 =
         ExpressionFactory.likeExp(
@@ -308,12 +311,16 @@ public class AddressBookWordSelectData extends
             + "."
             + EipMAddressbookCompany.COMPANY_NAME_KANA_PROPERTY,
           "%" + transWords[i] + "%");
+      Expression exp37 =
+        ExpressionFactory.likeExp(EipMAddressbook.NOTE_PROPERTY, "%"
+          + transWords[i]
+          + "%");
 
       if (word != null && !"".equals(word)) {
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp21).orExp(
-          exp22).orExp(exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(
-          exp34).orExp(exp35).orExp(exp36));
+          exp15).orExp(exp16).orExp(exp17).orExp(exp18).orExp(exp19).orExp(
+          exp21).orExp(exp22).orExp(exp23).orExp(exp31).orExp(exp32).orExp(
+          exp33).orExp(exp34).orExp(exp35).orExp(exp36).orExp(exp37));
       }
     }
 
@@ -365,6 +372,6 @@ public class AddressBookWordSelectData extends
    */
   @Override
   public String getTemplateFilePath() {
-    return "portlets/html/ja/ajax-addressbook-list.vm";
+    return "portlets/html/ajax-addressbook-list.vm";
   }
 }

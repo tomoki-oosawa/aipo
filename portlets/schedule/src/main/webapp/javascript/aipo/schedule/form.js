@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 dojo.provide("aipo.schedule");
 
 dojo.require("aipo.widget.ToolTip");
@@ -102,55 +101,59 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
         return;
     }
 
-    dojo.xhrGet({
-        portletId: portlet_id,
-        url: url,
-        encoding: "utf-8",
-        handleAs: "json-comment-filtered",
-        load: function(schedule, event) {
-            if (!schedule.id) {
-                widget._onHover = function(){};
-                widget.close();
-                widget.processed = true;
-                return;
-            }
+    if(ptConfig[portlet_id].xhrUrl != url){
+        ptConfig[portlet_id].xhrUrl = url;
+	    dojo.xhrGet({
+	        portletId: portlet_id,
+	        url: url,
+	        encoding: "utf-8",
+	        handleAs: "json-comment-filtered",
+	        load: function(schedule, event) {
+	        	ptConfig[portlet_id].xhrUrl = "";
+	            if (!schedule.id) {
+	                widget._onHover = function(){};
+	                widget.close();
+	                widget.processed = true;
+	                return;
+	            }
 
-            if (!schedule.isSpan) {
-                datehtml = "<span style=\"font-size: 0.90em;\">" + schedule.date + "</span><br/>";
-            }
+	            if (!schedule.isSpan) {
+	                datehtml = "<span style=\"font-size: 0.90em;\">" + schedule.date + "</span><br/>";
+	            }
 
-            if (schedule.memberList) {
-                var memberSize = schedule.memberList.length;
-                for (var i = 0 ; i < memberSize ; i++) {
-                    mbhtml += "<li>" + schedule.memberList[i].aliasName.value + "</li>";
-                }
-            }
+	            if (schedule.memberList) {
+	                var memberSize = schedule.memberList.length;
+	                for (var i = 0 ; i < memberSize ; i++) {
+	                    mbhtml += "<li>" + schedule.memberList[i].aliasName.value + "</li>";
+	                }
+	            }
 
-            if (schedule.facilityList) {
-                var facilitySize = schedule.facilityList.length;
-                for (var i = 0 ; i < facilitySize ; i++) {
-                    mbfhtml += "<li>" + schedule.facilityList[i].facilityName.value + "</li>";
-                }
-            }
+	            if (schedule.facilityList) {
+	                var facilitySize = schedule.facilityList.length;
+	                for (var i = 0 ; i < facilitySize ; i++) {
+	                    mbfhtml += "<li>" + schedule.facilityList[i].facilityName.value + "</li>";
+	                }
+	            }
 
-            if(schedule.place != ""){
-                placehtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip2")+"</span><br/><ul><li>" + schedule.place + "</li></ul>";
-            }
+	            if(schedule.place != ""){
+	                placehtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip2")+"</span><br/><ul><li>" + schedule.place + "</li></ul>";
+	            }
 
-            if(mbhtml != ""){
-                mbhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip3")+"</span><br/><ul>" + mbhtml + "</ul>";
-            }
+	            if(mbhtml != ""){
+	                mbhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip3")+"</span><br/><ul>" + mbhtml + "</ul>";
+	            }
 
-            if(mbfhtml != ""){
-                mbfhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip4")+"</span><br/><ul>" + mbfhtml + "</ul>";
-            }
+	            if(mbfhtml != ""){
+	                mbfhtml = "<span style=\"font-size: 0.90em;\">"+aimluck.io.escapeText("schedule_val_tooltip4")+"</span><br/><ul>" + mbfhtml + "</ul>";
+	            }
 
-            var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
-            widget.label = tooltiphtml;
-            widget.processed = true;
-            containerNode.innerHTML = tooltiphtml;
-        }
-    });
+	            var tooltiphtml = "<h4>" + schedule.name + "</h4>" + datehtml + mbhtml + mbfhtml + placehtml;
+	            widget.label = tooltiphtml;
+	            widget.processed = true;
+	            containerNode.innerHTML = tooltiphtml;
+	        }
+	    });
+    }
 }
 
 

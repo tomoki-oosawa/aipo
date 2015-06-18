@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,45 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-#if($result.currentSubMenu=="requested")
-#set ($title = "$l10n.WORKFLOW_APPLICANT")
-#set($subtitle = "$l10n.WORKFLOW_CONFIRMED_LIST_HALFWIDTH")
-#set($noresultmsg = "$l10n.WORKFLOW_NO_WORKFLOW_TO_YOU")
-#else
-#set ($title = "$l10n.WORKFLOW_APPROVER")
-#set($subtitle = "$l10n.WORKFLOW_CREATED_LIST_HALFWIDTH")
-#set($noresultmsg = "$l10n.WORKFLOW_NO_WORKFLOW_YOU_CREATE")
-#end
-#set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWorkflow_list','1')")
-
-## ---------------------------------------------------------------------------
-#set($linklist = [["$l10n.WORKFLOW_GO_WORKFLOW_HALFWIDTH", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','menu')"]])
-#ALcell_pagetitle($career $subtitle)
-#if ($result.List.size() == 0)
-&nbsp;$noresultmsg
-#else
-#if($result.PagesNum > 1)
-#ALcell_hr($career '1')
-#ALcell_pageview($career $link $result)
-#end
-#ALcell_ul_header($career)
-#foreach ($record in $result.List)
-#if($result.currentSubMenu=="requested")
-#set ($user = $!record.ClientName)
-#else
-#set ($user = $!record.LastUpdateUser)
-#end
-#ALcell_li_header($career)
-<span class="caution">#if($record.Progress.Value == "D") $l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK #elseif($record.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end</span>
-<a href="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.RequestId).addQueryData('prvid',$record.RequestId))">【$!record.CategoryName】#if($!record.RequestName != '') $!record.RequestName #end</a>
-##[$!{record.PriceStr}&nbsp;$l10n.WORKFLOW_YEN]/[$l10n.WORKFLOW_CREATE：$!record.CreateDate]/
-[$title：$user]/[$l10n.WORKFLOW_SITUATION：$!record.StateString]
-#ALcell_li_footer($career)
-#end
-#ALcell_ul_footer($career)
-#end
-#ALcell_hr($career '1')
-#ALcell_linklist($career $linklist)
-#ALtdcellFooterLink($career)
+#set($career = 'docomo_imode')
+#parse("/portlets/cell_default/workflow-list.vm")

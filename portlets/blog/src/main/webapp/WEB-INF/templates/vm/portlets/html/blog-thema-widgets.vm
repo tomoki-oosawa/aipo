@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,6 +24,7 @@
 <div class="auiWidget clearfix">
 <a title="$l10n.BLOG_CREATE" href="javascript:aipo.common.showDialog('$newEntryUrl','$!portlet.ID',aipo.blog.onLoadBlogDialog);" class="auiButtonBold">$l10n.BLOG_CREATE</a>
 </div>
+<div class="auiWidget clearfix" style="border-bottom:none; padding: 0;">
 <div class="auiWidget clearfix">
 <ul>
 <li#if ($!result.OwnerId && $!result.OwnerId == "all") class="active"#end>
@@ -49,6 +50,7 @@
 </ul>
 <div style="margin:0.5em 0;">
 <a href="javascript:void(0);" onclick="aipo.view$themaEditUrl', '$!portlet.ID');">$l10n.BLOG_MANAGEMENT</a>
+</div>
 </div>
 </div>
 </div>

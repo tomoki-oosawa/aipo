@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cabinet;
 
 import java.util.ArrayList;
@@ -261,15 +260,15 @@ public class CabinetFileFormData extends ALAbstractFormData {
     // ファイル名
     if (ALEipConstants.MODE_INSERT.equals(getMode())) {
       file_name.validate(msgList);
-      if (fileuploadList != null && fileuploadList.size() > 1) {
-        msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_LAUNCH_MORE"));
-      }
     } else {
       if (fileuploadList != null) {
         if (fileuploadList.size() > 0) {
           file_name.validate(msgList);
         }
       }
+    }
+    if (fileuploadList != null && fileids.length > 1) {
+      msgList.add(ALLocalizationUtils.getl10n("CABINET_DONOT_LAUNCH_MORE"));
     }
     if (ALEipConstants.MODE_UPDATE.equals(getMode()) && fileids == null) {
       msgList.add(ALLocalizationUtils.getl10n("CABINET_KAKKO")
@@ -453,11 +452,22 @@ public class CabinetFileFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_CABINET_FILE,
         file_title.getValue());
 
+      EipTCabinetFolder parentFolder;
+      if (Integer.valueOf(folder.getPublicFlag()) == CabinetUtils.ACCESS_PUBLIC_ALL) {
+        Integer parentFolderId =
+          CabinetUtils.getAccessControlFolderId(folder.getFolderId());
+        parentFolder =
+          Database
+            .get(EipTCabinetFolder.class, Integer.valueOf(parentFolderId));
+      } else {
+        parentFolder = folder;
+      }
+
       // アクティビティ
       List<Integer> userIds =
-        CabinetUtils.getWhatsNewInsertList(rundata, folder
+        CabinetUtils.getWhatsNewInsertList(rundata, parentFolder
           .getFolderId()
-          .intValue(), folder.getPublicFlag());
+          .intValue(), parentFolder.getPublicFlag());
 
       // nullなら誰にも公開しない
       if (userIds != null) {
@@ -620,9 +630,11 @@ public class CabinetFileFormData extends ALAbstractFormData {
       }
 
     } catch (RuntimeException ex) {
+      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("cabinet", ex);
       return false;
     }

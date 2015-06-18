@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.util.ArrayList;
@@ -67,10 +66,10 @@ public class BlogEntryResultData implements ALData {
   /** タイトル月日 */
   private ALDateTimeField title_date;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
-  /** 登録日(DATA型) */
+  /** 作成日(DATA型) */
   private ALDateTimeField create_date_alternative;
 
   /** 更新日 */

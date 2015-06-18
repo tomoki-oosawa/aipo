@@ -1,0 +1,79 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($action_str = "初期配置として設定する")
+#set ($default_str = "デフォルト設定に戻す" )
+#set ($all_user_str = "配置を変更する" )
+#set ($indicator_id = "indicator-form-")
+## ---------------------------------------------------------------------------
+#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+#ALerrmsg($errmsgs)
+#ALajaxscreenformheader("psmlForm" $jslink $portlet "PsmlFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.psml.onReceiveMessageUpdate)")
+<div class="p">
+<input type="hidden" name="mode" id="$!{portlet.ID}-mode" value="" />
+</div>
+<div class="p spaceTop spaceBottom">
+あなたのタブ設定、タブ内のアプリ配置を、新規追加するユーザーの初期配置として設定することができます。
+</div>
+<div class="p spaceBottom">
+#if(!$!{result.isAdminUser()})
+#ALsubmitJS($event_submit $action_str "aipo.psml.beforeSubmit('$!portlet.ID', 'update')")
+#if($!{result.getAttachStatus().equals("success")})
+#ALcaution("設定が完了しました。")
+#elseif($!{result.getAttachStatus().equals("error")})
+#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#end
+#else
+<input type="button" disabled="disabled" value="$action_str">
+<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
+#end
+</div>
+<hr />
+<div class="p spaceTop spaceBottom">
+アプリ初期配置設定をデフォルトに戻します。
+</div>
+<div class="p spaceBottom">
+#ALsubmitJS($event_submit $default_str "aipo.psml.beforeSubmit('$!portlet.ID', 'default')")
+#if($!{result.getDefaultStatus().equals("success")})
+#ALcaution("設定が完了しました。")
+#elseif($!{result.getDefaultStatus().equals("error")})
+#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#end
+</div>
+<hr />
+<div class="p spaceTop spaceBottom">
+あなたの配置で、すべてユーザーの配置を変更できます。
+</div>
+<div class="p spaceBottom">
+#if(!$!{result.isAdminUser()})
+#ALsubmitJS($event_submit $all_user_str "aipo.psml.beforeSubmit('$!portlet.ID', 'all_user')")
+#if($!{result.getAllUserStatus().equals("success")})
+#ALcaution("設定が完了しました。")
+#elseif($!{result.getAllUserStatus().equals("error")})
+#ALcaution("設定に失敗しました。時間をおいてから再度試してください。")
+#end
+#else
+<input type="button" disabled="disabled" value="$all_user_str">
+<div class="spaceTop caution"><span class="small em">※管理者権限をもつ Admin 以外のユーザーでご使用ください。</span></div>
+#end
+</div>
+
+
+#ALformfooter()
+

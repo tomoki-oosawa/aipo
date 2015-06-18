@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-                            <!-- MAIN TAB -->
+<!-- MAIN TAB -->
 #set($beforeselected =false)
 #foreach ( $c in $css )
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/css/$c.Path" media="$c.Media" />
@@ -29,79 +28,37 @@
 #if($!showTab == "false")
 $portlet.getContent($data)
 #else
-
-                            <div id="auiTabs" class="clearfix">
-                              <ul>
-#foreach ( $tab in $tabs )
-	#set($selected = $tab.Link && ($tab.isSelected() == true))
-                               <li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
-                                  <div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
-
-                                  <div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-	                                  <div class="setting" style="position:relative;">
-	                                  #if ($!tab.Authority)#foreach ($action in $tab.Actions)
-	                                        #set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?action=controls.Maximize&template=CustomizeFormScreen") )
-											#if ($tab.isSelected() == true)
-												#set($activeurlselected=$clink)
-											#end
-											<a href="javascript:void(0);" id="menubar_button_tab_$!{tab.Id}" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
-											<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
-											<ul>
-												<li>
-													#if (${client} == "IPAD")
-														<a href="${action.Link}" title="${action.Alt}">設定</a>
-													#else
-														<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
-													#end
-					    						</li>
-												#if($!tab.Title.Value != "マイページ")
-												<li class="last">
-													<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$secid))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
-												</li>
-												#end
-											</ul>
-											</div>
-	                                  #end#end
-	                                  </div>
-                                  </div>
-                                </li>
-	#set($beforeselected =$selected)
+#parse("/controls/html/jetspeed-header.vm")
+#if($activeurlselected)
+<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
+#else
+<input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
 #end
-								#if ($data.User.getUserName()!="admin")
-									<li class="addTab">
-										<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="$l10n.WAR_ADD_MENU_TUB"><span>+</span></a>
-									</li>
-								#end
-                              </ul>
-                            </div>
-							#if($activeurlselected)
-							<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
-                            #else
-                             <input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
-							#end
-							<!-- /MAIN TAB -->
-                            <!-- MAIN OUTER -->
-							#if (${client} != "IPAD" || ${clientVer} != "4")
-							<div class="roundMainWrapper">
-							#else
-							<div class="roundMainWrapper" style="min-height:1000px">
-							#end
-							<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
-							#AuiInformation($information_title $information_text $information_cookie_name $information_display)
-							#if(!$run)
-								$portlet.getContent($data)
-							#elseif($runs.size()==0)
-							#AUIrowTableWide()
-							<tr><td colspan="4" class="auiNoData">
-							<p class="mh10">
-							<a title="$l10n.WAR_ADD_APPLICATION" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
-							</p>
-							</td></tr>
-							#AUItablefooter()
-							#else
-								$portlet.getContent($data)
-							#end
-							</div>
-                            <!-- MAIN OUTER -->
+<!-- /MAIN TAB -->
+<!-- MAIN OUTER -->
+#if (${client} != "IPAD" || ${clientVer} != "4")
+<div class="roundMainWrapper">
+#else
+<div class="roundMainWrapper" style="min-height:1000px">
+#end
+<noscript><div class="alert">$utils.getl10nFormat1("WAR_CANNOT_USE_JAVASCRIPT",$!{alias})</div></noscript>
+#AUINotificationCheck()
+#ALMaintenance()
+#AuiInformation($information_title $information_text $information_cookie_name $information_display)
+#if(!$run)
+$portlet.getContent($data)
+#elseif($runs.size()==0)
+#AUIrowTableWide()
+<tr><td colspan="4" class="auiNoData">
+<p class="mh10">
+<a title="$l10n.WAR_ADD_APPLICATION" href="javascript:void(0)" onclick="aipo.common.showDialog('$activeurlselected')" class="auiButtonAction">$l10n.WAR_ADD_APPLICATION</a>
+</p>
+</td></tr>
+#AUItablefooter()
+#else
+$portlet.getContent($data)
+#end
+</div>
+<!-- MAIN OUTER -->
 #end
 #end

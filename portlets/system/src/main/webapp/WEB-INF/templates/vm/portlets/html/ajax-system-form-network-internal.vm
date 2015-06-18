@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set ($action_str = $l10n.SYSTEM_UPDATE)
 #set ($subtitle = $l10n.SYSTEM_CAUTION)
@@ -45,7 +44,7 @@ $l10n.SYSTEM_SET_ADDRESS_FROM_IN_MSG1${alias}$l10n.SYSTEM_SET_ADDRESS_FROM_IN_MS
 #ALtditem("#ALtextfield('port_internal' $!result.PortInternal '90%' 10 'disabled')")
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.SYSTEM_CLOSE" onclick="aipo.system.hideDialog();" />
+#ALsubmit($event_submit $action_str)<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.system.hideDialog();" />
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

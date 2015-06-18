@@ -1,0 +1,65 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($subtitle = "$l10n.PROJECT_CHANGE_ORDER")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALerrmsg($errmsgs)
+#if((! $!result.ProjectTaskList) || $result.ProjectTaskList.isEmpty())
+#AUIEmptyMessage("" "$l10n.PROJECT_TASK_NOT_FOUND")
+#else
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div style="padding:0px 0px 5px 5px"><img src="images/account/account_up_10.gif" align="absmiddle">&nbsp;<img src="images/account/account_up_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_1.gif" align="absmiddle">&nbsp;<img src="images/account/account_down_10.gif" align="absmiddle">$l10n.PROJECT_FILTER_ORDER_MSG<br>
+ $l10n.PROJECT_MULTICHOICE_MSG</div>
+#ALajaxscreenformheader("ProjectTaskChangeTurnForm" $jslink $portlet "ProjectTaskChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.project.onReceiveMessage)")
+<input type="hidden" name="mode" value="update">
+<input type="hidden" name="positions" value="">
+<input type="hidden" name="parent_task_id" value="$!result.ParentTaskId">
+<table class="dialogTable wide">
+<tbody>
+<tr>
+<td class="caption" width="30%" nowrap="">$l10n.PROJECT_TASK_LIST</td>
+<td width="5%">
+<div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_TEN"><img src="images/account/account_up_10.gif" alt="10 ずつ順番を上げる" border="0"></a></div>
+<div class="mb40"><a href="javascript:doUpOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_INCREMENT_ONE"><img src="images/account/account_up_1.gif" alt="1 ずつ順番を上げる" border="0"></a></div
+<div class="mt40"><a href="javascript:doDownOptions(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_ONE"><img src="images/account/account_down_1.gif" alt="1 ずつ順番を下げる" border="0"></a></div>
+<div class="mt10"><a href="javascript:doDownOptions10(dojo.byId('project_so_$!portlet.ID'))" title="$l10n.PROJECT_DECREMENT_TEN"><img src="images/account/account_down_10.gif" alt="10 ずつ順番を下げる" border="0"></a></div>
+</td>
+<td width="65%"><select id="project_so_$!portlet.ID" name="project_so" size="20" multiple="multiple" style="WIDTH: 100%">
+#if($!result.UserList.size() <= 0)
+<option value=""></option>
+#else
+#foreach($record in $!result.ProjectTaskList)
+<option value="$!record.TaskId">$!record.TaskName</option>
+#end
+#end
+</select>
+</td>
+</tr>
+</tbody>
+</table>
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmitJS('eventSubmit_doProjectTask_change_turn_update' "$l10n.PROJECT_UPDATE" 'setHiddenValue(this);aipo.project.sortsubmit(this.form)')
+#ALajaxbuttonCancel()
+#ALbuttonfooter()
+#ALformfooter()
+#end
+#ALdialogfooter()

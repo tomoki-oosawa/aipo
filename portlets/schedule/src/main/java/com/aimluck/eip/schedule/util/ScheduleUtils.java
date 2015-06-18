@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule.util;
 
 import java.io.IOException;
@@ -107,7 +106,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- * 
+ *
  */
 public class ScheduleUtils {
 
@@ -189,7 +188,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -203,7 +202,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -283,7 +282,7 @@ public class ScheduleUtils {
 
   /**
    * Scheudle オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -386,7 +385,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールへのアクセス権限があるかどうかを調べます。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -437,7 +436,7 @@ public class ScheduleUtils {
 
   /**
    * ツールチップ表示用の Scheudle オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -489,7 +488,7 @@ public class ScheduleUtils {
 
   /**
    * 詳細表示用の Scheudle オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -558,7 +557,7 @@ public class ScheduleUtils {
 
   /**
    * ScheudleMap オブジェクトモデルを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -653,7 +652,7 @@ public class ScheduleUtils {
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @param includeLoginUser
@@ -745,7 +744,7 @@ public class ScheduleUtils {
 
   /**
    * 設備メンバーを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -774,7 +773,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した繰り返しパターンにマッチするかどうかを返します。
-   * 
+   *
    * @param date
    * @param ptn
    * @param startDate
@@ -796,7 +795,7 @@ public class ScheduleUtils {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       switch (dow) {
-        // 日
+      // 日
         case Calendar.SUNDAY:
           result = ptn.charAt(1) != '0';
           break;
@@ -860,7 +859,7 @@ public class ScheduleUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -1072,7 +1071,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -1113,7 +1112,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1156,7 +1155,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した2つの時刻のみを比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @return
@@ -1190,7 +1189,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1272,7 +1271,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールを登録する（携帯電話対応時には上記のメソッドに変更する）．
-   * 
+   *
    * @param schedule
    * @param ownerid
    * @param startDate
@@ -1409,7 +1408,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールを時刻でソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -1458,7 +1457,7 @@ public class ScheduleUtils {
 
   /**
    * ダミースケジュールが上にくるようにソートする．
-   * 
+   *
    * @param list
    * @return
    */
@@ -1497,7 +1496,7 @@ public class ScheduleUtils {
 
   /**
    * 現在選択しているタブ名を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1527,7 +1526,7 @@ public class ScheduleUtils {
 
   /**
    * Date のオブジェクトを指定した形式の文字列に変換する．
-   * 
+   *
    * @param date
    * @param dateFormat
    * @return
@@ -1545,7 +1544,7 @@ public class ScheduleUtils {
 
   /**
    * 指定した曜日が，選択範囲に入っているかを検証する．
-   * 
+   *
    * @param selectedWeek
    *          指定曜日
    * @param startWeek
@@ -1572,7 +1571,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1591,7 +1590,7 @@ public class ScheduleUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -1849,7 +1848,7 @@ public class ScheduleUtils {
 
   /**
    * パラメータを読み込みます。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -1934,7 +1933,7 @@ public class ScheduleUtils {
 
   /**
    * スケジュールの時刻系要素バリデーション処理移譲メソッド
-   * 
+   *
    * @param start_date
    * @param end_date
    * @param repeat_type
@@ -2203,7 +2202,7 @@ public class ScheduleUtils {
 
   /**
    * 同一期間内に複数の ToDo を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   * 
+   *
    * @param weekSpanConList
    *          複数の期間スケジュールを保持するリスト
    * @param viewStartDate
@@ -2441,6 +2440,47 @@ public class ScheduleUtils {
     return ulist;
   }
 
+  public static List<UserFacilityLiteBean> getALEipFacility(String[] ids,
+      RunData rundata) throws ALDBErrorException {
+
+    List<UserFacilityLiteBean> ulist = new ArrayList<UserFacilityLiteBean>();
+
+    int ids_len = ids.length;
+    List<String> f_ids = new ArrayList<String>();
+    for (int i = 0; i < ids_len; i++) {
+      if (ids[i].startsWith("f")) {
+        // facilityIDをセット
+        f_ids.add(ids[i].replace("f", ""));
+      }
+    }
+
+    UserFacilityLiteBean user = null;
+
+    // facilityIDを元にデータを取得
+    if (f_ids != null && f_ids.size() > 0) {
+      Expression f_exp =
+        ExpressionFactory.inDbExp(EipMFacility.FACILITY_ID_PK_COLUMN, f_ids);
+      List<EipMFacility> facilities =
+        Database.query(EipMFacility.class, f_exp).fetchList();
+      if (facilities.size() == 0) {
+        return null;
+      }
+      int f_size = facilities.size();
+      for (int i = 0; i < f_size; i++) {
+        EipMFacility f_user = facilities.get(i);
+        user = new UserFacilityLiteBean();
+        user.initField();
+        user.setUserFacilityId(f_user.getFacilityId().intValue());
+        user.setName("f" + user.getUserFacilityId());
+        user.setAliasName(f_user.getFacilityName());
+        user.setUserFacilityType("F");
+        ulist.add(user);
+      }
+    }
+
+    return ulist;
+  }
+
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
    * 
@@ -2523,7 +2563,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static Date getEmptyDate() {
@@ -2677,7 +2717,7 @@ public class ScheduleUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
@@ -2782,7 +2822,7 @@ public class ScheduleUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   public static String createMsgForCellPhone(RunData rundata,
@@ -3614,7 +3654,7 @@ public class ScheduleUtils {
 
   /**
    * 他人のスケジュールに対する権限があるかどうかを調べます。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -3636,6 +3676,38 @@ public class ScheduleUtils {
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
+      List<Integer> users, List<Integer> facilities, String keyword, int page,
+      int limit) {
+    return getScheduleList(
+      userId,
+      null,
+      null,
+      users,
+      facilities,
+      keyword,
+      page,
+      limit,
+      true,
+      true);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
+      Date viewStart, Date viewEnd, List<Integer> users,
+      List<Integer> facilities, boolean isDetail) {
+    return getScheduleList(
+      userId,
+      viewStart,
+      viewEnd,
+      users,
+      facilities,
+      null,
+      -1,
+      -1,
+      false,
+      isDetail);
+  }
+
+  public static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities) {
     return getScheduleList(
@@ -3651,137 +3723,154 @@ public class ScheduleUtils {
       false);
   }
 
-  public static List<VEipTScheduleList> getScheduleList(int userId,
+  protected static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
-      boolean isSearch, boolean isiCal) {
+      boolean isSearch, boolean isDetail) {
+
+    boolean isMySQL = Database.isJdbcMySQL();
 
     StringBuilder select = new StringBuilder();
 
     select.append("select");
-    if (isSearch) {
-      select.append(" distinct");
+    if (!isSearch) {
+      select.append(" t3.id, ");
+      select.append(" t3.user_id, ");
+      select.append(" t3.status, ");
+      select.append(" t3.type, ");
+      select.append(" t3.common_category_id, ");
     }
-    select.append(" eip_t_schedule_map.id, ");
-    select.append(" eip_t_schedule_map.user_id,");
-    select.append(" eip_t_schedule_map.status,");
-    select.append(" eip_t_schedule_map.type,");
-
-    select.append(" eip_t_schedule.schedule_id,");
-    select.append(" eip_t_schedule_map.common_category_id,");
-    select.append(" eip_t_schedule.owner_id,");
-    select.append(" eip_t_schedule.parent_id,");
-    select.append(" eip_t_schedule.name,");
-    select.append(" eip_t_schedule.place,");
-    select.append(" eip_t_schedule.start_date,");
-    select.append(" eip_t_schedule.end_date,");
-    select.append(" eip_t_schedule.update_date,");
-    select.append(" eip_t_schedule.public_flag,");
-    select.append(" eip_t_schedule.repeat_pattern,");
-    select.append(" eip_t_schedule.create_user_id,");
-    if (isSearch || isiCal) {
-      select.append(" eip_t_schedule.note,");
+    select.append(" t4.schedule_id,");
+    select.append(" t4.owner_id,");
+    select.append(" t4.parent_id,");
+    select.append(" t4.name,");
+    select.append(" t4.place,");
+    select.append(" t4.start_date,");
+    select.append(" t4.end_date,");
+    select.append(" t4.update_date,");
+    select.append(" t4.public_flag,");
+    select.append(" t4.repeat_pattern,");
+    select.append(" t4.create_user_id,");
+    select.append(" t4.edit_flag,");
+    if (isDetail) {
+      select.append(" t4.note,");
     }
-    select.append(" eip_t_schedule.edit_flag,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = eip_t_schedule_map.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = eip_t_schedule_map.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = t4.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
 
     StringBuilder count = new StringBuilder();
-    count.append("select count(distinct eip_t_schedule.schedule_id) AS c ");
+    count.append("select count(t4.schedule_id) AS c ");
 
-    StringBuilder body = new StringBuilder();
-    body
-      .append(" FROM eip_t_schedule_map, eip_t_schedule WHERE eip_t_schedule_map.schedule_id = eip_t_schedule.schedule_id");
     boolean hasKeyword = false;
-    if (keyword != null && keyword.length() > 0) {
-      hasKeyword = true;
-      body.append(" AND (");
+    StringBuilder body = new StringBuilder();
+    if (isSearch) {
+      body.append(" FROM eip_t_schedule t4 ");
+      body.append(" WHERE ");
+      body.append(" EXISTS ( ");
       body
-        .append(" eip_t_schedule.name LIKE #bind($keyword) OR eip_t_schedule.note LIKE #bind($keyword) OR eip_t_schedule.place LIKE #bind($keyword) ");
+        .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
+      if ((users != null && users.size() > 0)
+        || (facilities != null && facilities.size() > 0)) {
+        body.append(" AND (t3.type, t3.user_id) IN ( ");
+        boolean isFirst = true;
+        if (users != null && users.size() > 0) {
+          for (Integer num : users) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('U', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        if (facilities != null && facilities.size() > 0) {
+          for (Integer num : facilities) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('F', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        body.append(" ) ");
+      }
+      if (keyword != null && keyword.length() > 0) {
+        hasKeyword = true;
+        body.append(" AND (");
+        body
+          .append(" t4.name LIKE #bind($keyword) OR t4.note LIKE #bind($keyword) OR t4.place LIKE #bind($keyword) ");
+        body.append(" ) ");
+
+      }
+      body
+        .append(" AND ( t4.public_flag = 'O' OR  ( t3.type = 'U' AND t3.user_id = #bind($user_id) ) OR  (t4.owner_id = #bind($user_id)) ) ");
       body.append(" ) ");
-
-    }
-
-    if ((users != null && users.size() > 0)
-      || (facilities != null && facilities.size() > 0)) {
-      body.append(" AND (");
-    }
-
-    if (users != null && users.size() > 0) {
-      body.append(" ((eip_t_schedule_map.type = 'U')");
-      body.append(" AND (eip_t_schedule_map.user_id IN (");
-
-      boolean isFirst = true;
-      for (Integer num : users) {
-        if (!isFirst) {
-          body.append(",");
-
-        }
-        body.append(num.intValue());
-        isFirst = false;
-      }
-      body.append(")))");
-    }
-
-    if (facilities != null && facilities.size() > 0) {
-      if (users != null && users.size() > 0) {
-        body.append(" OR ");
-      }
-      body.append(" ((eip_t_schedule_map.type = 'F')");
-      body.append(" AND (eip_t_schedule_map.user_id IN (");
-
-      boolean isFirst = true;
-      for (Integer num : facilities) {
-        if (!isFirst) {
-          body.append(",");
-
-        }
-        body.append(num.intValue());
-        isFirst = false;
-      }
-      body.append(")))");
-    }
-
-    if ((users != null && users.size() > 0)
-      || (facilities != null && facilities.size() > 0)) {
-      body.append(")");
-    }
-
-    if (viewStart != null && viewEnd != null) {
-      body.append(" AND (((eip_t_schedule.end_date >= '");
-      body
-        .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
-      body.append("') AND (eip_t_schedule.start_date <= '");
-      body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
-
-      body
-        .append("')) OR ((eip_t_schedule.repeat_pattern <> 'N') AND (eip_t_schedule.repeat_pattern <> 'S')))");
     } else {
-      if (isSearch) {
-        body.append(" AND (eip_t_schedule.public_flag = 'O'");
-
-      } else {
-        body.append(" AND (eip_t_schedule.public_flag <> 'P'");
+      body.append(" FROM eip_t_schedule_map t3 ");
+      if (isMySQL) {
+        body.append(" FORCE INDEX (eip_t_schedule_map_schedule_id_index) ");
       }
-      body
-        .append(" OR ((SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = eip_t_schedule_map.schedule_id) AND (t0.user_id = #bind($user_id))) > 0 )");
-      body
-        .append(" OR (eip_t_schedule_map.type = 'U' AND eip_t_schedule_map.user_id = #bind($user_id))");
-      body.append(" OR ( eip_t_schedule.owner_id = #bind($user_id)))");
-      body.append(" AND (eip_t_schedule_map.status <> 'D')");
+      body.append(" , eip_t_schedule t4 ");
+      body.append(" WHERE ");
+      body.append(" t3.schedule_id = t4.schedule_id AND (t3.status <> 'R') ");
+      if ((users != null && users.size() > 0)
+        || (facilities != null && facilities.size() > 0)) {
+        body.append(" AND (t3.type, t3.user_id) IN ( ");
+        boolean isFirst = true;
+        if (users != null && users.size() > 0) {
+          for (Integer num : users) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('U', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        if (facilities != null && facilities.size() > 0) {
+          for (Integer num : facilities) {
+            if (!isFirst) {
+              body.append(",");
+            }
+            body.append(" ('F', ");
+            body.append(num.intValue());
+            body.append(" ) ");
+            isFirst = false;
+          }
+        }
+        body.append(" ) ");
+      }
+      if (viewStart != null && viewEnd != null) {
+        body.append(" AND ( ");
+        body.append(" ( ");
+        body.append(" t4.start_date <= '");
+        body
+          .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
+        body.append("' ");
+        body.append(" AND t4.end_date >= '");
+        body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+          .format(viewStart));
+        body.append("' ");
+        body.append(" ) ");
+        body.append(" OR  t4.repeat_pattern NOT IN ('N', 'S') ");
+        body.append(" ) ");
+      }
     }
 
     StringBuilder last = new StringBuilder();
 
     last
-      .append(" ORDER BY eip_t_schedule.start_date  DESC, eip_t_schedule.end_date DESC, eip_t_schedule.update_date DESC");
-
+      .append(" ORDER BY t4.start_date DESC, t4.end_date DESC, t4.update_date DESC ");
     if (!isSearch) {
-      last.append(" ,eip_t_schedule_map.type DESC, eip_t_schedule_map.user_id");
+      last.append(" , t3.type DESC, t3.user_id ");
     }
 
     SQLTemplate<VEipTScheduleList> countQuery =
@@ -3945,7 +4034,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -3991,7 +4080,7 @@ public class ScheduleUtils {
 
   /**
    * 入力フィールド値が数字かどうかを判定します。
-   * 
+   *
    * @return
    */
   public static boolean isNumberValue(String string) {

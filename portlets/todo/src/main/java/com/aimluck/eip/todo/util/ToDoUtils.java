@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo.util;
 
 import java.io.StringWriter;
@@ -440,6 +439,29 @@ public class ToDoUtils {
       target_keyword = keywordParam;
     }
     return target_keyword;
+  }
+
+  public static int getViewId(RunData rundata, Context context, int uid)
+      throws ALDBErrorException, ALPageNotFoundException {
+    int view_uid = -1;
+    EipTTodo record;
+    try {
+      record = ToDoUtils.getEipTTodo(rundata, context, false);
+    } catch (ALPageNotFoundException ex) {
+      record = null;
+    }
+    if (record != null) {
+      view_uid = record.getUserId();
+    } else {
+      if (rundata.getParameters().containsKey("view_uid")) {
+        view_uid =
+          Integer.parseInt(rundata.getParameters().getString("view_uid"));
+      } else {
+        view_uid = uid;
+      }
+    }
+    ALEipUtils.setTemp(rundata, context, "view_uid", String.valueOf(view_uid));
+    return view_uid;
   }
 
   /**

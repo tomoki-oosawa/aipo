@@ -1,0 +1,48 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+<div class="borderAuiHead">
+#ALdialogheader($l10n.MESSAGE_READ)
+    <div class="auiListWrapper">
+		<ul class="userList">
+			#foreach ($record in $result.List)
+			<li>
+				<div class="content">
+					<div class="avatar">
+						<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
+							#if($!record.isHasPhoto())
+							<td class="caption"><img style="border-radius: 3px;" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", $!record.PhotoModified))" alt="$!record.LastName $!record.FirstName" width="50" height="50" /></td>
+							#else
+			      			<td class="caption"><img style="border-radius: 3px;" src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" width="50" height="50" /></td>
+							#end
+						</a>
+					</div>
+					<div class="name">
+					<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></td>
+					</tr>
+					</div>
+				</div>
+			</li>
+			#end
+		</ul>
+#ALdialogfooter()
+#ALbuttonheaderPt10()
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+</div>

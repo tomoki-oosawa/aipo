@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1').addQueryData('view_uid', $view_uid)")
 ##set($methodlist = [["$l10n.BLOG_ADD_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_ADD_THEME", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_thema_form','1').addQueryData('entityid','new')"], ["$l10n.BLOG_LOOK_ALL_ENTRY", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_list_user','1')"],["$l10n.BLOG_DO_ENTRY_SEARCH", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_search_list','1')"]])
@@ -50,7 +49,7 @@ $l10n.BLOG_NOTHING_ENTRY_SELECT_THEME
 #foreach ($record in $result.List)
 <tr>
 <td>${record.TitleDate}</td>
-<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId}))');">${record.Title} #if($record.CommentsNum > 0)（$record.CommentsNum）#end</a> &nbsp;</td>
+<td><a href="$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doBlog_entry_detail','1').addQueryData('mode','view').addQueryData("entityid",$record.EntryId).addQueryData('view_uid',${record.OwnerId}))');">${record.Title} #if($record.CommentsNum > 0)($record.CommentsNum)#end</a> &nbsp;</td>
 <td>${record.OwnerName}</td>
 </tr>
 #end

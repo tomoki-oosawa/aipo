@@ -1,0 +1,95 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+#set ($progressJsonScreen = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskProgressFormJSONScreen")))
+#set ($adminTab = $!utils.escapeXML($!jslink.getAction("controls.Maximize",$!portlet.ID).addQueryData("admintab","true")))
+
+## ---------------------------------------------------------------------------
+#if($result.isProjectEmpty())
+#AUIEmptyMessage("" "$utils.getl10nFormat1('PROJECT_EMPTY_LONG_MESSAGE_HREF',${adminTab})")
+#else
+    <div class="auiSummaryMeta clearfix auiFilter">
+	  <input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectScreen")' />
+      <div class="filters floatLeft" id="filters_$!{portlet.ID}">
+		#if(!$!result.issetFilter("project_id") || $!result.issetFilter("project_id", "0"))
+		  <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.PROJECT_ALL_PROJECT</span></a>
+        #else
+	  		#set($break=false)
+		 	#foreach($record in $result.AllProject)
+		 		#if(!$break)
+					#if($!result.issetFilter("project_id", $!{record.getProjectId().toString()}))
+					<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.project.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.ProjectName</span></a>
+		 			#set($break=true)
+					#end
+		 		#end
+			#end
+		#end
+	  </div>
+	  #if("$result.List.size()" != "0")
+		#AUIajaxpageview('ProjectScreen' $result)
+	  #end
+    </div>
+
+	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
+	<div>
+		<p class="caption">$l10n.PROJECT_PROJECT</p>
+		<ul class="filtertype_$!portlet.ID" data-type="project_id" data-defaultparam="0">
+			<li data-param="0"><a href="javascript:void(0)" #if(!$!{result.issetFilter("project_id")} || $!result.issetFilter("project_id", "0")) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_PROJECT</a></li>
+			#foreach($record in $result.AllProject)
+			<li #if ($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected"#end data-param="$!record.ProjectId"><a href="javascript:void(0)"  #if($!result.issetFilter("project_id", $!{record.getProjectId().toString()})) class="selected" #end onclick='aipo.project.projectFilterClick("$!portlet.ID",this,event)'>$record.ProjectName</a></li>
+			#end
+		</ul>
+	</div>
+    </div>
+
+    #if($result.isTaskEmpty())
+		#AUIEmptyMessage("" "$l10n.PROJECT_TASK_NOT_FOUND")
+    #else
+		#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+		<div id="messageDiv-$!portlet.ID"></div>
+        <table class="auiRowTable auiMbTable wide">
+        <colgroup></colgroup>
+        <colgroup class="thin"></colgroup>
+        <colgroup class="thin"></colgroup>
+        <tbody>
+        #foreach ($record in $result.List)
+			<tr #if($!{record.Delay}) class="bgRed" #end>
+            <td class="auiMTCaption">
+				$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskNameHtml</a>
+			</td>
+            <td class="mb_hide" nowrap="nowrap">
+			#if(!$!record.HasChildrenForForm)
+				<select name="progress_rate" onchange="aimluck.io.selectPost({name: this.name, value: this.value, taskId: '$record.taskId', secid: '$secid'}, '$progressJsonScreen', '$indicator_id', '$!portlet.ID', aipo.project.onReceiveMessage)">
+				#foreach($rate in [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+					<option #if ($!{record.ProgressRate.toString()} == "$rate") selected="selected" #end value="${rate}">${rate}%</option>
+				#end
+				</select>
+			#else
+                <span>$!{record.ProgressRate.toString()}%</span>
+			#end
+            </td>
+            <td class="mb_hide" nowrap="nowrap">
+			$!{record.getEndPlanDateWithFormat("$l10n.PROJECT_DAY")}
+			</td>
+			</tr>
+        #end
+        </table>
+	#end
+#end

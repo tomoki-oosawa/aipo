@@ -23,7 +23,7 @@ import java.util.Map;
  * Interface for manipulating RegistryFragments in a fragment based
  * registry implementation.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: FileRegistry.java,v 1.4 2004/02/23 03:31:50 jford Exp $
  */
 public interface FileRegistry {

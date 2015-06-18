@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')")
 #set($linklist = [[$l10n.SCHEDULE_ONEDAY_LIST, "$!jslink.addQueryData('js_peid',$!portlet.ID).addQueryData('eventSubmit_doSchedule_list','1')"], [$l10n.SCHEDULE_TO_SCHEDULE, "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_menu','1')"]])
@@ -34,7 +33,7 @@
 #end
 #ALcell_pagetitle($career $l10n.SCHEDULE_SCHEDULE_DELETE)
 #ALcell_formheader($career $jslink $portlet)
-$l10n.SCHEDULE_DELETE_CONDITOPN：#ALcell_br($career)
+$l10n.SCHEDULE_DELETE_CONDITOPN:#ALcell_br($career)
 #if($!{result.Detail.isOwner()})
 #if($hasMember && $!{result.Detail.isRepeat()})
 <input name="del_flag" type="radio" value="3" checked>
@@ -100,7 +99,7 @@ $l10n.SCHEDULE_DELETE_THE_OWN_SCHEDULE
 <input type="hidden" name="entityid" value="$!{result.EntityId}">
 <input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}">
 #ALcell_hr($career '1')
-#ALcell_submit($career 'eventSubmit_doSchedule_delete' $l10n.SCHEDULE_DELETE)
+#ALcell_submit($career 'eventSubmit_doSchedule_delete' "$l10n.COMMON_DELETE")
 #ALcell_formfooter()
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)

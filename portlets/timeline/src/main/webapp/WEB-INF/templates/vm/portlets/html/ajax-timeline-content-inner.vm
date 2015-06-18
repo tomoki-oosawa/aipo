@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -22,28 +22,45 @@
 #set ($indicator_id3 = "indicator-dlg3-")
 ## ---------------------------------------------------------------------------
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message $!{firstCss}">
-	#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 	<div class="avatar mr10">
+		#if(!$!result.isMatch(2, $!{record.OwnerId.Value}))
+		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">
+		#end
 		#if(${record.hasPhoto()})
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.PhotoModified}))" alt="$!{record.OwnerName}" width="50" height="50" />
+		#elseif($!result.isMatch(2, $!{record.OwnerId.Value}))
+			<img src="themes/default/images/guide_icon.png" alt="$l10n.TIMELINE_GUIDE_USER" width="50" height="50" />
 		#else
 			<img src="images/common/avatar_default3.png" alt="$!{record.OwnerName}" width="50" height="50" />
+		#end
+		#if(!$!result.isMatch(2, $!{record.OwnerId.Value}))
+		</a>
 		#end
 	</div>
 #if($!{record.isNotActivityParent()})
 	<div class="messageContents">
-		<div class="name">$!record.OwnerName</div>
+		<div class="name">
+			#if($!result.isMatch(2, $!{record.OwnerId.Value}))
+			$l10n.TIMELINE_GUIDE_USER
+			#else
+			<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a>
+			#end
+		</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
-				<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
+				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
 			#else
 				$!{record.PreviewNote}#if($record.isDetailNote())<span class="text_exposed_show ellipsis">$record.DetailNote</span>
 				<p class="more">$l10n.WAR_LONG_ROUND<br /><a class="ellipsis_message" href="javascript:void(0)" onclick="aipo.timeline.ellipse_message(this)">$l10n.TIMELINE_ELLIPSIS_MESSAGE</a></p>#end
 				#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
-					#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
-#end#end
-</div>#end
+					#foreach( $attachmentFile in $!record.AttachmentFileList )
+					#if($attachmentFile.isImage())
+					<a href="javascript:aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addQueryData('screen','TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entryid',$!{record.TimelineId}).addQueryData('attachmentIndex', $!{attachmentFile.FileId})')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate('TimelineFileThumbnailScreen').addQueryData('ownerid', ${record.OwnerId}).addQueryData('entityid', ${record.TimelineId}).addQueryData('attachmentIndex', ${attachmentFile.FileId})"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate('TimelineFileRawScreen').addQueryData('ownerid', $!{record.OwnerId}).addQueryData('entityid', $!record.TimelineId).addQueryData('attachmentIndex', $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+					#end
+					#end
+				</div>
+				#end
 				#foreach ($attachmentUrl in $record.UrlList)
 					<div class="tlClipBoard clearfix" id="tlClipBoard_$!{portlet.ID}">
 						<div class="tlClipImage" id="tlClipImage_$!{portlet.ID}">
@@ -94,7 +111,7 @@
 					<input type="hidden" name="secid" value="$secid" />
 					#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete'))")
 					&nbsp;
-					<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.TIMELINE_DELETE</a>
+					<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
 					<input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
 				</form>
 			#end
@@ -118,14 +135,16 @@
 		<div id="message_$!{portlet.ID}_$!{record2.TimelineId}" class="message">
 			#end
 			<div class="avatar mr10">
+				<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record2.OwnerId},arguments[0])">
 				#if(${record2.hasPhoto()})
 					<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record2.OwnerId}).addQueryData("t", ${record2.PhotoModified}))" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#else
 					<img src="images/common/avatar_default3.png" alt="$!{record2.OwnerName}" width="32" height="32" />
 				#end
+				</a>
 			</div>
 			<div class="messageContents">
-				<div class="name">$!record2.OwnerName</div>
+				<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record2.OwnerId},arguments[0])">$!record2.OwnerName</a></div>
 				<div class="body">$!record2.Note</div>
 				<div class="time">$!{record2.CreateDate}
 					&nbsp;
@@ -147,7 +166,7 @@
 								<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 								<input type="hidden" name="secid" value="$secid" />
 								#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record2.TimelineId).addQueryData('mode', 'delete'))")
-								<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.TIMELINE_DELETE</a>
+								<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
 								<input type="hidden" id="dummy_$!{portlet.ID}_$!{record2.TimelineId}" value="" />
 							</form>
 						#end
@@ -177,7 +196,7 @@
 		<form name="commentForm_$!{portlet.ID}_$!{record.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record.TimelineId).addQueryData('secid',$secid))" method="post" onsubmit="dojo.byId('getTimelineOnClick').innerHTML='true';aimluck.io.submit(this,'${indicator_id}_$!{record.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
-				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
+				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 43px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record.TimelineId})"></textarea>
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">
@@ -200,10 +219,10 @@
 		#set($existcomment = $existcomment + 1)
 	#end
 	#if($velocityCount==1)
-	<div class="name">$!record.OwnerName</div>
+	<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a></div>
 	#end
 	<div class="body">
-		<a href="javascript:void(0);" onclick="dijit.byId('activitycheckerContainer')._closeDropDown();aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
+		<a href="javascript:void(0);" onclick="aipo.timeline.inactiveFileAttachments('$!{portlet.ID}');aipo.common.showDialog('$!utils.escapeXML($!{record2.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record2.TimelineId})">$!{record2.PreviewNote}</a>
 	</div>
 	<div class="time">
 		$!{record2.UpdateDate}
@@ -227,7 +246,7 @@
 				<input type="hidden" name="secid" value="$secid" />
 				#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record2.TimelineId).addQueryData('mode', 'delete'))")
 				&nbsp;
-				<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.TIMELINE_DELETE</a>
+				<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record2.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
 				<input type="hidden" id="dummy_$!{portlet.ID}_$!{record2.TimelineId}" value="" />
 			</form>
 		#end
@@ -251,14 +270,16 @@
 	<div id="message_$!{portlet.ID}_$!{record3.TimelineId}" class="message">
 		#end
 		<div class="avatar mr10">
+			<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record3.OwnerId},arguments[0])">
 			#if(${record3.hasPhoto()})
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record3.OwnerId}).addQueryData("t", ${record3.PhotoModified}))" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#else
 				<img src="images/common/avatar_default3.png" alt="$!{record3.OwnerName}" width="32" height="32" />
 			#end
+			</a>
 		</div>
 		<div class="messageContents">
-			<div class="name">$!record3.OwnerName</div>
+			<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record3.OwnerId},arguments[0])">$!record3.OwnerName</a></div>
 			<div class="body">$!record3.Note</div>
 			<div class="time">$!{record3.CreateDate}
 				&nbsp;
@@ -279,7 +300,7 @@
 						<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 							<input type="hidden" name="secid" value="$secid" />
 							#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record3.TimelineId).addQueryData('mode', 'delete'))")
-							<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record3.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.TIMELINE_DELETE</a>
+							<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record3.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
 							<input type="hidden" id="dummy_$!{portlet.ID}_$!{record3.TimelineId}" value="" />
 					</form>
 				#end
@@ -309,7 +330,7 @@
 		<form name="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" id="commentForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$!record2.TimelineId).addQueryData('secid',$secid)" method="post" onsubmit="aimluck.io.submit(this,'$!{indicator_id}_$!{record2.TimelineId}','$!portlet.ID',aipo.timeline.onReceiveMessage);return false;">
 			<input type="hidden" name="secid" value="$secid" />
 			<div class="outer">
-				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record2.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 39px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record2.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record2.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record2.TimelineId})"></textarea>
+				<textarea class="elastic" id="note_$!{portlet.ID}_$!{record2.TimelineId}" cols="10" name="note" rows="1" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; border-image: initial; height: 43px; " onkeyup="aipo.timeline.onKeyUp('$!{portlet.ID}', $!{record2.TimelineId}, event)" onpaste="aipo.timeline.onPaste('$!{portlet.ID}', $!{record2.TimelineId}, event)" onblur="aipo.timeline.onBlurCommentField('$!{portlet.ID}', $!{record2.TimelineId})"></textarea>
 			</div>
 			<div class="tlInputMention clearfix">
 				<div class="floatRight">

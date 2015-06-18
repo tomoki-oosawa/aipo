@@ -2,7 +2,7 @@
 <!--
 
     Aipo is a groupware program developed by Aimluck,Inc.
-    Copyright (C) 2004-2011 Aimluck,Inc.
+    Copyright (C) 2004-2015 Aimluck,Inc.
     http://www.aipo.com
 
     This program is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-
 <!DOCTYPE web-app
     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     "http://java.sun.com/j2ee/dtds/web-app_2.2.dtd">
@@ -50,12 +49,15 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
-    <filter>
-      <filter-name>migrateFilter</filter-name>
-      <filter-class>com.aimluck.eip.filter.ALMigrateFilter</filter-class>
-    </filter>
-
+    <servlet>
+        <servlet-name>
+           push
+        </servlet-name>
+        <servlet-class>
+            com.aimluck.eip.http.ALCometServlet
+        </servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <filter>
       <filter-name>baseFilter</filter-name>
       <filter-class>com.aimluck.eip.filter.ALBaseFilter</filter-class>
@@ -81,18 +83,20 @@
        </url-pattern>
     </servlet-mapping>
 
-   <filter-mapping>
-     <filter-name>migrateFilter</filter-name>
-     <url-pattern>/portal/*</url-pattern>
-     <url-pattern>/ical/*</url-pattern>
-     <dispatcher>REQUEST</dispatcher>
-     <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
+    <servlet-mapping>
+       <servlet-name>
+          push
+       </servlet-name>
+       <url-pattern>
+         /push/*
+       </url-pattern>
+    </servlet-mapping>
 
    <filter-mapping>
      <filter-name>baseFilter</filter-name>
      <url-pattern>/portal/*</url-pattern>
      <url-pattern>/ical/*</url-pattern>
+     <url-pattern>/push/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
      <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

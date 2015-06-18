@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($enable_userlist = true)
 #if($config.getString("action.login.enable.select.userlist") != "true")
 #set($enable_userlist = false)
 #end
 #set($uri = "portal/")
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 var tmpUsername = "";
@@ -145,7 +144,7 @@ $!data.Message
 </p>
 </form>
 #ALcell_contents_footer($career)
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 init();
 //-->

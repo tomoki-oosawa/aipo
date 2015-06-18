@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.system;
 
 import java.util.List;
@@ -31,6 +30,7 @@ import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.services.portal.ALPortalApplicationService;
 
 /**
  * 管理者メール通知設定のフォームデータを管理するためのクラスです。 <br />
@@ -104,6 +104,24 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
   /** メール送信時のメッセージ種別(報告書) */
   private int msg_type_report = FLG_NOTIFY_NONCHECKED;
 
+  /** 有効/無効(スケジュール) */
+  private boolean active_schedule;
+
+  /** 有効/無効(伝言メモ) */
+  private boolean active_note;
+
+  /** 有効/無効 (ブログ) */
+  private boolean active_blog;
+
+  /** 有効/無効 (ワークフロー) */
+  private boolean active_workflow;
+
+  /** 有効/無効(掲示板) */
+  private boolean active_msgboard;
+
+  /** 有効/無効 (報告書) */
+  private boolean active_report;
+
   @Override
   public void initField() {
     pc_flg_schedule = new ALNumberField();
@@ -176,6 +194,13 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_MSGBOARD));
     setNotifyFlg(pc_flg_report, cell_flg_report, ALMailUtils
       .getSendDestType(ALMailUtils.KEY_MSGTYPE_REPORT));
+
+    active_blog = ALPortalApplicationService.isActive("Blog");
+    active_note = ALPortalApplicationService.isActive("Note");
+    active_schedule = ALPortalApplicationService.isActive("Schedule");
+    active_workflow = ALPortalApplicationService.isActive("Workflow");
+    active_msgboard = ALPortalApplicationService.isActive("Msgboard");
+    active_report = ALPortalApplicationService.isActive("Report");
 
     String timestr = ALMailUtils.getNotifyTime();
     notify_time_hour.setValue(timestr.charAt(0) == '0' ? timestr
@@ -409,5 +434,47 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   public int getNotifyTimeMinute() {
     return (int) notify_time_minute.getValue();
+  }
+
+  /**
+   * @return active_schedule
+   */
+  public boolean isActiveSchedule() {
+    return active_schedule;
+  }
+
+  /**
+   * @return active_note
+   */
+  public boolean isActiveNote() {
+    return active_note;
+  }
+
+  /**
+   * @return active_blog
+   */
+  public boolean isActiveBlog() {
+    return active_blog;
+  }
+
+  /**
+   * @return active_workflow
+   */
+  public boolean isActiveWorkflow() {
+    return active_workflow;
+  }
+
+  /**
+   * @return active_msgboard
+   */
+  public boolean isActiveMsgboard() {
+    return active_msgboard;
+  }
+
+  /**
+   * @return active_report
+   */
+  public boolean isActiveReport() {
+    return active_report;
   }
 }

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_list','1')")
 #set($linklist = [["ToDoへ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doTodo_menu','1')"]])
@@ -41,8 +40,8 @@
 #end
 #ALcell_li_header($career)<a href="$!jslink.getPortletById($!portlet.ID).addQueryData('mode','detail').addQueryData('entityid',$record.TodoId)"><span style="color:$color">$!record.TodoName</span></a>
 #if(! ${record.isPublic()})
-（非公開）
-##<img src="images/todo/todo_secret.gif" border="0" width="16" height="16" alt="非公開">
+(非公開)
+##AUIiconSecretAtt("title='非公開'" "")
 #end
 #ALcell_li_footer($career)
 #end
@@ -56,7 +55,7 @@
 <hr>
 ｶﾃｺﾞﾘ選択
 <select name="filter">
-<option value="">（全体）
+<option value="">(全体)
 #foreach( $record in $result.CategoryList )
 <option value="$!record.CategoryId" #if ($!result.CurrentFilter && $!result.CurrentFilter == $!record.CategoryId.toString()) selected #end>$!record.CategoryName
 #end

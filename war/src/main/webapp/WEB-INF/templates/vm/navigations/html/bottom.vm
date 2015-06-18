@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 							#if("${client}" == "PCIPHONE")
 								<!-- auiDispChanger -->
@@ -27,14 +26,19 @@
 							#end
 
                             <!-- FOOTER -->
+<div class="copyright mb_hide" id="copyright">
+    ${copyright_short}
+    &nbsp;·&nbsp;
+    ${alias_copyright} ${version}
+</div>
 #if ("${client}" != "IPAD" || "${clientVer}" != "4")
 #set ($onclickClose = "document.getElementById('startGuide').style.display='none';document.getElementById('wrapper').style.marginBottom='26px';document.getElementById('guide_on').style.display='inline';document.getElementById('guide_off').style.display='none';aipo.setCookie('start_guide_popup',false,'/')")
 #set ($onclickOpen = "document.getElementById('startGuide').style.display='block';document.getElementById('wrapper').style.marginBottom='156px';document.getElementById('guide_on').style.display='none';document.getElementById('guide_off').style.display='inline';aipo.setCookie('start_guide_popup',true,'/');")
-                            <div id="footer" class="clearfix">
+                            <div id="footer" class="clearfix" style="display:none">
 #else
 #set ($onclickClose = "document.getElementById('startGuide').style.display='none';document.getElementById('guide_on').style.display='inline';document.getElementById('guide_off').style.display='none';aipo.setCookie('start_guide_popup',false,'/')")
 #set ($onclickOpen = "document.getElementById('startGuide').style.display='block';document.getElementById('guide_on').style.display='none';document.getElementById('guide_off').style.display='inline';aipo.setCookie('start_guide_popup',true,'/');")
-                            <div id="footer" class="clearfix" style="position:static;">
+                            <div id="footer" class="clearfix" style="display:none;position:static;">
 #end
 								#if($data.User.isAdmin() && $data.User.UserName != "admin")
                             	<!-- START GUIDE -->

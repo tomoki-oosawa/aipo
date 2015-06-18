@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.social.model;
 
 /**
@@ -43,6 +42,8 @@ public class ALActivityGetRequest {
   private long max = -1;
 
   private float priority = -1f;
+
+  private String postId;
 
   // 自分宛のお知らせかどうかのフラグ
   private boolean targetLoginNameLimit = false;
@@ -243,4 +244,25 @@ public class ALActivityGetRequest {
   public boolean isTargetLoginNameLimit() {
     return targetLoginNameLimit;
   }
+
+  /**
+   * @return postId
+   */
+  public String getPostId() {
+    return postId;
+  }
+
+  /**
+   * @param postId
+   *          セットする postId
+   */
+  public void setPostId(String postId) {
+    this.postId = postId;
+  }
+
+  public ALActivityGetRequest withPostId(String postId) {
+    setPostId(postId);
+    return this;
+  }
+
 }

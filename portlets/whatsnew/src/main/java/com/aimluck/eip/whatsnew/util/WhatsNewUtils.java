@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.whatsnew.util;
 
 import java.util.ArrayList;
@@ -354,398 +353,410 @@ public class WhatsNewUtils {
 
   public static WhatsNewResultData setupWhatsNewResultData(
       WhatsNewContainer record, int uid, int num, int span) {
-    WhatsNewResultData rd = new WhatsNewResultData();
-    rd.initField();
+    try {
+      WhatsNewResultData rd = new WhatsNewResultData();
+      rd.initField();
 
-    int size = 0;
-    int type = record.getType();
-    Integer[] eids = null;
-    Integer[] deids = null;
-    Date[] dates = null;
-    List<EipTWhatsNew> entity_ids = record.getList();
-    List<EipTWhatsNew> deny_whatsnew = new ArrayList<EipTWhatsNew>();
+      int size = 0;
+      int type = record.getType();
+      Integer[] eids = null;
+      Integer[] deids = null;
+      Date[] dates = null;
+      List<EipTWhatsNew> entity_ids = record.getList();
+      List<EipTWhatsNew> deny_whatsnew = new ArrayList<EipTWhatsNew>();
 
-    if ((entity_ids != null) && (size = entity_ids.size()) > 0) {
-      if (size > num) {
-        eids = new Integer[num];
-        dates = new Date[num];
-        deids = new Integer[size - num];
+      if ((entity_ids != null) && (size = entity_ids.size()) > 0) {
+        if (size > num) {
+          eids = new Integer[num];
+          dates = new Date[num];
+          deids = new Integer[size - num];
+        } else {
+          eids = new Integer[size];
+          dates = new Date[size];
+        }
+
+        for (int i = 0; i < size; i++) {
+          try {
+            EipTWhatsNew wn = entity_ids.get(i);
+            if (i < num) {
+              eids[i] = wn.getEntityId();
+              dates[i] = wn.getUpdateDate();
+            } else {
+              deids[i - num] = wn.getEntityId();
+              deny_whatsnew.add(wn);
+            }
+          } catch (Exception e) {
+            return null;
+          }
+        }
       } else {
-        eids = new Integer[size];
-        dates = new Date[size];
+        return null;
       }
 
-      for (int i = 0; i < size; i++) {
-        try {
-          EipTWhatsNew wn = entity_ids.get(i);
-          if (i < num) {
-            eids[i] = wn.getEntityId();
-            dates[i] = wn.getUpdateDate();
-          } else {
-            deids[i - num] = wn.getEntityId();
-            deny_whatsnew.add(wn);
-          }
-        } catch (Exception e) {
+      // rd.setEntityId(entityid);
+      rd.setType(type);
+
+      if (deids != null) {
+        SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
+        Expression exp =
+          ExpressionFactory.matchExp(
+            EipTWhatsNew.PORTLET_TYPE_PROPERTY,
+            Integer.valueOf(type));
+        query.setQualifier(exp);
+        Expression exp1 =
+          ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
+            .valueOf(uid));
+        query.andQualifier(exp1);
+        Expression exp2 =
+          ExpressionFactory.inExp(EipTWhatsNew.ENTITY_ID_PROPERTY, deids);
+        query.andQualifier(exp2);
+        List<EipTWhatsNew> entries = query.fetchList();
+        if (entries != null && entries.size() > 0) {
+          Database.deleteAll(entries);
+          Database.commit();
+        }
+      }
+
+      if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY == type) {
+
+        Expression exp =
+          ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, eids);
+
+        List<EipTBlogEntry> entries =
+          Database.query(EipTBlogEntry.class, exp).orderDesending(
+            EipTBlogEntry.CREATE_DATE_PROPERTY).select(
+            EipTBlogEntry.ENTRY_ID_PK_COLUMN,
+            EipTBlogEntry.TITLE_COLUMN,
+            EipTBlogEntry.OWNER_ID_COLUMN).fetchList();
+
+        if (entries == null || entries.size() <= 0) {
           return null;
         }
-      }
-    } else {
-      return null;
-    }
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ ブログ ]  新着記事");
 
-    // rd.setEntityId(entityid);
-    rd.setType(type);
+        for (int i = 0; i < size; i++) {
+          EipTBlogEntry entry = entries.get(i);
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          bean.setEntityId(entry.getEntryId());
+          bean.addParamMap("template", "BlogDetailScreen");
+          bean.setJsFunctionName("aipo.blog.onLoadBlogDetailDialog");
+          bean.setPortletName("[ ブログ ] ");
 
-    if (deids != null) {
-      SelectQuery<EipTWhatsNew> query = Database.query(EipTWhatsNew.class);
-      Expression exp =
-        ExpressionFactory.matchExp(EipTWhatsNew.PORTLET_TYPE_PROPERTY, Integer
-          .valueOf(type));
-      query.setQualifier(exp);
-      Expression exp1 =
-        ExpressionFactory.matchExp(EipTWhatsNew.USER_ID_PROPERTY, Integer
-          .valueOf(uid));
-      query.andQualifier(exp1);
-      Expression exp2 =
-        ExpressionFactory.inExp(EipTWhatsNew.ENTITY_ID_PROPERTY, deids);
-      query.andQualifier(exp2);
-      List<EipTWhatsNew> entries = query.fetchList();
-      if (entries != null && entries.size() > 0) {
-        Database.deleteAll(entries);
-        Database.commit();
-      }
-    }
-
-    if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_ENTRY == type) {
-
-      Expression exp =
-        ExpressionFactory.inDbExp(EipTBlogEntry.ENTRY_ID_PK_COLUMN, eids);
-
-      List<EipTBlogEntry> entries =
-        Database.query(EipTBlogEntry.class, exp).orderDesending(
-          EipTBlogEntry.CREATE_DATE_PROPERTY).select(
-          EipTBlogEntry.ENTRY_ID_PK_COLUMN,
-          EipTBlogEntry.TITLE_COLUMN,
-          EipTBlogEntry.OWNER_ID_COLUMN).fetchList();
-
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ ブログ ]  新着記事");
-
-      for (int i = 0; i < size; i++) {
-        EipTBlogEntry entry = entries.get(i);
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        bean.setEntityId(entry.getEntryId());
-        bean.addParamMap("template", "BlogDetailScreen");
-        bean.setJsFunctionName("aipo.blog.onLoadBlogDetailDialog");
-        bean.setPortletName("[ ブログ ] ");
-
-        try {
-          ALEipUser owner = ALEipUtils.getALEipUser(entry.getOwnerId());
-          bean.setOwnerName(owner.getAliasName().getValue());
-        } catch (Exception e) {
-          bean.setOwnerName("");
-        }
-        bean.setName(entry.getTitle());
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        rd.setBean(bean);
-      }
-    } else if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT == type) {
-      Expression exp =
-        ExpressionFactory.inDbExp(EipTBlogComment.COMMENT_ID_PK_COLUMN, eids);
-
-      List<EipTBlogComment> entries =
-        Database.query(EipTBlogComment.class, exp).orderDesending(
-          EipTBlogComment.CREATE_DATE_PROPERTY).fetchList();
-
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ ブログ ]  新着コメント");
-      for (int i = 0; i < size; i++) {
-        EipTBlogComment entry = entries.get(i);
-        int entryId = entry.getEipTBlogEntry().getEntryId().intValue();
-        /**
-         * 重複判定
-         */
-        int size2 = 0;
-        List<WhatsNewBean> tmp = rd.getBeans();
-        boolean is_contain = false;
-        if ((tmp != null) && (size2 = tmp.size()) > 0) {
-          for (int j = 0; j < size2; j++) {
-            WhatsNewBean tmpb = tmp.get(j);
-            if (tmpb.getEntityId().getValue() == entryId) {
-              StringBuffer sb =
-                new StringBuffer(tmpb.getOwnerName().getValue());
-              try {
-                List<String> array = Arrays.asList(sb.toString().split(","));
-                ALEipUser tmpowner =
-                  ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
-                if (array.contains(tmpowner.getAliasName().getValue())) {
-                  continue;
-                }
-                sb.append(",").append(tmpowner.getAliasName().getValue());
-                tmpb.setOwnerName(sb.toString());
-              } catch (Exception e) {
-              }
-              is_contain = true;
-              break;
-            }
+          try {
+            ALEipUser owner = ALEipUtils.getALEipUser(entry.getOwnerId());
+            bean.setOwnerName(owner.getAliasName().getValue());
+          } catch (Exception e) {
+            bean.setOwnerName("");
           }
+          bean.setName(entry.getTitle());
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          rd.setBean(bean);
         }
+      } else if (WhatsNewUtils.WHATS_NEW_TYPE_BLOG_COMMENT == type) {
+        Expression exp =
+          ExpressionFactory.inDbExp(EipTBlogComment.COMMENT_ID_PK_COLUMN, eids);
 
-        if (is_contain) {
-          continue;
+        List<EipTBlogComment> entries =
+          Database.query(EipTBlogComment.class, exp).orderDesending(
+            EipTBlogComment.CREATE_DATE_PROPERTY).fetchList();
+
+        if (entries == null || entries.size() <= 0) {
+          return null;
         }
-
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        bean.setEntityId(entryId);
-        bean.addParamMap("template", "BlogDetailScreen");
-        bean.setJsFunctionName("aipo.blog.onLoadBlogDetailDialog");
-        bean.setPortletName("[ ブログ ] ");
-
-        try {
-          ALEipUser owner =
-            ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
-          bean.setOwnerName(owner.getAliasName().getValue());
-        } catch (Exception e) {
-          bean.setOwnerName("");
-        }
-
-        bean.setName(entry.getEipTBlogEntry().getTitle());
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        rd.setBean(bean);
-      }
-    } else if (WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST == type) {
-      Expression exp =
-        ExpressionFactory.inDbExp(
-          EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
-          eids);
-
-      List<EipTWorkflowRequest> entries =
-        Database.query(EipTWorkflowRequest.class, exp).orderDesending(
-          EipTWorkflowRequest.UPDATE_DATE_PROPERTY).fetchList();
-
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ ワークフロー ]  新着依頼");
-
-      for (int i = 0; i < size; i++) {
-        EipTWorkflowRequest entry = entries.get(i);
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        bean.setEntityId(entry.getRequestId());
-        bean.addParamMap("template", "WorkflowDetailScreen");
-        bean.setJsFunctionName("aipo.workflow.onLoadWorkflowDetail");
-        bean.setPortletName("[ ワークフロー ] ");
-        try {
-          List<EipTWorkflowRequestMap> maps = getEipTWorkflowRequestMap(entry);
-          int m_size = maps.size();
-          String lastUpdateUser = "";
-          EipTWorkflowRequestMap map;
-          if ("A".equals(entry.getProgress())) {
-            // すべて承認済みの場合、最終承認者をセットする
-            map = maps.get(m_size - 1);
-            ALEipUser user =
-              ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = user.getAliasName().getValue();
-          } else {
-            // 最終閲覧者を取得する
-            int unum = 0;
-            for (int j = 0; j < m_size; j++) {
-              map = maps.get(j);
-              if ("C".equals(map.getStatus())) {
-                unum = j - 1;
-              } else if ("D".equals(map.getStatus())) {
-                unum = j;
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ ブログ ]  新着コメント");
+        for (int i = 0; i < size; i++) {
+          EipTBlogComment entry = entries.get(i);
+          int entryId = entry.getEipTBlogEntry().getEntryId().intValue();
+          /**
+           * 重複判定
+           */
+          int size2 = 0;
+          List<WhatsNewBean> tmp = rd.getBeans();
+          boolean is_contain = false;
+          if ((tmp != null) && (size2 = tmp.size()) > 0) {
+            for (int j = 0; j < size2; j++) {
+              WhatsNewBean tmpb = tmp.get(j);
+              if (tmpb.getEntityId().getValue() == entryId) {
+                StringBuffer sb =
+                  new StringBuffer(tmpb.getOwnerName().getValue());
+                try {
+                  List<String> array = Arrays.asList(sb.toString().split(","));
+                  ALEipUser tmpowner =
+                    ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
+                  if (array.contains(tmpowner.getAliasName().getValue())) {
+                    continue;
+                  }
+                  sb.append(",").append(tmpowner.getAliasName().getValue());
+                  tmpb.setOwnerName(sb.toString());
+                } catch (Exception e) {
+                }
+                is_contain = true;
                 break;
               }
             }
-            map = maps.get(unum);
-            ALEipUser user =
-              ALEipUtils.getALEipUser(map.getUserId().intValue());
-            lastUpdateUser = user.getAliasName().getValue();
           }
 
-          bean.setOwnerName(lastUpdateUser);
-        } catch (Exception e) {
-          bean.setOwnerName("");
+          if (is_contain) {
+            continue;
+          }
+
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          bean.setEntityId(entryId);
+          bean.addParamMap("template", "BlogDetailScreen");
+          bean.setJsFunctionName("aipo.blog.onLoadBlogDetailDialog");
+          bean.setPortletName("[ ブログ ] ");
+
+          try {
+            ALEipUser owner =
+              ALEipUtils.getALEipUser(entry.getOwnerId().intValue());
+            bean.setOwnerName(owner.getAliasName().getValue());
+          } catch (Exception e) {
+            bean.setOwnerName("");
+          }
+
+          bean.setName(entry.getEipTBlogEntry().getTitle());
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          rd.setBean(bean);
         }
-        String cname = entry.getEipTWorkflowCategory().getCategoryName();
-        String rname = entry.getRequestName();
+      } else if (WhatsNewUtils.WHATS_NEW_TYPE_WORKFLOW_REQUEST == type) {
+        Expression exp =
+          ExpressionFactory.inDbExp(
+            EipTWorkflowRequest.REQUEST_ID_PK_COLUMN,
+            eids);
 
-        String title = "【" + cname + "】 " + rname;
+        List<EipTWorkflowRequest> entries =
+          Database.query(EipTWorkflowRequest.class, exp).orderDesending(
+            EipTWorkflowRequest.UPDATE_DATE_PROPERTY).fetchList();
 
-        bean.setName(title);
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        bean.addParamMap("mode", "detail");
-        bean.addParamMap("prvid", bean.getEntityId().toString());
-
-        rd.setBean(bean);
-      }
-    } else if (WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC == type) {
-      Expression exp =
-        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, eids);
-
-      List<EipTMsgboardTopic> entries =
-        Database.query(EipTMsgboardTopic.class, exp).orderDesending(
-          EipTWorkflowRequest.CREATE_DATE_PROPERTY).select(
-          EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
-          EipTMsgboardTopic.TOPIC_NAME_COLUMN,
-          EipTMsgboardTopic.OWNER_ID_COLUMN,
-          EipTMsgboardTopic.PARENT_ID_COLUMN).fetchList();
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ 掲示板 ]  新しい書き込み");
-      for (int i = 0; i < size; i++) {
-        EipTMsgboardTopic topic = entries.get(i);
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        int parentId = topic.getParentId().intValue();
-        if (parentId > 0) {
-          bean.setEntityId(parentId);
-        } else {
-          bean.setEntityId(topic.getTopicId());
+        if (entries == null || entries.size() <= 0) {
+          return null;
         }
-        bean.addParamMap("template", "MsgboardTopicDetailScreen");
-        bean.setJsFunctionName("aipo.msgboard.onLoadMsgboardDetail");
-        bean.setPortletName("[ 掲示板 ] ");
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ ワークフロー ]  新着依頼");
 
-        try {
-          ALEipUser owner = ALEipUtils.getALEipUser(topic.getOwnerId());
-          bean.setOwnerName(owner.getAliasName().getValue());
-        } catch (Exception e) {
-          bean.setOwnerName("");
+        for (int i = 0; i < size; i++) {
+          EipTWorkflowRequest entry = entries.get(i);
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          bean.setEntityId(entry.getRequestId());
+          bean.addParamMap("template", "WorkflowDetailScreen");
+          bean.setJsFunctionName("aipo.workflow.onLoadWorkflowDetail");
+          bean.setPortletName("[ ワークフロー ] ");
+          try {
+            List<EipTWorkflowRequestMap> maps =
+              getEipTWorkflowRequestMap(entry);
+            int m_size = maps.size();
+            String lastUpdateUser = "";
+            EipTWorkflowRequestMap map;
+            if ("A".equals(entry.getProgress())) {
+              // すべて承認済みの場合、最終承認者をセットする
+              map = maps.get(m_size - 1);
+              ALEipUser user =
+                ALEipUtils.getALEipUser(map.getUserId().intValue());
+              lastUpdateUser = user.getAliasName().getValue();
+            } else {
+              // 最終閲覧者を取得する
+              int unum = 0;
+              for (int j = 0; j < m_size; j++) {
+                map = maps.get(j);
+                if ("C".equals(map.getStatus())) {
+                  unum = j - 1;
+                } else if ("D".equals(map.getStatus())) {
+                  unum = j;
+                  break;
+                }
+              }
+              map = maps.get(unum);
+              ALEipUser user =
+                ALEipUtils.getALEipUser(map.getUserId().intValue());
+              lastUpdateUser = user.getAliasName().getValue();
+            }
+
+            bean.setOwnerName(lastUpdateUser);
+          } catch (Exception e) {
+            bean.setOwnerName("");
+          }
+          String cname = entry.getEipTWorkflowCategory().getCategoryName();
+          String rname = entry.getRequestName();
+
+          String title = "【" + cname + "】 " + rname;
+
+          bean.setName(title);
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          bean.addParamMap("mode", "detail");
+          bean.addParamMap("prvid", bean.getEntityId().toString());
+
+          rd.setBean(bean);
         }
-        bean.setName(topic.getTopicName());
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        rd.setBean(bean);
-      }
-    } else if (WhatsNewUtils.WHATS_NEW_TYPE_NOTE == type) {
-      Expression exp =
-        ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, eids);
+      } else if (WhatsNewUtils.WHATS_NEW_TYPE_MSGBOARD_TOPIC == type) {
+        Expression exp =
+          ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, eids);
 
-      List<EipTNote> entries =
-        Database.query(EipTNote.class, exp).orderDesending(
-          EipTNote.CREATE_DATE_PROPERTY).select(
-          EipTNote.NOTE_ID_PK_COLUMN,
-          EipTNote.CLIENT_NAME_COLUMN,
-          EipTNote.SUBJECT_TYPE_COLUMN,
-          EipTNote.CUSTOM_SUBJECT_COLUMN,
-          EipTNote.OWNER_ID_COLUMN).fetchList();
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ 伝言メモ ]  新着メモ");
-      for (int i = 0; i < size; i++) {
-        EipTNote note = entries.get(i);
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        bean.setEntityId(note.getNoteId());
-        bean.addParamMap("template", "NoteDetailScreen");
-        bean.setJsFunctionName("aipo.note.onLoadDetail");
-        bean.setPortletName("[ 伝言メモ ] ");
-        try {
-          ALEipUser owner =
-            ALEipUtils.getALEipUser(Integer.valueOf(note.getOwnerId()));
-          bean.setOwnerName(owner.getAliasName().getValue());
-        } catch (Exception e) {
-          bean.setOwnerName("");
+        List<EipTMsgboardTopic> entries =
+          Database.query(EipTMsgboardTopic.class, exp).orderDesending(
+            EipTWorkflowRequest.CREATE_DATE_PROPERTY).select(
+            EipTMsgboardTopic.TOPIC_ID_PK_COLUMN,
+            EipTMsgboardTopic.TOPIC_NAME_COLUMN,
+            EipTMsgboardTopic.OWNER_ID_COLUMN,
+            EipTMsgboardTopic.PARENT_ID_COLUMN).fetchList();
+        if (entries == null || entries.size() <= 0) {
+          return null;
         }
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ 掲示板 ]  新しい書き込み");
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardTopic topic = entries.get(i);
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          int parentId = topic.getParentId().intValue();
+          if (parentId > 0) {
+            bean.setEntityId(parentId);
+          } else {
+            bean.setEntityId(topic.getTopicId());
+          }
+          bean.addParamMap("template", "MsgboardTopicDetailScreen");
+          bean.setJsFunctionName("aipo.msgboard.onLoadMsgboardDetail");
+          bean.setPortletName("[ 掲示板 ] ");
 
-        String clname = note.getClientName();
-        String subject = "";
-        String stype = note.getSubjectType();
-
-        if ("0".equals(stype)) {
-          subject = note.getCustomSubject();
-        } else if ("1".equals(stype)) {
-          subject = "再度電話します。";
-        } else if ("2".equals(stype)) {
-          subject = "折返しお電話ください。";
-        } else if ("3".equals(stype)) {
-          subject = "連絡があったことをお伝えください。";
-        } else if ("4".equals(stype)) {
-          subject = "伝言をお願いします。";
+          try {
+            ALEipUser owner = ALEipUtils.getALEipUser(topic.getOwnerId());
+            bean.setOwnerName(owner.getAliasName().getValue());
+          } catch (Exception e) {
+            bean.setOwnerName("");
+          }
+          bean.setName(topic.getTopicName());
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          rd.setBean(bean);
         }
+      } else if (WhatsNewUtils.WHATS_NEW_TYPE_NOTE == type) {
+        Expression exp =
+          ExpressionFactory.inDbExp(EipTNote.NOTE_ID_PK_COLUMN, eids);
 
-        String title = "【" + clname + "】 " + subject;
-
-        bean.setName(title);
-
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        rd.setBean(bean);
-      }
-    } else if (WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE == type) {
-      Expression exp =
-        ExpressionFactory.inDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, eids);
-
-      List<EipTSchedule> entries =
-        Database.query(EipTSchedule.class, exp).orderDesending(
-          EipTSchedule.UPDATE_DATE_PROPERTY).select(
-          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
-          EipTSchedule.START_DATE_COLUMN,
-          EipTSchedule.NAME_COLUMN,
-          EipTSchedule.OWNER_ID_COLUMN,
-          EipTSchedule.UPDATE_USER_ID_COLUMN).fetchList();
-      if (entries == null || entries.size() <= 0) {
-        return null;
-      }
-      size = entries.size();
-      rd.setCreateDate(new Date());
-      rd.setUpdateDate(new Date());
-      rd.setPortletName("[ スケジュール ]  新着予定");
-      for (int i = 0; i < size; i++) {
-        EipTSchedule schedule = entries.get(i);
-        WhatsNewBean bean = new WhatsNewBean();
-        bean.initField();
-        bean.setEntityId(schedule.getScheduleId());
-        bean.addParamMap("template", "ScheduleDetailScreen");
-        bean.setJsFunctionName("aipo.schedule.onLoadScheduleDetail");
-        bean.setPortletName("[ スケジュール ] ");
-        try {
-          ALEipUser owner = ALEipUtils.getALEipUser(schedule.getOwnerId());
-          bean.setOwnerName(owner.getAliasName().getValue());
-        } catch (Exception e) {
-          bean.setOwnerName("");
+        List<EipTNote> entries =
+          Database.query(EipTNote.class, exp).orderDesending(
+            EipTNote.CREATE_DATE_PROPERTY).select(
+            EipTNote.NOTE_ID_PK_COLUMN,
+            EipTNote.CLIENT_NAME_COLUMN,
+            EipTNote.SUBJECT_TYPE_COLUMN,
+            EipTNote.CUSTOM_SUBJECT_COLUMN,
+            EipTNote.OWNER_ID_COLUMN).fetchList();
+        if (entries == null || entries.size() <= 0) {
+          return null;
         }
-        bean.setName(schedule.getName());
-        bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
-        bean.addParamMap("userid", Integer.toString(uid).trim());
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ 伝言メモ ]  新着メモ");
+        for (int i = 0; i < size; i++) {
+          EipTNote note = entries.get(i);
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          bean.setEntityId(note.getNoteId());
+          bean.addParamMap("template", "NoteDetailScreen");
+          bean.setJsFunctionName("aipo.note.onLoadDetail");
+          bean.setPortletName("[ 伝言メモ ] ");
+          try {
+            ALEipUser owner =
+              ALEipUtils.getALEipUser(Integer.valueOf(note.getOwnerId()));
+            bean.setOwnerName(owner.getAliasName().getValue());
+          } catch (Exception e) {
+            bean.setOwnerName("");
+          }
 
-        // view_dateの指定
-        Date start_date = schedule.getStartDate();
-        bean.addParamMap("view_date", ALDateUtil.format(
-          start_date,
-          "yyyy-MM-dd-00-00"));
+          String clname = note.getClientName();
+          String subject = "";
+          String stype = note.getSubjectType();
 
-        rd.setBean(bean);
+          if ("0".equals(stype)) {
+            subject = note.getCustomSubject();
+          } else if ("1".equals(stype)) {
+            subject = "再度電話します。";
+          } else if ("2".equals(stype)) {
+            subject = "折返しお電話ください。";
+          } else if ("3".equals(stype)) {
+            subject = "連絡があったことをお伝えください。";
+          } else if ("4".equals(stype)) {
+            subject = "伝言をお願いします。";
+          }
+
+          String title = "【" + clname + "】 " + subject;
+
+          bean.setName(title);
+
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          rd.setBean(bean);
+        }
+      } else if (WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE == type) {
+        Expression exp =
+          ExpressionFactory.inDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, eids);
+
+        List<EipTSchedule> entries =
+          Database.query(EipTSchedule.class, exp).orderDesending(
+            EipTSchedule.UPDATE_DATE_PROPERTY).select(
+            EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+            EipTSchedule.START_DATE_COLUMN,
+            EipTSchedule.NAME_COLUMN,
+            EipTSchedule.OWNER_ID_COLUMN,
+            EipTSchedule.UPDATE_USER_ID_COLUMN).fetchList();
+        if (entries == null || entries.size() <= 0) {
+          return null;
+        }
+        size = entries.size();
+        rd.setCreateDate(new Date());
+        rd.setUpdateDate(new Date());
+        rd.setPortletName("[ スケジュール ]  新着予定");
+        for (int i = 0; i < size; i++) {
+          EipTSchedule schedule = entries.get(i);
+          WhatsNewBean bean = new WhatsNewBean();
+          bean.initField();
+          bean.setEntityId(schedule.getScheduleId());
+          bean.addParamMap("template", "ScheduleDetailScreen");
+          bean.setJsFunctionName("aipo.schedule.onLoadScheduleDetail");
+          bean.setPortletName("[ スケジュール ] ");
+          try {
+            ALEipUser owner = ALEipUtils.getALEipUser(schedule.getOwnerId());
+            bean.setOwnerName(owner.getAliasName().getValue());
+          } catch (Exception e) {
+            bean.setOwnerName("");
+          }
+          bean.setName(schedule.getName());
+          bean.setUpdateDate(ALDateUtil.format(dates[i], "yyyy/MM/dd/"));
+          bean.addParamMap("userid", Integer.toString(uid).trim());
+
+          // view_dateの指定
+          Date start_date = schedule.getStartDate();
+          bean.addParamMap("view_date", ALDateUtil.format(
+            start_date,
+            "yyyy-MM-dd-00-00"));
+
+          rd.setBean(bean);
+        }
+      } else {
+        rd = null;
       }
-    } else {
-      rd = null;
+
+      return rd;
+    } catch (RuntimeException ex) {
+      Database.rollback();
+      logger.error("whatsnew", ex);
+      return null;
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("whatsnew", ex);
+      return null;
     }
-
-    return rd;
   }
 
   private static List<EipTWorkflowRequestMap> getEipTWorkflowRequestMap(

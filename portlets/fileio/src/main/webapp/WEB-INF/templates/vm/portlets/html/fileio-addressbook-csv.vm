@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 
 function onClick_Select(button){
@@ -191,9 +190,9 @@ function hide_Attention(){
 <tr>
 <td colspan="2" class="center">
 	#if($!result.List && $!result.List.size() > 0)
-	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="$l10n.FILEIO_LOAD" class="button" name="send" />
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);return false;" value="$l10n.FILEIO_LOAD" class="button" name="send" />
 	#else
-	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="$l10n.FILEIO_LOAD" class="auiButtonAction" name="send" />
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);return false;" value="$l10n.FILEIO_LOAD" class="auiButtonAction" name="send" />
 	#end
 </td>
 </tr>
@@ -231,6 +230,7 @@ function hide_Attention(){
 #set($showErrmsg13 = false)
 #set($showErrmsg14 = false)
 #set($showErrmsg15 = false)
+#set($showErrmsg18 = false)
 #foreach ($record in $result.List)
 #if($!record.getName().toString() == "")#set($showErrmsg1 = true)#end
 #if($!record.getNameKana().toString() == "")#set($showErrmsg2 = true)#end
@@ -249,6 +249,7 @@ function hide_Attention(){
 #if(!$!record.getCompanyUrl().getValidate())#set($showErrmsg15 = true)#end
 #if(!$!record.getCompanyName().getValue())#set($showErrmsg16 = true)#end
 #if(!$!record.getCompanyNameKana().getValue())#set($showErrmsg17 = true)#end
+#if(!$!record.getNoteRaw())#set($showErrmsg18 = true)#end
 #end
 
 <table class="listTable wide">
@@ -256,7 +257,7 @@ function hide_Attention(){
 
 
 #if($result.isError())${result.getLineCount3()}<br>$l10n.FILEIO_ERROR_NOT_ADD_DATA #end
-#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 )
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg18)
 #if($showErrmsg || $showErrmsg11)
 <ul>
 #if($showErrmsg1)
@@ -310,6 +311,9 @@ function hide_Attention(){
 #if($showErrmsg17)
 <li><span class="caution">（※17）&nbsp;$l10n.FILEIO_FILEIO_INFORMATION_INPUT_LIMIT_COMPANY_SPELL</span></li>
 #end
+#if($showErrmsg18)
+<li><span class="caution">（※18）&nbsp;$l10n.FILEIO_INFORMATION_INPUT_LIMIT_NOTE</span></li>
+#end
 </ul>
 #else
 <br>
@@ -346,7 +350,7 @@ function hide_Attention(){
 <th nowrap="nowrap" class="head">$l10n.FILIIO_UNIT_NAME</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_POST</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_URL</th>
-
+<th nowrap="nowrap" class="head">$l10n.FILEIO_NOTE</th>
 </tr>
 #set($con = 0)
 #foreach ($record in $result.List)
@@ -411,6 +415,9 @@ function hide_Attention(){
 </td>
 <td nowrap="nowrap" class="item">
 #if($!record.getCompanyUrl().getValidate())$!{record.getCompanyUrl().toString()}#else <span class="caution">※15</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.getNoteRaw())$!{record.getNote()}#else <span class="caution">※18</span> #end
 </td>
 </tr>
 #end

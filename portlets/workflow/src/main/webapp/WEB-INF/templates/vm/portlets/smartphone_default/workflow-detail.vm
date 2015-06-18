@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($linklist = [["$l10n.WORKFLOW_GO_WORKFLOW", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','menu')"], ["$l10n.WORKFLOW_GO_CONFIRMATION_REQUEST_LIST", "$!jslink.getPortletById($!portlet.ID).addQueryData('mode','list')"]])
 #ALcell_pagetitle_iphone($career "$l10n.WORKFLOW_WORKFLOW_DETAILS")
@@ -28,20 +27,20 @@
 #ALthtd('' "$l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK")
 #else
 #if($!result.Detail.Progress.Value == "A")
-#ALthtd('$l10n.WORKFLOW_FLOW_STATUS' "$l10n.WORKFLOW_CONFIRMED")
+#ALthtd("$l10n.WORKFLOW_FLOW_STATUS" "$l10n.WORKFLOW_CONFIRMED")
 #else
-#ALthtd('$l10n.WORKFLOW_FLOW_STATUS' "$l10n.WORKFLOW_WAITING_DECISION")
+#ALthtd("$l10n.WORKFLOW_FLOW_STATUS" "$l10n.WORKFLOW_WAITING_DECISION")
 #end
 #end
-#ALthtd('$l10n.WORKFLOW_CLASSIFICATION' "$!{result.Detail.CategoryName}")
+#ALthtd("$l10n.WORKFLOW_CLASSIFICATION" "$!{result.Detail.CategoryName}")
 #if($!result.Detail.RequestName != '')
-#ALthtd('$l10n.WORKFLOW_REQUEST_NAME' "$!result.Detail.RequestName")
+#ALthtd("$l10n.WORKFLOW_REQUEST_NAME" "$!result.Detail.RequestName")
 #end
-#ALthtd('$l10n.WORKFLOW_POSTING_DAY' "$!result.Detail.CreateDate")
-#ALthtd('$l10n.WORKFLOW_CREATEDATE' "$!result.Detail.CreateDate")
-#ALthtd('$l10n.WORKFLOW_PRIORITY_VALUE' "$!result.Detail.PriorityString")
-#ALthtd('$l10n.WORKFLOW_ACCESS_TO' $!result.Detail.Note)
-##ALthtd('$l10n.WORKFLOW_OF_MONEY' "$!{result.Detail.PriceStr}&nbsp;$l10n.WORKFLOW_YEN")
+#ALthtd("$l10n.WORKFLOW_POSTING_DAY" "$!result.Detail.CreateDate")
+#ALthtd("$l10n.WORKFLOW_CREATEDATE" "$!result.Detail.CreateDate")
+#ALthtd("$l10n.WORKFLOW_PRIORITY_VALUE" "$!result.Detail.PriorityString")
+#ALthtd("$l10n.WORKFLOW_ACCESS_TO" $!result.Detail.Note)
+##ALthtd("$l10n.WORKFLOW_OF_MONEY" "$!{result.Detail.PriceStr}&nbsp;$l10n.WORKFLOW_YEN")
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
 <tr><th>$l10n.WORKFLOW_ATTACHMENT</th>
 <td>
@@ -54,7 +53,7 @@
 #ALtablefooterBorder()
 <input type="hidden" name="confirmusers" value="#foreach($record in $!{result.MemberList})$!{record.Name},#end"> ##メンバーリストの作成
 #if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
-#ALcell_submit($career 'eventSubmit_doWorkflow_delete' '$l10n.WORKFLOW_DO_REMOVE')
+#ALcell_submit($career 'eventSubmit_doWorkflow_delete' "$l10n.COMMON_DELETE")
 #end
 
 #if($!result.Detail.OldRequestLinks.size() > 0)
@@ -91,7 +90,7 @@ $l10n.WORKFLOW_UNCONFIRMED
 #if($!record.Status.Value == "R" || $!record.Status.Value == "A") $!{record.UpdateDate} #end
 #if($confirm_view_flg && $!record.Status.Value == "C" && $!record.UserId.Value == $!result.LoginUser.UserId.Value)
 #ALtextarea('comment' $!record.Note 10 40)
-#ALcell_submit($career 'eventSubmit_doWorkflow_accept' '$l10n.WORKFLOW_DO_APPROVE')
+#ALcell_submit($career 'eventSubmit_doWorkflow_accept' $l10n.WORKFLOW_DO_APPROVE)
 #ALselectpdheader("passback_order" "90%" "" )
 <option value='0'>$l10n.WORKFLOW_APPLICANT</option>
 #foreach ($record in $result.Detail.DecisionRecords)
@@ -100,7 +99,7 @@ $l10n.WORKFLOW_UNCONFIRMED
   #end
 #end
 #ALselectfooter()
-#ALcell_submit($career 'eventSubmit_doWorkflow_denial' '$l10n.WORKFLOW_REFER_BACK')
+#ALcell_submit($career 'eventSubmit_doWorkflow_denial' $l10n.WORKFLOW_REFER_BACK)
 #else
 $!record.Note
 #end

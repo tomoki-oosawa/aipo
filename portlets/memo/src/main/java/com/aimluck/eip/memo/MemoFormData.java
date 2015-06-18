@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.memo;
 
 import java.util.Calendar;
@@ -42,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メモ帳のフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class MemoFormData extends ALAbstractFormData {
 
@@ -57,12 +56,12 @@ public class MemoFormData extends ALAbstractFormData {
   private ALStringField note;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -72,8 +71,8 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -90,8 +89,8 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoの各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -105,10 +104,10 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -121,7 +120,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -150,7 +149,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -190,6 +189,7 @@ public class MemoFormData extends ALAbstractFormData {
         memo.getMemoName());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("memo", ex);
       return false;
     }
@@ -198,7 +198,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memoをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -238,6 +238,7 @@ public class MemoFormData extends ALAbstractFormData {
         memo.getMemoName());
 
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("memo", ex);
       return false;
     }
@@ -246,7 +247,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているmemoを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -286,6 +287,7 @@ public class MemoFormData extends ALAbstractFormData {
         ALEventlogConstants.PORTLET_TYPE_MEMO,
         memo.getMemoName());
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("memo", ex);
       return false;
     }
@@ -294,7 +296,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -303,7 +305,7 @@ public class MemoFormData extends ALAbstractFormData {
 
   /**
    * Memo名を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getMemoName() {

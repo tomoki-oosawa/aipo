@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+
+    Aipo is a groupware program developed by Aimluck,Inc.
+    Copyright (C) 2004-2015 Aimluck,Inc.
+    http://www.aipo.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as
+    published by the Free Software Foundation, either version 3 of the
+    License, or (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
 	<db-entity name="eip_facility_group">
@@ -118,6 +138,22 @@
 		<db-attribute name="NOTIFY_TYPE" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="eip_m_project_kubun">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="PROJECT_KUBUN_CD" type="CLOB" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_m_project_kubun_value">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="ORDER_NO" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_VALUE" type="CLOB" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_VALUE_CD" type="CLOB" isMandatory="true"/>
+		<db-attribute name="PROJECT_KUBUN_VALUE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_t_addressbook_group_map">
 		<db-attribute name="ADDRESS_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -364,6 +400,55 @@
 		<db-attribute name="OWNER_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 	</db-entity>
+	<db-entity name="eip_t_message">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="MEMBER_COUNT" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="MESSAGE" type="CLOB"/>
+		<db-attribute name="MESSAGE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_message_file">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="MESSAGE_ID" type="INTEGER" length="4"/>
+		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="ROOM_ID" type="INTEGER" length="4"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+	</db-entity>
+	<db-entity name="eip_t_message_read">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="IS_READ" type="VARCHAR" length="1"/>
+		<db-attribute name="MESSAGE_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_message_room">
+		<db-attribute name="AUTO_NAME" type="VARCHAR" length="1"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" length="8"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" length="4"/>
+		<db-attribute name="HAS_PHOTO" type="CHAR" length="1"/>
+		<db-attribute name="LAST_MESSAGE" type="CLOB"/>
+		<db-attribute name="LAST_UPDATE_DATE" type="TIMESTAMP"/>
+		<db-attribute name="NAME" type="VARCHAR" length="255"/>
+		<db-attribute name="PHOTO" type="LONGVARBINARY"/>
+		<db-attribute name="PHOTO_MODIFIED" type="TIMESTAMP"/>
+		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
+		<db-attribute name="ROOM_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="ROOM_TYPE" type="VARCHAR" length="1"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
+	</db-entity>
+	<db-entity name="eip_t_message_room_member">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
+		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
+		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="TARGET_USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
+	</db-entity>
 	<db-entity name="eip_t_msgboard_category">
 		<db-attribute name="CATEGORY_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="CATEGORY_NAME" type="VARCHAR" length="99"/>
@@ -423,6 +508,88 @@
 		<db-attribute name="NOTE_ID" type="INTEGER" isMandatory="true"/>
 		<db-attribute name="NOTE_STAT" type="VARCHAR" length="1"/>
 		<db-attribute name="USER_ID" type="VARCHAR" isMandatory="true" length="99"/>
+	</db-entity>
+	<db-entity name="eip_t_project">
+		<db-attribute name="ADMIN_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="EXPLANATION" type="CLOB"/>
+		<db-attribute name="PROGRESS_FLG" type="VARCHAR" isMandatory="true" length="1"/>
+		<db-attribute name="PROGRESS_RATE" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="PROJECT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="PROJECT_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_project_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="PROJECT_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_t_project_member">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="PROJECT_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_project_task">
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="END_DATE" type="DATE"/>
+		<db-attribute name="END_PLAN_DATE" type="DATE"/>
+		<db-attribute name="EXPLANATION" type="CLOB"/>
+		<db-attribute name="ORDER_NO" type="INTEGER"/>
+		<db-attribute name="PARENT_TASK_ID" type="INTEGER"/>
+		<db-attribute name="PLAN_WORKLOAD" type="DECIMAL"/>
+		<db-attribute name="PRIORITY" type="CLOB" isMandatory="true"/>
+		<db-attribute name="PROGRESS_RATE" type="INTEGER"/>
+		<db-attribute name="PROJECT_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="START_DATE" type="DATE"/>
+		<db-attribute name="START_PLAN_DATE" type="DATE"/>
+		<db-attribute name="STATUS" type="CLOB"/>
+		<db-attribute name="TASK_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="TASK_NAME" type="CLOB" isMandatory="true"/>
+		<db-attribute name="TRACKER" type="CLOB"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="UPDATE_USER_ID" type="INTEGER" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_project_task_comment">
+		<db-attribute name="COMMENT" type="CLOB" isMandatory="true"/>
+		<db-attribute name="COMMENT_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="CREATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+		<db-attribute name="CREATE_USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="TASK_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" isMandatory="true"/>
+	</db-entity>
+	<db-entity name="eip_t_project_task_comment_file">
+		<db-attribute name="COMMENT_ID" type="INTEGER"/>
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_t_project_task_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="TASK_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
+	</db-entity>
+	<db-entity name="eip_t_project_task_member">
+		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="TASK_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true"/>
+		<db-attribute name="WORKLOAD" type="DECIMAL" isMandatory="true"/>
 	</db-entity>
 	<db-entity name="eip_t_report">
 		<db-attribute name="CREATE_DATE" type="TIMESTAMP"/>
@@ -778,6 +945,19 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
+	<obj-entity name="EipMProjectKubun" className="com.aimluck.eip.cayenne.om.portlet.EipMProjectKubun" dbEntityName="eip_m_project_kubun">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="projectKubunCd" type="java.lang.String" db-attribute-path="PROJECT_KUBUN_CD"/>
+		<obj-attribute name="projectKubunName" type="java.lang.String" db-attribute-path="PROJECT_KUBUN_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipMProjectKubunValue" className="com.aimluck.eip.cayenne.om.portlet.EipMProjectKubunValue" dbEntityName="eip_m_project_kubun_value">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="orderNo" type="java.lang.Integer" db-attribute-path="ORDER_NO"/>
+		<obj-attribute name="projectKubunValue" type="java.lang.String" db-attribute-path="PROJECT_KUBUN_VALUE"/>
+		<obj-attribute name="projectKubunValueCd" type="java.lang.String" db-attribute-path="PROJECT_KUBUN_VALUE_CD"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
 	<obj-entity name="EipTAddressbookGroupMap" className="com.aimluck.eip.cayenne.om.portlet.EipTAddressbookGroupMap" dbEntityName="eip_t_addressbook_group_map">
 		<obj-attribute name="addressId" type="java.lang.Integer" db-attribute-path="ADDRESS_ID"/>
 	</obj-entity>
@@ -985,6 +1165,47 @@
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
+	<obj-entity name="EipTMessage" className="com.aimluck.eip.cayenne.om.portlet.EipTMessage" dbEntityName="eip_t_message">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="memberCount" type="java.lang.Integer" db-attribute-path="MEMBER_COUNT"/>
+		<obj-attribute name="message" type="java.lang.String" db-attribute-path="MESSAGE"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTMessageFile" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageFile" dbEntityName="eip_t_message_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="messageId" type="java.lang.Integer" db-attribute-path="MESSAGE_ID"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="roomId" type="java.lang.Integer" db-attribute-path="ROOM_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTMessageRead" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRead" dbEntityName="eip_t_message_read">
+		<obj-attribute name="isRead" type="java.lang.String" db-attribute-path="IS_READ"/>
+		<obj-attribute name="roomId" type="java.lang.Integer" db-attribute-path="ROOM_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTMessageRoom" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom" dbEntityName="eip_t_message_room">
+		<obj-attribute name="autoName" type="java.lang.String" db-attribute-path="AUTO_NAME"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="createUserId" type="java.lang.Integer" db-attribute-path="CREATE_USER_ID"/>
+		<obj-attribute name="hasPhoto" type="java.lang.String" db-attribute-path="HAS_PHOTO"/>
+		<obj-attribute name="lastMessage" type="java.lang.String" db-attribute-path="LAST_MESSAGE"/>
+		<obj-attribute name="lastUpdateDate" type="java.util.Date" db-attribute-path="LAST_UPDATE_DATE"/>
+		<obj-attribute name="name" type="java.lang.String" db-attribute-path="NAME"/>
+		<obj-attribute name="photo" type="byte[]" db-attribute-path="PHOTO"/>
+		<obj-attribute name="photoModified" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED"/>
+		<obj-attribute name="photoSmartphone" type="byte[]" db-attribute-path="PHOTO_SMARTPHONE"/>
+		<obj-attribute name="roomType" type="java.lang.String" db-attribute-path="ROOM_TYPE"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
+		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
+		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
 	<obj-entity name="EipTMsgboardCategory" className="com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory" dbEntityName="eip_t_msgboard_category">
 		<obj-attribute name="categoryName" type="java.lang.String" db-attribute-path="CATEGORY_NAME"/>
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1035,6 +1256,77 @@
 		<obj-attribute name="noteId" type="java.lang.Integer" db-attribute-path="NOTE_ID"/>
 		<obj-attribute name="noteStat" type="java.lang.String" db-attribute-path="NOTE_STAT"/>
 		<obj-attribute name="userId" type="java.lang.String" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTProject" className="com.aimluck.eip.cayenne.om.portlet.EipTProject" dbEntityName="eip_t_project">
+		<obj-attribute name="adminUserId" type="java.lang.Integer" db-attribute-path="ADMIN_USER_ID"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="explanation" type="java.lang.String" db-attribute-path="EXPLANATION"/>
+		<obj-attribute name="progressFlg" type="java.lang.String" db-attribute-path="PROGRESS_FLG"/>
+		<obj-attribute name="progressRate" type="java.lang.Integer" db-attribute-path="PROGRESS_RATE"/>
+		<obj-attribute name="projectName" type="java.lang.String" db-attribute-path="PROJECT_NAME"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectFile" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectFile" dbEntityName="eip_t_project_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="projectId" type="java.lang.Integer" db-attribute-path="PROJECT_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectMember" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectMember" dbEntityName="eip_t_project_member">
+		<obj-attribute name="projectId" type="java.lang.Integer" db-attribute-path="PROJECT_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectTask" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectTask" dbEntityName="eip_t_project_task">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="endDate" type="java.util.Date" db-attribute-path="END_DATE"/>
+		<obj-attribute name="endPlanDate" type="java.util.Date" db-attribute-path="END_PLAN_DATE"/>
+		<obj-attribute name="explanation" type="java.lang.String" db-attribute-path="EXPLANATION"/>
+		<obj-attribute name="orderNo" type="java.lang.Integer" db-attribute-path="ORDER_NO"/>
+		<obj-attribute name="parentTaskId" type="java.lang.Integer" db-attribute-path="PARENT_TASK_ID"/>
+		<obj-attribute name="planWorkload" type="java.math.BigDecimal" db-attribute-path="PLAN_WORKLOAD"/>
+		<obj-attribute name="priority" type="java.lang.String" db-attribute-path="PRIORITY"/>
+		<obj-attribute name="progressRate" type="java.lang.Integer" db-attribute-path="PROGRESS_RATE"/>
+		<obj-attribute name="projectId" type="java.lang.Integer" db-attribute-path="PROJECT_ID"/>
+		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="START_DATE"/>
+		<obj-attribute name="startPlanDate" type="java.util.Date" db-attribute-path="START_PLAN_DATE"/>
+		<obj-attribute name="status" type="java.lang.String" db-attribute-path="STATUS"/>
+		<obj-attribute name="taskName" type="java.lang.String" db-attribute-path="TASK_NAME"/>
+		<obj-attribute name="tracker" type="java.lang.String" db-attribute-path="TRACKER"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectTaskComment" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment" dbEntityName="eip_t_project_task_comment">
+		<obj-attribute name="comment" type="java.lang.String" db-attribute-path="COMMENT"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="taskId" type="java.lang.Integer" db-attribute-path="TASK_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectTaskCommentFile" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskCommentFile" dbEntityName="eip_t_project_task_comment_file">
+		<obj-attribute name="commentId" type="java.lang.Integer" db-attribute-path="COMMENT_ID"/>
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectTaskFile" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskFile" dbEntityName="eip_t_project_task_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="taskId" type="java.lang.Integer" db-attribute-path="TASK_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
+	</obj-entity>
+	<obj-entity name="EipTProjectTaskMember" className="com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskMember" dbEntityName="eip_t_project_task_member">
+		<obj-attribute name="taskId" type="java.lang.Integer" db-attribute-path="TASK_ID"/>
+		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
+		<obj-attribute name="workload" type="java.math.BigDecimal" db-attribute-path="WORKLOAD"/>
 	</obj-entity>
 	<obj-entity name="EipTReport" className="com.aimluck.eip.cayenne.om.portlet.EipTReport" dbEntityName="eip_t_report">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -1303,6 +1595,12 @@
 	<db-relationship name="eipTMailFolders" source="eip_m_mail_account" target="eip_t_mail_folder" toMany="true">
 		<db-attribute-pair source="ACCOUNT_ID" target="ACCOUNT_ID"/>
 	</db-relationship>
+	<db-relationship name="eipMProjectKubunValue" source="eip_m_project_kubun" target="eip_m_project_kubun_value" toMany="true">
+		<db-attribute-pair source="PROJECT_KUBUN_ID" target="PROJECT_KUBUN_ID"/>
+	</db-relationship>
+	<db-relationship name="projectKubun" source="eip_m_project_kubun_value" target="eip_m_project_kubun" toMany="false">
+		<db-attribute-pair source="PROJECT_KUBUN_ID" target="PROJECT_KUBUN_ID"/>
+	</db-relationship>
 	<db-relationship name="eipMAddressbook" source="eip_t_addressbook_group_map" target="eip_m_addressbook" toMany="false">
 		<db-attribute-pair source="ADDRESS_ID" target="ADDRESS_ID"/>
 	</db-relationship>
@@ -1411,6 +1709,30 @@
 	<db-relationship name="eipTMailFilters" source="eip_t_mail_folder" target="eip_t_mail_filter" toMany="true">
 		<db-attribute-pair source="FOLDER_ID" target="DST_FOLDER_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTMessageFiles" source="eip_t_message" target="eip_t_message_file" toMany="true">
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessageRead" source="eip_t_message" target="eip_t_message_read" toMany="true">
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessageRoom" source="eip_t_message" target="eip_t_message_room" toMany="false">
+		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessage" source="eip_t_message_file" target="eip_t_message" toMany="false">
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessage" source="eip_t_message_read" target="eip_t_message" toMany="false">
+		<db-attribute-pair source="MESSAGE_ID" target="MESSAGE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessageRoomMembers" source="eip_t_message_room" target="eip_t_message_room_member" toMany="true">
+		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessages" source="eip_t_message_room" target="eip_t_message" toMany="true">
+		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTMessageRoom" source="eip_t_message_room_member" target="eip_t_message_room" toMany="false">
+		<db-attribute-pair source="ROOM_ID" target="ROOM_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTMsgboardCategoryMaps" source="eip_t_msgboard_category" target="eip_t_msgboard_category_map" toMany="true">
 		<db-attribute-pair source="CATEGORY_ID" target="CATEGORY_ID"/>
 	</db-relationship>
@@ -1437,6 +1759,57 @@
 	</db-relationship>
 	<db-relationship name="eipTNote" source="eip_t_note_map" target="eip_t_note" toMany="false">
 		<db-attribute-pair source="NOTE_ID" target="NOTE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectFiles" source="eip_t_project" target="eip_t_project_file" toMany="true">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectMember" source="eip_t_project" target="eip_t_project_member" toMany="true">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="eip_t_project" target="eip_t_project_task" toMany="true">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_project" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProject" source="eip_t_project_file" target="eip_t_project" toMany="false">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProject" source="eip_t_project_member" target="eip_t_project" toMany="false">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProject" source="eip_t_project_task" target="eip_t_project" toMany="false">
+		<db-attribute-pair source="PROJECT_ID" target="PROJECT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTaskComment" source="eip_t_project_task" target="eip_t_project_task_comment" toMany="true">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTaskFile" source="eip_t_project_task" target="eip_t_project_task_file" toMany="true">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTaskMember" source="eip_t_project_task" target="eip_t_project_task_member" toMany="true">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_project_task" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_comment" target="eip_t_project_task" toMany="false">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTaskCommentFile" source="eip_t_project_task_comment" target="eip_t_project_task_comment_file" toMany="true">
+		<db-attribute-pair source="COMMENT_ID" target="COMMENT_ID"/>
+	</db-relationship>
+	<db-relationship name="turbineUser" source="eip_t_project_task_comment" target="turbine_user" toMany="false">
+		<db-attribute-pair source="CREATE_USER_ID" target="USER_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTaskComment" source="eip_t_project_task_comment_file" target="eip_t_project_task_comment" toMany="false">
+		<db-attribute-pair source="COMMENT_ID" target="COMMENT_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_file" target="eip_t_project_task" toMany="false">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTProjectTask" source="eip_t_project_task_member" target="eip_t_project_task" toMany="false">
+		<db-attribute-pair source="TASK_ID" target="TASK_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTReportFiles" source="eip_t_report" target="eip_t_report_file" toMany="true">
 		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
@@ -1571,6 +1944,7 @@
 	<obj-relationship name="eipMFacilityGroupId" source="EipMFacilityGroupMap" target="EipMFacilityGroup" db-relationship-path="eip_m_facility_group"/>
 	<obj-relationship name="eipMGpdbKubun" source="EipMGpdbKubun" target="EipMGpdbKubunValue" db-relationship-path="eipMGpdbKubun"/>
 	<obj-relationship name="gpdbKubun" source="EipMGpdbKubunValue" target="EipMGpdbKubun" db-relationship-path="gpdbKubun"/>
+	<obj-relationship name="projectKubun" source="EipMProjectKubunValue" target="EipMProjectKubun" db-relationship-path="projectKubun"/>
 	<obj-relationship name="eipMAddressbook" source="EipTAddressbookGroupMap" target="EipMAddressbook" db-relationship-path="eipMAddressbook"/>
 	<obj-relationship name="eipTAddressGroup" source="EipTAddressbookGroupMap" target="EipMAddressGroup" db-relationship-path="eipTAddressGroup"/>
 	<obj-relationship name="eipTBlogEntrys" source="EipTBlog" target="EipTBlogEntry" db-relationship-path="eipTBlogEntrys"/>
@@ -1606,6 +1980,14 @@
 	<obj-relationship name="eipMMailAccount" source="EipTMailFilter" target="EipMMailAccount" db-relationship-path="eipMMailAccount"/>
 	<obj-relationship name="eipTMailFolder" source="EipTMailFilter" target="EipTMailFolder" db-relationship-path="eipTMailFolder"/>
 	<obj-relationship name="eipMMailAccount" source="EipTMailFolder" target="EipMMailAccount" db-relationship-path="eipMMailAccount"/>
+	<obj-relationship name="eipTMessageFiles" source="EipTMessage" target="EipTMessageFile" db-relationship-path="eipTMessageFiles"/>
+	<obj-relationship name="eipTMessageRead" source="EipTMessage" target="EipTMessageRead" db-relationship-path="eipTMessageRead"/>
+	<obj-relationship name="eipTMessageRoom" source="EipTMessage" target="EipTMessageRoom" db-relationship-path="eipTMessageRoom"/>
+	<obj-relationship name="eipTMessage" source="EipTMessageFile" target="EipTMessage" db-relationship-path="eipTMessage"/>
+	<obj-relationship name="eipTMessage" source="EipTMessageRead" target="EipTMessage" db-relationship-path="eipTMessage"/>
+	<obj-relationship name="eipTMessageRoomMember" source="EipTMessageRoom" target="EipTMessageRoomMember" db-relationship-path="eipTMessageRoomMembers"/>
+	<obj-relationship name="eipTMessages" source="EipTMessageRoom" target="EipTMessage" db-relationship-path="eipTMessages"/>
+	<obj-relationship name="eipTMessageRoom" source="EipTMessageRoomMember" target="EipTMessageRoom" db-relationship-path="eipTMessageRoom"/>
 	<obj-relationship name="eipTMsgboardCategoryMaps" source="EipTMsgboardCategory" target="EipTMsgboardCategoryMap" db-relationship-path="eipTMsgboardCategoryMaps"/>
 	<obj-relationship name="eipTMsgboardTopics" source="EipTMsgboardCategory" target="EipTMsgboardTopic" db-relationship-path="eipTMsgboardTopics"/>
 	<obj-relationship name="turbineUser" source="EipTMsgboardCategory" target="TurbineUser" db-relationship-path="turbineUser"/>
@@ -1615,6 +1997,23 @@
 	<obj-relationship name="eipTMsgboardFileArray" source="EipTMsgboardTopic" target="EipTMsgboardFile" db-relationship-path="eipTMsgboardFiles"/>
 	<obj-relationship name="eipTNoteMaps" source="EipTNote" target="EipTNoteMap" db-relationship-path="eipTNoteMaps"/>
 	<obj-relationship name="eipTNote" source="EipTNoteMap" target="EipTNote" db-relationship-path="eipTNote"/>
+	<obj-relationship name="eipTProjectFiles" source="EipTProject" target="EipTProjectFile" db-relationship-path="eipTProjectFiles"/>
+	<obj-relationship name="eipTProjectMember" source="EipTProject" target="EipTProjectMember" db-relationship-path="eipTProjectMember"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProject" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
+	<obj-relationship name="turbineUser" source="EipTProject" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTProject" source="EipTProjectFile" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProject" source="EipTProjectMember" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProject" source="EipTProjectTask" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProjectTaskComment" source="EipTProjectTask" target="EipTProjectTaskComment" db-relationship-path="eipTProjectTaskComment"/>
+	<obj-relationship name="eipTProjectTaskFile" source="EipTProjectTask" target="EipTProjectTaskFile" db-relationship-path="eipTProjectTaskFile"/>
+	<obj-relationship name="eipTProjectTaskMember" source="EipTProjectTask" target="EipTProjectTaskMember" db-relationship-path="eipTProjectTaskMember"/>
+	<obj-relationship name="turbineUser" source="EipTProjectTask" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskComment" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
+	<obj-relationship name="eipTProjectTaskCommentFile" source="EipTProjectTaskComment" target="EipTProjectTaskCommentFile" db-relationship-path="eipTProjectTaskCommentFile"/>
+	<obj-relationship name="turbineUser" source="EipTProjectTaskComment" target="TurbineUser" db-relationship-path="turbineUser"/>
+	<obj-relationship name="eipTProjectTaskComment" source="EipTProjectTaskCommentFile" target="EipTProjectTaskComment" db-relationship-path="eipTProjectTaskComment"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskFile" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
+	<obj-relationship name="eipTProjectTask" source="EipTProjectTaskMember" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
 	<obj-relationship name="eipTReportFiles" source="EipTReport" target="EipTReportFile" db-relationship-path="eipTReportFiles"/>
 	<obj-relationship name="eipTReportMap" source="EipTReport" target="EipTReportMap" db-relationship-path="eipTReportMap"/>
 	<obj-relationship name="eipTReportMemberMap" source="EipTReport" target="EipTReportMemberMap" db-relationship-path="eipTReportMemberMap"/>

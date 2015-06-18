@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
@@ -180,6 +179,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
    * @return
    * 
    */
+
   @Override
   protected boolean validate(List<String> msgList) {
     List<String> dummy = new ArrayList<String>();
@@ -188,7 +188,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
 
     if (!zipcode1.getValue().equals("") || !zipcode2.getValue().equals("")) {
       if (!zipcode1.validate(dummy) || !zipcode2.validate(dummy)) {
-        msgList.add("『 <span class='em'>郵便番号</span> 』は7桁の半角数字で入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_WITHIN_SEVEN"));
       }
     }
     if (!telephone1.getValue().equals("")
@@ -197,7 +197,8 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       if (!telephone1.validate(dummy)
         || !telephone2.validate(dummy)
         || !telephone3.validate(dummy)) {
-        msgList.add("『 <span class='em'>電話番号</span> 』を正しく入力してください。");
+        msgList
+          .add(ALLocalizationUtils.getl10n("ACCOUNT_PHONE_NUMBER_CAUTION"));
       }
     }
     if (!fax_number1.getValue().equals("")
@@ -206,7 +207,7 @@ public class AccountCompanyFormData extends ALAbstractFormData {
       if (!fax_number1.validate(dummy)
         || !fax_number2.validate(dummy)
         || !fax_number3.validate(dummy)) {
-        msgList.add("『 <span class='em'>FAX番号</span> 』を正しく入力してください。");
+        msgList.add(ALLocalizationUtils.getl10n("ACCOUNT_POST_SET_FAX_NOMBER"));
       }
     }
 

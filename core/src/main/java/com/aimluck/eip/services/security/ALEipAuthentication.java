@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.security;
 
 import java.util.Date;
@@ -90,6 +89,7 @@ public class ALEipAuthentication extends TurbineBaseService implements
     ALBaseUser baseUser = (ALBaseUser) user;
     if (cellular_uid == null
       || cellular_uid.length() == 0
+      || baseUser == null
       || !cellular_uid.equals(baseUser.getCelluarUId())) {
       logger.error("Invalid cellular uid for user: " + username);
       throw new UnknownUserException(
@@ -140,19 +140,18 @@ public class ALEipAuthentication extends TurbineBaseService implements
         logger.warn("User denied authentication: " + username, e);
         throw new LoginException(e.toString());
       }
-
       if (user == null || !user.getPassword().equals(password)) {
         logger.error("Invalid password for user: " + username);
         throw new FailedLoginException("Credential authentication failure");
       }
+    }
 
-      if (ALEipConstants.USER_STAT_DISABLED.equals(user.getDisabled())) {
-        logger.error("User deleted : " + username);
-        throw new FailedLoginException(ALEipConstants.USER_STAT_DISABLED);
-      } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user.getDisabled())) {
-        logger.error("User disabled : " + username);
-        throw new FailedLoginException(ALEipConstants.USER_STAT_NUTRAL);
-      }
+    if (ALEipConstants.USER_STAT_DISABLED.equals(user.getDisabled())) {
+      logger.error("User deleted : " + username);
+      throw new FailedLoginException(ALEipConstants.USER_STAT_DISABLED);
+    } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user.getDisabled())) {
+      logger.error("User disabled : " + username);
+      throw new FailedLoginException(ALEipConstants.USER_STAT_NUTRAL);
     }
 
     // Check for password expiration

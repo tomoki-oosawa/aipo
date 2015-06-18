@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
@@ -38,6 +37,7 @@ import com.aimluck.eip.note.NoteClientSelectData;
 import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモの一覧を処理するクラスです。
@@ -76,7 +76,7 @@ public class NoteScreen extends ALVelocityScreen {
         .getPortletConfig()
         .getInitParameter("p3a-strlen")));
       listData.doViewList(this, rundata, context);
-      String layout_template = "portlets/html/ja/ajax-note.vm";
+      String layout_template = "portlets/html/ajax-note.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {
@@ -96,7 +96,7 @@ public class NoteScreen extends ALVelocityScreen {
     // エラーメッセージ
     List<String> msgList = new ArrayList<String>();
     ALNumberField state = new ALNumberField();
-    state.setFieldName("状態");
+    state.setFieldName(ALLocalizationUtils.getl10n("NOTE_STATE"));
     // 0 から 100 まで
     state.limitValue(0, 100);
     // 必須項目

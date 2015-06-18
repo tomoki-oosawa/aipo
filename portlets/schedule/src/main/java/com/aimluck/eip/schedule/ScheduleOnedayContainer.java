@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -114,10 +113,6 @@ public class ScheduleOnedayContainer implements ALData {
         * 12
         + Integer.parseInt(rd.getEndDate().getMinute())
         / 5;
-    if (!(rd.getStartDate().getDay().equals(rd.getEndDate().getDay()))
-      && rd.getEndDate().getHour().equals("0")) {
-      ed = 12 * 24;
-    }
     if ((ed - sta > 0 && eta - st > 0) || (ed - sta == 0 && st == ed)) {
       if (sta > st) {
         st = sta;

@@ -26,7 +26,7 @@ import org.apache.turbine.util.RunData;
  * If the given PortletControl implements these actions, it must use
  * this information.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a> 
  */

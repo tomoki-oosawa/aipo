@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,18 +20,21 @@
 
 ## ---------------------------------------------------------------------------
 #set($beforeselected =false)
+#if($!globalPortlets)
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+#end
 #if( ! $portlet.isClosed($data) )
 #if($!isMaximized && ($!showTab == "true"))
 	#if(${client}=="IPHONE")
 <!-- appsNavigation_v2 -->
-<script language="javascript">
+<script type="text/javascript">
 // ウィジェットメニュー用
 aipo.onloadSmartPhone = function(){
 	var widgets_area = dojo.byId('auiWidgetsArea');
 	if(dojo.byId("snDrawer")) return;
 	if(widgets_area != null){
 		// classの追加
-		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson", "SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl","Gpdb","Wiki"].indexOf("$portlet.name") != -1;
+		var is_menu = ["Msgboard", "ToDo", "Workflow", "Note", "Report", "AddressBook", "UserList", "MyGroup", "AccountPerson", "SysInfo","FileIO","Account","Post","Position","Facilities","GadgetsAdmin","WorkflowCategory","ExtTimecardSystem","AccessControl","Gpdb","Wiki","Project"].indexOf("$portlet.name") != -1;
 		for(var i=0;i<widgets_area.childNodes.length;i++){
 			if(widgets_area.childNodes[i].className != null
 			&& widgets_area.childNodes[i].className.indexOf('auiWidget',0) >= 0){
@@ -65,6 +68,9 @@ aipo.onloadSmartPhone = function(){
 }
 dojo.addOnLoad(function(){
 	aipo.onloadSmartPhone();
+    aipo.menu.register("activity");
+    aipo.message.setup("$messagePortletId", "$!jslink.getPortletById($messagePortletId)", true);
+    aipo.message.updateUnreadCount();
 });
 function widgetMenuSwitch() {
         var subNavi = document.getElementById('subNavigation');
@@ -243,6 +249,7 @@ function setWrapperHeight() {
 #ALtabElementMaximize("Memo" "icon-pencil")
 #ALtabElementMaximize("Gpdb" "icon-hdd")
 #ALtabElementMaximize("Wiki" "icon-edit-sign")
+#ALtabElementMaximize("Project" "icon-tasks")
 </ul>
 </div>
 #if($menus && $menus.size()>0 && $gadgetCounts>0)
@@ -276,73 +283,23 @@ function setWrapperHeight() {
 					#if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Maximize'))"><span class="icon"><i class="icon-cogs"></i></span>$l10n.TOP_MANAGE_SETTING</a></li>
 					#end
-    					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction("ALChangeToPC")'"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li>
+    					<li><a href="javascript:void(0)" onclick="location.href='$jslink.addQueryData("mypageId","${mypageId}").setAction("ALChangeToPC")'"><span class="icon"><i class="icon-desktop"></i></span>PC版表示へ変更</a></li>
     					<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'"><span class="icon"><i class="icon-power-off"></i></span>$l10n.TOP_LOGOUT</a></li>
 				</ul>
         </div>
         <div class="anFooter">
-                <div class="copyright">&copy; Aimluck</div>
+                <div class="copyright"> ${copyright_short}&nbsp;·&nbsp;${version} </div>
         </div>
 </div></div>
 <!-- /mobileNavigation -->
 #else
-<!-- MAIN TAB -->
-<div id="auiTabs" class="clearfix">
-	<ul>
-	#foreach ( $tab in $tabs )
-		#set($selected = $tab.Link && ($tab.isSelected() == true))
-		<li class="#if($velocityCount==1)first#end #if($velocityCount==$tabs.size())last#end ">
-			<div class="tab#if($beforeselected) activeNext#end#if($selected) active#end">
-				<div class="title"><a title="$tab.Title" href="$tab.Link">$tab.Title</a></div>
-				<div class="setting">
-				#if ($!tab.Authority)
-					#foreach ($action in $tab.Actions)
-					#set($clink = $!utils.escapeXML("$!{jslink}/js_pane/$!{tab.Id}?template=CustomizeFormScreen") )
-					#if ($tab.isSelected() == true)
-						#set($activeurlselected=$clink)
-					#end
-					<a href="javascript:void(0);" id="menubar_button_tab_$!{tab.Id}" onclick="aipo.customize.showMenuForTab('tab_$!{tab.Id}');" onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="カスタマイズ"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
-					<div class="menubar body-child" id="menubar_tab_$!{tab.Id}" style="position:absolute; width=16em; display:none;">
-					<ul>
-						<li>
-							#if (${client} == "IPAD")
-								<a href="${action.Link}" title="${action.Alt}">設定</a>
-							#else
-								<a href="javascript:void(0);" onclick="aipo.common.showDialog('$clink')">設定</a>
-							#end
-						</li>
-						#if($!tab.Title.Value != "マイページ")
-						<li class="last">
-							<a href="javascript:void(0);" onclick="aipo.customize.deleteTabSubmit('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'Page').addQueryData('template','PageFormJSONScreen').addQueryData('entityid',$!{tab.Id}).addQueryData('mode','delete').addQueryData('secid',$!{secid}))', '$!{tab.Id}', function(){location.href='$!{jslink}/js_pane/$!{mypageId}'})">削除</a>
-						</li>
-						#end
-					</ul>
-					</div>
-				    #end
-				 #end
-				</div>
-			</div>
-		</li>
-		#set($beforeselected =$selected)
-	#end
-		#if ($data.User.getUserName()!="admin")
-			<li class="addTab">
-				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPeid($data,'AccountPerson').addQueryData('template','PageFormScreen').addQueryData('entityid','new'))','$!portlet.ID',aipo.page.onLoadPageDialog);" title="$l10n.WAR_ADD_MENU_TUB"><span>+</span></a>
-			</li>
-		#end
-	</ul>
-</div>
-#if("$!{activeurlselected}"!="")
-	<input id="data-activecustomizeurl" type="hidden" value="$activeurlselected" />
-#else
-	<input id="data-activecustomizeurl" type="hidden" value="$!utils.escapeXML("$!{jslink}/js_pane/?template=CustomizeFormErrorScreen")" />
-#end
-<!-- /MAIN TAB -->
+#parse("/controls/html/jetspeed-header.vm")
 #end
 <!-- MAIN OUTER -->
 <div id="roundWrapper">
   <div class="roundMainWrapper">
-	<noscript><div class="alert">$l10n.WAR_CANNOT_USE_JAVASCRIPT</div></noscript>
+	<noscript><div class="alert">$utils.getl10nFormat1("WAR_CANNOT_USE_JAVASCRIPT",$!{alias})</div></noscript>
+#ALMaintenance()
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
 $portlet.getContent($data)
   #set ($flag = false)
@@ -442,8 +399,8 @@ $portlet.getContent($data)
 					#foreach ( $action in $actions)
 						<li><a href="javascript:void(0)" onclick='aipo.common.showDialog("$!utils.escapeXML(${action.Link})")'>$l10n.WAR_SET_UP</a></li>
 					#end
-					#if($accessControl == "true")
-						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); window.location.reload(); } );">$l10n.CUSTOMIZER_DELETE</a></li>
+					#if($accessControl == "true" && ($portlet.name != "Timeline" || ($timelineCount > 1)))
+						<li class="last" id="accessControlDelete_$!{portlet.ID}"><a href="javascript:void(0);" onclick="aipo.customize.deletesubmit('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", "CustomizeFormJSONScreen").addQueryData("mode", "delete"))', '$!portlet.ID', function(){ dojo.query('.dojoDndItem.$!{portlet.ID}').orphan(); location.href='$!{jslink}'; } );">$l10n.CUSTOMIZER_DELETE</a></li>
 					#end
 					</ul>
 			    </div>

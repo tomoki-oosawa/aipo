@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.social;
 
 import java.util.ArrayList;
@@ -213,7 +212,12 @@ public abstract class ALSocialApplicationHandler {
       HttpServletRequest request = HttpServletRequestLocator.get();
       Integer port = request.getServerPort();
       String scheme = request.getScheme();
-      baseUrl = scheme + "://127.0.0.1:" + port;
+      String continerPath = JetspeedResources.getString("aipo.container.path");
+      baseUrl =
+        scheme
+          + "://127.0.0.1:"
+          + port
+          + (continerPath == null ? "" : continerPath);
     }
     return baseUrl + "/gadgets/metadata";
   }
@@ -228,7 +232,7 @@ public abstract class ALSocialApplicationHandler {
 
       HttpClient httpClient = new HttpClient();
       httpClient.getParams().setParameter("http.connection.timeout", 10000);
-      httpClient.getParams().setParameter("http.socket.timeout", 6000);
+      httpClient.getParams().setParameter("http.socket.timeout", 10000);
       PostMethod postMethod = new PostMethod(getMetaDataUrl());
       postMethod.addRequestHeader("Content-Type", "application/javascript");
       postMethod.addParameter("st", "default:st");

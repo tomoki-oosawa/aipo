@@ -25,7 +25,7 @@ import java.util.Enumeration;
  * runtime context for a set of portlets.
  * A portlet can get its current set by calling via its PortletConfig
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:burton@apache.org">Kevin A. Burton</a>
  * @version $Id: PortletSet.java,v 1.26 2004/02/23 04:05:35 jford Exp $
  */

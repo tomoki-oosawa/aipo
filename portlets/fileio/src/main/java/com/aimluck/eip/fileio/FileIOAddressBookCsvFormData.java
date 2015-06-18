@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.fileio;
 
 import java.util.ArrayList;
@@ -237,12 +236,11 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       .getl10n("FILEIO_OPEN_DIVISION"));
     public_flag.setTrim(true);
     create_user = new ALStringField();
-    create_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_AUTHOR"));
+    create_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_USER"));
     update_user = new ALStringField();
-    update_user.setFieldName(ALLocalizationUtils.getl10n("FILEIO_MODIFIED_BY"));
+    update_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_USER"));
     create_date = new ALDateField();
-    create_date.setFieldName(ALLocalizationUtils
-      .getl10n("FILEIO_CREATION_DATE"));
+    create_date.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_DATE"));
     update_date = new ALDateField();
     update_date.setFieldName(ALLocalizationUtils
       .getl10n("FILEIO_LAST_MODIFIED"));
@@ -354,6 +352,14 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     comp_fax_number2.setValue("");
     comp_fax_number3.setValue("");
     comp_fax_number_full.setValue("");
+
+    // 備考
+    note = new ALStringField();
+    note.setFieldName(ALLocalizationUtils
+      .getl10n("ADDRESSBOOK_SETFIELDNAME_NOTE"));
+    note.setTrim(true);
+    note.setValue("");
+
     setSameCompany(false);
     setIsCompanyOnly(false);
   }
@@ -564,6 +570,8 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
     comp_fax_number2.setNotNull(true);
     comp_fax_number3.setNotNull(true);
 
+    // 備考
+    note.limitMaxLength(1000);
   }
 
   @Override
@@ -649,6 +657,10 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
     if (!position_name.validate(msgList)) {
       position_name.setValue(null);
+    }
+
+    if (!note.validate(msgList)) {
+      note.setValue(null);
     }
 
     // 会社情報入力時用
@@ -929,6 +941,9 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       }
       // 公開区分の設定
       address.setPublicFlag(public_flag.getValue());
+
+      // 備考
+      address.setNote(note.getValue());
 
       // オーナIDの設定
       address.setOwnerId(Integer.valueOf(uid));
@@ -1525,6 +1540,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
       // 会社IDの設定
       company_id.setValue(company.getCompanyId().longValue());
     } catch (Exception ex) {
+      Database.rollback();
       logger.debug("AddressBookFormData insertFormData out / false");
       logger.error("fileio", ex);
       return false;
@@ -1791,6 +1807,9 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
         break;
       case 19:
         comp_url.setValue(token);
+        break;
+      case 20:
+        note.setValue(token);
         break;
 
       default:

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 window.aimluck = window.aimluck || {};
 dojo.require("dojo.string");
 dojo.requireLocalization("aipo", "locale");
@@ -276,6 +275,7 @@ function doUpOptions10(select) {
 			continue;
 		up_option(select, i, 10);
 	}
+	selectedOptionIntoView(select);
 }
 
 function doUpOptions(select) {
@@ -289,6 +289,7 @@ function doUpOptions(select) {
 			continue;
 		up_option(select, i, 1);
 	}
+	selectedOptionIntoView(select);
 }
 
 function doDownOptions10(select) {
@@ -302,6 +303,7 @@ function doDownOptions10(select) {
 			continue;
 		down_option(select, i, 10);
 	}
+	selectedOptionIntoView(select);
 }
 
 function doDownOptions(select) {
@@ -314,6 +316,26 @@ function doDownOptions(select) {
 		if (s_o[i + 1].selected)
 			continue;
 		down_option(select, i, 1);
+	}
+	selectedOptionIntoView(select);
+}
+
+function selectedOptionIntoView(select){
+	var s_o = select.options;
+	var firstSelected=select.options[0];
+	var i=0;
+	for (i = 0; i < s_o.length; i++) {
+		if (s_o[i].selected){
+			firstSelected=s_o[i];
+			break;
+		}
+	}
+	if(dojo.isIE==8){
+		if(select.scrollTop>16+18*(i-1))select.scrollTop=16+18*(i-1);
+		if(select.scrollTop<16+18*(i-20))select.scrollTop=16+18*(i-20);
+	}else{
+		if(firstSelected.offsetTop<select.scrollTop)select.scrollTop=firstSelected.offsetTop-firstSelected.offsetHeight/2;
+		if(firstSelected.offsetTop>select.scrollTop+select.offsetHeight)select.scrollTop=firstSelected.offsetTop-select.offsetHeight+firstSelected.offsetHeight/2;
 	}
 }
 

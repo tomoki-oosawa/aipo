@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.webmail;
 
 import com.aimluck.commons.field.ALNumberField;
@@ -47,16 +46,17 @@ public class WebMailFilterResultData implements ALData {
   /** 振り分け先フォルダ名 */
   private ALStringField dst_folder_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
   private ALStringField update_date;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
     filter_id = new ALNumberField();
     sort_order = new ALNumberField();

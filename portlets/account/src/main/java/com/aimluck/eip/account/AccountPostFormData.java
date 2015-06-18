@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
@@ -413,8 +412,12 @@ public class AccountPostFormData extends ALAbstractFormData {
             post_name);
         query.setQualifier(exp);
         List<TurbineGroup> list = query.fetchList();
-        TurbineGroup tg = list.get(0);
-        memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
+        if (!list.isEmpty()) {
+          TurbineGroup tg = list.get(0);
+          memberList.addAll(ALEipUtils.getUsers(tg.getGroupName()));
+        } else {
+          post_name.setValue(null);
+        }
       }
 
     } catch (RuntimeException ex) {
@@ -506,7 +509,7 @@ public class AccountPostFormData extends ALAbstractFormData {
       // グループ名
       record.setGroupName(groupName);
       Date now = new Date();
-      // 登録日
+      // 作成日
       record.setCreateDate(now);
       // 更新日
       record.setUpdateDate(now);

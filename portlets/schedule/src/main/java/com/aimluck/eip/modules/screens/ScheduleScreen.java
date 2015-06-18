@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ScheduleScreen extends ALVelocityScreen {
 
@@ -54,7 +53,7 @@ public class ScheduleScreen extends ALVelocityScreen {
     .getLogger(ScheduleScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -91,6 +90,14 @@ public class ScheduleScreen extends ALVelocityScreen {
         showAll = "f";
       }
       context.put("init_s_all", showAll);
+
+      // 表示形式（月間）を取得する
+      String display_month =
+        portlet.getPortletConfig().getInitParameter("p195-rows");
+      if (display_month == null || "".equals(display_month)) {
+        display_month = "detail";
+      }
+      context.put("display_month", display_month);
 
       // アクセスコントロール
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
@@ -173,8 +180,18 @@ public class ScheduleScreen extends ALVelocityScreen {
           memberList.add(login_user);
         } else {
           String selected_users[] = selected_user.split(",");
-          List<UserFacilityLiteBean> ulist =
-            ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          List<UserFacilityLiteBean> ulist;
+          if ("F".equals(has_acl_other)) {
+            ulist = ScheduleUtils.getALEipFacility(selected_users, rundata);
+            if (selected_user.contains(String.valueOf(ALEipUtils
+              .getUserId(rundata)))) {
+              UserFacilityLiteBean login_user =
+                UserFacilityUtils.getUserFacilityLiteBean(rundata);
+              ulist.add(login_user);
+            }
+          } else {
+            ulist = ScheduleUtils.getALEipUserFacility(selected_users, rundata);
+          }
           if (ulist == null || ulist.size() == 0) {
             UserFacilityLiteBean login_user =
               UserFacilityUtils.getUserFacilityLiteBean(rundata);
@@ -234,7 +251,7 @@ public class ScheduleScreen extends ALVelocityScreen {
       listData.initField();
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-schedule.vm";
+      String layout_template = "portlets/html/ajax-schedule.vm";
 
       setTemplate(rundata, context, layout_template);
 

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 window.aipo = window.aipo || {};
 
 aipo.namespace = function(ns) {
@@ -306,4 +305,40 @@ aipo.arrayContains=function(a,val){//:TODO binary search
 		if(a[i]==val)return true;
 	}
 	return false;
+};
+
+//非同期で読み込みを行う
+//target : 読み込んだ要素を入れる場所
+//url : 読み込む要素のurl
+//outerHTML : trueなら読み込んだ要素によってtargetが上書きされる。false（または省略）なら読み込んだ要素がtargetの子要素になる。
+aipo.asyncLoad = function(target, url,request, outerHTML){
+
+	  try {
+	    dojo
+	      .xhrPost({
+	        url:url,
+	        timeout: 30000,
+	        content : request,
+	        encoding: "utf-8",
+	        handleAs: "text",
+	        headers: {
+	          X_REQUESTED_WITH: "XMLHttpRequest"
+	        },
+	        load: function (response, ioArgs) {
+
+	            if (typeof target != "undefined") {
+	              	if(outerHTML){
+	              		target.outerHTML=response;
+	              	}else{
+	              		target.innerHTML=response;
+	              	}
+	              }
+
+	        },
+	        error: function (error) {
+	        }
+	      });
+	  } catch (E) {
+	  }
+
 };

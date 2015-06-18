@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.mail;
 
 import java.io.ByteArrayInputStream;
@@ -493,7 +492,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
       return super.getRecipients(recipienttype);
     }
 
-    StringTokenizer st = new StringTokenizer(recipients, ",");
+    StringTokenizer st = new StringTokenizer(recipients, ",;");
     String token = null;
     boolean found = false;
     while (st.hasMoreTokens()) {
@@ -527,7 +526,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
 
     if (found) {
       int index = 0;
-      st = new StringTokenizer(recipients, ",");
+      st = new StringTokenizer(recipients, ",;");
       Address[] addresses = new InternetAddress[st.countTokens()];
       while (st.hasMoreTokens()) {
         token = st.nextToken();
@@ -535,6 +534,9 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
           addresses[index] = new InternetAddress(token, false);
         } catch (AddressException ae) {
           addresses[index] = new InternetAddress();
+          if (index > 0 && token.contains("\r\n\t")) {
+            token = token.substring(4);
+          }
           ((InternetAddress) addresses[index]).setAddress(token);
         }
         index++;
@@ -571,7 +573,7 @@ public class ALLocalMailMessage extends MimeMessage implements ALMailMessage {
         }
         int index = 0;
         String token = null;
-        StringTokenizer st = new StringTokenizer(recipients, ",");
+        StringTokenizer st = new StringTokenizer(recipients, ",;");
         addresses = new InternetAddress[st.countTokens()];
         while (st.hasMoreTokens()) {
           token = st.nextToken();

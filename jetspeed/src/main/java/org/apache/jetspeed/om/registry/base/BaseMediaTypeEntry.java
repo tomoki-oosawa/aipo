@@ -22,7 +22,7 @@ import org.apache.jetspeed.om.registry.*;
  * Default bean like implementation of MediaTypeEntry interface
  * suitable for serializing with Castor
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: BaseMediaTypeEntry.java,v 1.6 2004/02/23 03:08:26 jford Exp $
  */
 public class BaseMediaTypeEntry extends BaseRegistryEntry

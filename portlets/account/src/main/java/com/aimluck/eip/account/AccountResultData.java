@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.account;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
- * 
+ *
  */
 public class AccountResultData implements ALData {
 
@@ -76,6 +75,8 @@ public class AccountResultData implements ALData {
 
   private boolean is_admin;
 
+  private boolean is_owner;
+
   /** 会社ID */
   private ALNumberField company_id;
 
@@ -94,7 +95,7 @@ public class AccountResultData implements ALData {
   /** FAX 番号 */
   private ALStringField company_fax_number;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
@@ -102,6 +103,12 @@ public class AccountResultData implements ALData {
 
   /** グループ名 */
   private ALStringField group_name;
+
+  /** メール容量 */
+  private ALNumberField mail_size;
+
+  /** メール容量(＋単位) */
+  private ALStringField mail_size_str;
 
   private long photo_modified;
 
@@ -127,6 +134,7 @@ public class AccountResultData implements ALData {
 
     has_photo = false;
     is_admin = false;
+    is_owner = false;
 
     company_id = new ALNumberField();
     company_name = new ALStringField();
@@ -137,6 +145,8 @@ public class AccountResultData implements ALData {
     create_date = new ALStringField();
     update_date = new ALStringField();
     group_name = new ALStringField();
+    mail_size = new ALNumberField();
+    mail_size_str = new ALStringField();
     setPhotoModified(0L);
   }
 
@@ -377,6 +387,20 @@ public class AccountResultData implements ALData {
   }
 
   /**
+   * @return is_admin
+   */
+  public boolean isOwnwer() {
+    return is_owner;
+  }
+
+  /**
+   * @param is_owner
+   */
+  public void setIsOwner(boolean is_owner) {
+    this.is_owner = is_owner;
+  }
+
+  /**
    * @return
    */
   public ALStringField getCompanyAddress() {
@@ -432,7 +456,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 会社の電話番号を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyTelephone() {
@@ -519,7 +543,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名を取得します
-   * 
+   *
    * @return
    */
   public ALStringField getGroupName() {
@@ -528,7 +552,7 @@ public class AccountResultData implements ALData {
 
   /**
    * グループ名をセットします
-   * 
+   *
    * @param string
    */
   public void setGroupName(String string) {
@@ -537,7 +561,7 @@ public class AccountResultData implements ALData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public Object getPostID(int i) {
@@ -565,6 +589,36 @@ public class AccountResultData implements ALData {
    */
   public void setPhotoModified(long photo_modified) {
     this.photo_modified = photo_modified;
+  }
+
+  /**
+   * @return mail_size
+   */
+  public ALNumberField getMailSize() {
+    return mail_size;
+  }
+
+  /**
+   * @param mail_size
+   *          セットする mail_size
+   */
+  public void setMailSize(long mail_size) {
+    this.mail_size.setValue(mail_size);
+  }
+
+  /**
+   * @return mail_size_str
+   */
+  public ALStringField getMailSizeStr() {
+    return mail_size_str;
+  }
+
+  /**
+   * @param mail_size_str
+   *          セットする mail_size_str
+   */
+  public void setMailSizeStr(String mail_size_str) {
+    this.mail_size_str.setValue(mail_size_str);
   }
 
 }

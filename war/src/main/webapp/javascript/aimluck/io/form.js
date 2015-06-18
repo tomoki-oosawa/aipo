@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 aimluck.namespace("aimluck.io");
 dojo.provide("aimluck.io");
 
 dojo.require("dojo.string");
 dojo.requireLocalization("aipo", "locale");
 
-aimluck.io.submit = function(form, indicator_id, portlet_id, callback) {
+aimluck.io.submit = function (form, indicator_id, portlet_id, callback) {
   aimluck.io.disableForm(form, true);
 
   var obj_indicator = dojo.byId(indicator_id + portlet_id);
@@ -33,45 +32,45 @@ aimluck.io.submit = function(form, indicator_id, portlet_id, callback) {
 
   try {
     dojo
-        .xhrPost({
-          url : form.action,
-          timeout : 30000,
-          form : form,
-          encoding : "utf-8",
-          handleAs : "json-comment-filtered",
-          headers : {
-            X_REQUESTED_WITH : "XMLHttpRequest"
-          },
-          load : function(response, ioArgs) {
-            var html = "";
-            if (dojo.isArray(response) && response.length > 0) {
-              if (response[0] == "PermissionError") {
-                html += "<ul>";
-                html += "<li><span class='caution'>" + response[1]
-                    + "</span></li>";
-                html += "</ul>";
-              } else {
-                html += "<ul>";
-                dojo.forEach(response, function(msg) {
-                  html += "<li><span class='caution'>" + msg + "</span></li>";
-                });
-                html += "</ul>";
-              }
+      .xhrPost({
+        url: form.action,
+        timeout: 30000,
+        form: form,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        headers: {
+          X_REQUESTED_WITH: "XMLHttpRequest"
+        },
+        load: function (response, ioArgs) {
+          var html = "";
+          if (dojo.isArray(response) && response.length > 0) {
+            if (response[0] == "PermissionError") {
+              html += "<ul>";
+              html += "<li><span class='caution'>" + response[1]
+                + "</span></li>";
+              html += "</ul>";
+            } else {
+              html += "<ul>";
+              dojo.forEach(response, function (msg) {
+                html += "<li><span class='caution'>" + msg + "</span></li>";
+              });
+              html += "</ul>";
             }
-            callback.call(callback, html);
-
-            obj_indicator = dojo.byId(indicator_id + portlet_id);
-            if (obj_indicator) {
-              dojo.style(obj_indicator, "display", "none");
-            }
-
-            if (html != "") {
-              aimluck.io.disableForm(form, false);
-            }
-          },
-          error : function(error) {
           }
-        });
+          callback.call(callback, html);
+
+          obj_indicator = dojo.byId(indicator_id + portlet_id);
+          if (obj_indicator) {
+            dojo.style(obj_indicator, "display", "none");
+          }
+
+          if (html != "") {
+            aimluck.io.disableForm(form, false);
+          }
+        },
+        error: function (error) {
+        }
+      });
   } catch (E) {
   }
   ;
@@ -83,7 +82,7 @@ aimluck.io.submit = function(form, indicator_id, portlet_id, callback) {
 //
 // callback(err:Array,...params:any)
 
-aimluck.io.submit_callbackparams = function(form, indicator_id, portlet_id, callback) {
+aimluck.io.submit_callbackparams = function (form, indicator_id, portlet_id, callback) {
   aimluck.io.disableForm(form, true);
 
   var obj_indicator = dojo.byId(indicator_id + portlet_id);
@@ -91,67 +90,66 @@ aimluck.io.submit_callbackparams = function(form, indicator_id, portlet_id, call
     dojo.style(obj_indicator, "display", "");
   }
 
-  var createErrorHTML=function(arr){
-	  var html = "";
-      if (dojo.isArray(arr) && arr.length > 0) {
-        if (arr[0] == "PermissionError") {
-          html += "<ul>";
-          html += "<li><span class='caution'>" + arr[1]
-              + "</span></li>";
-          html += "</ul>";
-        } else {
-          html += "<ul>";
-          dojo.forEach(arr, function(msg) {
-            html += "<li><span class='caution'>" + msg + "</span></li>";
-          });
-          html += "</ul>";
-        }
+  var createErrorHTML = function (arr) {
+    var html = "";
+    if (dojo.isArray(arr) && arr.length > 0) {
+      if (arr[0] == "PermissionError") {
+        html += "<ul>";
+        html += "<li><span class='caution'>" + arr[1]
+          + "</span></li>";
+        html += "</ul>";
+      } else {
+        html += "<ul>";
+        dojo.forEach(arr, function (msg) {
+          html += "<li><span class='caution'>" + msg + "</span></li>";
+        });
+        html += "</ul>";
       }
-      return html;
+    }
+    return html;
   }
 
   try {
     dojo
-        .xhrPost({
-          url : form.action,
-          timeout : 30000,
-          form : form,
-          encoding : "utf-8",
-          handleAs : "json-comment-filtered",
-          headers : {
-            X_REQUESTED_WITH : "XMLHttpRequest"
-          },
-          load : function(response, ioArgs) {
-        	var params=[];
-        	var html="";
-        	if(response.err){
-	            html = createErrorHTML(response.err);
-        	}
-        	params.push(html);
-
-        	if(dojo.isArray(response.params)){
-        		 dojo.forEach(response.params, function(param) {
-        			 params.push(param);
-        		 });
-        	}
-            callback.apply(callback,params);
-
-            obj_indicator = dojo.byId(indicator_id + portlet_id);
-            if (obj_indicator) {
-              dojo.style(obj_indicator, "display", "none");
-            }
-
-            aimluck.io.disableForm(form, false);
-          },
-          error : function(error) {
+      .xhrPost({
+        url: form.action,
+        timeout: 30000,
+        form: form,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        headers: {
+          X_REQUESTED_WITH: "XMLHttpRequest"
+        },
+        load: function (response, ioArgs) {
+          var result = {};
+          var html = "";
+          if (response.err) {
+            html = createErrorHTML(response.err);
           }
-        });
+          result["error"] = html;
+          var params = "";
+          if (response.params) {
+              params = response.params;
+          }
+          result["params"] = params;
+          callback.call(callback, result);
+
+          obj_indicator = dojo.byId(indicator_id + portlet_id);
+          if (obj_indicator) {
+            dojo.style(obj_indicator, "display", "none");
+          }
+
+          aimluck.io.disableForm(form, false);
+        },
+        error: function (error) {
+        }
+      });
   } catch (E) {
   }
   return false;
 }
 
-aimluck.io.xhr_http_request = function(form, indicator_id, portlet_id, callback) {
+aimluck.io.xhr_http_request = function (form, indicator_id, portlet_id, callback) {
   aimluck.io.disableForm(form, true);
 
   var obj_indicator = dojo.byId(indicator_id + portlet_id);
@@ -159,81 +157,79 @@ aimluck.io.xhr_http_request = function(form, indicator_id, portlet_id, callback)
     dojo.style(obj_indicator, "display", "");
   }
 
-  var createErrorHTML=function(arr){
-	  var html = "";
-      if (dojo.isArray(arr) && arr.length > 0) {
-        if (arr[0] == "PermissionError") {
-          html += "<ul>";
-          html += "<li><span class='caution'>" + arr[1]
-              + "</span></li>";
-          html += "</ul>";
-        } else {
-          html += "<ul>";
-          dojo.forEach(arr, function(msg) {
-            html += "<li><span class='caution'>" + msg + "</span></li>";
-          });
-          html += "</ul>";
-        }
+  var createErrorHTML = function (arr) {
+    var html = "";
+    if (dojo.isArray(arr) && arr.length > 0) {
+      if (arr[0] == "PermissionError") {
+        html += "<ul>";
+        html += "<li><span class='caution'>" + arr[1]
+          + "</span></li>";
+        html += "</ul>";
+      } else {
+        html += "<ul>";
+        dojo.forEach(arr, function (msg) {
+          html += "<li><span class='caution'>" + msg + "</span></li>";
+        });
+        html += "</ul>";
       }
-      return html;
+    }
+    return html;
   }
 
   try {
     dojo
-        .xhrPost({
-          url : form.action,
-          timeout : 30000,
-          form : form,
-          encoding : "utf-8",
-          handleAs : "json-comment-filtered",
-          headers : {
-            X_REQUESTED_WITH : "XMLHttpRequest"
-          },
-          load : function(response, ioArgs) {
-        	var params=[];
-        	var html="";
-        	if(response.err){
-	            html = createErrorHTML(response.err);
-        	}
-        	params.push(html);
-
-        	if(dojo.isArray(response.params)){
-        		 dojo.forEach(response.params, function(param) {
-        			 params.push(param);
-        		 });
-        	}
-            callback.apply(callback,params);
-
-            obj_indicator = dojo.byId(indicator_id + portlet_id);
-            if (obj_indicator) {
-              dojo.style(obj_indicator, "display", "none");
-            }
-
-            aimluck.io.disableForm(form, false);
-          },
-          error : function(error) {
+      .xhrPost({
+        url: form.action,
+        timeout: 30000,
+        form: form,
+        encoding: "utf-8",
+        handleAs: "json-comment-filtered",
+        headers: {
+          X_REQUESTED_WITH: "XMLHttpRequest"
+        },
+        load: function (response, ioArgs) {
+          var params = [];
+          var html = "";
+          if (response.err) {
+            html = createErrorHTML(response.err);
           }
-        });
+          params.push(html);
+
+          if (dojo.isArray(response.params)) {
+            dojo.forEach(response.params, function (param) {
+              params.push(param);
+            });
+          }
+          callback.apply(callback, params);
+
+          obj_indicator = dojo.byId(indicator_id + portlet_id);
+          if (obj_indicator) {
+            dojo.style(obj_indicator, "display", "none");
+          }
+
+          aimluck.io.disableForm(form, false);
+        },
+        error: function (error) {
+        }
+      });
   } catch (E) {
   }
   return false;
 }
 
 
-
-
-aimluck.io.sendData = function(url, params, callback) {
+aimluck.io.sendData = function (url, params, callback) {
   var callbackArgs = new Array();
   callbackArgs["callback"] = callback;
   aimluck.io.sendRawData(url, params, sendErrorData, callbackArgs)
 
   return false;
 }
-aimluck.io.sendErrorData = function(callbackArgs, rtnData) {
+aimluck.io.sendErrorData = function (callbackArgs, rtnData) {
   var html = "";
   if (dojo.isArray(rtnData["data"]) && rtnData["data"].length > 0) {
     html += "<ul>";
-    dojo.forEach(rtnData["data"], function(msg) {
+    dojo.forEach(rtnData["data"], function (msg) {
       html += "<li>" + msg + "</li>";
     });
     html += "</ul>";
@@ -243,17 +239,17 @@ aimluck.io.sendErrorData = function(callbackArgs, rtnData) {
 
   return false;
 }
-aimluck.io.sendRawData = function(url, params, callback, callbackArgs) {
+aimluck.io.sendRawData = function (url, params, callback, callbackArgs) {
   var rtnData = new Array;
   try {
     dojo.xhrGet({
-      url : url,
-      method : "POST",
-      encoding : "utf-8",
-      content : params,
-      mimetype : "text/json",
-      sync : true,
-      load : function(type, data, event, args) {
+      url: url,
+      method: "POST",
+      encoding: "utf-8",
+      content: params,
+      mimetype: "text/json",
+      sync: true,
+      load: function (type, data, event, args) {
         rtnData["type"] = type;
         rtnData["data"] = data;
         rtnData["event"] = event;
@@ -270,7 +266,7 @@ aimluck.io.sendRawData = function(url, params, callback, callbackArgs) {
 
 }
 
-aimluck.io.escapeText = function(Text) {
+aimluck.io.escapeText = function (Text) {
   var val;
   if (typeof (dojo.byId(Text).innerText) != 'undefined') {
     val = dojo.byId(Text).innerText;
@@ -282,24 +278,25 @@ aimluck.io.escapeText = function(Text) {
   return val;
 }
 
-aimluck.io.disableForm = function(form, bool) {
+aimluck.io.disableForm = function (form, bool) {
   function S4() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   }
+
   function guid() {
     return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4()
-        + S4() + S4());
+      + S4() + S4());
   }
 
-  if(form == null) {
+  if (form == null) {
     return;
   }
 
   if (bool) {
     var elements = form.elements;
-    for ( var i = 0; i < elements.length; i++) {
+    for (var i = 0; i < elements.length; i++) {
       if ((elements[i].type == 'submit' || elements[i].type == 'button')
-          && elements[i].style.display != "none") {
+        && elements[i].style.display != "none" && elements[i].value) {
         var uuid = guid();
         var span = document.createElement("span");
         span.id = uuid;
@@ -307,6 +304,7 @@ aimluck.io.disableForm = function(form, bool) {
         span.style.display = elements[i].style.display;
         elements[i].parentNode.insertBefore(span, elements[i]);
         span.appendChild(document.createTextNode(elements[i].value))
+        dojo.removeClass(span, "auiButtonAction");
         dojo.addClass(span, "auiButtonDisabled");
         elements[i].style.display = "none";
         dojo.addClass(elements[i], uuid);
@@ -314,7 +312,7 @@ aimluck.io.disableForm = function(form, bool) {
     }
   } else {
     var spans = dojo.query(".auiButtonDisabled", form);
-    for ( var i = 0; i < spans.length; i++) {
+    for (var i = 0; i < spans.length; i++) {
       var uuid = spans[i].id;
       var element = dojo.query("." + uuid)[0];
       dojo.removeClass(element, uuid);
@@ -324,36 +322,35 @@ aimluck.io.disableForm = function(form, bool) {
   }
 }
 
-aimluck.io.actionSubmit = function(button) {
+aimluck.io.actionSubmit = function (button) {
   aimluck.io.disableForm(button.form, true);
   aimluck.io.setHiddenValue(button);
   button.form.action = button.form.action + '?' + button.name + '=1';
   button.form.submit();
 }
 
-aimluck.io.ajaxActionSubmit = function(button, url, indicator_id, portlet_id,
-    receive) {
+aimluck.io.ajaxActionSubmit = function (button, url, indicator_id, portlet_id, receive) {
   aimluck.io.disableForm(button.form, true);
   aimluck.io.setHiddenValue(button);
   button.form.action = url;
   aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
 }
 
-aimluck.io.actionSubmitReturn = function(button, rtn) {
+aimluck.io.actionSubmitReturn = function (button, rtn) {
   aimluck.io.disableForm(button.form, true);
   aimluck.io.setHiddenValue(button);
   button.form.action = button.form.action + '?' + button.name + '=1&action='
-      + rtn;
+    + rtn;
   button.form.submit();
 }
 
 // webmail
-aimluck.io.deleteSubmit = function(button) {
+aimluck.io.deleteSubmit = function (button) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-    dw_del : nlsStrings.DW_DEL,
-    dw_this : nlsStrings.DW_THIS,
-    dw_name : button.form._name.value
+    dw_del: nlsStrings.DW_DEL,
+    dw_this: nlsStrings.DW_THIS,
+    dw_name: button.form._name.value
   });
   // この'+button.form._name.value+'を削除してよろしいですか?
   if (confirm(confirmString)) {
@@ -365,13 +362,12 @@ aimluck.io.deleteSubmit = function(button) {
 }
 
 // timeline
-aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
-    receive) {
+aimluck.io.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-    dw_del : nlsStrings.DW_DEL,
-    dw_this : nlsStrings.DW_THIS,
-    dw_name : button.form._name.value
+    dw_del: nlsStrings.DW_DEL,
+    dw_this: nlsStrings.DW_THIS,
+    dw_name: button.form._name.value
   });
   // 'この'+button.form._name.value+'を削除してよろしいですか？'
   if (confirm(confirmString)) {
@@ -383,13 +379,12 @@ aimluck.io.ajaxDeleteSubmit = function(button, url, indicator_id, portlet_id,
 }
 
 // account
-aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id,
-    receive) {
+aimluck.io.ajaxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.ENABLESUBMIT_STR, {
-    enableSubmit_this : nlsStrings.ENABLESUBMIT_THIS,
-    enableSubmit_enable : nlsStrings.ENABLESUBMIT_ENABLE,
-    enableSubmit_name : button.form._name.value
+    enableSubmit_this: nlsStrings.ENABLESUBMIT_THIS,
+    enableSubmit_enable: nlsStrings.ENABLESUBMIT_ENABLE,
+    enableSubmit_name: button.form._name.value
   });
   // この'+button.form._name.value+'を有効化してよろしいですか？
   if (confirm(confirmString)) {
@@ -401,13 +396,12 @@ aimluck.io.ajaxEnableSubmit = function(button, url, indicator_id, portlet_id,
 }
 
 // account
-aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id,
-    receive) {
+aimluck.io.ajaxDisableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DISABLESUBMIT_STR, {
-    disableSubmit_this : nlsStrings.DISABLESUBMIT_THIS,
-    disableSubmit_disable : nlsStrings.DISABLESUBMIT_DISABLE,
-    disableSubmit_name : button.form._name.value
+    disableSubmit_this: nlsStrings.DISABLESUBMIT_THIS,
+    disableSubmit_disable: nlsStrings.DISABLESUBMIT_DISABLE,
+    disableSubmit_name: button.form._name.value
   });
   // この'+button.form._name.value+'を無効化してよろしいですか？
   if (confirm(confirmString)) {
@@ -418,29 +412,29 @@ aimluck.io.ajaxDisableSubmit = function(button, url, indicator_id, portlet_id,
   }
 }
 
-aimluck.io.deleteSubmitReturn = function(button, rtn) {
+aimluck.io.deleteSubmitReturn = function (button, rtn) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-    dw_del : nlsStrings.DW_DEL,
-    dw_this : nlsStrings.DW_THIS,
-    dw_name : button.form._name.value
+    dw_del: nlsStrings.DW_DEL,
+    dw_this: nlsStrings.DW_THIS,
+    dw_name: button.form._name.value
   });
   // この'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
     aimluck.io.setHiddenValue(button);
     button.form.action = button.form.action + '?' + button.name + '=1&action='
-        + rtn;
+      + rtn;
     button.form.submit();
   }
 }
 
-aimluck.io.multiDeleteSubmit = function(button) {
+aimluck.io.multiDeleteSubmit = function (button) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DWS_STR, {
-    dws_del : nlsStrings.DWS_DEL,
-    dws_sel : nlsStrings.DWS_SEL,
-    dws_name : button.form._name.value
+    dws_del: nlsStrings.DWS_DEL,
+    dws_sel: nlsStrings.DWS_SEL,
+    dws_name: button.form._name.value
   });
   // 選択した'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
@@ -451,13 +445,12 @@ aimluck.io.multiDeleteSubmit = function(button) {
   }
 }
 
-aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxMultiDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.DWS_STR, {
-    dws_del : nlsStrings.DWS_DEL,
-    dws_sel : nlsStrings.DWS_SEL,
-    dws_name : button.form._name.value
+    dws_del: nlsStrings.DWS_DEL,
+    dws_sel: nlsStrings.DWS_SEL,
+    dws_name: button.form._name.value
   });
   // 選択した'+button.form._name.value+'を削除してよろしいですか？
   if (confirm(confirmString)) {
@@ -468,15 +461,30 @@ aimluck.io.ajaxMultiDeleteSubmit = function(button, url, indicator_id,
   }
 }
 
-aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxAllDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWA_STR, {
+	    dwa_del: nlsStrings.DWA_DEL,
+	    dwa_sel: nlsStrings.DWA_SEL,
+	    dwa_name: button.form._name.value
+	  });
+	  // すべての'+button.form._name.value+'を削除してよろしいですか？
+	  if (confirm(confirmString)) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
+
+aimluck.io.ajaxMultiEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.MULTIENABLESUBMIT_STR,
-      {
-        multiEnableSubmit_sel : nlsStrings.MULTIENABLESUBMIT_SEL,
-        multiEnableSubmit_enable : nlsStrings.MULTIENABLESUBMIT_ENABLE,
-        multiEnableSubmit_name : button.form._name.value
-      });
+    {
+      multiEnableSubmit_sel: nlsStrings.MULTIENABLESUBMIT_SEL,
+      multiEnableSubmit_enable: nlsStrings.MULTIENABLESUBMIT_ENABLE,
+      multiEnableSubmit_name: button.form._name.value
+    });
   // 選択した'+button.form._name.value+'を有効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
@@ -486,15 +494,14 @@ aimluck.io.ajaxMultiEnableSubmit = function(button, url, indicator_id,
   }
 }
 
-aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxMultiDisableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   var confirmString = dojo.string.substitute(nlsStrings.MULTIDISABLESUBMIT_STR,
-      {
-        multiDisableSubmit_sel : nlsStrings.MULTIDISABLESUBMIT_SEL,
-        multiDisableSubmit_disable : nlsStrings.MULTIDISABLESUBMIT_DISABLE,
-        multiDisableSubmit_name : button.form._name.value
-      });
+    {
+      multiDisableSubmit_sel: nlsStrings.MULTIDISABLESUBMIT_SEL,
+      multiDisableSubmit_disable: nlsStrings.MULTIDISABLESUBMIT_DISABLE,
+      multiDisableSubmit_name: button.form._name.value
+    });
   // 選択した'+button.form._name.value+'を無効化してよろしいですか？
   if (confirm(confirmString)) {
     aimluck.io.disableForm(button.form, true);
@@ -504,7 +511,7 @@ aimluck.io.ajaxMultiDisableSubmit = function(button, url, indicator_id,
   }
 }
 
-aimluck.io.setHiddenValue = function(button) {
+aimluck.io.setHiddenValue = function (button) {
   if (button.name) {
     var q = document.createElement('input');
     q.type = 'hidden';
@@ -514,44 +521,40 @@ aimluck.io.setHiddenValue = function(button) {
   }
 }
 
-aimluck.io.openDialog = function(button, url, portlet_id, callback) {
+aimluck.io.openDialog = function (button, url, portlet_id, callback) {
   aimluck.io.disableForm(button.form, true);
   aipo.common.showDialog(url, portlet_id, callback);
 }
 
-aimluck.io.checkboxActionSubmit = function(button) {
+aimluck.io.checkboxActionSubmit = function (button) {
   aimluck.io.verifyCheckbox(button.form, aimluck.io.actionSubmit, button);
 }
 
-aimluck.io.ajaxCheckboxActionSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxCheckboxActionSubmit = function (button, url, indicator_id, portlet_id, receive) {
   aimluck.io.ajaxVerifyCheckbox(button.form, aimluck.io.ajaxActionSubmit,
-      button, url, indicator_id, portlet_id, receive);
+    button, url, indicator_id, portlet_id, receive);
 }
 
-aimluck.io.checkboxDeleteSubmit = function(button) {
+aimluck.io.checkboxDeleteSubmit = function (button) {
   aimluck.io.verifyCheckbox(button.form, aimluck.io.multiDeleteSubmit, button);
 }
 
-aimluck.io.ajaxCheckboxDeleteSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxCheckboxDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
   aimluck.io.ajaxVerifyCheckbox(button.form, aimluck.io.ajaxMultiDeleteSubmit,
-      button, url, indicator_id, portlet_id, receive);
+    button, url, indicator_id, portlet_id, receive);
 }
 
-aimluck.io.ajaxCheckboxEnableSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxCheckboxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   aimluck.io.ajaxVerifyCheckbox(button.form, aimluck.io.ajaxMultiEnableSubmit,
-      button, url, indicator_id, portlet_id, receive);
+    button, url, indicator_id, portlet_id, receive);
 }
 
-aimluck.io.ajaxCheckboxDisableSubmit = function(button, url, indicator_id,
-    portlet_id, receive) {
+aimluck.io.ajaxCheckboxDisableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   aimluck.io.ajaxVerifyCheckbox(button.form, aimluck.io.ajaxMultiDisableSubmit,
-      button, url, indicator_id, portlet_id, receive);
+    button, url, indicator_id, portlet_id, receive);
 }
 
-aimluck.io.verifyCheckbox = function(form, action, button) {
+aimluck.io.verifyCheckbox = function (form, action, button) {
   var cnt = 0;
   var i;
   for (i = 0; i < form.elements.length; i++) {
@@ -561,9 +564,9 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
   if (cnt == 0) {
     var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
     var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
-      verifycb_sel : nlsStrings.VERIFYCB_SEL,
-      verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
-      verifycb_cb : nlsStrings.VERIFYCB_CB
+      verifycb_sel: nlsStrings.VERIFYCB_SEL,
+      verifycb_gt_one: nlsStrings.VERIFYCB_GT_ONE,
+      verifycb_cb: nlsStrings.VERIFYCB_CB
     });
     // "チェックボックスを１つ以上選択してください。"
     alert(alertString);
@@ -574,8 +577,7 @@ aimluck.io.verifyCheckbox = function(form, action, button) {
 }
 
 // msgboard,gadgets
-aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
-    indicator_id, portlet_id, receive) {
+aimluck.io.ajaxVerifyCheckbox = function (form, action, button, url, indicator_id, portlet_id, receive) {
   var cnt = 0;
   var i;
   for (i = 0; i < form.elements.length; i++) {
@@ -585,9 +587,9 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
   if (cnt == 0) {
     var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
     var alertString = dojo.string.substitute(nlsStrings.VERIFYCB_STR, {
-      verifycb_sel : nlsStrings.VERIFYCB_SEL,
-      verifycb_gt_one : nlsStrings.VERIFYCB_GT_ONE,
-      verifycb_cb : nlsStrings.VERIFYCB_CB
+      verifycb_sel: nlsStrings.VERIFYCB_SEL,
+      verifycb_gt_one: nlsStrings.VERIFYCB_GT_ONE,
+      verifycb_cb: nlsStrings.VERIFYCB_CB
     });
     // "チェックボックスを１つ以上選択してください。"
     alert(alertString);
@@ -597,7 +599,7 @@ aimluck.io.ajaxVerifyCheckbox = function(form, action, button, url,
   }
 }
 
-aimluck.io.createOptions = function(selectId, params) {
+aimluck.io.createOptions = function (selectId, params) {
   var sel, pre, key, value, url, ind, callback, callbackTarget;
   if (params["url"]) {
     url = params["url"];
@@ -634,14 +636,14 @@ aimluck.io.createOptions = function(selectId, params) {
   }
 
   dojo.xhrGet({
-    url : url,
-    timeout : 10000,
-    encoding : "utf-8",
-    handleAs : "json-comment-filtered",
-    headers : {
-      X_REQUESTED_WITH : "XMLHttpRequest"
+    url: url,
+    timeout: 10000,
+    encoding: "utf-8",
+    handleAs: "json-comment-filtered",
+    headers: {
+      X_REQUESTED_WITH: "XMLHttpRequest"
     },
-    load : function(response, ioArgs) {
+    load: function (response, ioArgs) {
       var select = dojo.byId(selectId);
       select.options.length = 0;
 
@@ -649,7 +651,7 @@ aimluck.io.createOptions = function(selectId, params) {
       } else {
         aimluck.io.addOption(select, pre["key"], pre["value"], false);
       }
-      dojo.forEach(response, function(p) {
+      dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined") {
         } else {
           if (p[key] == sel) {
@@ -669,35 +671,36 @@ aimluck.io.createOptions = function(selectId, params) {
   });
 }
 
-aimluck.io.replaceToAutoCRString = function(str){
-	var res="";
-	var step=4;
-	var size=str.length;
-	var count=Math.floor(size/step)
-	var i;
-	for(i=0;i<count;i++){
-		var j=i*step;
-		res=res.concat(str.substr(j,step)).concat("<wbr/>");
-	}
-	if (count * step < size) {
-		res=res.concat(str.substr(count * step));
-	}
-	return res;
+aimluck.io.replaceToAutoCRString = function (str) {
+  var res = "";
+  var step = 4;
+  var size = str.length;
+  var count = Math.floor(size / step)
+  var i;
+  for (i = 0; i < count; i++) {
+    var j = i * step;
+    res = res.concat(str.substr(j, step)).concat("<wbr/>");
+  }
+  if (count * step < size) {
+    res = res.concat(str.substr(count * step));
+  }
+  return res;
 }
 
-aimluck.io.addFileToList = function(ul, fileid, filename) {
+aimluck.io.addFileToList = function (ul, fileid, filename) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   if (ul.parentNode.style.display == "none") {
     ul.parentNode.style.display = "";
+    dojo.addClass( ul.parentNode, 'displayChangedFromNone' );
   }
   if (document.all) {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
     li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
-        + aimluck.io.replaceToAutoCRString(filename)
-        + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>";
+      + aimluck.io.replaceToAutoCRString(filename)
+      + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
+      + nlsStrings.DELETE_STR + "</span>";
 
     return ul.appendChild(li);
   } else {
@@ -706,23 +709,23 @@ aimluck.io.addFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
-        + aimluck.io.replaceToAutoCRString(filename)
-        + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>";
+      + aimluck.io.replaceToAutoCRString(filename)
+      + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
+      + nlsStrings.DELETE_STR + "</span>";
     return ul.appendChild(li);
   }
 }
 
-aimluck.io.replaceFileToList = function(ul, fileid, filename) {
+aimluck.io.replaceFileToList = function (ul, fileid, filename) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
   if (document.all) {
     var li = document.createElement("li");
     li.setAttribute('data-fileid', fileid);
     li.setAttribute('data-filename', filename);
     li.innerHTML = "<span>"
-        + aimluck.io.replaceToAutoCRString(filename)
-        + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>";
+      + aimluck.io.replaceToAutoCRString(filename)
+      + "</span><span class=\"deletebutton\" onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
+      + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";
     return ul.appendChild(li);
   } else {
@@ -731,16 +734,20 @@ aimluck.io.replaceFileToList = function(ul, fileid, filename) {
     li.setAttribute('data-filename', filename);
 
     li.innerHTML = "<span>"
-        + aimluck.io.replaceToAutoCRString(filename)
-        + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
-        + nlsStrings.DELETE_STR + "</span>";
+      + aimluck.io.replaceToAutoCRString(filename)
+      + "</span><span class=\"deletebutton\"  onclick=\"aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);\">"
+      + nlsStrings.DELETE_STR + "</span>";
     ul.innerHTML = "";
     return ul.appendChild(li);
   }
 }
 
-aimluck.io.removeFileFromList = function(ul, li) {
+aimluck.io.removeFileFromList = function (ul, li) {
   ul.removeChild(li);
+  if(ul.children.length==0&&ul.parentNode.className.indexOf("displayChangedFromNone")!=-1){
+    ul.parentNode.style.display = "none";
+    dojo.removeClass( ul.parentNode, 'displayChangedFromNone' );
+  }
   var modalDialog = document.getElementById('modalDialog');
   if (modalDialog) {
     var wrapper = document.getElementById('wrapper');
@@ -748,7 +755,7 @@ aimluck.io.removeFileFromList = function(ul, li) {
   }
 }
 
-aimluck.io.createSelectFromFileList = function(form, pid) {
+aimluck.io.createSelectFromFileList = function (form, pid) {
   var ul = dojo.byId("attachments_" + pid);
   var select = document.createElement("select");
   select.style.display = "none";
@@ -757,7 +764,7 @@ aimluck.io.createSelectFromFileList = function(form, pid) {
   select.name = "attachments";
 
   var lilist = ul.children;
-  for ( var i = 0; i < lilist.length; i++) {
+  for (var i = 0; i < lilist.length; i++) {
     var option = document.createElement("option");
     option.value = lilist[i].getAttribute("data-fileid");
     option.text = lilist[i].getAttribute("data-filename");
@@ -767,7 +774,7 @@ aimluck.io.createSelectFromFileList = function(form, pid) {
   form.appendChild(select);
 }
 
-aimluck.io.addOption = function(select, value, text, is_selected) {
+aimluck.io.addOption = function (select, value, text, is_selected) {
   if (document.all) {
     var option = document.createElement("OPTION");
     option.value = value;
@@ -796,7 +803,7 @@ aimluck.io.addOption = function(select, value, text, is_selected) {
   }
 }
 
-aimluck.io.removeOptions = function(select) {
+aimluck.io.removeOptions = function (select) {
   if (document.all) {
     var t_o = select.options;
     for (i = 0; i < t_o.length; i++) {
@@ -820,7 +827,7 @@ aimluck.io.removeOptions = function(select) {
   }
 }
 
-aimluck.io.removeAllOptions = function(select) {
+aimluck.io.removeAllOptions = function (select) {
   if (select.options.length == 0)
     return;
 
@@ -849,7 +856,7 @@ aimluck.io.removeAllOptions = function(select) {
   }
 }
 
-aimluck.io.selectAllOptions = function(select) {
+aimluck.io.selectAllOptions = function (select) {
   var t_o = select.options;
   if (t_o.length == 0)
     return;
@@ -858,7 +865,7 @@ aimluck.io.selectAllOptions = function(select) {
   }
 }
 
-aimluck.io.switchCheckbox = function(checkbox) {
+aimluck.io.switchCheckbox = function (checkbox) {
   var element;
 
   if (checkbox.checked) {
@@ -878,7 +885,7 @@ aimluck.io.switchCheckbox = function(checkbox) {
   }
 }
 
-aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
+aimluck.io.postViewPage = function (form, portlet_id, indicator_id) {
   aimluck.io.disableForm(form, true);
 
   var obj_indicator = dojo.byId(indicator_id + portlet_id);
@@ -887,62 +894,131 @@ aimluck.io.postViewPage = function(form, portlet_id, indicator_id) {
   }
 
   dojo
-      .xhrPost({
-        url : form.action,
-        timeout : 30000,
-        form : form,
-        encoding : "utf-8",
-        handleAs : "text",
-        headers : {
-          X_REQUESTED_WITH : "XMLHttpRequest"
-        },
-        load : function(response, ioArgs) {
-          var html = response;
-          obj_indicator = dojo.byId(indicator_id + portlet_id);
-          if (obj_indicator) {
-            dojo.style(obj_indicator, "display", "none");
-          }
-
-          if (html != "") {
-            aimluck.io.disableForm(form, false);
-            var portlet = dijit.byId("portlet_" + portlet_id);
-            if (!portlet) {
-              portlet = new aimluck.widget.Contentpane({}, 'portlet_'
-                  + portlet_id);
-            }
-
-            if (portlet) {
-              ptConfig[portlet_id].reloadUrl = ptConfig[portlet_id].initUrl;
-              portlet._isDownloaded = true;
-              portlet.setContent(html);
-            }
-          }
-          // スマートフォン対応用
-          if (aipo.onloadSmartPhone != null) {
-            aipo.onloadSmartPhone();
-          }
-        },
-        error : function(error) {
+    .xhrPost({
+      url: form.action,
+      timeout: 30000,
+      form: form,
+      encoding: "utf-8",
+      handleAs: "text",
+      headers: {
+        X_REQUESTED_WITH: "XMLHttpRequest"
+      },
+      load: function (response, ioArgs) {
+        var html = response;
+        obj_indicator = dojo.byId(indicator_id + portlet_id);
+        if (obj_indicator) {
+          dojo.style(obj_indicator, "display", "none");
         }
-      });
+
+        if (html != "") {
+          aimluck.io.disableForm(form, false);
+          var portlet = dijit.byId("portlet_" + portlet_id);
+          if (!portlet) {
+            portlet = new aimluck.widget.Contentpane({}, 'portlet_'
+              + portlet_id);
+          }
+
+          if (portlet) {
+            ptConfig[portlet_id].reloadUrl = ptConfig[portlet_id].initUrl;
+            portlet._isDownloaded = true;
+            portlet.setContent(html);
+          }
+        }
+        // スマートフォン対応用
+        if (aipo.onloadSmartPhone != null) {
+          aipo.onloadSmartPhone();
+        }
+      },
+      error: function (error) {
+      }
+    });
 }
 
-aimluck.io.onTextFieldFocus = function() {
-	var mobileHeader = document.getElementById('mobileHeader_v3');
-	  if (mobileHeader) {
-		 if(!aipo.userAgent.isAndroid()){
-			 mobileHeader.style.position = "absolute";
-			 mobileHeader.style.top = "0px";
-		 }
-	  }
-	}
-
-aimluck.io.onTextFieldBlur = function() {
+aimluck.io.onTextFieldFocus = function () {
   var mobileHeader = document.getElementById('mobileHeader_v3');
   if (mobileHeader) {
-	  if(!aipo.userAgent.isAndroid()){
-		  mobileHeader.style.position = "";
-		  mobileHeader.style.top = "0px";
-	  }
+    if (!aipo.userAgent.isAndroid()) {
+      mobileHeader.style.position = "absolute";
+      mobileHeader.style.top = "0px";
+    }
   }
 }
+
+aimluck.io.onTextFieldBlur = function () {
+  var mobileHeader = document.getElementById('mobileHeader_v3');
+  if (mobileHeader) {
+    if (!aipo.userAgent.isAndroid()) {
+      mobileHeader.style.position = "";
+      mobileHeader.style.top = "0px";
+    }
+  }
+}
+
+aimluck.io.selectPost = function (jsonparams, jsonscreen, indicator_id, portlet_id, callback) {
+
+  var obj_indicator = dojo.byId(indicator_id + portlet_id);
+  if (obj_indicator) {
+    dojo.style(obj_indicator, "display", "block");
+  }
+
+  var createErrorHTML = function (arr) {
+    var html = "";
+    if (dojo.isArray(arr) && arr.length > 0) {
+      if (arr[0] == "PermissionError") {
+        html += "<ul>";
+        html += "<li><span class='caution'>" + arr[1]
+          + "</span></li>";
+        html += "</ul>";
+      } else {
+        html += "<ul>";
+        dojo.forEach(arr, function (msg) {
+          html += "<li><span class='caution'>" + msg + "</span></li>";
+        });
+        html += "</ul>";
+      }
+    }
+    return html;
+  }
+
+  try {
+    dojo.xhrPost({
+      url: jsonscreen,
+      timeout: 30000,
+      content: jsonparams,
+      encoding: "utf-8",
+      handleAs: "json-comment-filtered",
+      headers: {"X_REQUESTED_WITH": "XMLHttpRequest"},
+      load: function (response, ioArgs) {
+        var params = [];
+        var html = "";
+        if (response.err) {
+          html = createErrorHTML(response.err);
+        } else if(response.length > 0) {
+          html = createErrorHTML(response);
+        }
+        params.push(html);
+        params.push(portlet_id);
+
+        if (dojo.isArray(response.params)) {
+          dojo.forEach(response.params, function (param) {
+            params.push(param);
+          });
+        }
+
+        var obj_indicator = dojo.byId(indicator_id + portlet_id);
+        if (obj_indicator) {
+          dojo.style(obj_indicator, "display", "none");
+        }
+
+        callback.apply(callback, params);
+      },
+      error: function (error) {
+        var params = ["", portlet_id];
+        callback.apply(callback, params);
+      }
+    });
+  } catch (E) {
+    var params = ["", portlet_id];
+    callback.apply(callback, params);
+  }
+};

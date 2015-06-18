@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.eventlog.action;
 
 import java.util.Calendar;
@@ -388,6 +387,8 @@ public class ALActionEventlogHandler extends ALEventlogHandler {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_GADGET;
     } else if (portletType == ALEventlogConstants.PORTLET_TYPE_WIKI) {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_WIKI;
+    } else if (portletType == ALEventlogConstants.PORTLET_TYPE_PROJECT) {
+      return ALActionEventlogConstants.PORTLET_TYPE_STR_PROJECT;
     } else {
       return ALActionEventlogConstants.PORTLET_TYPE_STR_STR_NONE;
     }

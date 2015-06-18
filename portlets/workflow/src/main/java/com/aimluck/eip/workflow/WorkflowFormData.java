@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.workflow;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils.Type;
 
 /**
  * ワークフローのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowFormData extends ALAbstractFormData {
 
@@ -125,12 +124,12 @@ public class WorkflowFormData extends ALAbstractFormData {
   private ALEipUser login_user;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -146,8 +145,8 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -189,7 +188,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -198,7 +197,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -207,7 +206,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -336,7 +335,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   * 
+   *
    * @param num
    * @return
    */
@@ -354,7 +353,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 指定したユーザ名のオブジェクトを取得する．
-   * 
+   *
    * @param userList
    * @param userName
    * @return
@@ -373,8 +372,8 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -389,10 +388,10 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -420,7 +419,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -480,7 +479,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -579,7 +578,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -728,7 +727,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているリクエストを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -893,7 +892,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   @Override
@@ -916,7 +915,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param request
    * @param user
    * @param status
@@ -937,7 +936,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   * 
+   *
    * @param num
    * @return
    */
@@ -997,7 +996,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   * 
+   *
    * @param num
    * @return
    */
@@ -1032,7 +1031,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCategoryId() {
@@ -1041,7 +1040,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 申請経路IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getRouteId() {
@@ -1050,7 +1049,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -1059,7 +1058,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * メモのフィールドを設定します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1069,7 +1068,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 金額を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPrice() {
@@ -1078,7 +1077,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 金額を設定します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1088,7 +1087,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 優先度を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getPriority() {
@@ -1097,7 +1096,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 優先度を設定します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1107,7 +1106,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエスト名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getRequestName() {
@@ -1116,7 +1115,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * リクエスト名を格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1127,7 +1126,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<WorkflowCategoryResultData> getCategoryList() {
@@ -1136,7 +1135,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * 申請経路一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<WorkflowRouteResultData> getRouteList() {
@@ -1145,7 +1144,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -1154,7 +1153,7 @@ public class WorkflowFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1163,7 +1162,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -1172,7 +1171,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1193,7 +1192,7 @@ public class WorkflowFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

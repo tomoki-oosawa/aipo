@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -29,7 +28,7 @@ import com.aimluck.eip.workflow.WorkflowAllSelectData;
 
 /**
  * ワークフローの管理者用の一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class WorkflowAllListScreen extends WorkflowAllScreen {
 
@@ -38,7 +37,7 @@ public class WorkflowAllListScreen extends WorkflowAllScreen {
     .getLogger(WorkflowAllListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -58,7 +57,7 @@ public class WorkflowAllListScreen extends WorkflowAllScreen {
 
       context.put("all_flg", true);
 
-      String layout_template = "portlets/html/ja/ajax-workflow-list-admin.vm";
+      String layout_template = "portlets/html/ajax-workflow-list-admin.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

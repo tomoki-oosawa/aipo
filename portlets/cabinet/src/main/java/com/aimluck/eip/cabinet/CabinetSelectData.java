@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.cabinet;
 
 import java.text.SimpleDateFormat;
@@ -103,7 +102,7 @@ public class CabinetSelectData extends
   protected boolean isFileUploadable;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -115,15 +114,16 @@ public class CabinetSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
-      ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("p1c-sort"));
-      logger.debug("[CabinetSelectData] Init Parameter. : "
-        + ALEipUtils
+      try {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
           .getPortlet(rundata, context)
           .getPortletConfig()
           .getInitParameter("p1c-sort"));
+      } catch (RuntimeException e) {
+        throw e;
+      } catch (Exception e) {
+        ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "update_date");
+      }
     }
 
     int fid = 0;
@@ -163,7 +163,7 @@ public class CabinetSelectData extends
         } catch (Exception e) {
           fid = CabinetUtils.ROOT_FODLER_ID;
         }
-      } else if (table_colum_num == 4) {
+      } else if (table_colum_num == 2 || table_colum_num == 4) {
         String id =
           ALEipUtils
             .getPortlet(rundata, context)
@@ -276,7 +276,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -304,8 +304,8 @@ public class CabinetSelectData extends
 
       SelectQuery<EipTCabinetFile> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
-      if (ALEipUtils.getTemp(rundata, context, LIST_SORT_STR).equals(
-        "update_date")
+      String tmpsort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
+      if ((tmpsort != null && "update_date".equals(tmpsort))
         && ALEipUtils.getTemp(rundata, context, LIST_SORT_TYPE_STR) == null) {
         ALEipUtils.setTemp(
           rundata,
@@ -339,7 +339,7 @@ public class CabinetSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -376,17 +376,39 @@ public class CabinetSelectData extends
     }
 
     if (!(post_name.equals("") || post_name.equals("0"))) {
-      HashSet<Integer> userIds = new HashSet<Integer>();
-      List<Integer> userId = ALEipUtils.getUserIds(post_name);
-      if (userId.isEmpty()) {
-        userId.add(-1);
+      boolean existPost = false;
+      for (int i = 0; i < myGroupList.size(); i++) {
+        String pid = myGroupList.get(i).getName().toString();
+        if (pid.equals(post_name)) {
+          existPost = true;
+          break;
+        }
       }
-      userIds.addAll(userId);
-      Expression exp =
-        ExpressionFactory.inExp(
-          EipTCabinetFile.CREATE_USER_ID_PROPERTY,
-          userIds);
-      query.andQualifier(exp);
+      Map<Integer, ALEipPost> map = ALEipManager.getInstance().getPostMap();
+      for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+        String pid = item.getValue().getGroupName().toString();
+        if (pid.equals(post_name)) {
+          existPost = true;
+          break;
+        }
+      }
+
+      if (existPost) {
+        HashSet<Integer> userIds = new HashSet<Integer>();
+        List<Integer> userId = ALEipUtils.getUserIds(post_name);
+        if (userId.isEmpty()) {
+          userId.add(-1);
+        }
+        userIds.addAll(userId);
+        Expression exp =
+          ExpressionFactory.inExp(
+            EipTCabinetFile.CREATE_USER_ID_PROPERTY,
+            userIds);
+        query.andQualifier(exp);
+      } else {
+        post_name = "0";
+        updatePostNames();
+      }
     }
 
     query.distinct(true);
@@ -395,7 +417,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -434,6 +456,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -443,7 +466,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    * @throws ALPageNotFoundException
@@ -477,6 +500,7 @@ public class CabinetSelectData extends
         createUserName = createUser.getAliasName().getValue();
       }
       rd.setCreateUser(createUserName);
+      rd.setCreateUserId(record.getCreateUserId());
       rd.setCreateDate(new SimpleDateFormat(ALLocalizationUtils
         .getl10n("CABINET_YEAR_MONTH_DAY")).format(record.getCreateDate()));
       String updateUserName = "";
@@ -486,6 +510,7 @@ public class CabinetSelectData extends
         updateUserName = updateUser.getAliasName().getValue();
       }
       rd.setUpdateUser(updateUserName);
+      rd.setUpdateUserId(record.getUpdateUserId());
       rd.setUpdateDate(record.getUpdateDate());
       return rd;
     } catch (Exception ex) {
@@ -521,7 +546,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -531,7 +556,7 @@ public class CabinetSelectData extends
 
   /**
    * ファイル総数を取得する． <BR>
-   * 
+   *
    * @return
    */
   public int getFileSum() {
@@ -541,7 +566,7 @@ public class CabinetSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -585,7 +610,7 @@ public class CabinetSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -629,4 +654,5 @@ public class CabinetSelectData extends
   public String getSelectedPostName() {
     return post_name;
   }
+
 }

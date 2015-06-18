@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.note.util;
 
 import java.io.StringWriter;
@@ -122,27 +121,27 @@ public class NoteUtils {
 
     int uid = ALEipUtils.getUserId(rundata);
 
-    // アクセス権の判定
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
-        .valueOf(noteId));
-    Expression exp2 =
-      ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, uid);
-
-    List<EipTNoteMap> maps =
-      Database.query(EipTNoteMap.class, exp1.andExp(exp2)).fetchList();
-    if (maps == null || maps.size() == 0) {
-      // 指定したアカウントIDのレコードが見つからない場合
-      logger.debug("[Note] Invalid user access...");
-      return null;
-    }
-
     try {
       if (noteId == null
         || noteId.equals("")
         || Integer.valueOf(noteId) == null) {
         // アカウントIDが空の場合
         logger.debug("[Note] Empty NoteID...");
+        return null;
+      }
+
+      // アクセス権の判定
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTNoteMap.NOTE_ID_PROPERTY, Integer
+          .valueOf(noteId));
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTNoteMap.USER_ID_PROPERTY, uid);
+
+      List<EipTNoteMap> maps =
+        Database.query(EipTNoteMap.class, exp1.andExp(exp2)).fetchList();
+      if (maps == null || maps.size() == 0) {
+        // 指定したアカウントIDのレコードが見つからない場合
+        logger.debug("[Note] Invalid user access...");
         return null;
       }
 
@@ -541,13 +540,13 @@ public class NoteUtils {
     if (note.getSubjectType().equals("0")) {
       subject = note.getCustomSubject();
     } else if (note.getSubjectType().equals("1")) {
-      subject = "再度電話します";
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN_NO_PERIOD");
     } else if (note.getSubjectType().equals("2")) {
-      subject = "電話をしてください";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_CALL_BACK");
     } else if (note.getSubjectType().equals("3")) {
-      subject = "電話がありました";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
     } else if (note.getSubjectType().equals("4")) {
-      subject = "伝言があります";
+      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TAKE_A_MESSAGE");
     }
     return subject + " (" + note.getClientName() + ")";
   }
@@ -792,24 +791,22 @@ public class NoteUtils {
       if ("0".equals(subjectType)) {
         subject = note.getCustomSubject();
       } else if ("1".equals(subjectType)) {
-        subject = "再度電話します。";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
       } else if ("2".equals(subjectType)) {
-        subject = "折返しお電話ください。";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
       } else if ("3".equals(subjectType)) {
-        subject = "連絡があったことをお伝えください。";
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
       } else if ("4".equals(subjectType)) {
-        subject = "伝言をお願いします。";
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
       String title =
-        new StringBuilder(note.getClientName())
-          .append("様より伝言「")
-          .append(subject)
-          .append("」がありました。")
-          .toString();
+        ALLocalizationUtils.getl10nFormat("NOTE_CLIENT_NAME_SUBJECT_TEXT", note
+          .getClientName(), subject);
       String portletParams =
         new StringBuilder("?template=NoteDetailScreen")
           .append("&entityid=")
           .append(note.getNoteId())
+          .append("&tab=received_notes")
           .toString();
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Note")

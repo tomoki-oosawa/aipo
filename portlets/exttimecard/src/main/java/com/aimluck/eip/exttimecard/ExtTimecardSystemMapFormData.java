@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.exttimecard;
 
 import java.util.Calendar;
@@ -35,6 +34,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード集計のフォームデータを管理するためのクラスです。 <br />
@@ -74,6 +74,7 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
 
     start_time_hour = new ALNumberField();
@@ -82,22 +83,26 @@ public class ExtTimecardSystemMapFormData extends ALAbstractFormData {
     end_time_minute = new ALNumberField();
 
     worktime_in = new ALNumberField();
-    worktime_in.setFieldName("勤務時間内の勤務時間");
+    worktime_in.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_WORKTIME"));
     worktime_in.setNotNull(true);
     worktime_in.limitMinValue(0);
 
     resttime_in = new ALNumberField();
-    resttime_in.setFieldName("勤務時間内の休憩時間");
+    resttime_in.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_RESTTIME"));
     resttime_in.setNotNull(true);
     resttime_in.limitValue(0, 360);
 
     worktime_out = new ALNumberField();
-    worktime_out.setFieldName("勤務時間外の勤務時間");
+    worktime_out.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_WORKTIME"));
     worktime_out.setNotNull(true);
     worktime_out.limitMinValue(0);
 
     resttime_out = new ALNumberField();
-    resttime_out.setFieldName("勤務時間外の休憩時間");
+    resttime_out.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_RESTTIME"));
     resttime_out.setNotNull(true);
     resttime_out.limitValue(0, 360);
   }

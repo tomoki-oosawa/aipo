@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.webmail;
 
 import java.util.ArrayList;
@@ -49,6 +48,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * メール送信時に使用するアドレス帳のフォームデータを管理するためのクラスです。 <br />
@@ -263,20 +263,24 @@ public class WebMailAddressbookFormData extends ALAbstractFormData {
   /**
    *
    */
+  @Override
   public void initField() {
     // 社内／社外
     type_company = new ALStringField();
-    type_company.setFieldName("社内／社外");
+    type_company.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_IN_OUT_OFFICE"));
     type_company.setValue(Integer.toString(TYPE_INTERNAL));
 
     // グループ名
     current_internal_group_name = new ALStringField();
-    current_internal_group_name.setFieldName("グループ名");
+    current_internal_group_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_GROUP_NAME"));
     current_internal_group_name.setValue("all");
 
     // グループ名
     current_external_group_name = new ALStringField();
-    current_external_group_name.setFieldName("グループ名");
+    current_external_group_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_GROUP_NAME"));
     current_external_group_name.setValue("all");
   }
 

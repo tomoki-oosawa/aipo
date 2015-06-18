@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.List;
@@ -45,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * Webデータベース項目定義情報の検索データを管理するクラスです。
- * 
+ *
  */
 public class GpdbItemSelectData extends
     ALAbstractSelectData<EipTGpdbItem, EipTGpdbItem> implements ALData {
@@ -65,13 +61,13 @@ public class GpdbItemSelectData extends
 
   /** フィルタ値のキー */
   private static final String RECORD_LIST_FILTER_STR = new StringBuffer()
-    .append(GpdbRecordSelectData.class.getName())
+    .append(GpdbRecordSelectData.class.getSimpleName())
     .append(ALEipConstants.LIST_FILTER)
     .toString();
 
   /**
    * 初期設定
-   * 
+   *
    * @param action
    *          ALAction
    * @param rundata
@@ -95,7 +91,7 @@ public class GpdbItemSelectData extends
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -123,7 +119,7 @@ public class GpdbItemSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -138,7 +134,7 @@ public class GpdbItemSelectData extends
 
   /**
    * 詳細データを取得します。
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -153,7 +149,7 @@ public class GpdbItemSelectData extends
 
   /**
    * ResultDataを取得します。（一覧データ）
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -165,7 +161,7 @@ public class GpdbItemSelectData extends
 
   /**
    * ResultDataを取得します。（詳細データ）
-   * 
+   *
    * @param record
    *          レコード
    * @return ResultData
@@ -177,7 +173,7 @@ public class GpdbItemSelectData extends
 
   /**
    * 項目情報を取得する
-   * 
+   *
    * @return 項目情報
    */
   @Override
@@ -189,7 +185,7 @@ public class GpdbItemSelectData extends
 
   /**
    * Webデータベースの総数を取得する
-   * 
+   *
    * @return Webデータベース総数
    */
   public int getGpdbSum() {
@@ -198,7 +194,7 @@ public class GpdbItemSelectData extends
 
   /**
    * Webデータベースの全リストを返す
-   * 
+   *
    * @return Webデータベースの全リスト
    */
   public List<GpdbResultData> getGpdbAllList() {
@@ -207,7 +203,7 @@ public class GpdbItemSelectData extends
 
   /**
    * 項目定義の入力項目が出力対象かを判定する
-   * 
+   *
    * @param field
    *          入力項目フィールド名
    * @param type
@@ -220,7 +216,7 @@ public class GpdbItemSelectData extends
 
   /**
    * WebデータベースIDの設定
-   * 
+   *
    */
 
   public void setGpdbId(Context context, RunData rundata) {

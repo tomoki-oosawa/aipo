@@ -1,0 +1,105 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+
+#set ($addProject = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectFormScreen").addQueryData("entityid","new")))
+## ---------------------------------------------------------------------------
+#AUIcontentsAreaHeader()
+<h2>$l10n.PROJECT_PROJECT_MANAGEMENT</h2>
+#AUISummaryDiv()
+	#AUIbuttonAction("$l10n.PROJECT_DO_PROJECT_ADD" "javascript:aipo.common.showDialog('$addProject','$!portlet.ID',aipo.project.onLoadProjectDialog);")
+#AUISummaryDivfooter()
+
+<div id="listmessageDiv"></div>
+#ALajaxlistformheader("$l10n.PROJECT_PROJECT")
+#if($result.ProjectCount == 0)
+#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_EMPTY_SHORT_MESSAGE")
+#else
+    #AUISummaryDiv()
+    #AUIajaxpageview('ProjectListScreen' $result)
+    #AUISummaryDivfooter()
+
+    <table class="auiRowTable auiMbTable wide">
+		<tbody>
+    		<tr>
+    #ALtdhead("#ALajaxsort('project_name' $l10n.PROJECT_NAME $result 'ProjectListScreen')")
+    #ALtdhead("$l10n.PROJECT_PROGRESS_RATE")
+    #ALtdhead("$l10n.PROJECT_ACTUAL_WORKLOAD")
+    #ALtdhead("$l10n.PROJECT_EXPECTED_WORKLOAD")
+    #ALtdhead("$l10n.PROJECT_REST_OF_TASK_")
+    #ALtdhead("$l10n.PROJECT_ADMIN_USER")
+    #ALtdhead("$l10n.COMMON_UPDATE_DATE")
+			</tr>
+    #foreach ($record in $result.List)
+    	#if($!{record.planProgressRate.toString()} == "")
+    		#set($planProgressRate = "-")
+    	#else
+    		#set($planProgressRate = "$!{record.planProgressRate}%")
+    	#end
+    	#if($!{record.PlanWorkload.toString()} == "")
+    		#set($planWorkload = "-")
+    	#else
+    		#set($planWorkload = "$!{record.PlanWorkloadFormat}h")
+    	#end
+    	#if($!{record.Workload.toString()} == "")
+    		#set($workload = "-")
+    	#else
+    		#set($workload = "$!{record.WorkloadFormat}h")
+    	#end
+    	#if($!{record.ForecastWorkload.toString()} == "")
+    		#set($forecastWorkload = "-")
+    	#else
+    		#set($forecastWorkload = "$!{record.ForecastWorkloadFormat}h")
+    	#end
+    	<tr #if($record.isDelay()) class="bgRed" #end>
+    	#ALtdcellheaderAtt('class="auiMTCaption"')
+    		<div>
+    		<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectDetailScreen").addQueryData("entityid",$record.ProjectId))');">$!record.ProjectNameHtml</a>
+    		</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center" nowrap')
+    		<div>$!{record.progressRate}%</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$workload</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$planWorkload</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$!{record.ReminderTask}</div>
+    	#ALtdcellfooter()
+    	#ALtdcellheader()
+    		<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.AdminUserId,arguments[0])">$!record.AdminUserName</a></div>
+    	#ALtdcellfooter()
+    	#ALtdcellheaderAtt('class="center mb_hide" nowrap')
+    		<div>$!{record.TaskUpdateDate}</div>
+    	#ALtdcellfooter()
+    	</tr>
+    #end
+    </table>
+    #AUISummaryDiv()
+    #AUIajaxpageview('ProjectListScreen' $result)
+    #AUISummaryDivfooter()
+#end
+#ALformfooter()
+#AUIcontentsAreaFooter()
+
+#parse("/portlets/html/project-widgets.vm")

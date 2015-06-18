@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -15,11 +15,7 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * General Purpose Database Portlet was developed by Advance,Inc.
- * http://www.a-dvance.co.jp/
  */
-
 package com.aimluck.eip.gpdb;
 
 import java.util.ArrayList;
@@ -310,9 +306,11 @@ public class GpdbRecordSelectData extends
    * @param context
    *          Context
    * @return 項目定義オブジェクト
+   * @throws ALPageNotFoundException
    */
   @Override
-  protected EipTGpdbRecord selectDetail(RunData rundata, Context context) {
+  protected EipTGpdbRecord selectDetail(RunData rundata, Context context)
+      throws ALPageNotFoundException {
     // セッション情報を設定
     setCurrentFilterAndSort(rundata, context);
 

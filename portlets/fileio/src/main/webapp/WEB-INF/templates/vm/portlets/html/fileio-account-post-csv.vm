@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 <!--
 function onClick_Select(button){
 	disableButton(button.form);
@@ -227,9 +226,9 @@ function hide_Attention(){
 <tr>
 <td colspan="2" class="center">
 	#if($!result.List && $!result.List.size() > 0)
-	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="$l10n.FILEIO_LOAD" class="button" name="send" />
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);return false;" value="$l10n.FILEIO_LOAD" class="button" name="send" />
 	#else
-	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);" value="$l10n.FILEIO_LOAD" class="auiButtonAction" name="send" />
+	<input type="submit" onClick="import_csv();aimluck.io.setHiddenValue(this);return false;" value="$l10n.FILEIO_LOAD" class="auiButtonAction" name="send" />
 	#end
 </td>
 </tr>

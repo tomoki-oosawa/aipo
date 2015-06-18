@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.List;
@@ -60,19 +59,20 @@ public class FileIOAddressBookCsvFileScreen extends ALCSVScreen {
 
       sb.append("名前（姓）,名前（名）,フリガナ（姓）,フリガナ（名）");
       sb.append(",役職,電話番号,携帯電話番号,E-mail,E-mail（携帯電話）");
-      sb.append(",会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL");
+      sb.append(",会社名,部課,フリガナ（会社名）,郵便番号,住所,会社電話番号,会社Fax,URL,備考");
       sb.append(LINE_SEPARATOR);
       sb.append("山田,太郎,ヤマダ,タロウ");
       sb.append(",営業部長,99-99-91,999-9999-9999,a@a.com,a@a.ne.jp");
-      sb.append(",いとう貿易,営業部,イトウボウエキ,111-1111,東京都○○,99-99-99,99-99-99,http://");
+      sb
+        .append(",いとう貿易,営業部,イトウボウエキ,111-1111,東京都○○,99-99-99,99-99-99,http://,1990年より勤務");
       sb.append(LINE_SEPARATOR);
       sb.append("鈴木,花子,スズキ,ハナコ");
       sb.append(",業務部長,99-99-92,999-9999-9999,b@b.com,b@bne.jp");
-      sb.append(",すずき製作所,業務部,スズキセイサクショ,,,,,");
+      sb.append(",すずき製作所,業務部,スズキセイサクショ,,,,,,");
       sb.append(LINE_SEPARATOR);
       sb.append("鈴木,太郎,スズキ,タロウ");
       sb.append(",,99-99-91,999-9999-9999,c@c.com,c@c.ne.jp");
-      sb.append(",,,,,,,,,");
+      sb.append(",,,,,,,,,,");
       sb.append(LINE_SEPARATOR);
 
       return sb.toString();

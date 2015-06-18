@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoカテゴリの複数削除を行うためのクラスです。 <BR>
- * 
+ *
  */
 public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
 
@@ -90,7 +89,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -140,7 +139,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
 
       // 一覧表示画面のフィルタに設定されているカテゴリのセッション情報を削除
       String filtername =
-        ToDoSelectData.class.getName() + ALEipConstants.LIST_FILTER;
+        ToDoSelectData.class.getSimpleName() + ALEipConstants.LIST_FILTER;
       ALEipUtils.removeTemp(rundata, context, filtername);
 
     } catch (Throwable t) {
@@ -154,7 +153,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -165,7 +164,7 @@ public class ToDoCategoryMultiDelete extends ALAbstractCheckList {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

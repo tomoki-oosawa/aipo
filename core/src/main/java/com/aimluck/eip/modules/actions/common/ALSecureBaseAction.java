@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions.common;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -157,10 +155,8 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
       ALEipConstants.ENTITY_ID));
     context.put("utils", new ALCommonUtils());
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
+
     if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
       "changeToPc"))) { // PC表示切り替え用
       context.put("client", ALEipUtils.getClient(rundata));
@@ -173,6 +169,8 @@ public abstract class ALSecureBaseAction extends SecureVelocityPortletAction
         context.put("SaaSMessageActionUrl", obj1.toString());
       }
     }
+
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
 
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 {
 	// 'この'+button.form.name+'を削除してよろしいですか？'
 	DW_STR:"${dw_del} ${dw_this} ${dw_name}?",
@@ -26,6 +25,10 @@
 	DWS_STR:"${dws_del} ${dws_sel} ${dws_name}?",
 	DWS_DEL:"Delete",
 	DWS_SEL:"selected",
+	// 'すべての'+button.form.name+'を削除してよろしいですか？'
+	DWA_STR:"${dwa_del} ${dwa_sel} ${dwa_name}?",
+	DWA_DEL:"Delete",
+	DWA_SEL:"all",
 	// "チェックボックスを１つ以上選択してください。"
 	VERIFYCB_STR:"${verifycb_sel} ${verifycb_gt_one} ${verifycb_cb}.",
 	VERIFYCB_SEL:"Select",
@@ -74,5 +77,7 @@
 	// 新しく入力する
 	NEW_INPUT_STR:"New entry",
 	// 一覧から選択する
-	SELECT_FROM_LIST_STR:"Select from the list."
+	SELECT_FROM_LIST_STR:"Select from the list.",
+	// 閉じる
+	CLOSE_STR:"Close"
 }

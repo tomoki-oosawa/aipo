@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -33,6 +33,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALURLConnectionUtils;
 
 /**
  * 各ポートレットでの添付ファイルを表示させるクラスです。 <br />
@@ -62,6 +63,9 @@ public class ProxyScreen extends ALVelocityScreen {
       return;
     }
 
+    // normalize()でエラーが起きないようにurlStringから改行コードを排除する処理
+    urlString = urlString.replaceAll("\\n", "");
+
     URI uri = new URI(urlString).normalize();
     String path =
       uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
@@ -72,7 +76,12 @@ public class ProxyScreen extends ALVelocityScreen {
         uri.getAuthority(),
         path));
 
-    InputStream in = url.openStream();
+    URLConnection urlCon = ALURLConnectionUtils.openUrlConnection(url);
+    urlCon.addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
+    urlCon.addRequestProperty(
+      "Accept-Encoding",
+      ALURLConnectionUtils.ACCEPT_ENCODING);
+    InputStream in = urlCon.getInputStream();
     ServletOutputStream out = null;
     HttpServletResponse response = rundata.getResponse();
     out = response.getOutputStream();

@@ -29,7 +29,7 @@ package org.apache.jetspeed.portal.portlets;
  *  or a sub-class there of.
  * </p>
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  */
 public class CustomizerVelocityPortlet extends VelocityPortlet
 {

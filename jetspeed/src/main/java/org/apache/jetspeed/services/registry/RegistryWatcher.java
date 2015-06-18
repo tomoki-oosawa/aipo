@@ -31,7 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
  * Monitors a Registry directory and notifies the associated Registry
  * of file updates.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @version $Id: RegistryWatcher.java,v 1.10 2004/02/23 03:31:50 jford Exp $
  */
 public class RegistryWatcher extends Thread

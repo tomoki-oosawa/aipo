@@ -1,0 +1,83 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+<div class="messageSummaryHead">
+	<div class="inner">
+		<select id="messageUserGroupSelect" name="group" onchange="aipo.message.searchUserList();"class="w100">
+			<option value="all">$l10n.SCHEDULE_ALL_GROUP</option>
+    #if($result.MyGroupList.size() > 0)
+		<option value="all">----------</option>
+	#end
+	#foreach( $record in $result.MyGroupList )
+		<option value="$!record.Name" #if($!result.TargetGroupName == $!record.Name.toString()) selected="selected" #end>$!record.AliasName</option>
+	#end
+    #if($result.PostMap && $!result.PostMap.size() > 0)
+		<option value="all">----------</option>
+	#end
+    #foreach( $record in $result.PostMap )
+		<option value="$!record.GroupName" #if($!result.TargetGroupName == $!record.GroupName.toString()) selected="selected" #end>$!record.PostName</option>
+    #end
+		</select>
+	</div>
+</div>
+<div class="messageUserlist scroll" id="messageUserlist">
+#if($result.List.size() == 0)
+#if($!isSearch)
+<ul class="messageSummary">
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
+#end
+#AUIEmptyMessage("" "$l10n.MESSAGE_ROOM_USER_EMPTY_MESSAGE")
+#else
+#set ($currentIndex = "")
+#set ($isFirst = true)
+#foreach ($record in $result.List)
+#if($currentIndex != $!record.getIndex().getValue())
+#if(!$isFirst)</ul>#end
+#if($!isSearch && $isFirst)
+<ul>
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+</ul>
+#end
+<div class="index">$!record.Index</div><ul>
+#set ($isFirst = false)
+#end
+#if($isFirst)
+<ul>
+#if($!isSearch)
+	<li><a href="javascript:void(0)" onclick="aipo.message.clearSearchUserList();" class="searchClear"><i class="icon-remove"></i>$l10n.MESSAGE_SEARCH_CLEAR</a></li>
+#end
+#set ($isFirst = false)
+#end
+#set ($currentIndex = $!record.getIndex().getValue())
+<li id="messageUser$!record.UserId" #if("$!currentUser" == "$!record.UserId")class="active"#end>
+	<a href="javascript:void(0)" onclick="aipo.message.selectUser($!record.UserId)">
+		<span class="avatar">
+		#if($!record.isHasPhoto())
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#else
+			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#end
+		</span>
+		<span class="name">$!record.LastName $!record.FirstName</span>
+	</a>
+</li>
+#end
+</ul>
+#end
+</div>

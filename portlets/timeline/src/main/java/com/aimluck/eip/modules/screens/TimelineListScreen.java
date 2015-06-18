@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -57,6 +56,9 @@ public class TimelineListScreen extends TimelineScreen {
       if (rundata.getParameters().containsKey("scrollTop")) {
         scrollTop = rundata.getParameters().getInt("scrollTop");
       }
+      if (rundata.getUserAgent().trim().indexOf("Mac") != -1) {
+        context.put("isMacOS", "true");
+      }
       TimelineSelectData listData = new TimelineSelectData();
       listData.initField();
       listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
@@ -66,7 +68,7 @@ public class TimelineListScreen extends TimelineScreen {
       listData.setScrollTop(scrollTop);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ja/ajax-timeline-list.vm";
+      String layout_template = "portlets/html/ajax-timeline-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

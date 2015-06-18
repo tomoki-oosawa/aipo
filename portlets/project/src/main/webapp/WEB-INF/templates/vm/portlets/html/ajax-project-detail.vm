@@ -1,0 +1,92 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader("$l10n.PROJECT_PROJECT_DETAIL")
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxdetailformheader("$l10n.PROJECT_PROJECT")
+#ALtableheaderWide()
+<div id="messageDiv"></div>
+
+#ALtdcaption("$l10n.PROJECT_NAME")
+#ALtditem($!result.Detail.ProjectNameHtml)
+
+#ALtdcaption("$l10n.PROJECT_EXPLANATION")
+#ALtditem($!result.Detail.Explanation)
+
+#ALtdcaption("$l10n.PROJECT_ADMIN_USER")
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.AdminUserId.value},arguments[0])">$!result.Detail.AdminUserName</a>
+#ALtditemfooter()
+#ALtdcaption("$l10n.PROJECT_MENVERS")
+#ALtditemheader()
+<ul>
+#foreach($record in $!result.Detail.MemberList)
+<li>
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.value},arguments[0])">$!record.AliasName</a>
+</li>
+#end
+</ul>
+#ALtditemfooter()
+#ALtdcaption("$l10n.COMMON_CREATE_DATE")
+#ALtditem($!result.Detail.CreateDate.toString())
+
+#ALtdcaption("$l10n.COMMON_UPDATE_DATE")
+#ALtditem($!result.Detail.UpdateDate.toString())
+
+#ALtdcaption("$l10n.COMMON_UPDATE_USER")
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUserId.value},arguments[0])">$!result.Detail.UpdateUserName</a>
+#ALtditemfooter()
+#ALtdcaption("$l10n.COMMON_CREATE_USER")
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUserId.value},arguments[0])">$!result.Detail.CreateUserName</a>
+#ALtditemfooter()
+
+#if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption("$l10n.PROJECT_FILE_ATTACH")
+#ALtditemheader()
+
+<ul>
+	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+	<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
+		#if($attachmentFile.isImage())
+		<div id='popc' style='position:absolute'></div>
+		<div class="thumbBlock">
+			<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectFileRawScreen').addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+				<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectFileThumbnailScreen").addQueryData("attachmentIndex", $attachmentFile.FileId)">
+			</a><br>
+		</div>
+		#end
+	</li>
+	#end
+</ul>
+#ALtditemfooter()
+#end
+
+#ALtablefooter()
+
+#ALbuttonheader()
+##ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectFormScreen')" "$!portlet.ID" "aipo.project.onLoadProjectDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectFormJSONScreen').addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

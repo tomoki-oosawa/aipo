@@ -23,7 +23,7 @@ import org.apache.jetspeed.om.profile.Security;
  * Castor serialization.
  * 
  * @see org.apache.jetspeed.om.registry.Security
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaï¿½l Luta</a>
  * @version $Id: PsmlSecurity.java,v 1.5 2004/02/23 03:02:54 jford Exp $
  */
 public class PsmlSecurity implements Security, java.io.Serializable

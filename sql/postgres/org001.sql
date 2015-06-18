@@ -1,6 +1,6 @@
 --
 -- Aipo is a groupware program developed by Aimluck,Inc.
--- Copyright (C) 2004-2011 Aimluck,Inc.
+-- Copyright (C) 2004-2015 Aimluck,Inc.
 -- http://www.aipo.com
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -184,6 +184,7 @@ CREATE TABLE EIP_M_POST
     OUT_TELEPHONE VARCHAR (15),
     FAX_NUMBER VARCHAR (15),
     GROUP_NAME VARCHAR (99),
+    SORT INTEGER,
     CREATE_DATE DATE,
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(POST_ID),
@@ -198,6 +199,7 @@ CREATE TABLE EIP_M_POSITION
 (
     POSITION_ID INTEGER NOT NULL,
     POSITION_NAME VARCHAR (64) NOT NULL,
+    SORT INTEGER,
     CREATE_DATE DATE,
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(POSITION_ID)
@@ -215,6 +217,8 @@ CREATE TABLE EIP_M_USER_POSITION
     POSITION INTEGER,
     PRIMARY KEY(ID)
 );
+
+CREATE INDEX eip_m_user_position_index ON EIP_M_USER_POSITION(POSITION);
 
 -----------------------------------------------------------------------------
 -- EIP_T_COMMON_CATEGORY
@@ -256,6 +260,8 @@ CREATE TABLE EIP_T_SCHEDULE
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(SCHEDULE_ID)
 );
+
+CREATE INDEX eip_t_schedule_date_index ON EIP_T_SCHEDULE(START_DATE, END_DATE, UPDATE_DATE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_SCHEDULE_MAP
@@ -541,6 +547,8 @@ CREATE TABLE EIP_T_NOTE_MAP
    PRIMARY KEY(ID)
 );
 
+CREATE INDEX eip_t_note_map_user_id_index ON EIP_T_NOTE_MAP(USER_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_CATEGORY
 -----------------------------------------------------------------------------
@@ -590,6 +598,8 @@ CREATE TABLE EIP_T_MSGBOARD_TOPIC
     FOREIGN KEY (CATEGORY_ID) REFERENCES EIP_T_MSGBOARD_CATEGORY (CATEGORY_ID) ON DELETE CASCADE,
     PRIMARY KEY(TOPIC_ID)
 );
+
+CREATE INDEX eip_t_msgboard_topic_category_id_index ON EIP_T_MSGBOARD_TOPIC(CATEGORY_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_MSGBOARD_FILE
@@ -786,6 +796,7 @@ CREATE TABLE EIP_FACILITY_GROUP
     ID INTEGER NOT NULL,
     FACILITY_ID INTEGER NOT NULL,
     GROUP_ID INTEGER NOT NULL,
+    SORT INTEGER,
     PRIMARY KEY(ID),
     FOREIGN KEY (FACILITY_ID) REFERENCES EIP_M_FACILITY (FACILITY_ID) ON DELETE CASCADE,
     FOREIGN KEY (GROUP_ID) REFERENCES TURBINE_GROUP (GROUP_ID)
@@ -856,6 +867,8 @@ CREATE TABLE EIP_T_EXT_TIMECARD
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(TIMECARD_ID)
 );
+
+CREATE INDEX eip_t_ext_timecard_user_id_index ON EIP_T_EXT_TIMECARD(USER_ID);
 
 -----------------------------------------------------------------------------
 -- EIP_T_EXT_TIMECARD_SYSTEM
@@ -1038,7 +1051,8 @@ CREATE TABLE EIP_T_EVENTLOG
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(EVENTLOG_ID)
 );
-
+CREATE INDEX eip_t_eventlog_event_type_index ON EIP_T_EVENTLOG(EVENT_TYPE);
+CREATE INDEX eip_t_eventlog_user_id_index ON EIP_T_EVENTLOG(USER_ID);
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_ROLE
 -----------------------------------------------------------------------------
@@ -1054,6 +1068,8 @@ CREATE TABLE EIP_T_ACL_ROLE
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(ROLE_ID)
 );
+
+CREATE INDEX eip_t_acl_role_acl_type_index ON EIP_T_ACL_ROLE(ACL_TYPE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_ACL_PORTLET_FEATURE
@@ -1080,7 +1096,7 @@ CREATE TABLE EIP_T_ACL_USER_ROLE_MAP
     PRIMARY KEY(ID)
 );
 
-
+CREATE INDEX eip_t_acl_user_role_map_role_id_index ON EIP_T_ACL_USER_ROLE_MAP(ROLE_ID);
 
 CREATE TABLE jetspeed_group_profile (
     COUNTRY varchar(2) NULL,
@@ -1250,6 +1266,7 @@ CREATE TABLE EIP_M_FACILITY_GROUP
 (
     GROUP_ID INTEGER NOT NULL,
     GROUP_NAME VARCHAR (64),
+    SORT INTEGER,
     PRIMARY KEY(GROUP_ID)
 );
 
@@ -1380,7 +1397,7 @@ CREATE TABLE EIP_T_TIMELINE_LIKE
     TIMELINE_ID INTEGER NOT NULL,
     OWNER_ID INTEGER,
     CREATE_DATE TIMESTAMP DEFAULT now(),
-    FOREIGN KEY (TIMELINE_LIKE_ID) REFERENCES EIP_T_TIMELINE_LIKE (TIMELINE_LIKE_ID) ON DELETE CASCADE,
+    FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_TIMELINE (TIMELINE_ID) ON DELETE CASCADE,
     PRIMARY KEY(TIMELINE_LIKE_ID),
     UNIQUE (TIMELINE_ID, OWNER_ID)
 );
@@ -1496,6 +1513,9 @@ CREATE TABLE EIP_T_GPDB_RECORD
     PRIMARY KEY (GPDB_RECORD_ID)
 );
 
+CREATE INDEX eip_t_gpdb_record_record_no_index ON EIP_T_GPDB_RECORD (RECORD_NO);
+CREATE INDEX eip_t_gpdb_record_gpdb_id_index ON EIP_T_GPDB_RECORD (GPDB_ID);
+
 -----------------------------------------------------------------------------
 -- EIP_T_GPDB_RECORD_FILE
 -----------------------------------------------------------------------------
@@ -1579,6 +1599,277 @@ CREATE TABLE EIP_T_WIKI_FILE
 );
 
 CREATE INDEX eip_t_file_wiki_id_index ON EIP_T_WIKI_FILE (WIKI_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT (
+      PROJECT_ID         INTEGER                        NOT NULL    --プロジェクトID
+    , PROJECT_NAME       TEXT                           NOT NULL    --プロジェクト名
+    , EXPLANATION        TEXT                                       --説明
+    , ADMIN_USER_ID      INTEGER                        NOT NULL    --管理者
+    , PROGRESS_FLG       CHARACTER VARYING(1)           NOT NULL    --進捗率入力フラグ 1:進捗率を入力する 0:タスクを元に自動計算する
+    , PROGRESS_RATE      INTEGER                                    --進捗率
+    , CREATE_USER_ID     INTEGER                        NOT NULL    --登録ユーザーID
+    , UPDATE_USER_ID     INTEGER                        NOT NULL    --更新ユーザーID
+    , CREATE_DATE        TIMESTAMP                                                          --登録日
+    , UPDATE_DATE        TIMESTAMP                                                          --更新日
+    , PRIMARY KEY (PROJECT_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_MEMBER (
+      ID          INTEGER                        NOT NULL    --ID
+    , PROJECT_ID  INTEGER                        NOT NULL    --プロジェクトID
+    , USER_ID     INTEGER                        NOT NULL    --ユーザーID
+    , PRIMARY KEY (ID)
+);
+
+CREATE INDEX eip_t_project_member_project_id_user_id_index ON EIP_T_PROJECT_MEMBER (PROJECT_ID, USER_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK (
+      TASK_ID                INTEGER                        NOT NULL    --タスクID
+    , PARENT_TASK_ID         INTEGER                                    --親タスクID
+    , PROJECT_ID             INTEGER                        NOT NULL    --プロジェクトID
+    , TRACKER                TEXT                           NOT NULL    --トラッカー 1:機能 2:バグ 3:サポート
+    , TASK_NAME              TEXT                           NOT NULL    --タスク名
+    , EXPLANATION            TEXT                                       --説明
+    , STATUS                 TEXT                           NOT NULL    --ステータス 1:新規 2:進行中 3:解決 4:フィードバック 5:終了 6:却下
+    , PRIORITY               TEXT                           NOT NULL    --優先度 1:高 2:中 3:低
+    , START_PLAN_DATE        DATE                                       --開始予定日
+    , END_PLAN_DATE          DATE                                       --完了予定日
+    , START_DATE             DATE                                       --開始実績日
+    , END_DATE               DATE                                       --完了実績日
+    , PLAN_WORKLOAD          DECIMAL(8,3)                               --計画工数（時間）
+    , PROGRESS_RATE          INTEGER                                    --進捗率
+    , ORDER_NO               INTEGER                                    --表示順
+    , CREATE_USER_ID         INTEGER                        NOT NULL    --登録ユーザーID
+    , UPDATE_USER_ID         INTEGER                        NOT NULL    --更新ユーザーID
+    , CREATE_DATE            TIMESTAMP                                                          --登録日
+    , UPDATE_DATE            TIMESTAMP                                                          --更新日
+    , PRIMARY KEY (TASK_ID)
+);
+
+CREATE INDEX eip_t_project_task_project_id_index ON EIP_T_PROJECT_TASK (PROJECT_ID);
+CREATE INDEX eip_t_project_task_parent_task_id_index ON EIP_T_PROJECT_TASK (PARENT_TASK_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_MEMBER (
+      ID              INTEGER                NOT NULL    --ID
+    , TASK_ID         INTEGER                NOT NULL    --タスクID
+    , USER_ID         INTEGER                NOT NULL    --ユーザーID
+    , WORKLOAD        DECIMAL(8,3)           NOT NULL    --工数
+    , PRIMARY KEY (ID)
+);
+
+CREATE INDEX eip_t_project_task_member_task_id_user_id_index ON EIP_T_PROJECT_TASK_MEMBER (TASK_ID, USER_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_COMMENT
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_COMMENT (
+      COMMENT_ID            INTEGER                        NOT NULL    --コメントID
+    , TASK_ID               INTEGER                        NOT NULL    --タスクID
+    , COMMENT               TEXT                           NOT NULL    --コメント
+    , CREATE_USER_ID        INTEGER                        NOT NULL    --登録ユーザーID
+    , CREATE_DATE           TIMESTAMP                                                          --登録日
+    , UPDATE_DATE           TIMESTAMP                                                          --更新日
+    , PRIMARY KEY (COMMENT_ID)
+);
+
+CREATE INDEX eip_t_project_task_comment_task_id_index ON EIP_T_PROJECT_TASK_COMMENT (TASK_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_FILE (
+      FILE_ID           INTEGER                NOT NULL
+    , OWNER_ID          INTEGER
+    , PROJECT_ID        INTEGER
+    , FILE_NAME         VARCHAR (128) NOT NULL
+    , FILE_PATH         TEXT                   NOT NULL
+    , FILE_THUMBNAIL    BYTEA
+    , CREATE_DATE       DATE
+    , UPDATE_DATE       TIMESTAMP
+    , PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_project_file_project_id_index ON EIP_T_PROJECT_FILE (PROJECT_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_FILE (
+      FILE_ID         INTEGER                NOT NULL
+    , OWNER_ID        INTEGER
+    , TASK_ID         INTEGER
+    , FILE_NAME       VARCHAR (128) NOT NULL
+    , FILE_PATH       TEXT                   NOT NULL
+    , FILE_THUMBNAIL  BYTEA
+    , CREATE_DATE     DATE
+    , UPDATE_DATE     TIMESTAMP
+    , PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_project_task_file_task_id_index ON EIP_T_PROJECT_TASK_FILE (TASK_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_PROJECT_TASK_COMMENT_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_PROJECT_TASK_COMMENT_FILE (
+      FILE_ID         INTEGER                NOT NULL
+    , OWNER_ID        INTEGER
+    , COMMENT_ID      INTEGER
+    , FILE_NAME       VARCHAR (128) NOT NULL
+    , FILE_PATH       TEXT                   NOT NULL
+    , FILE_THUMBNAIL  BYTEA
+    , CREATE_DATE     DATE
+    , UPDATE_DATE     TIMESTAMP
+    , PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_project_task_comment_file_comment_id_index ON EIP_T_PROJECT_TASK_COMMENT_FILE (COMMENT_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_M_PROJECT_KUBUN
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_M_PROJECT_KUBUN (
+      PROJECT_KUBUN_ID     INTEGER                        NOT NULL    --区分ID
+    , PROJECT_KUBUN_CD     TEXT                           NOT NULL    --区分コード
+    , PROJECT_KUBUN_NAME   TEXT                           NOT NULL    --区分名
+    , CREATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --登録日
+    , UPDATE_DATE          TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , PRIMARY KEY (PROJECT_KUBUN_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_M_PROJECT_KUBUN_VALUE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_M_PROJECT_KUBUN_VALUE (
+      PROJECT_KUBUN_VALUE_ID  INTEGER                        NOT NULL    --区分値ID
+    , PROJECT_KUBUN_ID        INTEGER                        NOT NULL    --区分ID
+    , PROJECT_KUBUN_VALUE_CD  TEXT                           NOT NULL    --区分値コード
+    , PROJECT_KUBUN_VALUE     TEXT                           NOT NULL    --区分値
+    , ORDER_NO                INTEGER                        NOT NULL    --表示順
+    , CREATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --登録日
+    , UPDATE_DATE             TIMESTAMP WITHOUT TIME ZONE                --更新日
+    , PRIMARY KEY (PROJECT_KUBUN_VALUE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM
+(
+    ROOM_ID INTEGER NOT NULL,
+    NAME VARCHAR (255),
+    ROOM_TYPE VARCHAR(1) DEFAULT 'G',
+    AUTO_NAME VARCHAR(1) DEFAULT 'F',
+    LAST_MESSAGE TEXT,
+    LAST_UPDATE_DATE TIMESTAMP DEFAULT NULL,
+    CREATE_USER_ID INTEGER NOT NULL,
+    PHOTO bytea,
+    PHOTO_SMARTPHONE bytea,
+    PHOTO_MODIFIED TIMESTAMP,
+    HAS_PHOTO VARCHAR (1) DEFAULT 'F',
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    PRIMARY KEY (ROOM_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE
+(
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    MESSAGE TEXT,
+    MEMBER_COUNT INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (MESSAGE_ID)
+);
+
+
+create index eip_t_message_room_id_create_date ON EIP_T_MESSAGE(ROOM_ID,CREATE_DATE);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_ROOM_MEMBER
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_ROOM_MEMBER
+(
+    ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    LOGIN_NAME VARCHAR (32) NOT NULL,
+    TARGET_USER_ID INTEGER NOT NULL,
+    FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+
+create index eip_t_message_room_member_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(TARGET_USER_ID);
+create index eip_t_message_room_member_user_id_target_user_id ON EIP_T_MESSAGE_ROOM_MEMBER(USER_ID,TARGET_USER_ID);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    MESSAGE_ID INTEGER,
+    ROOM_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+-----------------------------------------------------------------------------
+-- EIP_T_MESSAGE_READ
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_MESSAGE_READ
+(
+    ID INTEGER NOT NULL,
+    MESSAGE_ID INTEGER NOT NULL,
+    ROOM_ID INTEGER NOT NULL,
+    USER_ID INTEGER NOT NULL,
+    IS_READ VARCHAR(1) DEFAULT 'F',
+    FOREIGN KEY (MESSAGE_ID) REFERENCES EIP_T_MESSAGE (MESSAGE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (ID)
+);
+
+create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_READ);
+create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
@@ -1676,6 +1967,21 @@ CREATE SEQUENCE pk_eip_m_gpdb_kubun INCREMENT 20;
 CREATE SEQUENCE pk_eip_m_gpdb_kubun_value INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_wiki_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_comment INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_project_task_comment_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_project_kubun INCREMENT 20;
+CREATE SEQUENCE pk_eip_m_project_kubun_value INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_room INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_room_member INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_file INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_message_read INCREMENT 20;
 
 -----------------------------------------------------------------------------
 -- ALTER SEQUENCE
@@ -1757,12 +2063,21 @@ ALTER SEQUENCE pk_eip_m_gpdb_kubun OWNED BY EIP_M_GPDB_KUBUN.GPDB_KUBUN_ID;
 ALTER SEQUENCE pk_eip_m_gpdb_kubun_value OWNED BY EIP_M_GPDB_KUBUN_VALUE.GPDB_KUBUN_VALUE_ID;
 ALTER SEQUENCE pk_eip_t_wiki OWNED BY EIP_T_WIKI.WIKI_ID;
 ALTER SEQUENCE pk_eip_t_wiki_file OWNED BY EIP_T_WIKI_FILE.FILE_ID;
-
------------------------------------------------------------------------------
--- CREATE INDEX
------------------------------------------------------------------------------+
-
-CREATE INDEX eip_t_gpdb_record_record_no_index ON EIP_T_GPDB_RECORD (RECORD_NO);
+ALTER SEQUENCE pk_eip_t_project OWNED BY EIP_T_PROJECT.PROJECT_ID;
+ALTER SEQUENCE pk_eip_t_project_task OWNED BY EIP_T_PROJECT_TASK.TASK_ID;
+ALTER SEQUENCE pk_eip_t_project_task_comment OWNED BY EIP_T_PROJECT_TASK_COMMENT.TASK_ID;
+ALTER SEQUENCE pk_eip_t_project_member OWNED BY EIP_T_PROJECT_TASK_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_project_task_member OWNED BY EIP_T_PROJECT_TASK_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_project_file OWNED BY EIP_T_PROJECT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_project_task_file OWNED BY EIP_T_PROJECT_TASK_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_project_task_comment_file OWNED BY EIP_T_PROJECT_TASK_COMMENT_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_m_project_kubun OWNED BY EIP_M_PROJECT_KUBUN.PROJECT_KUBUN_ID;
+ALTER SEQUENCE pk_eip_m_project_kubun_value OWNED BY EIP_M_PROJECT_KUBUN_VALUE.PROJECT_KUBUN_VALUE_ID;
+ALTER SEQUENCE pk_eip_t_message_room OWNED BY EIP_T_MESSAGE_ROOM.ROOM_ID;
+ALTER SEQUENCE pk_eip_t_message OWNED BY EIP_T_MESSAGE.MESSAGE_ID;
+ALTER SEQUENCE pk_eip_t_message_room_member OWNED BY EIP_T_MESSAGE_ROOM_MEMBER.ID;
+ALTER SEQUENCE pk_eip_t_message_file OWNED BY EIP_T_MESSAGE_FILE.FILE_ID;
+ALTER SEQUENCE pk_eip_t_message_read OWNED BY EIP_T_MESSAGE_READ.ID;
 
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
@@ -2016,3 +2331,22 @@ INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (45, 1, '宮崎県', 45, now(), now())
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (46, 1, '鹿児島県', 46, now(), now());
 INSERT INTO EIP_M_GPDB_KUBUN_VALUE VALUES (47, 1, '沖縄県', 47, now(), now());
 SELECT setval('pk_eip_m_gpdb_kubun_value',47);
+
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (1,'tracker','トラッカー', now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (2,'status','ステータス', now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN VALUES (3,'priority','優先度', now(), now());
+SELECT setval('pk_eip_m_project_kubun',3);
+
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(1,1,'1','機能',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(2,1,'2','バグ',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(3,1,'3','サポート',3, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(4,2,'1','新規',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(5,2,'2','進行中',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(6,2,'3','フィードバック',3, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(7,2,'4','完了',4, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(8,2,'5','却下',5, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(9,2,'6','停止',6, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(10,3,'1','高',1, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(12,3,'3','低',3, now(), now());
+SELECT setval('pk_eip_m_project_kubun_value',12);

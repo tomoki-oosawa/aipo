@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.mail;
 
 import java.util.ArrayList;
@@ -87,6 +86,9 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
 
   /** 接続後のタイムアウト時間 */
   private static final String TIMEOUT = "300000";
+
+  /** UIDに追記する件数 */
+  private static final int UID_ADD_NUM = 100;
 
   protected ALPop3MailReceiverContext rcontext;
 
@@ -247,6 +249,7 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
         // 新着メールであるかを確認
         if (retrieveFlags.get(i)) {
           nowReceivedUID = pop3Folder.getUID(tmpMessage);
+
           if (nowReceivedUID == null) {
             String[] xuidls = tmpMessage.getHeader("X-UIDL");
             if (xuidls != null && xuidls.length > 0) {
@@ -289,6 +292,10 @@ public abstract class ALPop3MailReceiver implements ALMailReceiver {
             rcontext.getAccountId(),
             ALPop3MailReceiveThread.KEY_RECEIVE_MAIL_NUM,
             Integer.valueOf(receivedMailNum));
+
+          if (receivedMailNum % UID_ADD_NUM == 0 && receivedMailNum != 0) {
+            receiveFolder.saveUID(receivedUIDL);
+          }
         }
 
         finishedReceiving = true;

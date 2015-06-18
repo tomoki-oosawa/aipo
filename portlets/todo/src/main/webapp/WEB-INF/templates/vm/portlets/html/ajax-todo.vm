@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -19,38 +19,38 @@
 ## ---------------------------------------------------------------------------
 <div class="auiSummaryMeta auiFilter clearfix">
 	<input type="hidden" id="baseuri_$!{portlet.ID}" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoScreen")' />
-	<div class="filters floatLeft" id="filters_$!{portlet.ID}">
-		 #if(!$!result.issetFilter("post"))
-			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_GLOUP</span></a>
-		   #else
-		 	 #set($break=false)
-		 	 #foreach($record in $result.postList)
-		 		 #if(!$break)
-				 #if($!result.issetFilter("post",$!{record.Name}))
-					 <a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>
-		 			 #set($break=true)
-		 		 #end
-		 	 #end#end
+	<div class="filters floatLeft" id="filters_$!{portlet.ID}">#*
+		 *##if(!$!result.issetFilter("post"))#*
+			 *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_GLOUP</span></a>#*
+		   *##else#*
+		 	 *##set($break=false)#*
+		 	 *##foreach($record in $result.postList)#*
+		 		 *##if(!$break)#*
+				 *##if($!result.issetFilter("post",$!{record.Name}))#*
+					 *#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$record.AliasName</span></a>#*
+		 			 *##set($break=true)#*
+		 		 *##end#*
+		 	*##end#end#*
 
-		 	 #foreach($record in $result.PostMap)#if(!$break)
-			 	 #if($!result.issetFilter("post",$!{record.GroupName}))
-				<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>
-		 			#set($break=true)
-		 		#end
-		 	 #end#end
-		  #end
-		  #if(!$!result.issetFilter("category"))
-			 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_CATEGORY</span></a>
-		  #else
-		 	 #set($break=false)
-		 	 #foreach($record in $result.CategoryList)#if(!$break)
-		 		 #if ($!result.issetFilter("category",$!{record.CategoryId}))
-					 <a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></a>
-		 			 #set($break=true)
-		 		 #end
-		 	 #end#end
-		#end
-	 </div>
+		 	*##foreach($record in $result.PostMap)#if(!$break)#*
+				*##if($!result.issetFilter("post",$!{record.GroupName}))#*
+				*#<a href="javascript:void(0);"class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.PostName</span></a>#*
+		 			*##set($break=true)#*
+		 		*##end#*
+		 	 *##end#end#*
+		  *##end#*
+		  *##if(!$!result.issetFilter("category"))#*
+			 *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" style="display:none;" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$l10n.TODO_ALL_CATEGORY</span></a>#*
+		  *##else#*
+		 	 *##set($break=false)#*
+		 	 *##foreach($record in $result.CategoryList)#if(!$break)#*
+		 		 *##if ($!result.issetFilter("category",$!{record.CategoryId}))#*
+					 *#<a href="javascript:void(0);" class="customizeMenuIcon filterTip menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),event);"><span>$!record.CategoryName</span></a>#*
+		 			 *##set($break=true)#*
+		 		 *##end#*
+		 	 *##end#end#*
+		*##end#*
+	 *#</div>
 	<div class="floatRight">
 	#if($result.List.size() != 0)
 	#AUIajaxpageview('ToDoScreen' $result)
@@ -83,7 +83,7 @@
 </div>
 
 #if ($result.List.size() == 0)
-<div class="message">$l10n.TODO_NO_TODO_YOUR_SELECT</div>
+#AUIEmptyMessage("" "$l10n.TODO_NO_TODO")
 #else
 #if($result.TableColumNum == 4)
 #ALformheaderAction('ToDo' $jslink $portlet)
@@ -98,13 +98,15 @@
 #ALtdcellheader()
 <div>
 #if(! $!record.Public)
-<i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>&nbsp;
+#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'" "")
 #end
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
 </div>
 #ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.CategoryNameHtml</div>" '')
-#ALtdcellAtt("<div>$!record.userNameHtml</div>" '')
+#ALtdcellheader()
+<div><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.UserId.Value,arguments[0])">$!record.userNameHtml</a></div>
+#ALtdcellfooter()
 #ALtdcellAtt("<div>$!record.UpdateDate</div>" 'class="right" nowrap="nowrap"')
 </tr>
 #end
@@ -122,7 +124,7 @@
 #ALtdcellheader()
 <div>
 #if(! $!record.Public)
-<i class="auiIcon auiIconSecret" title="$l10n.TODO_CLOSE_PUBLIC"></i>&nbsp;
+#AUIiconSecretAtt("title='$l10n.TODO_CLOSE_PUBLIC'" "")
 #end
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$record.TodoId))');">$!record.TodoName</a>
 </div>

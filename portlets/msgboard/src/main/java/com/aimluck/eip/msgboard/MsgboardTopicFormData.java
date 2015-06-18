@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.msgboard;
 
 import java.util.ArrayList;
@@ -164,17 +163,19 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
   public void initField() {
     // トピック名
     topic_name = new ALStringField();
-    topic_name.setFieldName("タイトル");
+    topic_name.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_TITLE"));
     topic_name.setTrim(true);
     // カテゴリID
     category_id = new ALNumberField();
-    category_id.setFieldName("カテゴリ");
+    category_id.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_PORTLET_CATEGORY"));
     // カテゴリ
     category_name = new ALStringField();
-    category_name.setFieldName("カテゴリ名");
+    category_name.setFieldName(ALLocalizationUtils
+      .getl10n("MSGBOARD_CATEGORY_NAME"));
     // メモ
     note = new ALStringField();
-    note.setFieldName("内容");
+    note.setFieldName(ALLocalizationUtils.getl10n("MSGBOARD_NOTE"));
     note.setTrim(false);
 
     fileuploadList = new ArrayList<FileuploadLiteBean>();
@@ -498,8 +499,10 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       ALStorageService.deleteTmpFolder(uid, folderName);
 
     } catch (RuntimeException ex) {
+      Database.rollback();
       throw ex;
     } catch (Exception ex) {
+      Database.rollback();
       logger.error("msgboard", ex);
       return false;
     }
@@ -550,7 +553,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         Database.create(EipTMsgboardCategoryMap.class);
       map.setEipTMsgboardCategory(category);
       map.setUserId(Integer.valueOf(userid));
-      map.setStatus(MsgboardUtils.STAT_VALUE_OWNER);
+      map.setStatus(MsgboardUtils.STAT_VALUE_ALL);
 
       Database.commit();
 
@@ -668,6 +671,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
       // 添付ファイル保存先のフォルダを削除
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (RuntimeException ex) {
+      Database.rollback();
       throw ex;
     } catch (Exception ex) {
       Database.rollback();

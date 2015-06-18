@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.whatsnew;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class WhatsNewResultData implements ALData {
   /** ポートレット名 */
   private ALStringField portlet_name;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALDateTimeField create_date;
 
   /** 更新日 */
@@ -54,9 +53,10 @@ public class WhatsNewResultData implements ALData {
   private ALNumberField parent_id;
 
   /**
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
 
     /** Type */
@@ -65,13 +65,13 @@ public class WhatsNewResultData implements ALData {
     /** ポートレット名 */
     portlet_name = new ALStringField();
 
-    /** 登録日 */
+    /** 作成日 */
     create_date = new ALDateTimeField();
 
     /** 更新日 */
     update_date = new ALDateTimeField();
 
-    /** タイトルと作成日時 */
+    /** タイトルと作成日 */
     beans = new ArrayList<WhatsNewBean>();
 
     /** 親ID */

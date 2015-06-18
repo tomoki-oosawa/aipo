@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.portal.controllers;
 
 // Turbine stuff
-import java.util.Map;
-
 import org.apache.ecs.ConcreteElement;
 import org.apache.ecs.StringElement;
 import org.apache.jetspeed.portal.controllers.AbstractPortletController;
@@ -40,10 +37,10 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * A Velocity based portlet controller implementation
- * 
+ *
  * @author <a href="mailto:re_carrasco@bco011.sonda.cl">Roberto Carrasco</a>
  * @author <a href="mailto:raphael@apache.org">Rapha�l Luta</a>
- * 
+ *
  * @version $Id: VelocityPortletController.java,v 1.12 2004/02/23 03:25:06 jford
  *          Exp $
  */
@@ -83,9 +80,11 @@ public class ALVelocityPortletController extends AbstractPortletController {
     }
     context.put("accessControl", showDelete);
 
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
+    ALOrgUtilsService.assignCommonContext(context);
+
+    if (Boolean.parseBoolean((String) rundata.getSession().getAttribute(
+      "changeToPc"))) { // PC表示切り替え用
+      context.put("client", ALEipUtils.getClient(rundata));
     }
 
     // Put the request and session based contexts

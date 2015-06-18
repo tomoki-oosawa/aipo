@@ -32,7 +32,7 @@ import java.util.Enumeration;
  * Read only wrapper around a ClientEntry registry entry that
  * implements the CapabilityMap interface
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaï¿½l Luta</a>
  * @version $Id: BaseCapabilityMap.java,v 1.8 2004/02/23 02:46:39 jford Exp $
  */
 public class BaseCapabilityMap implements CapabilityMap

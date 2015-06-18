@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
@@ -67,7 +66,7 @@ public class AddressBookScreen extends ALVelocityScreen {
         listData.doViewList(this, rundata, context);
         listData.loadGroups(rundata, context);
 
-        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
+        setTemplate(rundata, context, "portlets/html/ajax-addressbook.vm");
       } else {
         AbstractAddressBookWordSelectData<?, ?> listData =
           AbstractAddressBookWordSelectData.createAddressBookWordSelectData(
@@ -82,7 +81,7 @@ public class AddressBookScreen extends ALVelocityScreen {
           context).getPortletConfig().getInitParameter("p3a-strlen")));
         listData.doViewList(this, rundata, context);
 
-        setTemplate(rundata, context, "portlets/html/ja/ajax-addressbook.vm");
+        setTemplate(rundata, context, "portlets/html/ajax-addressbook.vm");
       }
 
     } catch (Exception ex) {

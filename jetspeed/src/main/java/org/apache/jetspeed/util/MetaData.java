@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
 A class for storing MetaData about an object.
 
-@author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+@author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
 @version $Id: MetaData.java,v 1.11 2004/02/23 03:23:42 jford Exp $
 */
 public class MetaData implements Serializable

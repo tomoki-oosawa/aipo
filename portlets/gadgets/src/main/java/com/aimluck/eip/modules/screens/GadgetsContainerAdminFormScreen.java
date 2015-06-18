@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.turbine.util.RunData;
@@ -44,7 +43,7 @@ public class GadgetsContainerAdminFormScreen extends ALVelocityScreen {
     formData.setMode("update");
     formData.doViewForm(this, rundata, context);
 
-    String template = "portlets/html/ja/ajax-gadgets-container-admin-form.vm";
+    String template = "portlets/html/ajax-gadgets-container-admin-form.vm";
     setTemplate(rundata, context, template);
   }
 

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.wiki;
 
 import static com.aimluck.eip.util.ALLocalizationUtils.*;
@@ -56,7 +55,7 @@ import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  * Wikiのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WikiFormData extends ALAbstractFormData {
 
@@ -127,7 +126,7 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -174,10 +173,10 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -187,7 +186,21 @@ public class WikiFormData extends ALAbstractFormData {
     note.validate(msgList);
     if (is_child != null && is_child) {
       // 親wiki名
-      parentId.validate(msgList);
+      if (parentId.validate(msgList)) {
+        if (parentId.getValueWithInt() != 0) {
+          EipTWiki parentWiki =
+            WikiUtils.getEipTWiki(parentId.getValueWithInt());
+          if (parentWiki != null) {
+            if (parentWiki.getParentId() != 0) {
+              msgList.add(ALLocalizationUtils
+                .getl10n("WIKI_CONFLICT_PARENT_ERROR"));
+            }
+          } else {
+            msgList.add(ALLocalizationUtils
+              .getl10n("WIKI_CONFLICT_PARENT_ERROR"));
+          }
+        }
+      }
     }
 
     boolean duplication = false;
@@ -212,10 +225,14 @@ public class WikiFormData extends ALAbstractFormData {
       msgList.add(getl10n("WIKI_PARENT_ERROR"));
     }
 
-    if (update_date != null) {
+    if (update_date != null && entityId != null) {
       EipTWiki eipTWiki = WikiUtils.getEipTWiki(Integer.parseInt(entityId));
-      if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
-        msgList.add(ALLocalizationUtils.getl10n("WIKI_CONFLICT_ERROR"));
+      if (eipTWiki != null) {
+        if (!update_date.equals(eipTWiki.getUpdateDate().toString())) {
+          msgList.add(ALLocalizationUtils.getl10n("WIKI_CONFLICT_ERROR"));
+        }
+      } else {
+        msgList.add(ALLocalizationUtils.getl10n("WIKI_ALREADY_DELETE"));
       }
     }
 
@@ -224,7 +241,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -291,7 +308,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -340,7 +357,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * Wikiをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -399,6 +416,7 @@ public class WikiFormData extends ALAbstractFormData {
         wiki.getWikiName());
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("WikiFormData.insertFormData", e);
       return false;
     }
@@ -407,7 +425,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているWikiを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -467,6 +485,7 @@ public class WikiFormData extends ALAbstractFormData {
         wiki.getWikiName());
 
     } catch (Exception e) {
+      Database.rollback();
       logger.error("WikiFormData.updateFormData", e);
       return false;
     }
@@ -474,7 +493,7 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -497,10 +516,12 @@ public class WikiFormData extends ALAbstractFormData {
       if (isChild()) {
         /** set selected parent wiki */
         String filtertype =
-          ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
+          ALEipUtils.getTemp(rundata, context, WikiSelectData.class
+            .getSimpleName()
             + ALEipConstants.LIST_FILTER_TYPE);
         String fileterValue =
-          ALEipUtils.getTemp(rundata, context, WikiSelectData.class.getName()
+          ALEipUtils.getTemp(rundata, context, WikiSelectData.class
+            .getSimpleName()
             + ALEipConstants.LIST_FILTER);
         String wikiId =
           WikiUtils.getWikiIdFromSession(fileterValue, filtertype);
@@ -510,13 +531,18 @@ public class WikiFormData extends ALAbstractFormData {
       }
     }
 
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      ALEipUtils.removeTemp(rundata, context, "update_date");
+      update_date = null;
+    }
+
     return res;
   }
 
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -526,7 +552,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * 子ページかどうか判断します。 <BR>
-   * 
+   *
    * @return
    */
   public boolean isChild() {
@@ -539,7 +565,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getParentName() {
@@ -547,8 +573,17 @@ public class WikiFormData extends ALAbstractFormData {
   }
 
   /**
+   * メモを設定します。 <BR>
+   *
+   * @return
+   */
+  public void setNote(String n) {
+    note.setValue(n);
+  }
+
+  /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -557,7 +592,7 @@ public class WikiFormData extends ALAbstractFormData {
 
   /**
    * トピック名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getName() {

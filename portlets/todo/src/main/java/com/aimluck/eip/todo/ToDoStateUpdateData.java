@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.ArrayList;
@@ -31,12 +30,16 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.ALAdminMailContext;
 import com.aimluck.eip.mail.ALAdminMailMessage;
 import com.aimluck.eip.mail.ALMailService;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 import com.aimluck.eip.mail.util.ALMailUtils;
+import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
@@ -55,6 +58,38 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
 
   /** 状態 */
   private ALNumberField state;
+
+  /** ACL用の変数 * */
+  private String aclPortletFeature;
+
+  @Override
+  public void init(ALAction action, RunData rundata, Context context)
+      throws ALPageNotFoundException, ALDBErrorException {
+    super.init(action, rundata, context);
+
+    int login_user_id = ALEipUtils.getUserId(rundata);
+    String todoId = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    String userId = rundata.getParameters().getString("user_id");
+
+    if (todoId == null || todoId.equals("new")) {
+      if (userId != null && !userId.equals(String.valueOf(login_user_id))) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+      }
+    } else {
+      EipTTodo todo = ToDoUtils.getEipTTodo(rundata, context, true);
+      if ((todo != null && todo.getTurbineUser().getUserId() != login_user_id)) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+      }
+    }
+  }
 
   /**
    * フィールドを初期化します。 <BR>
@@ -133,6 +168,12 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
+
       EipTTodo todo = ToDoUtils.getEipTTodo(rundata, context, false);
       if (todo == null) {
         return false;
@@ -225,6 +266,6 @@ public class ToDoStateUpdateData extends ALAbstractFormData {
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF;
+    return aclPortletFeature;
   }
 }

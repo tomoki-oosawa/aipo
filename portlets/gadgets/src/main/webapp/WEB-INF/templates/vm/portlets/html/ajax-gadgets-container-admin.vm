@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 ## ---------------------------------------------------------------------------
 #ALspacebothheader()
@@ -29,25 +28,6 @@ ${l10n.GADGETS_ENABLE}（$result.Detail.LockedDomainSuffix）
 #else
 ${l10n.GADGETS_DISABLE}
 #end
-</td>
-#ALtdcaption($l10n.GADGETS_CHECK_ACTIVITY_INTERVAL)
-<td class="item">
-#if($result.Detail.CheckActivityInterval.toString() == "0")
-$l10n.GADGETS_DONOT_CHECK_ACTIVITY
-#elseif($result.Detail.CheckActivityInterval.toString() == "60")
-$l10n.GADGETS_PER1
-#elseif($result.Detail.CheckActivityInterval.toString() == "300")
-$l10n.GADGETS_PER5
-#elseif($result.Detail.CheckActivityInterval.toString() == "600")
-$l10n.GADGETS_PER10
-#elseif($result.Detail.CheckActivityInterval.toString() == "1800")
-$l10n.GADGETS_PER30
-#elseif($result.Detail.CheckActivityInterval.toString() == "3600")
-$l10n.GADGETS_PER60
-#else
-
-#end
-
 </td>
 #ALtdcaption($l10n.GADGETS_ACTIVITY_SAVE_LIMIT)
 <td class="item">

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,15 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
     dojo.provide('aipo.schedule');
 
     dojo.require("aipo.calendar.weekly");
     dojo.require("aipo.widget.DropdownMemberFacilitypicker");
 
-    ptConfig['$!portlet.ID'] = { group:"schedule", thisUrl:"$!jslink.getPortletById($!portlet.ID)", jsonUrl:"$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleWeeklyJSONScreen')", formUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen')', detailUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen')', rowHeight:18, scheduleDivDaySum:7, tmpIndex:-1, distance:3, timeStart:$!time_start, timeEnd:$!time_end, timeInterval:$!time_interval, contentHeight: ($!time_end - $!time_start)*(60/$!time_interval)*18, contentScrollTop: $!time_start*(60/$!time_interval)*18, initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage };
+    ptConfig['$!portlet.ID'] = { group:"schedule", thisUrl:"$!jslink.getPortletById($!portlet.ID)", jsonUrl:"$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleWeeklyJSONScreen')", formUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen')', detailUrl: '$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen')', rowHeight:18, scheduleDivDaySum:7, tmpIndex:-1, distance:3, timeStart:$!time_start, timeEnd:$!time_end, timeInterval:$!time_interval, contentHeight: ($!time_end - $!time_start)*(60/$!time_interval)*18, contentScrollTop: $!time_start*(60/$!time_interval)*18, initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreen"))', reloadFunction:aipo.reloadPage, xhrUrl:"" };
 	aipo.schedule.login_id = "$current_user_id";
 	aipo.schedule.login_name = "$current_user_ln";
     aipo.schedule.login_aliasname = "$current_user";
@@ -34,7 +32,7 @@
 </script>
 #ALjavascript("javascript/aipo/schedule/form.js")
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 //<![CDATA[
 
     var portletId = '$!portlet.ID';
@@ -156,7 +154,7 @@
 //]]>
 </script>
 #if($!hasMinimumAuthority)
-#parse("/portlets/html/ja/ajax-schedule.vm")
+#parse("/portlets/html/ajax-schedule.vm")
 #else
 #parse("/portlets/html/PermissionError.vm")
 #end

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.actions;
 
 import java.io.IOException;
@@ -30,10 +29,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.jetspeed.modules.actions.JetspeedSessionValidator;
+import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.customlocalization.CustomLocalizationService;
@@ -48,25 +46,22 @@ import org.apache.jetspeed.util.ServiceUtil;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
 import org.apache.turbine.TurbineConstants;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.localization.LocalizationService;
 import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
-import com.aimluck.eip.services.preexecute.ALPreExecuteFactoryService;
-import com.aimluck.eip.services.preexecute.ALPreExecuteHandler;
+import com.aimluck.eip.services.preexecute.ALPreExecuteService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -76,7 +71,7 @@ import com.aimluck.eip.util.ALSessionUtils;
 
 /**
  * セッションを制御するクラスです。 <br />
- * 
+ *
  */
 public class ALSessionValidator extends JetspeedSessionValidator {
 
@@ -84,7 +79,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     .getLogger(ALSessionValidator.class.getName());
 
   /**
-   * 
+   *
    * @param data
    * @throws Exception
    */
@@ -421,6 +416,21 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     }
 
     if (isLogin(loginuser)) {
+
+      ALPreExecuteService.migratePsml(data, context);
+
+      boolean hasMessage = false;
+      Map<String, Entry> portlets = ALEipUtils.getGlobalPortlets(data);
+      Entry entry = portlets.get("Message");
+      if (entry != null) {
+        if (entry.getId().equals(jdata.getJs_peid())) {
+          hasMessage = true;
+        }
+      }
+      String client = ALEipUtils.getClient(data);
+
+      boolean push = (!"IPHONE".equals(client)) || hasMessage;
+
       HttpServletRequest request = ((JetspeedRunData) data).getRequest();
       String requestUrl = request.getRequestURL().toString();
 
@@ -442,10 +452,19 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       String checkUrl =
         new StringBuilder("".equals(checkActivityUrl)
           ? "check.html"
-          : checkActivityUrl).append("?").append("st=").append(
-          gadgetContext.getSecureToken()).append("&parent=").append(
-          URLEncoder.encode(requestUrl, "utf-8")).append("&interval=").append(
-          interval).append("#rpctoken=").append(rpctoken).toString();
+          : checkActivityUrl)
+          .append("?")
+          .append("st=")
+          .append(gadgetContext.getSecureToken())
+          .append("&parent=")
+          .append(URLEncoder.encode(requestUrl, "utf-8"))
+          .append("&interval=")
+          .append(interval)
+          .append("&push=")
+          .append(push ? 1 : 0)
+          .append("#rpctoken=")
+          .append(rpctoken)
+          .toString();
       if (data.getSession() != null
         && Boolean.parseBoolean((String) data.getSession().getAttribute(
           "changeToPc"))) { // PC表示切り替え用
@@ -458,35 +477,10 @@ public class ALSessionValidator extends JetspeedSessionValidator {
       context.put("rpctoken", rpctoken);
       context.put("checkUrl", checkUrl);
       context.put("st", gadgetContext.getSecureToken());
-
-      try {
-        context.put("tutorialForbid", false);
-        String client = ALEipUtils.getClient(data);
-        if ("IPHONE".equals(client)) {
-          context.put("tutorialForbid", true);
-        } else {
-          SelectQuery<TurbineUser> userQuery =
-            Database.query(TurbineUser.class);
-          Expression exp1 =
-            ExpressionFactory.matchDbExp(
-              TurbineUser.USER_ID_PK_COLUMN,
-              loginuser.getPerm("USER_ID").toString());
-          userQuery.setQualifier(exp1);
-          TurbineUser tUser = userQuery.fetchSingle();
-          if (tUser.getTutorialForbid() != null
-            && tUser.getTutorialForbid().equals("T")) {
-            context.put("tutorialForbid", true);
-          }
-        }
-      } catch (Throwable ignore) {
-        // ignore
-      }
-
-      ALPreExecuteFactoryService pxservice =
-        (ALPreExecuteFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALPreExecuteFactoryService.SERVICE_NAME);
-      ALPreExecuteHandler preexecutehandler = pxservice.getPreExecuteHandler();
-      preexecutehandler.migratePsml(data, context);
+      context.put("hasAuthorityCustomize", ALEipUtils.getHasAuthority(
+        data,
+        context,
+        ALAccessControlConstants.VALUE_ACL_UPDATE));
     }
   }
 
@@ -530,15 +524,11 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     Context context =
       org.apache.turbine.services.velocity.TurbineVelocity.getContext(data);
     setOrgParameters(data, context);
-    context.put("tutorialForbid", true);
     context.put("isError", "true");
   }
 
   private void setOrgParameters(RunData data, Context context) {
-    Map<String, String> attribute = ALOrgUtilsService.getParameters();
-    for (Map.Entry<String, String> e : attribute.entrySet()) {
-      context.put(e.getKey(), e.getValue());
-    }
+    ALOrgUtilsService.assignCommonContext(context);
   }
 
   private boolean checkDbError(RunData data) {

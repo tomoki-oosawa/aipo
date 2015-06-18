@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.fileio;
 
 import java.util.ArrayList;
@@ -138,13 +137,13 @@ public class FileIOAddressBookCsvSelectData extends
     int i, j, k;
     int line = 0;
     String ErrorCode = "";
-    StringBuffer e_line = new StringBuffer();
 
     List<FileIOAddressBookCsvData> collectList =
       new ArrayList<FileIOAddressBookCsvData>();
 
     while (reader.eof != -1) {
       line++;
+      StringBuffer e_line = new StringBuffer();
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
       FileIOAddressBookCsvFormData formData =
@@ -223,6 +222,7 @@ public class FileIOAddressBookCsvSelectData extends
         data.setPostName(formData.getPostName().getValue());
         data.setPositionName(formData.getPositionName().getValue());
         data.setCompanyUrl(formData.getCompUrl());
+        data.setNote(formData.getNote().getValue());
 
         FileIOAddressBookCsvData pdata; // 同じデータがないか判別
         for (k = 0; k < collectList.size(); k++) {
@@ -406,6 +406,7 @@ public class FileIOAddressBookCsvSelectData extends
         data.setPositionName(formData.getPositionName().getValue());
         data.setCompanyUrl(formData.getCompUrl());
         data.setSameCompany(formData.getSameCompany());
+        data.setNote(formData.getNote().getValue());
 
         if (is_company_only && formData.getSameCompany()) {
           data.setIsError(true);

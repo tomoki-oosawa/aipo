@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class ScheduleCalendarUserSelectJSONScreen extends
       .getString("groupname"));
 
     String groupname = rundata.getParameters().getString("groupname");
-
+    String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
     if ("pickup".equals(groupname)) {
       VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
       List<UserFacilityLiteBean> memberList =
@@ -68,8 +67,18 @@ public class ScheduleCalendarUserSelectJSONScreen extends
         memberList.add(login_user);
       } else {
         String pickedMembers[] = pickedMember.split(",");
-        List<UserFacilityLiteBean> ulist =
-          ScheduleUtils.getALEipUserFacility(pickedMembers, rundata);
+        List<UserFacilityLiteBean> ulist;
+        if ("F".equals(has_acl_other)) {
+          ulist = ScheduleUtils.getALEipFacility(pickedMembers, rundata);
+          if (pickedMember.contains(String.valueOf(ALEipUtils
+            .getUserId(rundata)))) {
+            UserFacilityLiteBean login_user =
+              UserFacilityUtils.getUserFacilityLiteBean(rundata);
+            ulist.add(login_user);
+          }
+        } else {
+          ulist = ScheduleUtils.getALEipUserFacility(pickedMembers, rundata);
+        }
         if (ulist == null || ulist.size() == 0) {
           UserFacilityLiteBean login_user =
             UserFacilityUtils.getUserFacilityLiteBean(rundata);

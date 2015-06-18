@@ -22,7 +22,7 @@ import java.util.Iterator;
  * ConfigElement is the base interface that objects must implement in order
  * to be used with the Profile service.
  * 
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
  * @version $Id: ConfigElement.java,v 1.5 2004/02/23 03:05:01 jford Exp $
  */

@@ -1,0 +1,357 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+#set ($orderProjectTask = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskChangeTurnFormScreen"))
+#set ($baselink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')")
+## ---------------------------------------------------------------------------
+#AUIcontentsAreaHeader()
+#if(!$result.AllProject)
+	<div class="message">$l10n.PROJECT_NOT_FOUND</div>
+#elseif(!$result.List)
+	<div class="message">$l10n.PROJECT_NOT_SELECTED</div>
+#else
+	<div class="auiSummaryMeta auiFilter clearfix">
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+<input type="hidden" id="baseuri_$!portlet.ID" value='$!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectGanttChartScreen")' />
+<input type="hidden" name="template" value="ProjectGanttChartScreen"/>
+<div class="filterInputField">
+<div class="filters" id="filters_$!portlet.ID">
+#if("$!result.TargetUserId"!="")
+#ALfilterTip($!result.TargetUserName "aipo.project.filterSetDefault('$!portlet.ID','target_user_id');")
+#end
+#if("$!result.TargetTracker"!="")
+#ALfilterTip($!result.TargetTrackerName "aipo.project.filterSetDefault('$!portlet.ID','target_tracker');")
+#end
+#if("$!result.TargetPriority"!="")
+#ALfilterTip($!result.TargetPriorityName "aipo.project.filterSetDefault('$!portlet.ID','target_priority');")
+#end
+#if("$!result.TargetStatus"!="")
+#ALfilterTip($!result.TargetStatusName "aipo.project.filterSetDefault('$!portlet.ID','target_status');")
+#end
+</div>
+<a href="javascript:void(0);" id="filter_drawer_$!portlet.ID" class="filterDropDrawer menubarOpenButton" onclick='aipo.project.toggleMenu(dojo.byId("menubar_auiFilter_$!portlet.ID"),dojo.byId("filters_$!portlet.ID"),true);' title="$l10n.PROJECT_FILTER"><i class="auiIcon auiIconArwBottom"></i></a>
+<input class="text floatLeft long" type="text" name="target_keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.project.initFilterSearch("$!portlet.ID");' onblur='aipo.project.finFilterSearch("$!portlet.ID");' />
+</div>
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()	</div>
+<div class="auiSummaryMeta clearfix">
+	<div class="floatRight">
+		<div class="auiSelectButton">
+			<ul>
+				#set($tab = ["$l10n.PROJECT_TASK_LIST", "task_list","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskListScreen')"])
+				<li><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+				#set($tab = ["$l10n.PROJECT_GANTT_CHART", "gantt_chart", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectGanttChartScreen')"])
+				<li class="active"><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.project.setIndicator('$!portlet.ID');aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+			</ul>
+		</div>
+	</div>
+	</div>
+<div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
+<div id="content-$!portlet.ID" style="visibility:visible">
+	<div class="auiSummaryMeta clearfix">
+		<select id="target_progress_rate_from" name="target_progress_rate_from" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_from')" >
+		#foreach ( $num in [0..10] )
+			#set( $num = $num * 10 )
+			<option value="$num" #if ("$!result.TargetProgressRateFrom" == "$num") selected="selected" #end>$!{num}%</option>
+		#end
+		</select>
+		-
+		<select id="target_progress_rate_to" name="target_progress_rate_to" size="1" onchange="aipo.project.onChangeProgressRate('$baselink', '$!portlet.ID', 'target_progress_rate_to')" >
+		#foreach ( $num in [0..10] )
+			#set( $num = $num * 10 )
+			<option value="$num" #if ("$!result.TargetProgressRateTo" == "$num" || (!$!result.TargetProgressRateTo && $num == 100)) selected="selected" #end>$!{num}%</option>
+		#end
+		</select>
+		<label><input type="checkbox" id="target_delay_checkbox" name="target_delay_checkbox" onclick="aipo.project.onChangeDelay(this, 'target_delay', '$baselink', '$!portlet.ID');" #if("$!result.TargetDelay" == "t") checked #end />&nbsp;$l10n.PROJECT_TASK_ONLY_DELAYED</label>
+		<input type="hidden" id="target_delay" name="target_delay" value="$!result.TargetDelay">
+	</div>
+
+	<div class="auiSummaryMeta clearfix">
+		<select id="base_date_from_year" name="base_date_from_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
+			<option value="$num" #if ($!result.BaseDateFrom.Year == "$num") selected="selected" #end>$!{num}$l10n.PROJECT_YEAR</option>
+		#end
+		</select>
+		<select id="base_date_from_month" name="base_date_from_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [1..12] )
+			<option value="$num" #if ($!result.BaseDateFrom.Month == "$num") selected="selected" #end>$!{num}$l10n.PROJECT_MONTH</option>
+		#end
+		</select>
+		-
+		<select id="base_date_to_year" name="base_date_to_year" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [2010..$!result.ViewDateMaxYear] )
+			<option value="$num" #if ($!result.BaseDateTo.Year == "$num") selected="selected" #end>$!{num}$l10n.PROJECT_YEAR</option>
+		#end
+		</select>
+		<select id="base_date_to_month" name="base_date_to_month" size="1" onchange="aipo.project.onChangeDate('$baselink', '$!portlet.ID');" >
+		#foreach ( $num in [1..12] )
+			<option value="$num" #if ($!result.BaseDateTo.Month == "$num") selected="selected" #end>$!{num}$l10n.PROJECT_MONTH</option>
+		#end
+		</select>
+	    #if("$result.List.size()" != "0")
+			#AUIajaxpageview('ProjectGanttChartScreen' $result)
+		#end
+	</div>
+	#if($result.List.size() == 0)
+		#AUIEmptyMessage("icon-tasks" "$l10n.PROJECT_TASK_NOT_FOUND")
+	#else
+
+		##スタイル設定
+		#set($tableBorderColor = "#cccccc") ##表の線の色
+		#set($tableBorderWidth = 1)         ##表の線の幅(px)
+		#set($todayLineColor = "#ff3333")   ##今日の線の色
+		#set($borderWidthGraph = 1)         ##グラフ枠の幅(px)
+		#set($borderColorGraph = "#66cc66") ##グラフ枠の色
+		#set($heightGraph = 10)             ##グラフ枠の高さ(px)
+		#set($bgColorPlan = "#ffffff")      ##予定グラフの背景色
+		#set($bgColorResult = "#88dd88")    ##実績グラフの背景色
+		#set($lineHeightHdr = 20)           ##1行の高さ（ヘッダ）(px)
+		#set($lineHeight = 30)              ##1行の高さ（データ）(px)
+		#set($cellWidth = 20)               ##セル幅
+		#set($tableWidth = $!result.Days * 20 + 1) ##ガントチャート表の幅
+		#set($dataTop = $lineHeightHdr * 2 + 3) ##データ部TOPのy座標(+3は枠線分)
+
+		#########タスク名の一覧#########
+	#if($result.isAndroid2())
+	<table>
+	<tr>
+	<td class="top">
+	#else
+	<div class="clearfix">
+	#end
+		<div id="gantt_task">
+			<table class="ganttTaskTable">
+				<tr>
+					<th>$l10n.PROJECT_TASK</th>
+				</tr>
+				#foreach ($record in $result.List)
+				<tr>
+					<td>
+						<div>
+						$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
+						</div>
+					</td>
+				</tr>
+				#end
+			</table>
+		</div>##gantt_task
+		#if($result.isAndroid2())</td><td class="top">#end
+		#########ガントチャート#########
+
+		<div id="gantt_area">
+			<div style="width:${tableWidth}px;">
+				##==============表描画==============
+				<table id="gantt_table">
+					<tr class="gantt_area_month">
+					##月部分
+					#set($monthCnt = 0)
+					#foreach ($day in [1..$!result.Days])
+						#set($year = $!result.getYear($day))
+						#set($month = $!result.getMonth($day))
+						#set($monthDisp = $!result.getMonth($day) + 1)
+						#set($monthCnt = $monthCnt + 1)
+						#set($nextDay = $day + 1)
+						#if($day == $!result.Days || $month != $!result.getMonth($nextDay))
+							<td colspan="$monthCnt"><div>$year$l10n.PROJECT_YEAR$monthDisp$l10n.PROJECT_MONTH</div></td>
+							#set($monthCnt = 0)
+						#end
+					#end
+					</tr>
+					##週部分
+					##<tr>
+					###set($weekCnt = 0)
+					###foreach ($day in [1..$!result.Days])
+					##	#set($week = $!result.getWeek($day))
+					##	#set($weekCnt = $weekCnt + 1)
+					##	#set($nextDay = $day + 1)
+					##	#if($day == $!result.Days || $week != $!result.getWeek($nextDay))
+					##		<td style="$styleHdr" colspan="$weekCnt"><div>$week</div></td>
+					##		#set($weekCnt = 0)
+					##	#end
+					###end
+					##</tr>
+					##日付部分
+					<tr class="gantt_area_day">
+					#set($todayDay = 0)
+					#set($todayId = "")
+					#foreach ($day in [1..$!result.Days])
+						#if($result.isToday($day))
+							#set($todayDay = $day)
+							#set($todayLine = "border-right: ${tableBorderWidth}px solid ${todayLineColor};")
+							#set($todayId = " id='today'")
+						#else
+							#set($todayLine = "")
+							#set($todayId = "")
+						#end
+						##背景色
+						#if($result.isHoliday($day))
+							#set($dayClass = " class='holiday'")
+						#elseif($result.isSaturday($day))
+							#set($dayClass = " class='saturday'")
+						#elseif($result.isSunday($day))
+							#set($dayClass = " class='sunday'")
+						#elseif($result.isToday($day))
+							#set($dayClass = " class='today'")
+						#else
+							#set($dayClass = "")
+						#end
+						<td ${dayClass}><div>$!result.getDay($day)</div></td>
+					#end
+					</tr>
+					##データ部分
+					#foreach ($record in $result.List)
+					<tr class="gantt_area_cell">
+						#foreach ($day in [1..$!result.Days])
+							#if($todayDay == $day)
+								#set($borderRight = "border-right: ${tableBorderWidth}px solid ${todayLineColor};")
+							#else
+								#set($borderRight = "border-right: ${tableBorderWidth}px solid ${tableBorderColor};")
+							#end
+							##背景色
+							#if($result.isHoliday($day))
+								#set($dayClass = " class='holiday'")
+							#elseif($result.isSaturday($day))
+								#set($dayClass = " class='saturday'")
+							#elseif($result.isSunday($day))
+								#set($dayClass = " class='sunday'")
+							#elseif($result.isToday($day))
+								#set($dayClass = " class='today'")
+							#else
+								#set($dayClass = "")
+							#end
+							<td ${dayClass}></td>
+						#end
+					</tr>
+					#end
+				</table>
+				##==============グラフ描画==============
+				#foreach ($record in $result.List)
+					#if($record.PlanTerm.Value.intValue() > 0)
+						##高さ＝（行数−１）×（１行当たりの高さ）＋（ヘッダ部分を入れた１行目の高さ）＋（グラフが行の中央になる高さ）
+						#set($top = ($velocityCount - 1) * $lineHeight + $dataTop + (($lineHeight - $heightGraph) / 2 - ($borderWidthGraph * 2)))
+						##開始位置
+						#set($left = ($!result.getDays($record.StartPlanDate.Value) - 1) * $cellWidth)
+						##グラフ幅
+						#set($widthPlan = $record.PlanTerm.Value.intValue() * $cellWidth - ($borderWidthGraph * 2))
+						#set($widthNow = $widthPlan * $record.ProgressRate.Value.intValue() / 100)
+						##クリック動作
+						#set($onclick = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId)))
+						##開始日・完了日
+						#set($startDate = "")
+						#set($endDate = "")
+						#if($!{record.StartDate.toString()} != "")
+							#set($startDate = "${record.StartDate.Year}$l10n.PROJECT_YEAR${record.StartDate.Month}$l10n.PROJECT_MONTH${record.StartDate.Day}$l10n.PROJECT_DATE")
+						#end
+						#if($!{record.EndDate.toString()} != "")
+							#set($endDate = "${record.EndDate.Year}$l10n.PROJECT_YEAR${record.EndDate.Month}$l10n.PROJECT_MONTH${record.EndDate.Day}$l10n.PROJECT_DATE")
+						#end
+						##タイトル
+						#set($title = "${record.ProgressRate.Value}%&#10;${record.MemberListString}&#10;$l10n.PROJECT_START_DATE：${record.startPlanDate}&#10;$l10n.PROJECT_END_PLAN_DATE：${record.endPlanDate}")
+
+						##予定グラフ
+				<div class="gantt_tip" style="position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;"
+						id="plan$velocityCount">
+
+						#if($record.ProgressRate.Value.intValue() > 0)
+							<div class="w$record.ProgressRate.Value.intValue()"></div>
+
+							##完了フラグ
+							#if($record.ProgressRate.Value.intValue() == 100)
+									<div id="progress_finish$velocityCount"></div>
+							#end
+						#end
+				</div>
+				<div class="gantt_link" style="cursor:pointer;position:absolute;left:${left}px;top:${top}px;height:${heightGraph}px;width:${widthPlan}px;padding:${borderWidthGraph}px;z-index:4;"
+                        id="link$velocityCount" onclick="aipo.common.showDialog('$onclick')" title="$title"><span>$record.ProgressRate.Value.intValue()%</span> </div>
+
+
+						##未来開始予定
+						#if($record.NoStart)
+				<div id="no_start$velocityCount"></div>
+						#end
+
+						##完了済み予定
+						#if($record.PastFinish)
+				<div id="past_finish$velocityCount"></div>
+						#end
+					#end
+				#end
+				<div id="progress_line" style="position:absolute;left:0;top:0;width:${tableWidth}px;z-index:3;"></div>
+			</div>
+			<div id="count" style="display:none;">$result.List.size()</div>
+			<div id="todayDay" style="display:none;">$todayDay</div>
+			<div id="nowTime" style="display:none;">$result.NowTime</div>
+		</div>##gantt_area
+	#if($result.isAndroid2())
+	</td></tr></table>
+	#else
+	</div>
+	#end
+		#if("$result.List.size()" != "0")
+    	#AUISummaryDiv()
+    	#AUIajaxpageview('ProjectGanttChartScreen' $result)
+    	#AUISummaryDivfooter()
+		#end
+	#end
+#end
+</div>
+#AUIcontentsAreaFooter()
+<img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
+  <div>
+	<p class="caption">$l10n.PROJECT_MEMBER</p>
+    <ul class="filtertype filtertype_$!portlet.ID" data-type="target_user_id" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId"==""||"$!result.TargetUserId"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_USER</a></li>
+    #foreach($record in $result.projectMembers)
+      <li data-param="$!record.UserId" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetUserId" == "$!record.UserId.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.AliasName}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_CATEGORY</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_tracker" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker"==""||"$!result.TargetTracker"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_CATEGORY</a></li>
+    #foreach($record in $result.TrackerMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetTracker" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_PRIORITY</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_priority" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority"==""||"$!result.TargetPriority"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_STATUS</a></li>
+    #foreach($record in $result.PriorityMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetPriority" == "$!record.key.toString()") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+  <div>
+	<p class="caption">$l10n.PROJECT_STATUS</p>
+	<ul class="filtertype filtertype_$!portlet.ID" data-type="target_status" data-defaultparam="">
+      <li data-param="" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus"==""||"$!result.TargetStatus"=="0") class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$l10n.PROJECT_ALL_STATUS</a></li>
+    #foreach($record in $result.StatusMap.entrySet())
+      <li data-param="$!record.key" #if("$!result.TargetStatus" == "$!record.key.toString()") class="selected" #end><a href="javascript:void(0);" #if("$!result.TargetStatus" == $!record.key.toString()) class="selected" #end onclick='aipo.project.filterClick("$!portlet.ID",this,event)'>$!{record.value}</a></li>
+    #end
+    </ul>
+  </div>
+</div>
+
+#parse("/portlets/html/project-widgets.vm")

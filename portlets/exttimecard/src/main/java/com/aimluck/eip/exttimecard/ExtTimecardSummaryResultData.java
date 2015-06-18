@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.exttimecard;
 
 import java.math.BigDecimal;
@@ -38,14 +37,17 @@ import com.aimluck.eip.util.ALCommonUtils;
 /**
  * 一日分のタイムカード(出勤・退勤の履歴)を保持する。<br>
  * 一日ごとの勤務時間・残業時間などを計算し、その結果を保持する。
- * 
- * 
+ *
+ *
  */
 public class ExtTimecardSummaryResultData implements ALData {
 
   private ALDateField date = null;
 
   private List<ExtTimecardResultData> list = null;
+
+  /** オーナ ID */
+  private ALNumberField owner_id;
 
   /** 就業日数 */
   private ALNumberField work_day = null;
@@ -116,11 +118,14 @@ public class ExtTimecardSummaryResultData implements ALData {
     date = new ALDateField();
     date.setValue(new Date());
     list = new ArrayList<ExtTimecardResultData>();
+
+    owner_id = new ALNumberField();
+
   }
 
   /**
    * 出勤日数、および時間を設定します。
-   * 
+   *
    * @param days
    * @param hour
    */
@@ -131,7 +136,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 残業日数、および時間を設定します。
-   * 
+   *
    * @param days
    * @param hour
    */
@@ -142,7 +147,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 休出日数、および時間を設定します。
-   * 
+   *
    * @param days
    * @param hour
    */
@@ -153,7 +158,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 遅刻日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setLateComingDay(int days) {
@@ -162,7 +167,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 早退日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setEarlyLeavingDay(int days) {
@@ -171,7 +176,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 欠勤日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setAbsentDay(int days) {
@@ -180,7 +185,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 有休日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setPaidHoliday(int days) {
@@ -189,7 +194,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 代休日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setCompensatoryHoliday(int days) {
@@ -198,7 +203,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * その他日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setOtherDay(int days) {
@@ -207,7 +212,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 未入力日数を設定します。
-   * 
+   *
    * @param days
    */
   public void setNoInput(int days) {
@@ -216,7 +221,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 就業日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getWorkDay() {
@@ -225,7 +230,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 就業時間を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getWorkHour() {
@@ -234,7 +239,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 残業日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getOvertimeDay() {
@@ -243,7 +248,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 残業時間を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getOvertimeHour() {
@@ -252,7 +257,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 休出日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getOffDay() {
@@ -261,7 +266,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 休出時間を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getOffHour() {
@@ -270,7 +275,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 遅刻日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getLateComingDay() {
@@ -279,7 +284,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 早退日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getEarlyLeavingDay() {
@@ -288,7 +293,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 欠勤日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getAbsentDay() {
@@ -297,7 +302,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 有休日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getPaidHoliday() {
@@ -306,7 +311,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 代休日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getCompensatoryHoliday() {
@@ -315,7 +320,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * その他日数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getOtherDay() {
@@ -324,7 +329,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 未入力数を取得します。
-   * 
+   *
    * @return
    */
   public ALNumberField getNoInput() {
@@ -333,7 +338,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   // --------------------------------------------------------------------------------------
   /**
-   * 
+   *
    * @param date
    */
   public void setDate(Date date) {
@@ -348,7 +353,7 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param minute
    * @return
    */
@@ -362,7 +367,7 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getDateStr() {
@@ -375,7 +380,7 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ExtTimecardResultData> getList() {
@@ -407,7 +412,7 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ExtTimecardResultData> getViewList() {
@@ -427,7 +432,7 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param rd
    */
   public void addExtTimecardResultData(ExtTimecardResultData rd) {
@@ -435,8 +440,22 @@ public class ExtTimecardSummaryResultData implements ALData {
   }
 
   /**
+   * @param i
+   */
+  public void setOwnerId(long i) {
+    owner_id.setValue(i);
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getOwnerId() {
+    return owner_id;
+  }
+
+  /**
    * ExtTimecardResultDataオブジェクトのインスタンスを作る
-   * 
+   *
    * @param date
    * @param workflag
    * @return
@@ -453,7 +472,7 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /**
    * 勤務時間設定をDBから取得する
-   * 
+   *
    * @return
    */
   @SuppressWarnings("unused")

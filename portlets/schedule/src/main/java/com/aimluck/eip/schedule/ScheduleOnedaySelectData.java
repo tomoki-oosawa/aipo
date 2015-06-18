@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
@@ -179,17 +178,33 @@ public class ScheduleOnedaySelectData extends AjaxScheduleMonthlySelectData {
       ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
-        .getInitParameter("p1a-rows");
-    startHour = startHourInit != null ? Integer.parseInt(startHourInit) : 0;
+        .getInitParameter("p1a-rows") != null
+        ? ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1a-rows")
+          .toString()
+        : String.valueOf(0);
+    startHour = Integer.parseInt(startHourInit);
     startHour = startHour > 24 ? 0 : startHour;
     // 表示終了時間の設定
     String endHourInit =
       ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
-        .getInitParameter("p1b-rows");
-    endHour = endHourInit != null ? Integer.parseInt(endHourInit) : 13;
+        .getInitParameter("p1b-rows") != null
+        ? ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("p1b-rows")
+          .toString()
+        : String.valueOf(13);
+    endHour = Integer.parseInt(endHourInit);
     endHour = endHour > 24 ? 13 : endHour;
+    if (startHour > endHour) {
+      startHour = 0;
+      endHour = 13;
+    }
     // ToDo 表示設定
     String todoInit =
       ALEipUtils

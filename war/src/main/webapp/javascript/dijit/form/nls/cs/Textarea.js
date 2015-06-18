@@ -1,1 +1,1 @@
-({"iframeTitle1": "oblast úprav", "iframeTitle2": "rámec oblasti úprav"})
+({"iframeTitle1": "oblast 炭prav", "iframeTitle2": "r叩mec oblasti 炭prav"})

@@ -1,0 +1,226 @@
+#*
+ * Aipo is a groupware program developed by Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($subtitle = $l10n.PROJECT_TASK_DETAIL)
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+<div id="messageDivComment"></div>
+<div id="messageDiv_$!portlet.ID"></div>
+#ALajaxdetailformheader($l10n.PROJECT_TASK)
+<table class="listTable wide mb0">
+    <tbody>
+        <tr>
+            <td colspan="4">
+                <div class="clearfix">
+                <div class="alignleft">
+					<strong>
+				$!result.Detail.TaskNameHtml
+                    </strong>
+                <br>
+                $!result.Detail.TopicPath
+                </div>
+<div class="alignright">
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormScreen').addQueryData('entityid',$entityid).addQueryData('projectid',$!{result.Detail.ProjectId})" "$!portlet.ID" "aipo.project.onLoadProjectTaskDialog")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete').addQueryData('projectid',$!{result.Detail.ProjectId})" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
+</div>
+                </div>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="listTable noBorder wide mb0 mt0">
+    <tbody>
+    </tbody><colgroup class="w15"></colgroup>
+    <colgroup></colgroup>
+    <colgroup class="w15"></colgroup>
+    <colgroup class="w20"></colgroup>
+        <tbody>
+#ALtdcaption($l10n.PROJECT_CATEGORY)
+#ALtditemheader()
+$!result.Detail.TrackerString
+#ALtdcellfooter()
+      <td class="caption">$l10n.PROJECT_START_PLAN_DATE</td>
+#ALtditemheader()
+#if($!{result.Detail.StartPlanDate.toString()} != "")
+$!{result.Detail.StartPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.StartPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.StartPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.StartPlanDate.DayOfWeek}
+#end
+#ALtditemfooter()
+
+#ALtdcaption($l10n.PROJECT_STATUS)
+#ALtditemheader()
+$!result.Detail.StatusString
+#ALtdcellfooter()
+      <td class="caption">$l10n.PROJECT_END_PLAN_DATE</td>
+#ALtditemheader()
+#if($!{result.Detail.EndPlanDate.toString()} != "")
+$!{result.Detail.EndPlanDate.Year}${l10n.PROJECT_YEAR}$!{result.Detail.EndPlanDate.Month}${l10n.PROJECT_MONTH}$!{result.Detail.EndPlanDate.Day}${l10n.PROJECT_DATE}$!{result.Detail.EndPlanDate.DayOfWeek}
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.PROJECT_PRIORITY)
+#ALtditemheader()
+$!result.Detail.PriorityString
+#ALtdcellfooter()
+<td class="caption">$l10n.PROJECT_EXPECTED_WORKLOAD</td>
+#ALtditemheader()
+$!{result.Detail.PlanWorkload}${l10n.PROJECT_MANHOUR}
+#ALtditemfooter()
+#ALtdcaption($l10n.PROJECT_MEMBER)
+<td>
+<ul class="w90">
+#foreach($record in $!result.Detail.MemberList)
+<li class="clearfix">
+<div class="floatLeft w70">
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.UserId.value},arguments[0])">
+$!record.UserName
+</a>
+</div>
+<div class="floatRight w30 right">$!{record.Workload}${l10n.PROJECT_MANHOUR}</div>
+</li>
+#end
+</ul>
+</td>
+#ALtdcellfooter()
+<td class="caption">$l10n.PROJECT_PROGRESS_RATE</td>
+#ALtditemheader()
+$!{result.Detail.ProgressRate}%
+#ALtditemfooter()
+
+        </tr>
+    </tbody>
+</table>
+<table class="listTable wide mt0">
+    <tbody>
+		<tr>
+			<td>
+		<div class="caption mb10">$l10n.PROJECT_EXPLANATION</div>
+$!result.Detail.Explanation
+#if($!{result.Detail.AttachmentFileList} && $!result.Detail.AttachmentFileList.size() > 0)
+					<div style="padding-top:15px;">
+						<ul>
+						#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskFileRawScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+							#if($attachmentFile.isImage())
+								<div id='popc' style='position:absolute'></div>
+								<div class="thumbBlock">
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskFileRawScreen').addPathInfo("entityid", $result.Detail.TaskId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskFileThumbnailScreen").addQueryData("entityid", $result.Detail.TaskId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
+							#end
+						</li>
+						#end
+						</ul>
+					</div>
+#end
+            </td>
+        </tr>
+	</tbody>
+</table>
+#ALformfooter()
+
+#ALajaxdetailformheader($l10n.PROJECT_COMMENT)
+<table class="listTable wide mb0">
+<caption>$l10n.PROJECT_COMMENT</caption>
+#if (!$result.Detail.CommentList.isEmpty())
+<tbody>
+#foreach ($record in $result.Detail.CommentList)
+	<tr>
+		<td style="border-bottom:none;border-top:solid 1px #DDD">
+			<div class="clearfix">
+				<div class="alignright">
+					##if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.hasAclDeleteTopicOthers())
+					#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ProjectTaskFormJSONScreen').addQueryData('comment_id',${record.CommentId}).addQueryData('mode', 'comment_delete')" "$indicator_id" "$!portlet.ID" "aipo.project.onReceiveMessage")
+					##end
+				</div>
+				<div class="avatar floatLeft mr10">
+					<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.CreateUserId},arguments[0])">
+						#if($!{record.hasPhoto()})
+						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.CreateUserId}).addQueryData("t", $!{record.CreateUserId}))" alt="$!{record.CreateUserId}" width="32" height="32" />
+						#else
+						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						#end
+					</a>
+				</div>
+				<div class="alignleft">
+					<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{record.CreateUserId},arguments[0])"><b>$!{record.CreateUser}</b></a><br>$!{record.CreateDate.Year}${l10n.PROJECT_YEAR}$!{record.CreateDate.Month}${l10n.PROJECT_MONTH}$!{record.CreateDate.Day}${l10n.PROJECT_DATE}$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}
+				</div>
+			</div>
+			<div><br>
+				${record.Comment}
+				#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+					<div style="padding-top:15px;">
+						<ul>
+						#foreach( $attachmentFile in $!record.AttachmentFileList )
+						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectTaskCommentFileRawScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+							#if($attachmentFile.isImage())
+								<div id='popc' style='position:absolute'></div>
+								<div class="thumbBlock">
+									<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ProjectTaskCommentFileRawScreen').addPathInfo("entityid", $!record.CommentId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+									<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ProjectTaskCommentFileThumbnailScreen").addQueryData("entityid", $record.CommentId).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+								</div>
+							#end
+						</li>
+						#end
+						</ul>
+					</div>
+				#end
+			</div>
+    	</td>
+  	</tr>
+#end
+</tbody>
+#end
+</table>
+#ALformfooter()
+
+#ALajaxscreenformheader("projectTaskForm" $jslink $portlet "ProjectTaskFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.project.onReceiveMessageComment)")
+<input type="hidden" name="mode" value="comment_insert" />
+<input type="hidden" name="entityid" value="${result.Detail.TaskId}" />
+	<table class="listTable wide">
+		<tbody>
+			<tr>
+				<td class="caption" style="border-top:none;"><span class="required">$l10n.PROJECT_CONTENT</span></td>
+				<td style="border-top:none;">
+					#ALtextarea('comment' '' 5 40)
+				</td>
+			</tr>
+			<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+				<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
+				<td>
+					<div class="clearfix">
+					<div>#IFFileUpload()</div>
+					<ul id="attachments_$!{portlet.ID}" class="attachments">
+					</ul>
+					</div>
+				</td>
+			</tr>
+			<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  		</tbody>
+	</table>
+
+#ALbuttonheader()
+<input name="submit" class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$l10n.PROJECT_DO_COMMENT" onclick="aimluck.io.setHiddenValue(this);">
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

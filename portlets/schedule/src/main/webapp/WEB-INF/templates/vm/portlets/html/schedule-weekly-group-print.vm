@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,49 +16,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
-<div id="printHeader">
-#AUIPrintWindowCloseIcon()
-$l10n.SCHEDULE_ALERT_DONOT_REFLECT
-<table>
-<tr>
-<th>$l10n.SCHEDULE_WIDTH</th>
-<td>
-<select id=print_width onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="100%" >100%</option>
-<option value="90%">90%</option>
-<option value="80%">80%</option>
-<option selected="selected" value="600px">600$l10n.SCHEDULE_PIXEL</option>
-<option value="620px">620$l10n.SCHEDULE_PIXEL</option>
-<option value="640px">640$l10n.SCHEDULE_PIXEL</option>
-<option value="660px">660$l10n.SCHEDULE_PIXEL</option>
-<option value="680px">680$l10n.SCHEDULE_PIXEL</option>
-<option value="700px">700$l10n.SCHEDULE_PIXEL</option>
-<option value="720px">720$l10n.SCHEDULE_PIXEL</option>
-<option value="740px">740$l10n.SCHEDULE_PIXEL</option>
-<option value="760px">760$l10n.SCHEDULE_PIXEL</option>
-<option value="780px">780$l10n.SCHEDULE_PIXEL</option>
-<option value="800px">800$l10n.SCHEDULE_PIXEL</option>
-</select>
-</tr>
-<tr>
-<th>$l10n.SCHEDULE_WORD_SIZE</th>
-<td><select id=print_word_size onChange="change_print_form()" onkeyup="this.blur();this.focus();">
-<option value="8pt">8pt</option>
-<option value="9pt">9pt</option>
-<option selected="selected" value="10pt">10pt</option>
-<option value="11pt">11pt</option>
-<option value="12pt">12pt</option>
-<option value="13pt">13pt</option>
-<option value="14pt">14pt</option>
-<option value="16pt">16pt</option>
-<option value="18pt">18pt</option>
-<option value="20pt">20pt</option>
-</select>
-</td>
-</td>
-</tr>
+#ALprintoptionheader()
 <tr>
 <th>$l10n.SCHEDULE_SET_OTHER_VIEW</th>
 <td>
@@ -67,16 +26,11 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <label><input id=print_todo type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_TODO</label><br />
 <label><input id=print_holiday type="checkbox" checked="checked" onclick="change_print_form()" /> $l10n.SCHEDULE_DISPLAY_HOLIDAY</label><br />
 ##<label><input type="checkbox" checked="checked" onclick="change_print_form()" /> 記念日を表示する。</label></td>
+</td>
 </tr>
-<tr>
-<td><input type="button" value="$l10n.SCHEDULE_PRINT_OUT" onclick="javascript:print();"/></td>
-</tr>
-</table>
-</div>
+#ALprintoptionfooter()
 
-
-
-<script type="text/javascript" language="JavaScript">
+<script type="text/javascript">
   //<![CDATA[
   function change_print_form(){
     document.getElementById('printBody').style.width=document.getElementById('print_width').value;
@@ -277,17 +231,17 @@ $record3.AliasName
 #if(${record4.TermResultData.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record4.TermResultData.ScheduleId} calerndarTermScheduleDiv small">$!{record4.TermResultData.WbrName}
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid",$!{record4.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record4.Date.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">$!{record4.TermResultData.WbrName}
-#if(!${record4.TermResultData.isPublic()})&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
-#if(${record4.TermResultData.isTmpreserve()})<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>#end
+#if(!${record4.TermResultData.isPublic()})&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#else<img class="dot_schedule" src="images/common/dot.gif" alt="" />#end
+#if(${record4.TermResultData.isTmpreserve()})<i class="auiIcon auiIconTmpreserve"></i>#end
 </a>
 #else
 <div class="calerndarTermScheduleDiv small">
 $!{record4.TermResultData.WbrName}
 #if(!${record4.TermResultData.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 #if(${record4.TermResultData.isTmpreserve()})
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
+<i class="auiIcon auiIconTmpreserve"></i>
 #end
 #end
 </div>
@@ -358,18 +312,8 @@ $!{record4.TermResultData.WbrName}
 ##<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small">$!{record2.WbrName}</div>
 ##</div>
 #end
-#if(! ${record2.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
-#end
-#if($record2.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#end
-#if(${record2.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
-#if($record2.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
-#end
+#if(! ${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+#AUIiconScheduleSets($record2)
 </div>
 </div>
 #end
@@ -413,7 +357,7 @@ $!{record4.TermResultData.WbrName}
 #end
 ToDo：$!{record.ToDoResultData.TodoName}
 #if(! ${record.ToDoResultData.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
+#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
 #end
 </a>
 </div>
@@ -528,18 +472,8 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 ##<div class="schedule-$!{portlet.ID}-$!{record2.ScheduleId} small">$record2.Name</div>
 ##</div>
 #end
-#if(! ${record2.isPublic()})
-#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'")
-#end
-#if($record2.isDuplicate())
-<i class="auiIcon auiIconOverlap" title="$l10n.SCHEDULE_DUPLICATE_SCHEDULE"></i>
-#end
-#if(${record2.isRepeat()})
-<i class="auiIcon auiIconRepeat" title="$l10n.SCHEDULE_REPEAT"></i>
-#end
-#if($record2.isTmpreserve())
-<i class="auiIcon auiIconTmpreserve" title="$l10n.SCHEDULE_TEMP_SCHEDULE"></i>
-#end
+#if(! ${record2.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+#AUIiconScheduleSets($record2)
 </div>
 </div>
 #end
@@ -564,7 +498,7 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #if($!ajax_onloadimage)
   <img src="images/common/dot.gif" width="1" height="1" onload="aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');ptConfig['$!portlet.ID'].reloadFunction = aipo.reloadPage;" />
 #else
-  <script type="text/javascript" language="JavaScript">
+  <script type="text/javascript">
     //<![CDATA[
     dojo.addOnLoad(function(){
       aipo.schedule.setupTooltip('$!{getScheduleDetailLink}', '$!entityids', '$!portlet.ID');

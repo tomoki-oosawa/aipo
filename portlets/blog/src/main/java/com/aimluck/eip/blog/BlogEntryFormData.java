@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
 import java.io.ByteArrayInputStream;
@@ -162,24 +161,25 @@ public class BlogEntryFormData extends ALAbstractFormData {
   public void initField() {
     // 更新日時
     create_date = new ALDateTimeField(BlogUtils.DATE_TIME_FORMAT);
-    create_date.setFieldName("日時");
+    create_date.setFieldName(ALLocalizationUtils.getl10n("BLOG_DAY_HOUR"));
     // Title
     title = new ALStringField();
-    title.setFieldName("タイトル");
+    title.setFieldName(ALLocalizationUtils.getl10n("BLOG_TITLE"));
     title.setTrim(true);
     // メモ
     note = new ALStringField();
-    note.setFieldName("記事");
+    note.setFieldName(ALLocalizationUtils.getl10n("BLOG_ENTRY"));
     note.setTrim(false);
     // ブログID
     blog_id = new ALNumberField();
-    blog_id.setFieldName("ブログ");
+    blog_id.setFieldName(ALLocalizationUtils.getl10n("BLOG_BLOG"));
     // カテゴリID
     thema_id = new ALNumberField();
-    thema_id.setFieldName("テーマ");
+    thema_id.setFieldName(ALLocalizationUtils.getl10n("BLOG_THEME"));
     // 公開区分
     allow_comments = new ALStringField();
-    allow_comments.setFieldName("コメント付加フラグ");
+    allow_comments.setFieldName(ALLocalizationUtils
+      .getl10n("BLOG_ALLOW_COMMENT"));
     allow_comments.setValue("T");
     allow_comments.setTrim(true);
 
@@ -477,7 +477,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       int newfilebeansSize = newfilebeans.size();
       if (newfilebeansSize > 0) {
         FileuploadLiteBean newfilebean = null;
-        for (int j = 0; j < length; j++) {
+        for (int j = 0; j < newfilebeansSize; j++) {
           newfilebean = newfilebeans.get(j);
           // サムネイル処理
           String[] acceptExts = ImageIO.getWriterFormatNames();

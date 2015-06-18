@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -55,7 +54,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -120,10 +119,12 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
         "電話番号",
         "FAX番号",
         "URL",
-        "役職名" };
+        "役職名",
+        "備考" };
     // 0：日本語，1：英数字
     short[] cell_enc_types =
       {
+        HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
@@ -178,7 +179,8 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
             rd.getCompanyTelephone().getValue(),
             rd.getCompanyFaxNumber().getValue(),
             rd.getCompanyUrl().getValue(),
-            rd.getPositionName().getValue() };
+            rd.getPositionName().getValue(),
+            rd.getNoteRaw() };
 
         rowcount = rowcount + 1;
         addRow(sheet.createRow(rowcount), cell_enc_types, rows);
@@ -206,7 +208,7 @@ public class AddressBookWordXlsExportScreen extends ALXlsScreen {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

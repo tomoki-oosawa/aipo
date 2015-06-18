@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,18 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.schedule;
 
 import java.util.Date;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.common.ALEipHolidaysManager;
+import com.aimluck.eip.common.ALHoliday;
 
 /**
  * スケジュールに表示されるTodo コンテナです。
- * 
+ *
  */
 public class ScheduleToDoDayContainer implements ALData {
 
@@ -42,9 +43,13 @@ public class ScheduleToDoDayContainer implements ALData {
 
   private boolean is_hastodo = false;
 
+  /** <code>holiday</code> 祝日情報 */
+  private ALHoliday holiday;
+
   /*
-   * 
+   *
    */
+  @Override
   public void initField() {
     // 日付
     today = new ALDateTimeField("yyyy-MM-dd-HH-mm");
@@ -54,7 +59,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getDate() {
@@ -63,16 +68,20 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 日付を設定します。
-   * 
+   *
    * @param date
    */
   public void setDate(Date date) {
     today.setValue(date);
+
+    // 祝日かどうかを検証する．
+    ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
+    holiday = holidaysManager.isHoliday(date);
   }
 
   /**
    * 期間スケジュールを追加します。
-   * 
+   *
    * @param rd
    */
   public void setToDoResultData(ScheduleToDoResultData rd) {
@@ -81,7 +90,7 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * 期間スケジュールを取得します。
-   * 
+   *
    * @return
    */
   public ScheduleToDoResultData getToDoResultData() {
@@ -98,10 +107,19 @@ public class ScheduleToDoDayContainer implements ALData {
 
   /**
    * JobがNULLかどうか。
-   * 
+   *
    * @return
    */
   public boolean isTodoNull() {
     return todoRd == null;
+  }
+
+  /**
+   * 祝日かどうかを検証する． 祝日の場合，true．
+   *
+   * @return
+   */
+  public boolean isHoliday() {
+    return (holiday == null) ? false : true;
   }
 }

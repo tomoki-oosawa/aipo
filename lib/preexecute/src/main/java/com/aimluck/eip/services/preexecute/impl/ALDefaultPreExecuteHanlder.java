@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,11 +16,21 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.services.preexecute.impl;
 
+import java.util.Iterator;
+
+import org.apache.jetspeed.om.profile.Entry;
+import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
+import org.apache.jetspeed.om.profile.ProfileException;
+import org.apache.jetspeed.om.profile.psml.PsmlEntry;
+import org.apache.jetspeed.services.Profiler;
+import org.apache.jetspeed.services.PsmlManager;
+import org.apache.jetspeed.services.idgenerator.JetspeedIdGenerator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -36,6 +46,40 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
 
   @Override
   public void migratePsml(RunData rundata, Context context) {
-  }
+    try {
+      Profile profile = Profiler.getProfile(rundata);
+      String mediaType = profile.getMediaType();
+      Portlets portlets = profile.getDocument().getPortlets();
+      @SuppressWarnings("unchecked")
+      Iterator<Entry> iterator = portlets.getEntriesIterator();
 
+      User user = rundata.getUser();
+
+      if (!"admin".equals(user.getUserName())
+        && !"anon".equals(user.getUserName())
+        && !"template".equals(user.getUserName())) {
+        if (mediaType.equals("html")) {
+          boolean hasMressageEntry = false;
+          while (iterator.hasNext()) {
+            Entry next = iterator.next();
+            String parent = next.getParent();
+            if ("Message".equals(parent)) {
+              hasMressageEntry = true;
+            }
+          }
+
+          if (!hasMressageEntry) {
+            PsmlEntry entry = new PsmlEntry();
+            entry.setId(JetspeedIdGenerator.getNextPeid());
+            entry.setParent("Message");
+            portlets.addEntry(entry);
+            PsmlManager.store(profile);
+          }
+        }
+      }
+
+    } catch (ProfileException e) {
+      logger.error(e.getMessage(), e);
+    }
+  }
 }

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($career = 'au')
 #set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
@@ -29,7 +28,7 @@
 <input name="eventSubmit_doAddressbook_addr_search_list" type="hidden" value="1">
 #ALcell_formfooter()
 #ALcell_br($career)
-名前・ﾒｰﾙｱﾄﾞﾚｽ・電話番号・会社名で検索します。
+名前･ﾒｰﾙｱﾄﾞﾚｽ･電話番号･会社名で検索します。
 #ALcell_hr($career '1')
 #ALcell_linklist($career $linklist)
 #ALtdcellFooterLink($career)

@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -58,13 +58,16 @@
 <div id="listMessageDiv"></div>
 #ALajaxlistformheader("$l10n.FACILITIES_FACILITY")
 #if($result.getAllFacilitySum() == 0)
-#AUIbuttonActionInBlankBox("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUISummaryDivHeader()
+#AUIbuttonAction("$l10n.FACILITIES_ADD_FACILITY" "javascript:aipo.common.showDialog('$addFacility','$!portlet.ID',aipo.facility.onLoadFacilityDialog);")
+#AUISummaryDivFooter()
+#AUIEmptyMessage("icon-building" "$l10n.FACILITIES_NO_FACILITIES")
 #elseif($result.List.size() == 0)
-$l10n.FACILITIES_MSG_NO_FACILITIES<br />
+#AUIEmptyMessage("icon-building" "$l10n.FACILITIES_NO_FACILITIES")
 #else
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
 #AUIajaxbuttonLink("$l10n.FACILITIES_SORT_FACILITY" $orderFacility)
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
@@ -104,7 +107,7 @@ $result.getStringCR($!group.GroupName)
 </table>
 #AUISummaryDiv()
 <div class="floatLeft">
-#AUIajaxbuttonCheckboxDelete("$l10n.FACILITIES_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','FacilityFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.facility.onReceiveMessage")
 #AUIajaxbuttonLink("$l10n.FACILITIES_SORT_FACILITY" $orderFacility)
 </div>
 #AUIajaxpageview('FacilityListScreen' $result)

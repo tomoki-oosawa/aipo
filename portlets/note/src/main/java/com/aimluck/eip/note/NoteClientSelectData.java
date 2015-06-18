@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.note;
 
 import java.util.jar.Attributes;
@@ -40,6 +39,7 @@ import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 伝言メモ依頼者検索データを管理するためのクラスです。
@@ -180,13 +180,13 @@ public class NoteClientSelectData extends
             record.getCustomSubject(),
             getStrLength());
       } else if (record.getSubjectType().equals("1")) {
-        subject = "再度電話します";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN_NO_PERIOD");
       } else if (record.getSubjectType().equals("2")) {
-        subject = "電話をしてください";
+        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_CALL_BACK");
       } else if (record.getSubjectType().equals("3")) {
-        subject = "電話がありました";
+        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
       } else if (record.getSubjectType().equals("4")) {
-        subject = "伝言があります";
+        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TAKE_A_MESSAGE");
       }
 
       rd.setSubject(subject);
@@ -194,15 +194,18 @@ public class NoteClientSelectData extends
       if (NoteUtils.NOTE_STAT_NEW.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_NEW);
         rd.setNoteStatImage("images/note/note_new_message.gif");
-        rd.setNoteStatImageDescription("新着");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_NEW_MESSAGE"));
       } else if (NoteUtils.NOTE_STAT_UNREAD.equals(map.getNoteStat())) {
         rd.setNoteStat(NoteUtils.NOTE_STAT_UNREAD);
         rd.setNoteStatImage("images/note/note_unread_message.gif");
-        rd.setNoteStatImageDescription("未読");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_UNREAD_MESSAGE"));
       } else {
         rd.setNoteStat(NoteUtils.NOTE_STAT_READ);
         rd.setNoteStatImage("images/note/note_read_message.gif");
-        rd.setNoteStatImageDescription("既読");
+        rd.setNoteStatImageDescription(ALLocalizationUtils
+          .getl10n("NOTE_READ_MESSAGE"));
       }
 
       ALEipUser user =

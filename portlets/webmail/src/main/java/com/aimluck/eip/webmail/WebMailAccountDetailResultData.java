@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,13 +16,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.webmail;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * WebメールアカウントのDetailResultDataです。 <br />
@@ -94,73 +94,86 @@ public class WebMailAccountDetailResultData implements ALData {
   @Override
   public void initField() {
     account_id = new ALNumberField();
-    account_id.setFieldName("アカウントID");
+    account_id.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_ACCOUNTID"));
 
     user_id = new ALNumberField();
-    user_id.setFieldName("ユーザID");
+    user_id.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_USERID"));
 
     account_name = new ALStringField();
-    account_name.setFieldName("メールアカウント名");
+    account_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_MAILACCOUNT_NAME"));
     account_name.setTrim(true);
 
     account_type = new ALStringField();
-    account_type.setFieldName("アカウント種別");
+    account_type.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_ACCOUNT_TYPE"));
     account_type.setTrim(true);
 
     smtpserver_name = new ALStringField();
-    smtpserver_name.setFieldName("送信メールサーバ名（SMTP）");
+    smtpserver_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_MAILSERVER_SEND"));
     smtpserver_name.setTrim(true);
 
     pop3server_name = new ALStringField();
-    pop3server_name.setFieldName("受信メールサーバ名（POP3）");
+    pop3server_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_MAILSERVER_RECEIVE"));
     pop3server_name.setTrim(true);
 
     pop3user_name = new ALStringField();
-    pop3user_name.setFieldName("受信用ユーザーID");
+    pop3user_name.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_USERID_RECEIVE"));
     pop3user_name.setTrim(true);
 
     pop3_password = new ALStringField();
-    pop3_password.setFieldName("受信用ユーザーパスワード");
+    pop3_password.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_USERPASS_RECEIVE"));
     pop3_password.setTrim(true);
 
     mail_user_name = new ALStringField();
-    mail_user_name.setFieldName("名前");
+    mail_user_name.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_NAME"));
     mail_user_name.setTrim(true);
 
     mail_address = new ALStringField();
-    mail_address.setFieldName("メールアドレス");
+    mail_address.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_MAILADDRESS"));
     mail_address.setTrim(true);
 
     smtp_port = new ALNumberField();
-    smtp_port.setFieldName("送信ポート番号（SMTP）");
+    smtp_port.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_PORTNUM_SEND"));
     smtp_port.setValue(DEF_SMTP_PORT);
 
     pop3_port = new ALNumberField();
-    pop3_port.setFieldName("受信ポート番号（POP3）");
+    pop3_port.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_PORTNUM_RECEIVE"));
     pop3_port.setValue(DEF_POP3_PORT);
 
     auth_send_flg = new ALNumberField();
-    auth_send_flg.setFieldName("メール送信時の認証");
+    auth_send_flg.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SEND_AUTHENTICATION"));
     auth_send_flg.setValue(0);
 
     pop3_encryption_flag = new ALNumberField();
-    pop3_encryption_flag.setFieldName("受信時にSSL暗号化を行う");
+    pop3_encryption_flag.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_RECEIVE_SSL_ENCRYPTION"));
     pop3_encryption_flag.setValue(0);
 
     smtp_encryption_flag = new ALNumberField();
-    smtp_encryption_flag.setFieldName("送信時にSSL暗号化を行う");
+    smtp_encryption_flag.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SEND_SSL_ENCRYPTION"));
     smtp_encryption_flag.setValue(0);
 
     auth_send_user_id = new ALStringField();
-    auth_send_user_id.setFieldName("SMTP認証用ユーザーID");
+    auth_send_user_id.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SMTP_ID"));
     auth_send_user_id.setTrim(true);
 
     auth_send_user_password = new ALStringField();
-    auth_send_user_password.setFieldName("SMTP認証用パスワード");
+    auth_send_user_password.setFieldName(ALLocalizationUtils
+      .getl10n("WEBMAIL_SMTP_PW"));
     auth_send_user_password.setTrim(true);
 
     signature = new ALStringField();
-    signature.setFieldName("署名");
+    signature.setFieldName(ALLocalizationUtils.getl10n("WEBMAIL_SIGN"));
     signature.setTrim(true);
   }
 

@@ -30,7 +30,7 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
  * Portlet context and allows you to manipulate the lowest level pane 
  * if it exists.
  *
- * @author <a href="mailto:raphael@apache.org">Raphaël Luta</a>
+ * @author <a href="mailto:raphael@apache.org">Raphaè¬– Luta</a>
  * @deprecated Since 2002-03-05. Use JetspeedTemplateLink with the setPortlet(Portlet) method to give
  * it the right context.
  * @version $Id: PortletTemplateLink.java,v 1.4 2004/02/23 03:20:45 jford Exp $

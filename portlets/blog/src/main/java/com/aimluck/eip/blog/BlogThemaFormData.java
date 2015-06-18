@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,9 +16,9 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.blog;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -31,6 +31,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.blog.util.BlogUtils;
+import com.aimluck.eip.cayenne.om.portlet.EipTBlogEntry;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogThema;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -44,6 +45,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログテーマのフォームデータを管理するクラスです。 <BR>
@@ -86,11 +88,11 @@ public class BlogThemaFormData extends ALAbstractFormData {
 
     // カテゴリ名
     thema_name = new ALStringField();
-    thema_name.setFieldName("テーマ名");
+    thema_name.setFieldName(ALLocalizationUtils.getl10n("BLOG_THEME_NAME"));
     thema_name.setTrim(true);
     // メモ
     description = new ALStringField();
-    description.setFieldName("メモ");
+    description.setFieldName(ALLocalizationUtils.getl10n("BLOG_MEMO"));
     description.setTrim(true);
   }
 
@@ -323,6 +325,26 @@ public class BlogThemaFormData extends ALAbstractFormData {
         // テーマ「その他」は削除不可
         msgList.add("このテーマは削除できません。");
         return false;
+      }
+      // 記事を「その他」に移す
+      List<String> values = new ArrayList<String>();
+      values.add(thema.getThemaId().toString());
+      SelectQuery<EipTBlogEntry> reqquery = Database.query(EipTBlogEntry.class);
+      Expression reqexp1 =
+        ExpressionFactory.inDbExp(EipTBlogEntry.EIP_TBLOG_THEMA_PROPERTY
+          + "."
+          + EipTBlogThema.THEMA_ID_PK_COLUMN, values);
+      reqquery.setQualifier(reqexp1);
+      List<EipTBlogEntry> requests = reqquery.fetchList();
+      if (requests != null && requests.size() > 0) {
+        EipTBlogEntry request = null;
+        EipTBlogThema defaultThema =
+          BlogUtils.getEipTBlogThema(Long.valueOf(1));
+        int size = requests.size();
+        for (int i = 0; i < size; i++) {
+          request = requests.get(i);
+          request.setEipTBlogThema(defaultThema);
+        }
       }
 
       // entityIdを取得

@@ -1,6 +1,6 @@
 /*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.todo;
 
 import java.util.Date;
@@ -30,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのResultDataです。 <BR>
- * 
+ *
  */
 public class ToDoResultData implements ALData {
 
@@ -46,8 +45,14 @@ public class ToDoResultData implements ALData {
   /** 優先度 */
   private ALNumberField priority;
 
+  /** 担当者ID */
+  private ALNumberField user_id;
+
   /** 担当者 */
   private ALStringField user_name;
+
+  /** 作成者(更新者)ID */
+  private ALNumberField create_user_id;
 
   /** 作成者 */
   private ALStringField create_user_name;
@@ -85,11 +90,14 @@ public class ToDoResultData implements ALData {
   /** 状態（文字列） */
   private ALStringField state_string;
 
-  /** 登録日 */
+  /** 作成日 */
   private ALStringField create_date;
 
   /** 更新日 */
   private ALDateTimeField update_date;
+
+  /** ログインユーザーID */
+  private ALNumberField login_user_id;
 
   /**
    * 期限状態（期限前/期限当日/期限後）． <br>
@@ -99,6 +107,10 @@ public class ToDoResultData implements ALData {
   private ALNumberField limit_state;
 
   private boolean is_self_todo;
+
+  private boolean hasAclListTodoOther;
+
+  private boolean hasAclDetailTodoOther;
 
   private boolean hasAclEditTodoOther;
 
@@ -114,6 +126,7 @@ public class ToDoResultData implements ALData {
     category_id = new ALNumberField();
     state = new ALNumberField();
     priority = new ALNumberField();
+    user_id = new ALNumberField();
     user_name = new ALStringField();
     todo_name = new ALStringField();
     category_name = new ALStringField();
@@ -127,7 +140,9 @@ public class ToDoResultData implements ALData {
     state_string = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALDateTimeField();
+    login_user_id = new ALNumberField();
     limit_state = new ALNumberField();
+    create_user_id = new ALNumberField();
     create_user_name = new ALStringField();
     is_public = true;
     addon_schedule_flg = true;
@@ -185,6 +200,13 @@ public class ToDoResultData implements ALData {
    */
   public String getTodoName() {
     return ALCommonUtils.replaceToAutoCR(todo_name.toString());
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getTodoNameString() {
+    return todo_name;
   }
 
   /**
@@ -252,7 +274,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -330,7 +352,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getStateImage() {
@@ -369,7 +391,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getLimitState() {
@@ -377,7 +399,7 @@ public class ToDoResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @param value
    */
   public void setLimitState(int value) {
@@ -392,6 +414,14 @@ public class ToDoResultData implements ALData {
     return addon_schedule_flg;
   }
 
+  public void setUserId(long i) {
+    user_id.setValue(i);
+  }
+
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
   public void setUserName(String user_name) {
     this.user_name.setValue(user_name);
   }
@@ -404,12 +434,28 @@ public class ToDoResultData implements ALData {
     return ALCommonUtils.replaceToAutoCR(user_name.toString());
   }
 
+  public void setCreateUserId(long i) {
+    create_user_id.setValue(i);
+  }
+
+  public ALNumberField getCreateUserId() {
+    return create_user_id;
+  }
+
   public void setCreateUserName(String create_user_name) {
     this.create_user_name.setValue(create_user_name);
   }
 
   public ALStringField getCreateUserName() {
     return create_user_name;
+  }
+
+  public void setLoginUserId(int i) {
+    login_user_id.setValue(i);
+  }
+
+  public ALNumberField getLoginUserId() {
+    return login_user_id;
   }
 
   public boolean isSelfTodo() {
@@ -421,8 +467,46 @@ public class ToDoResultData implements ALData {
   }
 
   /**
+   * hasAclListTodoOtherを取得します。
+   *
+   * @return hasAclListTodoOther
+   */
+  public boolean hasAclListTodoOther() {
+    return hasAclListTodoOther;
+  }
+
+  /**
+   * hasAclListTodoOtherを設定します。
+   *
+   * @param hasAclListTodoOther
+   *          hasAclListTodoOther
+   */
+  public void setAclListTodoOther(boolean hasAclListTodoOther) {
+    this.hasAclListTodoOther = hasAclListTodoOther;
+  }
+
+  /**
+   * hasAclDetailTodoOtherを取得します。
+   *
+   * @return hasAclDetailTodoOther
+   */
+  public boolean hasAclDetailTodoOther() {
+    return hasAclDetailTodoOther;
+  }
+
+  /**
+   * hasAclDetailTodoOtherを設定します。
+   *
+   * @param hasAclDetailTodoOther
+   *          hasAclDetailTodoOther
+   */
+  public void setAclDetailTodoOther(boolean hasAclDetailTodoOther) {
+    this.hasAclDetailTodoOther = hasAclDetailTodoOther;
+  }
+
+  /**
    * hasAclEditTodoOtherを取得します。
-   * 
+   *
    * @return hasAclEditTodoOther
    */
   public boolean hasAclEditTodoOther() {
@@ -431,7 +515,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclEditTodoOtherを設定します。
-   * 
+   *
    * @param hasAclEditTodoOther
    *          hasAclEditTodoOther
    */
@@ -441,7 +525,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDeleteTodoOtherを取得します。
-   * 
+   *
    * @return hasAclDeleteTodoOther
    */
   public boolean hasAclDeleteTodoOther() {
@@ -450,7 +534,7 @@ public class ToDoResultData implements ALData {
 
   /**
    * hasAclDeleteTodoOtherを設定します。
-   * 
+   *
    * @param hasAclDeleteTodoOther
    *          hasAclDeleteTodoOther
    */

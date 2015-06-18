@@ -1,6 +1,6 @@
 #*
  * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2011 Aimluck,Inc.
+ * Copyright (C) 2004-2015 Aimluck,Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 ## ---------------------------------------------------------------------------
 #set($link = "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_eventSubmit_doSchedule_list_select_member','1').addQueryData('selectedmember', $result.TargerUser.UserId)")
 ##set($methodlist = [["登録(1日)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_oneday','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(繰り返し)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_repeat','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"], ["登録(期間)へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doSchedule_form_span','1').addQueryData('entityid','new').addQueryData('view_date', $!{result.ViewDate.toString()})"]])
@@ -42,7 +41,7 @@ $l10n.SCHEDULE_NO_SCHEDULE
 #if(!${record.isPublic()} && !${record.isMember()})
 <span>
 #if($schedule.Repeat)
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 #else
 $!{record.Date}#ALcell_br($career)
 #end
@@ -59,7 +58,7 @@ $l10n.SCHEDULE_CLOSE_PUBLIC_WORD
 #if(!$!{record.isSpan()})
 $!{record.Date}#ALcell_br($career)
 #else
-$l10n.SCHEDULE_TERM：
+$l10n.SCHEDULE_TERM:
 #end
 $!{record.Name}
 #if($record.isDuplicate())$l10n.SCHEDULE_SUB_DUPLICATE#end
