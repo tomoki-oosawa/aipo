@@ -197,7 +197,7 @@ public class GpdbRecordSelectData extends
       searchWord.setValue(GpdbUtils.getSearchword(rundata, context));
       String searchValue;
       if ((searchWord != null) && (!searchWord.getValue().equals(""))) {
-        searchValue = "   AND r4.value LIKE '%" + searchWord + "%'";
+        searchValue = "   AND r4.value LIKE #bind($keyword)";
       } else {
         searchValue = "";
       }
@@ -277,6 +277,7 @@ public class GpdbRecordSelectData extends
         sqltemp.param("sort", sort);
       }
       if (searchValue != "") {
+        sqltemp.param("keyword", "%" + searchWord + "%");
         sqltemp.param("type1", GpdbUtils.ITEM_TYPE_TEXTAREA);
         sqltemp.param("type2", GpdbUtils.ITEM_TYPE_TEXT);
         sqltemp.param("type3", GpdbUtils.ITEM_TYPE_LINK);
