@@ -330,9 +330,9 @@ public class MessageFormData extends ALAbstractFormData {
       Database.delete(message);
       Database.commit();
 
-    } catch (Throwable t) {
+    } catch (Exception ex) {
       Database.rollback();
-      logger.error("[MessageFormData]", t);
+      logger.error("[MessageFormData]", ex);
       return false;
     }
 

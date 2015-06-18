@@ -962,26 +962,10 @@ aipo.message.onReceiveMessageDelete = function(msg) {
 	if (!msg) {
 		aipo.message.reloadMessageList();
 	}
-    if (dojo.byId('messageDiv')) {
-        dojo.byId('messageDiv').innerHTML =msg;
+    if (dojo.byId('messageListDiv')) {
+        dojo.byId('messageListDiv').innerHTML =msg;
 	}
 };
-
-aipo.message.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
-	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
-	var confirmString = dojo.string.substitute(nlsStrings.DW_STR, {
-		dw_del: nlsStrings.DW_DEL,
-		dw_this: nlsStrings.DW_THIS,
-		dw_name: button.form._name.value
-	});
-	// 'この'+button.form._name.value+'を削除してよろしいですか？'
-	if (confirm(confirmString)) {
-		aimluck.io.disableForm(button.form, true);
-		aimluck.io.setHiddenValue(button);
-		button.form.action = url;
-		aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
-	}
-}
 
 aipo.message.setWrapperHeight = function() {
     var modalDialog = document.getElementById('modalDialog');
