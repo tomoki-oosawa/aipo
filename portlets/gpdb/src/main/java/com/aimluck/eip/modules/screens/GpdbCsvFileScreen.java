@@ -39,7 +39,7 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
   private String fileName = null;
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
