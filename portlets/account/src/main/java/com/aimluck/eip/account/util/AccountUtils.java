@@ -682,6 +682,41 @@ public class AccountUtils {
         }
       }
 
+      Expression exp011 =
+        ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, user
+          .getUserId());
+
+      Expression exp021 =
+        ExpressionFactory.noMatchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
+      Expression exp031 =
+        ExpressionFactory.matchDbExp(
+          "TIMELINE_TYPE",
+          EipTTimeline.TIMELINE_TYPE_TIMELINE);
+
+      SelectQuery<EipTTimeline> EipTTimelineSQL1 =
+        Database.query(EipTTimeline.class).andQualifier(
+          exp011.andExp(exp021.andExp(exp031)));
+      List<EipTTimeline> timelineList1 = EipTTimelineSQL1.fetchList();
+
+      if (!timelineList1.isEmpty()) {
+        SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL2 =
+          Database.query(EipTTimelineLike.class);
+        EipTTimelineLikeSQL2.andQualifier(ExpressionFactory.inDbExp(
+          EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+          timelineList1));
+
+        EipTTimelineLikeSQL2.deleteAll();
+        EipTTimelineSQL1.deleteAll();
+
+      }
+
+      SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL3 =
+        Database.query(EipTTimelineLike.class);
+      EipTTimelineLikeSQL3.andQualifier(ExpressionFactory.matchDbExp(
+        EipTTimelineLike.OWNER_ID_COLUMN,
+        user.getUserId()));
+      EipTTimelineLikeSQL3.deleteAll();
+
       // メッセージ
       List<EipTMessageFile> messageFileList =
         Database
