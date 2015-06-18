@@ -68,7 +68,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ToDoのフォームデータを管理するクラスです。 <BR>
- *
+ * 
  */
 public class ToDoFormData extends ALAbstractFormData {
 
@@ -138,12 +138,12 @@ public class ToDoFormData extends ALAbstractFormData {
   private boolean hasAclInsertTodoOther;
 
   /**
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -263,7 +263,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    */
@@ -295,10 +295,10 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -371,7 +371,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースから読み出します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -430,7 +430,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースから削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -475,7 +475,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -628,7 +628,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * ToDoカテゴリをデータベースに格納します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -673,7 +673,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているToDoを更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -825,7 +825,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getCategoryId() {
@@ -834,7 +834,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -843,7 +843,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 優先度を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getPriority() {
@@ -852,7 +852,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 状態を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALNumberField getState() {
@@ -861,7 +861,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * タイトルを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getTodoName() {
@@ -870,7 +870,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 締切日を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALDateField getEndDate() {
@@ -879,7 +879,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 開始日を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALDateField getStartDate() {
@@ -888,7 +888,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   *
+   * 
    * @return
    */
   public List<ToDoCategoryResultData> getCategoryList() {
@@ -897,7 +897,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 締切日指定フラグを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getEndDateCheck() {
@@ -906,7 +906,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 開始日指定フラグを取得します。 <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getStartDateCheck() {
@@ -914,7 +914,7 @@ public class ToDoFormData extends ALAbstractFormData {
   }
 
   /**
-   *
+   * 
    * @return
    */
   public int getCurrentYear() {
@@ -930,7 +930,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。
-   *
+   * 
    * @return
    */
   public ALStringField getCategoryName() {
@@ -939,7 +939,7 @@ public class ToDoFormData extends ALAbstractFormData {
 
   /**
    * 公開/非公開フラグを取得する．
-   *
+   * 
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -953,7 +953,7 @@ public class ToDoFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override
