@@ -2213,7 +2213,7 @@ div.weeklyTermRights div.weeklyTermRightR {
 /***************************************************
 	scheduleBlock
 --------------------------------------------------*/
-table.scheduleBlock thead{
+table.scheduleBlock thead td{
   padding-bottom: 5px;
 }
 table.weeklyTableHead {
