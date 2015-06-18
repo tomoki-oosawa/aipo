@@ -1140,11 +1140,6 @@ div.weeklyScrollPane {
 .scrollRight {
   /*border-right: 1px solid #d2d2d2;*/
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  .scrollRight {
-    border-right: 1px solid #d2d2d2;
-  }
-}
 
 .scroll_width {
   padding-right: 1px;
@@ -1469,8 +1464,13 @@ div.termScheduleDivTgt {
 table.weeklyTableHead {
   margin-top: 5px;
   border-top: solid 1px #d2d2d2;
-  border-right: solid 1px #d2d2d2;
+  border-right: none;
   padding-right: 0 !important;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  table.weeklyTableHead {
+    border-right: 1px solid #d2d2d2;
+  }
 }
 
 div.weeklyBorder {
