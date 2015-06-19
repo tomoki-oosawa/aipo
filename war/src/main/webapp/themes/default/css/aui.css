@@ -4244,6 +4244,7 @@ ul.attachments {
 }
 
 #timelineOuter .searchClearOuter,
+#timelineOuter .newMessage,
 .timelineOuter .newMessage,
 .timelineOuter .searchClearOuter {
   background: #f6f6f6;
