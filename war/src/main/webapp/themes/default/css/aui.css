@@ -4280,6 +4280,7 @@ ul.attachments {
 .searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
   color: #666 !important;
 }
+#timelineOuter .newMessage a:hover,
 .searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
   color: #f90 !important;
 }
