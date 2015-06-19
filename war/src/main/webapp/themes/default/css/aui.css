@@ -4271,6 +4271,7 @@ ul.attachments {
   position: absolute;
   right: 0;
 }
+#timelineOuter .newMessage a,
 .searchClear {
   color: #666 !important;
   line-height: inherit;
