@@ -4264,7 +4264,8 @@ ul.attachments {
   text-decoration: none;
 }
 #timelineOuter .newMessage,
-#timelineOuter .searchClearOuter{
+#timelineOuter .searchClearOuter,
+#timelineOuter .loader{
   margin-top: 5px;
 }
 .searchClearOuter .indicatorglay{
@@ -5490,9 +5491,9 @@ a:hover .auiWFicon [class^="icon-"] {
 	loader
 --------------------------------------------------*/
 .loader {
-  padding: 10px;
-  height: 20px;
-  line-height: 20px;
+  padding: 5px;
+  height: 18px;
+  line-height: 18px;
   background-size: 16px;
   text-align: center;
 }
