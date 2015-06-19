@@ -4263,6 +4263,7 @@ ul.attachments {
   padding: 5px !important;
   text-decoration: none;
 }
+#timelineOuter .newMessage,
 #timelineOuter .searchClearOuter{
   margin-top: 5px;
 }
