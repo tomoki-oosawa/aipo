@@ -37,6 +37,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
@@ -325,6 +326,14 @@ public class MessageFormData extends ALAbstractFormData {
       if (!(messageOwner.equals(user))) {
         return false;
       }
+      // messageの添付ファイルを削除
+      List<EipTMessageFile> files =
+        MessageUtils.getEipTMessageFilesByMessage(messageId);
+
+      ALDeleteFileUtil.deleteFiles(
+        MessageUtils.FOLDER_FILEDIR_MESSAGE,
+        MessageUtils.CATEGORY_KEY,
+        files);
 
       // messageを削除
       Database.delete(message);
