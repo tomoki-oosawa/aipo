@@ -93,6 +93,7 @@ aipo.timeline.onScroll = function(url, pid, page, max) {
 	var clientHeight = dojo.byId("timeline_" + pid).clientHeight;
 	var scrollHeight = dojo.byId("timeline_" + pid).scrollHeight;
 	var remain = scrollHeight - clientHeight - scrollTop;
+
 	if (dojo.byId("height_" + pid) == 0 || remain < 5) {
 		aipo.timeline.onClick(url, pid, page, max);
 	}
@@ -262,6 +263,9 @@ aipo.timeline.getUrl = function(url, pid) {
 
 aipo.timeline.setScrollTop = function(pid, scrollTop) {
 	dojo.byId("timeline_" + pid).scrollTop = scrollTop;
+	if(aipo.userAgent.isAndroid2()){
+		　window.location.reload();
+		}
 }
 
 aipo.timeline.onKeyUp = function(pid, tid, e) {
