@@ -1193,7 +1193,7 @@ aipo.message.popupProfile = function(userId, event) {
 			 aipo.message.hideProfile();
 				//android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
 			    if(aipo.userAgent.isAndroid2()){
-			        var wrapper=dojo.byId("wrapper");
+			      var wrapper=dojo.byId("wrapper");
 			        // wrapper再表示
 			        // wrapperの非表示はdisplay:none;で行う
 			        // dojo.style(wrapper, "visibility", "visible");
@@ -1254,17 +1254,15 @@ aipo.message.popupProfile = function(userId, event) {
 		var node = dojo.query("#popupProfileInner_" + userId); /*プロフィールカード本体の表示・非表示*/
 		var popupNode = dojo.query("#popupProfile_" + userId); /*プロフィールカードの出現位置を指定*/
 		var wrapper=dojo.byId("wrapper");
-
 		if (node.style('display') == 'none' || popupInner.eventTarget !== eventTarget) {
 			dojo.query('.profilePopup').style('display', 'none');
 			var scroll={
 					left:document.documentElement.scrollLeft||document.body.scrollLeft,
 					top:document.documentElement.scrollTop||document.body.scrollTop
 			};
-
-			node.style("display","block");
-			popupNode.style("position","absolute");
-			node.style("opacity","0");
+			    node.style("opacity","0");
+			    node.style("display","block");
+			    popupNode.style("position","absolute");
 
 			var width = scroll.left + html.right;
 			var bottom = node[0].clientWidth + rect.right;
@@ -1335,12 +1333,6 @@ aipo.message.openProfileTextarea = function(userId) {
 	card.style.display="block";
 	cardDummy.style.display="none";
 	aipo.message.focusProfileInput(userId);
-	 if(aipo.userAgent.isAndroid2()){
-	     var wrapper=dojo.byId("wrapper");
-		 dojo.style(wrapper, "display", "none");
-		 popupNode.style("top", "0px");
-	     popupNode.style("margin", "0");
-	}
 }
 
 aipo.message.closeProifleTextarea  = function(userId) {
