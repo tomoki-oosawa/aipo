@@ -457,10 +457,10 @@ aipo.message.closeRightBlock = function(){
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageRightBlock = dojo.byId("messageRightPane");
     if (messageMainBlock && !aipo.message.isMobile) {
-        messageMainBlock.style["margin"] = "0px 0px 0 280px";
+        messageMainBlock.style["margin"] = "0px 0px 0px 280px";
     }
     if (messageMainBlockEmpty && !aipo.message.isMobile) {
-    	messageMainBlockEmpty.style["margin"] = "0px 0px 0 280px";
+    	messageMainBlockEmpty.style["margin"] = "0px 0px 0px 280px";
     }
     if(messageRightBlock) {
     	messageRightBlock.style.display="none"
