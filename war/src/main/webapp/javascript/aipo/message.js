@@ -432,17 +432,16 @@ aipo.message.swapRightMessage = function(){
     	dojo.forEach(dojo.query(".messageRightMessage"), function(item) {item.style.display=""});
     }
 }
-
 aipo.message.closeRightBlock = function(){
     var messageSideBlock = dojo.byId("messageSideBlock");
     var messageMainBlock = dojo.byId("messageMainBlock");
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageRightBlock = dojo.byId("messageRightPane");
     if (messageMainBlock && !aipo.message.isMobile) {
-        messageMainBlock.style["margin-right"] = "0px";
+        messageMainBlock.style["margin"] = "0px 0px 0px 280px";
     }
     if (messageMainBlockEmpty && !aipo.message.isMobile) {
-    	messageMainBlockEmpty.style["margin-right"] = "0px";
+    	messageMainBlockEmpty.style["margin"] = "0px 0px 0px 280px";
     }
     if(messageRightBlock) {
     	messageRightBlock.style.display="none"
