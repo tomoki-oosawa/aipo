@@ -35,7 +35,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのResultData <BR>
- * 
+ *
  */
 public class TimelineResultData implements ALData {
 
@@ -104,6 +104,9 @@ public class TimelineResultData implements ALData {
 
   private ALEipUser user = null;
 
+  /** キーワード */
+  private ALStringField keyword;
+
   /**
    *
    *
@@ -127,6 +130,7 @@ public class TimelineResultData implements ALData {
     like = false;
     attachmentFileList = new ArrayList<FileuploadBean>();
     likeCount = 0;
+    keyword = new ALStringField();
   }
 
   /**
@@ -184,14 +188,14 @@ public class TimelineResultData implements ALData {
    * @return String
    */
   public String getNote() {
-    return ALEipUtils.getMessageList(note.getValue());
+    return ALEipUtils.getMessageList(note.getValue(), keyword.getValue());
   }
 
   private static final int PRE_NOTE_LENGTH = 500;
 
   /**
    * 続きを見るを表示するかどうかの判定
-   * 
+   *
    * @return boolean
    */
   public boolean isLongNote() {
@@ -200,7 +204,7 @@ public class TimelineResultData implements ALData {
 
   /**
    * 部分文字列の最後がアドレスのときTrueを返します。
-   * 
+   *
    * @param 部分文字列sub
    * @return
    */
@@ -228,7 +232,7 @@ public class TimelineResultData implements ALData {
 
   /**
    * 続きを見るで隠されない部分を返します。
-   * 
+   *
    * @return String
    */
   public String getPreviewNote() {
@@ -267,7 +271,7 @@ public class TimelineResultData implements ALData {
 
   /**
    * 続きを見るで隠される部分を返します。
-   * 
+   *
    * @return String
    */
   public String getDetailNote() {
@@ -361,7 +365,7 @@ public class TimelineResultData implements ALData {
 
   /**
    * 公開/非公開フラグ．
-   * 
+   *
    * @return
    */
   public boolean isPublic() {
@@ -616,4 +620,18 @@ public class TimelineResultData implements ALData {
     return portletId;
   }
 
+  /**
+   * @return keyword
+   */
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
+  }
 }

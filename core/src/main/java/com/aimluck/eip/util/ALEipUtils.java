@@ -2493,4 +2493,68 @@ public class ALEipUtils {
     }
     return maps;
   }
+
+  /**
+   * @param value
+   * @param value2
+   * @return
+   */
+  public static String getMessageList(String msgline, String keyword) {
+    StringBuffer sb = new StringBuffer();
+    ALStringField field = null;
+
+    if (msgline == null || msgline.equals("")) {
+      return "";
+    }
+    msgline = Normalizer.normalize(msgline, Normalizer.Form.NFC);
+    if (msgline.indexOf("\r") < 0
+      && msgline.indexOf("\n") < 0
+      && msgline.indexOf("\r\n") < 0) {
+      field = new ALStringField();
+      field.setTrim(false);
+      field.setValue(msgline);
+      return ALCommonUtils
+        .replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field.toString())));
+    }
+
+    String token = null;
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new StringReader(msgline));
+      while ((token = reader.readLine()) != null) {
+        field = new ALStringField();
+        field.setTrim(false);
+        field.setValue(token);
+        sb.append(
+          ALCommonUtils.replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
+            .toString())))).append("<br/>");
+      }
+      reader.close();
+    } catch (IOException ioe) {
+      try {
+        reader.close();
+      } catch (IOException e) {
+      }
+      return "";
+    }
+
+    int index = sb.lastIndexOf("<br/>");
+    if (index == -1) {
+      return sb.toString();
+    }
+
+    if (keyword == null || keyword.equals("")) {
+      return "";
+    } else if (keyword != null) {
+      // 本文の中に検索キーワードが含まれていた場合、
+      // <span class='searchKeyword'>検索キーワード</span>
+      // のようにコードが挿入されるようにする
+
+      return msgline =
+        msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
+    }
+
+    return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
+
+  }
 }
