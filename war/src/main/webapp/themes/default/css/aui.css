@@ -4244,6 +4244,7 @@ ul.attachments {
 }
 
 #timelineOuter .searchClearOuter,
+#timelineOuter .newMessage,
 .timelineOuter .newMessage,
 .timelineOuter .searchClearOuter {
   background: #f6f6f6;
@@ -4252,7 +4253,6 @@ ul.attachments {
   margin-bottom: 0px;
 }
 
-#timelineOuter .newMessage,
 #timelineOuter .newMessage a,
 #timelineOuter .readMore a,
 #timelineOuter .searchClearOuter a,
@@ -4263,13 +4263,16 @@ ul.attachments {
   padding: 5px !important;
   text-decoration: none;
 }
-#timelineOuter .searchClearOuter{
+#timelineOuter .newMessage,
+#timelineOuter .searchClearOuter,
+#timelineOuter .loader{
   margin-top: 5px;
 }
 .searchClearOuter .indicatorglay{
   position: absolute;
   right: 0;
 }
+#timelineOuter .newMessage a,
 .searchClear {
   color: #666 !important;
   line-height: inherit;
@@ -4278,6 +4281,7 @@ ul.attachments {
 .searchClear [class^="icon-"], .searchClear [class*=" icon-"] {
   color: #666 !important;
 }
+#timelineOuter .newMessage a:hover,
 .searchClear:hover [class^="icon-"], .searchClear:hover [class*=" icon-"] {
   color: #f90 !important;
 }
@@ -5487,9 +5491,9 @@ a:hover .auiWFicon [class^="icon-"] {
 	loader
 --------------------------------------------------*/
 .loader {
-  padding: 10px;
-  height: 20px;
-  line-height: 20px;
+  padding: 5px;
+  height: 18px;
+  line-height: 18px;
   background-size: 16px;
   text-align: center;
 }
