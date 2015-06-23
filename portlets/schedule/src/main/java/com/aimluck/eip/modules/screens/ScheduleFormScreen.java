@@ -23,13 +23,14 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.schedule.ScheduleFormData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールフォームデータを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class ScheduleFormScreen extends ALVelocityScreen {
 
@@ -40,7 +41,7 @@ public class ScheduleFormScreen extends ALVelocityScreen {
   private final static String IGNORE_VIEWDATE = "ignore_viewdate";
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -63,6 +64,13 @@ public class ScheduleFormScreen extends ALVelocityScreen {
     formData.loadParameters(rundata, context);
     formData.initField();
     formData.doViewForm(this, rundata, context);
+
+    String entityid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    if (entityid == null || "".equals(entityid)) {
+      entityid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
+    }
+    context.put(ALEipConstants.ENTITY_ID, entityid);
 
     String ignore_viewdate = rundata.getParameters().getString(IGNORE_VIEWDATE);
     if (ignore_viewdate != null && ignore_viewdate.equals("true")) {
