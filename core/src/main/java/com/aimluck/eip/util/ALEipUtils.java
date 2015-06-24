@@ -1743,6 +1743,48 @@ public class ALEipUtils {
   }
 
   /**
+   * 文字列中の検索キーワードを<span class="searchKeyword">タグで囲います。
+   *
+   * @param msg
+   * @return
+   */
+  public static String highlihgtKeywords(String msg, String keyword) {// タグ避け実装中
+    if (msg != null) {
+      if (keyword != null && !(keyword.equals(""))) {
+        String pattern = "<a\\s(?:\".*?\"|\'.*?\'|[^\'\"])*?>(.*?)</a>";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(msg);
+        if (m.find()) {
+          String[] notInTag = msg.split(pattern);
+          String[] highlighted = new String[notInTag.length];
+          for (int i = 0; i < notInTag.length; i++) {
+            if (notInTag[i].indexOf(keyword) < 0) {
+              highlighted[i] =
+                "<span class='searchKeyword'>" + keyword + "</span>";
+            } else {
+              highlighted[i] = notInTag[i];
+            }
+          }
+          String replaced = new String();
+          for (int i = 0; i < notInTag.length; i++) {
+            // msgでnotInTag[i]とマッチしたi番目の文字列をhighlighted[i]に置換する。
+            // i番目の文字列はm.group(i)?
+          }
+        } else {
+          return "";
+        }
+
+        // return msg = msg.replaceAll(keyword, replaced);//前のコード
+      } else {
+        return msg;
+      }
+    } else {
+      return "";
+    }
+    return "";
+  }
+
+  /**
    * 文字列内のリンクにタグAを追加します。
    *
    * @param msg
@@ -1778,6 +1820,47 @@ public class ALEipUtils {
       return newMsg.replaceAll(
         "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
         "<a href='mailto:$0'>$0</a>");
+    } else {
+      return "";
+    }
+  }
+
+  public static String replaceStrToLink(String msg, String keyword) {
+    if (msg != null) {
+      String regex =
+        "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)";
+      Pattern p = Pattern.compile(regex);
+      boolean check = true;
+      while (check) {
+        check = false;
+        Matcher m = p.matcher(msg);
+        while (m.find()) {
+          if (m.group(0).contains("@")) {
+            String matchString = m.group(0);
+            matchString = matchString.replaceAll("@", "%40");
+            String pre = msg.substring(0, m.start(0));
+            String post = msg.substring(m.end(0), msg.length());
+            msg = pre + matchString + post;
+            check = true;
+          }
+        }
+      }
+
+      // 日本語（ひらがな、かたかな、漢字）が含まれていてもリンク化されるように正規表現を追加する。
+      // URL
+      String newMsg =
+        msg
+          .replaceAll(
+            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
+            "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
+      // mail
+      String newnewMsg =
+        newMsg.replaceAll(
+          "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
+          "<a href='mailto:$0'>$0</a>");
+      // highlight
+      String highlightedMsg = highlihgtKeywords(newnewMsg, keyword);
+      return highlightedMsg;
     } else {
       return "";
     }
@@ -2495,8 +2578,8 @@ public class ALEipUtils {
   }
 
   /**
-   * @param value
-   * @param value2
+   * @param msgline
+   * @param keyword
    * @return
    */
   public static String getMessageList(String msgline, String keyword) {
@@ -2513,8 +2596,9 @@ public class ALEipUtils {
       field = new ALStringField();
       field.setTrim(false);
       field.setValue(msgline);
-      return ALCommonUtils
-        .replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field.toString())));
+      return ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+        replaseLeftSpace(field.toString()),
+        keyword)));
     }
 
     String token = null;
@@ -2526,8 +2610,9 @@ public class ALEipUtils {
         field.setTrim(false);
         field.setValue(token);
         sb.append(
-          ALCommonUtils.replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
-            .toString())))).append("<br/>");
+          ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+            replaseLeftSpace(field.toString()),
+            keyword)))).append("<br/>");
       }
       reader.close();
     } catch (IOException ioe) {
@@ -2542,17 +2627,17 @@ public class ALEipUtils {
     if (index == -1) {
       return sb.toString();
     }
-
-    if (keyword == null || keyword.equals("")) {
-      return "";
-    } else if (keyword != null) {
-      // 本文の中に検索キーワードが含まれていた場合、
-      // <span class='searchKeyword'>検索キーワード</span>
-      // のようにコードが挿入されるようにする
-
-      return msgline =
-        msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
-    }
+    //
+    // if (keyword == null || keyword.equals("")) {
+    // return "";
+    // } else if (keyword != null) {
+    // // 本文の中に検索キーワードが含まれていた場合、
+    // // <span class='searchKeyword'>検索キーワード</span>
+    // // のようにコードが挿入されるようにする
+    //
+    // return msgline =
+    // msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
+    // }
 
     return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
 
