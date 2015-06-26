@@ -2216,6 +2216,16 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	scheduleBlock
+--------------------------------------------------*/
+table.scheduleBlock thead td{
+  padding-bottom: 5px;
+}
+table.weeklyTableHead {
+  border-right: none;
+}
+
+/***************************************************
 	message
 --------------------------------------------------*/
 body.messageRoomList {
