@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムライントピックの一覧を処理するクラスです。
- * 
+ *
  */
 public class TimelineScreen extends ALVelocityScreen {
 
@@ -38,7 +38,7 @@ public class TimelineScreen extends ALVelocityScreen {
     .getLogger(TimelineScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

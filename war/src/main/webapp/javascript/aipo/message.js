@@ -901,7 +901,7 @@ aipo.message.changeMember = function() {
         node.innerHTML = HTML;
     }
 
-    aipo.message.setWrapperHeight();
+    aipo.message.setHeight();
 }
 
 aipo.message.onReceiveMessage = function(msg) {
@@ -1190,7 +1190,6 @@ aipo.message.popupProfile = function(userId, event) {
 		aipo.message.mobileUnderlay = new aimluck.widget.DialogUnderlay();
 		dojo.byId(aipo.message.mobileUnderlay.domNode.id).style["z-index"] = 999;
 		dojo.connect(aipo.message.mobileUnderlay.domNode, "onmousedown", aipo.message.mobileUnderlay.domNode, function(){
-			 aipo.message.hideProfile();
 				//android2の時、テキストエリアへの書き込み時に画面が激しくスクロールするの対策
 			    if(aipo.userAgent.isAndroid2()){
 			      var wrapper=dojo.byId("wrapper");
@@ -1199,6 +1198,7 @@ aipo.message.popupProfile = function(userId, event) {
 			        // dojo.style(wrapper, "visibility", "visible");
 			        dojo.style(wrapper, "display", "block");
 			    }
+			    aipo.message.hideProfile();
 		 });
 	}
 	if(aipo.message.isMobile) {
