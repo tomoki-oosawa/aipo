@@ -161,8 +161,8 @@
 		<tbody>
 			<tr>
                 <td class="wide top">
-					<div style="width: 100%; overflow: hidden; height: 53px;">
-                    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="weeklyTableHead" style="padding-right: 0px; margin-top: 0px;">
+					<div id="weeklyTableHeadWrapper_$!portlet.ID" style="width: 100%; overflow: hidden; height: 53px;">
+                    <table cellspacing="0" cellpadding="0" border="0" width="100%" class="weeklyTableHead" id="weeklyTableHead_$!portlet.ID" style="padding-right: 0px; margin-top: 0px;">
                       <tbody>
                         <tr>
                           <td width="50">
