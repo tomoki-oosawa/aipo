@@ -572,6 +572,9 @@ table.tableWrapper td.tableCenter {
   vertical-align: top;
 }
 /*//　2015.06.01 ここから　ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー*/
+.tableWrapper.scheduleBlock thead .dijitInline.dijitDropDownButton .dijitRight {
+  margin-bottom: 5px;
+}
 .tableWrapper.scheduleBlock tbody {
   border-right: 1px solid #D2D2D2;
 }
