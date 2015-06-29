@@ -147,7 +147,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 初期化処理を行います。 <BR>
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -267,7 +267,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -387,7 +387,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   /**
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -565,7 +565,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを設定します。
-   * 
+   *
    * @return
    */
   public void loadEmail(RunData rundata) {
@@ -585,7 +585,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 未使用。
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -598,7 +598,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -658,16 +658,16 @@ public class AccountEditFormData extends ALAbstractFormData {
       if (filebean != null && filebean.getFileId() != 0) {
         // 顔写真を登録する．
         user.setPhotoSmartphone(facePhoto_smartphone);
-        user.setHasPhotoSmartphone(true);
+        user.setHasPhotoSmartphone("N");
         user.setPhotoModifiedSmartphone(new Date());
         user.setPhoto(facePhoto);
-        user.setHasPhoto(true);
+        user.setHasPhoto("N");
         user.setPhotoModified(new Date());
       } else if (delete_photo) {
         user.setPhoto(null);
-        user.setHasPhoto(false);
+        user.setHasPhoto("F");
         user.setPhotoSmartphone(null);
-        user.setHasPhotoSmartphone(false);
+        user.setHasPhotoSmartphone("F");
 
       }
 
@@ -692,7 +692,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
       if (currentUser.getUserName().equals(user.getUserName())) {
         currentUser.setPassword(user.getPassword());
-        currentUser.setHasPhoto(user.hasPhoto());
+        currentUser.setHasPhoto(user.hasPhotoString());
         currentUser.setPhotoModified(user.getPhotoModified());
       }
 
@@ -728,7 +728,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularMail() {
@@ -737,7 +737,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEmail() {
@@ -746,7 +746,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -755,7 +755,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstName() {
@@ -792,7 +792,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -801,7 +801,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -810,7 +810,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastName() {
@@ -819,7 +819,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -828,7 +828,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -837,7 +837,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -846,7 +846,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -855,7 +855,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -864,7 +864,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -886,7 +886,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 部署を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALStringField> getPostNameList() {
@@ -899,7 +899,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 役職を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPositionName() {
@@ -922,7 +922,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */

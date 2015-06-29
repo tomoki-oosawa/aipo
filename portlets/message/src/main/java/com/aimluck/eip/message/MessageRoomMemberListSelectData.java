@@ -139,7 +139,8 @@ public class MessageRoomMemberListSelectData extends
     rd.setLastName(model.getLastName());
     rd.setFirstNameKana(model.getFirstNameKana());
     rd.setLastNameKana(model.getLastNameKana());
-    rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    rd.setHasPhoto("T".equals(model.getHasPhoto())
+      || "N".equals(model.getHasPhoto()));
     Date photoModified = model.getPhotoModified();
     if (photoModified != null) {
       rd.setPhotoModified(photoModified.getTime());

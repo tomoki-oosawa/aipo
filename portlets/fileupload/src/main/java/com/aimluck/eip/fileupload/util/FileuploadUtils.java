@@ -58,7 +58,7 @@ import com.drew.metadata.jpeg.JpegDirectory;
 
 /**
  * ファイルアップロードのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class FileuploadUtils {
 
@@ -85,16 +85,16 @@ public class FileuploadUtils {
   public static final String DEFAULT_FILENAME_DATE_FORMAT = "yyyyMMddHHmmssSSS";
 
   /** 画像サムネイルのサイズ（横幅） */
-  public static final int DEF_THUMBNAIL_WIDTH = 86;
+  public static final int DEF_THUMBNAIL_WIDTH = 200;
 
   /** 画像サムネイルのサイズ（縦幅） */
-  public static final int DEF_THUMBNAIL_HEIGHT = 86;
+  public static final int DEF_THUMBNAIL_HEIGHT = 200;
 
   /** スマートフォンの画像サムネイルのサイズ（横幅） */
-  public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 64;
+  public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 100;
 
   /** スマートフォンの画像サムネイルのサイズ（縦幅） */
-  public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 64;
+  public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 100;
 
   /** 現在の添付ファイル数 */
   public static final String KEY_NOW_SIZE = "nsize";
@@ -220,7 +220,7 @@ public class FileuploadUtils {
   }
 
   /**
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -287,7 +287,7 @@ public class FileuploadUtils {
 
   /**
    * 縮小した画像のバイナリを返す。
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -405,7 +405,7 @@ public class FileuploadUtils {
 
   /**
    * 縮小した画像のバイナリを返す。
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -450,7 +450,7 @@ public class FileuploadUtils {
 
   /**
    * Java1.5：BMP, bmp, jpeg, wbmp, gif, png, JPG, jpg, WBMP, JPEG
-   * 
+   *
    * @param fileType
    * @return
    */
@@ -478,7 +478,7 @@ public class FileuploadUtils {
 
   /**
    * ファイル名からファイルの拡張子を取得する。
-   * 
+   *
    * @param fileName
    * @return
    */
@@ -497,7 +497,7 @@ public class FileuploadUtils {
 
   /**
    * 縦横の縮小率で小さい方を縮小率とする。
-   * 
+   *
    * @param imgfile
    * @param dim
    * @return
@@ -535,7 +535,7 @@ public class FileuploadUtils {
 
   /**
    * アスペクト比を保存する。（縦横を切り取る）
-   * 
+   *
    * @param imgfile
    * @param width
    * @param height

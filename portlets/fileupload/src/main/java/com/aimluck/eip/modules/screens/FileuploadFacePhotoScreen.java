@@ -18,9 +18,6 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -30,8 +27,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALBaseUser;
-import com.aimluck.eip.fileupload.util.FileuploadUtils;
-import com.aimluck.eip.util.ALCellularUtils;
 
 /**
  * 顔写真を画像データとして出力するクラスです。 <br />
@@ -45,6 +40,9 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
 
   /** 取得したい顔画像のユーザーID */
   private static final String KEY_FACE_PHOTO_ID = "uid";
+
+  /** 画像サイズ */
+  private static final String KEY_PHOTO_SIZE = "size";
 
   /**
    *
@@ -63,38 +61,38 @@ public class FileuploadFacePhotoScreen extends FileuploadThumbnailScreen {
         (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(uid));
 
       byte[] photo;
-      if (!ALCellularUtils.isSmartPhone(rundata)) {
-        photo = user.getPhoto();
+      String hasPhoto = user.hasPhotoString();
 
+      // 新仕様（HAS_PHOTO=N）の場合
+      if ("N".equals(hasPhoto)) {
+        String size = rundata.getParameters().getString(KEY_PHOTO_SIZE);
+        if ("large".equals(size)) {
+          photo = user.getPhoto();
+          if (photo == null) {
+            return;
+          }
+          Date date = user.getPhotoModified();
+          if (date != null) {
+            super.setLastModified(date);
+          }
+        } else {
+          photo = user.getPhotoSmartphone();
+          if (photo == null) {
+            return;
+          }
+          Date date = user.getPhotoModifiedSmartphone();
+          if (date != null) {
+            super.setLastModified(date);
+          }
+        }
+        // 旧仕様（HAS_PHOTO=T）の場合
+      } else {
+        // すべて getPhoto() で 86x86 をダウンロード
+        photo = user.getPhoto();
         if (photo == null) {
           return;
         }
         Date date = user.getPhotoModified();
-        if (date != null) {
-          super.setLastModified(date);
-        }
-      } else {
-        photo = user.getPhotoSmartphone();
-
-        if (photo == null && user.getPhoto() == null) {
-          return;
-        } else if (photo == null && user.getPhoto() != null) {
-          // スマホ用サムネがなければ作ってしまう。
-          InputStream tmpStream = new ByteArrayInputStream(user.getPhoto());
-          byte[] shrinkPhoto =
-            FileuploadUtils.getBytesShrink(
-              tmpStream,
-              FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
-              FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
-              new ArrayList<String>());
-          user.setPhotoSmartphone(shrinkPhoto);
-          user.setHasPhotoSmartphone(true);
-          user.setPhotoModifiedSmartphone(new Date());
-          JetspeedSecurity.saveUser(user);
-          photo = shrinkPhoto;
-        }
-
-        Date date = user.getPhotoModifiedSmartphone();
         if (date != null) {
           super.setLastModified(date);
         }

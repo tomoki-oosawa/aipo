@@ -81,6 +81,8 @@ public class ALBaseUser extends
 
   public static final String HAS_PHOTO = "HAS_PHOTO";
 
+  public static final String PHOTO_TYPE = "PHOTO_TYPE";
+
   public static final String HAS_PHOTO_SMARTPHONE = "HAS_PHOTO_SMARTPHONE";
 
   public static final String MIGRATE_VERSION = "MIGRATE_VERSION";
@@ -447,26 +449,34 @@ public class ALBaseUser extends
 
   public boolean hasPhoto() {
     String hasPhoto = (String) getPerm(HAS_PHOTO);
-    return "T".equals(hasPhoto);
+    return "T".equals(hasPhoto) || "N".equals(hasPhoto);
+  }
+
+  public String hasPhotoString() {
+    return (String) getPerm(HAS_PHOTO);
   }
 
   public boolean hasPhotoSmartphone() {
     String hasPhotoSmartphone = (String) getPerm(HAS_PHOTO_SMARTPHONE);
-    return "T".equals(hasPhotoSmartphone);
+    return "T".equals(hasPhotoSmartphone) || "N".equals(hasPhotoSmartphone);
+  }
+
+  public String hasPhotoSmartphoneString() {
+    return (String) getPerm(HAS_PHOTO_SMARTPHONE);
   }
 
   /**
    *
    */
-  public void setHasPhoto(boolean hasPhoto) {
-    setPerm(HAS_PHOTO, hasPhoto ? "T" : "F");
+  public void setHasPhoto(String hasPhoto) {
+    setPerm(HAS_PHOTO, hasPhoto);
   }
 
   /**
   *
   */
-  public void setHasPhotoSmartphone(boolean hasPhotoSmartphone) {
-    setPerm(HAS_PHOTO_SMARTPHONE, hasPhotoSmartphone ? "T" : "F");
+  public void setHasPhotoSmartphone(String hasPhotoSmartphone) {
+    setPerm(HAS_PHOTO_SMARTPHONE, hasPhotoSmartphone);
   }
 
   /**

@@ -428,7 +428,8 @@ public class AccountUserSelectData extends
         .getPositionId()
         .intValue()));
       rd.setDisabled(record.getDisabled());
-      rd.setHasPhoto("T".equals(record.getHasPhoto()));
+      rd.setHasPhoto("T".equals(record.getHasPhoto())
+        || "N".equals(record.getHasPhoto()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
       rd.setEmail(record.getEmail());
 

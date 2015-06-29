@@ -851,8 +851,8 @@ public class AccountUserFormData extends ALAbstractFormData {
           // 顔写真を登録する．
           user.setPhotoSmartphone(facePhoto_smartphone);
           user.setPhoto(facePhoto);
-          user.setHasPhoto(true);
-          user.setHasPhotoSmartphone(true);
+          user.setHasPhoto("N");
+          user.setHasPhotoSmartphone("N");
           user.setPhotoModified(new Date());
           user.setPhotoModifiedSmartphone(new Date());
         }
@@ -1025,16 +1025,16 @@ public class AccountUserFormData extends ALAbstractFormData {
             // 顔写真を登録する．
             user.setPhotoSmartphone(facePhoto_smartphone);
             user.setPhotoModifiedSmartphone(new Date());
-            user.setHasPhotoSmartphone(true);
+            user.setHasPhotoSmartphone("N");
             user.setPhoto(facePhoto);
             user.setPhotoModified(new Date());
-            user.setHasPhoto(true);
+            user.setHasPhoto("N");
           }
         } else {
           user.setPhoto(null);
-          user.setHasPhoto(false);
+          user.setHasPhoto("F");
           user.setPhotoModifiedSmartphone(null);
-          user.setHasPhotoSmartphone(false);
+          user.setHasPhotoSmartphone("F");
         }
 
         user.setEmail(email.getValue());
@@ -1090,9 +1090,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
           currentUser.setFirstNameKana(user.getFirstNameKana());
           currentUser.setLastNameKana(user.getLastNameKana());
-          currentUser.setHasPhoto(user.hasPhoto());
+          currentUser.setHasPhoto(user.hasPhotoString());
           currentUser.setPhotoModified(user.getPhotoModified());
-          currentUser.setHasPhotoSmartphone(user.hasPhoto());
+          currentUser.setHasPhotoSmartphone(user.hasPhotoSmartphoneString());
           currentUser.setPhotoModifiedSmartphone(user
             .getPhotoModifiedSmartphone());
         }

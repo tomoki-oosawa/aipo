@@ -105,7 +105,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -327,7 +327,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         model.setPhotoSmartphone(facePhoto_smartphone);
         model.setPhoto(facePhoto);
         model.setPhotoModified(new Date());
-        model.setHasPhoto("T");
+        model.setHasPhoto("N");
       } else {
         model.setHasPhoto("F");
       }
@@ -405,7 +405,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         model.setPhotoSmartphone(facePhoto_smartphone);
         model.setPhoto(facePhoto);
         model.setPhotoModified(new Date());
-        model.setHasPhoto("T");
+        model.setHasPhoto("N");
       }
 
       if (filebean != null) {
@@ -413,7 +413,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           model.setPhoto(facePhoto);
           model.setPhotoSmartphone(facePhoto_smartphone);
           model.setPhotoModified(new Date());
-          model.setHasPhoto("T");
+          model.setHasPhoto("N");
         }
       } else {
         model.setPhoto(null);

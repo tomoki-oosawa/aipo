@@ -26,7 +26,6 @@ import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.message.util.MessageUtils;
-import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -40,8 +39,11 @@ public class MessageFileuploadRoomPhotoScreen extends FileuploadThumbnailScreen 
 
   private static final String KEY_ROOM_ID = "rid";
 
+  /** 画像サイズ */
+  private static final String KEY_PHOTO_SIZE = "size";
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -63,22 +65,41 @@ public class MessageFileuploadRoomPhotoScreen extends FileuploadThumbnailScreen 
       }
 
       byte[] photo;
-      if (!ALCellularUtils.isSmartPhone(rundata)) {
-        photo = room.getPhoto();
-        Date date = room.getPhotoModified();
-        if (date != null) {
-          super.setLastModified(date);
-        }
-      } else {
-        photo = room.getPhotoSmartphone();
+      String hasPhoto = room.getHasPhoto();
 
+      // 新仕様（HAS_PHOTO=N）の場合
+      if ("N".equals(hasPhoto)) {
+        String size = rundata.getParameters().getString(KEY_PHOTO_SIZE);
+        if ("large".equals(size)) {
+          photo = room.getPhoto();
+          if (photo == null) {
+            return;
+          }
+          Date date = room.getPhotoModified();
+          if (date != null) {
+            super.setLastModified(date);
+          }
+        } else {
+          photo = room.getPhotoSmartphone();
+          if (photo == null) {
+            return;
+          }
+          Date date = room.getPhotoModified();
+          if (date != null) {
+            super.setLastModified(date);
+          }
+        }
+        // 旧仕様（HAS_PHOTO=T）の場合
+      } else {
+        // すべて getPhoto() で 86x86 をダウンロード
+        photo = room.getPhoto();
+        if (photo == null) {
+          return;
+        }
         Date date = room.getPhotoModified();
         if (date != null) {
           super.setLastModified(date);
         }
-      }
-      if (photo == null) {
-        return;
       }
 
       super.setFile(photo);
