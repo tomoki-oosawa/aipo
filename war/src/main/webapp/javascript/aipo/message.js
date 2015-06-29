@@ -802,6 +802,7 @@ aipo.message.clearInput = function() {
         messageForm.message.value = "";
         aipo.message.resizeInput(messageForm.message);
         aipo.message.focusInput();
+        dojo.byId('messageFormDiv').innerHTML = "";
     }
 }
 
@@ -922,6 +923,9 @@ aipo.message.onReceiveMessage = function(msg) {
             }
             aipo.message.selectTab("room");
         }
+    }
+    else if (dojo.byId('messageFormDiv')){
+    	dojo.byId('messageFormDiv').innerHTML = msg["error"];
     }
 };
 

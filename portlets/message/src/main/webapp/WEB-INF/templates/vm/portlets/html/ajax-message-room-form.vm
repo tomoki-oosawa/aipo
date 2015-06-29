@@ -34,6 +34,7 @@
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 
+
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 #if($mode=="new_form" || !$result.isFileUploadable())
