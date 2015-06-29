@@ -779,10 +779,10 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	            }else{
 	            }
 
-	            dojo.byId("weeklyTableHead_" + _portletId).style.marginTop = "5px";
+	            dojo.byId("weeklyTableHead_" + _portletId).style.marginTop = "0px";
 	            var headHeight = dojo.byId("weeklyTableHead_" + _portletId).offsetHeight;
 	            var trHeight = dojo.byId("weeklyTermTr_" + _portletId).offsetHeight;
-	        	headHeight += 5;
+	        	headHeight += 0;
 	            headHeight -= trHeight;
 	            trHeight -= trHeight % 17;
 	            headHeight += trHeight;
