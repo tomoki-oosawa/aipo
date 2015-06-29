@@ -2362,8 +2362,7 @@ body.messageRoomList .messageUserlist .index {
   margin: 0 0 5px 0;
   position: relative;
 }
-
-.timelineOuter .auiSummaryMeta.auiFilter .floatRight {
+#timelineOuter .auiSummaryMeta.auiFilter .floatRight {
   width: 100%;
   margin-top: 5px;
 }
