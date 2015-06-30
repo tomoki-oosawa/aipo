@@ -406,7 +406,7 @@ public class TimelineSelectData extends
         -1,
         0,
         useridList,
-        null);
+        target_keyword.toString());
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
