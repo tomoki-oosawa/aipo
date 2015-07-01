@@ -212,9 +212,7 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
           if (messages.size() == 0) {
             try {
               synchronized (messages) {
-                while (messages.size() == 0) {
-                  messages.wait();
-                }
+                messages.wait();
               }
             } catch (InterruptedException ignore) {
               // Ignore
