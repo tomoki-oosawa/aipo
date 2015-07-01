@@ -1748,40 +1748,49 @@ public class ALEipUtils {
    * @param msg
    * @return
    */
-  public static String highlihgtKeywords(String msg, String keyword) {// タグ避け実装中
+  public static String highlihgtKeywords(String msg, String keyword) {
     if (msg != null) {
       if (keyword != null && !(keyword.equals(""))) {
-        String pattern = "<a\\s(?:\".*?\"|\'.*?\'|[^\'\"])*?>(.*?)</a>";
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(msg);
-        if (m.find()) {
-          String[] notInTag = msg.split(pattern);
-          String[] highlighted = new String[notInTag.length];
-          for (int i = 0; i < notInTag.length; i++) {
-            if (notInTag[i].indexOf(keyword) < 0) {
-              highlighted[i] =
-                "<span class='searchKeyword'>" + keyword + "</span>";
-            } else {
-              highlighted[i] = notInTag[i];
+        Boolean inTag = false;
+        String regex = "((" + keyword + ")+)";
+        int len = msg.length();
+        int st = 0;
+        char[] val = msg.toCharArray();
+        StringBuffer result = new StringBuffer();
+        StringBuffer temp = new StringBuffer();
+        while ((st < len)) {
+          if (inTag == false) {
+            temp.append(val[st]);
+            if (val[st] == '<') {
+              inTag = true;
+              String highLighted = new String();
+              highLighted =
+                temp.toString().replaceAll(
+                  regex,
+                  "<span class=\"searchKeyword\">$1</span>");
+              result.append(highLighted);
+              temp.delete(0, temp.length());
+            }
+          } else if (inTag == true) {
+            result.append(val[st]);
+            if (val[st] == '>') {
+              inTag = false;
             }
           }
-          String replaced = new String();
-          for (int i = 0; i < notInTag.length; i++) {
-            // msgでnotInTag[i]とマッチしたi番目の文字列をhighlighted[i]に置換する。
-            // i番目の文字列はm.group(i)?
-          }
-        } else {
-          return "";
+          st++;
         }
-
-        // return msg = msg.replaceAll(keyword, replaced);//前のコード
+        if (st == len && inTag == false) {
+          result.append(temp.toString().replaceAll(
+            regex,
+            "<span class=\"searchKeyword\">$1</span>"));
+        }
+        return result.toString();
       } else {
         return msg;
       }
     } else {
       return "";
     }
-    return "";
   }
 
   /**
@@ -2585,6 +2594,7 @@ public class ALEipUtils {
   public static String getMessageList(String msgline, String keyword) {
     StringBuffer sb = new StringBuffer();
     ALStringField field = null;
+    ALStringField key = null;
 
     if (msgline == null || msgline.equals("")) {
       return "";
@@ -2596,9 +2606,16 @@ public class ALEipUtils {
       field = new ALStringField();
       field.setTrim(false);
       field.setValue(msgline);
-      return ALCommonUtils.replaceToAutoCR((replaceStrToLink(
-        replaseLeftSpace(field.toString()),
-        keyword)));
+      if (!(keyword == null || keyword.equals(""))) {
+        key = new ALStringField();
+        key.setTrim(true);
+        key.setValue(keyword);
+        return ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+          replaseLeftSpace(field.toString()),
+          key.toString())));
+      }
+      return ALCommonUtils
+        .replaceToAutoCR((replaceStrToLink(replaseLeftSpace(field.toString()))));
     }
 
     String token = null;
