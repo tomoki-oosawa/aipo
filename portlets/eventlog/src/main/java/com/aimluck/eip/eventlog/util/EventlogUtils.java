@@ -54,6 +54,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * イベントログのユーティリティクラスです。 <BR>
@@ -526,13 +527,13 @@ public class EventlogUtils {
       if (note.getSubjectType().equals("0")) {
         subject = note.getCustomSubject();
       } else if (note.getSubjectType().equals("1")) {
-        subject = "再度電話します";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
       } else if (note.getSubjectType().equals("2")) {
-        subject = "折返しお電話ください";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
       } else if (note.getSubjectType().equals("3")) {
-        subject = "電話がありました";
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
       } else if (note.getSubjectType().equals("4")) {
-        subject = "伝言があります";
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
       String dataName = subject + " (" + note.getClientName() + ")";
       return dataName;

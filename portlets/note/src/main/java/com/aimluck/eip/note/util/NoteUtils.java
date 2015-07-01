@@ -109,7 +109,7 @@ public class NoteUtils {
 
   /**
    * 詳細表示用の EipTNote オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -164,7 +164,7 @@ public class NoteUtils {
 
   /**
    * EipTNote オブジェクトモデルを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -206,7 +206,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param tabReceive
@@ -264,7 +264,7 @@ public class NoteUtils {
 
   /**
    * ユーザのログイン名をもとにユーザ ID を取得する．
-   * 
+   *
    * @param userLoginName
    *          ユーザのログイン名
    * @return
@@ -296,7 +296,7 @@ public class NoteUtils {
 
   /**
    * 指定した ID に対するユーザのログイン名を取得する．
-   * 
+   *
    * @param userId
    * @return
    */
@@ -326,7 +326,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -349,7 +349,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param str
    * @return
    */
@@ -364,7 +364,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -384,7 +384,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -406,7 +406,7 @@ public class NoteUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -428,7 +428,7 @@ public class NoteUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -440,7 +440,7 @@ public class NoteUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -451,7 +451,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -531,7 +531,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param note
    * @return
    */
@@ -540,19 +540,19 @@ public class NoteUtils {
     if (note.getSubjectType().equals("0")) {
       subject = note.getCustomSubject();
     } else if (note.getSubjectType().equals("1")) {
-      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN_NO_PERIOD");
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
     } else if (note.getSubjectType().equals("2")) {
-      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_CALL_BACK");
+      subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
     } else if (note.getSubjectType().equals("3")) {
       subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
     } else if (note.getSubjectType().equals("4")) {
-      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TAKE_A_MESSAGE");
+      subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
     }
     return subject + " (" + note.getClientName() + ")";
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -571,7 +571,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -609,7 +609,7 @@ public class NoteUtils {
 
   /**
    * 受信した新着メモの総数を取得する．
-   * 
+   *
    * @param userid
    * @return
    */
@@ -628,7 +628,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param srcUserId
    * @return
    */
@@ -664,7 +664,7 @@ public class NoteUtils {
 
   /**
    * 受信した未読メモの総数を取得する
-   * 
+   *
    * @param userId
    * @return
    */
@@ -684,7 +684,7 @@ public class NoteUtils {
   }
 
   /**
-   * 
+   *
    * @param srcUserId
    * @return
    */
@@ -720,7 +720,7 @@ public class NoteUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -826,7 +826,7 @@ public class NoteUtils {
 
   /**
    * note-notification-mail.vmからパソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    */
   @SuppressWarnings("unused")
