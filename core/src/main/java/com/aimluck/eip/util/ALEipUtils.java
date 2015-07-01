@@ -896,7 +896,6 @@ public class ALEipUtils {
    */
   public static List<ALEipGroup> getMyGroups(RunData rundata)
       throws ALDBErrorException {
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
     // ServletRequestからマイグループのリストを読み込み
     Object obj = null;
     HttpServletRequest request = HttpServletRequestLocator.get();
