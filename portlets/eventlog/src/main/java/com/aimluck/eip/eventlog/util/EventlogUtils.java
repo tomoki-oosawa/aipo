@@ -54,10 +54,11 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * イベントログのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class EventlogUtils {
 
@@ -131,7 +132,7 @@ public class EventlogUtils {
 
   /**
    * イベントログオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -165,7 +166,7 @@ public class EventlogUtils {
   /**
    * ポートレットタイプを元に、それぞれのデータ名を取得します。 <BR>
    * 返すデータがない操作では、nullを返します
-   * 
+   *
    * @param portletType
    * @param entityId
    * @return dataName
@@ -247,7 +248,7 @@ public class EventlogUtils {
 
   /**
    * 社外グループ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -269,7 +270,7 @@ public class EventlogUtils {
 
   /**
    * 会社名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -291,7 +292,7 @@ public class EventlogUtils {
 
   /**
    * アドレス帳に登録した名前を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -315,7 +316,7 @@ public class EventlogUtils {
 
   /**
    * ブログテーマ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -336,7 +337,7 @@ public class EventlogUtils {
 
   /**
    * ToDoデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -357,7 +358,7 @@ public class EventlogUtils {
 
   /**
    * ToDoカテゴリのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -379,7 +380,7 @@ public class EventlogUtils {
 
   /**
    * ブログのエントリ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -400,7 +401,7 @@ public class EventlogUtils {
 
   /**
    * ワークフローを取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -425,7 +426,7 @@ public class EventlogUtils {
 
   /**
    * ワークフローカテゴリのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -447,7 +448,7 @@ public class EventlogUtils {
 
   /**
    * メールアカウントのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -469,7 +470,7 @@ public class EventlogUtils {
 
   /**
    * タイムカードのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -490,7 +491,7 @@ public class EventlogUtils {
 
   /**
    * スケジュールのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -511,7 +512,7 @@ public class EventlogUtils {
 
   /**
    * 伝言メモのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -526,13 +527,13 @@ public class EventlogUtils {
       if (note.getSubjectType().equals("0")) {
         subject = note.getCustomSubject();
       } else if (note.getSubjectType().equals("1")) {
-        subject = "再度電話します";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
       } else if (note.getSubjectType().equals("2")) {
-        subject = "電話をしてください";
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
       } else if (note.getSubjectType().equals("3")) {
-        subject = "電話がありました";
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
       } else if (note.getSubjectType().equals("4")) {
-        subject = "伝言があります";
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
       String dataName = subject + " (" + note.getClientName() + ")";
       return dataName;
@@ -544,7 +545,7 @@ public class EventlogUtils {
 
   /**
    * マイグループのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -565,7 +566,7 @@ public class EventlogUtils {
 
   /**
    * Msgboardデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -587,7 +588,7 @@ public class EventlogUtils {
 
   /**
    * Msgboardカテゴリのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -609,7 +610,7 @@ public class EventlogUtils {
 
   /**
    * 共有フォルダのファイル名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -631,7 +632,7 @@ public class EventlogUtils {
 
   /**
    * 共有フォルダのフォルダ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -653,7 +654,7 @@ public class EventlogUtils {
 
   /**
    * 共有カテゴリのカテゴリ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */
@@ -675,7 +676,7 @@ public class EventlogUtils {
 
   /**
    * memoのデータ名を取得します。 <BR>
-   * 
+   *
    * @param entityId
    * @return dataName
    */

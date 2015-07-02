@@ -61,7 +61,7 @@ public class NoteClientSelectData extends
   private int unreadReceivedNotesAllSum = 0;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -89,7 +89,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -116,7 +116,7 @@ public class NoteClientSelectData extends
 
   /**
    * ソート用の <code>SelectQuery</code> を構築します。
-   * 
+   *
    * @param crt
    * @return
    */
@@ -141,7 +141,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -152,7 +152,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param map
    * @return
    */
@@ -180,13 +180,13 @@ public class NoteClientSelectData extends
             record.getCustomSubject(),
             getStrLength());
       } else if (record.getSubjectType().equals("1")) {
-        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN_NO_PERIOD");
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_AGAIN");
       } else if (record.getSubjectType().equals("2")) {
-        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_CALL_BACK");
+        subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
       } else if (record.getSubjectType().equals("3")) {
-        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
+        subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
       } else if (record.getSubjectType().equals("4")) {
-        subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TAKE_A_MESSAGE");
+        subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
       }
 
       rd.setSubject(subject);
@@ -225,7 +225,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -235,7 +235,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -259,7 +259,7 @@ public class NoteClientSelectData extends
 
   /**
    * 検索条件を設定した Criteria を返す．
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -269,7 +269,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -277,7 +277,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param userId
    * @return
    */
@@ -286,7 +286,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param userId
    * @return
    */
@@ -301,7 +301,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @param userName
    * @return
    */
@@ -310,7 +310,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getNewNoteAllSum() {
@@ -318,7 +318,7 @@ public class NoteClientSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getUnreadReceivedNotesAllSum() {
