@@ -544,7 +544,7 @@ public class NoteUtils {
     } else if (note.getSubjectType().equals("2")) {
       subject = ALLocalizationUtils.getl10n("NOTE_CALL_BACK");
     } else if (note.getSubjectType().equals("3")) {
-      subject = ALLocalizationUtils.getl10n("NOTE_MAIL_TELL_ME");
+      subject = ALLocalizationUtils.getl10n("NOTE_TELL_ME");
     } else if (note.getSubjectType().equals("4")) {
       subject = ALLocalizationUtils.getl10n("NOTE_TAKE_A_MESSAGE");
     }
