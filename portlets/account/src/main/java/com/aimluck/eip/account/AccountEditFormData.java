@@ -18,8 +18,6 @@
  */
 package com.aimluck.eip.account;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +27,6 @@ import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -47,8 +44,8 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
-import com.aimluck.eip.fileupload.util.FileuploadUtils.ImageInformation;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -70,6 +67,12 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
+
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
 
   /** ログイン名 */
   private ALStringField loginname;
@@ -128,6 +131,8 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /** 顔写真 */
   private ALStringField photo = null;
+
+  private boolean photo_vali_flag = false;
 
   /** 添付ファイル */
   private FileuploadLiteBean filebean = null;
@@ -283,6 +288,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     boolean res = super.setFormData(rundata, context, msgList);
+
     try {
       if (res) {
         List<FileuploadLiteBean> fileBeanList =
@@ -293,24 +299,7 @@ public class AccountEditFormData extends ALAbstractFormData {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto_smartphone = null;
-            InputStream is = null;
-            is =
-              ALStorageService.getFile(
-                FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
-                ALEipUtils.getUserId(rundata)
-                  + ALStorageService.separator()
-                  + folderName,
-                String.valueOf(filebean.getFileId()));
-            byte[] imageInBytes = IOUtils.toByteArray(is);
-            ImageInformation readImageInformation =
-              FileuploadUtils.readImageInformation(new ByteArrayInputStream(
-                imageInBytes));
-            if (readImageInformation.height < FileuploadUtils.DEF_THUMBNAIL_HEIGHT
-              || readImageInformation.width < FileuploadUtils.DEF_THUMBNAIL_WIDTH) {
-              msgList.add(ALLocalizationUtils
-                .getl10nFormat("ACCOUNT_ALERT_PHOTO"));
-              return false;
-            }
+
             ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
@@ -321,7 +310,10 @@ public class AccountEditFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
+
             if (bytesShrinkFilebean != null) {
               facePhoto_smartphone = bytesShrinkFilebean.getShrinkImage();
             }
@@ -347,6 +339,9 @@ public class AccountEditFormData extends ALAbstractFormData {
           }
         }
       }
+    } catch (FileuploadMinSizeException ex) {
+      logger.error("fileupload", ex);
+      photo_vali_flag = true;
     } catch (Exception ex) {
       logger.error("AccountEditFormData.setFormData", ex);
       res = false;
@@ -480,7 +475,12 @@ public class AccountEditFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
+    if (photo_vali_flag) {
+      msgList
+        .add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO_SIZE"));
+    } else if (filebean != null
+      && filebean.getFileId() != 0
+      && facePhoto == null) {
       msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO"));
     }
 
