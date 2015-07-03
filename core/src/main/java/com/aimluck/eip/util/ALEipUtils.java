@@ -1630,6 +1630,26 @@ public class ALEipUtils {
   }
 
   /**
+   *
+   * @param rundata
+   * @param context
+   * @param key
+   * @return
+   */
+  // getTempを使わずにパラメータを取得したい
+
+  public static String getParam(RunData rundata, Context context, String key) {
+    String name = null;
+    String idParam = rundata.getParameters().getString(key);
+    if (idParam == null && name == null) {
+      name = null;
+    } else if (idParam != null) {
+      name = idParam;
+    }
+    return name;
+  }
+
+  /**
    * 指定したエントリー名のポートレットへの URI を取得します。
    *
    * @param rundata
