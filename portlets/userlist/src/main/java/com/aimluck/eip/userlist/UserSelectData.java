@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントの検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class UserSelectData extends
     ALAbstractSelectData<TurbineUser, TurbineUser> {
@@ -90,7 +90,7 @@ public class UserSelectData extends
 
   /**
    * 初期化します。
-   * 
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -105,7 +105,7 @@ public class UserSelectData extends
 
   /**
    * アカウント一覧を取得します。 ただし、論理削除されているアカウントは取得しません。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +130,7 @@ public class UserSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -222,6 +222,17 @@ public class UserSelectData extends
             + searchWordValue
             + "%");
         Expression exp16 =
+          ExpressionFactory.likeExp(TurbineUser.COMPANY_ID_PROPERTY, "%"
+            + searchWordValue
+            + "%");
+        /**
+         * Problem check/問題チェック: PHOTO_MODIFIED_SMARTPHONE_PROPERTY;
+         * POSITION_ID_PROPERTY; CREATED_PROPERTY; COMPANY_ID_PROPERTY;
+         *
+         * Problems are restricted to non Strings, find a way to get a string
+         * expression for a persons position/job title
+         */
+        Expression exp17 =
           ExpressionFactory.likeExp(
             TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
               + "."
@@ -267,8 +278,9 @@ public class UserSelectData extends
             "%" + transWords[i] + "%");
 
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
-          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
+          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
+          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
+          exp35));
 
         query.distinct();
       }
@@ -278,7 +290,7 @@ public class UserSelectData extends
 
   /**
    * フィルタ用の <code>Criteria</code> を構築します。
-   * 
+   *
    * @param crt
    * @param rundata
    * @param context
@@ -318,7 +330,7 @@ public class UserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -336,7 +348,7 @@ public class UserSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -368,7 +380,7 @@ public class UserSelectData extends
   /**
    * @param obj
    * @return
-   * 
+   *
    */
   @Override
   protected Object getResultData(TurbineUser record) {
@@ -424,7 +436,7 @@ public class UserSelectData extends
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -513,7 +525,7 @@ public class UserSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -528,7 +540,7 @@ public class UserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getCurrentPost() {
@@ -544,7 +556,7 @@ public class UserSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -552,7 +564,7 @@ public class UserSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -561,7 +573,7 @@ public class UserSelectData extends
 
   /**
    * 登録ユーザー数を取得する．
-   * 
+   *
    * @return
    */
   public int getRegisteredUserNum() {
