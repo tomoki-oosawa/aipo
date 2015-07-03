@@ -221,10 +221,11 @@ public class UserSelectData extends
           ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
             + searchWordValue
             + "%");
-        Expression exp16 =
-          ExpressionFactory.likeExp(TurbineUser.COMPANY_ID_PROPERTY, "%"
-            + searchWordValue
-            + "%");
+        /**
+         * Expression exp16 =
+         * ExpressionFactory.likeExp(TurbineUser.COMPANY_ID_PROPERTY, "%" +
+         * searchWordValue + "%");
+         */
         /**
          * Problem check/問題チェック: PHOTO_MODIFIED_SMARTPHONE_PROPERTY;
          * POSITION_ID_PROPERTY; CREATED_PROPERTY; COMPANY_ID_PROPERTY;
@@ -278,9 +279,8 @@ public class UserSelectData extends
             "%" + transWords[i] + "%");
 
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35));
+          exp15).orExp(exp17).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
+          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
 
         query.distinct();
       }
