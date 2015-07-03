@@ -232,6 +232,9 @@ public class UserSelectData extends
          *
          * Problems are restricted to non Strings, find a way to get a string
          * expression for a persons position/job title
+         *
+         * Treat this section as the current exp35 is being treated as it is not
+         * a String
          */
         Expression exp17 =
           ExpressionFactory.likeExp(
