@@ -5354,6 +5354,9 @@ a.auiIconTmpreserve:hover {
   background-position: 0px -704px;
   width: 12px;
 }
+@media all and (-ms-high-contrast:none){
+  *::-ms-backdrop, .auiIconOverlap { background: url("../images/icon/auiIconOverlap.png") top left no-repeat !important; } /* IE11 */
+}
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
