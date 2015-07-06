@@ -19,8 +19,6 @@
 
 package com.aimluck.eip.modules.screens;
 
-import info.bliki.wiki.filter.Encoder;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -69,11 +67,6 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
     List<EipTGpdbItem> items = gpdb.getEipTGpdbItem();
     Collections.sort(items, new EipTGpdbItemComparator());
     for (EipTGpdbItem item : items) {
-      String type = item.getType();
-      if (type.equals(GpdbUtils.ITEM_TYPE_FILE)
-        || type.equals(GpdbUtils.ITEM_TYPE_IMAGE)) {
-        continue;
-      }
       if (isFirst) {
         isFirst = false;
       } else {
@@ -88,10 +81,6 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
     Collections.sort(records, new EipTGpdbRecordComparator2());
     for (EipTGpdbRecord record : records) {
       String type = record.getGpdbItem().getType();
-      if (type.equals(GpdbUtils.ITEM_TYPE_FILE)
-        || type.equals(GpdbUtils.ITEM_TYPE_IMAGE)) {
-        continue;
-      }
 
       int recordNo = record.getRecordNo();
       if (lastRecordNo != recordNo) {
@@ -118,6 +107,10 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
             }
           }
         } else { // タイトル名などの、上の条件式に当てはまらないものを出力
+          if (type.equals(GpdbUtils.ITEM_TYPE_TEXTAREA)) {
+            // テキストエリアの場合、ダブルクオーテーションで囲む
+            value = "\"" + value + "\"";
+          }
           if (type.equals(GpdbUtils.ITEM_TYPE_CREATE_USER)
             || type.equals(GpdbUtils.ITEM_TYPE_UPDATE_USER)) {
             // 登録者、更新者の場合、名称・ユーザーIDをセットする
@@ -141,8 +134,9 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
    */
   @Override
   protected String getFileName() {
-    String result = Encoder.encodeUrl(fileName);
-    return result + ".csv";
+    // String result = Encoder.encodeUrl(fileName);
+    // return result + ".csv";
+    return "webdb.csv";
   }
 
   @SuppressWarnings("rawtypes")
