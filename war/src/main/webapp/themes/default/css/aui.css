@@ -5353,10 +5353,45 @@ a.auiIconTmpreserve:hover {
 .auiIconOverlap {
   background-position: 0px -704px;
   width: 12px;
-  background: url("../images/icon/auiIconOverlap.png") top left no-repeat !important;
 }
+/* IE11用記述 */
 @media all and (-ms-high-contrast:none){
-  *::-ms-backdrop, .auiIconOverlap { background: url("../images/icon/auiIconOverlap.png") top left no-repeat !important; } /* IE11 */
+  /* 仮 */
+  *::-ms-backdrop, .auiIconTmpreserve{
+    width: 13px;
+    height: 16px;
+    background-image: url("../images/icon/auiIconTmpreserve.png") !important;
+    background-repeat: no-repeat;
+    background-position-x: 0px !important;
+    background-position-y: 0.2px !important;
+  }
+  /* 重複 */
+  *::-ms-backdrop, .auiIconOverlap {
+    width: 12px;
+    height: 16px;
+    background-image: url("../images/icon/auiIconOverlap.png") !important;
+    background-repeat: no-repeat;
+    background-position-x: 0px !important;
+    background-position-y: 0.2px !important;
+  }
+  /* 繰り返し */
+  *::-ms-backdrop, .auiIconRepeat{
+    width: 13px;
+    height: 16px;
+    background-image: url("../images/icon/auiIconRepeat.png") !important;
+    background-repeat: no-repeat;
+    background-position-x: 0px !important;
+    background-position-y: 0.2px !important;
+  }
+  /* 鍵 */
+  *::-ms-backdrop, .auiIconSecret{
+    width: 12px;
+    height: 16px;
+    background-image: url("../images/icon/auiIconSecret.png") !important;
+    background-repeat: no-repeat;
+    background-position-x: 0px !important;
+    background-position-y: 0.2px !important;
+  }
 }
 
 a.auiIconOverlap:hover {
