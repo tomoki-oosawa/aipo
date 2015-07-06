@@ -5362,8 +5362,8 @@ a.auiIconTmpreserve:hover {
     height: 16px;
     background-image: url("../images/icon/auiIconTmpreserve.png") !important;
     background-repeat: no-repeat;
-    background-position-x: -0.5px !important;
-    background-position-y: -0.5px !important;
+    background-position-x: -0.1px !important;
+    background-position-y: -0.1px !important;
   }
   /* 重複 */
   *::-ms-backdrop, .auiIconOverlap {
@@ -5371,8 +5371,8 @@ a.auiIconTmpreserve:hover {
     height: 16px;
     background-image: url("../images/icon/auiIconOverlap.png") !important;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-position-x: -0.1px !important;
+    background-position-y: -0.1px !important;
   }
   /* 繰り返し */
   *::-ms-backdrop, .auiIconRepeat{
@@ -5380,8 +5380,8 @@ a.auiIconTmpreserve:hover {
     height: 16px;
     background-image: url("../images/icon/auiIconRepeat.png") !important;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-position-x: -0.1px !important;
+    background-position-y: -0.1px !important;
   }
   /* 鍵 */
   *::-ms-backdrop, .auiIconSecret{
@@ -5389,8 +5389,8 @@ a.auiIconTmpreserve:hover {
     height: 16px;
     background-image: url("../images/icon/auiIconSecret.png") !important;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-position-x: -0.1px !important;
+    background-position-y: -0.1px !important;
   }
 }
 
