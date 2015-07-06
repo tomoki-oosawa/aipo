@@ -62,7 +62,6 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
     EipTGpdb gpdb = GpdbUtils.getEipTGpdb(gpdbId);
     fileName = gpdb.getGpdbName();
     boolean isFirst;
-    String[] separateValue = null;
 
     StringBuffer sb = new StringBuffer();
 
@@ -102,34 +101,35 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
         sb.append(",");
       }
 
-      String value;
       Integer kubun = record.getGpdbItem().getGpdbKubunId();
-      value = record.getValue();
-      separateValue = value.split("\\|"); // 複数の項目への対応で分割処理
-      if (kubun != null && (value != null && !"".equals(value))) {
-        for (int i = 0; i < separateValue.length; i++) {
-          separateValue[i] =
-            GpdbUtils
-              .getEipMGpdbKubunValue(separateValue[i])
-              .getGpdbKubunValue();
-          sb.append(separateValue[i]);
-          if (i < separateValue.length - 1) {
-            sb.append("|");
+      String value = record.getValue();
+      if (value != null) {
+        String[] separateValue = null;
+        separateValue = value.split("\\|"); // 複数の項目への対応で分割処理
+        if (kubun != null && (value != null && !"".equals(value))) {
+          for (int i = 0; i < separateValue.length; i++) {
+            separateValue[i] =
+              GpdbUtils
+                .getEipMGpdbKubunValue(separateValue[i])
+                .getGpdbKubunValue();
+            sb.append(separateValue[i]);
+            if (i < separateValue.length - 1) {
+              sb.append("|");
+            }
           }
-        }
-      } else { // タイトル名などの、上の条件式に当てはまらないものを出力
-        if (type.equals(GpdbUtils.ITEM_TYPE_CREATE_USER)
-          || type.equals(GpdbUtils.ITEM_TYPE_UPDATE_USER)) {
-          // 登録者、更新者の場合、名称・ユーザーIDをセットする
-          if (!"".equals(value.trim())) {
-            Integer userid = Integer.valueOf(value);
-            value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
-          }
+        } else { // タイトル名などの、上の条件式に当てはまらないものを出力
+          if (type.equals(GpdbUtils.ITEM_TYPE_CREATE_USER)
+            || type.equals(GpdbUtils.ITEM_TYPE_UPDATE_USER)) {
+            // 登録者、更新者の場合、名称・ユーザーIDをセットする
+            if (!"".equals(value.trim())) {
+              Integer userid = Integer.valueOf(value);
+              value = ALEipUtils.getALEipUser(userid).getAliasName().getValue();
+            }
 
+          }
+          sb.append(value);
         }
-        sb.append(value);
       }
-      separateValue = null;
 
     }
 
