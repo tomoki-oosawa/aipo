@@ -19,7 +19,6 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('filter',$!result.Detail.GpdbId).addQueryData('filtertype','gpdb_id')))
-#set( $csvUrl = "$!jslink.getTemplate('GpdbCsvFileScreen').addQueryData('gpdb_id',$entityid)"  )
 ## ---------------------------------------------------------------------------
 #ALdialogheader("$l10n.GPDB_DATABASE_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -47,7 +46,6 @@ $!result.Detail.WbrGpdbName
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.gpdb.onLoadGpdbDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','GpdbFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.gpdb.onReceiveMessage")
 #ALbutton("ajaxbuttonLink" "$l10n.GPDB_SETTING_ITEM" "aipo.common.hideDialog();aipo.viewPage('$GpdbItem', '$!portlet.ID')")
-#ALbutton("ajaxbuttonLink" "$l10n.GPDB_EXPORT" "aipo.gpdb.downloadCsv('$csvUrl')" )
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
