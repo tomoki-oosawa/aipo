@@ -406,7 +406,8 @@ public class FileuploadUtils {
   public static ShrinkImageSet getBytesShrinkFilebean(String org_id,
       String folderName, int uid, FileuploadLiteBean fileBean,
       String[] acceptExts, int width, int height, List<String> msgList,
-      boolean isFixOrgImage, int validate_width, int validate_height) {
+      boolean isFixOrgImage, int validate_width, int validate_height)
+      throws FileuploadMinSizeException {
 
     byte[] result = null;
     byte[] fixResult = null;
