@@ -221,7 +221,22 @@ public class UserSelectData extends
           ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
             + searchWordValue
             + "%");
-        Expression exp16 =
+        /**
+         * Expression exp16 =
+         * ExpressionFactory.likeExp(TurbineUser.COMPANY_ID_PROPERTY, "%" +
+         * searchWordValue + "%");
+         */
+        /**
+         * Problem check/問題チェック: PHOTO_MODIFIED_SMARTPHONE_PROPERTY;
+         * POSITION_ID_PROPERTY; CREATED_PROPERTY; COMPANY_ID_PROPERTY;
+         *
+         * Problems are restricted to non Strings, find a way to get a string
+         * expression for a persons position/job title
+         *
+         * Treat this section as the current exp35 is being treated as it is not
+         * a String
+         */
+        Expression exp17 =
           ExpressionFactory.likeExp(
             TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
               + "."
@@ -229,11 +244,6 @@ public class UserSelectData extends
               + "."
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
             "%" + searchWord + "%");
-        Expression exp17 =
-          ExpressionFactory.likeExp(TurbineUser.POSITION_ID_PROPERTY, "%"
-            + searchWordValue
-            + "%"); // same hench error as yesterday, finna fix w/ pgadmin and
-                    // shee
         Expression exp21 =
           ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
             + searchWordValue
@@ -272,9 +282,8 @@ public class UserSelectData extends
             "%" + transWords[i] + "%");
 
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35));
+          exp15).orExp(exp17).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
+          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
 
         query.distinct();
       }
