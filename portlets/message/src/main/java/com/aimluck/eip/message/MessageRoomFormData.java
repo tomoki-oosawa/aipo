@@ -91,6 +91,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -101,6 +107,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
 
   }
+
+  /** 顔写真 */
+  private final ALStringField photo = null;
+
+  private final boolean photo_vali_flag = false;
 
   /**
    *
@@ -513,5 +524,4 @@ public class MessageRoomFormData extends ALAbstractFormData {
     list.add(filebean);
     return list;
   }
-
 }

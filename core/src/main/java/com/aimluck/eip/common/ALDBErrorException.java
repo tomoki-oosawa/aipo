@@ -20,7 +20,7 @@ package com.aimluck.eip.common;
 
 /**
  * この例外は、データベースへのアクセス時にエラーが発生した場合にスローされます。 <br />
- * 
+ *
  */
 public class ALDBErrorException extends Exception {
 
@@ -28,5 +28,4 @@ public class ALDBErrorException extends Exception {
    *
    */
   private static final long serialVersionUID = -7293414426078181289L;
-
 }
