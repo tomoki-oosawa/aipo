@@ -235,6 +235,13 @@ public class UserSelectData extends
          *
          * Treat this section as the current exp35 is being treated as it is not
          * a String
+         *
+         * more importantly now, find a way to implement the correct drop down
+         * menu in the form.js files and the ajax vm files
+         *
+         * ajax-userlist-list.vm you need to add an id for the menubar_auiFilter
+         *
+         * also maybe remove the form.js stuff and see if that works
          */
         Expression exp17 =
           ExpressionFactory.likeExp(
