@@ -27,22 +27,13 @@
 <div class="filterInputField">
 <div class="filters" id="filters_$!portlet.ID">#*
 
-*##foreach($record in $result.postList)#*
-*##if($!result.issetFilter("post",$!{record.Name}))#*
-*##ALfilterTip($!record.AliasName "aipo.todo.filterSetDefault('$!portlet.ID','post')")#*
-*##end#end#*
-
-*##foreach($record in $result.PostMap)#*
-*##if($!result.issetFilter("post",$!{record.GroupName}))#*
-*##ALfilterTip($!record.PostName "aipo.todo.filterSetDefault('$!portlet.ID','post')")#*
-*##end#end#*
-
 *##foreach($record in $result.CategoryList)#*
 *##if($!result.issetFilter("category",$!{record.CategoryId}))#*
 *##ALfilterTip($!record.CategoryName "aipo.todo.filterSetDefault('$!portlet.ID','category')")#*
 *##end#end#*
+
 *#</div>
-<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
+<a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.isthisafunctionornot(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
 <input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
 #AUIButtonSearch("$l10n.COMMON_SEARCH")
