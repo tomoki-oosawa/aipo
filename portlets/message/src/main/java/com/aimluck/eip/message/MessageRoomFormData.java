@@ -46,6 +46,7 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
@@ -64,6 +65,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MessageRoomFormData.class.getName());
 
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
+
   private ALStringField members;
 
   private ALStringField name;
@@ -79,6 +86,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
   private byte[] facePhoto;
 
   private byte[] facePhoto_smartphone;
+
+  private boolean photo_vali_flag = false;
 
   private int roomId;
 
@@ -152,7 +161,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean != null) {
               facePhoto = bytesShrinkFilebean.getShrinkImage();
             }
@@ -167,7 +178,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean2 != null) {
               facePhoto_smartphone = bytesShrinkFilebean2.getShrinkImage();
             }
@@ -176,6 +189,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
             facePhoto_smartphone = null;
           }
         }
+      } catch (FileuploadMinSizeException ex) {
+        logger.error("fileupload", ex);
+        photo_vali_flag = true;
       } catch (Exception ex) {
         logger.error("MessageRoomFormData.setFormData", ex);
       }
@@ -212,6 +228,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
     }
     if (!hasOwn) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
+    }
+    if (photo_vali_flag) {
+      msgList.add(ALLocalizationUtils
+        .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
     }
     return msgList.size() == 0;
   }

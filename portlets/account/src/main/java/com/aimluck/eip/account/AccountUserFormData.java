@@ -55,6 +55,7 @@ import com.aimluck.eip.common.ALEipPosition;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -147,6 +148,14 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /** 顔写真 */
   private ALStringField photo = null;
+
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
+
+  private boolean photo_vali_flag = false;
 
   /** 添付ファイル */
   private FileuploadLiteBean filebean = null;
@@ -366,7 +375,9 @@ public class AccountUserFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean != null) {
               facePhoto = bytesShrinkFilebean.getShrinkImage();
             }
@@ -381,7 +392,9 @@ public class AccountUserFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean2 != null) {
               facePhoto_smartphone = bytesShrinkFilebean2.getShrinkImage();
             }
@@ -391,6 +404,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
         }
       }
+    } catch (FileuploadMinSizeException ex) {
+      logger.error("fileupload", ex);
+      photo_vali_flag = true;
     } catch (Exception ex) {
       logger.error("AccountUserFormData.setFormData", ex);
       res = false;
@@ -618,7 +634,12 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
+    if (photo_vali_flag) {
+      msgList
+        .add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO_SIZE"));
+    } else if (filebean != null
+      && filebean.getFileId() != 0
+      && facePhoto == null) {
       msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO"));
     }
 

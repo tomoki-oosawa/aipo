@@ -282,7 +282,6 @@ public class AccountEditFormData extends ALAbstractFormData {
    * @param msgList
    * @return
    */
-  @SuppressWarnings("null")
   @Override
   protected boolean setFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
@@ -330,7 +329,9 @@ public class AccountEditFormData extends ALAbstractFormData {
                 FileuploadUtils.DEF_THUMBNAIL_WIDTH,
                 FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean2 != null) {
               facePhoto = bytesShrinkFilebean2.getShrinkImage();
             }
