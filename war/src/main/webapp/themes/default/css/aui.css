@@ -4438,6 +4438,11 @@ ul.attachments {
   background: #ffffff;
   overflow: hidden;
 }
+.filterInputField:hover,
+.filterInputField.hover,
+.filterInputField.focus {
+  border: solid 1px #999999;
+}
 
 *:first-child + html .filterInputField {
   overflow: hidden;
