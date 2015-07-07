@@ -20,6 +20,7 @@
 package com.aimluck.eip.modules.screens;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.turbine.util.RunData;
@@ -34,8 +35,6 @@ import com.aimluck.eip.util.ALEipUtils;
  *
  */
 public class GpdbCsvFileScreen extends ALCSVScreen {
-
-  private String fileName = null;
 
   /**
    *
@@ -58,14 +57,13 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
     String LINE_SEPARATOR = System.getProperty("line.separator");
     String gpdbId = rundata.getParameters().getString("gpdb_id");
     EipTGpdb gpdb = GpdbUtils.getEipTGpdb(gpdbId);
-    fileName = gpdb.getGpdbName();
     boolean isFirst;
 
     StringBuffer sb = new StringBuffer();
 
     isFirst = true;
     List<EipTGpdbItem> items = gpdb.getEipTGpdbItem();
-    Collections.sort(items, new EipTGpdbItemComparator());
+    Collections.sort(items, getEipTGpdbItemComparator());
     for (EipTGpdbItem item : items) {
       if (isFirst) {
         isFirst = false;
@@ -77,8 +75,8 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
 
     int lastRecordNo = -1;
     List<EipTGpdbRecord> records = gpdb.getEipTGpdbRecord();
-    Collections.sort(records, new EipTGpdbRecordComparator1());
-    Collections.sort(records, new EipTGpdbRecordComparator2());
+    Collections.sort(records, getEipTGpdbRecordComparator1());
+    Collections.sort(records, getEipTGpdbRecordComparator2());
     for (EipTGpdbRecord record : records) {
       String type = record.getGpdbItem().getType();
 
@@ -95,7 +93,7 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
       if (value != null) {
         String[] separateValue = null;
         separateValue = value.split("\\|"); // 複数の項目への対応で分割処理
-        if (kubun != null && (value != null && !"".equals(value))) {
+        if (kubun != null && !"".equals(value)) {
           for (int i = 0; i < separateValue.length; i++) {
             separateValue[i] =
               GpdbUtils
@@ -139,30 +137,37 @@ public class GpdbCsvFileScreen extends ALCSVScreen {
     return "webdb.csv";
   }
 
-  @SuppressWarnings("rawtypes")
-  private class EipTGpdbItemComparator implements java.util.Comparator {
-    @Override
-    public int compare(Object s, Object t) {
-      return ((EipTGpdbItem) s).getOrderNo() - ((EipTGpdbItem) t).getOrderNo();
-    }
+  private static Comparator<EipTGpdbItem> getEipTGpdbItemComparator() {
+    Comparator<EipTGpdbItem> com = null;
+    com = new Comparator<EipTGpdbItem>() {
+      @Override
+      public int compare(EipTGpdbItem s, EipTGpdbItem t) {
+        return (s.getOrderNo() - t.getOrderNo());
+      }
+    };
+    return com;
   }
 
-  @SuppressWarnings("rawtypes")
-  private class EipTGpdbRecordComparator1 implements java.util.Comparator {
-    @Override
-    public int compare(Object s, Object t) {
-      return ((EipTGpdbRecord) s).getGpdbItem().getOrderNo()
-        - ((EipTGpdbRecord) t).getGpdbItem().getOrderNo();
-    }
+  private static Comparator<EipTGpdbRecord> getEipTGpdbRecordComparator1() {
+    Comparator<EipTGpdbRecord> com = null;
+    com = new Comparator<EipTGpdbRecord>() {
+      @Override
+      public int compare(EipTGpdbRecord s, EipTGpdbRecord t) {
+        return (s.getGpdbItem().getOrderNo() - t.getGpdbItem().getOrderNo());
+      }
+    };
+    return com;
   }
 
-  @SuppressWarnings("rawtypes")
-  private class EipTGpdbRecordComparator2 implements java.util.Comparator {
-    @Override
-    public int compare(Object s, Object t) {
-      return ((EipTGpdbRecord) s).getRecordNo()
-        - ((EipTGpdbRecord) t).getRecordNo();
-    }
+  private static Comparator<EipTGpdbRecord> getEipTGpdbRecordComparator2() {
+    Comparator<EipTGpdbRecord> com = null;
+    com = new Comparator<EipTGpdbRecord>() {
+      @Override
+      public int compare(EipTGpdbRecord s, EipTGpdbRecord t) {
+        return (s.getRecordNo() - t.getRecordNo());
+      }
+    };
+    return com;
   }
 
 }
