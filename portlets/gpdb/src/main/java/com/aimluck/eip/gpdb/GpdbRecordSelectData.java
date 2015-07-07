@@ -196,7 +196,7 @@ public class GpdbRecordSelectData extends
       }
       searchWord.setValue(GpdbUtils.getSearchword(rundata, context));
       String searchValue;
-      if ((searchWord != null) && (!searchWord.getValue().equals(""))) {
+      if (!searchWord.getValue().equals("")) {
         searchValue = "   AND r4.value LIKE #bind($keyword)";
       } else {
         searchValue = "";
