@@ -49,6 +49,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
+import com.aimluck.eip.common.ALEipPosition;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
@@ -240,8 +241,9 @@ public class UserSelectData extends
          * menu in the form.js files and the ajax vm files
          *
          * ajax-userlist-list.vm you need to add an id for the menubar_auiFilter
+         * TICK
          *
-         * also maybe remove the form.js stuff and see if that works
+         * also maybe remove the form.js stuff and see if that works TICK
          */
         Expression exp17 =
           ExpressionFactory.likeExp(
@@ -579,6 +581,14 @@ public class UserSelectData extends
    */
   public Map<Integer, ALEipPost> getPostMap() {
     return ALEipManager.getInstance().getPostMap();
+  }
+
+  /**
+   *
+   * @return
+   */
+  public Map<Integer, ALEipPosition> getPositionMap() {
+    return ALEipManager.getInstance().getPositionMap();
   }
 
   /**
