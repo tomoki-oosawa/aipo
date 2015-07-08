@@ -242,7 +242,7 @@ public class TimelineResultData implements ALData {
         String subnote =
           ALEipUtils.getMessageList(note.getValue().substring(
             0,
-            PRE_NOTE_LENGTH));
+            PRE_NOTE_LENGTH), keyword.getValue());
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
         if (!isLastWordAddress(sub)) {
           return subnote;
@@ -262,7 +262,8 @@ public class TimelineResultData implements ALData {
       }
     } else {
       if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(timeline_type)) {
-        return note.toString();
+        return ALEipUtils
+          .highlihgtKeywords(note.toString(), keyword.toString());
       } else {
         return getNote();
       }
@@ -277,7 +278,9 @@ public class TimelineResultData implements ALData {
   public String getDetailNote() {
     if (isLongNote()) {
       String subnote =
-        ALEipUtils.getMessageList(note.getValue().substring(PRE_NOTE_LENGTH));
+        ALEipUtils.getMessageList(
+          note.getValue().substring(PRE_NOTE_LENGTH),
+          keyword.getValue());
       String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
       if (!isLastWordAddress(sub)) {
         return subnote;
@@ -289,7 +292,9 @@ public class TimelineResultData implements ALData {
         && sub.charAt(i) != ' '
         && sub.charAt(i) != '\n'; i++) {
       }
-      subnote = ALEipUtils.getMessageList(note.getValue().substring(i));
+      subnote =
+        ALEipUtils.getMessageList(note.getValue().substring(i), keyword
+          .getValue());
       return subnote;
     } else {
       return null;
