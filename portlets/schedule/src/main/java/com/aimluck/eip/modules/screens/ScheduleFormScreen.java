@@ -66,10 +66,7 @@ public class ScheduleFormScreen extends ALVelocityScreen {
     formData.doViewForm(this, rundata, context);
 
     String entityid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-    if (entityid == null || "".equals(entityid)) {
-      entityid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-    }
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     context.put(ALEipConstants.ENTITY_ID, entityid);
 
     String ignore_viewdate = rundata.getParameters().getString(IGNORE_VIEWDATE);
