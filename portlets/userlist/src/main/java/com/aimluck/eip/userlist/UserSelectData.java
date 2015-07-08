@@ -40,11 +40,12 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.AccountResultData;
+import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
-import com.aimluck.eip.common.ALAbstractSelectData;
+import com.aimluck.eip.common.ALAbstractMultiFilterSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
@@ -67,7 +68,7 @@ import com.aimluck.eip.util.ALEipUtils;
  *
  */
 public class UserSelectData extends
-    ALAbstractSelectData<TurbineUser, TurbineUser> {
+    ALAbstractMultiFilterSelectData<TurbineUser, TurbineUser> {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -244,6 +245,10 @@ public class UserSelectData extends
          * TICK
          *
          * also maybe remove the form.js stuff and see if that works TICK
+         *
+         * find ALAbstractMultiFilterSelectData and put breakpoint on
+         * issetFilter(String key, Object value) to find what should be subbed
+         * into ajax-userlist-list.vm between lines 30 and 33
          */
         Expression exp17 =
           ExpressionFactory.likeExp(
@@ -548,6 +553,7 @@ public class UserSelectData extends
     map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
       + "."
       + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
+    map.putValue("position", EipMPosition.POSITION_NAME_PROPERTY);
     return map;
   }
 
@@ -588,7 +594,8 @@ public class UserSelectData extends
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {
-    return ALEipManager.getInstance().getPositionMap();
+    return ALEipManager.getInstance().getPositionMap(); // added, reference in
+                                                        // hack
   }
 
   /**
