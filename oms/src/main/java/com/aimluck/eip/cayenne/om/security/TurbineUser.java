@@ -48,6 +48,8 @@ public class TurbineUser extends _TurbineUser {
   public static final String PHOTO_MODIFIED_SMARTPHONE_COLUMN =
     "PHOTO_MODIFIED_SMARTPHONE";
 
+  public static final String EIP_MPOSITION = "EipMPosition"; // hack
+
   public Integer getUserId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(USER_ID_PK_COLUMN);
@@ -66,4 +68,14 @@ public class TurbineUser extends _TurbineUser {
     setObjectId(new ObjectId("TurbineUser", USER_ID_PK_COLUMN, Integer
       .valueOf(id)));
   }
+
+  public void setEipMPosition(
+      com.aimluck.eip.cayenne.om.account.EipMPosition eipMPosition) {
+    setToOneTarget("eipMPosition", eipMPosition, true);
+  }
+
+  public com.aimluck.eip.cayenne.om.account.EipMPosition getEipMPosition() {
+    return (com.aimluck.eip.cayenne.om.account.EipMPosition) readProperty("eipMPosition"); // hack
+  }
+
 }

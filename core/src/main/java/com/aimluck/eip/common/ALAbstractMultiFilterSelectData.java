@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 検索データを管理するための抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
     ALAbstractSelectData<M1, M2> {
@@ -52,7 +52,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
   protected Map<String, List<String>> current_filterMap;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -75,7 +75,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
   /**
    * filter_type =a,b,c,a &filter =1,2 3,4,5と入力した時に デフォルトでは、a=1,5 & b=2,3 & c=4
    * のようにマップにセットします。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -109,7 +109,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -124,7 +124,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
 
   /**
    * フィルタ用の <code>SelectQuery</code> を構築します。
-   * 
+   *
    * @param crt
    * @param rundata
    * @param context
@@ -160,7 +160,8 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
   }
 
   public boolean issetFilter(String key, Object value) {
-    return issetFilter(key)
+    return issetFilter(key) // optional set breakpoint here for future reference
+                            // to keys and values
       && current_filterMap.get(key).contains(value.toString());
   }
 
@@ -186,7 +187,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -196,7 +197,7 @@ public abstract class ALAbstractMultiFilterSelectData<M1, M2> extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override

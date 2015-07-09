@@ -33,7 +33,7 @@ public class UserListUtils {
 
   /**
    * 検索クエリ用のキーワードを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return

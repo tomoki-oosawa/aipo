@@ -34,7 +34,7 @@
 
 *#</div>
 <a href="javascript:void(0)" class="filterDropDrawer menubarOpenButton" onclick="aipo.todo.toggleMenu(dojo.byId('menubar_auiFilter_$!portlet.ID'),dojo.byId('filters_$!portlet.ID'),true)"><i class="auiIcon auiIconArwBottom"></i></a>
-<input class="text floatLeft long" type="text" name="keyword" id="q$!{portlet.ID}" value="$!result.targetKeyword" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
+<input class="text floatLeft long" type="text" name="sword" id="q$!{portlet.ID}" value="$!result.searchWord" onfocus='aipo.todo.initFilterSearch("$!portlet.ID");' onblur='aipo.todo.finFilterSearch("$!portlet.ID");' />
 </div>
 #AUIButtonSearch("$l10n.COMMON_SEARCH")
 #AUISearchIndicator()
@@ -97,11 +97,11 @@ $post
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:130px; display:none; top:85px; left:276px;">
 <div>
 <p class="caption">$l10n.USERLIST_POSITION</p>
-<ul class="filtertype filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
-<li data-param="0" #if(!$!result.issetFilter("post")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("post")) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$l10n.USERLIST_ALL_POSITION</a></li>
+<ul class="filtertype filtertype_$!portlet.ID" data-type="position" data-defaultparam="0">
+<li data-param="0" #if(!$!result.issetFilter("position")) class="selected" #end><a href="javascript:void(0)" #if(!$!result.issetFilter("position")) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$l10n.USERLIST_ALL_POSITION</a></li>
 
 #foreach($record in $result.PositionMap)
-<li data-param="$!record.PositionName" #if($!result.issetFilter("position",$!{record.PositionId})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("position",$!{record.PositionId})) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$!record.PositionName</a></li>
+<li data-param="$!record.PositionId" #if($!result.issetFilter("position",$!{record.PositionId})) class="selected" #end><a href="javascript:void(0)" #if($!result.issetFilter("position",$!{record.PositionId})) class="selected" #end onclick="aipo.todo.filterClick('$!portlet.ID',this,event)">$!record.PositionName</a></li>
 #end
 </ul>
 </div>

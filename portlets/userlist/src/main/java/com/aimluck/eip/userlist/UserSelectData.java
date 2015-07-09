@@ -223,10 +223,11 @@ public class UserSelectData extends
           ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
             + searchWordValue
             + "%");
+
         /**
          * Expression exp16 =
-         * ExpressionFactory.likeExp(TurbineUser.COMPANY_ID_PROPERTY, "%" +
-         * searchWordValue + "%");
+         * ExpressionFactory.likeExp(TurbineUser.EIP_MPOSITION + "." +
+         * EipMPosition.POSITION_NAME_PROPERTY, "%" + searchWordValue + "%");
          */
         /**
          * Problem check/問題チェック: PHOTO_MODIFIED_SMARTPHONE_PROPERTY;
@@ -239,7 +240,7 @@ public class UserSelectData extends
          * a String
          *
          * more importantly now, find a way to implement the correct drop down
-         * menu in the form.js files and the ajax vm files
+         * menu in the form.js files and the ajax vm files TICK
          *
          * ajax-userlist-list.vm you need to add an id for the menubar_auiFilter
          * TICK
@@ -249,6 +250,13 @@ public class UserSelectData extends
          * find ALAbstractMultiFilterSelectData and put breakpoint on
          * issetFilter(String key, Object value) to find what should be subbed
          * into ajax-userlist-list.vm between lines 30 and 33
+         *
+         * perhaps the issue is in the UserSelectData.java side of things, once
+         * the query has already been entered
+         *
+         * it seems that searchWord turns null for UserSelectData.java
+         *
+         *
          */
         Expression exp17 =
           ExpressionFactory.likeExp(
@@ -553,7 +561,9 @@ public class UserSelectData extends
     map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
       + "."
       + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
-    map.putValue("position", EipMPosition.POSITION_NAME_PROPERTY);
+    map.putValue("position", TurbineUser.EIP_MPOSITION
+      + "."
+      + EipMPosition.POSITION_NAME_PROPERTY);
     return map;
   }
 
