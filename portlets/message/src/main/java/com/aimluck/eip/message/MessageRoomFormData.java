@@ -158,8 +158,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_HEIGHT,
                 msgList,
                 false,
                 DEF_PHOTO_VALIDATE_WIDTH,
@@ -175,8 +175,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_HEIGHT,
                 msgList,
                 false,
                 DEF_PHOTO_VALIDATE_WIDTH,
@@ -190,7 +190,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
         }
       } catch (FileuploadMinSizeException ex) {
-        logger.error("fileupload", ex);
+        // ignore
         photo_vali_flag = true;
       } catch (Exception ex) {
         logger.error("MessageRoomFormData.setFormData", ex);

@@ -412,6 +412,7 @@ public class UserSelectData extends
     data.setDisabled(model.getDisabled());
     data.setHasPhoto("T".equals(model.getHasPhoto())
       || "N".equals(model.getHasPhoto()));
+    data.setIsNewPhotoSpec("N".equals(model.getHasPhoto()));
     data.setPhotoModified(model.getPhotoModified().getTime());
   }
 

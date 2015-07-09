@@ -154,6 +154,8 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 登録済顔写真削除 */
   private boolean delete_photo = false;
 
+  private boolean isNewPhotoSpec = false;
+
   /**
    * 初期化処理を行います。 <BR>
    *
@@ -306,8 +308,8 @@ public class AccountEditFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_HEIGHT,
                 msgList,
                 false,
                 DEF_PHOTO_VALIDATE_WIDTH,
@@ -326,8 +328,8 @@ public class AccountEditFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts2,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_HEIGHT,
                 msgList,
                 false,
                 DEF_PHOTO_VALIDATE_WIDTH,
@@ -335,13 +337,14 @@ public class AccountEditFormData extends ALAbstractFormData {
             if (bytesShrinkFilebean2 != null) {
               facePhoto = bytesShrinkFilebean2.getShrinkImage();
             }
+            isNewPhotoSpec = true;
           } else {
             facePhoto = null;
           }
         }
       }
     } catch (FileuploadMinSizeException ex) {
-      logger.error("fileupload", ex);
+      // ignore
       photo_vali_flag = true;
     } catch (Exception ex) {
       logger.error("AccountEditFormData.setFormData", ex);
@@ -579,6 +582,8 @@ public class AccountEditFormData extends ALAbstractFormData {
 
       new_password.setValue(DEFAULT_VIEW_PASSWORD);
       new_password_confirm.setValue(DEFAULT_VIEW_PASSWORD);
+
+      isNewPhotoSpec = "N".equals(user.hasPhotoString());
 
       return true;
     } catch (Exception e) {
@@ -957,6 +962,10 @@ public class AccountEditFormData extends ALAbstractFormData {
         .valueOf(id))).getPositionName().getValue();
     }
     return null;
+  }
+
+  public boolean isNewPhotoSpec() {
+    return isNewPhotoSpec;
   }
 
 }

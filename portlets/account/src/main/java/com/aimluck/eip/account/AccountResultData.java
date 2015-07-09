@@ -112,6 +112,8 @@ public class AccountResultData implements ALData {
 
   private long photo_modified;
 
+  private boolean is_new_photo_spec;
+
   /**
    *
    *
@@ -135,6 +137,7 @@ public class AccountResultData implements ALData {
     has_photo = false;
     is_admin = false;
     is_owner = false;
+    is_new_photo_spec = false;
 
     company_id = new ALNumberField();
     company_name = new ALStringField();
@@ -619,6 +622,14 @@ public class AccountResultData implements ALData {
    */
   public void setMailSizeStr(String mail_size_str) {
     this.mail_size_str.setValue(mail_size_str);
+  }
+
+  public void setIsNewPhotoSpec(boolean is_new_photo_spec) {
+    this.is_new_photo_spec = is_new_photo_spec;
+  }
+
+  public boolean isNewPhotoSpec() {
+    return this.is_new_photo_spec;
   }
 
 }

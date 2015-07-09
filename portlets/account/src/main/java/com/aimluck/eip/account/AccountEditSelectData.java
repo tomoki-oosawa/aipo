@@ -68,7 +68,7 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -78,7 +78,7 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -112,6 +112,7 @@ public class AccountEditSelectData extends
       rd.setCompanyId(record.getCompanyId());
 
       rd.setHasPhoto(record.hasPhoto());
+      rd.setIsNewPhotoSpec("N".equals(record.hasPhotoString()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
 
       rd.setPostIdList(postIds);
@@ -139,7 +140,7 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -148,7 +149,7 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -166,7 +167,7 @@ public class AccountEditSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */

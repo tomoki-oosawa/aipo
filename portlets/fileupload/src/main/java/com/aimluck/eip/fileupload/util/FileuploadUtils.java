@@ -84,17 +84,29 @@ public class FileuploadUtils {
   /** 保存用ファイル名フォーマット */
   public static final String DEFAULT_FILENAME_DATE_FORMAT = "yyyyMMddHHmmssSSS";
 
-  /** 画像サムネイルのサイズ（横幅） */
-  public static final int DEF_THUMBNAIL_WIDTH = 200;
+  /** 新仕様：画像サムネイルのサイズ（横幅） */
+  public static final int DEF_NORMAL_THUMBNAIL_WIDTH = 100;
 
-  /** 画像サムネイルのサイズ（縦幅） */
-  public static final int DEF_THUMBNAIL_HEIGHT = 200;
+  /** 新仕様：画像サムネイルのサイズ（縦幅） */
+  public static final int DEF_NORMAL_THUMBNAIL_HEIGHT = 100;
 
-  /** スマートフォンの画像サムネイルのサイズ（横幅） */
-  public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 100;
+  /** 新仕様：画像サムネイルのサイズ大（横幅） */
+  public static final int DEF_LARGE_THUMBNAIL_WIDTH = 200;
 
-  /** スマートフォンの画像サムネイルのサイズ（縦幅） */
-  public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 100;
+  /** 新仕様：画像サムネイルのサイズ大（縦幅） */
+  public static final int DEF_LARGE_THUMBNAIL_HEIGHT = 200;
+
+  /** 旧仕様：画像サムネイルのサイズ（横幅） */
+  public static final int DEF_THUMBNAIL_WIDTH = 86;
+
+  /** 旧仕様：画像サムネイルのサイズ（縦幅） */
+  public static final int DEF_THUMBNAIL_HEIGHT = 86;
+
+  /** 旧仕様：スマートフォンの画像サムネイルのサイズ（横幅） */
+  public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 64;
+
+  /** 旧仕様：スマートフォンの画像サムネイルのサイズ（縦幅） */
+  public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 64;
 
   /** 現在の添付ファイル数 */
   public static final String KEY_NOW_SIZE = "nsize";
