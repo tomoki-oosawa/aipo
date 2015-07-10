@@ -84,6 +84,9 @@
 					</div>
 				</form>
 			</div>
+			#set($indicator_id = "indicator-list-$!{portlet.ID}" )
+			#ALajaxIndicator("$indicator_id" "$!portlet.ID" "&nbsp;")
+			<div id="messageListDiv"></div>
 			<div id="messagePane" class="timeline scroll">
 			</div>
 		</div>

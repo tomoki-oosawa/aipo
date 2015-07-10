@@ -105,7 +105,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -459,7 +459,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         files);
 
       Database.delete(model);
-
       Database.commit();
     } catch (Throwable t) {
       Database.rollback();

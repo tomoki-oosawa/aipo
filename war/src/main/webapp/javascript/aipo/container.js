@@ -92,6 +92,7 @@ aipo.IfrGadgetService = function() {
     gadgets.rpc.register('requestCheckTimeline', this.requestCheckTimeline);
     gadgets.rpc.register('requestCheckMessage', this.requestCheckMessage);
     gadgets.rpc.register('requestCheckMessageRead', this.requestCheckMessageRead);
+    gadgets.rpc.register('requestCheckMessageDelete', this.requestCheckMessageDelete);
     // gadgets.rpc.register('requestSendMessage', this.requestSendMessage);
 };
 
@@ -417,6 +418,17 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
 aipo.IfrGadgetService.prototype.requestCheckMessageRead = function(params) {
     if (params.roomId) {
         aipo.message.updateReadCount(params.roomId);
+    }
+}
+
+aipo.IfrGadgetService.prototype.requestCheckMessageDelete = function(params) {
+    if (params.roomId) {
+    	if(aipo.message.isInit) {
+            aipo.message.reloadRoomList();
+        } else {
+            aipo.message.updateUnreadCount();
+        }
+        aipo.message.removeNode(params.messageId);
     }
 }
 

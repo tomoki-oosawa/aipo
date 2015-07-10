@@ -37,6 +37,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRead;
@@ -44,6 +45,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
@@ -110,7 +112,7 @@ public class MessageFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -310,7 +312,63 @@ public class MessageFormData extends ALAbstractFormData {
   @Override
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    return false;
+    try {
+      // messageIdの取得
+      int messageId = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
+
+      EipTMessage message = MessageUtils.getMessage(messageId);
+      if (message == null) {
+        return false;
+      }
+      // messageがuserのものか判定
+      Integer user = ALEipUtils.getUserId(rundata);
+      Integer messageOwner = message.getUserId();
+      if (!(messageOwner.equals(user))) {
+        return false;
+      }
+
+      List<String> recipients = new ArrayList<String>();
+      EipTMessageRoom room = message.getEipTMessageRoom();
+      if (room != null) {
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+        if (members != null) {
+          for (EipTMessageRoomMember member : members) {
+            if (member.getUserId().intValue() != (int) login_user
+              .getUserId()
+              .getValue()) {
+              recipients.add(member.getLoginName());
+            }
+          }
+        }
+      }
+
+      // messageの添付ファイルを削除
+      List<EipTMessageFile> files =
+        MessageUtils.getEipTMessageFilesByMessage(messageId);
+
+      ALDeleteFileUtil.deleteFiles(
+        MessageUtils.FOLDER_FILEDIR_MESSAGE,
+        MessageUtils.CATEGORY_KEY,
+        files);
+
+      // messageを削除
+      Database.delete(message);
+      Database.commit();
+
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(room.getRoomId()));
+      params.put("messageId", String.valueOf(messageId));
+
+      ALPushService.pushAsync("messagev2_delete", params, recipients);
+
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("[MessageFormData]", ex);
+      return false;
+    }
+
+    return true;
   }
 
   public ALStringField getMessage() {

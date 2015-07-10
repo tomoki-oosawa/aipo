@@ -20,6 +20,7 @@
 dojo.provide("aipo.message");
 
 aipo.message.currentRoomId = null;
+aipo.message.tmpMessageId = null;
 aipo.message.tmpRoomId = null;
 aipo.message.tmpPortletTitle = null;
 aipo.message.currentUserId = null;
@@ -960,6 +961,27 @@ aipo.message.onReceiveMessageRoomDelete = function(msg) {
     if (dojo.byId('messageDiv')) {
         dojo.byId('messageDiv').innerHTML =msg;
     }
+};
+
+aipo.message.removeNode = function(id) {
+	var message = dojo.byId("message" + id);
+	if(message) {
+		message.parentNode.removeChild(message);
+	}
+}
+
+aipo.message.onReceiveMessageDelete = function(msg) {
+	if (!msg) {
+		if (aipo.message.tmpMessageId) {
+			aipo.message.removeNode(aipo.message.tmpMessageId);
+			aipo.message.tmpMessageId = null;
+		} else {
+			aipo.message.reloadMessageList();
+		}
+	}
+    if (dojo.byId('messageListDiv')) {
+        dojo.byId('messageListDiv').innerHTML =msg;
+	}
 };
 
 aipo.message.setWrapperHeight = function() {
