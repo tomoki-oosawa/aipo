@@ -326,6 +326,23 @@ public class MessageFormData extends ALAbstractFormData {
       if (!(messageOwner.equals(user))) {
         return false;
       }
+
+      List<String> recipients = new ArrayList<String>();
+      EipTMessageRoom room = message.getEipTMessageRoom();
+      if (room != null) {
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+        if (members != null) {
+          for (EipTMessageRoomMember member : members) {
+            if (member.getUserId().intValue() != (int) login_user
+              .getUserId()
+              .getValue()) {
+              recipients.add(member.getLoginName());
+            }
+          }
+        }
+      }
+
       // messageの添付ファイルを削除
       List<EipTMessageFile> files =
         MessageUtils.getEipTMessageFilesByMessage(messageId);
@@ -338,6 +355,12 @@ public class MessageFormData extends ALAbstractFormData {
       // messageを削除
       Database.delete(message);
       Database.commit();
+
+      Map<String, String> params = new HashMap<String, String>();
+      params.put("roomId", String.valueOf(room.getRoomId()));
+      params.put("messageId", String.valueOf(messageId));
+
+      ALPushService.pushAsync("messagev2_delete", params, recipients);
 
     } catch (Exception ex) {
       Database.rollback();

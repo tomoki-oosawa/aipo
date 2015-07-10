@@ -89,6 +89,9 @@ function join() {
            if("messagev2_read" == type) {
                gadgets.rpc.call(null, "requestCheckMessageRead", null, data);
            }
+           if("messagev2_delete" == type) {
+               gadgets.rpc.call(null, "requestCheckMessageDelete", null, data);
+           }
            if("activity" == type) {
                gadgets.rpc.call(null, "requestCheckActivity");
            }
