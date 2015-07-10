@@ -594,7 +594,9 @@ table.tableWrapper td.tableCenter {
   background-color: #d2d2d2;
 }
 div.sunday,
-.tableWrapper tbody .sunday div{
+.tableWrapper tbody .sunday div,
+div.holiday,
+.tableWrapper tbody .holiday div{
   background-color: #fef6f1 !important;
 }
 div.saturday,
