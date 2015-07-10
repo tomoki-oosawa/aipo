@@ -2047,8 +2047,10 @@ table tr.caption {
 
 .filterTip {
   padding: 0 4px;
-  height: 26px !important;
-  line-height: 26px !important;
+  /*height: 26px !important;*/
+  /*line-height: 26px !important;*/
+  height: 32px !important;
+  line-height: 33px !important;
 }
 
 .filterTip > a {
@@ -2211,6 +2213,16 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 .profilePopupWrap .profilePopup .icon_menu li {
   width: 50%;
+}
+
+/***************************************************
+	scheduleBlock
+--------------------------------------------------*/
+table.scheduleBlock thead td{
+  padding-bottom: 5px;
+}
+table.weeklyTableHead {
+  border-right: none;
 }
 
 /***************************************************

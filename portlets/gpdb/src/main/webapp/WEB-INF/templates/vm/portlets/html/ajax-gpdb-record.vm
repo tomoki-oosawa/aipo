@@ -29,9 +29,32 @@
 #elseif(!$result.List)
 	<div class="auiBlankBox">$l10n.GPDB_SELECT_DATABASE</div>
 #elseif($result.List.size() == 0)
+<div class="auiSummaryMeta clearfix">
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+<input type="hidden" name="template" value="GpdbRecordListScreen"/>
+<input type="hidden" name="mode" value="ajaxsearch"/>
+#AUISearchInput("sword" "sword" "$!result.searchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()
+</div>
 	#AUIEmptyMessage("icon-hdd" "$l10n.GPDB_EMPTY_DATA_MESSAGE")
-#else
 
+#else
+<div class="auiSummaryMeta clearfix">
+#AUISearchHeader("searchForm_" "searchForm_" "$!jslink.getPortletById($!portlet.ID)" "aimluck.io.postViewPage(this, '$!portlet.ID', 'search-${indicator_id}'); return false;")
+<input type="hidden" name="template" value="GpdbRecordListScreen"/>
+<input type="hidden" name="mode" value="ajaxsearch"/>
+#AUISearchInput("sword" "sword" "$!result.searchWord" " maxlength='100' style='margin-right:5px;ime-mode:active'")
+#AUIButtonSearch("$l10n.COMMON_SEARCH")
+#AUISearchIndicator()
+#AUISearchFooter()
+</div>
+#if($!result.searchWord && ($!result.searchWord.toString() != ""))
+#AUISummaryDiv()
+#AUIsearchresult($!result.searchWord.toString())
+#AUISummaryDivfooter()
+#end
 #ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 <div id="listmessageDiv"></div>
 #ALajaxlistformheader("$l10n.GPDB_DATA")
@@ -41,6 +64,8 @@
 		    #if(${client}!="IPHONE")
 			#AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordScreenPrint").addQueryData("filter",$!result.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData('tab','list').addQueryData('reset_keyword_params','true').addQueryData('start',$result.CurrentPage))
 			#end
+			#set( $csvUrl = "$!jslink.getTemplate('GpdbCsvFileScreen').addQueryData('gpdb_id',$!result.GpdbId)"  )
+			#ALbutton("ajaxbuttonLink" "$l10n.GPDB_EXPORT" "aipo.gpdb.downloadCsv('$csvUrl')" )
 			#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 		</div>
 		#AUIajaxpageview('GpdbRecordListScreen' $result)
@@ -91,13 +116,13 @@
 			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbRecordDetailScreen").addQueryData("filter",$!$result.Gpdb.GpdbId).addQueryData("filtertype","gpdb_id").addQueryData("entityid",$record.RecordNo))');">$!record.WbrDispValue</a>
 			#ALtdcellNowrapfooter()
 		#elseif ($createUserId.toString() == $record.GpdbItemId.toString())
-			#ALtdcellNowrapheader()
-			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
-			#ALtdcellNowrapfooter()
+			<td class="mb_hide"><div>
+    			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
+			</div></td>
 		#elseif ($updateUserId.toString() == $record.GpdbItemId.toString())
-			#ALtdcellNowrapheader()
-			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
-			#ALtdcellNowrapfooter()
+			<td class="mb_hide"><div>
+    			<a href="javascript:void(0);" onclick="aipo.message.popupProfile($record.UserId,arguments[0])">$!record.WbrDispValue</a>
+			</div></td>
 		#elseif ("$!item.TitleFlg.toString()" == "t")
 			#ALtdcellNowrapAtt($!record.WbrDispValue 'class="auiMTCaption"')
 		#else

@@ -480,19 +480,19 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
-    List[] columns =
-      CustomizeUtils.buildCustomizeColumns(data, context, portlets);
-    if (columns == null) {
-      return;
-    }
+    if (portlets != null) {
+      List[] columns =
+        CustomizeUtils.buildCustomizeColumns(data, context, portlets);
+      if (columns.length == 0) {
+        return;
+      }
 
-    if ((col > -1) && (row > -1)) {
-      try {
-        IdentityElement identityElement =
-          (IdentityElement) columns[col].get(row);
-        columns[col].remove(row);
+      if ((col > -1) && (row > -1)) {
+        try {
+          IdentityElement identityElement =
+            (IdentityElement) columns[col].get(row);
+          columns[col].remove(row);
 
-        if (portlets != null) {
           if (identityElement instanceof Entry) {
             for (int i = 0; i < portlets.getEntryCount(); i++) {
               if (portlets.getEntry(i) == identityElement) {
@@ -507,24 +507,25 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
               }
             }
           }
+
+        } catch (Exception e) {
+          // probably got wrong coordinates
+          logger.error(
+            "MultiColumnControllerAction: Probably got wrong coordinates",
+            e);
         }
+      }
+      for (col = 0; col < columns.length; col++) {
+        for (row = 0; row < columns[col].size(); row++) {
+          setPosition((IdentityElement) columns[col].get(row), col, row);
+        }
+      }
+      try {
+        ((JetspeedRunData) data).getCustomizedProfile().store();
+        PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
       } catch (Exception e) {
-        // probably got wrong coordinates
-        logger.error(
-          "MultiColumnControllerAction: Probably got wrong coordinates",
-          e);
+        logger.error("Unable to save profile ", e);
       }
-    }
-    for (col = 0; col < columns.length; col++) {
-      for (row = 0; row < columns[col].size(); row++) {
-        setPosition((IdentityElement) columns[col].get(row), col, row);
-      }
-    }
-    try {
-      ((JetspeedRunData) data).getCustomizedProfile().store();
-      PsmlManager.refresh(((JetspeedRunData) data).getCustomizedProfile());
-    } catch (Exception e) {
-      logger.error("Unable to save profile ", e);
     }
   }
 
@@ -550,7 +551,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
-    if (columns == null) {
+    if (columns.length == 0) {
       return;
     }
 
@@ -593,7 +594,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
-    if (columns == null) {
+    if (columns.length == 0) {
       return;
     }
 
@@ -636,7 +637,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
       CustomizeUtils.buildCustomizeColumns(data, context, portlets);
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
-    if (columns == null) {
+    if (columns.length == 0) {
       return;
     }
 
@@ -680,7 +681,7 @@ public class ALMultiColumnControllerAction extends VelocityControllerAction {
 
     int col = data.getParameters().getInt("col", -1);
     int row = data.getParameters().getInt("row", -1);
-    if (columns == null) {
+    if (columns.length == 0) {
       return;
     }
 

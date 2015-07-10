@@ -227,7 +227,7 @@ aimluck.io.disableForm = function(form, bool) {
     var elements = form.elements;
     for ( var i = 0; i < elements.length; i++) {
       if ((elements[i].type == 'submit' || elements[i].type == 'button')
-          && elements[i].style.display != "none") {
+          && elements[i].style.display != "none" && elements[i].value) {
         var uuid = guid();
         var span = document.createElement("span");
         span.id = uuid;

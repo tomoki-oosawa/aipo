@@ -22,7 +22,6 @@
 #set ($indicator_id3 = "indicator-dlg3-")
 ## ---------------------------------------------------------------------------
 <div id="message_$!{portlet.ID}_$!{record.TimelineId}" class="message $!{firstCss}">
-	#ALajaxIndicator("$indicator_id3" "$!portlet.ID" "&nbsp;")
 	<div class="avatar mr10">
 		#if(!$!result.isMatch(2, $!{record.OwnerId.Value}))
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">
