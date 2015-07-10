@@ -202,7 +202,7 @@
 ##if($record.TermResultData.isShowDetail())
 
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.TermResultData.ScheduleId}).addQueryData('userid', $!{record3.UserId}).addQueryData('view_date', $!{record.Date.toString()})")
-<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
+<td colspan="$col_span">
 #if(${record.TermResultData.isShowDetail()})
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 
