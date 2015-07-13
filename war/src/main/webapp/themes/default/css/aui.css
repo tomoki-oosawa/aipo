@@ -5103,6 +5103,12 @@ tr:first-child #gantt_task > table td {
   background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
 }
+.off .auiIcon {
+  background-image: url(../images/icon/auiIconSpritesGray20150709.png);
+}
+.off a:hover .auiIcon {
+  background-image: url(../images/icon/auiIconSprites20150318.png);
+}
 
 .auiIcon span {
   display: none;
