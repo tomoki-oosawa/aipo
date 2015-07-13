@@ -3077,6 +3077,9 @@ button[disabled]:active {
 .auiSearch {
   position: relative;
 }
+.auiSearch input[type="text"] {
+  outline: none;
+}
 .auiSearch input.long {
   min-width: 320px;
 }
