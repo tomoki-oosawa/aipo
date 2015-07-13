@@ -3941,21 +3941,26 @@ public class ScheduleUtils {
   }
 
   public static void createShareScheduleActivity(EipTSchedule schedule,
-      String loginName, List<String> recipients, boolean isNew, int userid) {
+      String loginName, List<String> recipients, String mode, int userid) {
     if (recipients != null && recipients.size() > 0) {
       ALActivity RecentActivity =
         ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
+      String message = new String();
+      if (mode == "new") {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+      } else if (mode == "edit") {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+      } else {// if (mode == "delete")
+        message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+      }
 
       String title =
         new StringBuilder(ALLocalizationUtils
           .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
           .append(schedule.getName())
-          .append(
-            isNew
-              ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
-              : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+          .append(message)
           .toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
@@ -3982,20 +3987,25 @@ public class ScheduleUtils {
   }
 
   public static void createNewScheduleActivity(EipTSchedule schedule,
-      String loginName, boolean isNew, int userid) {
+      String loginName, String mode, int userid) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
     boolean isDeletePrev =
       RecentActivity != null && RecentActivity.isReplace(loginName);
 
+    String message = new String();
+    if (mode == "new") {
+      message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+    } else if (mode == "edit") {
+      message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+    } else {// if (mode == "delete")
+      message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+    }
     String title =
       new StringBuilder(ALLocalizationUtils
         .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
         .append(schedule.getName())
-        .append(
-          isNew
-            ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
-            : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+        .append(message)
         .toString();
     String portletParams =
       new StringBuilder("?template=ScheduleDetailScreen")
