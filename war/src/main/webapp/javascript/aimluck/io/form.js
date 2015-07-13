@@ -1022,3 +1022,20 @@ aimluck.io.selectPost = function (jsonparams, jsonscreen, indicator_id, portlet_
     callback.apply(callback, params);
   }
 };
+
+aimluck.io.initFilterSearch = function(portlet_id) {
+	var filterInputField = dojo.query(".filterInputField");
+	if(filterInputField) {
+		dojo.addClass(filterInputField, "focus");
+	}
+}
+
+
+aimluck.io.msgboard.finFilterSearch = function(portlet_id) {
+	var filterInputField = dojo.query(".filterInputField");
+	if(filterInputField) {
+		if(!filterInputField.keyword.value) {
+		    dojo.removeClass(filterInputField, "focus");
+		}
+	}
+}
