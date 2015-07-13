@@ -2276,9 +2276,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         recipients,
         "delete",
         ownerid);
-
       // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
-      if ("O".equals(public_flag.toString())) {
+      if ("O".equals(schedule.getPublicFlag())) {
         ScheduleUtils.createNewScheduleActivity(
           schedule,
           loginName,
