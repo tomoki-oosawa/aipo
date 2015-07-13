@@ -753,7 +753,7 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1142,7 +1142,7 @@ public class ScheduleWeeklyJSONFormData {
         schedule,
         loginName,
         recipients,
-        false,
+        "edit",
         userId);
 
       // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
@@ -1150,7 +1150,7 @@ public class ScheduleWeeklyJSONFormData {
         ScheduleUtils.createNewScheduleActivity(
           schedule,
           loginName,
-          false,
+          "edit",
           userId);
       }
     }
@@ -1200,7 +1200,7 @@ public class ScheduleWeeklyJSONFormData {
 
   /**
    * セキュリティをチェックします。
-   * 
+   *
    * @return
    */
   private boolean doCheckSecurity(RunData rundata, Context context) {

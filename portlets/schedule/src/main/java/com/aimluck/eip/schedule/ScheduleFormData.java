@@ -2261,6 +2261,30 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.getScheduleId(),
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
+      // 「あなた宛のお知らせ」に表示させる。
+      String loginName = loginUser.getName().getValue();
+      List<String> recipients = new ArrayList<String>();
+      for (ALEipUser user : memberList) {
+        if (loginUser.getUserId().getValue() != user.getUserId().getValue()) {
+          recipients.add(user.getName().getValue());
+        }
+      }
+      int ownerid = ALEipUtils.getUserId(rundata);
+      ScheduleUtils.createShareScheduleActivity(
+        schedule,
+        loginName,
+        recipients,
+        "delete",
+        ownerid);
+
+      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+      if ("O".equals(public_flag.toString())) {
+        ScheduleUtils.createNewScheduleActivity(
+          schedule,
+          loginName,
+          "delete",
+          ownerid);
+      }
     } catch (RuntimeException e) {
       // RuntimeException
       Database.rollback();
