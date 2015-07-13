@@ -545,13 +545,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   schedule,
                   memberList,
-                  false));
+                  "edit"));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   schedule,
                   memberList,
                   destMember.getUserId(),
-                  false));
+                  "edit"));
                 messageList.add(message);
               }
 
@@ -717,13 +717,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   newSchedule,
                   memberList,
-                  false));
+                  "edit"));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   newSchedule,
                   memberList,
                   destMember.getUserId(),
-                  false));
+                  "edit"));
                 messageList.add(message);
               }
 
@@ -879,13 +879,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 schedule,
                 memberList,
-                true));
+                "new"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 schedule,
                 memberList,
                 destMember.getUserId(),
-                true));
+                "new"));
               messageList.add(message);
             }
 
@@ -1041,13 +1041,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 newSchedule,
                 memberList,
-                true));
+                "new"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 newSchedule,
                 memberList,
                 destMember.getUserId(),
-                true));
+                "new"));
               messageList.add(message);
             }
 

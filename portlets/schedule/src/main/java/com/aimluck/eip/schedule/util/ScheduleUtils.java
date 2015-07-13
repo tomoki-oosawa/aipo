@@ -2721,7 +2721,7 @@ public class ScheduleUtils {
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
-      List<ALEipUser> memberList, boolean add) {
+      List<ALEipUser> memberList, String mode) {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -2747,12 +2747,15 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (add) {
+      if (mode == "new") {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else {
+      } else if (mode == "edit") {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+      } else {// if (mode == "delete")
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
@@ -2827,7 +2830,7 @@ public class ScheduleUtils {
    */
   public static String createMsgForCellPhone(RunData rundata,
       EipTSchedule schedule, List<ALEipUser> memberList, int destUserID,
-      boolean add) {
+      String mode) {
     ALEipUser loginUser = null;
     ALBaseUser user = null;
     String date_detail = "";
@@ -2851,12 +2854,15 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (add) {
+      if (mode == "new") {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else {
+      } else if (mode == "edit") {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+      } else {// if (mode == "delete")
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());

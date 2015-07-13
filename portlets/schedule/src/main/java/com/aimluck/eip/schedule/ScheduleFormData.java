@@ -1302,13 +1302,13 @@ public class ScheduleFormData extends ALAbstractFormData {
               rundata,
               schedule,
               memberList,
-              true));
+              "new"));
             message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
               rundata,
               schedule,
               memberList,
               destMember.getUserId(),
-              true));
+              "new"));
             messageList.add(message);
           }
 
@@ -1856,13 +1856,13 @@ public class ScheduleFormData extends ALAbstractFormData {
                 rundata,
                 newSchedule,
                 memberList,
-                false));
+                "edit"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 newSchedule,
                 memberList,
                 destMember.getUserId(),
-                false));
+                "edit"));
             }
 
             ALMailService.sendAdminMailAsync(new ALAdminMailContext(
@@ -1883,13 +1883,13 @@ public class ScheduleFormData extends ALAbstractFormData {
                 rundata,
                 schedule,
                 memberList,
-                false));
+                "edit"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 schedule,
                 memberList,
                 destMember.getUserId(),
-                false));
+                "edit"));
               messageList.add(message);
             }
 
@@ -2285,16 +2285,65 @@ public class ScheduleFormData extends ALAbstractFormData {
           "delete",
           ownerid);
       }
+
+      if (ScheduleUtils.MAIL_FOR_ALL.equals(schedule.getMailFlag())
+        || ScheduleUtils.MAIL_FOR_INSERT.equals(schedule.getMailFlag())) {
+        try {
+          // メール送信
+          int msgType =
+            ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE);
+          if (msgType > 0) {
+            // パソコンへメールを送信
+            List<ALEipUserAddr> destMemberList =
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
+            String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
+            String orgId = Database.getDomainName();
+
+            List<ALAdminMailMessage> messageList =
+              new ArrayList<ALAdminMailMessage>();
+            for (ALEipUserAddr destMember : destMemberList) {
+              ALAdminMailMessage message = new ALAdminMailMessage(destMember);
+              message.setPcSubject(subject);
+              message.setCellularSubject(subject);
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                schedule,
+                memberList,
+                "delete"));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                schedule,
+                memberList,
+                destMember.getUserId(),
+                "delete"));
+              messageList.add(message);
+            }
+
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+            // msgList.addAll(errors);
+          }
+        } catch (Exception e) {
+          throw new MailSendException();
+        }
+      }
     } catch (RuntimeException e) {
       // RuntimeException
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
+    } catch (MailSendException e) {
+      msgList.add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
+      logger.error("schedule", e);
+      return false;
     } catch (Exception e) {
       Database.rollback();
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
-
     }
     return true;
   }
