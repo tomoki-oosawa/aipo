@@ -243,7 +243,7 @@ $l10n.SCHEDULE_SATURDAY<br />
 ##if($record.TermResultData.isShowDetail())
 #set ($col_span = $!{record.TermResultData.Rowspan})
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.TermResultData.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.Date.toString()})")
-<td colspan="$col_span">
+<td colspan="$col_span" class="term">
 #if(${record.TermResultData.isShowDetail()})
 <div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv small schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 ##<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);" class="small">
