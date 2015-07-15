@@ -1036,36 +1036,7 @@ public class ALEipUtils {
       String template =
         rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
       if (template != null && !("".equals(template))) {
-        if (template.equals("ScheduleDetailScreen")) {
-          VelocityContext context = new VelocityContext();
-          setupContext(rundata, context);
-          try {
-            ServletOutputStream out = null;
-            HttpServletResponse response = rundata.getResponse();
-            out = response.getOutputStream();
-            BufferedWriter writer =
-              new BufferedWriter(new OutputStreamWriter(
-                out,
-                ALEipConstants.DEF_CONTENT_ENCODING));
-            context
-              .put("l10n", ALLocalizationUtils.createLocalization(rundata));
-            Template templete =
-              Velocity.getTemplate("screens/html/AjaxScheduleNotFound.vm");
-            templete.merge(context, writer);
-            writer.flush();
-            writer.close();
-          } catch (ResourceNotFoundException e) {
-            logger.error("ALEipUtils.redirectPageNotFound", e);
-            throw new RuntimeException(e);
-          } catch (ParseErrorException e) {
-            logger.error("ALEipUtils.redirectPageNotFound", e);
-            throw new RuntimeException(e);
-          } catch (Exception e) {
-            logger.error("ALEipUtils.redirectPageNotFound", e);
-            throw new RuntimeException(e);
-          }
-          return true;
-        } else if (template.endsWith("DetailScreen")
+        if (template.endsWith("DetailScreen")
           || template.endsWith("FormScreen")) {
           VelocityContext context = new VelocityContext();
           setupContext(rundata, context);

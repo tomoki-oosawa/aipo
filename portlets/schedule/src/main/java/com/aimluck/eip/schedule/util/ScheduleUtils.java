@@ -18,7 +18,9 @@
  */
 package com.aimluck.eip.schedule.util;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -33,6 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
@@ -53,7 +58,13 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import com.aimluck.commons.field.ALAbstractField;
 import com.aimluck.commons.field.ALCellDateField;
@@ -87,6 +98,7 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
+import com.aimluck.eip.schedule.ScheduleNotFounfException;
 import com.aimluck.eip.schedule.ScheduleResultData;
 import com.aimluck.eip.schedule.ScheduleTermWeekContainer;
 import com.aimluck.eip.schedule.ScheduleToDoResultData;
@@ -535,10 +547,22 @@ public class ScheduleUtils {
 
       List<EipTSchedule> schedules = query.fetchList();
 
+      boolean activity;
+      String option = rundata.getParameters().getString("activityId", null);
+      if (option != null && option.length() > 0) {
+        activity = true;
+      } else {
+        activity = false;
+      }
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-        logger.error("[ScheduleUtils] Not found record.");
-        throw new ALPageNotFoundException();
+        if (activity) {// アクテシビティから入った
+          logger.error("[ScheduleUtils] Not found record.");
+          throw new ScheduleNotFounfException();
+        } else {// ポートレットからはいった。
+          logger.error("[ScheduleUtils] Not found record.");
+          throw new ALPageNotFoundException();
+        }
       }
 
       EipTSchedule record = schedules.get(0);
@@ -549,9 +573,68 @@ public class ScheduleUtils {
     } catch (ALPageNotFoundException ex) {
       ALEipUtils.redirectPageNotFound(rundata);
       return null;
+    } catch (ScheduleNotFounfException ex) {
+      shceduleNotFound(rundata);
+      return null;
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * @param rundata
+   */
+  private static Boolean shceduleNotFound(RunData rundata) {
+    try {
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      DynamicURI duri = jsLink.getPage();
+      String template =
+        rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
+      if (template != null && !("".equals(template))) {
+        VelocityContext context = new VelocityContext();
+        ALEipUtils.setupContext(rundata, context);
+        try {
+          ServletOutputStream out = null;
+          HttpServletResponse response = rundata.getResponse();
+          out = response.getOutputStream();
+          BufferedWriter writer =
+            new BufferedWriter(new OutputStreamWriter(
+              out,
+              ALEipConstants.DEF_CONTENT_ENCODING));
+          context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
+          Template templete =
+            Velocity.getTemplate("portlets/html/ajax-schedule-not-found.vm");
+          templete.merge(context, writer);
+          writer.flush();
+          writer.close();
+        } catch (ResourceNotFoundException e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        } catch (ParseErrorException e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        } catch (Exception e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        }
+        return true;
+      }
+      duri.addPathInfo("template", "PageNotFound");
+      rundata.setRedirectURI(duri.toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+
+      JetspeedLinkFactory.putInstance(jsLink);
+      jsLink = null;
+      return true;
+    } catch (TurbineException e) {
+
+      logger.error("ALEipUtils.redirectPageNotFound", e);
+      return false;
+    } catch (IOException e) {
+
+      logger.error("ALEipUtils.redirectPageNotFound", e);
+      return false;
     }
   }
 
