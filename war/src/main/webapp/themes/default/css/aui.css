@@ -4429,7 +4429,7 @@ ul.attachments {
 }
 .filterInputField:hover,
 .filterInputField.hover,
-.filterInputField.focus {
+.focus .filterInputField {
   border: solid 1px #999999;
 }
 
