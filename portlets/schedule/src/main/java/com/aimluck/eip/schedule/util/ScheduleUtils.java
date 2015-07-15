@@ -2747,15 +2747,17 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (mode == "new") {
+      if (mode.equals("new")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if (mode == "edit") {
+      } else if (mode.equals("edit")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else {// if (mode == "delete")
+      } else if (mode.equals("delete")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+      } else {
+        throw new IllegalArgumentException();
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
@@ -2807,6 +2809,8 @@ public class ScheduleUtils {
       service.handleRequest(context, "mail/createSchedule.vm", out);
       out.flush();
       return out.toString();
+    } catch (IllegalArgumentException e) {
+
     } catch (Exception e) {
       String message = e.getMessage();
       logger.warn(message, e);
@@ -2854,15 +2858,17 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (mode == "new") {
+      if (mode.equals("new")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if (mode == "edit") {
+      } else if (mode.equals("edit")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else {// if (mode == "delete")
+      } else if (mode.equals("delete")) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+      } else {
+        throw new IllegalArgumentException();
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
@@ -2905,6 +2911,8 @@ public class ScheduleUtils {
       service.handleRequest(context, "mail/createSchedule.vm", out);
       out.flush();
       return out.toString();
+    } catch (IllegalArgumentException e) {
+
     } catch (RuntimeException e) {
       String message = e.getMessage();
       logger.warn(message, e);
@@ -3948,20 +3956,75 @@ public class ScheduleUtils {
 
   public static void createShareScheduleActivity(EipTSchedule schedule,
       String loginName, List<String> recipients, String mode, int userid) {
-    if (recipients != null && recipients.size() > 0) {
+    try {
+      if (recipients != null && recipients.size() > 0) {
+        ALActivity RecentActivity =
+          ALActivity
+            .getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
+        boolean isDeletePrev =
+          RecentActivity != null && RecentActivity.isReplace(loginName);
+        String message = new String();
+        if (mode.equals("new")) {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+        } else if (mode.equals("edit")) {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+        } else if (mode == "delete") {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+        } else {
+          throw new IllegalAccessException();
+        }
+
+        String title =
+          new StringBuilder(ALLocalizationUtils
+            .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+            .append(schedule.getName())
+            .append(message)
+            .toString();
+        String portletParams =
+          new StringBuilder("?template=ScheduleDetailScreen")
+            .append("&entityid=")
+            .append(schedule.getScheduleId())
+            .append("&view_date=")
+            .append(
+              ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
+            .toString();
+        ALActivityService.create(new ALActivityPutRequest()
+          .withAppId("Schedule")
+          .withUserId(userid)
+          .withLoginName(loginName)
+          .withPortletParams(portletParams)
+          .withRecipients(recipients)
+          .withTitle(title)
+          .withPriority(1f)
+          .withExternalId(String.valueOf(schedule.getScheduleId())));
+
+        if (isDeletePrev) {
+          RecentActivity.delete();
+        }
+      }
+    } catch (IllegalAccessException e) {
+
+    }
+  }
+
+  public static void createNewScheduleActivity(EipTSchedule schedule,
+      String loginName, String mode, int userid) {
+    try {
       ALActivity RecentActivity =
-        ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
+        ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
-      String message = new String();
-      if (mode == "new") {
-        message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
-      } else if (mode == "edit") {
-        message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
-      } else {// if (mode == "delete")
-        message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
-      }
 
+      String message = new String();
+      if (mode.equals("new")) {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+      } else if (mode.equals("edit")) {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+      } else if (mode == "delete") {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+      } else {
+        throw new IllegalArgumentException();
+      }
       String title =
         new StringBuilder(ALLocalizationUtils
           .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
@@ -3981,56 +4044,15 @@ public class ScheduleUtils {
         .withUserId(userid)
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withRecipients(recipients)
         .withTitle(title)
-        .withPriority(1f)
+        .withPriority(0f)
         .withExternalId(String.valueOf(schedule.getScheduleId())));
 
       if (isDeletePrev) {
         RecentActivity.delete();
       }
-    }
-  }
+    } catch (IllegalArgumentException e) {
 
-  public static void createNewScheduleActivity(EipTSchedule schedule,
-      String loginName, String mode, int userid) {
-    ALActivity RecentActivity =
-      ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
-    boolean isDeletePrev =
-      RecentActivity != null && RecentActivity.isReplace(loginName);
-
-    String message = new String();
-    if (mode == "new") {
-      message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
-    } else if (mode == "edit") {
-      message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
-    } else {// if (mode == "delete")
-      message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
-    }
-    String title =
-      new StringBuilder(ALLocalizationUtils
-        .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
-        .append(schedule.getName())
-        .append(message)
-        .toString();
-    String portletParams =
-      new StringBuilder("?template=ScheduleDetailScreen")
-        .append("&entityid=")
-        .append(schedule.getScheduleId())
-        .append("&view_date=")
-        .append(ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
-        .toString();
-    ALActivityService.create(new ALActivityPutRequest()
-      .withAppId("Schedule")
-      .withUserId(userid)
-      .withLoginName(loginName)
-      .withPortletParams(portletParams)
-      .withTitle(title)
-      .withPriority(0f)
-      .withExternalId(String.valueOf(schedule.getScheduleId())));
-
-    if (isDeletePrev) {
-      RecentActivity.delete();
     }
   }
 
