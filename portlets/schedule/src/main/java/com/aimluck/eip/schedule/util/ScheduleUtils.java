@@ -2830,13 +2830,13 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (mode.equals("new")) {
+      if ("new".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if (mode.equals("edit")) {
+      } else if ("edit".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else if (mode.equals("delete")) {
+      } else if ("delete".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       } else {
@@ -2941,13 +2941,13 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (mode.equals("new")) {
+      if ("new".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if (mode.equals("edit")) {
+      } else if ("edit".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else if (mode.equals("delete")) {
+      } else if ("delete".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       } else {
@@ -4047,11 +4047,11 @@ public class ScheduleUtils {
         boolean isDeletePrev =
           RecentActivity != null && RecentActivity.isReplace(loginName);
         String message = new String();
-        if (mode.equals("new")) {
+        if ("new".equals(mode)) {
           message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
-        } else if (mode.equals("edit")) {
+        } else if ("edit".equals(mode)) {
           message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
-        } else if (mode == "delete") {
+        } else if ("delete".equals(mode)) {
           message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
         } else {
           throw new IllegalAccessException();
@@ -4099,11 +4099,11 @@ public class ScheduleUtils {
         RecentActivity != null && RecentActivity.isReplace(loginName);
 
       String message = new String();
-      if (mode.equals("new")) {
+      if ("new".equals(mode)) {
         message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
-      } else if (mode.equals("edit")) {
+      } else if ("edit".equals(mode)) {
         message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
-      } else if (mode == "delete") {
+      } else if ("delete".equals(mode)) {
         message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
       } else {
         throw new IllegalArgumentException();
