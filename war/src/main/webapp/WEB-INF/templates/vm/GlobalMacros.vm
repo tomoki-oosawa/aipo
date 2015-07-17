@@ -1928,7 +1928,7 @@ $!{text}
 #end
 
 #macro(AUISearchHeader $id $name $action $onsubmit)
-<form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post">
+<form class="auiSearch" id="$id$!portlet.ID" name="$name$!portlet.ID" action="$action" onsubmit="$onsubmit" method="post" onfocus="aimluck.io.onFocusSearch('$!portlet.ID');" onblur="aimluck.io.onBlurSearch('$!portlet.ID');">
 #end
 
 #macro(AUISearchHeaderMarginOne)
