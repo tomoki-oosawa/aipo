@@ -254,7 +254,9 @@ public class TimelineResultData implements ALData {
           && sub.charAt(i) != ' '
           && sub.charAt(i) != '\n'; i++) {
         }
-        subnote = ALEipUtils.getMessageList(note.getValue().substring(0, i));
+        subnote =
+          ALEipUtils.getMessageList(note.getValue().substring(0, i), keyword
+            .getValue());
         return subnote;
       } catch (Exception ex) {
         // 文字数のカウントに失敗した場合は文字を丸めずに返す

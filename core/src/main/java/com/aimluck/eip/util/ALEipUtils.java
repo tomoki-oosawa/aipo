@@ -1763,8 +1763,7 @@ public class ALEipUtils {
             temp.append(val[st]);
             if (val[st] == '<') {
               inTag = true;
-              String highLighted = new String();
-              highLighted =
+              String highLighted =
                 temp.toString().replaceAll(
                   regex,
                   "<span class=\"searchKeyword\">$1</span>");
