@@ -2325,6 +2325,17 @@ public class ALEipUtils {
   }
 
   /**
+   * アクセスしてきたユーザが利用するブラウザ名が Windows の Edge であるかを判定する．
+   *
+   * @param rundata
+   * @return MSIE の場合は，true．
+   */
+  public static boolean isEdgeBrowser(RunData rundata) {
+    return isMatchUserAgent("Win", rundata)
+      && (isMatchUserAgent("Edge", rundata));
+  }
+
+  /**
    * アクセスしてきたユーザが利用するブラウザ名が Android．
    *
    * @param rundata

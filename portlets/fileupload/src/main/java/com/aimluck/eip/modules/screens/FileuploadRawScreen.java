@@ -51,7 +51,7 @@ public class FileuploadRawScreen extends RawScreen {
   private String filepath = null;
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -62,7 +62,7 @@ public class FileuploadRawScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected String getFileName() {
@@ -71,7 +71,7 @@ public class FileuploadRawScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected String getFilePath() {
@@ -87,7 +87,7 @@ public class FileuploadRawScreen extends RawScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -107,7 +107,8 @@ public class FileuploadRawScreen extends RawScreen {
         }
       } else {
         boolean isMsie = ALEipUtils.isMsieBrowser(rundata);
-        if (isMsie) {
+        boolean isEdge = ALEipUtils.isEdgeBrowser(rundata);
+        if (isMsie || isEdge) {
           attachmentRealName =
             new String(getFileName().getBytes("Windows-31J"), "8859_1");
         } else {
