@@ -1742,6 +1742,56 @@ public class ALEipUtils {
   }
 
   /**
+   * 文字列中の検索キーワードを<span class="searchKeyword">タグで囲います。
+   *
+   * @param msg
+   * @return
+   */
+  public static String highlihgtKeywords(String msg, String keyword) {
+    if (msg != null) {
+      if (keyword != null && !(keyword.equals(""))) {
+        Boolean inTag = false;
+        String regex = "((" + keyword + ")+)";
+        int len = msg.length();
+        int st = 0;
+        char[] val = msg.toCharArray();
+        StringBuffer result = new StringBuffer();
+        StringBuffer temp = new StringBuffer();
+        while ((st < len)) {
+          if (inTag == false) {
+            temp.append(val[st]);
+            if (val[st] == '<') {
+              inTag = true;
+              String highLighted =
+                temp.toString().replaceAll(
+                  regex,
+                  "<span class=\"searchKeyword\">$1</span>");
+              result.append(highLighted);
+              temp.delete(0, temp.length());
+            }
+          } else if (inTag == true) {
+            result.append(val[st]);
+            if (val[st] == '>') {
+              inTag = false;
+            }
+          }
+          st++;
+        }
+        if (st == len && inTag == false) {
+          result.append(temp.toString().replaceAll(
+            regex,
+            "<span class=\"searchKeyword\">$1</span>"));
+        }
+        return result.toString();
+      } else {
+        return msg;
+      }
+    } else {
+      return "";
+    }
+  }
+
+  /**
    * 文字列内のリンクにタグAを追加します。
    *
    * @param msg
@@ -1777,6 +1827,47 @@ public class ALEipUtils {
       return newMsg.replaceAll(
         "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
         "<a href='mailto:$0'>$0</a>");
+    } else {
+      return "";
+    }
+  }
+
+  public static String replaceStrToLink(String msg, String keyword) {
+    if (msg != null) {
+      String regex =
+        "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)";
+      Pattern p = Pattern.compile(regex);
+      boolean check = true;
+      while (check) {
+        check = false;
+        Matcher m = p.matcher(msg);
+        while (m.find()) {
+          if (m.group(0).contains("@")) {
+            String matchString = m.group(0);
+            matchString = matchString.replaceAll("@", "%40");
+            String pre = msg.substring(0, m.start(0));
+            String post = msg.substring(m.end(0), msg.length());
+            msg = pre + matchString + post;
+            check = true;
+          }
+        }
+      }
+
+      // 日本語（ひらがな、かたかな、漢字）が含まれていてもリンク化されるように正規表現を追加する。
+      // URL
+      String newMsg =
+        msg
+          .replaceAll(
+            "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
+            "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
+      // mail
+      String newnewMsg =
+        newMsg.replaceAll(
+          "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
+          "<a href='mailto:$0'>$0</a>");
+      // highlight
+      String highlightedMsg = highlihgtKeywords(newnewMsg, keyword);
+      return highlightedMsg;
     } else {
       return "";
     }
@@ -2491,5 +2582,79 @@ public class ALEipUtils {
       }
     }
     return maps;
+  }
+
+  /**
+   * @param msgline
+   * @param keyword
+   * @return
+   */
+  public static String getMessageList(String msgline, String keyword) {
+    StringBuffer sb = new StringBuffer();
+    ALStringField field = null;
+    ALStringField key = null;
+
+    if (msgline == null || msgline.equals("")) {
+      return "";
+    }
+    msgline = Normalizer.normalize(msgline, Normalizer.Form.NFC);
+    if (msgline.indexOf("\r") < 0
+      && msgline.indexOf("\n") < 0
+      && msgline.indexOf("\r\n") < 0) {
+      field = new ALStringField();
+      field.setTrim(false);
+      field.setValue(msgline);
+      if (!(keyword == null || keyword.equals(""))) {
+        key = new ALStringField();
+        key.setTrim(true);
+        key.setValue(keyword);
+        return ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+          replaseLeftSpace(field.toString()),
+          key.toString())));
+      }
+      return ALCommonUtils
+        .replaceToAutoCR((replaceStrToLink(replaseLeftSpace(field.toString()))));
+    }
+
+    String token = null;
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new StringReader(msgline));
+      while ((token = reader.readLine()) != null) {
+        field = new ALStringField();
+        field.setTrim(false);
+        field.setValue(token);
+        sb.append(
+          ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+            replaseLeftSpace(field.toString()),
+            keyword)))).append("<br/>");
+      }
+      reader.close();
+    } catch (IOException ioe) {
+      try {
+        reader.close();
+      } catch (IOException e) {
+      }
+      return "";
+    }
+
+    int index = sb.lastIndexOf("<br/>");
+    if (index == -1) {
+      return sb.toString();
+    }
+    //
+    // if (keyword == null || keyword.equals("")) {
+    // return "";
+    // } else if (keyword != null) {
+    // // 本文の中に検索キーワードが含まれていた場合、
+    // // <span class='searchKeyword'>検索キーワード</span>
+    // // のようにコードが挿入されるようにする
+    //
+    // return msgline =
+    // msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
+    // }
+
+    return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
+
   }
 }

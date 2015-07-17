@@ -3122,6 +3122,14 @@ button[disabled]:active {
   line-height: 2em;
   margin-bottom: 2em;
 }
+.searchKeyword{
+  background:#fffee0;
+  padding:2px 3px;
+  margin:0 1px;
+  border-radius:3px;
+  display: inline !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
+}
 
 /* ------------------------------------------------
    auiSearch.gray  2015.05.11
