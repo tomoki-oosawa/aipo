@@ -357,7 +357,12 @@ public class MessageFormData extends ALAbstractFormData {
       Database.commit();
 
       Map<String, String> params = new HashMap<String, String>();
-      params.put("roomId", String.valueOf(room.getRoomId()));
+      if (room != null && room.getRoomId() != null) {
+        params.put("roomId", String.valueOf(room.getRoomId()));
+        params.put("messageId", String.valueOf(messageId));
+
+        ALPushService.pushAsync("messagev2_delete", params, recipients);
+      }
       params.put("messageId", String.valueOf(messageId));
 
       ALPushService.pushAsync("messagev2_delete", params, recipients);
