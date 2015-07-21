@@ -293,7 +293,7 @@ public class ScheduleUtils {
 
     // String org_id = OrgORMappingMap.getInstance().getOrgId(rundata);
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
