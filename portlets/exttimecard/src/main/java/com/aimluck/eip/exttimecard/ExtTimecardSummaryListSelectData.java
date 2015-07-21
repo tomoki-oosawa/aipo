@@ -257,25 +257,23 @@ public class ExtTimecardSummaryListSelectData extends
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
-
-    if (userList == null || userList.size() == 0) {
-      target_user_id = "";
-      ALEipUtils.removeTemp(rundata, context, TARGET_USER_ID);
-      return;
-    }
-
     // アクセス権
-    for (ALEipUser group_target_user : userList) {
-      String group_target_user_id =
-        group_target_user.getUserId().getValueAsString();
-      if (userid.equals(group_target_user_id)) {
-        aclPortletFeature =
-          ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
-        break;
-      } else {
-        aclPortletFeature =
-          ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+    if (!(userList == null) && !(userList.size() == 0)) {
+      for (ALEipUser group_target_user : userList) {
+        String group_target_user_id =
+          group_target_user.getUserId().getValueAsString();
+        if (userid.equals(group_target_user_id)) {
+          aclPortletFeature =
+            ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+          break;
+        } else {
+          aclPortletFeature =
+            ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+        }
       }
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
     }
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
