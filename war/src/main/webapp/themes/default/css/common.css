@@ -1345,7 +1345,7 @@ div.scheduleDivFirstLine {
   background-color: #c33;
   overflow: hidden;
   margin: 0;
-  white-space: nowrap;
+  /*white-space: nowrap;*/
   border: solid #c33;
   border-width: 1px;
 }
@@ -1477,10 +1477,13 @@ table.weeklyTableHead {
   border-right: none;
   padding-right: 0 !important;
 }
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-  table.weeklyTableHead {
-    border-right: 1px solid #d2d2d2;
-  }
+/*@media screen and (-webkit-min-device-pixel-ratio:0) {*/
+  /*table.weeklyTableHead {*/
+    /*border-right: 1px solid #d2d2d2;*/
+  /*}*/
+/*}*/
+_::content, _:future, table.weeklyTableHead:not(*:root) {
+  border-right: 1px solid #d2d2d2;
 }
 
 div.weeklyBorder {
