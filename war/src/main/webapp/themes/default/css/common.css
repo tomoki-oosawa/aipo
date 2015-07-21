@@ -590,7 +590,9 @@ table.tableWrapper td.tableCenter {
   /*background-color: transparent;*/
 }
 .scheduleDivAdd,
-.tableWrapper.scheduleBlock tbody table div.scheduleDivAdd{
+.tableWrapper.scheduleBlock tbody table div.scheduleDivAdd,
+.termScheduleDivAdd,
+.tableWrapper.scheduleBlock tbody table div.termScheduleDivAdd{
   background-color: #d2d2d2;
 }
 div.sunday,
