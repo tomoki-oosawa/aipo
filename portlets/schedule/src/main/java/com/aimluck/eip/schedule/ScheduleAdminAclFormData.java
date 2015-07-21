@@ -66,7 +66,7 @@ public class ScheduleAdminAclFormData extends ALAbstractFormData {
     aclData = new ALStringField();
 
     String entitiyId =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     Integer tmpId = null;
     if (entitiyId.startsWith("ug")) {

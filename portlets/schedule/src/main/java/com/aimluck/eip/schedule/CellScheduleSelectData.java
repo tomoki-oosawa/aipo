@@ -32,7 +32,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュール詳細表示の検索結果を管理するクラスです。
- * 
+ *
  */
 public class CellScheduleSelectData extends ScheduleSelectData {
 
@@ -44,7 +44,7 @@ public class CellScheduleSelectData extends ScheduleSelectData {
   protected String entityid;
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -55,7 +55,7 @@ public class CellScheduleSelectData extends ScheduleSelectData {
   protected EipTSchedule selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    entityid = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    entityid = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     return super.selectDetail(rundata, context);
   }
@@ -73,7 +73,6 @@ public class CellScheduleSelectData extends ScheduleSelectData {
       }
     }
   }
-
 
   public String getEntityId() {
     return entityid;
