@@ -242,12 +242,35 @@ public class ExtTimecardSummaryListSelectData extends
       logger.error("exttimecard", ex);
     }
 
+    target_group_name = getTargetGroupName(rundata, context);
+    if (target_group_name != null) {
+      if ((!target_group_name.equals(""))
+        && (!target_group_name.equals("all"))
+        && (!target_group_name.equals("only"))) {
+        userList = ALEipUtils.getUsers(target_group_name);
+      } else if (target_group_name.equals("all")
+        || target_group_name.equals("only")) {
+        userList = getUserList(Integer.parseInt(userid));
+      } else {
+        userList = ALEipUtils.getUsers("LoginUser");
+      }
+    } else {
+      userList = ALEipUtils.getUsers("LoginUser");
+    }
     // アクセス権
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || userid.equals(target_user_id)) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    if (!(userList == null) && !(userList.size() == 0)) {
+      for (ALEipUser group_target_user : userList) {
+        String group_target_user_id =
+          group_target_user.getUserId().getValueAsString();
+        if (userid.equals(group_target_user_id)) {
+          aclPortletFeature =
+            ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+          break;
+        } else {
+          aclPortletFeature =
+            ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+        }
+      }
     } else {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
@@ -280,7 +303,7 @@ public class ExtTimecardSummaryListSelectData extends
     hasAclXlsExport =
       aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER,
+        aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     if (!hasAclSummaryOther) {
