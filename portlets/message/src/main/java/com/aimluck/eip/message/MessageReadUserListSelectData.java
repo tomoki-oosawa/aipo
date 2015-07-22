@@ -87,7 +87,8 @@ public class MessageReadUserListSelectData extends
     rd.setUserId(model.getUserId());
     rd.setFirstName(model.getFirstName());
     rd.setLastName(model.getLastName());
-    rd.setHasPhoto("T".equals(model.getHasPhoto()));
+    rd.setHasPhoto("T".equals(model.getHasPhoto())
+      || "N".equals(model.getHasPhoto()));
     Date photoModified = model.getPhotoModified();
     if (photoModified != null) {
       rd.setPhotoModified(photoModified.getTime());

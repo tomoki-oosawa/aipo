@@ -428,7 +428,8 @@ public class AccountUserSelectData extends
         .getPositionId()
         .intValue()));
       rd.setDisabled(record.getDisabled());
-      rd.setHasPhoto("T".equals(record.getHasPhoto()));
+      rd.setHasPhoto("T".equals(record.getHasPhoto())
+        || "N".equals(record.getHasPhoto()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
       rd.setEmail(record.getEmail());
 
@@ -447,7 +448,6 @@ public class AccountUserSelectData extends
   protected Object getResultDataDetail(ALBaseUser record) {
     try {
       Integer id = Integer.valueOf(record.getUserId());
-
       AccountResultData rd = new AccountResultData();
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
@@ -472,6 +472,7 @@ public class AccountUserSelectData extends
       rd.setDisabled(record.getDisabled());
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
       rd.setHasPhoto(record.hasPhoto());
+      rd.setIsNewPhotoSpec("N".equals(record.hasPhotoString()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
 
       return rd;

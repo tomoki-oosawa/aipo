@@ -78,7 +78,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーを管理するクラスです。 <br />
- * 
+ *
  */
 public class ALUserManagement extends TurbineBaseService implements
     UserManagement, CredentialsManagement {
@@ -156,8 +156,8 @@ public class ALUserManagement extends TurbineBaseService implements
         .intValue() : 0);
       baseuser.setPhotoModified(tuser.getPhotoModified());
       baseuser.setPhotoModifiedSmartphone(tuser.getPhotoModifiedSmartphone());
-      baseuser.setHasPhoto("T".equals(tuser.getHasPhoto()));
-      baseuser.setHasPhotoSmartphone("T".equals(tuser.getHasPhotoSmartphone()));
+      baseuser.setHasPhoto(tuser.getHasPhoto());
+      baseuser.setHasPhotoSmartphone(tuser.getHasPhotoSmartphone());
       baseuser.setMigrateVersion((tuser.getMigrateVersion() != null) ? tuser
         .getMigrateVersion()
         .intValue() : 0);
@@ -317,9 +317,9 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setPhotoSmartphone(baseuser.getPhotoSmartphone());
       tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
       tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
-      tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
+      tuser.setHasPhoto(baseuser.hasPhotoString());
       tuser.setPhotoModified(baseuser.getPhotoModified());
-      tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
+      tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
       tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
       tuser.setMigrateVersion(baseuser.getMigrateVersion());
 
@@ -390,9 +390,9 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setPhotoSmartphone(baseuser.getPhotoSmartphone());
     tuser.setCreatedUserId(Integer.valueOf(baseuser.getCreatedUserId()));
     tuser.setUpdatedUserId(Integer.valueOf(baseuser.getUpdatedUserId()));
-    tuser.setHasPhoto(baseuser.hasPhoto() ? "T" : "F");
+    tuser.setHasPhoto(baseuser.hasPhotoString());
     tuser.setPhotoModified(new Date());
-    tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphone() ? "T" : "F");
+    tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     tuser.setMigrateVersion(baseuser.getMigrateVersion());
     // Database.commit();
@@ -450,7 +450,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザーにデフォルトのPSMLを設定します。
-   * 
+   *
    * @param user
    * @throws JetspeedSecurityException
    */
@@ -482,7 +482,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * ユーザーのロールを承認します
-   * 
+   *
    * @param user
    * @param hasAdminCredential
    */
@@ -510,7 +510,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   * 
+   *
    * @param user
    * @throws Exception
    */
@@ -520,7 +520,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザのPSMLからシステム管理のページを取り除きます。
-   * 
+   *
    * @param user
    * @throws Exception
    */
@@ -548,7 +548,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザに管理者権限を付与します。
-   * 
+   *
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -565,7 +565,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   /**
    * 指定したユーザの管理者権限を取り除きます。
-   * 
+   *
    * @param tuser
    * @throws JetspeedSecurityException
    */
@@ -754,7 +754,7 @@ public class ALUserManagement extends TurbineBaseService implements
   }
 
   /**
-   * 
+   *
    * @param user
    * @return
    * @throws UserException

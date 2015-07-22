@@ -44,6 +44,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -66,6 +67,12 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /** ブラウザに表示するデフォルトのパスワード（ダミーパスワード） */
   private static final String DEFAULT_VIEW_PASSWORD = "******";
+
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
 
   /** ログイン名 */
   private ALStringField loginname;
@@ -125,6 +132,8 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 顔写真 */
   private ALStringField photo = null;
 
+  private boolean photo_vali_flag = false;
+
   /** 添付ファイル */
   private FileuploadLiteBean filebean = null;
 
@@ -145,9 +154,11 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 登録済顔写真削除 */
   private boolean delete_photo = false;
 
+  private boolean isNewPhotoSpec = false;
+
   /**
    * 初期化処理を行います。 <BR>
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -267,7 +278,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -278,6 +289,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     boolean res = super.setFormData(rundata, context, msgList);
+
     try {
       if (res) {
         List<FileuploadLiteBean> fileBeanList =
@@ -288,6 +300,7 @@ public class AccountEditFormData extends ALAbstractFormData {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto_smartphone = null;
+
             ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
@@ -295,10 +308,13 @@ public class AccountEditFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
+
             if (bytesShrinkFilebean != null) {
               facePhoto_smartphone = bytesShrinkFilebean.getShrinkImage();
             }
@@ -312,18 +328,24 @@ public class AccountEditFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts2,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean2 != null) {
               facePhoto = bytesShrinkFilebean2.getShrinkImage();
             }
+            isNewPhotoSpec = true;
           } else {
             facePhoto = null;
           }
         }
       }
+    } catch (FileuploadMinSizeException ex) {
+      // ignore
+      photo_vali_flag = true;
     } catch (Exception ex) {
       logger.error("AccountEditFormData.setFormData", ex);
       res = false;
@@ -387,7 +409,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   /**
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -457,7 +479,12 @@ public class AccountEditFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
+    if (photo_vali_flag) {
+      msgList
+        .add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO_SIZE"));
+    } else if (filebean != null
+      && filebean.getFileId() != 0
+      && facePhoto == null) {
       msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO"));
     }
 
@@ -556,6 +583,8 @@ public class AccountEditFormData extends ALAbstractFormData {
       new_password.setValue(DEFAULT_VIEW_PASSWORD);
       new_password_confirm.setValue(DEFAULT_VIEW_PASSWORD);
 
+      isNewPhotoSpec = "N".equals(user.hasPhotoString());
+
       return true;
     } catch (Exception e) {
       logger.error("AccountEditFormData.loadFormData", e);
@@ -565,7 +594,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを設定します。
-   * 
+   *
    * @return
    */
   public void loadEmail(RunData rundata) {
@@ -585,7 +614,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 未使用。
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -598,7 +627,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -658,16 +687,16 @@ public class AccountEditFormData extends ALAbstractFormData {
       if (filebean != null && filebean.getFileId() != 0) {
         // 顔写真を登録する．
         user.setPhotoSmartphone(facePhoto_smartphone);
-        user.setHasPhotoSmartphone(true);
+        user.setHasPhotoSmartphone("N");
         user.setPhotoModifiedSmartphone(new Date());
         user.setPhoto(facePhoto);
-        user.setHasPhoto(true);
+        user.setHasPhoto("N");
         user.setPhotoModified(new Date());
       } else if (delete_photo) {
         user.setPhoto(null);
-        user.setHasPhoto(false);
+        user.setHasPhoto("F");
         user.setPhotoSmartphone(null);
-        user.setHasPhotoSmartphone(false);
+        user.setHasPhotoSmartphone("F");
 
       }
 
@@ -692,7 +721,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       ALBaseUser currentUser = (ALBaseUser) rundata.getUser();
       if (currentUser.getUserName().equals(user.getUserName())) {
         currentUser.setPassword(user.getPassword());
-        currentUser.setHasPhoto(user.hasPhoto());
+        currentUser.setHasPhoto(user.hasPhotoString());
         currentUser.setPhotoModified(user.getPhotoModified());
       }
 
@@ -728,7 +757,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularMail() {
@@ -737,7 +766,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getEmail() {
@@ -746,7 +775,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -755,7 +784,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（名）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstName() {
@@ -792,7 +821,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -801,7 +830,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * フリガナ（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -810,7 +839,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 名前（姓）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastName() {
@@ -819,7 +848,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -828,7 +857,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone2() {
@@ -837,7 +866,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone3() {
@@ -846,7 +875,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -855,7 +884,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -864,7 +893,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -886,7 +915,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 部署を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALStringField> getPostNameList() {
@@ -899,7 +928,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   /**
    * 役職を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPositionName() {
@@ -922,7 +951,7 @@ public class AccountEditFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -933,6 +962,10 @@ public class AccountEditFormData extends ALAbstractFormData {
         .valueOf(id))).getPositionName().getValue();
     }
     return null;
+  }
+
+  public boolean isNewPhotoSpec() {
+    return isNewPhotoSpec;
   }
 
 }

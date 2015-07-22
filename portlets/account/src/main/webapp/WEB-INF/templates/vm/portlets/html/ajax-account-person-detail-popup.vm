@@ -49,7 +49,11 @@
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 #ALtditemheader()
 #if($!{result.Detail.hasPhoto()})
-<img class="avatar" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("t",$!{result.Detail.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
+#if($!{result.Detail.isNewPhotoSpec()})
+<img class="avatar" width="100" height="100" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "normal").addQueryData("t",$!{result.Detail.PhotoModified})" srcset="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "normal").addQueryData("t",$!{result.Detail.PhotoModified}) 1x, $jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "large").addQueryData("t",$!{result.Detail.PhotoModified}) 2x" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
+#else
+<img class="avatar" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "large").addQueryData("t",$!{result.Detail.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
+#end
 #else
 $l10n.ACCOUNT_USER_NOT_CREATE
 #end

@@ -55,6 +55,7 @@ import com.aimluck.eip.common.ALEipPosition;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
@@ -147,6 +148,14 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   /** 顔写真 */
   private ALStringField photo = null;
+
+  /** プロフィール画像バリデートのサイズ(横幅) */
+  public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
+
+  /** プロフィール画像バリデートのサイズ(縦幅) */
+  public static final int DEF_PHOTO_VALIDATE_HEIGHT = 200;
+
+  private boolean photo_vali_flag = false;
 
   /** 添付ファイル */
   private FileuploadLiteBean filebean = null;
@@ -363,10 +372,12 @@ public class AccountUserFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_LARGE_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean != null) {
               facePhoto = bytesShrinkFilebean.getShrinkImage();
             }
@@ -378,10 +389,12 @@ public class AccountUserFormData extends ALAbstractFormData {
                 ALEipUtils.getUserId(rundata),
                 filebean,
                 acceptExts,
-                FileuploadUtils.DEF_THUMBNAIL_WIDTH_SMARTPHONE,
-                FileuploadUtils.DEF_THUMBNAIL_HEIGHT_SMARTPHONE,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_NORMAL_THUMBNAIL_HEIGHT,
                 msgList,
-                false);
+                false,
+                DEF_PHOTO_VALIDATE_WIDTH,
+                DEF_PHOTO_VALIDATE_HEIGHT);
             if (bytesShrinkFilebean2 != null) {
               facePhoto_smartphone = bytesShrinkFilebean2.getShrinkImage();
             }
@@ -391,6 +404,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
         }
       }
+    } catch (FileuploadMinSizeException ex) {
+      // ignore
+      photo_vali_flag = true;
     } catch (Exception ex) {
       logger.error("AccountUserFormData.setFormData", ex);
       res = false;
@@ -618,7 +634,12 @@ public class AccountUserFormData extends ALAbstractFormData {
     }
 
     // 顔写真
-    if (filebean != null && filebean.getFileId() != 0 && facePhoto == null) {
+    if (photo_vali_flag) {
+      msgList
+        .add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO_SIZE"));
+    } else if (filebean != null
+      && filebean.getFileId() != 0
+      && facePhoto == null) {
       msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_PHOTO"));
     }
 
@@ -851,8 +872,8 @@ public class AccountUserFormData extends ALAbstractFormData {
           // 顔写真を登録する．
           user.setPhotoSmartphone(facePhoto_smartphone);
           user.setPhoto(facePhoto);
-          user.setHasPhoto(true);
-          user.setHasPhotoSmartphone(true);
+          user.setHasPhoto("N");
+          user.setHasPhotoSmartphone("N");
           user.setPhotoModified(new Date());
           user.setPhotoModifiedSmartphone(new Date());
         }
@@ -1025,16 +1046,16 @@ public class AccountUserFormData extends ALAbstractFormData {
             // 顔写真を登録する．
             user.setPhotoSmartphone(facePhoto_smartphone);
             user.setPhotoModifiedSmartphone(new Date());
-            user.setHasPhotoSmartphone(true);
+            user.setHasPhotoSmartphone("N");
             user.setPhoto(facePhoto);
             user.setPhotoModified(new Date());
-            user.setHasPhoto(true);
+            user.setHasPhoto("N");
           }
         } else {
           user.setPhoto(null);
-          user.setHasPhoto(false);
+          user.setHasPhoto("F");
           user.setPhotoModifiedSmartphone(null);
-          user.setHasPhotoSmartphone(false);
+          user.setHasPhotoSmartphone("F");
         }
 
         user.setEmail(email.getValue());
@@ -1090,9 +1111,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
           currentUser.setFirstNameKana(user.getFirstNameKana());
           currentUser.setLastNameKana(user.getLastNameKana());
-          currentUser.setHasPhoto(user.hasPhoto());
+          currentUser.setHasPhoto(user.hasPhotoString());
           currentUser.setPhotoModified(user.getPhotoModified());
-          currentUser.setHasPhotoSmartphone(user.hasPhoto());
+          currentUser.setHasPhotoSmartphone(user.hasPhotoSmartphoneString());
           currentUser.setPhotoModifiedSmartphone(user
             .getPhotoModifiedSmartphone());
         }
