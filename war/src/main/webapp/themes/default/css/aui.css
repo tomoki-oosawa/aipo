@@ -4438,6 +4438,11 @@ ul.attachments {
   background: #ffffff;
   overflow: hidden;
 }
+.filterInputField:hover,
+.filterInputField.hover,
+.focus .filterInputField {
+  border: solid 1px #999999;
+}
 
 *:first-child + html .filterInputField {
   overflow: hidden;
@@ -4455,6 +4460,7 @@ ul.attachments {
   height: 30px;
   border: none;
   background: transparent;
+  outline: none;
 }
 
 .filterInputField .menubar.multi {

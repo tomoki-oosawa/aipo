@@ -1022,3 +1022,19 @@ aimluck.io.selectPost = function (jsonparams, jsonscreen, indicator_id, portlet_
     callback.apply(callback, params);
   }
 };
+
+aimluck.io.onFocusSearch = function(pid) {
+    var searchForm = dojo.byId("searchForm_" + pid);
+    if(searchForm) {
+        dojo.addClass(searchForm, "focus");
+    }
+}
+
+aimluck.io.onBlurSearch = function(pid) {
+    var searchForm = dojo.byId("searchForm_" + pid);
+    if(searchForm) {
+        if(!searchForm.keyword.value) {
+            dojo.removeClass(searchForm, "focus");
+        }
+    }
+}
