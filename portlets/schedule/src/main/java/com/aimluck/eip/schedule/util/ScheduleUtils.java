@@ -305,9 +305,9 @@ public class ScheduleUtils {
 
     // String org_id = OrgORMappingMap.getInstance().getOrgId(rundata);
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -509,9 +509,9 @@ public class ScheduleUtils {
       Context context, String type) throws ALPageNotFoundException,
       ALDBErrorException {
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -648,9 +648,9 @@ public class ScheduleUtils {
   public static EipTScheduleMap getEipTScheduleMap(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -747,9 +747,9 @@ public class ScheduleUtils {
       ALDBErrorException {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合

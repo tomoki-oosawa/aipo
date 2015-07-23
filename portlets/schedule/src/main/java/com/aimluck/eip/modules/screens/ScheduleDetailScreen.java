@@ -30,7 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールの詳細画面を処理するクラスです。 <br />
- * 
+ *
  */
 public class ScheduleDetailScreen extends ALVelocityScreen {
 
@@ -41,7 +41,7 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
   private final static String IGNORE_VIEWDATE = "ignore_viewdate";
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -54,7 +54,7 @@ public class ScheduleDetailScreen extends ALVelocityScreen {
       detailData.doViewDetail(this, rundata, context);
 
       String entityid =
-        ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+        rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
       context.put(ALEipConstants.ENTITY_ID, entityid);
 
       String ignore_viewdate =

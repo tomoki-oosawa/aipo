@@ -51,7 +51,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
- * 
+ *
  */
 public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
@@ -104,7 +104,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   protected boolean is_copy;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -122,7 +122,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
     facilities = Database.query(EipMFacilityGroup.class, null).fetchList();
 
-    entity_id = ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    entity_id = rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
 
@@ -139,7 +139,8 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     try {
       init(action, rundata, context);
       boolean isedit =
-        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+        (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID) && !"new"
+          .equals(rundata.getParameters().getString(ALEipConstants.ENTITY_ID)));
       int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
       if (isedit) {
         aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
@@ -177,7 +178,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * パラメータを読み込みます。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -218,7 +219,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    * @throws ALDBErrorException
@@ -235,7 +236,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -279,7 +280,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * 入力データを検証する．
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -310,7 +311,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -367,7 +368,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * 指定したグループ名のユーザーを取得します。
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -377,7 +378,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * 部署マップを取得します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -386,7 +387,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * フォームデータを取得します。
-   * 
+   *
    * @return
    */
   public CellScheduleFormBean getFormData() {
@@ -394,7 +395,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isOwner() {
@@ -426,7 +427,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * ログインユーザを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getLoginUser() {
@@ -435,7 +436,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * 編集するスケジュールの1日の情報を取得します。
-   * 
+   *
    * @return
    */
   public ScheduleOnedayGroupSelectData getSelectData() {
@@ -444,7 +445,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * スケジュールタイプを取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getScheduleType() {
@@ -453,7 +454,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getGroupList() {
@@ -462,7 +463,7 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
 
   /**
    * グループリストを取得します
-   * 
+   *
    * @return
    */
   public List<EipMFacilityGroup> getFacilityGroupList() {

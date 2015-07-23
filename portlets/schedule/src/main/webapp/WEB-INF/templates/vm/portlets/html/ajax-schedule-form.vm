@@ -65,6 +65,7 @@
 <form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
 <input type="hidden" name="ignore_duplicate_facility" value="false" />
 <input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="entityid" value="$entityid" />
 #if($mode=="new_form" || $!result.isCopy())
 <input type="hidden" name="mode" value="insert" />
 #else

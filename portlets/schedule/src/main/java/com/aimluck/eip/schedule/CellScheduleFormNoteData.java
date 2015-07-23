@@ -115,7 +115,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     try {
       init(action, rundata, context);
       boolean isedit =
-        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+        (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID) && !"new"
+          .equals(rundata.getParameters().getString(ALEipConstants.ENTITY_ID)));
       if (is_copy) {
         isedit = false;
       }
