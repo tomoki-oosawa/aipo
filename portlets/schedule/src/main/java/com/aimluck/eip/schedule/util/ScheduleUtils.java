@@ -4046,7 +4046,7 @@ public class ScheduleUtils {
             .getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
         boolean isDeletePrev =
           RecentActivity != null && RecentActivity.isReplace(loginName);
-        String message = new String();
+        String message = "";
         if ("new".equals(mode)) {
           message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
         } else if ("edit".equals(mode)) {
@@ -4098,7 +4098,7 @@ public class ScheduleUtils {
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
 
-      String message = new String();
+      String message = "";
       if ("new".equals(mode)) {
         message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
       } else if ("edit".equals(mode)) {
