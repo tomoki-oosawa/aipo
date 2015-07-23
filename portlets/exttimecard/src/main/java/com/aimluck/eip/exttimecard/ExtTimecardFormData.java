@@ -62,7 +62,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカードのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ExtTimecardFormData extends ALAbstractFormData {
 
@@ -139,19 +139,22 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private int current_clock_out_time_minute;
 
-  /** アクセス権限の機能名 */
+  /** 他人アクセス権限の機能名 */
   private final String aclPortletFeatureOther =
     ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
 
   private ALAccessControlHandler aclHandler;
 
+  /** アクセス権限の機能名 */
+  private final String aclPortletFeature = null;
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -182,8 +185,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -251,7 +254,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * フォームを表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -303,8 +306,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -316,10 +319,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -710,7 +713,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -777,7 +780,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -797,7 +800,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカードをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -936,7 +939,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているタイムカードを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1068,7 +1071,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 各ボタンを押したときの動作 <BR>
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -1102,7 +1105,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   @Override
@@ -1123,7 +1126,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPunchDate() {
@@ -1132,7 +1135,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDateStr() {
@@ -1147,7 +1150,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付が過去かどうか
-   * 
+   *
    * @return
    */
   public boolean getIsPast() {
@@ -1158,7 +1161,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付が現在かどうか
-   * 
+   *
    * @return
    */
   public boolean getIsToday() {
@@ -1182,7 +1185,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 種類
-   * 
+   *
    * @return
    */
   public ALStringField getType() {
@@ -1191,7 +1194,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 出勤時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getClockInTime() {
@@ -1207,7 +1210,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 退勤時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getClockOutTime() {
@@ -1223,7 +1226,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 外出時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getOutgoingTime(int n) {
@@ -1247,7 +1250,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 復帰時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getComebackTime(int n) {
@@ -1275,7 +1278,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 修正理由
-   * 
+   *
    * @return
    */
   public ALStringField getReason() {
@@ -1284,7 +1287,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 備考
-   * 
+   *
    * @return
    */
   public ALStringField getRemarks() {
@@ -1293,7 +1296,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * タイムカード設定
-   * 
+   *
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
@@ -1302,7 +1305,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -1346,7 +1349,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 日付がずれていたら、強制的に直します。
-   * 
+   *
    * @param datetime
    * @param ajustto
    * @return
@@ -1374,12 +1377,12 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
   public String getAclPortletFeature() {
-    return ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    return aclPortletFeature;
   }
 
   /**
