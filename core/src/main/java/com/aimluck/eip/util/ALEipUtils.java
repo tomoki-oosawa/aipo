@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -1513,11 +1514,11 @@ public class ALEipUtils {
    * @return
    */
   public static Object getObjFromDataRow(DataRow dataRow, String key) {
-    String lowerKey = key.toLowerCase();
+    String lowerKey = key.toLowerCase(Locale.ENGLISH);
     if (dataRow.containsKey(lowerKey)) {
       return dataRow.get(lowerKey);
     } else {
-      return dataRow.get(key.toUpperCase());
+      return dataRow.get(key.toUpperCase(Locale.ENGLISH));
     }
   }
 

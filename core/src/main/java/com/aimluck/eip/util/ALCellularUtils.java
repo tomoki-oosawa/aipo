@@ -18,6 +18,7 @@
  */
 package com.aimluck.eip.util;
 
+import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.zip.CRC32;
 
@@ -52,7 +53,7 @@ import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * Aimluck EIP のユーティリティクラスです。
- * 
+ *
  */
 public class ALCellularUtils {
 
@@ -62,7 +63,7 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話の固有 ID によるログイン認証時のアクセス URL に付加する値を取得します。
-   * 
+   *
    * @param username
    * @return
    */
@@ -87,7 +88,7 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話の固有 ID を取得します。
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -155,7 +156,7 @@ public class ALCellularUtils {
 
   /**
    * アクセス元の端末が携帯電話であるかを判定します。
-   * 
+   *
    * @param data
    * @return
    */
@@ -193,23 +194,23 @@ public class ALCellularUtils {
 
   /**
    * データベースの検索結果から、指定したキーに対応する値を取得します。
-   * 
+   *
    * @param dataRow
    * @param key
    * @return
    */
   public static Object getObjFromDataRow(DataRow dataRow, String key) {
-    String lowerKey = key.toLowerCase();
+    String lowerKey = key.toLowerCase(Locale.ENGLISH);
     if (dataRow.containsKey(lowerKey)) {
       return dataRow.get(lowerKey);
     } else {
-      return dataRow.get(key.toUpperCase());
+      return dataRow.get(key.toUpperCase(Locale.ENGLISH));
     }
   }
 
   /**
    * 携帯電話からのアクセス用 URL を取得します。
-   * 
+   *
    * @param useraddr
    * @return
    */
@@ -243,7 +244,7 @@ public class ALCellularUtils {
 
   /**
    * 携帯電話からのアクセス用 key を取得します。
-   * 
+   *
    * @param useraddr
    * @return
    */
@@ -260,7 +261,7 @@ public class ALCellularUtils {
 
   /**
    * Triple DES で文字列を暗号化します。
-   * 
+   *
    * @param plain
    *          暗号化対象文字列
    * @return 暗号化文字列
@@ -289,7 +290,7 @@ public class ALCellularUtils {
 
   /**
    * Triple DES で文字列を復号します。
-   * 
+   *
    * @param plain
    *          復号対象文字列
    * @return 復号文字列
@@ -321,7 +322,7 @@ public class ALCellularUtils {
 
   /**
    * 指定したエントリー名のポートレットへの URI を取得します。
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
