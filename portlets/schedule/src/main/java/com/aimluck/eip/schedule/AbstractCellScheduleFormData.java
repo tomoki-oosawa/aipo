@@ -139,7 +139,8 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
     try {
       init(action, rundata, context);
       boolean isedit =
-        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+        (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID) && !"new"
+          .equals(rundata.getParameters().getString(ALEipConstants.ENTITY_ID)));
       int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
       if (isedit) {
         aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
