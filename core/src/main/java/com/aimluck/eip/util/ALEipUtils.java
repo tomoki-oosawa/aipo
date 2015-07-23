@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,7 +123,7 @@ import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * Aimluck EIP のユーティリティクラスです。 <br />
- * 
+ *
  */
 public class ALEipUtils {
 
@@ -154,7 +155,7 @@ public class ALEipUtils {
   /**
    * セッション変数に値を格納します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -187,7 +188,7 @@ public class ALEipUtils {
   /**
    * セッション変数を削除します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -243,7 +244,7 @@ public class ALEipUtils {
   /**
    * セッション変数の値を取得します。 <br />
    * セッション変数は各ポートレット毎に管理されます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -273,7 +274,7 @@ public class ALEipUtils {
 
   /**
    * セッションに保存されているエンティティIDを整数値として返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -292,7 +293,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーIDを返します。
-   * 
+   *
    * @param rundata
    * @return ユーザーID
    */
@@ -304,7 +305,7 @@ public class ALEipUtils {
 
   /**
    * ポートレットを返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return 自ポートレット
@@ -315,7 +316,7 @@ public class ALEipUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得します。
-   * 
+   *
    * @param rundata
    * @param portletId
    * @return 自ポートレット
@@ -378,7 +379,7 @@ public class ALEipUtils {
 
   /**
    * 指定したポートレット ID を持つポートレットのオブジェクトを取得します。
-   * 
+   *
    * @param rundata
    * @param portletId
    * @return 自ポートレット
@@ -425,7 +426,7 @@ public class ALEipUtils {
   /**
    * リクエストが自ポートレットに対するものであるかを返します。 <br />
    * true となる場合、そのポートレットに対するフォーム送信となります。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -449,7 +450,7 @@ public class ALEipUtils {
   /**
    * 指定されたグループに所属するユーザーを取得します。<br/>
    * DISABLEDがNのユーザー（即ち無効化されたユーザー）は取得しないことに注意してください。
-   * 
+   *
    * @param groupname
    *          グループ名
    * @return ALEipUser の List
@@ -494,7 +495,7 @@ public class ALEipUtils {
   /**
    * 指定されたグループに所属するユーザーを取得します。<br/>
    * DISABLEDがNのユーザー（即ち無効化されたユーザー）も取得します。
-   * 
+   *
    * @param groupname
    *          グループ名
    * @return ALEipUser の List
@@ -539,7 +540,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたグループに所属するユーザーのIDを取得します。
-   * 
+   *
    * @param groupname
    *          グループ名
    * @return Integer の List
@@ -581,7 +582,7 @@ public class ALEipUtils {
 
   /**
    * 指定された部署に所属するユーザーを取得します。
-   * 
+   *
    * @param postid
    *          部署ID
    * @return ALEipUser の List
@@ -625,7 +626,7 @@ public class ALEipUtils {
 
   /**
    * <code>SelectQuery</code> の条件に従ってユーザーを取得します。
-   * 
+   *
    * @param crt
    * @return ALEipUser の List
    */
@@ -650,7 +651,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーの簡易オブジェクトを取得します。
-   * 
+   *
    * @param crt
    * @return ALEipUser
    */
@@ -668,7 +669,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -679,7 +680,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -703,7 +704,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDの簡易オブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -718,7 +719,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDのオブジェクトを取得します。
-   * 
+   *
    * @param userid
    *          ユーザID
    * @return
@@ -739,7 +740,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDのユーザーオブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -757,7 +758,7 @@ public class ALEipUtils {
 
   /**
    * 指定したログイン名のユーザーオブジェクトを取得します。
-   * 
+   *
    * @param login_name
    * @return
    */
@@ -780,7 +781,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザーIDが有効か（無効化、削除されていないか）どうか調べます。
-   * 
+   *
    * @param id
    * @return
    */
@@ -794,7 +795,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーのフルネームを取得します。
-   * 
+   *
    * @param userid
    *          ユーザID
    * @return
@@ -813,7 +814,7 @@ public class ALEipUtils {
   /**
    * 部署の変更を行います。 <br>
    * 部署に関連付けされているグループの更新も同時に行います。
-   * 
+   *
    * @param rundata
    * @param username
    *          ユーザー名
@@ -854,7 +855,7 @@ public class ALEipUtils {
    * 自ユーザーのマイグループを再読み込みします。 <br>
    * 読み込まれたマイグループはセッションに保存されます。 <br>
    * マイグループの更新が行われた場合はこのメソッドを呼び出してください。
-   * 
+   *
    * @param rundata
    */
   public static void reloadMygroup(RunData rundata) throws ALDBErrorException {
@@ -888,7 +889,7 @@ public class ALEipUtils {
 
   /**
    * 自ユーザーのマイグループを取得します。
-   * 
+   *
    * @param rundata
    * @return ALEipGroup の List
    */
@@ -952,7 +953,7 @@ public class ALEipUtils {
 
   /**
    * 会社名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -985,7 +986,7 @@ public class ALEipUtils {
 
   /**
    * 部署名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1003,7 +1004,7 @@ public class ALEipUtils {
 
   /**
    * 役職名を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1018,7 +1019,7 @@ public class ALEipUtils {
 
   /**
    * ページが見つからない場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectPageNotFound(RunData rundata) {
@@ -1080,7 +1081,7 @@ public class ALEipUtils {
 
   /**
    * データベースエラーの場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectDBError(RunData rundata) {
@@ -1148,7 +1149,7 @@ public class ALEipUtils {
 
   /**
    * パーミッションエラーの場合に、リダイレクト処理します。
-   * 
+   *
    * @return
    */
   public static boolean redirectPermissionError(RunData rundata) {
@@ -1326,7 +1327,7 @@ public class ALEipUtils {
 
   /**
    * 改行コードを含む文字列を、複数行に分割します。
-   * 
+   *
    * @return
    */
   public static String getMessageList(String msgline) {
@@ -1375,7 +1376,7 @@ public class ALEipUtils {
 
   /**
    * 左端の半角空文字を「&nbsp;」に変換する。
-   * 
+   *
    * @param str
    * @return
    */
@@ -1402,7 +1403,7 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末が携帯電話であるかを判定します。
-   * 
+   *
    * @param data
    * @return
    */
@@ -1429,7 +1430,7 @@ public class ALEipUtils {
 
   /**
    * アクセス元の端末がスマートフォンであるかを判定します。
-   * 
+   *
    * @param data
    * @return
    */
@@ -1453,7 +1454,7 @@ public class ALEipUtils {
 
   /**
    * 指定した2つの日付を比較します。
-   * 
+   *
    * @param date1
    * @param date2
    * @return 等しい場合、0。date1>date2の場合、1。date1 < date2の場合、2。
@@ -1494,23 +1495,23 @@ public class ALEipUtils {
 
   /**
    * データベースの検索結果から、指定したキーに対応する値を取得します。
-   * 
+   *
    * @param dataRow
    * @param key
    * @return
    */
   public static Object getObjFromDataRow(DataRow dataRow, String key) {
-    String lowerKey = key.toLowerCase();
+    String lowerKey = key.toLowerCase(Locale.ENGLISH);
     if (dataRow.containsKey(lowerKey)) {
       return dataRow.get(lowerKey);
     } else {
-      return dataRow.get(key.toUpperCase());
+      return dataRow.get(key.toUpperCase(Locale.ENGLISH));
     }
   }
 
   /**
    * 会社情報のオブジェクトを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1568,7 +1569,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -1588,7 +1589,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -1610,7 +1611,7 @@ public class ALEipUtils {
 
   /**
    * 指定したエントリー名のポートレットへの URI を取得します。
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -1667,7 +1668,7 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param portletEntryId
    * @return
@@ -1723,7 +1724,7 @@ public class ALEipUtils {
 
   /**
    * 文字列内のリンクにタグAを追加します。
-   * 
+   *
    * @param msg
    * @return
    */
@@ -1762,17 +1763,17 @@ public class ALEipUtils {
 
   /**
    * フォルダを再帰的に消します。
-   * 
+   *
    * @param parent_folder
    *          親フォルダ
    * @param cal
-   * 
+   *
    * @return フォルダの中身が全て消去されたときのみtrueを返します
    */
 
   /**
    * ユーザーの所属する部署を取得します。
-   * 
+   *
    * @param id
    *          ユーザーID
    * @return 所属する部署リスト
@@ -1809,7 +1810,7 @@ public class ALEipUtils {
 
   /**
    * ユーザーの所属する部署のIDを取得します。
-   * 
+   *
    * @param id
    *          ユーザーID
    * @return 所属する部署リスト
@@ -1844,7 +1845,7 @@ public class ALEipUtils {
 
   /**
    * アクセス権限をチェックします（ポートレットカスタマイズ）
-   * 
+   *
    * @return
    */
   public static boolean checkAclPermissionForCustomize(RunData rundata,
@@ -1906,7 +1907,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除は除く)を取得します。
-   * 
+   *
    * @return
    */
   public static int getCurrentUserNumEnabledOnly(RunData rundata) {
@@ -1938,7 +1939,7 @@ public class ALEipUtils {
 
   /**
    * 現在登録されている有効なユーザー数(システムユーザ、論理削除、無効化は除く)を取得します。
-   * 
+   *
    * @return
    */
   public static int getCurrentUserNum(RunData rundata) {
@@ -1970,7 +1971,7 @@ public class ALEipUtils {
 
   /**
    * 指定されたユーザが管理者権限を持っているかを返します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -1996,7 +1997,7 @@ public class ALEipUtils {
 
   /**
    * ログインユーザが管理者権限を持っているかを返します。
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -2025,7 +2026,7 @@ public class ALEipUtils {
 
   /**
    * Dateに対して整形されたALDateTimeFieldを返します。
-   * 
+   *
    * @param date
    * @return 整形されたALDateTimeField
    */
@@ -2077,7 +2078,7 @@ public class ALEipUtils {
 
   /**
    * 指定したユーザのPSMLにシステム管理のページを追加します。
-   * 
+   *
    * @param user_name
    * @throws Exception
    */
@@ -2183,7 +2184,7 @@ public class ALEipUtils {
 
   /**
    * 期待するユーザーエージェントが含まれていればtrue
-   * 
+   *
    * @param expect
    * @param rundata
    * @return
@@ -2200,7 +2201,7 @@ public class ALEipUtils {
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Windows の MSIE であるかを判定する．
-   * 
+   *
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -2213,7 +2214,7 @@ public class ALEipUtils {
 
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Android．
-   * 
+   *
    * @param rundata
    * @return MSIE の場合は，true．
    */
@@ -2308,7 +2309,7 @@ public class ALEipUtils {
 
   /**
    * PSMLにデータを埋め込みます。
-   * 
+   *
    * @param rundata
    * @param context
    * @param key
@@ -2376,10 +2377,10 @@ public class ALEipUtils {
   }
 
   /**
-   * 
+   *
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
-   * 
-   * 
+   *
+   *
    * @param rundata
    * @param context
    * @param config

@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -60,7 +61,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * データベース操作ユーティリティ
- * 
+ *
  */
 public class Database {
 
@@ -73,7 +74,7 @@ public class Database {
 
   /**
    * 検索用クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @return
@@ -84,7 +85,7 @@ public class Database {
 
   /**
    * 検索用クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -97,7 +98,7 @@ public class Database {
 
   /**
    * 検索用クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @param exp
@@ -109,7 +110,7 @@ public class Database {
 
   /**
    * 検索用クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -123,7 +124,7 @@ public class Database {
 
   /**
    * SQL検索クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @param sql
@@ -135,7 +136,7 @@ public class Database {
 
   /**
    * SQL検索クエリを作成します。
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -149,7 +150,7 @@ public class Database {
 
   /**
    * プライマリキーで指定されたオブジェクトモデルを取得します。
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @param primaryKey
@@ -161,7 +162,7 @@ public class Database {
 
   /**
    * 指定されたオブジェクトモデルを取得します。
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -176,7 +177,7 @@ public class Database {
   }
 
   /**
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @param key
@@ -188,7 +189,7 @@ public class Database {
   }
 
   /**
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -206,7 +207,7 @@ public class Database {
 
   /**
    * オブジェクトモデルを新規作成します。
-   * 
+   *
    * @param <M>
    * @param modelClass
    * @return
@@ -217,7 +218,7 @@ public class Database {
 
   /**
    * オブジェクトモデルを新規作成します。
-   * 
+   *
    * @param <M>
    * @param dataContext
    * @param modelClass
@@ -231,7 +232,7 @@ public class Database {
 
   /**
    * オブジェクトモデルを削除します。
-   * 
+   *
    * @param target
    */
   public static void delete(Persistent target) {
@@ -240,7 +241,7 @@ public class Database {
 
   /**
    * オブジェクトモデルを削除します。
-   * 
+   *
    * @param dataContext
    * @param target
    */
@@ -250,7 +251,7 @@ public class Database {
 
   /**
    * オブジェクトモデルをすべて削除します。
-   * 
+   *
    * @param target
    */
   public static void deleteAll(List<?> target) {
@@ -259,7 +260,7 @@ public class Database {
 
   /**
    * オブジェクトモデルをすべて削除します。
-   * 
+   *
    * @param dataContext
    * @param target
    */
@@ -270,7 +271,7 @@ public class Database {
 
   /**
    * オブジェクトモデルをすべて削除します。
-   * 
+   *
    * @param target
    */
   public static void deleteAll(DataObject... target) {
@@ -279,7 +280,7 @@ public class Database {
 
   /**
    * オブジェクトモデルをすべて削除します。
-   * 
+   *
    * @param dataContext
    * @param target
    */
@@ -289,7 +290,7 @@ public class Database {
 
   /**
    * 現在までの更新をコミットします。
-   * 
+   *
    */
   public static void commit() {
     commit(DataContext.getThreadDataContext());
@@ -297,7 +298,7 @@ public class Database {
 
   /**
    * 現在までの更新をコミットします。
-   * 
+   *
    * @param dataContext
    */
   public static void commit(DataContext dataContext) {
@@ -321,7 +322,7 @@ public class Database {
 
   /**
    * 現在までの更新をロールバックします。
-   * 
+   *
    */
   public static void rollback() {
     rollback(DataContext.getThreadDataContext());
@@ -329,7 +330,7 @@ public class Database {
 
   /**
    * 現在までの更新をロールバックします。
-   * 
+   *
    * @param dataContext
    */
   public static void rollback(DataContext dataContext) {
@@ -343,17 +344,17 @@ public class Database {
 
   /**
    * DataRow から指定したキーの値を取得します。
-   * 
+   *
    * @param dataRow
    * @param key
    * @return
    */
   public static Object getFromDataRow(DataRow dataRow, Object key) {
-    String lowerKey = ((String) key).toLowerCase();
+    String lowerKey = ((String) key).toLowerCase(Locale.ENGLISH);
     if (dataRow.containsKey(lowerKey)) {
       return dataRow.get(lowerKey);
     } else {
-      return dataRow.get(((String) key).toUpperCase());
+      return dataRow.get(((String) key).toUpperCase(Locale.ENGLISH));
     }
   }
 
