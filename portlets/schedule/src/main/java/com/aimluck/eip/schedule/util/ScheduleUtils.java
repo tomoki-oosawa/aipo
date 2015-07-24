@@ -782,6 +782,12 @@ public class ScheduleUtils {
             Integer.valueOf(ALEipUtils.getUserId(rundata)));
         mapquery.andQualifier(exp2);
       }
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
 
       List<Integer> uidlist = new ArrayList<Integer>();
