@@ -21,6 +21,8 @@ package com.aimluck.eip.timeline;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
@@ -231,6 +233,27 @@ public class TimelineResultData implements ALData {
   }
 
   /**
+   * 分割位置にキーワードがかぶっていたときに何文字伸ばせばいいのかを返します。
+   *
+   * @param 部分文字列sub
+   * @return
+   */
+  private int lenOverdKeyword(int pos, String keyword) {
+    if ("".equals(keyword) || keyword != null) {
+      return 0;
+    }
+    String rawNote = note.getValue();
+    Pattern pattern = Pattern.compile("(" + keyword + ")+");
+    Matcher matcher = pattern.matcher(rawNote);
+    while (matcher.find()) {
+      if (matcher.start() < pos && matcher.end() > pos) {
+        return pos - matcher.end();
+      }
+    }
+    return 0;
+  }
+
+  /**
    * 続きを見るで隠されない部分を返します。
    *
    * @return String
@@ -238,25 +261,29 @@ public class TimelineResultData implements ALData {
   public String getPreviewNote() {
     if (isLongNote()) {
       try {
-
         String subnote =
           ALEipUtils.getMessageList(note.getValue().substring(
             0,
             PRE_NOTE_LENGTH), keyword.getValue());
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-        if (!isLastWordAddress(sub)) {
-          return subnote;
+        int i = PRE_NOTE_LENGTH;
+        if (isLastWordAddress(sub)) {
+          sub = note.getValue();
+          for (i = PRE_NOTE_LENGTH; i < sub.length()
+            && sub.charAt(i) != ' '
+            && sub.charAt(i) != '\n'; i++) {
+          }
+
+          // subnote =
+          // ALEipUtils.getMessageList(note.getValue().substring(0, i), keyword
+          // .getValue());
+          sub =
+            note.getValue().substring(
+              0,
+              i + lenOverdKeyword(i, keyword.getValue()));
+          subnote = ALEipUtils.getMessageList(sub, keyword.getValue());
         }
 
-        sub = note.getValue();
-        int i;
-        for (i = PRE_NOTE_LENGTH; i < sub.length()
-          && sub.charAt(i) != ' '
-          && sub.charAt(i) != '\n'; i++) {
-        }
-        subnote =
-          ALEipUtils.getMessageList(note.getValue().substring(0, i), keyword
-            .getValue());
         return subnote;
       } catch (Exception ex) {
         // 文字数のカウントに失敗した場合は文字を丸めずに返す
