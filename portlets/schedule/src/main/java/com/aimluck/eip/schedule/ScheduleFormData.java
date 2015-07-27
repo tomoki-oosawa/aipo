@@ -2261,6 +2261,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         schedule.getScheduleId(),
         ALEventlogConstants.PORTLET_TYPE_SCHEDULE,
         schedule.getName());
+
       // 「あなた宛のお知らせ」に表示させる。
       String loginName = loginUser.getName().getValue();
       List<String> recipients = new ArrayList<String>();
@@ -2276,13 +2277,15 @@ public class ScheduleFormData extends ALAbstractFormData {
         recipients,
         "delete",
         ownerid);
-      // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
+      // アクティビティが公開スケジュールで参加メンバーがいる場合、「更新情報」に表示させる。
       if ("O".equals(schedule.getPublicFlag())) {
-        ScheduleUtils.createNewScheduleActivity(
-          schedule,
-          loginName,
-          "delete",
-          ownerid);
+        if (recipients != null && recipients.size() > 0) {
+          ScheduleUtils.createNewScheduleActivity(
+            schedule,
+            loginName,
+            "delete",
+            ownerid);
+        }
       }
 
       if (ScheduleUtils.MAIL_FOR_ALL.equals(schedule.getMailFlag())
