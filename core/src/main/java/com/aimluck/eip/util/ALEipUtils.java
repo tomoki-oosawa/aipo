@@ -1336,7 +1336,7 @@ public class ALEipUtils {
 
   /**
    * 改行コードを含む文字列を、複数行に分割します。 メソッドの統一
-   * 
+   *
    * @return
    */
   public static String getMessageList(String msgline) {
@@ -2544,7 +2544,7 @@ public class ALEipUtils {
       field = new ALStringField();
       field.setTrim(false);
       field.setValue(msgline);
-      if (!(keyword == null || keyword.equals(""))) {
+      if (!(keyword == null || "".equals(keyword))) {
         key = new ALStringField();
         key.setTrim(true);
         key.setValue(keyword);
