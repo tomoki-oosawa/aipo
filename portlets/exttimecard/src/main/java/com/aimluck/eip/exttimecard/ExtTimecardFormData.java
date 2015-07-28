@@ -146,7 +146,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   private ALAccessControlHandler aclHandler;
 
   /** アクセス権限の機能名 */
-  private final String aclPortletFeature = null;
+  private String aclPortletFeature = null;
 
   /**
    *
@@ -280,8 +280,21 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           msgList);
 
       int aclType = ALAccessControlConstants.VALUE_ACL_INSERT;
-      if (isedit || (getIsPast() || getIsToday())) {
+      if (isedit) {
         aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
+      }
+      String userId = selectedUserId;
+      EipTExtTimecard timecard =
+        ExtTimecardUtils.getEipTExtTimecard(rundata, context);
+      if (!(timecard == null)) {
+        userId = String.valueOf(timecard.getUserId());
+      }
+      if (String.valueOf(login_uid).equals(userId) || "".equals(userId)) {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+      } else {
+        aclPortletFeature =
+          ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
       }
       doCheckAclPermission(rundata, context, aclType);
 
