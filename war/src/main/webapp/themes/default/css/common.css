@@ -169,6 +169,9 @@ select {
   margin: 1px;
   z-index: 0 !important;
 }
+select[id^="groupselect"]{
+  max-width: 200px;
+}
 
 img {
   border: none;
