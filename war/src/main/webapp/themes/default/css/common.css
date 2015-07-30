@@ -2082,7 +2082,9 @@ div.userInfo {
   overflow: hidden;
   zoom: 1;
   overflow: visible;
-  max-width: 260px;
+}
+html>/**/body .menubar {
+  max-width /*\**/: 260px \9;
 }
 .menubar.z-upper {
   position: fixed !important;
