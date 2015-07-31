@@ -24,6 +24,7 @@
         - Use in all TABLE, TR and TD tags.
         - If there is more than one class on the tag, place this first so other classes override.
     */
+    width:38px;
     margin:0px;
     border:0px;
     padding:0px;
