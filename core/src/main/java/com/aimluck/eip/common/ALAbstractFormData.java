@@ -180,8 +180,8 @@ public abstract class ALAbstractFormData implements ALData {
     try {
       if (!doCheckSecurity(rundata, context)) {
         msgList.add(ALLocalizationUtils.getl10n("ERROR_SECID_UNMATCH"));
-        action.putData(rundata, context);
         action.addErrorMessages(msgList);
+        action.putData(rundata, context);
         return false;
       }
 
