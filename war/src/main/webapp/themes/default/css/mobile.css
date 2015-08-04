@@ -2239,7 +2239,7 @@ body.messageRoomList .auiPortletBody {
   background-color: transparent !important;
 }
 body.messageRoomList .dijitContentPane {
-	overflow:hidden;
+	/*overflow:hidden;*/
 }
 body.messageRoomList .messageSummary .date,
 body.messageRoomList .messageSummary .name,
