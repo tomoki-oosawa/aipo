@@ -22,13 +22,22 @@
 ## ---------------------------------------------------------------------------
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
+
+<div class="auiPooupThumbnail">
+	##<img class="avatar" alt="$l10n.ACCOUNT_USER_PHOTO" "?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}">
+	#if($!{result.Detail.hasPhoto()})
+		<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
+	#else
+		<img class="avatar" src="images/common/avatar_default3.png" alt="$l10n.ACCOUNT_USER_PHOTO" />
+	#end
+	<div class="auiPooupName">
+		<strong>$!result.Detail.Name</strong>
+		<span>$result.getStringCR($!result.Detail.NameKana)</span>
+        <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
+	</div>
+</div>
+
 #ALtableheaderWide()
-#ALtdcaption($l10n.USERLIST_NAME)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UserId},arguments[0])">$!result.Detail.Name</a>
-#ALtditemfooter()
-#ALtdcaption($l10n.USERLIST_NAME_KANA)
-#ALtditem($result.getStringCR($!result.Detail.NameKana))
 #ALtdcaption($l10n.USERLIST_EMAIL)
 #ALtditem($result.getStringCR($!result.Detail.Email))
 #ALtdcaption($l10n.USERLIST_OUT_TELEPHONE)
@@ -39,18 +48,6 @@
 #ALtditem("#ALtelLink($!result.Detail.CellularPhone $!utils.replaceToTelLink($!result.Detail.CellularPhone.toString()))")
 #ALtdcaption($l10n.USERLIST_CELLULAR_MAIL)
 #ALtditem($result.getStringCR($!result.Detail.CellularMail))
-#ALtdcaption($l10n.USERLIST_PHOTO)
-#ALtditemheader()
-#if($!{result.Detail.hasPhoto()})
-#if($!{result.Detail.isNewPhotoSpec()})
-<img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" align="absmiddle" />
-#else
-<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
-#end
-#else
-$l10n.ACCOUNT_USER_NOT_CREATE
-#end
-#ALtditemfooter()
 #ALtdcaption($l10n.USERLIST_POST_NAME)
 #ALtditemheader()
 #foreach($record in $!result.Detail.getPostNameList())
