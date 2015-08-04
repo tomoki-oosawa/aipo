@@ -3174,7 +3174,7 @@ dojo.provide("dojo._base.event");
 	};
 
 	// IE event normalization
-	if(dojo.isIE){
+	if(dojo.isIE <= 8 && dojo.isIE > 0){
 		var _trySetKeyCode = function(e, code){
 			try{
 				// squelch errors when keyCode is read-only
@@ -3477,7 +3477,7 @@ dojo.provide("dojo._base.event");
 	}
 })();
 
-if(dojo.isIE){
+if(dojo.isIE <= 8 && dojo.isIE > 0){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
@@ -3537,7 +3537,7 @@ dojo.byId = function(id, doc){
 	//		dojo.doc.  Can be used to retreive
 	//		node references from other documents.
 =====*/
-if(dojo.isIE || dojo.isOpera){
+if((dojo.isIE <= 8 && dojo.isIE > 0) || dojo.isOpera){
 	dojo.byId = function(id, doc){
 		if(dojo.isString(id)){
 			var _d = doc || dojo.doc;
