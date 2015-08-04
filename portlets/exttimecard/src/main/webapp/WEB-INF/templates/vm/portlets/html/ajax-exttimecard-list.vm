@@ -105,9 +105,6 @@
 			#set($entityid = "new")
 		#end
 		#set($class = "")
-		#if($beforeafter == 0)
-			#set($class = "today")
-		#end
 
 		<tr class="$class">
 		#ALtdcellheaderAtt("class='day' nowrap='nowrap'")
