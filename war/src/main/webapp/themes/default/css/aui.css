@@ -2347,6 +2347,7 @@ button[disabled]:active {
 }
 .imgPopup .meta a {
   display: inline-block;
+  text-decoration: none;
 }
 .imgPopup .meta [class*="icon-"] {
   font-size: 24px;
