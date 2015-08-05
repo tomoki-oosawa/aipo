@@ -5355,9 +5355,9 @@ a.auiIconTmpreserve:hover {
   background-position: 0px -704px;
   width: 12px;
 }
-/* IE11用記述 */
+/* IE11逕ｨ險倩ｿｰ */
 @media all and (-ms-high-contrast:none){
-  /* 仮 */
+  /* 莉ｮ */
   *::-ms-backdrop, .auiIconTmpreserve{
     width: 14px;
     height: 16px;
@@ -5366,7 +5366,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 重複 */
+  /* 驥崎､�*/
   *::-ms-backdrop, .auiIconOverlap {
     width: 14px;
     height: 16px;
@@ -5375,7 +5375,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 繰り返し */
+  /* 郢ｰ繧願ｿ斐＠ */
   *::-ms-backdrop, .auiIconRepeat{
     width: 14px;
     height: 16px;
@@ -5384,7 +5384,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 鍵 */
+  /* 骰ｵ */
   *::-ms-backdrop, .auiIconSecret{
     width: 14px;
     height: 16px;
@@ -5560,7 +5560,7 @@ a:hover .auiWFicon [class^="icon-"] {
 }
 
 /*IE8Hack*/
-html > body .auiLoadWrapper .loader {
+html > body .loader , .auiLoadWrapper.loader{
   background-color/*\**/: white \9;
   filter: alpha(opacity=80);
   -ms-filter: "alpha(opacity=80)";
