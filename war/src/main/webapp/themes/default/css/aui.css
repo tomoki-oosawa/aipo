@@ -5355,9 +5355,9 @@ a.auiIconTmpreserve:hover {
   background-position: 0px -704px;
   width: 12px;
 }
-/* IE11逕ｨ險倩ｿｰ */
+/* IE11用記述 */
 @media all and (-ms-high-contrast:none){
-  /* 莉ｮ */
+  /* 仮 */
   *::-ms-backdrop, .auiIconTmpreserve{
     width: 14px;
     height: 16px;
@@ -5366,7 +5366,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 驥崎､�*/
+  /* 重複*/
   *::-ms-backdrop, .auiIconOverlap {
     width: 14px;
     height: 16px;
@@ -5375,7 +5375,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 郢ｰ繧願ｿ斐＠ */
+  /* 繰り返し */
   *::-ms-backdrop, .auiIconRepeat{
     width: 14px;
     height: 16px;
@@ -5384,7 +5384,7 @@ a.auiIconTmpreserve:hover {
     background-position-x: -0.05px !important;
     background-position-y: -0.05px !important;
   }
-  /* 骰ｵ */
+  /* 鍵 */
   *::-ms-backdrop, .auiIconSecret{
     width: 14px;
     height: 16px;
