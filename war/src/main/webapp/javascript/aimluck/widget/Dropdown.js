@@ -44,6 +44,13 @@ dojo.declare("aimluck.widget.Dropdown", [dijit.form.DropDownButton], {
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
         }
+        //For IE11
+        if (dojo.isIE && (dojo.isIE == 11)) {
+            var pNode = this.dropDown.domNode.parentNode;
+            var top = pNode.style.top.replace("px","");
+            top_new = parseInt(top) - window.pageYOffset;
+            pNode.style.top = top_new + "px";
+        }
     },
 
 	_toggleDropDown: function(){
