@@ -18,7 +18,9 @@
  */
 package com.aimluck.eip.schedule.util;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
@@ -33,6 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
@@ -53,7 +58,13 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.velocity.VelocityService;
 import org.apache.turbine.util.DynamicURI;
 import org.apache.turbine.util.RunData;
+import org.apache.turbine.util.TurbineException;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import com.aimluck.commons.field.ALAbstractField;
 import com.aimluck.commons.field.ALCellDateField;
@@ -87,6 +98,7 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
+import com.aimluck.eip.schedule.ScheduleNotFounfException;
 import com.aimluck.eip.schedule.ScheduleResultData;
 import com.aimluck.eip.schedule.ScheduleTermWeekContainer;
 import com.aimluck.eip.schedule.ScheduleToDoResultData;
@@ -293,9 +305,9 @@ public class ScheduleUtils {
 
     // String org_id = OrgORMappingMap.getInstance().getOrgId(rundata);
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -497,9 +509,9 @@ public class ScheduleUtils {
       Context context, String type) throws ALPageNotFoundException,
       ALDBErrorException {
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -535,10 +547,22 @@ public class ScheduleUtils {
 
       List<EipTSchedule> schedules = query.fetchList();
 
+      boolean activity;
+      String option = rundata.getParameters().getString("activityId", null);
+      if (option != null && option.length() > 0) {
+        activity = true;
+      } else {
+        activity = false;
+      }
       // 指定したSchedule IDのレコードが見つからない場合
       if (schedules == null || schedules.size() == 0) {
-        logger.error("[ScheduleUtils] Not found record.");
-        throw new ALPageNotFoundException();
+        if (activity) {// アクテシビティから入った
+          logger.error("[ScheduleUtils] Not found record.");
+          throw new ScheduleNotFounfException();
+        } else {// ポートレットからはいった。
+          logger.error("[ScheduleUtils] Not found record.");
+          throw new ALPageNotFoundException();
+        }
       }
 
       EipTSchedule record = schedules.get(0);
@@ -549,9 +573,68 @@ public class ScheduleUtils {
     } catch (ALPageNotFoundException ex) {
       ALEipUtils.redirectPageNotFound(rundata);
       return null;
+    } catch (ScheduleNotFounfException ex) {
+      shceduleNotFound(rundata);
+      return null;
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * @param rundata
+   */
+  private static Boolean shceduleNotFound(RunData rundata) {
+    try {
+      JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
+      DynamicURI duri = jsLink.getPage();
+      String template =
+        rundata.getParameters().getString(JetspeedResources.PATH_TEMPLATE_KEY);
+      if (template != null && !("".equals(template))) {
+        VelocityContext context = new VelocityContext();
+        ALEipUtils.setupContext(rundata, context);
+        try {
+          ServletOutputStream out = null;
+          HttpServletResponse response = rundata.getResponse();
+          out = response.getOutputStream();
+          BufferedWriter writer =
+            new BufferedWriter(new OutputStreamWriter(
+              out,
+              ALEipConstants.DEF_CONTENT_ENCODING));
+          context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
+          Template templete =
+            Velocity.getTemplate("portlets/html/ajax-schedule-not-found.vm");
+          templete.merge(context, writer);
+          writer.flush();
+          writer.close();
+        } catch (ResourceNotFoundException e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        } catch (ParseErrorException e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        } catch (Exception e) {
+          logger.error("ALEipUtils.redirectPageNotFound", e);
+          throw new RuntimeException(e);
+        }
+        return true;
+      }
+      duri.addPathInfo("template", "PageNotFound");
+      rundata.setRedirectURI(duri.toString());
+      rundata.getResponse().sendRedirect(rundata.getRedirectURI());
+
+      JetspeedLinkFactory.putInstance(jsLink);
+      jsLink = null;
+      return true;
+    } catch (TurbineException e) {
+
+      logger.error("ALEipUtils.redirectPageNotFound", e);
+      return false;
+    } catch (IOException e) {
+
+      logger.error("ALEipUtils.redirectPageNotFound", e);
+      return false;
     }
   }
 
@@ -565,9 +648,9 @@ public class ScheduleUtils {
   public static EipTScheduleMap getEipTScheduleMap(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -664,9 +747,9 @@ public class ScheduleUtils {
       ALDBErrorException {
     List<ALEipUser> list = new ArrayList<ALEipUser>();
 
-    // スケジュールIDをセッション変数から取得
+    // スケジュールIDをパラメータから取得
     String scheduleid =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+      rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
 
     try {
       // IDが空の場合 || IDがintでない場合
@@ -699,6 +782,12 @@ public class ScheduleUtils {
             Integer.valueOf(ALEipUtils.getUserId(rundata)));
         mapquery.andQualifier(exp2);
       }
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
 
       List<Integer> uidlist = new ArrayList<Integer>();
@@ -2721,7 +2810,7 @@ public class ScheduleUtils {
    * @return
    */
   public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
-      List<ALEipUser> memberList, boolean add) {
+      List<ALEipUser> memberList, String mode) {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -2747,12 +2836,17 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (add) {
+      if ("new".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else {
+      } else if ("edit".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+      } else if ("delete".equals(mode)) {
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+      } else {
+        throw new IllegalArgumentException();
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
@@ -2804,6 +2898,8 @@ public class ScheduleUtils {
       service.handleRequest(context, "mail/createSchedule.vm", out);
       out.flush();
       return out.toString();
+    } catch (IllegalArgumentException e) {
+
     } catch (Exception e) {
       String message = e.getMessage();
       logger.warn(message, e);
@@ -2827,7 +2923,7 @@ public class ScheduleUtils {
    */
   public static String createMsgForCellPhone(RunData rundata,
       EipTSchedule schedule, List<ALEipUser> memberList, int destUserID,
-      boolean add) {
+      String mode) {
     ALEipUser loginUser = null;
     ALBaseUser user = null;
     String date_detail = "";
@@ -2851,12 +2947,17 @@ public class ScheduleUtils {
 
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
-      if (add) {
+      if ("new".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else {
+      } else if ("edit".equals(mode)) {
         context.put("addScheduleMSG", ALLocalizationUtils
           .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+      } else if ("delete".equals(mode)) {
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+      } else {
+        throw new IllegalArgumentException();
       }
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
@@ -2899,6 +3000,8 @@ public class ScheduleUtils {
       service.handleRequest(context, "mail/createSchedule.vm", out);
       out.flush();
       return out.toString();
+    } catch (IllegalArgumentException e) {
+
     } catch (RuntimeException e) {
       String message = e.getMessage();
       logger.warn(message, e);
@@ -3941,21 +4044,81 @@ public class ScheduleUtils {
   }
 
   public static void createShareScheduleActivity(EipTSchedule schedule,
-      String loginName, List<String> recipients, boolean isNew, int userid) {
-    if (recipients != null && recipients.size() > 0) {
+      String loginName, List<String> recipients, String mode, int userid) {
+    try {
+      if (recipients != null && recipients.size() > 0) {
+        ALActivity RecentActivity =
+          ALActivity
+            .getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
+        boolean isDeletePrev =
+          RecentActivity != null && RecentActivity.isReplace(loginName);
+        String message = "";
+        if ("new".equals(mode)) {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+        } else if ("edit".equals(mode)) {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+        } else if ("delete".equals(mode)) {
+          message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+        } else {
+          throw new IllegalAccessException();
+        }
+
+        String title =
+          new StringBuilder(ALLocalizationUtils
+            .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+            .append(schedule.getName())
+            .append(message)
+            .toString();
+        String portletParams =
+          new StringBuilder("?template=ScheduleDetailScreen")
+            .append("&entityid=")
+            .append(schedule.getScheduleId())
+            .append("&view_date=")
+            .append(
+              ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
+            .toString();
+        ALActivityService.create(new ALActivityPutRequest()
+          .withAppId("Schedule")
+          .withUserId(userid)
+          .withLoginName(loginName)
+          .withPortletParams(portletParams)
+          .withRecipients(recipients)
+          .withTitle(title)
+          .withPriority(1f)
+          .withExternalId(String.valueOf(schedule.getScheduleId())));
+
+        if (isDeletePrev) {
+          RecentActivity.delete();
+        }
+      }
+    } catch (IllegalAccessException e) {
+
+    }
+  }
+
+  public static void createNewScheduleActivity(EipTSchedule schedule,
+      String loginName, String mode, int userid) {
+    try {
       ALActivity RecentActivity =
-        ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
+        ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
       boolean isDeletePrev =
         RecentActivity != null && RecentActivity.isReplace(loginName);
 
+      String message = "";
+      if ("new".equals(mode)) {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE");
+      } else if ("edit".equals(mode)) {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE");
+      } else if ("delete".equals(mode)) {
+        message = ALLocalizationUtils.getl10n("SCHEDULE_DELETE_A_SCHEDULE");
+      } else {
+        throw new IllegalArgumentException();
+      }
       String title =
         new StringBuilder(ALLocalizationUtils
           .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
           .append(schedule.getName())
-          .append(
-            isNew
-              ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
-              : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
+          .append(message)
           .toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
@@ -3970,51 +4133,15 @@ public class ScheduleUtils {
         .withUserId(userid)
         .withLoginName(loginName)
         .withPortletParams(portletParams)
-        .withRecipients(recipients)
         .withTitle(title)
-        .withPriority(1f)
+        .withPriority(0f)
         .withExternalId(String.valueOf(schedule.getScheduleId())));
 
       if (isDeletePrev) {
         RecentActivity.delete();
       }
-    }
-  }
+    } catch (IllegalArgumentException e) {
 
-  public static void createNewScheduleActivity(EipTSchedule schedule,
-      String loginName, boolean isNew, int userid) {
-    ALActivity RecentActivity =
-      ALActivity.getRecentActivity("Schedule", schedule.getScheduleId(), 0f);
-    boolean isDeletePrev =
-      RecentActivity != null && RecentActivity.isReplace(loginName);
-
-    String title =
-      new StringBuilder(ALLocalizationUtils
-        .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
-        .append(schedule.getName())
-        .append(
-          isNew
-            ? ALLocalizationUtils.getl10n("SCHEDULE_ADD_A_SCHEDULE")
-            : ALLocalizationUtils.getl10n("SCHEDULE_EDIT_A_SCHEDULE"))
-        .toString();
-    String portletParams =
-      new StringBuilder("?template=ScheduleDetailScreen")
-        .append("&entityid=")
-        .append(schedule.getScheduleId())
-        .append("&view_date=")
-        .append(ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
-        .toString();
-    ALActivityService.create(new ALActivityPutRequest()
-      .withAppId("Schedule")
-      .withUserId(userid)
-      .withLoginName(loginName)
-      .withPortletParams(portletParams)
-      .withTitle(title)
-      .withPriority(0f)
-      .withExternalId(String.valueOf(schedule.getScheduleId())));
-
-    if (isDeletePrev) {
-      RecentActivity.delete();
     }
   }
 

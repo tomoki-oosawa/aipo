@@ -404,7 +404,10 @@ public class TimelineUtils {
           TurbineUser.LAST_NAME_COLUMN));
         user.setHasPhoto("T".equals(Database.getFromDataRow(
           dataRow,
-          TurbineUser.HAS_PHOTO_COLUMN)));
+          TurbineUser.HAS_PHOTO_COLUMN))
+          || "N".equals(Database.getFromDataRow(
+            dataRow,
+            TurbineUser.HAS_PHOTO_COLUMN)));
 
         Object photoModified =
           Database.getFromDataRow(dataRow, TurbineUser.PHOTO_MODIFIED_COLUMN);

@@ -78,7 +78,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class BlogUtils {
 
@@ -131,7 +131,7 @@ public class BlogUtils {
 
   /**
    * エントリーオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -174,7 +174,7 @@ public class BlogUtils {
 
   /**
    * ブログカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -209,7 +209,7 @@ public class BlogUtils {
 
   /**
    * ブログカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -247,7 +247,7 @@ public class BlogUtils {
 
   /**
    * コメントオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -285,7 +285,7 @@ public class BlogUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -334,7 +334,7 @@ public class BlogUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -429,7 +429,7 @@ public class BlogUtils {
 
   /**
    * 顔写真の有無の情報をもつユーザオブジェクトの一覧を取得する．
-   * 
+   *
    * @param org_id
    * @param groupname
    * @return
@@ -487,7 +487,10 @@ public class BlogUtils {
           TurbineUser.LAST_NAME_COLUMN));
         user.setHasPhoto("T".equals(Database.getFromDataRow(
           dataRow,
-          TurbineUser.HAS_PHOTO_COLUMN)));
+          TurbineUser.HAS_PHOTO_COLUMN))
+          || "N".equals(Database.getFromDataRow(
+            dataRow,
+            TurbineUser.HAS_PHOTO_COLUMN)));
 
         Object photoModified =
           Database.getFromDataRow(dataRow, TurbineUser.PHOTO_MODIFIED_COLUMN);
@@ -508,7 +511,7 @@ public class BlogUtils {
 
   /**
    * ユーザ情報の取得
-   * 
+   *
    * @param userid
    *          ユーザID
    * @return
@@ -540,7 +543,7 @@ public class BlogUtils {
 
   /**
    * 保持されるタグは　a、wbr の２種類。 brも保持したい場合はコメントアウトを外すこと。
-   * 
+   *
    * @param src
    *          圧縮したい文字列
    * @return 上記のタグを除いて100文字以下の文字列。有効なタグは保持される。
@@ -591,7 +594,7 @@ public class BlogUtils {
 
   /**
    * 指定したエントリー名を持つ個人設定ページに含まれるポートレットへの URI を取得する．
-   * 
+   *
    * @param rundata
    * @param portletEntryName
    *          PSML ファイルに記述されているタグ entry の要素 parent
@@ -661,7 +664,7 @@ public class BlogUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -673,7 +676,7 @@ public class BlogUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -683,7 +686,7 @@ public class BlogUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -810,7 +813,7 @@ public class BlogUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -919,7 +922,7 @@ public class BlogUtils {
 
   /**
    * アクティビティを通知先・社内参加者の「あなた宛のお知らせ」に表示させる（返信用）
-   * 
+   *
    * @param topic
    * @param loginName
    * @param recipients
@@ -1021,7 +1024,7 @@ public class BlogUtils {
 
   /**
    * 検索クエリ用の所有者IDを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1045,7 +1048,7 @@ public class BlogUtils {
 
   /**
    * 検索クエリ用のキーワードを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1067,7 +1070,7 @@ public class BlogUtils {
 
   /**
    * 検索クエリ用のテーマIDを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1091,7 +1094,7 @@ public class BlogUtils {
 
   /**
    * 表示されているグループIDを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1113,7 +1116,7 @@ public class BlogUtils {
 
   /**
    * ブログ固有のフィルタをクエリに適用します
-   * 
+   *
    * @param query
    * @param rundata
    * @param context
@@ -1160,7 +1163,7 @@ public class BlogUtils {
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   public static boolean checkPermission(RunData rundata, Context context,

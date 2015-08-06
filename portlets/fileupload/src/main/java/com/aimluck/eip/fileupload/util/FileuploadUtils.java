@@ -58,7 +58,7 @@ import com.drew.metadata.jpeg.JpegDirectory;
 
 /**
  * ファイルアップロードのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class FileuploadUtils {
 
@@ -84,16 +84,28 @@ public class FileuploadUtils {
   /** 保存用ファイル名フォーマット */
   public static final String DEFAULT_FILENAME_DATE_FORMAT = "yyyyMMddHHmmssSSS";
 
-  /** 画像サムネイルのサイズ（横幅） */
+  /** 新仕様：画像サムネイルのサイズ（横幅） */
+  public static final int DEF_NORMAL_THUMBNAIL_WIDTH = 100;
+
+  /** 新仕様：画像サムネイルのサイズ（縦幅） */
+  public static final int DEF_NORMAL_THUMBNAIL_HEIGHT = 100;
+
+  /** 新仕様：画像サムネイルのサイズ大（横幅） */
+  public static final int DEF_LARGE_THUMBNAIL_WIDTH = 200;
+
+  /** 新仕様：画像サムネイルのサイズ大（縦幅） */
+  public static final int DEF_LARGE_THUMBNAIL_HEIGHT = 200;
+
+  /** 旧仕様：画像サムネイルのサイズ（横幅） */
   public static final int DEF_THUMBNAIL_WIDTH = 86;
 
-  /** 画像サムネイルのサイズ（縦幅） */
+  /** 旧仕様：画像サムネイルのサイズ（縦幅） */
   public static final int DEF_THUMBNAIL_HEIGHT = 86;
 
-  /** スマートフォンの画像サムネイルのサイズ（横幅） */
+  /** 旧仕様：スマートフォンの画像サムネイルのサイズ（横幅） */
   public static final int DEF_THUMBNAIL_WIDTH_SMARTPHONE = 64;
 
-  /** スマートフォンの画像サムネイルのサイズ（縦幅） */
+  /** 旧仕様：スマートフォンの画像サムネイルのサイズ（縦幅） */
   public static final int DEF_THUMBNAIL_HEIGHT_SMARTPHONE = 64;
 
   /** 現在の添付ファイル数 */
@@ -220,7 +232,7 @@ public class FileuploadUtils {
   }
 
   /**
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -287,7 +299,7 @@ public class FileuploadUtils {
 
   /**
    * 縮小した画像のバイナリを返す。
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -403,9 +415,124 @@ public class FileuploadUtils {
     return new ShrinkImageSet(result, fixed ? fixResult : null);
   }
 
+  public static ShrinkImageSet getBytesShrinkFilebean(String org_id,
+      String folderName, int uid, FileuploadLiteBean fileBean,
+      String[] acceptExts, int width, int height, List<String> msgList,
+      boolean isFixOrgImage, int validate_width, int validate_height)
+      throws FileuploadMinSizeException {
+
+    byte[] result = null;
+    byte[] fixResult = null;
+    InputStream is = null;
+    boolean fixed = false;
+
+    try {
+
+      String file_name = fileBean.getFileName();
+      String ext = "";
+
+      if (acceptExts != null && acceptExts.length > 0) {
+        // 拡張子をチェックする．
+        // ファイルのヘッダで識別するとベスト．
+        boolean isAccept = false;
+        String tmpExt = null;
+        int len = acceptExts.length;
+        for (int i = 0; i < len; i++) {
+          if (!acceptExts[i].startsWith(".")) {
+            tmpExt = "." + acceptExts[i];
+          }
+          if (file_name.toLowerCase().endsWith(tmpExt)) {
+            isAccept = true;
+            ext = tmpExt.replace(".", "");
+            ;
+            break;
+          }
+        }
+        if (!isAccept) {
+          // 期待しない拡張子の場合は，null を返す．
+          return null;
+        }
+      }
+
+      is =
+        ALStorageService.getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+          + ALStorageService.separator()
+          + folderName, String.valueOf(fileBean.getFileId()));
+
+      byte[] imageInBytes = IOUtils.toByteArray(is);
+      ImageInformation readImageInformation =
+        readImageInformation(new ByteArrayInputStream(imageInBytes));
+      BufferedImage bufferdImage =
+        ImageIO.read(new ByteArrayInputStream(imageInBytes));
+      if (readImageInformation != null) {
+        bufferdImage =
+          transformImage(
+            bufferdImage,
+            getExifTransformation(readImageInformation),
+            readImageInformation.orientation >= 5
+              ? bufferdImage.getHeight()
+              : bufferdImage.getWidth(),
+            readImageInformation.orientation >= 5
+              ? bufferdImage.getWidth()
+              : bufferdImage.getHeight());
+        fixed = isFixOrgImage;
+      }
+      if (bufferdImage == null) {
+        // ファイルからbufferdImageを生成できなかった場合には,nullを返す.
+        return null;
+      }
+
+      BufferedImage shrinkImage =
+        FileuploadUtils.shrinkAndTrimImage(
+          bufferdImage,
+          width,
+          height,
+          validate_width,
+          validate_height);
+      Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("jpeg");
+      ImageWriter writer = writers.next();
+
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      ImageOutputStream ios = ImageIO.createImageOutputStream(out);
+      writer.setOutput(ios);
+      writer.write(shrinkImage);
+
+      result = out.toByteArray();
+
+      if (fixed) {
+        Iterator<ImageWriter> writers2 = ImageIO.getImageWritersBySuffix(ext);
+        ImageWriter writer2 = writers2.next();
+
+        ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+        ImageOutputStream ios2 = ImageIO.createImageOutputStream(out2);
+        writer2.setOutput(ios2);
+        writer2.write(bufferdImage);
+
+        fixResult = out2.toByteArray();
+      }
+    } catch (FileuploadMinSizeException e) {
+      logger.error("fileupload", e);
+      throw e;
+    } catch (Exception e) {
+      logger.error("fileupload", e);
+      result = null;
+    } finally {
+      try {
+        if (is != null) {
+          is.close();
+        }
+      } catch (Exception e) {
+        logger.error("fileupload", e);
+        result = null;
+      }
+    }
+
+    return new ShrinkImageSet(result, fixed ? fixResult : null);
+  }
+
   /**
    * 縮小した画像のバイナリを返す。
-   * 
+   *
    * @param org_id
    * @param folderName
    * @param uid
@@ -450,7 +577,7 @@ public class FileuploadUtils {
 
   /**
    * Java1.5：BMP, bmp, jpeg, wbmp, gif, png, JPG, jpg, WBMP, JPEG
-   * 
+   *
    * @param fileType
    * @return
    */
@@ -478,7 +605,7 @@ public class FileuploadUtils {
 
   /**
    * ファイル名からファイルの拡張子を取得する。
-   * 
+   *
    * @param fileName
    * @return
    */
@@ -497,7 +624,7 @@ public class FileuploadUtils {
 
   /**
    * 縦横の縮小率で小さい方を縮小率とする。
-   * 
+   *
    * @param imgfile
    * @param dim
    * @return
@@ -535,7 +662,7 @@ public class FileuploadUtils {
 
   /**
    * アスペクト比を保存する。（縦横を切り取る）
-   * 
+   *
    * @param imgfile
    * @param width
    * @param height
@@ -545,6 +672,75 @@ public class FileuploadUtils {
       int width, int height) {
     int iwidth = imgfile.getWidth();
     int iheight = imgfile.getHeight();
+    double ratio =
+      Math.max((double) width / (double) iwidth, (double) height
+        / (double) iheight);
+
+    int shrinkedWidth;
+    int shrinkedHeight;
+
+    if ((iwidth <= width) || (iheight < height)) {
+      shrinkedWidth = iwidth;
+      shrinkedHeight = iheight;
+    } else {
+      shrinkedWidth = (int) (iwidth * ratio);
+      shrinkedHeight = (int) (iheight * ratio);
+    }
+
+    // イメージデータを縮小する
+    Image targetImage =
+      imgfile.getScaledInstance(
+        shrinkedWidth,
+        shrinkedHeight,
+        Image.SCALE_AREA_AVERAGING);
+
+    int w_size = targetImage.getWidth(null);
+    int h_size = targetImage.getHeight(null);
+    if (targetImage.getWidth(null) < width) {
+      w_size = width;
+    }
+    if (targetImage.getHeight(null) < height) {
+      h_size = height;
+    }
+    BufferedImage tmpImage =
+      new BufferedImage(w_size, h_size, BufferedImage.TYPE_INT_RGB);
+    Graphics2D g = tmpImage.createGraphics();
+    g.setBackground(Color.WHITE);
+    g.setColor(Color.WHITE);
+    // 画像が小さい時には余白を追加してセンタリングした画像にする
+    g.fillRect(0, 0, w_size, h_size);
+    int diff_w = 0;
+    int diff_h = 0;
+    if (width > shrinkedWidth) {
+      diff_w = (width - shrinkedWidth) / 2;
+    }
+    if (height > shrinkedHeight) {
+      diff_h = (height - shrinkedHeight) / 2;
+    }
+    g.drawImage(targetImage, diff_w, diff_h, null);
+
+    int _iwidth = tmpImage.getWidth();
+    int _iheight = tmpImage.getHeight();
+    BufferedImage _tmpImage;
+    if (_iwidth > _iheight) {
+      int diff = _iwidth - width;
+      _tmpImage = tmpImage.getSubimage(diff / 2, 0, width, height);
+    } else {
+      int diff = _iheight - height;
+      _tmpImage = tmpImage.getSubimage(0, diff / 2, width, height);
+    }
+    return _tmpImage;
+  }
+
+  public static BufferedImage shrinkAndTrimImage(BufferedImage imgfile,
+      int width, int height, int validate_width, int validate_height)
+      throws FileuploadMinSizeException {
+    int iwidth = imgfile.getWidth();
+    int iheight = imgfile.getHeight();
+    if (iwidth < validate_width || iheight < validate_height) {
+      throw new FileuploadMinSizeException();
+    }
+
     double ratio =
       Math.max((double) width / (double) iwidth, (double) height
         / (double) iheight);

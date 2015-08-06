@@ -16,16 +16,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aimluck.eip.common;
+
+package com.aimluck.eip.schedule;
 
 /**
- * この例外は、データベースへのアクセス時にエラーが発生した場合にスローされます。 <br />
- *
+ * 
  */
-public class ALDBErrorException extends Exception {
+public class ScheduleNotFounfException extends Exception {
 
-  /**
-   *
-   */
-  private static final long serialVersionUID = -7293414426078181289L;
 }

@@ -723,6 +723,13 @@ public class MessageUtils {
       Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, userId)).fetchList();
   }
 
+  public static List<EipTMessageFile> getEipTMessageFilesByMessage(int messageId) {
+    return Database
+      .query(EipTMessageFile.class)
+      .where(Operations.eq(EipTMessageFile.MESSAGE_ID_PROPERTY, messageId))
+      .fetchList();
+  }
+
   public static EipTMessageFile getEipTMessageFile(RunData rundata)
       throws ALPageNotFoundException, ALDBErrorException {
     try {

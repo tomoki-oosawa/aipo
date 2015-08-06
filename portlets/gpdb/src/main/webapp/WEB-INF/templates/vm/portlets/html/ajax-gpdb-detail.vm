@@ -19,7 +19,6 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 #set ($GpdbItem = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GpdbItemListScreen").addQueryData('filter',$!result.Detail.GpdbId).addQueryData('filtertype','gpdb_id')))
-
 ## ---------------------------------------------------------------------------
 #ALdialogheader("$l10n.GPDB_DATABASE_DETAIL")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")

@@ -31,6 +31,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -693,7 +694,8 @@ public class ALEipUtils {
     user.setUserId(tuser.getUserId().intValue());
     user.setName(tuser.getLoginName());
     user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-    user.setHasPhoto("T".equals(tuser.getHasPhoto()));
+    user.setHasPhoto("T".equals(tuser.getHasPhoto())
+      || "N".equals(tuser.getHasPhoto()));
     user.setPhotoModified(tuser.getPhotoModified() != null ? tuser
       .getPhotoModified()
       .getTime() : 0);
@@ -896,7 +898,6 @@ public class ALEipUtils {
    */
   public static List<ALEipGroup> getMyGroups(RunData rundata)
       throws ALDBErrorException {
-    JetspeedRunData jdata = (JetspeedRunData) rundata;
     // ServletRequestからマイグループのリストを読み込み
     Object obj = null;
     HttpServletRequest request = HttpServletRequestLocator.get();
@@ -1334,54 +1335,12 @@ public class ALEipUtils {
   }
 
   /**
-   * 改行コードを含む文字列を、複数行に分割します。
+   * 改行コードを含む文字列を、複数行に分割します。 メソッドの統一
    *
    * @return
    */
   public static String getMessageList(String msgline) {
-    StringBuffer sb = new StringBuffer();
-    ALStringField field = null;
-
-    if (msgline == null || msgline.equals("")) {
-      return "";
-    }
-    msgline = Normalizer.normalize(msgline, Normalizer.Form.NFC);
-    if (msgline.indexOf("\r") < 0
-      && msgline.indexOf("\n") < 0
-      && msgline.indexOf("\r\n") < 0) {
-      field = new ALStringField();
-      field.setTrim(false);
-      field.setValue(msgline);
-      return ALCommonUtils
-        .replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field.toString())));
-    }
-
-    String token = null;
-    BufferedReader reader = null;
-    try {
-      reader = new BufferedReader(new StringReader(msgline));
-      while ((token = reader.readLine()) != null) {
-        field = new ALStringField();
-        field.setTrim(false);
-        field.setValue(token);
-        sb.append(
-          ALCommonUtils.replaceToAutoCR(replaceStrToLink(replaseLeftSpace(field
-            .toString())))).append("<br/>");
-      }
-      reader.close();
-    } catch (IOException ioe) {
-      try {
-        reader.close();
-      } catch (IOException e) {
-      }
-      return "";
-    }
-
-    int index = sb.lastIndexOf("<br/>");
-    if (index == -1) {
-      return sb.toString();
-    }
-    return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
+    return getMessageList(msgline, null);
   }
 
   /**
@@ -1513,11 +1472,11 @@ public class ALEipUtils {
    * @return
    */
   public static Object getObjFromDataRow(DataRow dataRow, String key) {
-    String lowerKey = key.toLowerCase();
+    String lowerKey = key.toLowerCase(Locale.ENGLISH);
     if (dataRow.containsKey(lowerKey)) {
       return dataRow.get(lowerKey);
     } else {
-      return dataRow.get(key.toUpperCase());
+      return dataRow.get(key.toUpperCase(Locale.ENGLISH));
     }
   }
 
@@ -1743,12 +1702,66 @@ public class ALEipUtils {
   }
 
   /**
-   * 文字列内のリンクにタグAを追加します。
+   * 文字列中の検索キーワードを<span class="searchKeyword">タグで囲います。
+   *
+   * @param msg
+   * @return
+   */
+  public static String highlihgtKeywords(String msg, String keyword) {
+    if (msg != null) {
+      if (keyword != null && !("".equals(keyword))) {
+        Boolean inTag = false;
+        String regex = "((" + keyword + ")+)";
+        int len = msg.length();
+        int st = 0;
+        char[] val = msg.toCharArray();
+        StringBuffer result = new StringBuffer();
+        StringBuffer temp = new StringBuffer();
+        while ((st < len)) {
+          if (inTag == false) {
+            temp.append(val[st]);
+            if (val[st] == '<') {
+              inTag = true;
+              String highLighted =
+                temp.toString().replaceAll(
+                  regex,
+                  "<span class=\"searchKeyword\">$1</span>");
+              result.append(highLighted);
+              temp.delete(0, temp.length());
+            }
+          } else if (inTag == true) {
+            result.append(val[st]);
+            if (val[st] == '>') {
+              inTag = false;
+            }
+          }
+          st++;
+        }
+        if (st == len && inTag == false) {
+          result.append(temp.toString().replaceAll(
+            regex,
+            "<span class=\"searchKeyword\">$1</span>"));
+        }
+        return result.toString();
+      } else {
+        return msg;
+      }
+    } else {
+      return "";
+    }
+  }
+
+  /**
+   * 文字列内のリンクにタグAを追加します。 メソッドの統一
    *
    * @param msg
    * @return
    */
   public static String replaceStrToLink(String msg) {
+    return replaceStrToLink(msg, null);
+  }
+
+  public static String replaceStrToLink(String msg, String keyword) {
     if (msg != null) {
       String regex =
         "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)";
@@ -1770,14 +1783,20 @@ public class ALEipUtils {
       }
 
       // 日本語（ひらがな、かたかな、漢字）が含まれていてもリンク化されるように正規表現を追加する。
+      // URL
       String newMsg =
         msg
           .replaceAll(
             "(https?|ftp|gopher|telnet|whois|news)\\:([\\w|\\p{InHiragana}\\p{InKatakana}\\p{InCJKUnifiedIdeographs}\\:\\!\\#\\$\\%\\=\\&\\-\\^\\`\\\\|\\@\\~\\[\\{\\]\\}\\;\\+\\*\\,\\.\\?\\/]+)",
             "<a href=\"$1\\:$2\" target=\"_blank\">$1\\:$2</a>");
-      return newMsg.replaceAll(
-        "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
-        "<a href='mailto:$0'>$0</a>");
+      // mail
+      String newnewMsg =
+        newMsg.replaceAll(
+          "[\\w\\.\\-]+@([\\w\\-]+\\.)+[\\w\\-]+",
+          "<a href='mailto:$0'>$0</a>");
+      // highlight
+      String highlightedMsg = highlihgtKeywords(newnewMsg, keyword);
+      return highlightedMsg;
     } else {
       return "";
     }
@@ -2235,6 +2254,17 @@ public class ALEipUtils {
   }
 
   /**
+   * アクセスしてきたユーザが利用するブラウザ名が Windows の Edge であるかを判定する．
+   *
+   * @param rundata
+   * @return MSIE の場合は，true．
+   */
+  public static boolean isEdgeBrowser(RunData rundata) {
+    return isMatchUserAgent("Win", rundata)
+      && (isMatchUserAgent("Edge", rundata));
+  }
+
+  /**
    * アクセスしてきたユーザが利用するブラウザ名が Android．
    *
    * @param rundata
@@ -2492,5 +2522,79 @@ public class ALEipUtils {
       }
     }
     return maps;
+  }
+
+  /**
+   * @param msgline
+   * @param keyword
+   * @return
+   */
+  public static String getMessageList(String msgline, String keyword) {
+    StringBuffer sb = new StringBuffer();
+    ALStringField field = null;
+    ALStringField key = null;
+
+    if (msgline == null || msgline.equals("")) {
+      return "";
+    }
+    msgline = Normalizer.normalize(msgline, Normalizer.Form.NFC);
+    if (msgline.indexOf("\r") < 0
+      && msgline.indexOf("\n") < 0
+      && msgline.indexOf("\r\n") < 0) {
+      field = new ALStringField();
+      field.setTrim(false);
+      field.setValue(msgline);
+      if (!(keyword == null || "".equals(keyword))) {
+        key = new ALStringField();
+        key.setTrim(true);
+        key.setValue(keyword);
+        return ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+          replaseLeftSpace(field.toString()),
+          key.toString())));
+      }
+      return ALCommonUtils
+        .replaceToAutoCR((replaceStrToLink(replaseLeftSpace(field.toString()))));
+    }
+
+    String token = null;
+    BufferedReader reader = null;
+    try {
+      reader = new BufferedReader(new StringReader(msgline));
+      while ((token = reader.readLine()) != null) {
+        field = new ALStringField();
+        field.setTrim(false);
+        field.setValue(token);
+        sb.append(
+          ALCommonUtils.replaceToAutoCR((replaceStrToLink(
+            replaseLeftSpace(field.toString()),
+            keyword)))).append("<br/>");
+      }
+      reader.close();
+    } catch (IOException ioe) {
+      try {
+        reader.close();
+      } catch (IOException e) {
+      }
+      return "";
+    }
+
+    int index = sb.lastIndexOf("<br/>");
+    if (index == -1) {
+      return sb.toString();
+    }
+    //
+    // if (keyword == null || keyword.equals("")) {
+    // return "";
+    // } else if (keyword != null) {
+    // // 本文の中に検索キーワードが含まれていた場合、
+    // // <span class='searchKeyword'>検索キーワード</span>
+    // // のようにコードが挿入されるようにする
+    //
+    // return msgline =
+    // msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
+    // }
+
+    return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
+
   }
 }

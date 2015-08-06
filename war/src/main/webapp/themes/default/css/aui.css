@@ -3078,6 +3078,9 @@ button[disabled]:active {
 .auiSearch {
   position: relative;
 }
+.auiSearch input[type="text"] {
+  outline: none;
+}
 .auiSearch input.long {
   min-width: 320px;
 }
@@ -3119,6 +3122,14 @@ button[disabled]:active {
 .auiSearchMore {
   line-height: 2em;
   margin-bottom: 2em;
+}
+.searchKeyword{
+  background:#fffee0;
+  padding:2px 3px;
+  margin:0 1px;
+  border-radius:3px;
+  display: inline !important;
+  text-shadow:0 1px 0 rgba(255,255,255,.3);
 }
 
 /* ------------------------------------------------
@@ -4428,6 +4439,11 @@ ul.attachments {
   background: #ffffff;
   overflow: hidden;
 }
+.filterInputField:hover,
+.filterInputField.hover,
+.focus .filterInputField {
+  border: solid 1px #999999;
+}
 
 *:first-child + html .filterInputField {
   overflow: hidden;
@@ -4445,6 +4461,7 @@ ul.attachments {
   height: 30px;
   border: none;
   background: transparent;
+  outline: none;
 }
 
 .filterInputField .menubar.multi {
@@ -5100,6 +5117,12 @@ tr:first-child #gantt_task > table td {
   border-radius: 2px;
   background-image: url(../images/icon/auiIconSprites20150318.png);
   background-repeat: no-repeat;
+}
+.off .auiIcon {
+  background-image: url(../images/icon/auiIconSpritesGray20150709.png);
+}
+.off a:hover .auiIcon {
+  background-image: url(../images/icon/auiIconSprites20150318.png);
 }
 
 .auiIcon span {

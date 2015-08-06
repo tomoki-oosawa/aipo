@@ -68,7 +68,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのフォームデータを管理するクラスです。
- * 
+ *
  */
 public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
@@ -104,7 +104,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * フォームを表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -115,7 +115,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     try {
       init(action, rundata, context);
       boolean isedit =
-        (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
+        (rundata.getParameters().containsKey(ALEipConstants.ENTITY_ID) && !"new"
+          .equals(rundata.getParameters().getString(ALEipConstants.ENTITY_ID)));
       if (is_copy) {
         isedit = false;
       }
@@ -280,7 +281,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -360,7 +361,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    * @throws ALDBErrorException
@@ -412,7 +413,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -436,7 +437,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -656,7 +657,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           schedule,
           loginName,
           recipients,
-          true,
+          "new",
           ownerid); // createShareScheduleActivity関数に引数1個追加
 
         // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
@@ -664,7 +665,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ScheduleUtils.createNewScheduleActivity(
             schedule,
             loginName,
-            true,
+            "new",
             ownerid);
         }
       }
@@ -704,13 +705,13 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             rundata,
             schedule,
             form_data.getMemberList(),
-            true));
+            "new"));
           message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
             rundata,
             schedule,
             form_data.getMemberList(),
             destMember.getUserId(),
-            true));
+            "new"));
           messageList.add(message);
         }
 
@@ -733,7 +734,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1155,14 +1156,14 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           schedule,
           loginName,
           recipients,
-          false,
+          "edit",
           ownerid);
         // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
         if ("O".equals(public_flag.toString())) {
           ScheduleUtils.createNewScheduleActivity(
             schedule,
             loginName,
-            false,
+            "edit",
             ownerid);
         }
       }
@@ -1203,13 +1204,13 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             rundata,
             schedule,
             form_data.getMemberList(),
-            false));
+            "edit"));
           message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
             rundata,
             schedule,
             form_data.getMemberList(),
             destMember.getUserId(),
-            false));
+            "edit"));
           messageList.add(message);
         }
 
@@ -1241,7 +1242,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1444,7 +1445,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * 指定したスケジュールを削除する．
-   * 
+   *
    * @param schedule
    */
   private void deleteSchedule(EipTSchedule schedule) {
@@ -1472,7 +1473,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * Facilityのアクセス権限をチェック
-   * 
+   *
    * @param rundata
    * @param aclType
    * @return
@@ -1493,7 +1494,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * タイトルを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getName() {
@@ -1502,7 +1503,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * 内容を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -1511,7 +1512,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * 場所を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPlace() {
@@ -1520,7 +1521,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * 公開/非公開フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -1529,7 +1530,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   @Override

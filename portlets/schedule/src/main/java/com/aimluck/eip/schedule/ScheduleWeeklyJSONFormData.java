@@ -545,13 +545,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   schedule,
                   memberList,
-                  false));
+                  "edit"));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   schedule,
                   memberList,
                   destMember.getUserId(),
-                  false));
+                  "edit"));
                 messageList.add(message);
               }
 
@@ -717,13 +717,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   newSchedule,
                   memberList,
-                  false));
+                  "edit"));
                 message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                   rundata,
                   newSchedule,
                   memberList,
                   destMember.getUserId(),
-                  false));
+                  "edit"));
                 messageList.add(message);
               }
 
@@ -753,7 +753,7 @@ public class ScheduleWeeklyJSONFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -879,13 +879,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 schedule,
                 memberList,
-                true));
+                "new"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 schedule,
                 memberList,
                 destMember.getUserId(),
-                true));
+                "new"));
               messageList.add(message);
             }
 
@@ -1041,13 +1041,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 newSchedule,
                 memberList,
-                true));
+                "new"));
               message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
                 rundata,
                 newSchedule,
                 memberList,
                 destMember.getUserId(),
-                true));
+                "new"));
               messageList.add(message);
             }
 
@@ -1142,7 +1142,7 @@ public class ScheduleWeeklyJSONFormData {
         schedule,
         loginName,
         recipients,
-        false,
+        "edit",
         userId);
 
       // アクティビティが公開スケジュールである場合、「更新情報」に表示させる。
@@ -1150,7 +1150,7 @@ public class ScheduleWeeklyJSONFormData {
         ScheduleUtils.createNewScheduleActivity(
           schedule,
           loginName,
-          false,
+          "edit",
           userId);
       }
     }
@@ -1200,7 +1200,7 @@ public class ScheduleWeeklyJSONFormData {
 
   /**
    * セキュリティをチェックします。
-   * 
+   *
    * @return
    */
   private boolean doCheckSecurity(RunData rundata, Context context) {

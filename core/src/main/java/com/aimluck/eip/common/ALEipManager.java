@@ -50,7 +50,7 @@ import com.aimluck.eip.services.customlocalization.ALLocalizationTool;
 
 /**
  * ユーザー情報、会社情報、部署情報、役職情報をメモリ上に保持するクラスです。 <br />
- * 
+ *
  */
 public class ALEipManager {
 
@@ -94,7 +94,7 @@ public class ALEipManager {
   private static String LOCALIZATION_PREFIX = "Localization";
 
   /**
-   * 
+   *
    * @return
    */
   public static ALEipManager getInstance() {
@@ -202,7 +202,8 @@ public class ALEipManager {
         eipUser.setAliasName(model.getFirstName(), model.getLastName());
         eipUser.setName(model.getLoginName());
         eipUser.setUserId(model.getUserId());
-        eipUser.setHasPhoto("T".equals(model.getHasPhoto()));
+        eipUser.setHasPhoto("T".equals(model.getHasPhoto())
+          || "N".equals(model.getHasPhoto()));
         eipUser.setPhotoModified(model.getPhotoModified() != null ? model
           .getPhotoModified()
           .getTime() : 0);
@@ -222,7 +223,7 @@ public class ALEipManager {
 
   /**
    * 会社情報を返します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipCompany> getCompanyMap() {
@@ -260,7 +261,7 @@ public class ALEipManager {
 
   /**
    * 部署情報を返します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -300,7 +301,7 @@ public class ALEipManager {
 
   /**
    * 役職情報を返します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPosition> getPositionMap() {

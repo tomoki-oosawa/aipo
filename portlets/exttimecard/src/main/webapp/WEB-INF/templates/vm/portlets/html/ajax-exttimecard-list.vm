@@ -105,16 +105,6 @@
 			#set($entityid = "new")
 		#end
 		#set($class = "")
-		#if($saturday_sunday_holiday == 1)
-			#set($class = "saturday")
-		#elseif($saturday_sunday_holiday == 2)
-			#set($class = "sunday")
-		#elseif($saturday_sunday_holiday == 3)
-			#set($class = "holiday")
-		#end
-		#if($beforeafter == 0)
-			#set($class = "today")
-		#end
 
 		<tr class="$class">
 		#ALtdcellheaderAtt("class='day' nowrap='nowrap'")

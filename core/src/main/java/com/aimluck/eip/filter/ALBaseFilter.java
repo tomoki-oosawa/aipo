@@ -72,6 +72,14 @@ public class ALBaseFilter implements Filter {
     HttpServletRequest prevHttpServletRequest = HttpServletRequestLocator.get();
     HttpServletResponse prevHttpServletResponse =
       HttpServletResponseLocator.get();
+    if (request instanceof HttpServletRequest) {
+      HttpServletRequest hreq = (HttpServletRequest) request;
+      if (isInvalid(hreq.getQueryString()) || isInvalid(hreq.getRequestURI())) {
+        ((HttpServletResponse) response)
+          .sendError(HttpServletResponse.SC_BAD_REQUEST);
+        return;
+      }
+    }
     try {
       DataContext dataContext = null;
       try {
@@ -110,5 +118,16 @@ public class ALBaseFilter implements Filter {
   protected String getCurrentOrgId(HttpServletRequest request,
       HttpServletResponse response) {
     return Database.DEFAULT_ORG;
+  }
+
+  /**
+   * XXS url attack protection blocking access
+   */
+  private boolean isInvalid(String value) {
+    return (value != null && (value.indexOf('<') != -1
+      || value.indexOf('>') != -1
+      || value.indexOf("%3C") != -1
+      || value.indexOf("%3c") != -1
+      || value.indexOf("%3E") != -1 || value.indexOf("%3e") != -1));
   }
 }

@@ -42,9 +42,13 @@
 #ALtdcaption($l10n.USERLIST_PHOTO)
 #ALtditemheader()
 #if($!{result.Detail.hasPhoto()})
-<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.USERLIST_PHOTO" align="absmiddle" />
+#if($!{result.Detail.isNewPhotoSpec()})
+<img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" align="absmiddle" />
 #else
-$l10n.USERLIST_NOT_CREATE
+<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
+#end
+#else
+$l10n.ACCOUNT_USER_NOT_CREATE
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.USERLIST_POST_NAME)

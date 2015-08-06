@@ -2216,6 +2216,16 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	scheduleBlock
+--------------------------------------------------*/
+table.scheduleBlock thead td{
+  padding-bottom: 5px;
+}
+table.weeklyTableHead {
+  border-right: none;
+}
+
+/***************************************************
 	message
 --------------------------------------------------*/
 body.messageRoomList {
@@ -2229,7 +2239,7 @@ body.messageRoomList .auiPortletBody {
   background-color: transparent !important;
 }
 body.messageRoomList .dijitContentPane {
-	overflow:hidden;
+	/*overflow:hidden;*/
 }
 body.messageRoomList .messageSummary .date,
 body.messageRoomList .messageSummary .name,
