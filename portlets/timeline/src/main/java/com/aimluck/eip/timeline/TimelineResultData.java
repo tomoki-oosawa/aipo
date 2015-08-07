@@ -245,7 +245,7 @@ public class TimelineResultData implements ALData {
     }
 
     char firstChar = keyword.getValue().charAt(0);
-    int lenOverdKeyword = strlen(keyword.getValue());// キーワードの文字数
+    int lenOverdKeyword = keyword.getValue().length();// キーワードの文字数
 
     if (sub.indexOf(firstChar) != -1 // 投稿の中にキーワードの1文字目を含む
       && sub.lastIndexOf(firstChar) > sub.lastIndexOf(" ")
@@ -275,7 +275,7 @@ public class TimelineResultData implements ALData {
             0,
             PRE_NOTE_LENGTH), keyword.getValue());
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-        if (!isLastWordAddress(sub) || !isLastWordKeyword(sub)) {
+        if (!isLastWordAddress(sub) && !isLastWordKeyword(sub)) {
           return subnote;
         }
 
@@ -290,7 +290,7 @@ public class TimelineResultData implements ALData {
             .getValue());
 
         if (isLastWordKeyword(sub)) {
-          int lenOverdKeyword = strlen(keyword.getValue());
+          int lenOverdKeyword = keyword.getValue().length();
           sub = note.getValue().substring(0, i + lenOverdKeyword);
           subnote = ALEipUtils.getMessageList(sub, keyword.getValue());
         }
@@ -311,14 +311,6 @@ public class TimelineResultData implements ALData {
   }
 
   /**
-   * @param value
-   * @return
-   */
-  private int strlen(String value) {
-    return 0;
-  }
-
-  /**
    * 続きを読むで隠される部分を返します。
    *
    * @return String
@@ -330,7 +322,7 @@ public class TimelineResultData implements ALData {
           note.getValue().substring(PRE_NOTE_LENGTH),
           keyword.getValue());
       String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-      if (!isLastWordAddress(sub) || !isLastWordKeyword(sub)) {
+      if (!isLastWordAddress(sub) && !isLastWordKeyword(sub)) {
         return subnote;
       }
       // 最後の行にアドレス又はキーワードが含まれていた場合
