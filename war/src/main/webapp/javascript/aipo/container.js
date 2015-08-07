@@ -335,7 +335,7 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
     var notify = true;
     if (aipo.message.isActive && aipo.message.isOpenWindow()
-            && aipo.message.currentRoomId) {
+            && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
         aipo.message.latestMessageList();
         notify = !(params.roomId == aipo.message.currentRoomId);
     } else {
