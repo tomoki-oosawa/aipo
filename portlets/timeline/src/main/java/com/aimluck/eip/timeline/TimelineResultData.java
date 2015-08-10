@@ -258,7 +258,16 @@ public class TimelineResultData implements ALData {
         return true;// キーワードの1文字目だけが部分文字列に含まれている時
       }
     }
+
     return false;
+  }
+
+  private boolean hasKeyword(String sub) {
+    if (keyword.getValue() != null && !"".equals(keyword.getValue())) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -275,7 +284,8 @@ public class TimelineResultData implements ALData {
             0,
             PRE_NOTE_LENGTH), keyword.getValue());
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-        if (!isLastWordAddress(sub) && !isLastWordKeyword(sub)) {
+        if (!isLastWordAddress(sub)
+          && (!hasKeyword(sub) || !isLastWordKeyword(sub))) {
           return subnote;
         }
 
@@ -288,12 +298,6 @@ public class TimelineResultData implements ALData {
         subnote =
           ALEipUtils.getMessageList(note.getValue().substring(0, i), keyword
             .getValue());
-
-        if (isLastWordKeyword(sub)) {
-          int lenOverdKeyword = keyword.getValue().length();
-          sub = note.getValue().substring(0, i + lenOverdKeyword);
-          subnote = ALEipUtils.getMessageList(sub, keyword.getValue());
-        }
 
         return subnote;
       } catch (Exception ex) {
@@ -322,7 +326,8 @@ public class TimelineResultData implements ALData {
           note.getValue().substring(PRE_NOTE_LENGTH),
           keyword.getValue());
       String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-      if (!isLastWordAddress(sub) && !isLastWordKeyword(sub)) {
+      if (!isLastWordAddress(sub)
+        && (!hasKeyword(sub) || !isLastWordKeyword(sub))) {
         return subnote;
       }
       // 最後の行にアドレス又はキーワードが含まれていた場合
@@ -335,6 +340,7 @@ public class TimelineResultData implements ALData {
       subnote =
         ALEipUtils.getMessageList(note.getValue().substring(i), keyword
           .getValue());
+
       return subnote;
     } else {
       return null;
