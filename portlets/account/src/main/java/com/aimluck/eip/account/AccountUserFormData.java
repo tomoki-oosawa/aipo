@@ -192,6 +192,8 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  private final boolean isNewPhotoSpec = false;
+
   /** 顔写真データ(スマートフォン） */
   private byte[] facePhoto_smartphone;
 
@@ -365,6 +367,7 @@ public class AccountUserFormData extends ALAbstractFormData {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto = null;
+
             ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
@@ -753,6 +756,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         filebean.setFileId(0);
         filebean.setFileName(ALLocalizationUtils
           .getl10nFormat("ACCOUNT_OLD_PHOTO"));
+        filebean.setUserId(Integer.parseInt(user.getUserId()));
+        filebean.setPhotoModified(String.valueOf(user
+          .getPhotoModified()
+          .getTime()));
       }
 
       postList =
@@ -871,11 +878,11 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhotoSmartphone(facePhoto_smartphone);
+          user.setPhotoModifiedSmartphone(new Date());
+          user.setHasPhotoSmartphone("N");
           user.setPhoto(facePhoto);
           user.setHasPhoto("N");
-          user.setHasPhotoSmartphone("N");
           user.setPhotoModified(new Date());
-          user.setPhotoModifiedSmartphone(new Date());
         }
         user.setMigrateVersion(0);
 
@@ -1048,8 +1055,8 @@ public class AccountUserFormData extends ALAbstractFormData {
             user.setPhotoModifiedSmartphone(new Date());
             user.setHasPhotoSmartphone("N");
             user.setPhoto(facePhoto);
-            user.setPhotoModified(new Date());
             user.setHasPhoto("N");
+            user.setPhotoModified(new Date());
           }
         } else {
           user.setPhoto(null);
@@ -1639,4 +1646,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     this.isSkipUsernameValidation = isSkipUsernameValidation;
   }
 
+  public boolean isNewPhotoSpec() {
+    return isNewPhotoSpec;
+  }
 }

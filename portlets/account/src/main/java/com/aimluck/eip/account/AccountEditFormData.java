@@ -567,6 +567,7 @@ public class AccountEditFormData extends ALAbstractFormData {
 
       position_name.setValue(getPositionName(user.getPositionId()));
 
+      // 顔写真
       if (user.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
         filebean.initField();
