@@ -5378,45 +5378,6 @@ a.auiIconTmpreserve:hover {
   background-position: 0px -704px;
   width: 12px;
 }
-/* IE11用記述 */
-@media all and (-ms-high-contrast:none){
-  /* 仮 */
-  *::-ms-backdrop, .auiIconTmpreserve{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconTmpreserve.png") !important;
-    background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
-  }
-  /* 重複*/
-  *::-ms-backdrop, .auiIconOverlap {
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconOverlap.png") !important;
-    background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
-  }
-  /* 繰り返し */
-  *::-ms-backdrop, .auiIconRepeat{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconRepeat.png") !important;
-    background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
-  }
-  /* 鍵 */
-  *::-ms-backdrop, .auiIconSecret{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconSecret.png") !important;
-    background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
-  }
-}
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
@@ -5583,7 +5544,7 @@ a:hover .auiWFicon [class^="icon-"] {
 }
 
 /*IE8Hack*/
-html > body .loader , .auiLoadWrapper.loader{
+html > body .auiLoadWrapper .loader {
   background-color/*\**/: white \9;
   filter: alpha(opacity=80);
   -ms-filter: "alpha(opacity=80)";

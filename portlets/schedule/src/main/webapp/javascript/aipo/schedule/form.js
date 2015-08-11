@@ -777,10 +777,8 @@ aipo.schedule.onSpanEndChange = function(){
 
 aipo.schedule.setIndicator = function(portlet_id) {
 
-	if (dojo.isIE != 8) {
-    	obj_content = dojo.byId('content-'+portlet_id);
-        dojo.style(obj_content, "visibility" , "hidden");
-    }
+    obj_content = dojo.byId('content-'+portlet_id);
+    dojo.style(obj_content, "visibility" , "hidden");
     var obj_garage = dojo.byId('scheduleGarage-'+portlet_id);
     if(obj_garage){
 	    var child_num = obj_garage.childNodes.length;
