@@ -5386,7 +5386,7 @@ a.auiIconTmpreserve:hover {
     height: 13px;
     background-image: url("../images/icon/auiIconTmpreserve.png") !important;
     background-repeat: no-repeat;
-    background-size: 13px 14px !important;
+    background-size: 100% !important;
     background-position-x: 0 !important;
     background-position-y: 0 !important;
     /*background-position-x: -0.05px !important;*/
@@ -5401,7 +5401,7 @@ a.auiIconTmpreserve:hover {
     height: 13px;
     background-image: url("../images/icon/auiIconOverlap.png") !important;
     background-repeat: no-repeat;
-    background-size: 13px 14px !important;
+    background-size: 100% !important;
     background-position-x: 0 !important;
     background-position-y: 0 !important;
     /*background-position-x: -0.05px !important;*/
@@ -5416,7 +5416,7 @@ a.auiIconTmpreserve:hover {
     height: 13px;
     background-image: url("../images/icon/auiIconRepeat.png") !important;
     background-repeat: no-repeat;
-    background-size: 13px 14px !important;
+    background-size: 100% !important;
     background-position-x: 0 !important;
     background-position-y: 0 !important;
     /*background-position-x: -0.05px !important;*/
@@ -5431,7 +5431,7 @@ a.auiIconTmpreserve:hover {
     height: 13px;
     background-image: url("../images/icon/auiIconSecret.png") !important;
     background-repeat: no-repeat;
-    background-size: 13px 14px !important;
+    background-size: 100% !important;
     background-position-x: 0 !important;
     background-position-y: 0 !important;
     /*background-position-x: -0.05px !important;*/
