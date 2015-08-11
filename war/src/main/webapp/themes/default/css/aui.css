@@ -2243,6 +2243,36 @@ button[disabled]:active {
   margin: 2px 0;
 }
 
+.auiPooupThumbnail {
+  position: relative;
+  padding-left: 143px;
+  margin-bottom: 25px;
+}
+.auiPooupThumbnail .avatar {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  height: 100px;
+  width: 100px;
+  border-radius: 3px;
+}
+.auiPooupThumbnail .auiPooupName {
+  min-height: 100px;
+  padding-top: 10px;
+}
+.auiPooupThumbnail .auiPooupName strong {
+  font-size: 22px;
+  display: block;
+}
+.auiPooupThumbnail .auiPooupName span {
+  display: block;
+  margin-top: 3px;
+  padding-left: 1px;
+}
+.auiPooupThumbnail .auiPooupName .auiButton {
+  margin-top: 15px;
+}
+
 .activityTable {
   border: none;
   padding: 0;
