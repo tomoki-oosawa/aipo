@@ -160,7 +160,7 @@
 #AUIcontentsAreaFooter()
 #if($result.AllProject && $result.AllProject.size() > 0)
 <img src="images/common/dot.gif" width="1" height="1" alt="" onload='if(dojo.byId("filters_$!{portlet.ID}").offsetWidth != 0) {dojo.byId("q$!{portlet.ID}").style.paddingLeft=dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px";} if(dojo.isIE){ dojo.byId("q$!{portlet.ID}").style.width=480-dojo.byId("filters_$!{portlet.ID}").offsetWidth+"px"; }' />
-<div class="menubar multi column4" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
+<div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:520px; display:none;">
   <div>
 	<p class="caption">$l10n.PROJECT_MEMBER</p>
     <ul class="filtertype filtertype_$!portlet.ID" data-type="target_user_id" data-defaultparam="">

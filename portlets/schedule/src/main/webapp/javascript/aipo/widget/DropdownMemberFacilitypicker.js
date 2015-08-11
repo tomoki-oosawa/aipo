@@ -240,14 +240,6 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         	  document.body.scrollTop =scrollTop;
            }
         }
-        //For IE11
-        if (dojo.isIE && (dojo.isIE == 11)) {
-            var pNode = this.dropDown.domNode.parentNode;
-            var top = pNode.style.top.replace("px","");
-            top_new = parseInt(top) - window.pageYOffset;
-            pNode.style.top = top_new + "px";
-        }
-
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
     },
     _onDropDownClick:function(e){

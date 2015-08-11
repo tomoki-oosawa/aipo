@@ -169,9 +169,6 @@ select {
   margin: 1px;
   z-index: 0 !important;
 }
-select[id^="groupselect"]{
-  width: 200px;
-}
 
 img {
   border: none;
@@ -2228,12 +2225,6 @@ div.userInfo {
   overflow: hidden;
   zoom: 1;
   overflow: visible;
-}
-html>/**/body .menubar {
-  max-width /*\**/: 260px \9;
-}
-html>/**/body .menubar.column4 {
-  max-width /*\**/: 520px \9;
 }
 .menubar.z-upper {
   position: fixed !important;
