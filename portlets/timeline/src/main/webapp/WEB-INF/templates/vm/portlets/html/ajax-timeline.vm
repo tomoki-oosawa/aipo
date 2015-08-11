@@ -100,8 +100,10 @@
    </div>
   </div>
 </div>
-<div class="menubar" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="display: none; ">
-	<ul>
+<div class="menubar multi" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="width:260px;display:none; ">
+	<div>
+	<p class="caption">$l10n.COMMON_GROUP</p>
+	<ul class="filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 		#foreach( $record in $result.MyGroupList)
 		#set($actionmygroupUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "$!{record.Name.toString()}")))
@@ -112,6 +114,15 @@
 		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "$!{record.GroupName.Value}")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$!record.PostName</a></li>
 		#end
 	</ul>
+	</div>
+	<div>
+	<p class="caption" class="filtertype_$!portlet.ID" data-type="display" data-defaultparam="0">$l10n.TIMELINE_DISPLAY</p>
+	<ul>
+		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.DisplayFilter}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.DisplayFilter}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.DisplayFilter}');">$l10n.TIMELINE_ALL_DISPLAY</a></li>
+	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.DisplayFilter}" == "posting")selected#end" id="PostName_$!{portlet.ID}_$!{record.DisplayFilter}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.DisplayFilter}');">$l10n.TIMELINE_ONLY_POSTING</a></li>
+	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.DisplayFilter}" == "update")selected#end" id="PostName_$!{portlet.ID}_$!{record.DisplayFilter}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.DisplayFilter}');">$l10n.TIMELINE_ONLY_UPDATE</a></li>
+	</ul>
+	</div>
 </div>
 #if($!result.hasKeyword())
 <div class="searchClearOuter clearfix">
