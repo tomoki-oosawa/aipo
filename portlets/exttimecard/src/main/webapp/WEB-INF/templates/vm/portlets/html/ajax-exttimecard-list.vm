@@ -105,7 +105,9 @@
 			#set($entityid = "new")
 		#end
 		#set($class = "")
-
+          #if($beforeafter == 0)
+            #set($class = "today")
+          #end
 		<tr class="$class">
 		#ALtdcellheaderAtt("class='day' nowrap='nowrap'")
 		#set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
