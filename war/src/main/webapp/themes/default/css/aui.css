@@ -5386,9 +5386,9 @@ a.auiIconTmpreserve:hover {
     height: 13px;
     background-image: url("../images/icon/auiIconTmpreserve.png") !important;
     background-repeat: no-repeat;
-    background-size: 100% !important;
-    background-position-x: 0 !important;
-    background-position-y: 0 !important;
+    /*background-size: 100% !important;*/
+    /*background-position-x: 0 !important;*/
+    /*background-position-y: 0 !important;*/
     /*background-position-x: -0.05px !important;*/
     /*background-position-y: -0.05px !important;*/
   }
