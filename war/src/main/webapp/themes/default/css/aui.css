@@ -5383,7 +5383,7 @@ a.auiIconTmpreserve:hover {
   /* 仮 */
   *::-ms-backdrop, .auiIconTmpreserve{
     width: 14px;
-    height: 16px;
+    height: 13px;
     background-image: url("../images/icon/auiIconTmpreserve.png") !important;
     background-repeat: no-repeat;
     background-position-x: -0.05px !important;
@@ -5395,7 +5395,7 @@ a.auiIconTmpreserve:hover {
   /* 重複*/
   *::-ms-backdrop, .auiIconOverlap {
     width: 14px;
-    height: 16px;
+    height: 13px;
     background-image: url("../images/icon/auiIconOverlap.png") !important;
     background-repeat: no-repeat;
     background-position-x: -0.05px !important;
@@ -5407,7 +5407,7 @@ a.auiIconTmpreserve:hover {
   /* 繰り返し */
   *::-ms-backdrop, .auiIconRepeat{
     width: 14px;
-    height: 16px;
+    height: 13px;
     background-image: url("../images/icon/auiIconRepeat.png") !important;
     background-repeat: no-repeat;
     background-position-x: -0.05px !important;
@@ -5419,7 +5419,7 @@ a.auiIconTmpreserve:hover {
   /* 鍵 */
   *::-ms-backdrop, .auiIconSecret{
     width: 14px;
-    height: 16px;
+    height: 13px;
     background-image: url("../images/icon/auiIconSecret.png") !important;
     background-repeat: no-repeat;
     background-position-x: -0.05px !important;
