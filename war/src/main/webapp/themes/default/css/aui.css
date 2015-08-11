@@ -5384,7 +5384,6 @@ a.auiIconTmpreserve:hover {
   *::-ms-backdrop, .auiIconTmpreserve,
   *::-ms-backdrop, .off .auiIconTmpreserve,
   *::-ms-backdrop, .off a:hover .auiIconTmpreserve{
-    width: 14px;
     height: 13px;
     background-repeat: no-repeat;
     background-size: 100% !important;
@@ -5404,7 +5403,6 @@ a.auiIconTmpreserve:hover {
   *::-ms-backdrop, .auiIconOverlap,
   *::-ms-backdrop, .off .auiIconOverlap,
   *::-ms-backdrop, .off a:hover .auiIconOverlap{
-    width: 14px;
     height: 13px;
     background-repeat: no-repeat;
     background-size: 100% !important;
@@ -5424,7 +5422,6 @@ a.auiIconTmpreserve:hover {
   *::-ms-backdrop, .auiIconRepeat,
   *::-ms-backdrop, .off .auiIconRepeat,
   *::-ms-backdrop, .off a:hover .auiIconRepeat{
-    width: 14px;
     height: 13px;
     background-repeat: no-repeat;
     background-size: 100% !important;
@@ -5444,7 +5441,6 @@ a.auiIconTmpreserve:hover {
   *::-ms-backdrop, .auiIconSecret,
   *::-ms-backdrop, .off .auiIconSecret,
   *::-ms-backdrop, .off a:hover .auiIconSecret{
-    width: 14px;
     height: 13px;
     background-repeat: no-repeat;
     background-size: 100% !important;
