@@ -3174,7 +3174,7 @@ dojo.provide("dojo._base.event");
 	};
 
 	// IE event normalization
-	if(dojo.isIE){
+	if(dojo.isIE <= 8 && dojo.isIE > 0){
 		var _trySetKeyCode = function(e, code){
 			try{
 				// squelch errors when keyCode is read-only
@@ -3477,7 +3477,7 @@ dojo.provide("dojo._base.event");
 	}
 })();
 
-if(dojo.isIE){
+if(dojo.isIE <= 8 && dojo.isIE > 0){
 	// keep this out of the closure
 	// closing over 'iel' or 'ieh' b0rks leak prevention
 	// ls[i] is an index into the master handler array
@@ -3537,7 +3537,7 @@ dojo.byId = function(id, doc){
 	//		dojo.doc.  Can be used to retreive
 	//		node references from other documents.
 =====*/
-if(dojo.isIE || dojo.isOpera){
+if((dojo.isIE <= 8 && dojo.isIE > 0) || dojo.isOpera){
 	dojo.byId = function(id, doc){
 		if(dojo.isString(id)){
 			var _d = doc || dojo.doc;
@@ -3841,7 +3841,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._getOpacity = (dojo.isIE ? function(node){
+	dojo._getOpacity = ((dojo.isIE <= 8 && dojo.isIE > 0) ? function(node){
 			try{
 				return (node.filters.alpha.opacity / 100); // Number
 			}catch(e){
@@ -3866,7 +3866,7 @@ if(dojo.isIE || dojo.isOpera){
 	}
 	=====*/
 
-	dojo._setOpacity = (dojo.isIE ? function(/*DomNode*/node, /*Number*/opacity){
+	dojo._setOpacity = ((dojo.isIE <= 8 && dojo.isIE > 0) ? function(/*DomNode*/node, /*Number*/opacity){
 			if(opacity == 1){
 				// on IE7 Alpha(Filter opacity=100) makes text look fuzzy so remove it altogether (bug #2661)
 				node.style.cssText = node.style.cssText.replace(/FILTER:[^;]*;/i, "");
@@ -5663,7 +5663,7 @@ dojo.provide("dojo._base.query");
 		}
 	};
 
-	var defaultGetter = (d.isIE) ? function(cond){
+	var defaultGetter = (d.isIE <= 8 && d.isIE > 0) ? function(cond){
 		var clc = cond.toLowerCase();
 		return function(elem){
 			return elem[cond]||elem[clc];

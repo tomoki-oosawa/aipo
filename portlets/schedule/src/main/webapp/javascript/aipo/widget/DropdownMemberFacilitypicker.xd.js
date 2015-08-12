@@ -169,14 +169,17 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
             var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             html += "<span class=\"dispUser color" + j +"\">" + text + "</span>";
         }
-        var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
-        if(pickedList){
-        	this.dropDown.removeMember(pickedList);
-			var p_mo = pickedList.options;
-			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
-			  opt.selected = true;
-			})(p_mo[i], i);
-			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
+        var isPicked=(dojo.byId("groupselect-"+this.tmpPortretId).value == dojo.byId("groupselect-defaulturl-"+this.tmpPortretId).value);
+        if(isPicked){
+        	var pickedList=dojo.byId("picked_memberlist-"+this.tmpPortretId);
+            if(pickedList){
+            	this.dropDown.removeMember(pickedList);
+    			var p_mo = pickedList.options;
+    			for(var i = 0; i < p_mo.length; i++)(function(opt, index){
+    			  opt.selected = true;
+    			})(p_mo[i], i);
+    			this.dropDown.addMember(dojo.byId("member_to-"+this.tmpPortretId), dojo.byId("picked_memberlist-"+this.tmpPortretId));
+            }
         }
         input.innerHTML = html;
     },
@@ -184,7 +187,11 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         var dropDown = this.dropDown;
         var oldWidth=dropDown.domNode.style.width;
         var self = this;
-
+        var scrollTop;
+        var userAgent = window.navigator.userAgent.toLowerCase();
+        if(userAgent.indexOf("chrome") > -1){
+        	scrollTop=document.body.scrollTop;
+        }
         dijit.popup.open({
             parent: this,
             popup: dropDown,
@@ -221,24 +228,36 @@ dojo.declare("aipo.widget.DropdownMemberFacilitypicker", [aimluck.widget.Dropdow
         if(dropDown.focus){
             dropDown.focus();
         }
-        dropDown.focus();
+
         //For google chrome and Firefox 3.6 or higher
-        var userAgent = window.navigator.userAgent.toLowerCase();
         if (userAgent.indexOf("chrome") > -1 || (dojo.isFF && (dojo.isFF >= 3.6))) {
             var pNode = this.dropDown.domNode.parentNode;
             var top = pNode.style.top.replace("px","");
             top_new = parseInt(top) + window.scrollY;
             pNode.style.top = top_new + "px";
-            var focusNode =  document.activeElement;
-            document.activeElement.blur();
-             focusNode.focus();
+           if(  userAgent.indexOf("chrome")> -1){
+        	   var focusNode =  document.activeElement;
+        	   	document.activeElement.blur();
+                focusNode.focus();
+        	  top_new =dojo.byId("adduser-"+this.tmpPortretId).getBoundingClientRect().top+document.body.scrollTop+20;
+        	  pNode.style.top = top_new + "px";
+        	  document.body.scrollTop =scrollTop;
+           }
         }
+        //For IE11
+        if (dojo.isIE && (dojo.isIE == 11)) {
+            var pNode = this.dropDown.domNode.parentNode;
+            var top = pNode.style.top.replace("px","");
+            top_new = parseInt(top) - window.pageYOffset;
+            pNode.style.top = top_new + "px";
+        }
+
         // TODO: set this.checked and call setStateClass(), to affect button look while drop down is shown
     },
     _onDropDownClick:function(e){
-    	var groupSelect=dojo.byId("groupselect-"+this.tmpPortretId);
+        var groupSelect=dojo.byId("groupselect-"+this.tmpPortretId);
 
-        if(groupSelect && groupSelect.value!="pickup"){
+        if(groupSelect && groupSelect.value.indexOf("pickup") == -1){
         		return false;
         }
 

@@ -21,6 +21,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
 <head>
 <base href="$clink.External"></base>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 <meta http-equiv="Content-Language" content="ja" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 #if($config.getString("portal.title"))#set($titlePrefix = $config.getString("portal.title"))#else#set($titlePrefix = "")#end
@@ -28,7 +29,6 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <meta name="copyright" content="${copyright}" />
-<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8,chrome=1" />
 <meta name="robots" content="noindex,follow" />
 #if("${client}" == "IPHONE")
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=0.6667, maximum-scale=1, user-scalable=no"/>
@@ -297,7 +297,7 @@ function activitySwitch(){
 </script>
 
 <iframe id="sharedStateIframe" name="sharedStateIframe" src="about:blank" frameborder="no" scrolling="no" width="0" height="0"></iframe>
-#if("$!{client}" == "IE" && ("$!{clientVer}" == "6" || "$!{clientVer}" == "7" || "$!{clientVer}" == "8"))
+#if("$!{client}" == "IE" && ("$!{clientVer}" == "6" || "$!{clientVer}" == "7" || "$!{clientVer}" == "8" || "$!{clientVer}" == "9"))
   #ALjavascript("javascript/aipo/common.js")
 #else
   #ALjavascriptdefer("javascript/aipo/common.js")
