@@ -84,6 +84,9 @@ public class AccountUserSelectData extends
 
   protected ALStringField target_keyword;
 
+  /** <code>userid</code> ユーザーID */
+  private int userid;
+
   /**
    * 初期化します。
    *
@@ -103,6 +106,9 @@ public class AccountUserSelectData extends
     }
 
     target_keyword = new ALStringField();
+
+    // ログインユーザの ID を設定する．
+    userid = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
   }
@@ -474,6 +480,7 @@ public class AccountUserSelectData extends
       rd.setHasPhoto(record.hasPhoto());
       rd.setIsNewPhotoSpec("N".equals(record.hasPhotoString()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
+      rd.setIsOwner(userid == Integer.valueOf(record.getUserId()));
 
       return rd;
     } catch (Exception ex) {
