@@ -392,7 +392,7 @@ public class AccountResultData implements ALData {
   /**
    * @return is_admin
    */
-  public boolean isOwnwer() {
+  public boolean isOwner() {
     return is_owner;
   }
 
