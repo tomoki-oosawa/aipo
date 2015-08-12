@@ -5411,40 +5411,80 @@ a.auiIconTmpreserve:hover {
 /* IE11用記述 */
 @media all and (-ms-high-contrast:none){
   /* 仮 */
-  *::-ms-backdrop, .auiIconTmpreserve{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconTmpreserve.png") !important;
+  *::-ms-backdrop, .auiIconTmpreserve,
+  *::-ms-backdrop, .off .auiIconTmpreserve,
+  *::-ms-backdrop, .off a:hover .auiIconTmpreserve{
+    height: 13px;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconTmpreserve{
+    background-image: url("../images/icon/auiIconTmpreserve_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconTmpreserve,
+  *::-ms-backdrop, .off a:hover .auiIconTmpreserve{
+    background-image: url("../images/icon/auiIconTmpreserve.png") !important;
   }
   /* 重複*/
-  *::-ms-backdrop, .auiIconOverlap {
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconOverlap.png") !important;
+  *::-ms-backdrop, .auiIconOverlap,
+  *::-ms-backdrop, .off .auiIconOverlap,
+  *::-ms-backdrop, .off a:hover .auiIconOverlap{
+    height: 13px;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconOverlap {
+    background-image: url("../images/icon/auiIconOverlap_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconOverlap,
+  *::-ms-backdrop, .off a:hover .auiIconOverlap {
+    background-image: url("../images/icon/auiIconOverlap.png") !important;
   }
   /* 繰り返し */
-  *::-ms-backdrop, .auiIconRepeat{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconRepeat.png") !important;
+  *::-ms-backdrop, .auiIconRepeat,
+  *::-ms-backdrop, .off .auiIconRepeat,
+  *::-ms-backdrop, .off a:hover .auiIconRepeat{
+    height: 13px;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconRepeat{
+    background-image: url("../images/icon/auiIconRepeat_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconRepeat,
+  *::-ms-backdrop, .off a:hover .auiIconRepeat{
+    background-image: url("../images/icon/auiIconRepeat.png") !important;
   }
   /* 鍵 */
-  *::-ms-backdrop, .auiIconSecret{
-    width: 14px;
-    height: 16px;
-    background-image: url("../images/icon/auiIconSecret.png") !important;
+  *::-ms-backdrop, .auiIconSecret,
+  *::-ms-backdrop, .off .auiIconSecret,
+  *::-ms-backdrop, .off a:hover .auiIconSecret{
+    height: 13px;
     background-repeat: no-repeat;
-    background-position-x: -0.05px !important;
-    background-position-y: -0.05px !important;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconSecret{
+    background-image: url("../images/icon/auiIconSecret_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconSecret,
+  *::-ms-backdrop, .off a:hover .auiIconSecret{
+    background-image: url("../images/icon/auiIconSecret.png") !important;
   }
 }
 

@@ -1546,7 +1546,7 @@ div.off, td.off {
 }
 
 .calendarWrapper {
-  overflow-x: auto;
+  /*overflow-x: auto;*/
 }
 
 .calendar {
