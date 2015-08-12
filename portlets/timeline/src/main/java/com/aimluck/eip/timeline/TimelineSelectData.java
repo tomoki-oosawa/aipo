@@ -75,6 +75,8 @@ public class TimelineSelectData extends
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   private final String TARGET_GROUP_NAME = "target_group_name";
 
+  private String display_filter;
+
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineSelectData.class.getName());
@@ -909,6 +911,7 @@ public class TimelineSelectData extends
 
     target_group_name = getTargetGroupName(rundata, context);
     current_filter = target_group_name;
+    display_filter = getDisplayFilter(rundata, context);
     if ((!target_group_name.equals("")) && (!target_group_name.equals("all"))) {
       boolean existPost = false;
       for (int i = 0; i < myGroupList.size(); i++) {
@@ -926,10 +929,20 @@ public class TimelineSelectData extends
           break;
         }
       }
+      // Map<Integer, List<TimelineResultData>> activitiesMap =
+      // getActivities(useridList);
+      // for (Map.Entry<Integer, ALEipPost> item : map.entrySet()) {
+      // String pid = item.getValue().getDisplayFilter().toString();
+      // if (pid.equals(display_filter)) {
+      // existPost = true;
+      // break;
+      // }
+      // }
       if (existPost) {
         userList = ALEipUtils.getUsers(target_group_name);
       } else {
         target_group_name = "all";
+        display_filter = "all";
         userList = ALEipUtils.getUsers("LoginUser");
       }
     } else {
@@ -950,6 +963,17 @@ public class TimelineSelectData extends
    * @return
    */
   protected String getTargetGroupName(RunData rundata, Context context) {
+    return getTargetGroupName(rundata, context, TARGET_GROUP_NAME);
+  }
+
+  /**
+   * 更新情報のみ・投稿のみの記事を絞り込むIDを取得する
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  protected String getDisplayFilter(RunData rundata, Context context) {
     return getTargetGroupName(rundata, context, TARGET_GROUP_NAME);
   }
 
@@ -982,12 +1006,44 @@ public class TimelineSelectData extends
   }
 
   /**
+   * 更新情報のみ・投稿のみの記事を絞り込むIDを取得する
+   *
+   * @param rundata
+   * @param target_key
+   * @param context
+   * @return
+   */
+  protected String getDisplayFilter(RunData rundata, Context context,
+      String target_key) {
+    String display_filter = null;
+    String idParam = null;
+    if (ALEipUtils.isMatch(rundata, context)) {
+      // 自ポートレットへのリクエストの場合に，グループ名を取得する．
+      idParam = rundata.getParameters().getString(target_key);
+    }
+    display_filter = ALEipUtils.getTemp(rundata, context, target_key);
+
+    if (idParam == null && display_filter == null) {
+      ALEipUtils.setTemp(rundata, context, target_key, "all");
+      display_filter = "all";
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, target_key, idParam);
+      display_filter = idParam;
+    }
+    return display_filter;
+  }
+
+  /**
    * 表示切り替え時に指定するグループ名
    *
    * @return
    */
   public String getTargetGroupName() {
     return target_group_name;
+  }
+
+  public String getDisplayFilter() {
+    return display_filter;
   }
 
   public boolean isFileUploadable() {
