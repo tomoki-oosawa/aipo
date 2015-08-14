@@ -192,7 +192,7 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
-  private final boolean isNewPhotoSpec = false;
+  private boolean isNewPhotoSpec = true;
 
   /** 顔写真データ(スマートフォン） */
   private byte[] facePhoto_smartphone;
@@ -761,6 +761,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           .getPhotoModified()
           .getTime()));
       }
+      isNewPhotoSpec = "N".equals(user.hasPhotoString());
 
       postList =
         AccountUtils.getPostBeanList(Integer.parseInt(user.getUserId()));

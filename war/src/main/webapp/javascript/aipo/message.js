@@ -909,7 +909,6 @@ aipo.message.changeMember = function() {
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg["error"]) {
         aimluck.io.disableForm(dojo.byId("messageForm"), false);
-        // need to correct
         aipo.message.latestMessageList();
         aipo.message.clearInput();
         dojo.byId("messagePane").scrollTop = 0;
