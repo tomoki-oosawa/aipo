@@ -5852,3 +5852,10 @@ iframe.iframe_messagelist {
   font-size: 11px;
   color: #999;
 }
+/***************************************************
+	avatar
+--------------------------------------------------*/
+[class*="avatar"],
+[class*="avatar"] img {
+  border-radius: 100% !important;
+}
