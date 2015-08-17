@@ -88,6 +88,9 @@ public class UserSelectData extends
   /** 一覧データ */
   private List<Object> list;
 
+  /** <code>userid</code> ユーザーID */
+  private int userid;
+
   /**
    * 初期化します。
    *
@@ -99,6 +102,9 @@ public class UserSelectData extends
     ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, "userposition");
 
     postList = ALEipUtils.getMyGroups(rundata);
+
+    // ログインユーザの ID を設定する．
+    userid = ALEipUtils.getUserId(rundata);
 
     super.init(action, rundata, context);
   }
@@ -389,6 +395,7 @@ public class UserSelectData extends
       rd.initField();
       setResultData(record, rd);
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
+      rd.setIsOwner(userid == Integer.valueOf(record.getUserId()));
       return rd;
     } catch (Exception ex) {
       logger.error("userlist", ex);

@@ -2243,6 +2243,36 @@ button[disabled]:active {
   margin: 2px 0;
 }
 
+.auiPooupThumbnail {
+  position: relative;
+  padding-left: 143px;
+  margin-bottom: 25px;
+}
+.auiPooupThumbnail .avatar {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  height: 100px;
+  width: 100px;
+  border-radius: 3px;
+}
+.auiPooupThumbnail .auiPooupName {
+  min-height: 100px;
+  padding-top: 10px;
+}
+.auiPooupThumbnail .auiPooupName strong {
+  font-size: 22px;
+  display: block;
+}
+.auiPooupThumbnail .auiPooupName span {
+  display: block;
+  margin-top: 3px;
+  padding-left: 1px;
+}
+.auiPooupThumbnail .auiPooupName .auiButton {
+  margin-top: 15px;
+}
+
 .activityTable {
   border: none;
   padding: 0;
@@ -5378,6 +5408,85 @@ a.auiIconTmpreserve:hover {
   background-position: 0px -704px;
   width: 12px;
 }
+/* IE11用記述 */
+@media all and (-ms-high-contrast:none){
+  /* 仮 */
+  *::-ms-backdrop, .auiIconTmpreserve,
+  *::-ms-backdrop, .off .auiIconTmpreserve,
+  *::-ms-backdrop, .off a:hover .auiIconTmpreserve{
+    height: 13px;
+    background-repeat: no-repeat;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconTmpreserve{
+    background-image: url("../images/icon/auiIconTmpreserve_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconTmpreserve,
+  *::-ms-backdrop, .off a:hover .auiIconTmpreserve{
+    background-image: url("../images/icon/auiIconTmpreserve.png") !important;
+  }
+  /* 重複*/
+  *::-ms-backdrop, .auiIconOverlap,
+  *::-ms-backdrop, .off .auiIconOverlap,
+  *::-ms-backdrop, .off a:hover .auiIconOverlap{
+    height: 13px;
+    background-repeat: no-repeat;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconOverlap {
+    background-image: url("../images/icon/auiIconOverlap_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconOverlap,
+  *::-ms-backdrop, .off a:hover .auiIconOverlap {
+    background-image: url("../images/icon/auiIconOverlap.png") !important;
+  }
+  /* 繰り返し */
+  *::-ms-backdrop, .auiIconRepeat,
+  *::-ms-backdrop, .off .auiIconRepeat,
+  *::-ms-backdrop, .off a:hover .auiIconRepeat{
+    height: 13px;
+    background-repeat: no-repeat;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconRepeat{
+    background-image: url("../images/icon/auiIconRepeat_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconRepeat,
+  *::-ms-backdrop, .off a:hover .auiIconRepeat{
+    background-image: url("../images/icon/auiIconRepeat.png") !important;
+  }
+  /* 鍵 */
+  *::-ms-backdrop, .auiIconSecret,
+  *::-ms-backdrop, .off .auiIconSecret,
+  *::-ms-backdrop, .off a:hover .auiIconSecret{
+    height: 13px;
+    background-repeat: no-repeat;
+    background-size: 100% !important;
+    background-position-x: 0 !important;
+    background-position-y: 0 !important;
+    /*background-position-x: -0.05px !important;*/
+    /*background-position-y: -0.05px !important;*/
+  }
+  *::-ms-backdrop, .off .auiIconSecret{
+    background-image: url("../images/icon/auiIconSecret_off.png") !important;
+  }
+  *::-ms-backdrop, .auiIconSecret,
+  *::-ms-backdrop, .off a:hover .auiIconSecret{
+    background-image: url("../images/icon/auiIconSecret.png") !important;
+  }
+}
 
 a.auiIconOverlap:hover {
   background-position: 0px -704px;
@@ -5544,7 +5653,7 @@ a:hover .auiWFicon [class^="icon-"] {
 }
 
 /*IE8Hack*/
-html > body .auiLoadWrapper .loader {
+html > body .loader , .auiLoadWrapper.loader{
   background-color/*\**/: white \9;
   filter: alpha(opacity=80);
   -ms-filter: "alpha(opacity=80)";
