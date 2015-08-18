@@ -71,7 +71,7 @@
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#else
-			<img src="images/common/avatar_default3.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#end
 		</span>
 		<span class="name">$!record.LastName $!record.FirstName</span>
