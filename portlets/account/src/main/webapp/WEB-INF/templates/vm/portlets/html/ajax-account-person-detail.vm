@@ -21,16 +21,38 @@
 
 ## ---------------------------------------------------------------------------
 
-<div class="auiSummaryMeta clearfix">
-<div class="floatRight">
-#set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
-<a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
+##<div class="auiSummaryMeta clearfix">
+##<div class="floatRight">
+##set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
+##<a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
+##</div>
+##</div>
+
+
+<div class="auiPooupThumbnail">
+	#if($!{result.Detail.hasPhoto()})
+		#if($!{result.Detail.isNewPhotoSpec()})
+			<img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" />
+		#else
+			<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
+		#end
+	#else
+		<img class="avatar" src="images/common/avatar_default3.png" alt="$l10n.ACCOUNT_USER_PHOTO" />
+	#end
+	<div class="auiPooupName">
+		<strong>$!result.Detail.Name</strong>
+		<span>$result.getStringCR($!result.Detail.NameKana)</span>
+       ## <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
+		#set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
+		<a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
+	</div>
 </div>
-</div>
+
+
 
 #ALajaxlistformheader($l10n.ACCOUNT_USER)
 #ALtableheaderWide()
-#ALtdcaption($l10n.ACCOUNT_USER_NAME)
+#ALtdcaption($l10n.ACCOUNT_USER_ACCOUNT)
 #ALtditem($!result.Detail.WbrUserName)
 #ALtdcaption($l10n.ACCOUNT_USER_NAME)
 #ALtditem($!result.Detail.WbrName)
@@ -46,18 +68,7 @@
 #ALtditem($!result.Detail.WbrCellularPhone)
 #ALtdcaption($l10n.ACCOUNT_USER_CELLULAR_MAIL)
 #ALtditem($!result.Detail.WbrCellularMail)
-#ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
-#ALtditemheader()
-#if($!{result.Detail.hasPhoto()})
-#if($!{result.Detail.isNewPhotoSpec()})
-<img class="avatar" width="100" height="100" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "normal").addQueryData("t",$!{result.Detail.PhotoModified})" srcset="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "normal").addQueryData("t",$!{result.Detail.PhotoModified}) 1x, $jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "large").addQueryData("t",$!{result.Detail.PhotoModified}) 2x" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
-#else
-<img class="avatar" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.Detail.UserId}).addQueryData("size", "large").addQueryData("t",$!{result.Detail.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" />
-#end
-#else
-$l10n.ACCOUNT_USER_NOT_CREATE
-#end
-#ALtditemfooter()
+
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
 #foreach($record in $!result.Detail.getWbrPostNameList())
