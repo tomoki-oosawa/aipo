@@ -36,7 +36,7 @@
 #if(${result.ParentReport.hasPhoto()})
 <img width="32" height="32" alt="$!result.ParentReport.ClientName" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!result.ParentReport.UserId))" />
 #else
-<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="images/common/avatar_default3.png" />
+<img width="32" height="32" alt="$!result.ParentReport.ClientName" src="themes/default/images/common/icon_user100.png" />
 #end
 </div>
 <div class="alignleft"><strong>
@@ -110,7 +110,7 @@
 #if(${record.hasPhoto()})
 <img width="32" height="32" alt="$!{record.ClientName}" src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId))" />
 #else
-<img width="32" height="32" alt="$!{record.ClientName}" src="images/common/avatar_default3.png" />
+<img width="32" height="32" alt="$!{record.ClientName}" src="themes/default/images/common/icon_user100.png" />
 #end
 </div>
 <div class="alignleft"><strong><a href="javascript: void(0)" onclick="aipo.message.popupProfile($!record.ClientId,arguments[0])">$!{record.ClientName}</a></strong><br />$!{record.UpdateDate.toString($l10n.REPORT_TIME)}</div>

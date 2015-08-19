@@ -155,7 +155,7 @@
 #if ($data.User.hasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{data.User.UserId}).addQueryData("t", $!{data.User.PhotoModified.Time}))" width="32" height="32" class="avatar_m" alt="$l10n.USERLIST_PHOTO" />
 #else
-				<img src="images/common/avatar_default3.png" width="32" height="32" class="avatar_m" alt="$l10n.USERLIST_PHOTO"/>
+				<img src="themes/default/images/common/icon_user100.png" width="32" height="32" class="avatar_m" alt="$l10n.USERLIST_PHOTO"/>
 #end#end
 				<span class="name">$utils.escapeXML($!data.User.LastName.toString()) $!utils.escapeXML($!data.User.FirstName.toString())</span></a>
 				<div class="dropdown" id="dd_settings">

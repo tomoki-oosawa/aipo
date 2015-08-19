@@ -41,7 +41,7 @@ $!{result.Detail.TitleHtml}
 #if(${result.Detail.hasPhoto()})
 <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${result.Detail.OwnerId}).addQueryData("t", ${result.Detail.PhotoModified}))" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #else
-<img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
+<img src="themes/default/images/common/icon_user100.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
 #end
 </a>
 </div>
@@ -104,7 +104,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
   #if(${record.Owner.hasPhoto()})
     <img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", ${record.OwnerId}).addQueryData("t", ${record.Owner.PhotoModified}))" alt="${record.OwnerName}" width="32" height="32" />
   #else
-    <img src="images/common/avatar_default3.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
+    <img src="themes/default/images/common/icon_user100.png" alt="${result.Detail.OwnerName}" width="32" height="32" />
   #end
   </a>
   </div>
