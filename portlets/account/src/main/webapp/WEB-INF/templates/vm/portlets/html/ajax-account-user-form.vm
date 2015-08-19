@@ -76,15 +76,27 @@
 #ALtdcaption($!result.getFieldName("cellular_mail"))
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
 #if($result.isFileUploadable())
-#ALtdcaption($!result.getFieldName("photo"))
+#ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
+
 #ALtditemheader()
-  #IFFileUpload()
-  <ul id="attachments_$!{portlet.ID}" class="attachments">
+<div>
+#IFFileUpload()
+</div>
+
+<ul id="attachments_$!{portlet.ID}" class="attachments">
 	#foreach($record in $!result.AttachmentFileNameList )
-	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.ACCOUNT_DELETION</span></li>
-	#end
-  </ul>
-  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}">
+		<span>$!record.FileName</span><span class="deletebutton" onclick="aipo.fileupload.removeFileFromList(this.parentNode.parentNode, this.parentNode, '$!{portlet.ID}');aipo.account_person.setDeletePhotoValue('$!{portlet.ID}');">$l10n.ACCOUNT_DELETION</span>
+#if($!result.isNewPhotoSpec())
+<img class="avatar" id="facephoto_$!{portlet.ID}" width="100" height="100" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("size", "normal").addQueryData("t", ${record.PhotoModified})" srcset="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("size", "normal").addQueryData("t",${record.PhotoModified}) 1x, $jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("size", "large").addQueryData("t",${record.PhotoModified}) 2x" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" style="display:block"/>
+#else
+<img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("size", "large").addQueryData("t", ${record.PhotoModified})" alt="$l10n.ACCOUNT_USER_PHOTO" align="absmiddle" style="display:block"/>
+#end
+    </li>
+    #end
+</ul>
+<input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+<input type="hidden" id="delete_photo_$!{portlet.ID}"  name="delete_photo" value="false" />
 #ALtditemfooter()
 #end
 
