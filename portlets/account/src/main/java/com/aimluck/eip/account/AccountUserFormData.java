@@ -367,7 +367,6 @@ public class AccountUserFormData extends ALAbstractFormData {
             // 顔写真をセットする．
             String[] acceptExts = ImageIO.getWriterFormatNames();
             facePhoto = null;
-
             ShrinkImageSet bytesShrinkFilebean =
               FileuploadUtils.getBytesShrinkFilebean(
                 orgId,
@@ -879,11 +878,11 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhotoSmartphone(facePhoto_smartphone);
-          user.setPhotoModifiedSmartphone(new Date());
-          user.setHasPhotoSmartphone("N");
           user.setPhoto(facePhoto);
           user.setHasPhoto("N");
+          user.setHasPhotoSmartphone("N");
           user.setPhotoModified(new Date());
+          user.setPhotoModifiedSmartphone(new Date());
         }
         user.setMigrateVersion(0);
 
@@ -1056,8 +1055,8 @@ public class AccountUserFormData extends ALAbstractFormData {
             user.setPhotoModifiedSmartphone(new Date());
             user.setHasPhotoSmartphone("N");
             user.setPhoto(facePhoto);
-            user.setHasPhoto("N");
             user.setPhotoModified(new Date());
+            user.setHasPhoto("N");
           }
         } else {
           user.setPhoto(null);
