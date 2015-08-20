@@ -73,7 +73,7 @@
 <ul>
 #foreach ($record in $result.List)
   <li #if(!$record.isRead())class="new"#end><a href="javascript:void(0);" onclick="aipo.menu.hideDropdown('activity');aipo.menu.closeDropdown('activity');aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portletId}', '$!{portletId}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity(${record.Id})">
-    <!-- div class="avatar"><img src="images/common/avatar_default3.png" class="avatar_s"></div -->
+    <!-- div class="avatar"><img src="themes/default/images/common/icon_user100.png" class="avatar_s"></div -->
     <div class="body">
       <div class="date">$!record.UpdateDate</div>
       <div class="name">$!{record.DisplayName}</div>

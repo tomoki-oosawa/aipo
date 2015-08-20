@@ -20,7 +20,7 @@
 #foreach ($record in $result.List)
 <li>
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
-<span class="avatar"><img #if($!record.isHasPhoto())src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))"#else src="images/common/avatar_default3.png"#end title="$!record.LastName $!record.FirstName" width="24" height="24" class="avatar_s"></span>
+<span class="avatar"><img #if($!record.isHasPhoto())src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))"#else src="themes/default/images/common/icon_user100.png"#end title="$!record.LastName $!record.FirstName" width="24" height="24" class="avatar_s"></span>
 </a>
 </li>
 #end
