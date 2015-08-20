@@ -42,7 +42,7 @@
 			<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
 		#end
 	#else
-		<img class="avatar" src="images/common/avatar_default3.png" alt="$l10n.ACCOUNT_USER_PHOTO" />
+		<img class="avatar" src="themes/default/images/common/icon_user100.png" alt="$l10n.ACCOUNT_USER_PHOTO" />
 	#end
 	<div class="auiPooupName">
 		<strong>$!result.Detail.Name</strong>
