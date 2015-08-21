@@ -374,6 +374,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('facilityField').style.display = "none";
     dojo.byId('facilityFieldButton').style.display = "none";
 
+
     form.is_span.value = 'TRUE';
 
     aipo.schedule.setWrapperHeight();
