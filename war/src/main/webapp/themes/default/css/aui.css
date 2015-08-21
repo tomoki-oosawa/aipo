@@ -5856,6 +5856,7 @@ iframe.iframe_messagelist {
 	avatar
 --------------------------------------------------*/
 [class*="avatar"],
-[class*="avatar"] img {
+[class*="avatar"] img,
+.auiAvatarList li a img {
   border-radius: 100% !important;
 }
