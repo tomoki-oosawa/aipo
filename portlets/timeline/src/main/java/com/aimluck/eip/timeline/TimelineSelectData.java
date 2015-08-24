@@ -126,7 +126,9 @@ public class TimelineSelectData extends
   /** <code>target_display_name</code> 記事の絞り込み */
   protected String target_display_name;
 
-  private String type = null;
+  private final String type = null;
+
+  private String displayParam = "";
 
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
   private List<ALEipGroup> myGroupList = null;
@@ -219,7 +221,8 @@ public class TimelineSelectData extends
             getRowsNum(),
             0,
             useridList,
-            target_keyword.getValue());
+            target_keyword.getValue(),
+            displayParam);
       }
       return list;
     } catch (Exception ex) {
@@ -247,7 +250,8 @@ public class TimelineSelectData extends
           0,
           minId,
           useridList,
-          null);
+          null,
+          displayParam);
 
       return list;
     } catch (Exception ex) {
@@ -386,7 +390,16 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getComments(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0, null, null);
+      TimelineUtils.getTimelineList(
+        uid,
+        parentIds,
+        "T",
+        -1,
+        -1,
+        0,
+        null,
+        null,
+        displayParam);
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -413,7 +426,8 @@ public class TimelineSelectData extends
         -1,
         0,
         useridList,
-        target_keyword.toString());
+        target_keyword.toString(),
+        displayParam);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -944,11 +958,12 @@ public class TimelineSelectData extends
     }
     if ((!"".equals(target_display_name))
       && (!"all".equals(target_display_name))) {
-
       if ("posting".equals(target_display_name)) {
-        type = "T";
+        // type = "T";
+        displayParam = "P";
       } else if ("update".equals(target_display_name)) {
-        type = "A";
+        // type = "A";
+        displayParam = "U";
       }
     }
     for (int i = 0; i < userList.size(); i++) {
