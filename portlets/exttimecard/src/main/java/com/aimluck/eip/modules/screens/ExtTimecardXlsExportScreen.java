@@ -61,7 +61,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -232,7 +232,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         date = tclistrd.getDateStr("yyyy/MM/dd");
         day = tclistrd.getDateStr("EE");
         String type = rd.getType().toString();
-        if (type.equals(EipTExtTimecard.TYPE_WORK)) {
+        if (!rd.getIsNullClockInTime()) {
           clock_in_time = rd.getClockInTime("HH:mm");
           clock_out_time = rd.getClockOutTime("HH:mm");
           if (tclistrd.getInworkHour() > 0.0) {
@@ -349,7 +349,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
