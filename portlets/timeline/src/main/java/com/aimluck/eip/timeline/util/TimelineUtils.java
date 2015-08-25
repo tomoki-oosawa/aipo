@@ -1260,8 +1260,7 @@ public class TimelineUtils {
   }
 
   public static void deleteTimelineActivity(RunData rundata, Context context,
-      String appId, String ExternalId, String displayParam)
-      throws ALFileNotRemovedException {
+      String appId, String ExternalId) throws ALFileNotRemovedException {
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
     Expression exp1 =
       ExpressionFactory.matchExp(EipTTimeline.APP_ID_PROPERTY, appId);

@@ -126,8 +126,6 @@ public class TimelineSelectData extends
   /** <code>target_display_name</code> 記事の絞り込み */
   protected String target_display_name;
 
-  private final String type = null;
-
   private String displayParam = "";
 
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
@@ -216,7 +214,7 @@ public class TimelineSelectData extends
           TimelineUtils.getTimelineList(
             uid,
             Arrays.asList(0),
-            type,
+            null,
             current_page,
             getRowsNum(),
             0,
@@ -399,7 +397,7 @@ public class TimelineSelectData extends
         0,
         null,
         null,
-        displayParam);
+        "");
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -427,7 +425,7 @@ public class TimelineSelectData extends
         0,
         useridList,
         target_keyword.toString(),
-        displayParam);
+        "");
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -959,10 +957,8 @@ public class TimelineSelectData extends
     if ((!"".equals(target_display_name))
       && (!"all".equals(target_display_name))) {
       if ("posting".equals(target_display_name)) {
-        // type = "T";
         displayParam = "P";
       } else if ("update".equals(target_display_name)) {
-        // type = "A";
         displayParam = "U";
       }
     }
