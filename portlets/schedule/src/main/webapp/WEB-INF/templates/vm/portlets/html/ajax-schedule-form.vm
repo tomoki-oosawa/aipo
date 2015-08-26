@@ -139,6 +139,19 @@
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+      <br/>
+      <input id="repeat_typeY" type="radio" value="Y" #if ($!{result.RepeatType.toString()} == "Y") checked="checked" #end name="repeat_type"/>
+      <label for="repeat_typeY">$l10n.SCHEDULE_EVERY_YEAR</label>
+      <select onchange="aipo.schedule.enableMonth(this.form)" name="year_month">
+      #foreach ( $num in [1..12] )
+      	<option value="$num" #if ($!{result.YearMonth.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_MONTH</option>
+      #end
+      </select>
+      <select onchange="aipo.schedule.enableMonth(this.form)" name="year_day">
+      #foreach ( $num in [1..31] )
+      	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
+      #end
+      </select>
    </div>
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
