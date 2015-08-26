@@ -566,7 +566,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     year_day = new ALNumberField();
     year_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR"));
-
     // 繰り返しフラグ
     limit_flag = new ALStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -1169,6 +1168,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+            format.format(year_month.getValue())).append(
             format.format(year_day.getValue())).append(lim).toString());
         }
       }
