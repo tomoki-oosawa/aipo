@@ -922,6 +922,15 @@ public class ScheduleUtils {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
+    } else if (ptn.charAt(0) == 'Y') {
+      int ymonth = Integer.parseInt(ptn.substring(1, 3));
+      int yday = Integer.parseInt(ptn.substring(3, 5));
+      int month = Integer.parseInt(date.getMonth());
+      int day = Integer.parseInt(date.getDay());
+      if (ymonth == month || yday == day) {
+        result = true;
+        count = 5;
+      }
     } else {
       return true;
     }
@@ -2167,6 +2176,21 @@ public class ScheduleUtils {
           } else {
             month_day.validate(msgList);
           }
+        } else if ("Y".equals(repeat_type.getValue())) {
+          // 毎年の繰り返し
+          if (year_month.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_MONTH"));
+          } else {
+            if (year_day.getValue() == 0 && isCellPhone) {
+              // 携帯画面用条件
+              msgList.add(ALLocalizationUtils
+                .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
+            } else {
+              year_month.validate(msgList); // 修正の必要多分有り
+            }
+          }
         }
 
         if ("ON".equals(limit_flag.getValue())) {
@@ -3145,6 +3169,8 @@ public class ScheduleUtils {
       boolean week_6;
       String limit_flag;
       int month_day = -1;
+      int year_month = -1;
+      int year_day = -1;
       Integer db_scheduleid = null;
       boolean[] week_array = new boolean[7];
       boolean unlimited_repeat = false;
@@ -3175,6 +3201,11 @@ public class ScheduleUtils {
 
         if (repeat_pattern.startsWith("M")) {
           month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
+        }
+
+        if (repeat_pattern.startsWith("Y")) {
+          year_month = Integer.parseInt(repeat_pattern.substring(1, 3));
+          year_day = Integer.parseInt(repeat_pattern.substring(3, 5));
         }
 
         // 単体スケジュールは期限1日のみのスケジュールとして判定
