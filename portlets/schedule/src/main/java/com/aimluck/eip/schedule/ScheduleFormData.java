@@ -163,10 +163,10 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>month_day</code> 繰り返す日 */
   private ALNumberField month_day;
 
-  /** <code>month_day</code> 毎年繰り返す月 */
+  /** <code>year_month</code> 毎年繰り返す月 */
   private ALNumberField year_month;
 
-  /** <code>month_day</code> 毎年繰り返す日 */
+  /** <code>year_day</code> 毎年繰り返す日 */
   private ALNumberField year_day;
 
   /** <code>memberList</code> メンバーリスト */
@@ -562,10 +562,14 @@ public class ScheduleFormData extends ALAbstractFormData {
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
-    // 繰り返し月
+    // 繰り返し年日
     year_day = new ALNumberField();
     year_day.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR"));
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR_DAY"));
+    // 繰り返し年月
+    year_month = new ALNumberField();
+    year_month.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR_MONTH"));
     // 繰り返しフラグ
     limit_flag = new ALStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -875,6 +879,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // MnnN M25 -> 毎月25日
+      // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
       int count = 0;
@@ -903,8 +908,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
+        year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
         year_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
-        count = 3;
+        count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         is_span = true;
@@ -1711,6 +1717,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+              format.format(year_month.getValue())).append(
               format.format(year_day.getValue())).append(lim).toString());
           }
         }
