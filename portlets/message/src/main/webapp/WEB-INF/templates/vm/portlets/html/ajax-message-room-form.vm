@@ -64,7 +64,7 @@
 <table class="none">
   <tr><td>
     <div class="spaceTop spaceLeft small">$l10n.MESSAGE_ADD_ENTRY_USER</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
+    <div dojoType="aipo.widget.MemberFilterSelectList"
         id="membernormalselect"
         widgetId="membernormalselect"
         buttonAddId="button_member_add"
