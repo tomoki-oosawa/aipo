@@ -372,7 +372,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
-    dojo.byId('facilityFieldButton').style.display = "none";
+    dojo.byId('facilityFieldButton').style.display = "block";
 
     form.is_span.value = 'TRUE';
 
@@ -478,7 +478,7 @@ aipo.schedule.formAllDayOn = function(checkbox) {
     dojo.byId('timeField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
 
-    dojo.byId('facilityFieldButton').style.display = "none";
+    dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
 
     checkbox.form.is_repeat.value = 'FALSE';
@@ -521,7 +521,7 @@ aipo.schedule.formPublicOff = function(form) {
         form.is_facility.value = "FALSE";
     }
     dojo.byId('facilityField').style.display = "none";
-    dojo.byId('facilityFieldButton').style.display = "none";
+    dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.setWrapperHeight();
 }
 
