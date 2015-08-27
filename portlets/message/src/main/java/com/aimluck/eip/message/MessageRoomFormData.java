@@ -206,6 +206,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
+    name.limitMaxLength(50);
+
   }
 
   /**
@@ -233,6 +235,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       msgList.add(ALLocalizationUtils
         .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
     }
+    name.validate(msgList);
     return msgList.size() == 0;
   }
 
