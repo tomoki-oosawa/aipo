@@ -217,7 +217,6 @@
 #ALtditemfooter()
 #end
 #* 共有カテゴリ連携（ここまで） *#
-
 #ALtdcaption("$!result.getFieldName('place')")
 #ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
 #ALtdcaption("$!result.getFieldName('note')")
