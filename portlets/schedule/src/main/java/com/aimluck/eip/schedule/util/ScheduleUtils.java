@@ -2055,7 +2055,8 @@ public class ScheduleUtils {
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
       ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
       ALDateField limit_start_date, ALDateField limit_end_date,
-      ALNumberField month_day, ALEipUser login_user, String entityid,
+      ALNumberField month_day, ALNumberField year_month,
+      ALNumberField year_day, ALEipUser login_user, String entityid,
       List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
       ALPageNotFoundException {
 
