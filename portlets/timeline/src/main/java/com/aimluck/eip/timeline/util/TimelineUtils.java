@@ -1081,7 +1081,7 @@ public class TimelineUtils {
 
   public static ResultList<EipTTimeline> getTimelineList(Integer userId,
       List<Integer> parentIds, String type, int page, int limit, int minId,
-      List<Integer> userIds, String keywordParam) {
+      List<Integer> userIds, String keywordParam, String displayParam) {
 
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
@@ -1091,6 +1091,14 @@ public class TimelineUtils {
         0);
     }
 
+    switch (displayParam) {
+      case "P":
+        type = "T";
+        break;
+      case "U":
+        type = "A";
+        break;
+    }
     boolean hasKeyword = false;
     StringBuilder select = new StringBuilder();
 
@@ -1130,6 +1138,7 @@ public class TimelineUtils {
     if (type != null) {
       body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
     }
+
     body.append(" eip_t_timeline.parent_id IN (");
     boolean isFirst = true;
     for (Integer num : parentIds) {
@@ -1170,7 +1179,7 @@ public class TimelineUtils {
 
     StringBuilder last = new StringBuilder();
 
-    if ("T".equals(type)) {
+    if ("T".equals(type) && "".equals(displayParam)) {
       last.append(" ORDER BY eip_t_timeline.create_date ASC");
     } else {
       last.append(" ORDER BY eip_t_timeline.update_date DESC");
