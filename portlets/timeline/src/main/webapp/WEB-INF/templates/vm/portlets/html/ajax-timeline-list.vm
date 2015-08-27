@@ -25,8 +25,8 @@
 #set ($indicator_id = "indicator-dlg-")
 #set ($indicator_id2 = "indicator-dlg2-")
 #set ($indicator_id3 = "indicator-dlg3-")
-#set($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
-#set($actionAllUrl_id2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "all")))
+#set ($actionAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_group_name", "all")))
+#set ($actionAllUrl_id2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "all")))
 #set ($clearAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("reset_params", "true").addQueryData("target_group_name", "all").addQueryData("target_display_name", "all")))
 
 ## ---------------------------------------------------------------------------
