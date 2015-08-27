@@ -422,11 +422,47 @@ public class ScheduleSelectData extends
       if (ptn.charAt(0) == 'D') {
         rd.addText(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY"));
         count = 1;
-        // 毎週
-      } else if (ptn.charAt(0) == 'W') {
+        // 毎週, 第1~5週
+      } else if (ptn.charAt(0) == 'W'
+        || ptn.charAt(0) == '1'
+        || ptn.charAt(0) == '2'
+        || ptn.charAt(0) == '3'
+        || ptn.charAt(0) == '4'
+        || ptn.charAt(0) == '5') {
+        switch (ptn.charAt(0)) {
+          case 'W':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+              .toString());
+            break;
+          case '1':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+              .toString());
+            break;
+          case '2':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+              .toString());
+            break;
+          case '3':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+              .toString());
+            break;
+          case '4':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+              .toString());
+            break;
+          case '5':
+            rd.addText(new StringBuffer()
+              .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+              .toString());
+            break;
+        }
         rd
           .addText(new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
             .append(
               ptn.charAt(1) != '0' ? ALLocalizationUtils
                 .getl10n("SCHEDULE_SUNDAY") : "")
@@ -697,7 +733,7 @@ public class ScheduleSelectData extends
 
   /**
    * ログインユーザーのIDかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */

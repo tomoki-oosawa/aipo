@@ -864,6 +864,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
+      // 1nnnnnnnN 101111110 -> 第1~5週(月〜金用)
       // MnnN M25 -> 毎月25日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -874,9 +875,14 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (ptn.charAt(0) == 'D') {
         repeat_type.setValue("D");
         count = 1;
-        // 毎週
-      } else if (ptn.charAt(0) == 'W') {
-        repeat_type.setValue("W");
+        // 毎週, 第1~5週
+      } else if (ptn.charAt(0) == 'W'
+        || ptn.charAt(0) == '1'
+        || ptn.charAt(0) == '2'
+        || ptn.charAt(0) == '3'
+        || ptn.charAt(0) == '4'
+        || ptn.charAt(0) == '5') {
+        repeat_type.setValue(String.valueOf(ptn.charAt(0)));
         week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
         week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
         week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
