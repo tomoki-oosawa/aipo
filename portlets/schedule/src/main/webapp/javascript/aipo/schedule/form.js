@@ -372,7 +372,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
-    dojo.byId('facilityFieldButton').style.display = "block";
+    dojo.byId('facilityFieldButton').style.display = "block";//
 
     form.is_span.value = 'TRUE';
 
