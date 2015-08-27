@@ -37,7 +37,6 @@
 #end
 #set ($indicator_id = "indicator-list-")
 
-#parse("/portlets/html/noteMacro.vm")
 ## ---------------------------------------------------------------------------
 
 #AUIcontentsAreaHeader()

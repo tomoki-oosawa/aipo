@@ -1620,6 +1620,37 @@ ul.hdCommunications .num {
 .auiPopup iframe {
   max-width: 100% !important;
 }
+
+.auiPooupThumbnail {
+  position: relative;
+  padding-left: 110px;
+  margin-bottom: 10px;
+}
+.auiPooupThumbnail .avatar {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100px;
+  width: 100px;
+  border-radius: 3px;
+}
+.auiPooupThumbnail .auiPooupName {
+  min-height: 100px;
+  padding-top: 5px;
+}
+.auiPooupThumbnail .auiPooupName strong {
+  font-size: 18px;
+  display: block;
+}
+.auiPooupThumbnail .auiPooupName span {
+  display: block;
+  margin-top: 3px;
+  padding-left: 1px;
+}
+.auiPooupThumbnail .auiPooupName .auiButton {
+  margin-top: 15px;
+}
+
 /***************************************************
 	login
 --------------------------------------------------*/

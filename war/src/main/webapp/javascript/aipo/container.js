@@ -335,7 +335,7 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
     var notify = true;
     if (aipo.message.isActive && aipo.message.isOpenWindow()
-            && aipo.message.currentRoomId) {
+            && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
         aipo.message.latestMessageList();
         notify = !(params.roomId == aipo.message.currentRoomId);
     } else {
@@ -367,7 +367,7 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
                         var userId = data.userId;
                         var text = data.text;
                         var photoModified = data.photoModified;
-                        var icon = 'images/common/avatar_default3.png';
+                        var icon = 'themes/default/images/common/icon_user100.png';
                         if(data.hasPhoto) {
                             icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
                         }
@@ -388,7 +388,7 @@ aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
                         var userId = data.userId;
                         var text = data.text;
                         var photoModified = data.photoModified;
-                        var icon = 'images/common/avatar_default3.png';
+                        var icon = 'themes/default/images/common/icon_user100.png';
                         if(data.hasPhoto) {
                             icon = '?template=FileuploadFacePhotoScreen&uid=' + userId + '&t=' + photoModified;
                         }

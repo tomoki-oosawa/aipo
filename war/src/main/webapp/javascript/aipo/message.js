@@ -579,7 +579,7 @@ aipo.message.updateUnreadCount = function() {
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
-            dojo.byId("portletsBody").style.display = "none";
+            dojo.byId("portletsBody").style.visibility = "hidden";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "none";
@@ -591,7 +591,7 @@ aipo.message.swapView = function() {
                 aipo.message.latestMessageList();
             }
         } else {
-            dojo.byId("portletsBody").style.display = "";
+            dojo.byId("portletsBody").style.visibility = "";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "";
@@ -909,7 +909,9 @@ aipo.message.changeMember = function() {
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg["error"]) {
         aimluck.io.disableForm(dojo.byId("messageForm"), false);
-        aipo.message.latestMessageList();
+        if(!aipo.message.moreMessageLock){
+            aipo.message.latestMessageList();
+        }
         aipo.message.clearInput();
         dojo.byId("messagePane").scrollTop = 0;
         dojo.style(dojo.byId("messageInputAttachment"), "display", "none");

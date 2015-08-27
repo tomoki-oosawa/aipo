@@ -1987,3 +1987,52 @@ $utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="dis
 </div>
 </div>
 #end
+
+## ---------------------------------------------------------------------------
+##
+## Aipo Note Portlet
+##
+## ---------------------------------------------------------------------------
+#macro(ALnoteResultList $msg_type)
+#if($msg_type == "0")
+<div class="message">$l10n.NOTE_SENT_NOTE</div>
+#elseif($msg_type == "1")
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_EMAIL</span></div>
+#elseif($msg_type == "2")
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_CELLULAR_MAIL</span></div>
+#elseif($msg_type == "3")
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_EMAIL_AND_CELLULAR_MAIL</span></div>
+#elseif($msg_type == "4")
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_USER</span></div>
+#elseif($msg_type == "5")
+<div class="message">$l10n.NOTE_SENT_NOTE<br/>
+<span class="errmsg">$l10n.NOTE_ALERT_DONT_SEND_NOTE_FOR_NO_ADMIN</span>
+</div>
+#end
+#end
+
+#macro(ALsetSubject $record)
+#if ($!record.SubjectType.toString() == "0") #set ($subject = $!record.CustomSubject.toString()) #end
+#if ($!record.SubjectType.toString() == "1") #set ($subject = $l10n.NOTE_CALL_AGAIN) #end
+#if ($!record.SubjectType.toString()  == "2") #set ($subject = $l10n.NOTE_CALL_BACK) #end
+#if ($!record.SubjectType.toString()  == "3") #set ($subject = $l10n.NOTE_TELL_ME) #end
+#if ($!record.SubjectType.toString()  == "4") #set ($subject = $l10n.NOTE_TAKE_A_MESSAGE) #end
+#end
+
+#macro(ALsetEven $setEven)
+#if($setEven)
+#set($setEven = false)
+#else
+#set($setEven = true)
+#end
+#end
+
+## ---------------------------------------------------------------------------
+##
+## Aipo Note Portlet End
+##
+## ---------------------------------------------------------------------------

@@ -231,7 +231,47 @@ public class TimelineResultData implements ALData {
   }
 
   /**
-   * 続きを見るで隠されない部分を返します。
+   * 部分文字列の最後が検索キーワードのときTrueを返します。
+   *
+   * @param 部分文字列sub
+   * @return
+   */
+  private boolean isLastWordKeyword(String sub) {
+
+    if (sub.indexOf(keyword.getValue()) != -1 // 投稿の中にキーワードを含む
+      && sub.lastIndexOf(keyword.getValue()) > sub.lastIndexOf(" ")
+      && sub.lastIndexOf(keyword.getValue()) > sub.lastIndexOf("\n")) {
+      return true; // キーワードが最後の行にある
+    }
+
+    char firstChar = keyword.getValue().charAt(0);
+    int lenOverdKeyword = keyword.getValue().length();// キーワードの文字数
+
+    if (sub.indexOf(firstChar) != -1 // 投稿の中にキーワードの1文字目を含む
+      && sub.lastIndexOf(firstChar) > sub.lastIndexOf(" ")
+      && sub.lastIndexOf(firstChar) > sub.lastIndexOf("\n")) {
+      String nextSub =
+        note.getValue().substring(
+          sub.lastIndexOf(firstChar),
+          sub.lastIndexOf(firstChar) + lenOverdKeyword);
+      if (nextSub.equals(keyword.getValue())) {
+        return true;// キーワードの1文字目だけが部分文字列に含まれている時
+      }
+    }
+
+    return false;
+  }
+
+  private boolean hasKeyword(String sub) {
+    if (keyword.getValue() != null && !"".equals(keyword.getValue())) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * 続きを読むで隠されない部分を返します。
    *
    * @return String
    */
@@ -244,7 +284,8 @@ public class TimelineResultData implements ALData {
             0,
             PRE_NOTE_LENGTH), keyword.getValue());
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-        if (!isLastWordAddress(sub)) {
+        if (!isLastWordAddress(sub)
+          && (!hasKeyword(sub) || !isLastWordKeyword(sub))) {
           return subnote;
         }
 
@@ -257,6 +298,7 @@ public class TimelineResultData implements ALData {
         subnote =
           ALEipUtils.getMessageList(note.getValue().substring(0, i), keyword
             .getValue());
+
         return subnote;
       } catch (Exception ex) {
         // 文字数のカウントに失敗した場合は文字を丸めずに返す
@@ -273,7 +315,7 @@ public class TimelineResultData implements ALData {
   }
 
   /**
-   * 続きを見るで隠される部分を返します。
+   * 続きを読むで隠される部分を返します。
    *
    * @return String
    */
@@ -284,10 +326,11 @@ public class TimelineResultData implements ALData {
           note.getValue().substring(PRE_NOTE_LENGTH),
           keyword.getValue());
       String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
-      if (!isLastWordAddress(sub)) {
+      if (!isLastWordAddress(sub)
+        && (!hasKeyword(sub) || !isLastWordKeyword(sub))) {
         return subnote;
       }
-
+      // 最後の行にアドレス又はキーワードが含まれていた場合
       sub = note.getValue();
       int i;
       for (i = PRE_NOTE_LENGTH; i < sub.length()
@@ -297,6 +340,7 @@ public class TimelineResultData implements ALData {
       subnote =
         ALEipUtils.getMessageList(note.getValue().substring(i), keyword
           .getValue());
+
       return subnote;
     } else {
       return null;
@@ -307,7 +351,6 @@ public class TimelineResultData implements ALData {
     if (getDetailNote() != null && !"".equals(getDetailNote())) {
       return true;
     } else {
-
       return false;
     }
   }

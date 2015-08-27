@@ -47,7 +47,7 @@
 						#if($!{result.ParentTopic.OwnerHasPhoto})
 							<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{result.ParentTopic.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 							#else
-							<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+							<img src="themes/default/images/common/icon_user100.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
 						</a>
 					</div>
@@ -105,7 +105,7 @@
 						#if($!{record.OwnerHasPhoto})
 						<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!{record.OwnerId}).addQueryData("t", $!{result.ParentTopic.OwnerId}))" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#else
-						<img src="images/common/avatar_default3.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
+						<img src="themes/default/images/common/icon_user100.png" alt="$!{result.ParentTopic.OwnerId}" width="32" height="32" />
 						#end
 						</a>
 					</div>

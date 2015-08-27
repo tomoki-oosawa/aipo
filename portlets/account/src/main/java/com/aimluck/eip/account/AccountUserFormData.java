@@ -192,6 +192,8 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真データ */
   private byte[] facePhoto;
 
+  private boolean isNewPhotoSpec = true;
+
   /** 顔写真データ(スマートフォン） */
   private byte[] facePhoto_smartphone;
 
@@ -753,7 +755,12 @@ public class AccountUserFormData extends ALAbstractFormData {
         filebean.setFileId(0);
         filebean.setFileName(ALLocalizationUtils
           .getl10nFormat("ACCOUNT_OLD_PHOTO"));
+        filebean.setUserId(Integer.parseInt(user.getUserId()));
+        filebean.setPhotoModified(String.valueOf(user
+          .getPhotoModified()
+          .getTime()));
       }
+      isNewPhotoSpec = "N".equals(user.hasPhotoString());
 
       postList =
         AccountUtils.getPostBeanList(Integer.parseInt(user.getUserId()));
@@ -1639,4 +1646,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     this.isSkipUsernameValidation = isSkipUsernameValidation;
   }
 
+  public boolean isNewPhotoSpec() {
+    return isNewPhotoSpec;
+  }
 }

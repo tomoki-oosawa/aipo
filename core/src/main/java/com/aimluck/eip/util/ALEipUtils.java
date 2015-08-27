@@ -2582,17 +2582,6 @@ public class ALEipUtils {
     if (index == -1) {
       return sb.toString();
     }
-    //
-    // if (keyword == null || keyword.equals("")) {
-    // return "";
-    // } else if (keyword != null) {
-    // // 本文の中に検索キーワードが含まれていた場合、
-    // // <span class='searchKeyword'>検索キーワード</span>
-    // // のようにコードが挿入されるようにする
-    //
-    // return msgline =
-    // msgline.replaceAll("あ", "<span class='searchKeyword'>あ</span>");
-    // }
 
     return sb.substring(0, index).replaceAll("<wbr/><br/>", "<br/>");
 
