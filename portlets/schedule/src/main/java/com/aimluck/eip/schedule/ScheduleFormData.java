@@ -1143,15 +1143,23 @@ public class ScheduleFormData extends ALAbstractFormData {
             .append('D')
             .append(lim)
             .toString());
-        } else if ("W".equals(repeat_type.getValue())) {
-          schedule.setRepeatPattern(new StringBuffer().append('W').append(
-            week_0.getValue() != null ? 1 : 0).append(
-            week_1.getValue() != null ? 1 : 0).append(
-            week_2.getValue() != null ? 1 : 0).append(
-            week_3.getValue() != null ? 1 : 0).append(
-            week_4.getValue() != null ? 1 : 0).append(
-            week_5.getValue() != null ? 1 : 0).append(
-            week_6.getValue() != null ? 1 : 0).append(lim).toString());
+        } else if ("W".equals(repeat_type.getValue())
+          || "1".equals(repeat_type.getValue())
+          || "2".equals(repeat_type.getValue())
+          || "3".equals(repeat_type.getValue())
+          || "4".equals(repeat_type.getValue())
+          || "5".equals(repeat_type.getValue())) {
+          schedule.setRepeatPattern(new StringBuffer()
+            .append(repeat_type.getValue())
+            .append(week_0.getValue() != null ? 1 : 0)
+            .append(week_1.getValue() != null ? 1 : 0)
+            .append(week_2.getValue() != null ? 1 : 0)
+            .append(week_3.getValue() != null ? 1 : 0)
+            .append(week_4.getValue() != null ? 1 : 0)
+            .append(week_5.getValue() != null ? 1 : 0)
+            .append(week_6.getValue() != null ? 1 : 0)
+            .append(lim)
+            .toString());
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
@@ -1678,9 +1686,14 @@ public class ScheduleFormData extends ALAbstractFormData {
             String tmpPattern =
               new StringBuffer().append('D').append(lim).toString();
             schedule.setRepeatPattern(tmpPattern);
-          } else if ("W".equals(repeat_type.getValue())) {
+          } else if ("W".equals(repeat_type.getValue())
+            || "1".equals(repeat_type.getValue())
+            || "2".equals(repeat_type.getValue())
+            || "3".equals(repeat_type.getValue())
+            || "4".equals(repeat_type.getValue())
+            || "5".equals(repeat_type.getValue())) {
             String tmpPattern =
-              new StringBuffer().append('W').append(
+              new StringBuffer().append(repeat_type.getValue()).append(
                 week_0.getValue() != null ? 1 : 0).append(
                 week_1.getValue() != null ? 1 : 0).append(
                 week_2.getValue() != null ? 1 : 0).append(
