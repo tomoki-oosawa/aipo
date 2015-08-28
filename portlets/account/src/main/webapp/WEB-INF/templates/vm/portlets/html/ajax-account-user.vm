@@ -29,7 +29,9 @@
 
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
-
+##ユーザー名簿を落とすためのリンクをセット*******************************************
+##set ($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+##**************************************************************************
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
 #set($currentRole = "")
 #else
@@ -112,6 +114,9 @@
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
+##ここにボタンを追加***********************************************************
+#AUIajaxbuttonLink($l10n.ACCOUNT_USERS_LIST_DOWNLOAD $orderUser)
+##*******************************************************************
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()

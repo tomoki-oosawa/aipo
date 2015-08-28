@@ -45,11 +45,11 @@ import com.aimluck.eip.util.ALEipUtils;
  *
  *
  */
-public class EventlogCsvExportScreen extends ALCSVScreen {
+public class AccountUserListCsvExportScreen extends ALCSVScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(EventlogCsvExportScreen.class.getName());
+    .getLogger(AccountUserListCsvExportScreen.class.getName());
 
   /**
    *

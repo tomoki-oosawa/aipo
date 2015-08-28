@@ -84,6 +84,11 @@
       <artifactId>aipo-portlet-cellular</artifactId>
       <version>${aipo.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-portlet-eventlog</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
   </dependencies>
 
 </project>
