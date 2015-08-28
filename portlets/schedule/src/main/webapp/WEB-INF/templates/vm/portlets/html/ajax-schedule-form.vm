@@ -142,14 +142,17 @@
    </div>
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
-      <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag"/>
-      <label for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
+      <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag" onclick="aipo.schedule.repeatpickeroff(form)"/>
+      <label id="limit_flagOFF" for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
       <br />
       <input id="limit_flagON" type="radio"  #if ($!{result.LimitFlag.toString()} == "ON") checked="checked" #end value="ON" name="limit_flag"/>
-      <label for="limit_flagON">$l10n.SCHEDULE_SELECT_REPEAT_SPAN</label>
+      <label id="limit_flagON" for="limit_flagON">$l10n.SCHEDULE_SELECT_REPEAT_SPAN</label>
       <br />
+      <div id="repeatpickerfield">
       <span dojoType="aipo.widget.DropdownDatepicker" id="limitStartDateSpan" widgetId="limitStartDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="limit_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitStartDateSub}"checked="checked" #end inputId="limit_start_date_input" dateId="limit_start_date" displayCheck="none"></span>
-            &nbsp;-&nbsp;<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
+            &nbsp;-&nbsp;
+      <span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
+      </div>
     </div>
   </div>
   <div class="p auiSetDate">

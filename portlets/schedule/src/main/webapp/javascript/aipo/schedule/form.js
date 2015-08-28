@@ -535,6 +535,9 @@ aipo.schedule.enableMonth = function(form){
         form.repeat_type[2].checked = true;
     }
 }
+aipo.schedule.repeatpickeroff = function(form){
+    dojo.byId('repeatpickerfield').style.display = "none";
+}
 
 aipo.schedule.buttonEdit = function(form, editurl) {
     aimluck.io.disableForm(form, true);
