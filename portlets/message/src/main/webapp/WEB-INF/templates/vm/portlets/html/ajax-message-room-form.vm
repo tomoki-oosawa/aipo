@@ -63,18 +63,15 @@
 <div id="memberField">
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">$l10n.MESSAGE_ADD_ENTRY_USER</div>
     <div dojoType="aipo.widget.MemberFilterSelectList"
-        id="membernormalselect"
-        widgetId="membernormalselect"
-        buttonAddId="button_member_add"
-        buttonRemoveId="button_member_remove"
+        id="memberfilterlselect"
+        widgetId="memberfilterselect"
         memberFromId="tmp_member_from"
-        memberToTitle="$l10n.MESSAGE_ENTRY_USER_LIST"
-        memberToId="member_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
+        memberFromOptionImage="aliasName"
+        childTemplateString="<select class='floatRight'><option>---</option><option>管理者</option><option>参加者</option></select>"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
         groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"

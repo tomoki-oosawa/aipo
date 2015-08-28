@@ -1038,3 +1038,109 @@ aimluck.io.onBlurSearch = function(pid) {
         }
     }
 }
+
+aimluck.io.createLists = function (ulId, params) {
+  var sel, pre, key, value, url, ind, callback, callbackTarget, image, child_html;
+  if (params["url"]) {
+    url = params["url"];
+  }
+  if (params["key"]) {
+    key = params["key"];
+  }
+  if (params["value"]) {
+    value = params["value"];
+  }
+  if (typeof params["image"] == "undefined") {
+  } else {
+	  image = params["image"];
+  }
+  if (typeof params["child_html"] == "undefined") {
+  } else {
+	  child_html = params["child_html"];
+  }
+  if (typeof params["selectedId"] == "undefined") {
+  } else {
+    sel = params["selectedId"];
+  }
+  if (typeof params["preOptions"] == "undefined") {
+  } else {
+    pre = params["preOptions"];
+  }
+  if (typeof params["indicator"] == "undefined") {
+  } else {
+    ind = params["indicator"];
+    var indicator = dojo.byId(ind);
+    if (indicator) {
+      dojo.style(indicator, "display", "none");
+    }
+  }
+  if (typeof params["callback"] == "undefined") {
+  } else {
+    callback = params["callback"];
+    if (typeof params["callbackTarget"] == "undefined") {
+    } else {
+      callbackTarget = params["callbackTarget"];
+    }
+  }
+
+  dojo.xhrGet({
+    url: url,
+    timeout: 10000,
+    encoding: "utf-8",
+    handleAs: "json-comment-filtered",
+    headers: {
+      X_REQUESTED_WITH: "XMLHttpRequest"
+    },
+    load: function (response, ioArgs) {
+      var ul = dojo.byId(ulId);
+      //todo 別の初期化処理を用意
+   //   select.options.length = 0;
+
+      if (typeof pre == "undefined") {
+      } else {
+        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, "", child_html);
+      }
+      dojo.forEach(response, function (p) {
+        if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[image] == "undefined") {
+        } else {
+          if (p[key] == sel) {
+        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image], child_html);
+          } else {
+        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image], child_html);
+          }
+        }
+      });
+      if (indicator) {
+        dojo.style(indicator, "display", "none");
+      }
+      if (callback) {
+        callback.call(callbackTarget ? callbackTarget : callback, response);
+      }
+    }
+  });
+}
+
+aimluck.io.addUserList = function (ul, value, text, is_checked, img_src, child_html) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  if (document.all) {
+	    var li = document.createElement("li");
+	    li.innerHTML = "<a href=\"javascript:void(0)\">"
+	      + "<input type=\"checkbox\" value=\"" + value + "\" name=\"" + text + "\" checked=\"" + is_checked + "\">"
+	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
+	      + "<span class=\"name\">" + text + "</span>"
+	      + child_html
+	      + "</a></li>";
+
+	    return ul.appendChild(li);
+	  } else {
+		    var li = document.createElement("li");
+		    li.innerHTML = "<a href=\"javascript:void(0)\">"
+		      + "<input type=\"checkbox\" value=\"" + value + "\" name=\"" + text + "\" checked=\"" + is_checked + "\">"
+		      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
+		      + "<span class=\"name\">" + text + "</span>"
+		      + child_html
+		      + "</a></li>";
+
+		    return ul.appendChild(li);
+	  }
+}
