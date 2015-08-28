@@ -151,6 +151,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>week_6</code> 繰り返し曜日 */
   private ALStringField week_6;
 
+  /** <code>repeat_week</code> 繰り返し週 */
+  private ALStringField repeat_week;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
 
@@ -2919,6 +2922,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getWeek6() {
     return week_6;
+  }
+
+  /**
+   * 繰り返し週を取得します。
+   *
+   * @return
+   */
+  public ALStringField getRepeatWeek() {
+    return repeat_week;
   }
 
   /**
