@@ -1189,8 +1189,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
       if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-        .toString()))
-        && !(is_span)) {
+        .toString()))) {
         for (Object record : facilityList) {
           FacilityResultData frd = (FacilityResultData) record;
 
@@ -2954,7 +2953,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    * @return
    */
   public boolean isFacility() {
-    return (is_facility || facilityList.size() > 0);
+    return (is_facility || facilityList.size() > 0);// 設備を予約するまたは設備リストは空でない
   }
 
   public List<Object> getFacilityList() {

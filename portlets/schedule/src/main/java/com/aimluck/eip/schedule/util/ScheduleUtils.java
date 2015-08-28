@@ -3076,7 +3076,7 @@ public class ScheduleUtils {
         .toString();
       count = 3;
       // 期間
-    } else if (ptn.charAt(0) == 'S') {
+    } else if (ptn.charAt(0) == 'S') {// 期間はS
       is_span = true;
       is_repeat = false;
     } else {
@@ -3154,7 +3154,7 @@ public class ScheduleUtils {
 
         repeat_pattern = schedule.getRepeatPattern();
 
-        repeat_type = repeat_pattern.substring(0, 0);
+        repeat_type = repeat_pattern.substring(0, 0);// repeat_patternの頭文字?
 
         limit_flag = repeat_pattern.substring(repeat_pattern.length() - 1);
 
@@ -3172,10 +3172,9 @@ public class ScheduleUtils {
 
         week_6 = repeat_pattern.matches("W......1.");
 
-        if (repeat_pattern.startsWith("M")) {
+        if (repeat_pattern.startsWith("M")) {// ////
           month_day = Integer.parseInt(repeat_pattern.substring(1, 3));
         }
-
         // 単体スケジュールは期限1日のみのスケジュールとして判定
         if (repeat_pattern.startsWith("N")) {
           Calendar cal = Calendar.getInstance();
@@ -3210,7 +3209,7 @@ public class ScheduleUtils {
       }
 
       // 設備予約状況をチェックする
-      if (facilityIdList.size() > 0) {
+      if (facilityIdList.size() > 0) {// //
         List<Integer> fids = facilityIdList;
         SelectQuery<EipTScheduleMap> fquery =
           Database.query(EipTScheduleMap.class);
@@ -3435,7 +3434,7 @@ public class ScheduleUtils {
                 }
               }
 
-            } else if (ptn.charAt(0) == 'D') {
+            } else if (ptn.charAt(0) == 'D') {// 毎日
               if (ptn.charAt(1) == 'L') {
                 try {
                   if ((dbStartDate.before(end_date) && dbEndDate
@@ -3624,7 +3623,7 @@ public class ScheduleUtils {
                               EipTSchedule.class,
                               dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
-                            existFacility = true;
+                            existFacility = true;// trueなら引っかかる
                             break;
                           }
                         } catch (Exception e) {
@@ -3680,6 +3679,7 @@ public class ScheduleUtils {
                             existFacility = true;
                             break;
                           }
+
                         } catch (Exception e) {
                           logger.error("[DuplicateFacilityCheck]: ", e);
                           existFacility = true;
