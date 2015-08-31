@@ -782,6 +782,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         getWeek4(),
         getWeek5(),
         getWeek6(),
+        getRepeatWeek(),
         getLimitFlag(),
         getLimitStartDate(),
         getLimitEndDate(),

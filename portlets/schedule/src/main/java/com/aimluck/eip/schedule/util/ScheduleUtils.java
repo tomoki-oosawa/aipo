@@ -879,44 +879,54 @@ public class ScheduleUtils {
     if (ptn.charAt(0) == 'D') {
       result = true;
       count = 1;
-      // 毎週
+      // 毎週, 第何週
     } else if (ptn.charAt(0) == 'W') {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
-      switch (dow) {
-      // 日
-        case Calendar.SUNDAY:
-          result = ptn.charAt(1) != '0';
-          break;
-        // 月
-        case Calendar.MONDAY:
-          result = ptn.charAt(2) != '0';
-          break;
-        // 火
-        case Calendar.TUESDAY:
-          result = ptn.charAt(3) != '0';
-          break;
-        // 水
-        case Calendar.WEDNESDAY:
-          result = ptn.charAt(4) != '0';
-          break;
-        // 木
-        case Calendar.THURSDAY:
-          result = ptn.charAt(5) != '0';
-          break;
-        // 金
-        case Calendar.FRIDAY:
-          result = ptn.charAt(6) != '0';
-          break;
-        // 土
-        case Calendar.SATURDAY:
-          result = ptn.charAt(7) != '0';
-          break;
-        default:
-          result = false;
-          break;
+      // 第何週目かを表すフィールド
+      int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+      if (ptn.charAt(8) == 'N'
+        || ptn.charAt(8) == 'L'
+        || dowim == Character.getNumericValue(ptn.charAt(8))) {
+        switch (dow) {
+        // 日
+          case Calendar.SUNDAY:
+            result = ptn.charAt(1) != '0';
+            break;
+          // 月
+          case Calendar.MONDAY:
+            result = ptn.charAt(2) != '0';
+            break;
+          // 火
+          case Calendar.TUESDAY:
+            result = ptn.charAt(3) != '0';
+            break;
+          // 水
+          case Calendar.WEDNESDAY:
+            result = ptn.charAt(4) != '0';
+            break;
+          // 木
+          case Calendar.THURSDAY:
+            result = ptn.charAt(5) != '0';
+            break;
+          // 金
+          case Calendar.FRIDAY:
+            result = ptn.charAt(6) != '0';
+            break;
+          // 土
+          case Calendar.SATURDAY:
+            result = ptn.charAt(7) != '0';
+            break;
+          default:
+            result = false;
+            break;
+        }
+        if (ptn.length() == 9) {
+          count = 8;
+        } else {
+          count = 9;
+        }
       }
-      count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
       int mday = Integer.parseInt(ptn.substring(1, 3));
@@ -2035,6 +2045,7 @@ public class ScheduleUtils {
    * @param week_4
    * @param week_5
    * @param week_6
+   * @param repeat_week
    * @param limit_flag
    * @param limit_start_date
    * @param limit_end_date
@@ -2053,11 +2064,11 @@ public class ScheduleUtils {
       ALDateTimeField end_date, ALStringField repeat_type, boolean is_repeat,
       boolean is_span, ALStringField week_0, ALStringField week_1,
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
-      ALStringField week_5, ALStringField week_6, ALStringField limit_flag,
-      ALDateField limit_start_date, ALDateField limit_end_date,
-      ALNumberField month_day, ALEipUser login_user, String entityid,
-      List<String> msgList, boolean isCellPhone) throws ALDBErrorException,
-      ALPageNotFoundException {
+      ALStringField week_5, ALStringField week_6, ALStringField repeat_week,
+      ALStringField limit_flag, ALDateField limit_start_date,
+      ALDateField limit_end_date, ALNumberField month_day,
+      ALEipUser login_user, String entityid, List<String> msgList,
+      boolean isCellPhone) throws ALDBErrorException, ALPageNotFoundException {
 
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
@@ -2146,7 +2157,7 @@ public class ScheduleUtils {
     if (is_repeat) {
       try {
         if ("W".equals(repeat_type.getValue())) {
-          // 毎週の繰り返し
+          // 毎週,第何週の繰り返し
           if (week_0.getValue() == null
             && week_1.getValue() == null
             && week_2.getValue() == null
@@ -2154,8 +2165,32 @@ public class ScheduleUtils {
             && week_4.getValue() == null
             && week_5.getValue() == null
             && week_6.getValue() == null) {
-            msgList.add(ALLocalizationUtils
-              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
+            switch (repeat_week.getValue()) {
+              case "0":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
+                break;
+              case "1":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_1ST_WEEKLY"));
+                break;
+              case "2":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_2ND_WEEKLY"));
+                break;
+              case "3":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_3RD_WEEKLY"));
+                break;
+              case "4":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_4TH_WEEKLY"));
+                break;
+              case "5":
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_5TH_WEEKLY"));
+                break;
+            }
           }
         } else if ("M".equals(repeat_type.getValue())) {
           // 毎月の繰り返し
@@ -3728,6 +3763,7 @@ public class ScheduleUtils {
       return (month_day == ptn_day);
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
+      int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
       if (dow == Calendar.SUNDAY) {
         return repeat_ptn.matches("W1.......");
       }

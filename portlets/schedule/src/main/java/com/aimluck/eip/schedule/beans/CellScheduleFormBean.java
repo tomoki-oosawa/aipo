@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 携帯版スケジュールのフォームデータを管理するクラスです。
- * 
+ *
  */
 public class CellScheduleFormBean implements ALData {
 
@@ -77,6 +77,9 @@ public class CellScheduleFormBean implements ALData {
 
   /** <code>week_6</code> 繰り返し曜日 */
   private ALCellStringField week_6;
+
+  /** <code>week_6</code> 繰り返し週 */
+  private ALCellStringField repeat_week;
 
   /** <code>limit_flag</code> 期限ありなし */
   private ALCellStringField limit_flag;
@@ -406,6 +409,7 @@ public class CellScheduleFormBean implements ALData {
       getWeek4(),
       getWeek5(),
       getWeek6(),
+      getRepeatWeek(),
       getLimitFlag(),
       getLimitStartDate(),
       getLimitEndDate(),
@@ -418,7 +422,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALCellDateTimeField getStartDate() {
@@ -454,7 +458,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALCellDateTimeField getEndDate() {
@@ -490,7 +494,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 指定日時を取得します。
-   * 
+   *
    * @return
    */
   public ALCellDateTimeField getViewDate() {
@@ -499,7 +503,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返しタイプを取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getRepeatType() {
@@ -508,7 +512,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek0() {
@@ -517,7 +521,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek1() {
@@ -526,7 +530,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek2() {
@@ -535,7 +539,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek3() {
@@ -544,7 +548,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek4() {
@@ -553,7 +557,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek5() {
@@ -562,7 +566,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 繰り返し曜日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getWeek6() {
@@ -570,8 +574,17 @@ public class CellScheduleFormBean implements ALData {
   }
 
   /**
+   * 繰り返し週を取得します。
+   *
+   * @return
+   */
+  public ALCellStringField getRepeatWeek() {
+    return repeat_week;
+  }
+
+  /**
    * 期限フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getLimitFlag() {
@@ -580,7 +593,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 期限開始日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellDateField getLimitStartDate() {
@@ -612,7 +625,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 期限終了日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellDateField getLimitEndDate() {
@@ -647,7 +660,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 毎月繰り返す日を取得します。
-   * 
+   *
    * @return
    */
   public ALCellNumberField getMonthDay() {
@@ -656,7 +669,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * グループメンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -665,7 +678,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 設備一覧を取得します。
-   * 
+   *
    * @return
    */
   public List<FacilityResultData> getFacilityMemberList() {
@@ -674,7 +687,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 共有メンバーによる編集／削除権限フラグを取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getEditFlag() {
@@ -683,7 +696,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 仮スケジュールに戻すかどうかを取得します。
-   * 
+   *
    * @return
    */
   public ALCellStringField getChangeTmpreserveFlag() {
@@ -692,7 +705,7 @@ public class CellScheduleFormBean implements ALData {
 
   /**
    * 現在の年を取得します。
-   * 
+   *
    * @return
    */
   public int getCurrentYear() {
