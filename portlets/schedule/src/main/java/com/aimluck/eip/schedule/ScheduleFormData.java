@@ -555,6 +555,11 @@ public class ScheduleFormData extends ALAbstractFormData {
     week_6.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
+    // 繰り返し週
+    repeat_week = new ALStringField();
+    repeat_week.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
+    repeat_week.setTrim(true);
     // 繰り返し日
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
@@ -867,7 +872,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
-      // 1nnnnnnnN 101111110 -> 第1~5週(月〜金用)
+      // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -878,14 +883,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (ptn.charAt(0) == 'D') {
         repeat_type.setValue("D");
         count = 1;
-        // 毎週, 第1~5週
-      } else if (ptn.charAt(0) == 'W'
-        || ptn.charAt(0) == '1'
-        || ptn.charAt(0) == '2'
-        || ptn.charAt(0) == '3'
-        || ptn.charAt(0) == '4'
-        || ptn.charAt(0) == '5') {
-        repeat_type.setValue(String.valueOf(ptn.charAt(0)));
+        // 毎週
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
+        repeat_type.setValue("W");
         week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
         week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
         week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
@@ -894,6 +894,35 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
         count = 8;
+        // 第何週
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+        repeat_type.setValue("W");
+        week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
+        week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
+        week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
+        week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
+        week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
+        week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
+        week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
+        repeat_week.setValue("0");
+        switch (ptn.charAt(8)) {
+          case '1':
+            repeat_week.setValue("1");
+            break;
+          case '2':
+            repeat_week.setValue("2");
+            break;
+          case '3':
+            repeat_week.setValue("3");
+            break;
+          case '4':
+            repeat_week.setValue("4");
+            break;
+          case '5':
+            repeat_week.setValue("5");
+            break;
+        }
+        count = 9;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
@@ -1146,23 +1175,27 @@ public class ScheduleFormData extends ALAbstractFormData {
             .append('D')
             .append(lim)
             .toString());
-        } else if ("W".equals(repeat_type.getValue())
-          || "1".equals(repeat_type.getValue())
-          || "2".equals(repeat_type.getValue())
-          || "3".equals(repeat_type.getValue())
-          || "4".equals(repeat_type.getValue())
-          || "5".equals(repeat_type.getValue())) {
-          schedule.setRepeatPattern(new StringBuffer()
-            .append(repeat_type.getValue())
-            .append(week_0.getValue() != null ? 1 : 0)
-            .append(week_1.getValue() != null ? 1 : 0)
-            .append(week_2.getValue() != null ? 1 : 0)
-            .append(week_3.getValue() != null ? 1 : 0)
-            .append(week_4.getValue() != null ? 1 : 0)
-            .append(week_5.getValue() != null ? 1 : 0)
-            .append(week_6.getValue() != null ? 1 : 0)
-            .append(lim)
-            .toString());
+        } else if ("W".equals(repeat_type.getValue())) {
+          if ("0".equals(repeat_week.getValue())) {
+            schedule.setRepeatPattern(new StringBuffer().append('W').append(
+              week_0.getValue() != null ? 1 : 0).append(
+              week_1.getValue() != null ? 1 : 0).append(
+              week_2.getValue() != null ? 1 : 0).append(
+              week_3.getValue() != null ? 1 : 0).append(
+              week_4.getValue() != null ? 1 : 0).append(
+              week_5.getValue() != null ? 1 : 0).append(
+              week_6.getValue() != null ? 1 : 0).append(lim).toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer().append('W').append(
+              week_0.getValue() != null ? 1 : 0).append(
+              week_1.getValue() != null ? 1 : 0).append(
+              week_2.getValue() != null ? 1 : 0).append(
+              week_3.getValue() != null ? 1 : 0).append(
+              week_4.getValue() != null ? 1 : 0).append(
+              week_5.getValue() != null ? 1 : 0).append(
+              week_6.getValue() != null ? 1 : 0).append(
+              repeat_week.getValue().charAt(0)).append(lim).toString());
+          }
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
@@ -1689,23 +1722,32 @@ public class ScheduleFormData extends ALAbstractFormData {
             String tmpPattern =
               new StringBuffer().append('D').append(lim).toString();
             schedule.setRepeatPattern(tmpPattern);
-          } else if ("W".equals(repeat_type.getValue())
-            || "1".equals(repeat_type.getValue())
-            || "2".equals(repeat_type.getValue())
-            || "3".equals(repeat_type.getValue())
-            || "4".equals(repeat_type.getValue())
-            || "5".equals(repeat_type.getValue())) {
-            String tmpPattern =
-              new StringBuffer().append(repeat_type.getValue()).append(
-                week_0.getValue() != null ? 1 : 0).append(
-                week_1.getValue() != null ? 1 : 0).append(
-                week_2.getValue() != null ? 1 : 0).append(
-                week_3.getValue() != null ? 1 : 0).append(
-                week_4.getValue() != null ? 1 : 0).append(
-                week_5.getValue() != null ? 1 : 0).append(
-                week_6.getValue() != null ? 1 : 0).append(lim).toString();
-            schedule.setRepeatPattern(tmpPattern);
+          } else if ("W".equals(repeat_type.getValue())) {
+            if ("0".equals(repeat_week.getValue())) {
+              String tmpPattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
 
+              schedule.setRepeatPattern(tmpPattern);
+            } else {
+              String tmpPattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(
+                  repeat_week.getValue().charAt(0)).append(lim).toString();
+              schedule.setRepeatPattern(tmpPattern);
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('M').append(

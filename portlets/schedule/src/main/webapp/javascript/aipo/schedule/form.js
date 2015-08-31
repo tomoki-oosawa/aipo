@@ -534,6 +534,10 @@ aipo.schedule.enableNthWeek = function(form){
 	form.repeat_type[2].checked = false;
 }
 
+aipo.schedule.setRepeatWeek = function(form){
+	dojo.byId('repeat_week').value = 	form.repeat_type[1].selectedIndex;
+}
+
 aipo.schedule.enableMonth = function(form){
     if(! form.repeat_type[2].checked){
         form.repeat_type[2].checked = true;
