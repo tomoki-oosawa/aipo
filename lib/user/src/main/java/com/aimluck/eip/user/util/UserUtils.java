@@ -35,11 +35,12 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.user.beans.UserEmailLiteBean;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.user.beans.UserLiteBean;
+import com.aimluck.eip.user.beans.UserPhotoLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーのユーティリティクラスです。 <br />
- * 
+ *
  */
 public class UserUtils {
 
@@ -48,7 +49,7 @@ public class UserUtils {
     .getLogger(UserUtils.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -105,7 +106,7 @@ public class UserUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -162,7 +163,7 @@ public class UserUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -209,6 +210,65 @@ public class UserUtils {
       }
     } catch (Exception e) {
       logger.error("UserUtils.getUserGroupLiteBeans", e);
+    }
+    return list;
+  }
+
+  /**
+   *
+   * @param rundata
+   * @return
+   */
+  public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
+      RunData rundata, String groupname, boolean includeLoginuser) {
+    int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
+    ArrayList<UserPhotoLiteBean> list = new ArrayList<UserPhotoLiteBean>();
+    // SQLの作成
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT ");
+    statement
+      .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, B.HAS_PHOTO, B.PHOTO_MODIFIED, D.POSITION ");
+    statement.append("FROM turbine_user_group_role as A ");
+    statement.append("LEFT JOIN turbine_user as B ");
+    statement.append("  on A.USER_ID = B.USER_ID ");
+    statement.append("LEFT JOIN turbine_group as C ");
+    statement.append("  on A.GROUP_ID = C.GROUP_ID ");
+    statement.append("LEFT JOIN eip_m_user_position as D ");
+    statement.append("  on A.USER_ID = D.USER_ID ");
+    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
+    statement.append("ORDER BY D.POSITION");
+    String query = statement.toString();
+
+    List<TurbineUser> list2 =
+      Database
+        .sql(TurbineUser.class, query)
+        .param("groupname", groupname)
+        .fetchList();
+
+    UserPhotoLiteBean user;
+    // ユーザデータを作成し、返却リストへ格納
+    for (TurbineUser tuser : list2) {
+      user = new UserPhotoLiteBean();
+      user.initField();
+      user.setUserId(tuser.getUserId());
+      user.setName(tuser.getLoginName());
+      user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+      user.setHasPhoto("T".equals(tuser.getHasPhoto())
+        || "N".equals(tuser.getHasPhoto()));
+      user.setPhotoModified(tuser.getPhotoModified().getTime());
+      list.add(user);
+    }
+
+    if (!includeLoginuser && login_user_id > 3) {
+      /** 返り値からログインユーザを除く */
+      for (int i = 0; i < list.size(); i++) {
+        user = list.get(i);
+        if (Integer.valueOf(user.getUserId()) == login_user_id) {
+          list.remove(i);
+          break;
+        }
+      }
     }
     return list;
   }
