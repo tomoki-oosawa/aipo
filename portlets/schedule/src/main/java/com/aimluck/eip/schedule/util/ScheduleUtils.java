@@ -2250,23 +2250,44 @@ public class ScheduleUtils {
             repeat_pattern =
               new StringBuffer().append('D').append(lim).toString();
           } else if ("W".equals(repeat_type.getValue())) {
-            repeat_pattern =
-              new StringBuffer().append('W').append(
-                week_0.getValue() != null ? 1 : 0).append(
-                week_1.getValue() != null ? 1 : 0).append(
-                week_2.getValue() != null ? 1 : 0).append(
-                week_3.getValue() != null ? 1 : 0).append(
-                week_4.getValue() != null ? 1 : 0).append(
-                week_5.getValue() != null ? 1 : 0).append(
-                week_6.getValue() != null ? 1 : 0).append(lim).toString();
-            date_count =
-              (week_0.getValue() != null ? 1 : 0)
-                + (week_1.getValue() != null ? 1 : 0)
-                + (week_2.getValue() != null ? 1 : 0)
-                + (week_3.getValue() != null ? 1 : 0)
-                + (week_4.getValue() != null ? 1 : 0)
-                + (week_5.getValue() != null ? 1 : 0)
-                + (week_6.getValue() != null ? 1 : 0);
+            if ("0".equals(repeat_week.getValue())) {
+              repeat_pattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
+              date_count =
+                (week_0.getValue() != null ? 1 : 0)
+                  + (week_1.getValue() != null ? 1 : 0)
+                  + (week_2.getValue() != null ? 1 : 0)
+                  + (week_3.getValue() != null ? 1 : 0)
+                  + (week_4.getValue() != null ? 1 : 0)
+                  + (week_5.getValue() != null ? 1 : 0)
+                  + (week_6.getValue() != null ? 1 : 0);
+            } else {
+              repeat_pattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(
+                  repeat_week.getValue().charAt(0)).append(lim).toString();
+              date_count =
+                (week_0.getValue() != null ? 1 : 0)
+                  + (week_1.getValue() != null ? 1 : 0)
+                  + (week_2.getValue() != null ? 1 : 0)
+                  + (week_3.getValue() != null ? 1 : 0)
+                  + (week_4.getValue() != null ? 1 : 0)
+                  + (week_5.getValue() != null ? 1 : 0)
+                  + (week_6.getValue() != null ? 1 : 0);
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
@@ -3764,26 +3785,29 @@ public class ScheduleUtils {
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-      if (dow == Calendar.SUNDAY) {
-        return repeat_ptn.matches("W1.......");
-      }
-      if (dow == Calendar.MONDAY) {
-        return repeat_ptn.matches("W.1......");
-      }
-      if (dow == Calendar.TUESDAY) {
-        return repeat_ptn.matches("W..1.....");
-      }
-      if (dow == Calendar.WEDNESDAY) {
-        return repeat_ptn.matches("W...1....");
-      }
-      if (dow == Calendar.THURSDAY) {
-        return repeat_ptn.matches("W....1...");
-      }
-      if (dow == Calendar.FRIDAY) {
-        return repeat_ptn.matches("W.....1..");
-      }
-      if (dow == Calendar.SATURDAY) {
-        return repeat_ptn.matches("W......1.");
+      if (repeat_ptn.length() == 9
+        || dowim == Character.getNumericValue(repeat_ptn.charAt(8))) {
+        if (dow == Calendar.SUNDAY) {
+          return repeat_ptn.matches("W1........?");
+        }
+        if (dow == Calendar.MONDAY) {
+          return repeat_ptn.matches("W.1.......?");
+        }
+        if (dow == Calendar.TUESDAY) {
+          return repeat_ptn.matches("W..1......?");
+        }
+        if (dow == Calendar.WEDNESDAY) {
+          return repeat_ptn.matches("W...1.....?");
+        }
+        if (dow == Calendar.THURSDAY) {
+          return repeat_ptn.matches("W....1....?");
+        }
+        if (dow == Calendar.FRIDAY) {
+          return repeat_ptn.matches("W.....1...?");
+        }
+        if (dow == Calendar.SATURDAY) {
+          return repeat_ptn.matches("W......1..?");
+        }
       }
       return false;
     } else {
