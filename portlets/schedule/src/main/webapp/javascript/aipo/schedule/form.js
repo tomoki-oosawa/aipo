@@ -463,6 +463,7 @@ aipo.schedule.formRepeatOn = function(form) {
 
     dojo.byId('timeLabelField').style.display = "";
     dojo.byId('timeField').style.display = "";
+    dojo.byId('repeatpickerfield').style.display = "none";
 
     form.is_repeat.value = 'TRUE';
     form.is_span.value = 'FALSE';
@@ -535,8 +536,11 @@ aipo.schedule.enableMonth = function(form){
         form.repeat_type[2].checked = true;
     }
 }
-aipo.schedule.repeatpickeroff = function(form){
+aipo.schedule.repeatpickeroff = function(){
     dojo.byId('repeatpickerfield').style.display = "none";
+}
+aipo.schedule.repeatpickeron = function(){
+	dojo.byId('repeatpickerfield').style.display = "";
 }
 
 aipo.schedule.buttonEdit = function(form, editurl) {
