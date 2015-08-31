@@ -3532,7 +3532,7 @@ public class ScheduleUtils {
               containtsRs = true;
             }
 
-            if (containtsRs) {
+            if (containtsRs) {//
               /* ここで時間の重複をチェック */
               int ss_flg = ScheduleUtils.compareTime(start_date, dbEndDate);
               int se_flg = ScheduleUtils.compareTime(end_date, dbStartDate);
