@@ -1552,25 +1552,25 @@ div.off, td.off {
 /***************************************************
 	memberPopupDiv_ver3　　20150715
 --------------------------------------------------*/
-#memberPopupDiv_ver3 {
+.memberPopupDiv_ver3 {
   margin: 0 0 10px;
 }
 
-#memberPopupDiv_ver3 .head {
+.memberPopupDiv_ver3 .head {
   border: 1px solid #d2d2d2;
   border-bottom: none;
   padding: 3px 7px;
   border-radius: 3px 3px 0 0;
 }
 
-#memberPopupDiv_ver3 .memberPopupList {
+.memberPopupDiv_ver3 .memberPopupList {
   border: 1px solid #d2d2d2;
   height: 250px;
   overflow-y: scroll;
   border-radius: 0 0 3px 3px;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li {
+.memberPopupDiv_ver3 .memberPopupList li {
   display: block;
   padding: 0;
   margin: 0;
@@ -1580,11 +1580,11 @@ div.off, td.off {
   *zoom: 1;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li:first-child {
+.memberPopupDiv_ver3 .memberPopupList li:first-child {
   border-top: none;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li a {
+.memberPopupDiv_ver3 .memberPopupList li label {
   display: block;
   height: 32px;
   line-height: 32px;
@@ -1592,21 +1592,21 @@ div.off, td.off {
   text-decoration: none;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li a:hover {
+.memberPopupDiv_ver3 .memberPopupList li label:hover {
   background: #f6f6f6;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li a input[type="checkbox"] {
+.memberPopupDiv_ver3 .memberPopupList li label input[type="checkbox"] {
   float: left;
   margin-top: 9px;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li a .avatar {
+.memberPopupDiv_ver3 .memberPopupList li label .avatar {
   margin: 4px 7px 0 10px;
   float: left;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li a .name {
+.memberPopupDiv_ver3 .memberPopupList li label .name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1616,15 +1616,15 @@ div.off, td.off {
   float: left;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li select {
+.memberPopupDiv_ver3 .memberPopupList li select {
   display: none;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li.checked a {
+.memberPopupDiv_ver3 .memberPopupList li.checked a {
   background: #f6f6f6;
 }
 
-#memberPopupDiv_ver3 .memberPopupList li.checked select {
+.memberPopupDiv_ver3 .memberPopupList li.checked select {
   display: block;
 }
 
