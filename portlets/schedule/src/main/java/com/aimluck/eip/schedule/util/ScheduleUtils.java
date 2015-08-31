@@ -3123,6 +3123,7 @@ public class ScheduleUtils {
     return result.toString();
   }
 
+  @SuppressWarnings("deprecation")
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
       List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
@@ -3152,13 +3153,19 @@ public class ScheduleUtils {
 
         end_date = schedule.getEndDate();
 
+        if (end_date.getHours() == 0) {// 終了時刻が0:00:00なら、23:59:59にする
+          end_date.setHours(23);
+          end_date.setMinutes(59);
+          end_date.setSeconds(59);
+        }
+
         repeat_pattern = schedule.getRepeatPattern();
 
-        repeat_type = repeat_pattern.substring(0, 0);// repeat_patternの頭文字?
+        repeat_type = repeat_pattern.substring(0, 0);
 
         limit_flag = repeat_pattern.substring(repeat_pattern.length() - 1);
 
-        week_0 = repeat_pattern.matches("W1.......");
+        week_0 = repeat_pattern.matches("W1.......");// return boolean
 
         week_1 = repeat_pattern.matches("W.1......");
 
@@ -3209,7 +3216,7 @@ public class ScheduleUtils {
       }
 
       // 設備予約状況をチェックする
-      if (facilityIdList.size() > 0) {// //
+      if (facilityIdList.size() > 0) {//
         List<Integer> fids = facilityIdList;
         SelectQuery<EipTScheduleMap> fquery =
           Database.query(EipTScheduleMap.class);
@@ -3223,11 +3230,12 @@ public class ScheduleUtils {
             ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY);
         fquery.andQualifier(fexp2);
 
-        Expression oneexp = null;
-        Expression rdexp = null;
-        Expression rwexp = null;
+        Expression oneexp = null;// 1日
+        Expression spanexp = null;// 期間
+        Expression rdexp = null;// 毎日
+        Expression rwexp = null;// 毎週何曜日
         // Expression rwlexp = null;
-        Expression rmexp = null;
+        Expression rmexp = null;// 毎月何日
 
         { // １日スケジュールの検索
           Expression exp100 =
@@ -3242,16 +3250,49 @@ public class ScheduleUtils {
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.START_DATE_PROPERTY,
-                  end_date);
+                  end_date);// EipTSchedule.START_DATE_PROPERTY <= end_date
               Expression exp102 =
                 ExpressionFactory.greaterExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.END_DATE_PROPERTY,
-                  start_date);
+                  start_date);// EipTSchedule.END_DATE_PROPERTY > start_date
+
               oneexp = exp100.andExp(exp101.andExp(exp102));
+
             } else {
               oneexp = exp100;
+            }
+          } catch (Exception e) {
+
+          }
+        }
+
+        { // 期間スケジュールの検索？
+          Expression exp200 =
+            ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
+              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+
+          try {
+            if (!unlimited_repeat) {
+              Expression exp201 =
+                ExpressionFactory.lessOrEqualExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.START_DATE_PROPERTY,
+                  end_date);// EipTSchedule.START_DATE_PROPERTY <= end_date
+              Expression exp202 =
+                ExpressionFactory.greaterExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.END_DATE_PROPERTY,
+                  start_date);// EipTSchedule.END_DATE_PROPERTY > start_date
+
+              spanexp = exp200.andExp(exp201.andExp(exp202));// ここで期間の場合を追加？
+
+            } else {
+              spanexp = exp200;
             }
           } catch (Exception e) {
 
@@ -3384,6 +3425,9 @@ public class ScheduleUtils {
           if (rmexp != null) {
             repeatexp = repeatexp.orExp(rmexp);
           }
+          if (spanexp != null) {
+            repeatexp = repeatexp.orExp(spanexp);
+          }
           fquery.andQualifier(repeatexp);
         }
 
@@ -3413,8 +3457,17 @@ public class ScheduleUtils {
             boolean containtsRs = false;
             // 繰り返し期限付きの処理
             String ptn = map.getEipTSchedule().getRepeatPattern();
-
-            if (ptn.charAt(0) == 'N') { // 単体スケジュール
+            if (ptn.charAt(0) == 'S') { // 期間スケジュール
+              try {
+                if (dbStartDate.after(end_date)
+                  && dbEndDate.before(start_date)
+                  || unlimited_repeat) {
+                  containtsRs = true;
+                }
+              } catch (Exception e) {
+                containtsRs = false;
+              }
+            } else if (ptn.charAt(0) == 'N') { // 単体スケジュール
               if ("D".equals(repeat_type) || "N".equals(repeat_type)) { // 毎日 or
                 // 単体
                 try {
@@ -3433,9 +3486,8 @@ public class ScheduleUtils {
                   containtsRs = true;
                 }
               }
-
             } else if (ptn.charAt(0) == 'D') {// 毎日
-              if (ptn.charAt(1) == 'L') {
+              if (ptn.charAt(1) == 'L') {// なんかしらの制限がある
                 try {
                   if ((dbStartDate.before(end_date) && dbEndDate
                     .after(start_date))
@@ -3481,6 +3533,7 @@ public class ScheduleUtils {
             }
 
             if (containtsRs) {
+              /* ここで時間の重複をチェック */
               int ss_flg = ScheduleUtils.compareTime(start_date, dbEndDate);
               int se_flg = ScheduleUtils.compareTime(end_date, dbStartDate);
               if (ss_flg > 0 && se_flg < 0) {
@@ -3525,7 +3578,7 @@ public class ScheduleUtils {
                   Expression dexp1 =
                     ExpressionFactory.matchExp(
                       EipTSchedule.NAME_PROPERTY,
-                      "dummy");
+                      "dummy");// ダミースケジュール
 
                   Expression dexp2 =
                     ExpressionFactory.matchExp(
@@ -3546,7 +3599,7 @@ public class ScheduleUtils {
                   cald.set(Calendar.SECOND, 0);
                   cald.set(Calendar.MINUTE, 0);
                   cald.set(Calendar.HOUR_OF_DAY, 0);
-                  Date ddate = cald.getTime();
+                  Date ddate = cald.getTime();// ?
                   List<EipTSchedule> temp = null;
 
                   if ("N".equals(repeat_pattern)) {
@@ -3603,7 +3656,17 @@ public class ScheduleUtils {
                       cald.add(Calendar.DATE, 1);
                       ddate = cald.getTime();
                     }
-                  } else if (repeat_pattern.startsWith("W")) {
+                  } /*
+                     * else if (repeat_pattern.startsWith("S")) {// 期間の場合を追加 try
+                     * { dexp3 = ExpressionFactory.matchExp(
+                     * EipTSchedule.START_DATE_PROPERTY, ddate); temp =
+                     * Database.query( EipTSchedule.class,
+                     * dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
+                     * if (temp == null || temp.size() <= 0) { existFacility =
+                     * true; break; } } catch (Exception e) {
+                     * logger.error("[DuplicateFacilityCheck]: ", e);
+                     * existFacility = true; break; } }
+                     */else if (repeat_pattern.startsWith("W")) {
                     /* ダミースケジュールを探す */
                     int wlen = week_array.length;
                     if (wlen < 1) {
@@ -3621,7 +3684,7 @@ public class ScheduleUtils {
                           temp =
                             Database.query(
                               EipTSchedule.class,
-                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;// trueなら引っかかる
                             break;
@@ -3674,7 +3737,7 @@ public class ScheduleUtils {
                           temp =
                             Database.query(
                               EipTSchedule.class,
-                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -3702,7 +3765,7 @@ public class ScheduleUtils {
                     continue;
                   }
                 }
-                // existFacility = true;
+                existFacility = true;
               }
             }
             if (existFacility) {

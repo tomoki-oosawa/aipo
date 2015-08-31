@@ -347,7 +347,7 @@ aipo.schedule.formSwitchAllDay = function(checkbox) {
 
 aipo.schedule.formSwitchSpan = function(button) {
     if(button.form.is_span.value == 'TRUE' || button.form.is_span.value == 'true') {
-        button.value = aimluck.io.escapeText("schedule_val_span2");
+        button.value = aimluck.io.escapeText("schedule_val_span1");
         if(button.form.is_repeat.value != 'TRUE' && button.form.is_repeat.value != 'true') {
             button.form.repeat_button.value = aimluck.io.escapeText("schedule_val_repeat1");
             aipo.schedule.formRepeatOff(button.form);
@@ -372,7 +372,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
-    dojo.byId('facilityFieldButton').style.display = "";
+    dojo.byId('facilityFieldButton').style.display = "block";
 
     form.is_span.value = 'TRUE';
 
@@ -478,7 +478,7 @@ aipo.schedule.formAllDayOn = function(checkbox) {
     dojo.byId('timeField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
 
-    dojo.byId('facilityFieldButton').style.display = "";
+    dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
 
     checkbox.form.is_repeat.value = 'FALSE';
