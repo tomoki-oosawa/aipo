@@ -67,6 +67,8 @@
         id="memberfilterlselect"
         widgetId="memberfilterselect"
         memberFromId="tmp_member_from"
+        memberToId="member_to"
+        memberInitId="init_memberlist"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"

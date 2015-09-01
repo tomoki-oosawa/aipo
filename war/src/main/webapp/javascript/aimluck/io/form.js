@@ -1041,6 +1041,7 @@ aimluck.io.onBlurSearch = function(pid) {
 
 aimluck.io.createLists = function (ulId, params) {
   var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html;
+  var init_member = [];
   if (params["url"]) {
     url = params["url"];
   }
@@ -1073,6 +1074,16 @@ aimluck.io.createLists = function (ulId, params) {
   if (typeof params["selectedId"] == "undefined") {
   } else {
     sel = params["selectedId"];
+    var select = dojo.byId(sel);
+    var i;
+    if (select) {
+      var s_o = select.options;
+      if (s_o.length > 1){
+        for(i = 0 ; i < s_o.length; i ++ ) {
+      	  init_member[init_member.length] = s_o[i].value;
+        }
+      }
+    }
   }
   if (typeof params["preOptions"] == "undefined") {
   } else {
@@ -1115,7 +1126,7 @@ aimluck.io.createLists = function (ulId, params) {
       dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined") {
         } else {
-          if (p[key] == sel) {
+		  if(dojo.indexOf(init_member, p[key]) >= 0){
         	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html);
           } else {
         	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html);
