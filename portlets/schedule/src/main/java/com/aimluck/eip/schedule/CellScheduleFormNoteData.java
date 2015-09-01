@@ -547,17 +547,32 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             .append(lim)
             .toString());
         } else if ("W".equals(form_data.getRepeatType().getValue())) {
-          schedule.setRepeatPattern(new StringBuffer()
-            .append('W')
-            .append(form_data.getWeek0().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek1().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek2().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek3().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek4().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek5().getValue() != null ? 1 : 0)
-            .append(form_data.getWeek6().getValue() != null ? 1 : 0)
-            .append(lim)
-            .toString());
+          if ("0".equals(form_data.getRepeatWeek().getValue())) {
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('W')
+              .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+              .append(lim)
+              .toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('W')
+              .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+              .append(form_data.getRepeatWeek().getValue().charAt(0))
+              .append(lim)
+              .toString());
+          }
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer()
@@ -1041,19 +1056,36 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
               new StringBuffer().append('D').append(lim).toString();
             schedule.setRepeatPattern(tmpPattern);
           } else if ("W".equals(form_data.getRepeatType().getValue())) {
-            String tmpPattern =
-              new StringBuffer()
-                .append('W')
-                .append(form_data.getWeek0().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek1().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek2().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek3().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek4().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek5().getValue() != null ? 1 : 0)
-                .append(form_data.getWeek6().getValue() != null ? 1 : 0)
-                .append(lim)
-                .toString();
-            schedule.setRepeatPattern(tmpPattern);
+            if ("0".equals(form_data.getRepeatWeek().getValue())) {
+              String tmpPattern =
+                new StringBuffer()
+                  .append('W')
+                  .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+                  .append(lim)
+                  .toString();
+              schedule.setRepeatPattern(tmpPattern);
+            } else {
+              String tmpPattern =
+                new StringBuffer()
+                  .append('W')
+                  .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+                  .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+                  .append(form_data.getRepeatWeek().getValue().charAt(0))
+                  .append(lim)
+                  .toString();
+              schedule.setRepeatPattern(tmpPattern);
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer()

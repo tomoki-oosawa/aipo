@@ -27,6 +27,7 @@ import com.aimluck.commons.field.ALCellDateField;
 import com.aimluck.commons.field.ALCellDateTimeField;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALCellStringField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -213,6 +214,12 @@ public class CellScheduleFormBean implements ALData {
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
 
+    // 繰り返し週
+    repeat_week = new ALCellStringField();
+    repeat_week.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
+    repeat_week.setTrim(true);
+
     // 繰り返し日（選択されたときのみ Validate する）
     month_day = new ALCellNumberField();
     month_day.setFieldName(ALLocalizationUtils
@@ -295,7 +302,7 @@ public class CellScheduleFormBean implements ALData {
     if (ptn.charAt(0) == 'D') {
       repeat_type.setValue("D");
       count = 1;
-    } else if (ptn.charAt(0) == 'W') {
+    } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
       repeat_type.setValue("W");
       week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
       week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -305,6 +312,35 @@ public class CellScheduleFormBean implements ALData {
       week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
       week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
       count = 8;
+   // 第何週
+    } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+      repeat_type.setValue("W");
+      week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
+      week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
+      week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
+      week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
+      week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
+      week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
+      week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
+      repeat_week.setValue("0");
+      switch (ptn.charAt(8)) {
+        case '1':
+          repeat_week.setValue("1");
+          break;
+        case '2':
+          repeat_week.setValue("2");
+          break;
+        case '3':
+          repeat_week.setValue("3");
+          break;
+        case '4':
+          repeat_week.setValue("4");
+          break;
+        case '5':
+          repeat_week.setValue("5");
+          break;
+      }
+      count = 9;
     } else if (ptn.charAt(0) == 'M') {
       repeat_type.setValue("M");
       month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
