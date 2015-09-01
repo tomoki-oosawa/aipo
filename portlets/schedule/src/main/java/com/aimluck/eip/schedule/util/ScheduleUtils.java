@@ -3546,15 +3546,15 @@ public class ScheduleUtils {
 
                   if (!"N".equals(ptn)
                     && ptn.endsWith("N")
-                    && !unlimited_repeat) {// 新は(！単体&&制限なし)&&元は制限あり
+                    && !unlimited_repeat) {// 元は(！単体&&制限なし)&&新は制限あり
                     _start_date = (Date) start_date.clone();
                     _end_date = (Date) end_date.clone();
                   } else if (("N".equals(ptn) || !ptn.endsWith("N"))
-                    && unlimited_repeat) {// 新は(単体||制限あり)&&元は制限なし
+                    && unlimited_repeat) {// 元は(単体||制限あり)&&新は制限なし
                     _start_date = (Date) dbStartDate.clone();
                     _end_date = (Date) dbEndDate.clone();
                   } else if (("N".equals(ptn) || !ptn.endsWith("N"))
-                    && !unlimited_repeat) {// 新は(単体||制限あり)&&元は制限あり
+                    && !unlimited_repeat) {// 元は(単体||制限あり)&&新は制限あり
 
                     if (dbStartDate.after(start_date)) {
                       _start_date = (Date) dbStartDate.clone();
@@ -3602,7 +3602,7 @@ public class ScheduleUtils {
                   Date ddate = cald.getTime();// _start_dateの時間
                   List<EipTSchedule> temp = null;
 
-                  if ("N".equals(repeat_pattern) || "S".equals(repeat_pattern)) {
+                  if ("N".equals(repeat_pattern)) {
                     /* 繰り返しスケジュールのうちひとつだけを移動した場合の処理 */
                     if ((_old_scheduleid != null) && (_old_viewDate != null)) {
                       if ((_old_scheduleid.intValue() == map
@@ -3631,8 +3631,7 @@ public class ScheduleUtils {
                       existFacility = true;
                       break;
                     }
-                  } else if (repeat_pattern.startsWith("D")
-                    || "S".equals(repeat_pattern)) {
+                  } else if (repeat_pattern.startsWith("D")) {
                     while (!ddate.after(_end_date)) {
                       if (matchDay(cald, ptn)) {
                         try {
@@ -3657,8 +3656,45 @@ public class ScheduleUtils {
                       cald.add(Calendar.DATE, 1);
                       ddate = cald.getTime();
                     }
-                  } else if (repeat_pattern.startsWith("W")
-                    || "S".equals(repeat_pattern)) {
+                  } else if (repeat_pattern.startsWith("S")) {
+
+                    Date nsd = start_date;
+                    Date ned = end_date;
+                    Date sd = dbStartDate;
+                    Date ed = dbEndDate;
+
+                    cald.setTime(sd);
+                    cald.set(Calendar.MILLISECOND, 0);
+                    cald.set(Calendar.SECOND, 0);
+                    cald.set(Calendar.MINUTE, 0);
+                    cald.set(Calendar.HOUR_OF_DAY, 0);
+
+                    while (!sd.after(ned) || !ed.before(nsd)) {
+                      try {
+                        dexp3 =
+                          ExpressionFactory.matchExp(
+                            EipTSchedule.START_DATE_PROPERTY,
+                            sd);
+                        temp =
+                          Database.query(
+                            EipTSchedule.class,
+                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                        if (temp == null || temp.size() <= 0) {
+                          existFacility = true;
+                          break;
+                        }
+                      } catch (Exception e) {
+                        logger.error("[DuplicateFacilityCheck]: ", e);
+                        existFacility = true;
+                        break;
+                      }
+                      cald.add(Calendar.DATE, 1);
+                      sd = cald.getTime();
+                    }
+                    if (ptn.equals("S")) {
+
+                    }
+                  } else if (repeat_pattern.startsWith("W")) {
                     /* ダミースケジュールを探す */
                     int wlen = week_array.length;
                     if (wlen < 1) {
@@ -3690,8 +3726,7 @@ public class ScheduleUtils {
                       cald.add(Calendar.DATE, 1);
                       ddate = cald.getTime();
                     }
-                  } else if (repeat_pattern.startsWith("M")
-                    || "S".equals(repeat_pattern)) {
+                  } else if (repeat_pattern.startsWith("M")) {
                     /* 比較開始日までカレンダー移動 */
                     cald.setTime(dbStartDate);
                     cald.set(Calendar.MILLISECOND, 0);
