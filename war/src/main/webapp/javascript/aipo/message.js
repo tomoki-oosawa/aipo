@@ -854,7 +854,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-    var mpicker = dijit.byId("membernormalselect");
+    var mpicker = dijit.byId("memberfilterselect");
     if (mpicker) {
         var select = dojo.byId('init_memberlist');
         var i;
@@ -865,23 +865,11 @@ aipo.message.onLoadMessageRoomDialog = function() {
             mpicker.addOptionSync(s_o[i].value, s_o[i].text, true);
         }
     }
-    var btn_ma = dojo.byId("button_member_add");
-    if (btn_ma) {
-        dojo.connect(btn_ma, "onclick", function() {
-            aipo.message.changeMember();
-        });
-    }
-
-    var btn_mr = dojo.byId("button_member_remove");
-    if (btn_mr) {
-        dojo.connect(btn_mr, "onclick", function() {
-            aipo.message.changeMember();
-        });
-    }
     aipo.message.changeMember();
 };
 
 aipo.message.changeMember = function() {
+	console.log("aipo.message.changeMember");
     var node = dojo.byId("memberFieldDisplay");
     if (node) {
         var HTML = "";

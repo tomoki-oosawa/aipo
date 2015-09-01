@@ -64,11 +64,10 @@
 <table class="none">
   <tr><td>
     <div dojoType="aipo.widget.MemberFilterSelectList"
-        id="memberfilterlselect"
+        id="memberfilterselect"
         widgetId="memberfilterselect"
         memberFromId="tmp_member_from"
         memberToId="member_to"
-        memberInitId="init_memberlist"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         memberFromOptionKey="name"
         memberFromOptionValue="aliasName"
@@ -76,6 +75,7 @@
         memberFromOptionImageFlag="hasPhoto"
         memberFromOptionImageVersionParam="photoModified"
         memberFromOptionDefaultImage="themes/default/images/common/icon_user100.png"
+        clickEvent="aipo.message.changeMember()"
         childTemplateString="<select class='floatRight'><option>---</option><option>管理者</option><option>参加者</option></select>"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
