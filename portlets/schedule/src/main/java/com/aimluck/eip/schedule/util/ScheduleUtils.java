@@ -3538,7 +3538,7 @@ public class ScheduleUtils {
               int se_flg = ScheduleUtils.compareTime(end_date, dbStartDate);
               if (ss_flg > 0 && se_flg < 0) {
                 /* 期限無しのスケジュール同士の場合は重複とみなす */
-                if (!"N".equals(ptn) && ptn.endsWith("N") && unlimited_repeat) {
+                if (!"N".equals(ptn) && ptn.endsWith("N") && unlimited_repeat) {// 新は(単体ではない&&期限なし)&&元は期限なし
                   existFacility = true;
                 } else {
                   Date _start_date = null;
@@ -3546,15 +3546,15 @@ public class ScheduleUtils {
 
                   if (!"N".equals(ptn)
                     && ptn.endsWith("N")
-                    && !unlimited_repeat) {
+                    && !unlimited_repeat) {// 新は(！単体&&制限なし)&&元は制限あり
                     _start_date = (Date) start_date.clone();
                     _end_date = (Date) end_date.clone();
                   } else if (("N".equals(ptn) || !ptn.endsWith("N"))
-                    && unlimited_repeat) {
+                    && unlimited_repeat) {// 新は(単体||制限あり)&&元は制限なし
                     _start_date = (Date) dbStartDate.clone();
                     _end_date = (Date) dbEndDate.clone();
                   } else if (("N".equals(ptn) || !ptn.endsWith("N"))
-                    && !unlimited_repeat) {
+                    && !unlimited_repeat) {// 新は(単体||制限あり)&&元は制限あり
 
                     if (dbStartDate.after(start_date)) {
                       _start_date = (Date) dbStartDate.clone();
@@ -3599,10 +3599,10 @@ public class ScheduleUtils {
                   cald.set(Calendar.SECOND, 0);
                   cald.set(Calendar.MINUTE, 0);
                   cald.set(Calendar.HOUR_OF_DAY, 0);
-                  Date ddate = cald.getTime();// ?
+                  Date ddate = cald.getTime();// _start_dateの時間
                   List<EipTSchedule> temp = null;
 
-                  if ("N".equals(repeat_pattern)) {
+                  if ("N".equals(repeat_pattern) || "S".equals(repeat_pattern)) {
                     /* 繰り返しスケジュールのうちひとつだけを移動した場合の処理 */
                     if ((_old_scheduleid != null) && (_old_viewDate != null)) {
                       if ((_old_scheduleid.intValue() == map
@@ -3631,7 +3631,8 @@ public class ScheduleUtils {
                       existFacility = true;
                       break;
                     }
-                  } else if (repeat_pattern.startsWith("D")) {
+                  } else if (repeat_pattern.startsWith("D")
+                    || "S".equals(repeat_pattern)) {
                     while (!ddate.after(_end_date)) {
                       if (matchDay(cald, ptn)) {
                         try {
@@ -3656,17 +3657,8 @@ public class ScheduleUtils {
                       cald.add(Calendar.DATE, 1);
                       ddate = cald.getTime();
                     }
-                  } /*
-                     * else if (repeat_pattern.startsWith("S")) {// 期間の場合を追加 try
-                     * { dexp3 = ExpressionFactory.matchExp(
-                     * EipTSchedule.START_DATE_PROPERTY, ddate); temp =
-                     * Database.query( EipTSchedule.class,
-                     * dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
-                     * if (temp == null || temp.size() <= 0) { existFacility =
-                     * true; break; } } catch (Exception e) {
-                     * logger.error("[DuplicateFacilityCheck]: ", e);
-                     * existFacility = true; break; } }
-                     */else if (repeat_pattern.startsWith("W")) {
+                  } else if (repeat_pattern.startsWith("W")
+                    || "S".equals(repeat_pattern)) {
                     /* ダミースケジュールを探す */
                     int wlen = week_array.length;
                     if (wlen < 1) {
@@ -3698,7 +3690,8 @@ public class ScheduleUtils {
                       cald.add(Calendar.DATE, 1);
                       ddate = cald.getTime();
                     }
-                  } else if (repeat_pattern.startsWith("M")) {
+                  } else if (repeat_pattern.startsWith("M")
+                    || "S".equals(repeat_pattern)) {
                     /* 比較開始日までカレンダー移動 */
                     cald.setTime(dbStartDate);
                     cald.set(Calendar.MILLISECOND, 0);
