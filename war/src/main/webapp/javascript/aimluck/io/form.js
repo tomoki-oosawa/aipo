@@ -1181,7 +1181,6 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 		    	   mpicker.onMemberCheck();
 		        });
 	    }
-
 	    li.innerHTML = "<label>"
 	      + input.outerHTML
 	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
