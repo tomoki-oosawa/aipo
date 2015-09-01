@@ -1126,7 +1126,7 @@ aimluck.io.createLists = function (ulId, params) {
       dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined") {
         } else {
-		  if(dojo.indexOf(init_member, p[key]) >= 0){
+		  if (dojo.indexOf(init_member, p[key]) != -1){
         	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html);
           } else {
         	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html);
@@ -1151,8 +1151,13 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	  }
 	  if (document.all) {
 	    var li = document.createElement("li");
+	    var input = document.createElement("input");
+	    input.type = "checkbox";
+	    input.value = value;
+	    input.name = text;
+	    input.checked = is_checked;
 	    li.innerHTML = "<label>"
-	      + "<input type=\"checkbox\" value=\"" + value + "\" name=\"" + text + "\" checked=\"" + is_checked + "\">"
+	      + input.outerHTML
 	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
 	      + "<span class=\"name\">" + text + "</span>"
 	      + child_html
@@ -1161,8 +1166,13 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	    return ul.appendChild(li);
 	  } else {
 		    var li = document.createElement("li");
+		    var input = document.createElement("input");
+		    input.type = "checkbox";
+		    input.value = value;
+		    input.name = text;
+		    input.checked = is_checked;
 		    li.innerHTML = "<label>"
-		      + "<input type=\"checkbox\" value=\"" + value + "\" name=\"" + text + "\" checked=\"" + is_checked + "\">"
+		      + input.outerHTML
 		      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
 		      + "<span class=\"name\">" + text + "</span>"
 		      + child_html
