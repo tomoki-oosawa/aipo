@@ -3165,7 +3165,7 @@ public class ScheduleUtils {
 
         limit_flag = repeat_pattern.substring(repeat_pattern.length() - 1);
 
-        week_0 = repeat_pattern.matches("W1.......");// return boolean
+        week_0 = repeat_pattern.matches("W1.......");
 
         week_1 = repeat_pattern.matches("W.1......");
 
@@ -3268,7 +3268,7 @@ public class ScheduleUtils {
           }
         }
 
-        { // 期間スケジュールの検索？
+        { // 期間スケジュールの検索
           Expression exp200 =
             ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
               + "."
@@ -3289,7 +3289,7 @@ public class ScheduleUtils {
                     + EipTSchedule.END_DATE_PROPERTY,
                   start_date);// EipTSchedule.END_DATE_PROPERTY > start_date
 
-              spanexp = exp200.andExp(exp201.andExp(exp202));// ここで期間の場合を追加？
+              spanexp = exp200.andExp(exp201.andExp(exp202));
 
             } else {
               spanexp = exp200;
@@ -3487,7 +3487,7 @@ public class ScheduleUtils {
                 }
               }
             } else if (ptn.charAt(0) == 'D') {// 毎日
-              if (ptn.charAt(1) == 'L') {// なんかしらの制限がある
+              if (ptn.charAt(1) == 'L') {
                 try {
                   if ((dbStartDate.before(end_date) && dbEndDate
                     .after(start_date))
@@ -3532,7 +3532,7 @@ public class ScheduleUtils {
               containtsRs = true;
             }
 
-            if (containtsRs) {//
+            if (containtsRs) {
               /* ここで時間の重複をチェック */
               int ss_flg = ScheduleUtils.compareTime(start_date, dbEndDate);
               int se_flg = ScheduleUtils.compareTime(end_date, dbStartDate);
@@ -3657,24 +3657,12 @@ public class ScheduleUtils {
                       ddate = cald.getTime();
                     }
                   } else if (repeat_pattern.startsWith("S")) {
-
-                    Date nsd = start_date;
-                    Date ned = end_date;
-                    Date sd = dbStartDate;
-                    Date ed = dbEndDate;
-
-                    cald.setTime(sd);
-                    cald.set(Calendar.MILLISECOND, 0);
-                    cald.set(Calendar.SECOND, 0);
-                    cald.set(Calendar.MINUTE, 0);
-                    cald.set(Calendar.HOUR_OF_DAY, 0);
-
-                    while (!sd.after(ned) || !ed.before(nsd)) {
+                    while (!ddate.after(_end_date)) {
                       try {
                         dexp3 =
                           ExpressionFactory.matchExp(
                             EipTSchedule.START_DATE_PROPERTY,
-                            sd);
+                            ddate);
                         temp =
                           Database.query(
                             EipTSchedule.class,
@@ -3689,10 +3677,7 @@ public class ScheduleUtils {
                         break;
                       }
                       cald.add(Calendar.DATE, 1);
-                      sd = cald.getTime();
-                    }
-                    if (ptn.equals("S")) {
-
+                      ddate = cald.getTime();
                     }
                   } else if (repeat_pattern.startsWith("W")) {
                     /* ダミースケジュールを探す */
@@ -3765,7 +3750,7 @@ public class ScheduleUtils {
                           temp =
                             Database.query(
                               EipTSchedule.class,
-                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
