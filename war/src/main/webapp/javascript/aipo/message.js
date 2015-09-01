@@ -854,7 +854,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-    var mpicker = dijit.byId("membernormalselect");
+    var mpicker = dijit.byId("memberfilterselect");
     if (mpicker) {
         var select = dojo.byId('init_memberlist');
         var i;

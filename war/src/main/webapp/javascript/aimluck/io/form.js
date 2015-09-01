@@ -1040,8 +1040,7 @@ aimluck.io.onBlurSearch = function(pid) {
 }
 
 aimluck.io.createLists = function (ulId, params) {
-  var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html;
-  var init_member = [];
+  var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html, name;
   if (params["url"]) {
     url = params["url"];
   }
@@ -1054,6 +1053,10 @@ aimluck.io.createLists = function (ulId, params) {
   if (typeof params["userId"] == "undefined") {
   } else {
 	  user_id = params["userId"];
+  }
+  if (typeof params["name"] == "undefined") {
+  } else {
+	  name = params["name"];
   }
   if (typeof params["image_flag"] == "undefined") {
   } else {
@@ -1074,16 +1077,6 @@ aimluck.io.createLists = function (ulId, params) {
   if (typeof params["selectedId"] == "undefined") {
   } else {
     sel = params["selectedId"];
-    var select = dojo.byId(sel);
-    var i;
-    if (select) {
-      var s_o = select.options;
-      if (s_o.length > 1){
-        for(i = 0 ; i < s_o.length; i ++ ) {
-      	  init_member[init_member.length] = s_o[i].value;
-        }
-      }
-    }
   }
   if (typeof params["preOptions"] == "undefined") {
   } else {
@@ -1115,21 +1108,36 @@ aimluck.io.createLists = function (ulId, params) {
       X_REQUESTED_WITH: "XMLHttpRequest"
     },
     load: function (response, ioArgs) {
+        //todo 別の初期化処理を用意
+    	   //   select.options.length = 0;
       var ul = dojo.byId(ulId);
-      //todo 別の初期化処理を用意
-   //   select.options.length = 0;
+      var init_member = [];
+      if (typeof sel == "undefined") {
+      } else {
+          var select = dojo.byId(sel);
+          var i;
+          if (select) {
+            var s_o = select.options;
+            if (s_o.length > 0){
+              for(i = 0 ; i < s_o.length; i ++ ) {
+            	  init_member[init_member.length] = s_o[i].value;
+              }
+            }
+          }
+      }
 
       if (typeof pre == "undefined") {
       } else {
-        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html);
+        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html, name);
       }
       dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined") {
         } else {
 		  if (dojo.indexOf(init_member, p[key]) != -1){
-        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+		    	console.log("true");
+        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html, name);
           } else {
-        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html, name);
           }
         }
       });
@@ -1143,19 +1151,20 @@ aimluck.io.createLists = function (ulId, params) {
   });
 }
 
-aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html) {
+aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html, name) {
 	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	  var img_src = default_image;
 	  if(has_photo){
 		  img_src = '?template=FileuploadFacePhotoScreen&uid=' + user_id + '&t=' + photo_modified;
 	  }
-	  if (document.all) {
 	    var li = document.createElement("li");
 	    var input = document.createElement("input");
 	    input.type = "checkbox";
 	    input.value = value;
-	    input.name = text;
-	    input.checked = is_checked;
+	    input.name = name;
+	    if(is_checked){
+	      input.setAttribute('checked', 'checked');
+	    }
 	    li.innerHTML = "<label>"
 	      + input.outerHTML
 	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
@@ -1164,20 +1173,4 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	      + "</label></li>";
 
 	    return ul.appendChild(li);
-	  } else {
-		    var li = document.createElement("li");
-		    var input = document.createElement("input");
-		    input.type = "checkbox";
-		    input.value = value;
-		    input.name = text;
-		    input.checked = is_checked;
-		    li.innerHTML = "<label>"
-		      + input.outerHTML
-		      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
-		      + "<span class=\"name\">" + text + "</span>"
-		      + child_html
-		      + "</label></li>";
-
-		    return ul.appendChild(li);
-	  }
 }

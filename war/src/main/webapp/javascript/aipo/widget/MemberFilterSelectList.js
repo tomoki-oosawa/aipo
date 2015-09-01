@@ -29,8 +29,6 @@ var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 dojo.declare("aipo.widget.MemberFilterSelectList", [dijit._Widget, dijit._Templated], {
     widgetId:"",
     memberFromId: "",
-    memberToId: "",
-    memberInitId: "",
     memberFromUrl: "",
     memberFromOptionKey: "",
     memberFromOptionValue: "",
@@ -38,6 +36,7 @@ dojo.declare("aipo.widget.MemberFilterSelectList", [dijit._Widget, dijit._Templa
     memberFromOptionImageFlag: "",
     memberFromOptionImageVersionParam: "",
     memberFromOptionDefaultImage: "",
+    memberToId: "",
     memberLimit: 0,
     groupSelectId: "",
     groupSelectPreOptionKey: "",
@@ -49,15 +48,16 @@ dojo.declare("aipo.widget.MemberFilterSelectList", [dijit._Widget, dijit._Templa
     childTemplateString: "",
     /*ユーザー選択部分のdiv要素*/
 //    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\" style=\"table-layout: fixed;\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix mb5\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.DELETEBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.ADDBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);\" value=\"\" name=\"\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul></div></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);\" value=\"\" name=\"\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
           value: this.memberFromOptionValue,
+          selectedId: this.memberToId,
+          name: this.memberFromId,
           userId: this.memberFromOptionUserId,
-          selectedId: this.memberInitId,
           image_flag: this.memberFromOptionImageFlag,
           image_version: this.memberFromOptionImageVersionParam,
           default_image: this.memberFromOptionDefaultImage,
@@ -72,6 +72,32 @@ dojo.declare("aipo.widget.MemberFilterSelectList", [dijit._Widget, dijit._Templa
           preOptions: { key:this.groupSelectPreOptionKey, value:this.groupSelectPreOptionValue }
         };
         aimluck.io.createOptions(this.groupSelectId, params);
+    },
+    addOption:function(select, value, text, is_selected) {
+      aimluck.io.addOption(select, value, text, is_selected);
+    },
+    addOptionSync:function(value, text, is_selected) {
+      var select = dojo.byId(this.memberToId);
+      if (this.memberLimit != 0 && select.options.length >= this.memberLimit) return;
+      if (document.all) {
+        var option = document.createElement("OPTION");
+        option.value = value;
+        option.text = text;
+        option.selected = is_selected;
+        if (select.options.length == 1 && select.options[0].value == ""){
+                select.options.remove(0);
+          }
+          select.add(option, select.options.length);
+      } else {
+        var option = document.createElement("OPTION");
+        option.value = value;
+        option.text = text;
+        option.selected = is_selected;
+        if (select.options.length == 1 && select.options[0].value == ""){
+            select.removeChild(select.options[0]);
+        }
+        select.insertBefore(option, select.options[select.options.length]);
+      }
     },
     changeGroup: function(select) {
       var group_name = select.target.options[select.target.selectedIndex].value;
