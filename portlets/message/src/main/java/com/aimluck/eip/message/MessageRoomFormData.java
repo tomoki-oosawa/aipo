@@ -108,6 +108,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     name = new ALStringField();
+    name.setFieldName(getl10n("MESSAGE_ROOM_NAME"));
     members = new ALStringField();
     members.setTrim(true);
     memberList = new ArrayList<ALEipUser>();
