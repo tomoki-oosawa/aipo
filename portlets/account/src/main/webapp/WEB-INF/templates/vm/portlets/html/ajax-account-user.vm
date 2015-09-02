@@ -30,10 +30,11 @@
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
 ##ユーザー名簿を落とすためのリンクをセット*******************************************
-#set ($listDownload = $!utils.escapeXML($jslink.PortletById('AccountUserListCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+#set ($listDownload = $!utils.escapeXML($jslink.PortletById('AccountUserListCsvExportScreen')))
 ##set ($listDownload = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListCsvExportScreen"))
 ##set($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
 ##**************************************************************************
+##$listDownload
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
 #set($currentRole = "")
 #else
