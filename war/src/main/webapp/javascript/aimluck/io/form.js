@@ -1132,15 +1132,15 @@ aimluck.io.createLists = function (ulId, params) {
 
       if (typeof pre == "undefined") {
       } else {
-        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html, name, clickEvent);
+        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html, name, sel, clickEvent);
       }
       dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined") {
         } else {
 		  if (dojo.indexOf(init_member, p[key]) != -1){
-        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, clickEvent);
+        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
           } else {
-        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, clickEvent);
+        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
           }
         }
       });
@@ -1154,7 +1154,7 @@ aimluck.io.createLists = function (ulId, params) {
   });
 }
 
-aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html, name, clickEvent) {
+aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html, name, memberTo, clickEvent) {
 	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	  var img_src = default_image;
 	  if(has_photo){
@@ -1169,18 +1169,7 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	    if(is_checked){
 	      input.setAttribute('checked', 'checked');
 	    }
-	    input.setAttribute('dojoAttachEvent', 'onclick:onMemberCheck');
-	    input.setAttribute('onclick', 'onMemberCheck');
-	    if (typeof clickEvent == "undefined") {
-	    } else {
-		       dojo.connect(input, "onclick", function(){
-		    	   clickEvent;
-		        });
-		       var mpicker = dijit.byId("memberfilterselect");
-		       dojo.connect(input, "onclick", function(){
-		    	   mpicker.onMemberCheck();
-		        });
-	    }
+	    input.setAttribute('onclick', 'aipo.widget.MemberFilterList.onMemberCheck(this, "' + text + '", "' + memberTo + '");'+ clickEvent);
 	    li.innerHTML = "<label>"
 	      + input.outerHTML
 	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
