@@ -1112,9 +1112,8 @@ aimluck.io.createLists = function (ulId, params) {
       X_REQUESTED_WITH: "XMLHttpRequest"
     },
     load: function (response, ioArgs) {
-        //todo 別の初期化処理を用意
-    	   //   select.options.length = 0;
       var ul = dojo.byId(ulId);
+      ul.innerHTML = "";
       var init_member = [];
       if (typeof sel == "undefined") {
       } else {
@@ -1165,11 +1164,12 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	    input.type = "checkbox";
 	    input.value = value;
 	    input.name = name;
-	    input.id = name + value;
+	    input.id = name + "_" + value;
 	    if(is_checked){
 	      input.setAttribute('checked', 'checked');
 	    }
-	    input.setAttribute('onclick', 'aipo.widget.MemberFilterList.onMemberCheck(this, "' + text + '", "' + memberTo + '");'+ clickEvent);
+	    input.setAttribute('data-name', text);
+	    input.setAttribute('onclick', 'aipo.widget.MemberFilterList.onMemberCheck(this, "' + memberTo + '");'+ clickEvent);
 	    li.innerHTML = "<label>"
 	      + input.outerHTML
 	      + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"

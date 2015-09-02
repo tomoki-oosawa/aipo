@@ -48,7 +48,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     childTemplateString: "",
     /*ユーザー選択部分のdiv要素*/
 //    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\" style=\"table-layout: fixed;\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix mb5\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.DELETEBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.ADDBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);\" value=\"\" name=\"\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);aipo.widget.MemberFilterList.allMemberCheck(this,'${memberFromId}','${memberToId}');${clickEvent}\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
         params = {
@@ -140,12 +140,95 @@ aipo.widget.MemberFilterList.setWrapperHeight = function(){
     }
 }
 
-aipo.widget.MemberFilterList.onMemberCheck = function(input, name, memberToId){
-	aipo.widget.MemberFilterList.changeMember(input, name, dojo.byId(memberToId));
+aipo.widget.MemberFilterList.onMemberCheck = function(checkbox, memberToId){
+	aipo.widget.MemberFilterList.changeMember(checkbox, dojo.byId(memberToId));
     aipo.widget.MemberFilterList.setWrapperHeight();
 }
 
-aipo.widget.MemberFilterList.changeMember = function(input, name, select_member_to) {
+aipo.widget.MemberFilterList.allMemberCheck = function(checkbox, memberFromId, memberToId){
+    if (checkbox.checked){
+    	aipo.widget.MemberFilterList.addAllMember(checkbox, memberFromId, dojo.byId(memberToId));
+    }else{
+    	aipo.widget.MemberFilterList.removeAllMember(dojo.byId(memberToId));
+    }
+    aipo.widget.MemberFilterList.setWrapperHeight();
+}
+
+aipo.widget.MemberFilterList.addAllMember = function(checkbox, memberFromId, select_member_to) {
+    if (document.all) {
+          var t_o = select_member_to.options;
+          for (i = 0; i < checkbox.form.elements.length; i++) {
+        	  input = checkbox.form.elements[i];
+              if (!input.disabled && input.type == "checkbox" && input.name == memberFromId) {
+              var iseq = false;
+
+              for( j = 0 ; j < t_o.length; j ++ ) {
+              if( t_o[j].value == input.value ) {
+                  iseq = true;
+                  break;
+              }
+              }
+
+              if(iseq) continue;
+              var option = document.createElement("OPTION");
+              option.value = input.value;
+              option.text = input.getAttribute("data-name");
+              option.selected = true;
+          if (t_o.length == 1 && t_o[0].value == ""){
+                  t_o.remove(0);
+          }
+              t_o.add(option, t_o.length);
+          }
+          }
+    } else {
+          var t_o = select_member_to.options;
+          for (i = 0; i < checkbox.form.elements.length; i++) {
+        	  input = checkbox.form.elements[i];
+              if (!input.disabled && input.type == "checkbox" && input.name == memberFromId) {
+              var iseq = false;
+
+              for( j = 0 ; j < t_o.length; j ++ ) {
+              if( t_o[j].value == input.value ) {
+                  iseq = true;
+                  break;
+              }
+              }
+
+              if(iseq) continue;
+              var option = document.createElement("OPTION");
+              option.value = input.value;
+              option.text = input.getAttribute("data-name");
+              option.selected = true;
+          if (select_member_to.options.length == 1 && select_member_to.options[0].value == ""){
+              select_member_to.removeChild(select_member_to.options[0]);
+          }
+              select_member_to.insertBefore(option, t_o[t_o.length]);
+          }
+          }
+    }
+}
+
+aipo.widget.MemberFilterList.removeAllMember = function(select) {
+  if (document.all) {
+    var t_o = select.options;
+      for(i = 0 ;i < t_o.length; i ++ ) {
+          if( t_o[i].selected ) {
+          t_o.remove(i);
+            i -= 1;
+        }
+        }
+  } else {
+    var t_o = select.options;
+      for(i = 0 ;i < t_o.length; i ++ ) {
+          if( t_o[i].selected ) {
+                select.removeChild(t_o[i]);
+            i -= 1;
+            }
+        }
+  }
+}
+
+aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
   if (document.all) {
       var t_o = select_member_to.options;
       if (input.value == "") return;
@@ -162,7 +245,7 @@ aipo.widget.MemberFilterList.changeMember = function(input, name, select_member_
           if(iseq) return;
           var option = document.createElement("OPTION");
           option.value = input.value;
-          option.text = name;
+          option.text = input.getAttribute("data-name");
           option.selected = true;
           if (t_o.length == 1 && t_o[0].value == ""){
               t_o.remove(0);
@@ -193,7 +276,7 @@ aipo.widget.MemberFilterList.changeMember = function(input, name, select_member_
             if(iseq) return;
             var option = document.createElement("OPTION");
             option.value = input.value;
-            option.text = name;
+            option.text = input.getAttribute("data-name");
             option.selected = true;
             if (select_member_to.options.length == 1 && select_member_to.options[0].value == ""){
               select_member_to.removeChild(select_member_to.options[0]);
