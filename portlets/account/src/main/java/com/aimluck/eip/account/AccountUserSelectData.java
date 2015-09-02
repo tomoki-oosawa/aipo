@@ -20,6 +20,7 @@ package com.aimluck.eip.account;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
@@ -35,11 +36,13 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.account.util.AccountUtils.FilterRole;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
+import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
@@ -49,6 +52,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.eventlog.util.EventlogUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.Operations;
@@ -66,6 +70,9 @@ public class AccountUserSelectData extends
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountUserSelectData.class.getName());
+
+  // 最大数を50,000に変更点
+  private static final int MAX_SIZE = 50000;
 
   /** 現在表示している部署 */
   protected String currentPost = "";
@@ -87,10 +94,12 @@ public class AccountUserSelectData extends
   /** <code>userid</code> ユーザーID */
   private int userid;
 
-  /**
-   * 初期化します。
-   *
-   */
+  private ALDateTimeField start_date, end_date;
+
+  private int start_date_max_day, end_date_max_day;
+
+  private int view_date_max_year;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -110,7 +119,29 @@ public class AccountUserSelectData extends
     // ログインユーザの ID を設定する．
     userid = ALEipUtils.getUserId(rundata);
 
+    // カレンダーを取得してみるよ
+    Calendar cal = Calendar.getInstance();
+    view_date_max_year = cal.get(Calendar.YEAR);
+
+    start_date = new ALDateTimeField();
+    cal = EventlogUtils.getViewCalendar(true, rundata, context);
+    start_date.setValue(cal.getTime());
+    start_date_max_day = cal.getActualMaximum(Calendar.DATE);
+
+    end_date = new ALDateTimeField();
+    cal = EventlogUtils.getViewCalendar(false, rundata, context);
+    end_date.setValue(cal.getTime());
+    end_date_max_day = cal.getActualMaximum(Calendar.DATE);
+
     super.init(action, rundata, context);
+  }
+
+  public int getStartDateMaxDay() {
+    return start_date_max_day;
+  }
+
+  public int getEndDateMaxDay() {
+    return end_date_max_day;
   }
 
   /**
@@ -127,8 +158,10 @@ public class AccountUserSelectData extends
       target_keyword.setValue(AccountUtils.getTargetKeyword(rundata, context));
 
       SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
+      // SelectQuery<EipTEventlog> query2 = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
+      buildSelectQueryForDate(query, rundata, context);
       ResultList<TurbineUser> list = query.getResultList();
 
       registeredUserNum = list.getTotalCount();
@@ -529,6 +562,27 @@ public class AccountUserSelectData extends
     return AccountUtils.getRoleMap();
   }
 
+  private SelectQuery<TurbineUser> getSelectQuery(
+      SelectQuery<TurbineUser> query, RunData rundata, Context context) {
+    SelectQuery<TurbineUser> query2 = Database.query(TurbineUser.class);
+    return buildSelectQueryForFilter(query, rundata, context);
+  }
+
+  void buildSelectQueryForDate(SelectQuery<TurbineUser> query, RunData rundata,
+      Context context) {
+    Expression exp1 =
+      ExpressionFactory.greaterOrEqualExp(
+        EipTEventlog.EVENT_DATE_PROPERTY,
+        start_date.getValue());
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(end_date.getValue());
+    cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+    Expression exp2 =
+      ExpressionFactory
+        .lessExp(EipTEventlog.EVENT_DATE_PROPERTY, cal.getTime());
+    query.andQualifier(exp1.andExp(exp2));
+  }
+
   /**
    * 登録ユーザー数を取得する．
    *
@@ -556,5 +610,18 @@ public class AccountUserSelectData extends
 
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  /**
+   * 初期化します。
+   *
+   */
+
+  public int getMaxSize() {
+    return MAX_SIZE;
+  }
+
+  public boolean isOverSize() {
+    return getCount() > MAX_SIZE;
   }
 }

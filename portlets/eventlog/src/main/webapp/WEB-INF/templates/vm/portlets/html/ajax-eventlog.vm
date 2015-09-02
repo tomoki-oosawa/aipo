@@ -69,13 +69,13 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','multi_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
+##ここがダウロードボタン埋め込み部分************************************************************************************
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
-
 #set($title = "$l10n.EVENTLOG_DOWNLOAD")
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
 
 ##AUIajaxbuttonAllDelete($l10n.EVENTLOG_ALL_DELETE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','EventlogFormJSONScreen').addQueryData('mode','all_delete')" "$!indicator_id" "$!portlet.ID" "aipo.eventlog.onReceiveMessage")
-
+##***************************************************************************************************************
 </div>
 #AUIajaxpageview('EventlogScreen' $result)
 #AUISummaryDivfooter()

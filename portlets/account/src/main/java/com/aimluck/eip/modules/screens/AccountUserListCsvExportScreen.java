@@ -20,13 +20,7 @@ package com.aimluck.eip.modules.screens;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.ListIterator;
-import java.util.Locale;
 
-import org.apache.cayenne.exp.Expression;
-import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -37,7 +31,6 @@ import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.EventlogResultData;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -101,51 +94,38 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
   protected String getCSVString(RunData rundata) throws Exception {
     if (ALEipUtils.isAdmin(rundata)) {
       SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
-
-      Date startDay =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("start_day"));
-      Date endDay =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("end_day"));
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(endDay);
-      cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
-      endDay = cal.getTime();
-      Expression exp1 =
-        ExpressionFactory.greaterOrEqualExp(
-          EipTEventlog.EVENT_DATE_PROPERTY,
-          startDay);
-      Expression exp2 =
-        ExpressionFactory.lessExp(EipTEventlog.EVENT_DATE_PROPERTY, endDay);
-      query.andQualifier(exp1.andExp(exp2));
-      ResultList<EipTEventlog> list = query.getResultList();
+      /*
+       * Date startDay = DateFormat.getDateInstance(DateFormat.DEFAULT,
+       * Locale.JAPAN).parse( rundata.getParameters().get("start_day")); Date
+       * endDay = DateFormat.getDateInstance(DateFormat.DEFAULT,
+       * Locale.JAPAN).parse( rundata.getParameters().get("end_day")); Calendar
+       * cal = Calendar.getInstance(); cal.setTime(endDay);
+       * cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1); endDay =
+       * cal.getTime(); Expression exp1 = ExpressionFactory.greaterOrEqualExp(
+       * EipTEventlog.EVENT_DATE_PROPERTY, startDay); Expression exp2 =
+       * ExpressionFactory.lessExp(EipTEventlog.EVENT_DATE_PROPERTY, endDay);
+       * query.andQualifier(exp1.andExp(exp2)); ResultList<EipTEventlog> list =
+       * query.getResultList();
+       */
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb =
           new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\",\"件名\"");
-        EventlogResultData data;
-        for (ListIterator<EipTEventlog> iterator =
-          list.listIterator(list.size()); iterator.hasPrevious();) {
-          sb.append(LINE_SEPARATOR);
-          data = getResultData(iterator.previous());
-          sb.append("\"");
-          sb.append(data.getEventDate());
-          sb.append("\",\"");
-          sb.append(data.getUserFullName());
-          sb.append("\",\"");
-          sb.append(data.getPortletName());
-          sb.append("\",\"");
-          sb.append(data.getEventName());
-          sb.append("\",\"");
-          sb.append(data.getIpAddr());
-          sb.append("\",\"");
-          sb.append(data.getNote());
-          sb.append("\"");
-        }
+        /*
+         * EventlogResultData data; for (ListIterator<EipTEventlog> iterator =
+         * list.listIterator(list.size()); iterator.hasPrevious();) {
+         * sb.append(LINE_SEPARATOR); data = getResultData(iterator.previous());
+         * sb.append("\""); sb.append(data.getEventDate()); sb.append("\",\"");
+         * sb.append(data.getUserFullName()); sb.append("\",\"");
+         * sb.append(data.getPortletName()); sb.append("\",\"");
+         * sb.append(data.getEventName()); sb.append("\",\"");
+         * sb.append(data.getIpAddr()); sb.append("\",\"");
+         * sb.append(data.getNote()); sb.append("\""); }
+         */
         return sb.toString();
+
       } catch (Exception e) {
-        logger.error("EventlogCsvExportScreen.getCSVString", e);
+        logger.error("AccountUserListCsvExportScreen.getCSVString", e);
         return null;
       }
     } else {

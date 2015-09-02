@@ -30,7 +30,9 @@
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
 ##ユーザー名簿を落とすためのリンクをセット*******************************************
-##set ($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+#set ($listDownload = $!utils.escapeXML($jslink.PortletById('AccountUserListCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+##set ($listDownload = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListCsvExportScreen"))
+##set($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
 ##**************************************************************************
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
 #set($currentRole = "")
@@ -115,8 +117,11 @@
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
 ##ここにボタンを追加***********************************************************
-#AUIajaxbuttonLink($l10n.ACCOUNT_USERS_LIST_DOWNLOAD $orderUser)
-##*******************************************************************
+##AUIajaxbuttonLink($l10n.ACCOUNT_USERS_LIST_DOWNLOAD $orderUser)
+#set($title = "$l10n.ACCOUNT_USERS_LIST_DOWNLOAD")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account.downloadCvn(${result.isOverSize()},${result.MaxSize},'$listDownload');" >$title</a>
+
+##*************************************************************************
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
