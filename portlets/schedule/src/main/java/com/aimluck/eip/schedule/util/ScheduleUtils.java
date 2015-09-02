@@ -2179,16 +2179,17 @@ public class ScheduleUtils {
         } else if ("Y".equals(repeat_type.getValue())) {
           // 毎年の繰り返し
           if (year_month.getValue() == 0 && isCellPhone) {
-            // 携帯画面用条件
+            // 携帯画面用条件（月が未入力）
             msgList.add(ALLocalizationUtils
               .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_MONTH"));
           } else {
             if (year_day.getValue() == 0 && isCellPhone) {
-              // 携帯画面用条件
+              // 携帯画面用条件（日が未入力）
               msgList.add(ALLocalizationUtils
                 .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
             } else {
-              year_month.validate(msgList); // 修正の必要多分有り
+              year_month.validate(msgList);
+              year_day.validate(msgList);
             }
           }
         }
@@ -2257,11 +2258,18 @@ public class ScheduleUtils {
                 + (week_4.getValue() != null ? 1 : 0)
                 + (week_5.getValue() != null ? 1 : 0)
                 + (week_6.getValue() != null ? 1 : 0);
-          } else {
+          } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
               new StringBuffer().append('M').append(
                 format.format(month_day.getValue())).append(lim).toString();
+            date_count = 1;
+          } else {
+            DecimalFormat format = new DecimalFormat("00");
+            repeat_pattern =
+              new StringBuffer().append('Y').append(
+                format.format(year_month.getValue())).append(
+                format.format(year_day.getValue())).append(lim).toString();
             date_count = 1;
           }
           // 開始時刻(期間初日)
