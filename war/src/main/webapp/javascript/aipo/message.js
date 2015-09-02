@@ -859,7 +859,6 @@ aipo.message.onLoadMessageRoomDialog = function() {
 };
 
 aipo.message.changeMember = function() {
-	console.log("aipo.message.changeMember");
     var node = dojo.byId("memberFieldDisplay");
     if (node) {
         var HTML = "";

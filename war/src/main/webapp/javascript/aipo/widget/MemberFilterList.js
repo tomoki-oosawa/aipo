@@ -30,12 +30,12 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     widgetId:"",
     memberFromId: "",
     memberFromUrl: "",
-    memberFromOptionKey: "",
-    memberFromOptionValue: "",
-    memberFromOptionUserId: "",
-    memberFromOptionImageFlag: "",
-    memberFromOptionImageVersionParam: "",
-    memberFromOptionDefaultImage: "",
+    memberFromOptionKey: "name",
+    memberFromOptionValue: "aliasName",
+    memberFromOptionUserId: "userId",
+    memberFromOptionImageFlag: "hasPhoto",
+    memberFromOptionImageVersionParam: "photoModified",
+    memberFromOptionDefaultImage: "themes/default/images/common/icon_user100.png",
     memberToId: "",
     clickEvent: "",
     groupSelectId: "",
@@ -48,7 +48,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     childTemplateString: "",
     /*ユーザー選択部分のdiv要素*/
 //    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\" style=\"table-layout: fixed;\"><tr><td><div id=\"memberPopupDiv\"><div class=\"outer\"><div class=\"popup\"><div class=\"clearfix\"><div class=\"memberlistToTop\" >${memberToTitle}</div><div class=\"memberlistFromTop\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select></div></div><div class=\"clearfix mb5\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.DELETEBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberRemoveClick\"></div></div><div class=\"memberlistFromBottom\"><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.ADDBTN_STR+"\"/ dojoAttachEvent=\"onclick:onMemberAddClick\"></div></div></div></div></div></div></td></tr></table></div>\n",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);\" value=\"\" name=\"\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"memberPopupDiv_ver3\"><select size=\"1\" style=\"width:100%\" name=\"${groupSelectId}\" id=\"${groupSelectId}\" dojoAttachEvent=\"onchange:changeGroup\"></select><div class=\"head\"><input type=\"checkbox\" onclick=\"aimluck.io.switchCheckbox(this);\" value=\"\" name=\"\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
         params = {
@@ -141,9 +141,6 @@ aipo.widget.MemberFilterList.setWrapperHeight = function(){
 }
 
 aipo.widget.MemberFilterList.onMemberCheck = function(input, name, memberToId){
-	console.log("onMemberCheck");
-	console.log(input);
-	console.log(name);
 	aipo.widget.MemberFilterList.changeMember(input, name, dojo.byId(memberToId));
     aipo.widget.MemberFilterList.setWrapperHeight();
 }
