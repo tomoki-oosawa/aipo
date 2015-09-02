@@ -3459,8 +3459,8 @@ public class ScheduleUtils {
             String ptn = map.getEipTSchedule().getRepeatPattern();
             if (ptn.charAt(0) == 'S') { // 期間スケジュール
               try {
-                if (dbStartDate.after(end_date)
-                  && dbEndDate.before(start_date)
+                if ((end_date.after(dbStartDate) && start_date
+                  .before(dbEndDate))
                   || unlimited_repeat) {
                   containtsRs = true;
                 }
