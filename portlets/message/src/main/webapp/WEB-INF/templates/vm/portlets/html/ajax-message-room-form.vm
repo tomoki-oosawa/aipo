@@ -63,29 +63,44 @@
 <div id="memberField">
 <table class="none">
   <tr><td>
-    <div dojoType="aipo.widget.MemberFilterSelectList"
-        id="memberfilterselect"
-        widgetId="memberfilterselect"
-        memberFromId="tmp_member_from"
-        memberToId="member_to"
-        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
-        memberFromOptionKey="name"
-        memberFromOptionValue="aliasName"
-        memberFromOptionUserId="userId"
-        memberFromOptionImageFlag="hasPhoto"
-        memberFromOptionImageVersionParam="photoModified"
-        memberFromOptionDefaultImage="themes/default/images/common/icon_user100.png"
-        clickEvent="aipo.message.changeMember()"
-        childTemplateString="<select class='floatRight'><option>---</option><option>管理者</option><option>参加者</option></select>"
-        groupSelectId="tmp_group"
-        groupSelectPreOptionKey="LoginUser"
-        groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"
-        groupSelectOptionKey="groupId"
-        groupSelectOptionValue="name"
-        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
-        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group')">
-    </div>
+  	<div id="memberfilterlist"><div class="memberPopupDiv_ver3">
+  		<select size="1" style="width:100%" name="tmp_group" id="tmp_group" onchange="aipo.widget.MemberFilterList.changeGroup(this, 'tmp_member_from')"></select>
+  		<div class="head">
+  			<input type="checkbox" onclick="aimluck.io.switchCheckbox(this);"></div>
+  		<div style="display: none;" id="memberfilterlist-memberlist-indicator" class="indicator alignleft">読み込み中</div>
+  		<ul class="memberPopupList" id="tmp_member_from"></ul>
+  		<select style="display:none" name="member_to" id="member_to"></select></div></div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+<script type="text/javascript">
+//<![CDATA[
+
+dojo.addOnLoad(function() {
+    var params1 = {
+      url: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')",
+      key: "name",
+      value: "aliasName",
+      clickEvent: "aipo.message.changeMember()",
+      selectedId: "member_to",
+      name: "tmp_member_from",
+      userId: "userId",
+      image_flag: "hasPhoto",
+      image_version: "photoModified",
+      default_image: "themes/default/images/common/icon_user100.png",
+      child_html: "<select class='floatRight'><option>---</option><option>管理者</option><option>参加者</option></select>",
+      indicator: "memberfilterlist-memberlist-indicator"
+    };
+    var params2 = {
+          url: "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')",
+          key: "groupId",
+          value: "name",
+          preOptions: { key:"LoginUser", value:"$l10n.MESSAGE_ALL_GROUP" }
+    };
+    aipo.widget.MemberFilterList.init("tmp_member_from", params1, "tmp_group", params2);
+});
+
+
+//]]>
+</script>
   </td></tr>
 </table>
 </div>

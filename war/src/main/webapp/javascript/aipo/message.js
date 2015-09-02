@@ -854,17 +854,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-    var mpicker = dijit.byId("memberfilterselect");
-    if (mpicker) {
-        var select = dojo.byId('init_memberlist');
-        var i;
-        var s_o = select.options;
-        if (s_o.length == 1 && s_o[0].value == "")
-            return;
-        for (i = 0; i < s_o.length; i++) {
-            mpicker.addOptionSync(s_o[i].value, s_o[i].text, true);
-        }
-    }
+	aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
     aipo.message.changeMember();
 };
 
