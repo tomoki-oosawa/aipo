@@ -316,38 +316,43 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     } else if (ptn.charAt(0) == 'W') {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
-      switch (dow) {
-      // 日
-        case Calendar.SUNDAY:
-          result = ptn.charAt(1) != '0';
-          break;
-        // 月
-        case Calendar.MONDAY:
-          result = ptn.charAt(2) != '0';
-          break;
-        // 火
-        case Calendar.TUESDAY:
-          result = ptn.charAt(3) != '0';
-          break;
-        // 水
-        case Calendar.WEDNESDAY:
-          result = ptn.charAt(4) != '0';
-          break;
-        // 木
-        case Calendar.THURSDAY:
-          result = ptn.charAt(5) != '0';
-          break;
-        // 金
-        case Calendar.FRIDAY:
-          result = ptn.charAt(6) != '0';
-          break;
-        // 土
-        case Calendar.SATURDAY:
-          result = ptn.charAt(7) != '0';
-          break;
-        default:
-          result = false;
-          break;
+      int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+      if (ptn.charAt(8) == 'N'
+        || ptn.charAt(8) == 'L'
+        || dowim == Character.getNumericValue(ptn.charAt(8))) {
+        switch (dow) {
+        // 日
+          case Calendar.SUNDAY:
+            result = ptn.charAt(1) != '0';
+            break;
+          // 月
+          case Calendar.MONDAY:
+            result = ptn.charAt(2) != '0';
+            break;
+          // 火
+          case Calendar.TUESDAY:
+            result = ptn.charAt(3) != '0';
+            break;
+          // 水
+          case Calendar.WEDNESDAY:
+            result = ptn.charAt(4) != '0';
+            break;
+          // 木
+          case Calendar.THURSDAY:
+            result = ptn.charAt(5) != '0';
+            break;
+          // 金
+          case Calendar.FRIDAY:
+            result = ptn.charAt(6) != '0';
+            break;
+          // 土
+          case Calendar.SATURDAY:
+            result = ptn.charAt(7) != '0';
+            break;
+          default:
+            result = false;
+            break;
+        }
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
