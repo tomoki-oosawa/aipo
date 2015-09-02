@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 週間スケジュールの検索結果を管理するクラスです。
- * 
+ *
  */
 public class CellScheduleWeekSelectData extends
     ALAbstractSelectData<List<EipTScheduleMap>, List<EipTScheduleMap>> {
@@ -230,22 +230,29 @@ public class CellScheduleWeekSelectData extends
         for (int l = 0; l < 7; l++) {
           if (pattern.charAt(l + 1) == '1') {
             int index = (l - cal.get(Calendar.DAY_OF_WEEK) + 7 + 1) % 7;
-            Calendar cal2 = Calendar.getInstance();
-            cal2.setTime(startDate.getValue());
-            cal2.add(Calendar.DAY_OF_MONTH, index);
-            if (pattern.endsWith("L")) {
-              if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-                cal2.add(Calendar.DAY_OF_MONTH, 1);
-                if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                  List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                  list2.add(list.get(k));
-                  scheduleMapList.set(index, list2);
+            Calendar cal3 = Calendar.getInstance();
+            cal3.setTime(cal.getTime());
+            cal3.add(Calendar.DAY_OF_MONTH, -(7 - index));
+            if (pattern.length() == 9
+              || cal3.get(Calendar.DAY_OF_WEEK_IN_MONTH) == Character
+                .getNumericValue(pattern.charAt(8))) {
+              Calendar cal2 = Calendar.getInstance();
+              cal2.setTime(startDate.getValue());
+              cal2.add(Calendar.DAY_OF_MONTH, index);
+              if (pattern.endsWith("L")) {
+                if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
+                  cal2.add(Calendar.DAY_OF_MONTH, 1);
+                  if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
+                    List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                    list2.add(list.get(k));
+                    scheduleMapList.set(index, list2);
+                  }
                 }
+              } else {
+                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                list2.add(list.get(k));
+                scheduleMapList.set(index, list2);
               }
-            } else {
-              List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-              list2.add(list.get(k));
-              scheduleMapList.set(index, list2);
             }
           }
         }
