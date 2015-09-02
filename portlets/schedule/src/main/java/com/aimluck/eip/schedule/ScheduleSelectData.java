@@ -458,6 +458,15 @@ public class ScheduleSelectData extends
           Integer.parseInt(ptn.substring(1, 3))).append(
           ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 3;
+        // 毎年
+      } else if (ptn.charAt(0) == 'Y') {
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+          Integer.parseInt(ptn.substring(3, 5))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         rd.setSpan(true);
@@ -697,7 +706,7 @@ public class ScheduleSelectData extends
 
   /**
    * ログインユーザーのIDかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */
