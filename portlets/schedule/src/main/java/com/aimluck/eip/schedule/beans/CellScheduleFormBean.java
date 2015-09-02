@@ -222,6 +222,18 @@ public class CellScheduleFormBean implements ALData {
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
     month_day.limitValue(1, 31);
 
+    // 毎年繰り返し月（選択されたときのみ Validate する）
+    year_month = new ALCellNumberField();
+    year_month.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_MONTH"));
+    month_day.limitValue(1, 12);
+
+    // 毎年繰り返し日（選択されたときのみ Validate する）
+    year_day = new ALCellNumberField();
+    year_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
+    month_day.limitValue(1, 31);
+
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
     limit_flag.setFieldName(ALLocalizationUtils

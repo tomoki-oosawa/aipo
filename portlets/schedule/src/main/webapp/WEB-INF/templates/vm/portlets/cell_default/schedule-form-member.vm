@@ -50,6 +50,9 @@
 #if ($!{result.FormData.Week6.toString()} == "TRUE") <input type="hidden" name="week_6" value="TRUE"> #end
 #elseif ($!{result.FormData.RepeatType.toString()} == "M")
 <input type="hidden" name="month_day" value="$!{result.FormData.MonthDay}">
+#elseif ($!{result.FormData.RepeatType.toString()} == "Y")
+<input type="hidden" name="year_month" value="$!{result.FormData.YearMonth}">
+<input type="hidden" name="year_day" value="$!{result.FormData.YearDay}">
 #end
 <input type="hidden" name="limit_flag" value="$!{result.FormData.LimitFlag.toString()}">
 #if($!{result.FormData.LimitFlag.toString()} == "ON")

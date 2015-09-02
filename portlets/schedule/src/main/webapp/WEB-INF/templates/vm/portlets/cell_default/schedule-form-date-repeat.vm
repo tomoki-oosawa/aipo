@@ -43,9 +43,9 @@ $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 </BLOCKQUOTE>
 <input name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
-<hr size="1">
 <input name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
-<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 3 2 '' 'n') $l10n.SCHEDULE_MONTH</BLOCKQUOTE>
+<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH</BLOCKQUOTE>
+<BLOCKQUOTE>#ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
@@ -69,9 +69,8 @@ $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 </BLOCKQUOTE>
 <input name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
-<hr size="1">
 <input name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
-<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 3 2 '' 'n') $l10n.SCHEDULE_MONTH</BLOCKQUOTE>
+<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
