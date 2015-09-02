@@ -317,7 +317,7 @@ public class CellScheduleFormBean implements ALData {
       repeat_type.setValue("Y");
       year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
       year_day.setValue(Integer.parseInt(ptn.substring(3, 5)));
-      count = 3;
+      count = 5;
     } else if (ptn.charAt(0) == 'S') {
       is_span = true;
       is_repeat = false;

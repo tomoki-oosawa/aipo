@@ -927,7 +927,7 @@ public class ScheduleUtils {
       int yday = Integer.parseInt(ptn.substring(3, 5));
       int month = Integer.parseInt(date.getMonth());
       int day = Integer.parseInt(date.getDay());
-      if (ymonth == month || yday == day) {
+      if (ymonth == month && yday == day) {
         result = true;
         count = 5;
       }
@@ -3221,6 +3221,9 @@ public class ScheduleUtils {
           week_5 = (dow == Calendar.FRIDAY);
           week_6 = (dow == Calendar.SATURDAY);
           month_day = cal.get(Calendar.DAY_OF_MONTH);
+          year_month = cal.get(Calendar.MONTH);
+          year_day = cal.get(Calendar.DAY_OF_YEAR);
+
         } else if (repeat_pattern.endsWith("N")) {
           unlimited_repeat = true;
         }
@@ -3261,6 +3264,7 @@ public class ScheduleUtils {
         Expression rwexp = null;
         // Expression rwlexp = null;
         Expression rmexp = null;
+        Expression ryexp = null;
 
         { // １日スケジュールの検索
           Expression exp100 =
@@ -3407,6 +3411,28 @@ public class ScheduleUtils {
             }
           }
 
+          { // "Y".equals(repeat_type.getValue())
+            if (year_day > 0 && year_month > 0) { // 毎年、もしくは単体の場合
+              DecimalFormat exG = new DecimalFormat("00");
+              String ym_str = exG.format(year_month);
+              String yd_str = exG.format(year_day);
+
+              ryexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "Y" + ym_str + yd_str + "_");
+            } else {
+              ryexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "Y_____");
+            }
+          }
+
           Expression repeatexp = oneexp;
           if (rdexp != null) {
             repeatexp = repeatexp.orExp(rdexp);
@@ -3416,6 +3442,9 @@ public class ScheduleUtils {
           }
           if (rmexp != null) {
             repeatexp = repeatexp.orExp(rmexp);
+          }
+          if (ryexp != null) {
+            repeatexp = repeatexp.orExp(ryexp);
           }
           fquery.andQualifier(repeatexp);
         }
@@ -3497,6 +3526,20 @@ public class ScheduleUtils {
               }
             } else if (ptn.charAt(0) == 'M') {
               if (ptn.charAt(3) == 'L') {
+                try {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
+                    containtsRs = true;
+                  }
+                } catch (Exception e) {
+                  containtsRs = false;
+                }
+              } else {
+                containtsRs = true;
+              }
+            } else if (ptn.charAt(0) == 'Y') {
+              if (ptn.charAt(5) == 'L') {
                 try {
                   if ((dbStartDate.before(end_date) && dbEndDate
                     .after(start_date))
@@ -3730,6 +3773,69 @@ public class ScheduleUtils {
                       }
                       ddate = cald.getTime();
                     }
+                  } else if (repeat_pattern.startsWith("Y")) {
+                    /* 比較開始日までカレンダー移動 */
+                    cald.setTime(dbStartDate);
+                    cald.set(Calendar.MILLISECOND, 0);
+                    cald.set(Calendar.SECOND, 0);
+                    cald.set(Calendar.MINUTE, 0);
+                    cald.set(Calendar.HOUR_OF_DAY, 0);
+
+                    if (year_month > 0 && year_day > 0) {
+                      cald.set(Calendar.MONTH, year_month);
+                      cald.set(Calendar.DAY_OF_YEAR, year_day);
+                    } else {
+                      continue;
+                    }
+                    Date tmp_date = cald.getTime();
+                    while (tmp_date.before(ddate)) {
+                      cald.add(Calendar.MONTH, 1);
+                      /* 月によって日にちがないときのための処理 */
+                      while (year_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                        cald.add(Calendar.MONTH, 1);
+                        cald.set(Calendar.DAY_OF_MONTH, year_day);
+                        if (tmp_date.before(tmp_date)) {
+                          break;
+                        }
+                      }
+                      tmp_date = cald.getTime();
+                    }
+                    ddate = tmp_date;
+                    /* 比較開始 */
+                    while (!ddate.after(_end_date)) {
+                      if (matchDay(cald, ptn)) {
+                        try {
+                          dexp3 =
+                            ExpressionFactory.matchExp(
+                              EipTSchedule.START_DATE_PROPERTY,
+                              ddate);
+                          temp =
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                          if (temp == null || temp.size() <= 0) {
+                            existFacility = true;
+                            break;
+                          }
+                        } catch (Exception e) {
+                          logger.error("[DuplicateFacilityCheck]: ", e);
+                          existFacility = true;
+                          break;
+                        }
+                      }
+                      cald.add(Calendar.MONTH, 1);
+                      /* 月によって日にちがないときのための処理 */
+                      while (year_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
+                        cald.add(Calendar.MONTH, 1);
+                        cald.set(Calendar.DAY_OF_MONTH, year_day);
+                        if (!ddate.after(_end_date)) {
+                          break;
+                        }
+                      }
+                      ddate = cald.getTime();
+                    }
                   } else {
                     continue;
                   }
@@ -3758,6 +3864,13 @@ public class ScheduleUtils {
       int month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
       return (month_day == ptn_day);
+    }
+    if (repeat_ptn.startsWith("Y")) {
+      int year_month = Integer.parseInt(repeat_ptn.substring(1, 3));
+      int year_day = Integer.parseInt(repeat_ptn.substring(3, 5));
+      int ptn_month = cal.get(Calendar.MONTH);
+      int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
+      return (year_day == ptn_day && year_month == ptn_month);
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       if (dow == Calendar.SUNDAY) {
