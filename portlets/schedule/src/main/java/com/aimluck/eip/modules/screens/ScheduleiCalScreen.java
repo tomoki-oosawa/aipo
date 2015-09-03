@@ -180,6 +180,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         recur.getMonthDayList().add(mday);
         count = 3;
+      } else if (ptn.charAt(0) == 'Y') {
+        recur = new Recur(Recur.YEARLY, null);
+        int ymonth = Integer.parseInt(ptn.substring(1, 3));
+        int yday = Integer.parseInt(ptn.substring(3, 5));
+        recur.getMonthList().add(ymonth);
+        recur.getMonthDayList().add(yday);
+        count = 5;
       }
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
@@ -353,6 +360,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     } else if (ptn.charAt(0) == 'M') {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = cal.get(Calendar.DATE) == mday;
+    } else if (ptn.charAt(0) == 'Y') {
+      int ymonth = Integer.parseInt(ptn.substring(1, 3));
+      int yday = Integer.parseInt(ptn.substring(3, 5));
+      result =
+        (cal.get(Calendar.MONTH) == ymonth) && (cal.get(Calendar.DATE) == yday);
     } else {
       return true;
     }

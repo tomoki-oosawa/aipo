@@ -3065,6 +3065,7 @@ public class ScheduleUtils {
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
     // MnnN M25 -> 毎月25日
+    // YnnmmN Y0825N ->　毎年8月25日
     // S -> 期間での指定
     String ptn = schedule.getRepeatPattern();
     int count = 0;
@@ -3108,6 +3109,16 @@ public class ScheduleUtils {
         .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
         .toString();
       count = 3;
+      // 期間
+    } else if (ptn.charAt(0) == 'Y') {
+      result
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE"))
+        .append(Integer.parseInt(ptn.substring(1, 3)))
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
+        .append(Integer.parseInt(ptn.substring(3, 5)))
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+        .toString();
+      count = 5;
       // 期間
     } else if (ptn.charAt(0) == 'S') {
       is_span = true;

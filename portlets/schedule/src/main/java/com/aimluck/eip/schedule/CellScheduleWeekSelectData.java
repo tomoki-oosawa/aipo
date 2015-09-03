@@ -282,7 +282,7 @@ public class CellScheduleWeekSelectData extends
           }
         }
       } else if (pattern.startsWith("Y")) {
-        int day = Integer.parseInt(pattern.substring(3, pattern.length() - 1));
+        int day = Integer.parseInt(pattern.substring(3, 5));
         int month = Integer.parseInt(pattern.substring(1, 3));
         Calendar cal2 = Calendar.getInstance();
         Calendar cal_event = Calendar.getInstance();
@@ -291,17 +291,18 @@ public class CellScheduleWeekSelectData extends
         cal2.set(Calendar.MONTH, month);
         cal_event.setTime(startDate.getValue());
 
-        int index = (day - cal_event.get(Calendar.DAY_OF_YEAR));
+        int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
         if (index < 0) {
-          index += cal_event.getActualMaximum(Calendar.DAY_OF_YEAR);
-          cal2.add(Calendar.MONTH, 1);
+          index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
+          cal2.add(Calendar.YEAR, 1);
         }
         if (index >= 0
           && index <= 6
-          && cal_event.getActualMaximum(Calendar.DAY_OF_YEAR) >= day) {
+          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day
+          && cal_event.getActualMaximum(Calendar.MONTH) >= month) {
           if (pattern.endsWith("L")) {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-              cal2.add(Calendar.DAY_OF_YEAR, 1);
+              cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
                 List<EipTScheduleMap> list2 = scheduleMapList.get(index);
                 list2.add(list.get(k));
@@ -315,6 +316,7 @@ public class CellScheduleWeekSelectData extends
           }
         }
       }
+
     }
 
     // ダミースケジュールの処理
