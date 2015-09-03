@@ -193,11 +193,19 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             .append(form_data.getWeek6().getValue() != null ? 1 : 0)
             .append(lim)
             .toString());
-        } else {
+        } else if ("M".equals(form_data.getRepeatType().getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer()
             .append('M')
             .append(format.format(form_data.getMonthDay().getValue()))
+            .append(lim)
+            .toString());
+        } else {
+          DecimalFormat format = new DecimalFormat("00");
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('Y')
+            .append(format.format(form_data.getYearMonth().getValue()))
+            .append(format.format(form_data.getYearDay().getValue()))
             .append(lim)
             .toString());
         }
@@ -558,11 +566,19 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             .append(form_data.getWeek6().getValue() != null ? 1 : 0)
             .append(lim)
             .toString());
-        } else {
+        } else if ("M".equals(form_data.getRepeatType().getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer()
             .append('M')
             .append(format.format(form_data.getMonthDay().getValue()))
+            .append(lim)
+            .toString());
+        } else {
+          DecimalFormat format = new DecimalFormat("00");
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('Y')
+            .append(format.format(form_data.getYearMonth().getValue()))
+            .append(format.format(form_data.getYearDay().getValue()))
             .append(lim)
             .toString());
         }
@@ -1054,11 +1070,19 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
                 .append(lim)
                 .toString();
             schedule.setRepeatPattern(tmpPattern);
-          } else {
+          } else if ("M".equals(form_data.getRepeatType().getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer()
               .append('M')
               .append(format.format(form_data.getMonthDay().getValue()))
+              .append(lim)
+              .toString());
+          } else {
+            DecimalFormat format = new DecimalFormat("00");
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('Y')
+              .append(format.format(form_data.getYearMonth().getValue()))
+              .append(format.format(form_data.getYearDay().getValue()))
               .append(lim)
               .toString());
           }
