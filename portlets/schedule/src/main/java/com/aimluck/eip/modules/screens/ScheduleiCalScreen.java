@@ -149,7 +149,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         recur = new Recur(Recur.DAILY, null);
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W') {
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
         recur = new Recur(Recur.WEEKLY, null);
         if (ptn.charAt(1) != '0') {
           recur.getDayList().add(WeekDay.SU);
@@ -173,6 +173,31 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           recur.getDayList().add(WeekDay.SA);
         }
         count = 8;
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+        recur = new Recur(Recur.MONTHLY, null);
+        int offset = Character.getNumericValue(ptn.charAt(8));
+        if (ptn.charAt(1) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.SU, offset));
+        }
+        if (ptn.charAt(2) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.MO, offset));
+        }
+        if (ptn.charAt(3) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.TU, offset));
+        }
+        if (ptn.charAt(4) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.WE, offset));
+        }
+        if (ptn.charAt(5) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.TH, offset));
+        }
+        if (ptn.charAt(6) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.FR, offset));
+        }
+        if (ptn.charAt(7) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.SA, offset));
+        }
+        count = 9;
       } else if (ptn.charAt(0) == 'M') {
         recur = new Recur(Recur.MONTHLY, null);
         int mday = Integer.parseInt(ptn.substring(1, 3));
