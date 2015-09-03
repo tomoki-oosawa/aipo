@@ -83,6 +83,7 @@ function androidLocale(){
 #else
 <script type="text/javascript">
   djConfig = {
+    isDebug: true,
     cacheBust: '$!{utils.CacheBust}',
     siteTitle: '$!{alias}'
 	#if($!utils.isAndroid2Browser($data)) ,locale: androidLocale() #end

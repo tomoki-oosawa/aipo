@@ -1039,7 +1039,7 @@ aimluck.io.onBlurSearch = function(pid) {
     }
 }
 
-aimluck.io.createLists = function (ulId, params) {
+aimluck.io.createMemberLists = function (ulId, params) {
   var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html, name, clickEvent;
   if (params["url"]) {
     url = params["url"];
@@ -1131,15 +1131,15 @@ aimluck.io.createLists = function (ulId, params) {
 
       if (typeof pre == "undefined") {
       } else {
-        aimluck.io.addUserList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html, name, sel, clickEvent);
+        aimluck.io.addMemberList(ul, pre["key"], pre["value"], false, false, "", "", default_image, child_html, name, sel, clickEvent);
       }
       dojo.forEach(response, function (p) {
         if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined") {
         } else {
 		  if (dojo.indexOf(init_member, p[key]) != -1){
-        	aimluck.io.addUserList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
+        	aimluck.io.addMemberList(ul, p[key], p[value], true, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
           } else {
-        	aimluck.io.addUserList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
+        	aimluck.io.addMemberList(ul, p[key], p[value], false, p[image_flag], p[user_id], p[image_version], default_image, child_html, name, sel, clickEvent);
           }
         }
       });
@@ -1153,7 +1153,7 @@ aimluck.io.createLists = function (ulId, params) {
   });
 }
 
-aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html, name, memberTo, clickEvent) {
+aimluck.io.addMemberList = function (ul, value, text, is_checked, has_photo, user_id, photo_modified, default_image, child_html, name, memberTo, clickEvent) {
 	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	  var img_src = default_image;
 	  if(has_photo){
@@ -1177,5 +1177,101 @@ aimluck.io.addUserList = function (ul, value, text, is_checked, has_photo, user_
 	      + child_html
 	      + "</label></li>";
 
+	    return ul.appendChild(li);
+}
+
+aimluck.io.createGroupLists = function (ulId, params) {
+  var sel, pre, key, value, url, ind, callback, callbackTarget, widgetId;
+  if (params["url"]) {
+    url = params["url"];
+  }
+  if (params["key"]) {
+    key = params["key"];
+  }
+  if (params["value"]) {
+    value = params["value"];
+  }
+  if (typeof params["widgetId"] == "undefined") {
+  } else {
+	  widgetId = params["widgetId"];
+  }
+  if (typeof params["selectedId"] == "undefined") {
+  } else {
+    sel = params["selectedId"];
+  }
+  if (typeof params["preOptions"] == "undefined") {
+  } else {
+    pre = params["preOptions"];
+  }
+  if (typeof params["indicator"] == "undefined") {
+  } else {
+    ind = params["indicator"];
+    var indicator = dojo.byId(ind);
+    if (indicator) {
+      dojo.style(indicator, "display", "none");
+    }
+  }
+  if (typeof params["callback"] == "undefined") {
+  } else {
+    callback = params["callback"];
+    if (typeof params["callbackTarget"] == "undefined") {
+    } else {
+      callbackTarget = params["callbackTarget"];
+    }
+  }
+
+  dojo.xhrGet({
+    url: url,
+    timeout: 10000,
+    encoding: "utf-8",
+    handleAs: "json-comment-filtered",
+    headers: {
+      X_REQUESTED_WITH: "XMLHttpRequest"
+    },
+    load: function (response, ioArgs) {
+      var ul = dojo.byId(ulId);
+      ul.innerHTML = "";
+
+      if (typeof pre == "undefined") {
+      } else {
+          if (pre["key"] == sel) {
+              aimluck.io.addGroupList(ul, pre["key"], pre["value"], true, widgetId);
+            } else {
+              aimluck.io.addGroupList(ul, pre["key"], pre["value"], false, widgetId);
+            }
+      }
+      dojo.forEach(response, function (p) {
+        if (typeof p[key] == "undefined" || typeof p[value] == "undefined") {
+        } else {
+          if (p[key] == sel) {
+            aimluck.io.addGroupList(ul, p[key], p[value], true, widgetId);
+          } else {
+            aimluck.io.addGroupList(ul, p[key], p[value], false, widgetId);
+          }
+        }
+      });
+      if (indicator) {
+        dojo.style(indicator, "display", "none");
+      }
+      if (callback) {
+        callback.call(callbackTarget ? callbackTarget : callback, response);
+      }
+    }
+  });
+}
+
+aimluck.io.addGroupList = function (ul, value, text, is_selected, widgetId) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	    var li = document.createElement("li");
+	    li.setAttribute('data-param', value);
+	    var a = document.createElement("a");
+	    a.href = "javascript:void(0)";
+	    a.text = text;
+	    if(is_selected){
+	        dojo.addClass(li, "selected");
+	        dojo.addClass(a, "selected");
+		}
+	    a.setAttribute('onclick', 'dijit.byId("' + widgetId + '").changeGroup(this, "' + value + '", "' + text + '");');
+	    li.appendChild(a);
 	    return ul.appendChild(li);
 }
