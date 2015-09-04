@@ -18,17 +18,13 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
+import com.aimluck.eip.account.AccountResultData;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALPermissionException;
-import com.aimluck.eip.eventlog.EventlogResultData;
 import com.aimluck.eip.eventlog.util.ALEventlogUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -60,20 +56,19 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
    * @param obj
    * @return
    */
-  protected EventlogResultData getResultData(EipTEventlog record) {
+  protected AccountResultData getResultData(TurbineUser record) {
     try {
-      DateFormat df = new SimpleDateFormat("yyyy年MM月dd日(EE)HH:mm:ss");
+      // DateFormat df = new SimpleDateFormat("yyyy年MM月dd日(EE)HH:mm:ss");
 
-      EventlogResultData rd = new EventlogResultData();
+      AccountResultData rd = new AccountResultData();
       rd.initField();
-      rd.setEventlogId(record.getEventlogId().longValue());
+      rd.setUserName(record.getFirstName());
 
       TurbineUser user = record.getTurbineUser();
 
       rd.setUserFullName(user == null ? "" : new StringBuffer().append(
         user.getLastName()).append(" ").append(user.getFirstName()).toString());
 
-      rd.setEventDate(df.format(record.getUpdateDate()));
       rd.setPortletName(ALEventlogUtils.getPortletAliasName(record
         .getPortletType()));
       rd.setEntityId(record.getEntityId().longValue());
@@ -93,7 +88,7 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
     if (ALEipUtils.isAdmin(rundata)) {
-      SelectQuery<EipTEventlog> query = Database.query(EipTEventlog.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       /*
        * Date startDay = DateFormat.getDateInstance(DateFormat.DEFAULT,
        * Locale.JAPAN).parse( rundata.getParameters().get("start_day")); Date
@@ -102,17 +97,18 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
        * cal = Calendar.getInstance(); cal.setTime(endDay);
        * cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1); endDay =
        * cal.getTime(); Expression exp1 = ExpressionFactory.greaterOrEqualExp(
-       * EipTEventlog.EVENT_DATE_PROPERTY, startDay); Expression exp2 =
-       * ExpressionFactory.lessExp(EipTEventlog.EVENT_DATE_PROPERTY, endDay);
-       * query.andQualifier(exp1.andExp(exp2)); ResultList<EipTEventlog> list =
+       * TurbineUser.EVENT_DATE_PROPERTY, startDay); Expression exp2 =
+       * ExpressionFactory.lessExp(TurbineUser.EVENT_DATE_PROPERTY, endDay);
+       * query.andQualifier(exp1.andExp(exp2)); ResultList<TurbineUser> list =
        * query.getResultList();
        */
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb =
           new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\",\"件名\"");
+        AccountResultData data;
         /*
-         * EventlogResultData data; for (ListIterator<EipTEventlog> iterator =
+         * for (ListIterator<TurbineUser> iterator =
          * list.listIterator(list.size()); iterator.hasPrevious();) {
          * sb.append(LINE_SEPARATOR); data = getResultData(iterator.previous());
          * sb.append("\""); sb.append(data.getEventDate()); sb.append("\",\"");
@@ -135,7 +131,7 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return "eventlog.csv";
+    return "Aipo_users.csv";
   }
 
 }

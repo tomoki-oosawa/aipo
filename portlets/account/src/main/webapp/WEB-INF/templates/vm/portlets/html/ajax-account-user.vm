@@ -30,9 +30,9 @@
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
 ##ユーザー名簿を落とすためのリンクをセット*******************************************
-#set ($listDownload = $!utils.escapeXML($jslink.PortletById('AccountUserListCsvExportScreen')))
+#set ($listDownload = $!utils.escapeXML($jslink.getTemplate('AccountUserListCsvExportScreen')))
 ##set ($listDownload = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserListCsvExportScreen"))
-##set($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
+##set ($listDownload = $!utils.escapeXML($jslink.getTemplate('EventlogCsvExportScreen').addQueryData('start_day',$!{result.StartDate}).addQueryData('end_day',$!{result.EndDate}) ))
 ##**************************************************************************
 ##$listDownload
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
@@ -120,7 +120,7 @@
 ##ここにボタンを追加***********************************************************
 ##AUIajaxbuttonLink($l10n.ACCOUNT_USERS_LIST_DOWNLOAD $orderUser)
 #set($title = "$l10n.ACCOUNT_USERS_LIST_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account.downloadCvn(${result.isOverSize()},${result.MaxSize},'$listDownload');" >$title</a>
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account_user.downloadCvn(${result.isOverSize()},${result.MaxSize},'$listDownload');" >$title</a>
 
 ##*************************************************************************
 </div>

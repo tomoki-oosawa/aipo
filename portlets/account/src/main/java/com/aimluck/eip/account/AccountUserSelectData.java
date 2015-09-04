@@ -42,7 +42,6 @@ import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.account.util.AccountUtils.FilterRole;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.portlet.EipTEventlog;
 import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
@@ -161,7 +160,7 @@ public class AccountUserSelectData extends
       // SelectQuery<EipTEventlog> query2 = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
       buildSelectQueryForListViewSort(query, rundata, context);
-      buildSelectQueryForDate(query, rundata, context);
+      // buildSelectQueryForDate(query, rundata, context);
       ResultList<TurbineUser> list = query.getResultList();
 
       registeredUserNum = list.getTotalCount();
@@ -562,27 +561,12 @@ public class AccountUserSelectData extends
     return AccountUtils.getRoleMap();
   }
 
-  private SelectQuery<TurbineUser> getSelectQuery(
-      SelectQuery<TurbineUser> query, RunData rundata, Context context) {
-    SelectQuery<TurbineUser> query2 = Database.query(TurbineUser.class);
-    return buildSelectQueryForFilter(query, rundata, context);
-  }
-
-  void buildSelectQueryForDate(SelectQuery<TurbineUser> query, RunData rundata,
-      Context context) {
-    Expression exp1 =
-      ExpressionFactory.greaterOrEqualExp(
-        EipTEventlog.EVENT_DATE_PROPERTY,
-        start_date.getValue());
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(end_date.getValue());
-    cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
-    Expression exp2 =
-      ExpressionFactory
-        .lessExp(EipTEventlog.EVENT_DATE_PROPERTY, cal.getTime());
-    query.andQualifier(exp1.andExp(exp2));
-  }
-
+  /*
+   * private SelectQuery<TurbineUser> getSelectQuery( SelectQuery<TurbineUser>
+   * query, RunData rundata, Context context) { SelectQuery<TurbineUser> query2
+   * = Database.query(TurbineUser.class); return
+   * buildSelectQueryForFilter(query, rundata, context); }
+   */
   /**
    * 登録ユーザー数を取得する．
    *

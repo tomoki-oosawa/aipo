@@ -44,6 +44,8 @@ public class AccountResultData implements ALData {
   /** 名前 */
   private ALStringField name;
 
+  private ALStringField user_full_name;
+
   /** フリガナ（名前） */
   private ALStringField name_kana;
 
@@ -631,5 +633,8 @@ public class AccountResultData implements ALData {
   public boolean isNewPhotoSpec() {
     return this.is_new_photo_spec;
   }
+
+  public void setUserFullName(String string) {
+    user_full_name.setValue(string);
 
 }
