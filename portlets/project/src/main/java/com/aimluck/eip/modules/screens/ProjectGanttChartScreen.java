@@ -18,15 +18,11 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.project.ProjectTaskSelectData;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -52,8 +48,6 @@ public class ProjectGanttChartScreen extends ProjectScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
 
-      clearSessionData(rundata, context);
-
       ProjectTaskSelectData listData = new ProjectTaskSelectData();
       listData.initField();
       listData.setRowsNum(Integer.parseInt(ALEipUtils.getPortlet(
@@ -68,17 +62,6 @@ public class ProjectGanttChartScreen extends ProjectScreen {
       logger.error("[ProjectGanttChartScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
-  }
-
-  private void clearSessionData(RunData rundata, Context context) {
-    List<String> list = new ArrayList<String>();
-    list.add(new StringBuilder().append(
-      ProjectTaskSelectData.class.getSimpleName()).append(
-      ALEipConstants.LIST_SORT).toString());
-    list.add(new StringBuilder().append(
-      ProjectTaskSelectData.class.getSimpleName()).append(
-      ALEipConstants.LIST_SORT_TYPE).toString());
-    ALEipUtils.removeTemp(rundata, context, list);
   }
 
 }
