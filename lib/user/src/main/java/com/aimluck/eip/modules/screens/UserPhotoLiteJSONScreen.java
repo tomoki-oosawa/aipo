@@ -49,6 +49,7 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
 
     try {
 
+      String keyword = rundata.getParameters().getString("keyword");
       String mode = rundata.getParameters().getString("mode");
       if ("group".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
@@ -61,11 +62,16 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
           JSONArray.fromObject(UserUtils.getUserPhotoLiteBeansFromGroup(
             rundata,
             groupname,
-            include_loginuser));
+            include_loginuser,
+            keyword));
       } else if ("group_loginname".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
         List<UserPhotoLiteBean> users =
-          UserUtils.getUserPhotoLiteBeansFromGroup(rundata, groupname, false);
+          UserUtils.getUserPhotoLiteBeansFromGroup(
+            rundata,
+            groupname,
+            false,
+            keyword);
         List<UserPhotoLiteBean> outputs = new ArrayList<UserPhotoLiteBean>();
         for (UserPhotoLiteBean datarow : users) {
           UserPhotoLiteBean user = datarow;

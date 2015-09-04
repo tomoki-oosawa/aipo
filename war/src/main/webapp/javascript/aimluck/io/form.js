@@ -1040,7 +1040,7 @@ aimluck.io.onBlurSearch = function(pid) {
 }
 
 aimluck.io.createMemberLists = function (ulId, params) {
-  var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html, name, clickEvent, widgetId;
+  var sel, pre, key, value, url, ind, callback, callbackTarget, user_id, image_flag, image_version, default_image, child_html, name, clickEvent, widgetId, keyword;
   if (params["url"]) {
     url = params["url"];
   }
@@ -1105,6 +1105,14 @@ aimluck.io.createMemberLists = function (ulId, params) {
     } else {
       callbackTarget = params["callbackTarget"];
     }
+  }
+  if (typeof params["keyword"] == "undefined") {
+  } else {
+	  keyword = params["keyword"];
+	    var target_keyword = dojo.byId(keyword);
+	    if (target_keyword) {
+	      url = url+"&keyword=" + target_keyword.value;
+	    }
   }
 
   dojo.xhrGet({

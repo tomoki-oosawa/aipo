@@ -46,7 +46,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     memberGroupUrl: "",
     changeGroupUrl: "",
     childTemplateString: "",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"auiSummaryMeta auiFilter clearfix\"><div class=\"filters floatLeft\" id=\"filters_${widgetId}\" ><a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\"  onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\"><span id=\"tlDisplayGroup_${widgetId}\"></span></a><a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\"  onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\" style=\"display:none;\"><span id=\"tlDisplayView_${widgetId}\" data-param=\"0\">未選択</span></a></div><div class=\"auiSummarySearch floatRight\"><div class=\"auiSearch gray\" name=\"timelineSearchForm\" id=\"\"><input type=\"text\" onblur=\"\" onfocus=\"\" value=\"\" name=\"keyword\" placeholder=\"ユーザー検索\"><button type=\"button\"><i class=\"icon-search\"></i></button></div></div></div><div class=\"menubar multi\" id=\"menubar_auiFilter_${widgetId}\" style=\"width:260px;display:none; \"><div><p class=\"caption\">グループ</p><ul class=\"filtertype filtertype_${widgetId}\" data-type=\"post\" data-defaultparam=\"0\" id=\"${groupSelectId}\"></ul></div><div><p class=\"caption\">表示</p><ul class=\"filtertype filtertype_${widgetId}\" data-type=\"view\" data-defaultparam=\"0\"><li data-param=\"0\" class=\"selected\"><a href=\"javascript:void(0);\" class=\"selected\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">すべて</a></li><li data-param=\"1\"><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">選択済み</a></li><li data-param=\"2\"><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">未選択</a></li></ul></div></div><div class=\"memberPopupDiv_ver3\"><div class=\"head\"><input type=\"checkbox\" id=\"tmp_head_checkbox_${widgetId}\" onclick=\"aipo.widget.MemberFilterList.allMemberCheck(this,'${memberFromId}','${memberToId}','${widgetId}');${clickEvent}\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"auiSummaryMeta auiFilter clearfix\"><div class=\"filters floatLeft\" id=\"filters_${widgetId}\" ><a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\"  onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\"><span id=\"tlDisplayGroup_${widgetId}\"></span></a><a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\"  onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\" style=\"display:none;\"><span id=\"tlDisplayView_${widgetId}\" data-param=\"0\">未選択</span></a></div><div class=\"auiSummarySearch floatRight\"><div class=\"auiSearch gray\" name=\"timelineSearchForm\" id=\"\"><input type=\"text\" value=\"\" name=\"${widgetId}-keyword\" id=\"${widgetId}-keyword\" placeholder=\"ユーザー検索\" onkeydown=\"return aipo.widget.MemberFilterList.filteredSearchCheck(arguments[0], '${widgetId}')\"><button type=\"button\" dojoAttachEvent=\"onclick:filteredSearch\"><i class=\"icon-search\"></i></button></div></div></div><div class=\"menubar multi\" id=\"menubar_auiFilter_${widgetId}\" style=\"width:260px;display:none; \"><div><p class=\"caption\">グループ</p><ul class=\"filtertype filtertype_${widgetId}\" data-type=\"post\" data-defaultparam=\"0\" id=\"${groupSelectId}\"></ul></div><div><p class=\"caption\">表示</p><ul class=\"filtertype filtertype_${widgetId}\" data-type=\"view\" data-defaultparam=\"0\"><li data-param=\"0\" class=\"selected\"><a href=\"javascript:void(0);\" class=\"selected\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">すべて</a></li><li data-param=\"1\"><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">選択済み</a></li><li data-param=\"2\"><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\">未選択</a></li></ul></div></div><div class=\"memberPopupDiv_ver3\"><div class=\"head\"><input type=\"checkbox\" id=\"tmp_head_checkbox_${widgetId}\" onclick=\"aipo.widget.MemberFilterList.allMemberCheck(this,'${memberFromId}','${memberToId}','${widgetId}');${clickEvent}\"></div><div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div><ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul><select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
         params = {
@@ -62,6 +62,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           default_image: this.memberFromOptionDefaultImage,
           child_html: this.childTemplateString,
           widgetId: this.widgetId,
+          keyword: this.widgetId + "-keyword",
           indicator: this.widgetId + "-memberlist-indicator"
         };
         aimluck.io.createMemberLists(this.memberFromId, params);
@@ -74,7 +75,17 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           widgetId: this.widgetId,
         };
         aimluck.io.createGroupLists(this.groupSelectId, params);
-        aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, this.groupSelectPreOptionValue);
+        aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, this.groupSelectPreOptionKey, this.groupSelectPreOptionValue);
+    },
+    filteredSearch: function() {
+    	var group_name = dojo.byId("tlDisplayGroup_"+this.widgetId).getAttribute("data-param");
+    	var group_name_text = dojo.byId("tlDisplayGroup_"+this.widgetId).getAttribute("data-name");
+    	var ul = dojo.byId(this.groupSelectId);
+    	var as =dojo.query("a.selected",ul);
+        var spans = dojo.query(".auiButtonDisabled", form);
+        if(as.length > 0){
+    	  this.changeGroup(as[0], group_name, group_name_text);
+        }
     },
     changeGroup: function(node, group_name, group_name_text) {
       var url = this.changeGroupUrl+"&groupname="+group_name;
@@ -91,13 +102,14 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
               default_image: this.memberFromOptionDefaultImage,
               child_html: this.childTemplateString,
               widgetId: this.widgetId,
+              keyword: this.widgetId + "-keyword",
               indicator: this.widgetId + "-memberlist-indicator"
       };
       aimluck.io.createMemberLists(this.memberFromId, params);
       var li=node.parentNode;
       var ul=li.parentNode;
       aipo.widget.MemberFilterList.filterSelect(ul, li, node);
-      aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, group_name_text);
+      aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, group_name, group_name_text);
     }
 });
 /**
@@ -377,8 +389,10 @@ aipo.widget.MemberFilterList.filterSelect = function(ul,li,a){
  * @param ul
  * @param li
  */
-aipo.widget.MemberFilterList.filterSelectDisplay = function(widgetId, name){
+aipo.widget.MemberFilterList.filterSelectDisplay = function(widgetId, key, name){
 	dojo.byId("tlDisplayGroup_"+widgetId).innerHTML = name;
+	dojo.byId("tlDisplayGroup_"+widgetId).setAttribute("data-param", key);
+	dojo.byId("tlDisplayGroup_"+widgetId).setAttribute("data-name", name);
 }
 
 /**
@@ -463,39 +477,15 @@ aipo.widget.MemberFilterList.filterCheckedMember = function(checkbox, widgetId, 
               }
           }
     }
-
-
-
 }
-/**
- * urlを整形して送信。
- */
-aipo.widget.MemberFilterList.filteredSearch=function(portlet_id){
-	//filtertype
-
-	var baseuri=dojo.byId("baseuri_"+portlet_id).value;
-
-	var types=[];
-	var params=[];
-	dojo.query("ul.filtertype_"+portlet_id).forEach(function(ul){
-			//console.info(ul);
-			var type=ul.getAttribute("data-type");
-			types.push(type);
-
-			var activeli=dojo.query("li.selected",ul)[0];
-			if(activeli){
-				var param=activeli.getAttribute("data-param");
-				params.push(param);
-			}else{
-				params.push(ul.getAttribute("data-defaultparam"));
-			}
-		}
-	);
-	var q=dojo.byId("q"+portlet_id);
-	var qs=[["filter",params.join(",")],
-	        ["filtertype",types.join(",")],
-		["keyword",q?q.value:""]
-	];
-	aipo.viewPage(baseuri,portlet_id,qs);
-};
+aipo.widget.MemberFilterList.filteredSearchCheck =  function(e, widgetId) {
+	var widget = dijit.byId(widgetId);
+	if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+    	    if (widget) {
+    	  widget.filteredSearch();
+    	      }
+    	return false;
+      }
+    return true;
+}
 }
