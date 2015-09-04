@@ -104,8 +104,7 @@ public class AccountUserListCsvExportScreen extends ALCSVScreen {
        */
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
-        StringBuffer sb =
-          new StringBuffer("\"日時\",\"名前\",\"機能名\",\"操作\",\"接続IP\",\"件名\"");
+        StringBuffer sb = new StringBuffer("\"ユーザー名\",\"名前\",\"部署名\",\"役職名\"");
         AccountResultData data;
         /*
          * for (ListIterator<TurbineUser> iterator =
