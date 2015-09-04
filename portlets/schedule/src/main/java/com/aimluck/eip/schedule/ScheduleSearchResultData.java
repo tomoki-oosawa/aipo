@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールの検索データを管理するクラスです。
- * 
+ *
  */
 public class ScheduleSearchResultData extends ScheduleResultData {
 
@@ -101,7 +101,7 @@ public class ScheduleSearchResultData extends ScheduleResultData {
 
   /**
    * 時刻まではチェックしない。
-   * 
+   *
    * @return 年・月・日が等しいならtrue
    */
   public boolean isStartDayEqualsEndDay() {

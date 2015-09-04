@@ -42,7 +42,6 @@ $!{result.ViewStartFormat} $!{result.ViewStart.DayOfWeek} - $!{result.ViewEndFor
 <a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("view_start",$!{result.NextMonth.toString()}))', '$!portlet.ID');" title="$l10n.SCHEDULE_NEXT_MONTH">
 <img src="images/schedule/schedule_nextmonth.gif" border="0" alt="$l10n.SCHEDULE_NEXT_MONTH" /></a>&nbsp;
 </td></tr></tbody></table>
-
 #ALformheader($l10n.SCHEDULE_SCHEDULE $jslink $portlet)
 #ALtableheaderCalendar("100%")
 #set($entityids = "")

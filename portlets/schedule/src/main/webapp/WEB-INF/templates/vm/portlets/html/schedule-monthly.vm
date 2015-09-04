@@ -268,7 +268,6 @@ $!{record.ToDoResultData.TodoName}
 </tr>
 #end
 #end
-
 <tr>
 #foreach($record in $record4.DayList)
 #set ($color_style = "")

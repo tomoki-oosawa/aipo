@@ -20,7 +20,6 @@
 <div class="auiSummaryMeta auiMultiSelector clearfix" >
 <div class="floatRight mb_hide">
 <div class="auiSelectButton">
-
 #if (${client}!= "IPHONE")
 <ul>
 #set($tab = ["$l10n.SCHEDULE_BLOCK", "calendar","$!jslink.getPortletById($!portlet.ID).addQueryData('template',$!{schedulescreen}).addQueryData('tab','calendar')"])
@@ -124,6 +123,11 @@
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
 #end
+
+#if($termcolcount == 0)
+#set($termcolcount = ${result.getFacilityTermResultDataList($record3.UserId.Value).size()})
+#end
+
 #if($todocolcount < ${result.getToDoResultDataList($record3.UserId.Value).size()})
 #set($todocolcount = ${result.getToDoResultDataList($record3.UserId.Value).size()})
 #end
@@ -156,7 +160,6 @@
 #end
 </tr>
 #foreach($record3 in $result.MemberList)
-
 #if($result.isDuplicate())
 #set($duplirowcount = ${result.getDuplicateScheduleListRowCount($record3.UserId.Value)})
 #if($duplirowcount > 0)
@@ -348,7 +351,6 @@ $record.WbrName
 ### 設備スケジュール表示（ここから） ###
 #set($duplirowcount = 0)
 #set($colspanmax = $!{result.Max} + 1)
-
 #foreach($record3 in $result.FacilityList)
 #if($result.isDuplicate())
 #set($duplirowcount = ${result.getFacilityDuplicateScheduleListRowCount($record3.FacilityId.Value)})

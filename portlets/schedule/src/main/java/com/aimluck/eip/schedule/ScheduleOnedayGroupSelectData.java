@@ -67,7 +67,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * １日スケジュール（グループ）の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
@@ -77,6 +77,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleOnedayResultData>> termmap;
+
+  /** <code>termmap</code> 設備期間スケジュールマップ 9.4 */
+  private Map<Integer, List<ScheduleOnedayResultData>> facilitytermmap;
 
   /** <code>map</code> スケジュールMap */
   private Map<Integer, ScheduleOnedayContainer> map;
@@ -128,7 +131,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   private TurbineGroup target_group_name;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -158,6 +161,10 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     viewtype = "oneday-group";
     try {
       termmap = new LinkedHashMap<Integer, List<ScheduleOnedayResultData>>();
+
+      facilitytermmap =
+        new LinkedHashMap<Integer, List<ScheduleOnedayResultData>>();
+
       map = new LinkedHashMap<Integer, ScheduleOnedayContainer>();
       todomap = new LinkedHashMap<Integer, List<ScheduleToDoResultData>>();
       facilitymap = new LinkedHashMap<Integer, ScheduleOnedayContainer>();
@@ -379,14 +386,15 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
     // グループ名からユーザを取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
-
+    List<Integer> flist = getFacilityIdAllList();// 使われたFacilityIdだけ取り出す？
     // グループにユーザが存在しない場合はダミーユーザを設定し、検索します。(0件ヒット)
     // ダミーユーザーID = -1
-    int size = ulist.size();
-    if (size == 0) {
+    int usize = ulist.size();
+    int fsize = flist.size();
+    if (usize == 0) {
       ulist.add(Integer.valueOf(-1));
     } else {
-      for (int i = 0; i < size; i++) {
+      for (int i = 0; i < usize; i++) {
         Integer id = ulist.get(i);
         ScheduleOnedayContainer con = new ScheduleOnedayContainer();
         con.initField();
@@ -394,6 +402,19 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         this.termmap.put(id, new ArrayList<ScheduleOnedayResultData>());
         this.map.put(id, con);
         this.todomap.put(id, new ArrayList<ScheduleToDoResultData>());
+      }
+    }
+    if (fsize == 0) {
+      flist.add(Integer.valueOf(-1));
+    } else {
+      for (int i = 0; i < fsize; i++) {
+        Integer fid = flist.get(i);
+        ScheduleOnedayContainer con = new ScheduleOnedayContainer();
+        con.initField();
+        con.initHour(startHour, endHour);
+        this.facilitytermmap
+          .put(fid, new ArrayList<ScheduleOnedayResultData>());
+        this.todomap.put(fid, new ArrayList<ScheduleToDoResultData>());
       }
     }
 
@@ -521,7 +542,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -609,6 +630,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       if (rd.getPattern().equals("S")) {
         is_hasspan = true;
         List<ScheduleOnedayResultData> terms = termmap.get(record.getUserId());
+        if (terms == null) {
+          terms = facilitytermmap.get(record.getUserId());
+        }
         if (terms != null) {
           // 期間スケジュールを格納
           terms.add(rd);
@@ -635,7 +659,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -650,7 +674,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -666,7 +690,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * スケジュールの一日コンテナの各rows値の中で、最大値を取得します。
-   * 
+   *
    * @param list
    */
   private int[] getMaxRowsFromContainer(Collection<ScheduleOnedayContainer> list) {
@@ -691,7 +715,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 検索後の処理を行います。
-   * 
+   *
    */
   private void postDoList() {
     int userRows[] = getMaxRowsFromContainer(map.values());
@@ -820,7 +844,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定した時間のcolspanを取得します。
-   * 
+   *
    * @param hour
    * @return
    */
@@ -841,7 +865,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定したスケジュールのcolspanを取得します。
-   * 
+   *
    * @param hour
    * @return
    */
@@ -866,7 +890,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 期間スケジュールを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -877,7 +901,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定したユーザーのスケジュールリストを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -888,7 +912,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定したユーザーのrowsを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -904,7 +928,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定したユーザーの重複スケジュールリストを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -920,7 +944,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 部署マップを取得します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -929,7 +953,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -938,7 +962,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getGroupList() {
@@ -947,7 +971,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 施設のグループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getFacilitiyGroupList() {
@@ -956,7 +980,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定したユーザーが自ユーザーかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -966,7 +990,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * colspanの最大値を返します。
-   * 
+   *
    * @return
    */
   public int getMax() {
@@ -975,7 +999,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 期間スケジュールがあるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean isHasspan() {
@@ -984,7 +1008,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * ポートレット MyGroup へのリンクを取得する．
-   * 
+   *
    * @return
    */
   public String getMyGroupURI() {
@@ -993,7 +1017,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 期間スケジュールリストを取得する.
-   * 
+   *
    * @param id
    * @return
    */
@@ -1002,8 +1026,18 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   }
 
   /**
+   * 設備期間スケジュールリストを取得する.
+   *
+   * @param id
+   * @return
+   */
+  public List<ScheduleOnedayResultData> getFacilityTermResultDataList(long id) {
+    return facilitytermmap.get(Integer.valueOf((int) id));
+  }
+
+  /**
    * ToDo リストを取得する.
-   * 
+   *
    * @param id
    * @return
    */
@@ -1022,7 +1056,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定した施設のスケジュールリストを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1042,7 +1076,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定した設備のrowsを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1053,7 +1087,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /**
    * 指定した設備の重複スケジュールリストを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -1070,7 +1104,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
