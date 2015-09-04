@@ -854,7 +854,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-	aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
+    aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
     aipo.message.changeMember();
 };
 

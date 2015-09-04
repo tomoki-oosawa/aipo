@@ -63,7 +63,7 @@
 <div id="memberField">
 <table class="none">
   <tr><td>
-  	    <div dojoType="aipo.widget.MemberFilterList"
+    <div dojoType="aipo.widget.MemberFilterList"
         id="memberfilterlist"
         widgetId="memberfilterlist"
         memberFromId="tmp_member_from"
