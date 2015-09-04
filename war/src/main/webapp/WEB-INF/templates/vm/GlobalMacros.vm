@@ -2036,3 +2036,44 @@ $utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="dis
 ## Aipo Note Portlet End
 ##
 ## ---------------------------------------------------------------------------
+
+
+#macro (ALOnedayLink $portletID $filter $record $class)
+#if($!isMaximize)
+#set ($screen = 'ScheduleListScreen')
+#else
+#set ($screen = 'ScheduleScreen')
+#end
+#ALtdheadheaderAtt("class='$class' nowrap='nowrap'")
+<a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_start",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","group"))', '$portletID');">
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+</a>
+#end
+
+#macro (ALOnedayLinkFacility $portletID $filter $record $class)
+#if($!isMaximize)
+#set ($screen = 'ScheduleListScreen')
+#else
+#set ($screen = 'ScheduleScreen')
+#end
+#ALtdheadheaderAtt("class='$class' nowrap='nowrap'")
+<a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_start",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","facilitygroup"))', '$portletID');">
+$!{record.Date.Day} $!{record.Date.DayOfWeek}
+</a>
+#end
+
+#macro (ALMonthlyOnedayLink $portletID $filter $record)
+#if($!isMaximize)
+#set ($screen = 'ScheduleListScreen')
+#else
+#set ($screen = 'ScheduleScreen')
+#end
+<a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_start",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","group"))', '$portletID');">
+$!{record.Date.Day}
+</a>
+#end
+
+#macro (ALMonthlyCalendarOnedayLink $portletID $filter $record)
+#set ($screen = 'ScheduleListScreen')
+<a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_start",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","group"))', '$portletID');">$!{record.Date.Day}</a>
+#end
