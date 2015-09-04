@@ -455,6 +455,7 @@ aipo.widget.MemberFilterList.filterCheckedMemberSync = function(checkbox, param)
   	  }
 
 }
+
 /**
  * 選択・未選択のみ表示切り替え
  * @param ul
@@ -478,13 +479,17 @@ aipo.widget.MemberFilterList.filterCheckedMember = function(checkbox, widgetId, 
           }
     }
 }
+
+/**
+ * 検索キーワード入力時イベント
+ */
 aipo.widget.MemberFilterList.filteredSearchCheck =  function(e, widgetId) {
-	var widget = dijit.byId(widgetId);
-	if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
-    	    if (widget) {
-    	  widget.filteredSearch();
-    	      }
-    	return false;
+    var widget = dijit.byId(widgetId);
+    if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+        if (widget) {
+          widget.filteredSearch();
+        }
+        return false;
       }
     return true;
 }
