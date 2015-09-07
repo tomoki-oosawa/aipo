@@ -167,7 +167,10 @@ aipo.widget.MemberFilterList.setWrapperHeight = function(){
 }
 
 /**
- * メンバーチェック
+ * 参加メンバー追加/削除チェックボックス
+ * クリック時アクション
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.onMemberCheck = function(checkbox, memberToId, widgetId, memberFromId){
 	aipo.widget.MemberFilterList.changeMember(checkbox, dojo.byId(memberToId));
@@ -273,6 +276,9 @@ aipo.widget.MemberFilterList.removeAllMember = function(select) {
 
 /**
  * メンバー選択状態切り替え
+ * チェックボックス押下状態により、id="select_member_to"のselectタグ追加・削除処理
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
   if (document.all) {
@@ -373,9 +379,11 @@ aipo.widget.MemberFilterList.toggleMenu = function (node,filters,event){
 
 
 /**
- * フィルタを選択した時に発生させるイベント　フィルタの選択状態切り替え
+ * フィルタを選択した時に発生させるイベント　部署/表示のフィルタの選択状態切り替え
  * @param ul
  * @param li
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filterSelect = function(ul,li,a){
 	dojo.query("li",ul).removeClass("selected");
@@ -385,9 +393,11 @@ aipo.widget.MemberFilterList.filterSelect = function(ul,li,a){
 }
 
 /**
- * フィルタを選択した時に発生させるイベント　フィルタ選択名表示
+ * フィルタを選択した時に発生させるイベント　部署/表示のフィルタの選択状態切り替えに伴う表示用テキスト切り替え
  * @param ul
  * @param li
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filterSelectDisplay = function(widgetId, key, name){
 	dojo.byId("tlDisplayGroup_"+widgetId).innerHTML = name;
@@ -399,11 +409,13 @@ aipo.widget.MemberFilterList.filterSelectDisplay = function(widgetId, key, name)
  * フィルタを選択した時に発生させるイベント　選択・未選択切り替え
  * @param ul
  * @param li
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filterCheckedDisplay = function(widgetId, node, memberFromId){
     var li=node.parentNode;
     var ul=li.parentNode;
-    aipo.widget.MemberFilterList.filterSelectDisplayView (widgetId, node);
+    aipo.widget.MemberFilterList.filterSelectDisplayView(widgetId, node);
     aipo.widget.MemberFilterList.filterSelect(ul,li,node);
     aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, memberFromId);
 }
@@ -412,6 +424,8 @@ aipo.widget.MemberFilterList.filterCheckedDisplay = function(widgetId, node, mem
  * フィルタを選択した時に発生させるイベント　フィルタ選択名表示
  * @param ul
  * @param li
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filterSelectDisplayView = function(widgetId, node){
     var li=node.parentNode;
@@ -427,6 +441,14 @@ aipo.widget.MemberFilterList.filterSelectDisplayView = function(widgetId, node){
     }
 }
 
+/**
+ * 選択済み・未選択の表示切り替え
+ * チェックボックスクリック後に選択済み・未選択でフィルタリングされている場合は一覧からの表示/非表示を切り替える
+ * @param ul
+ * @param li
+ *
+ * @fixed
+ */
 aipo.widget.MemberFilterList.filterCheckedMemberSync = function(checkbox, param){
 		var label = checkbox.parentNode;
 			var li = label.parentNode;
@@ -457,9 +479,12 @@ aipo.widget.MemberFilterList.filterCheckedMemberSync = function(checkbox, param)
 }
 
 /**
- * 選択・未選択のみ表示切り替え
+ * 選択済み・未選択の表示切り替え
+ * チェックボックスクリック後に選択済み・未選択でフィルタリングされている場合は一覧からの表示/非表示を切り替える
  * @param ul
  * @param li
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filterCheckedMember = function(checkbox, widgetId, memberFromId){
 	var param = dojo.byId("tlDisplayView_"+widgetId).getAttribute("data-param");
@@ -482,6 +507,8 @@ aipo.widget.MemberFilterList.filterCheckedMember = function(checkbox, widgetId, 
 
 /**
  * 検索キーワード入力時イベント
+ *
+ * @fixed
  */
 aipo.widget.MemberFilterList.filteredSearchCheck =  function(e, widgetId) {
     var widget = dijit.byId(widgetId);
