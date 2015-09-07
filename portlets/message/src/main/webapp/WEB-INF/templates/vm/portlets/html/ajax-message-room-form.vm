@@ -71,6 +71,7 @@
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         clickEvent="aipo.message.changeMember()"
         childTemplateString=""
+        viewSelectId="tmp_view"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
         groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"

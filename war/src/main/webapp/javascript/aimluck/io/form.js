@@ -1186,7 +1186,8 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         input.setAttribute('checked', 'checked');
       }
       input.setAttribute('data-name', text);
-      input.setAttribute('onclick', 'aipo.widget.MemberFilterList.onMemberCheck(this, "' + memberTo + '", "' + widgetId + '", "' + name + '");'+ clickEvent);
+
+      input.setAttribute('onclick', 'dijit.byId("' + widgetId + '").onMemberCheck(this);'+ clickEvent);
       li.innerHTML = "<label>"
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
