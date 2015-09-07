@@ -23,24 +23,10 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 
-<div class="auiPooupThumbnail">
-	#if($!{result.Detail.hasPhoto()})
-		#if($!{result.Detail.isNewPhotoSpec()})
-			<img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" />
-		#else
-			<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
-		#end
-	#else
-		<img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
-	#end
-	<div class="auiPooupName">
-		<strong>$!result.Detail.Name</strong>
-		<span>$result.getStringCR($!result.Detail.NameKana)</span>
-		#if(!$!{result.Detail.isOwner()})
-        <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
-        #end
-	</div>
-</div>
+#ALphotoheader()
+#AUIPooupHasPhoto($!result)
+#ALPooupName($!result $dlLink $!portlet)
+#ALphotofooter()
 
 #ALtableheaderWide()
 #ALtdcaption($l10n.USERLIST_EMAIL)
