@@ -119,17 +119,24 @@
 #set($termcolcount = 0)
 #set($todocolcount = 0)
 #set($duplirowcount = 0)
+
 #foreach($record3 in $result.MemberList)
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
 #end
-
-#if($termcolcount == 0)
-#set($termcolcount = ${result.getFacilityTermResultDataList($record3.UserId.Value).size()})
-#end
-
 #if($todocolcount < ${result.getToDoResultDataList($record3.UserId.Value).size()})
 #set($todocolcount = ${result.getToDoResultDataList($record3.UserId.Value).size()})
+#end
+#end
+
+#if($termcolcount == 0)
+#foreach($record4 in $result.FacilitiyGroupList)
+#if($termcolcount < ${result.FacilityTermResultDataList($record4.UserId.Value).size()})
+#set($termcolcount = ${result.FacilityTermResultDataList($record4.UserId.Value).size()})
+#end
+#if($todocolcount < ${result.getToDoResultDataList($record4.UserId.Value).size()})
+#set($todocolcount = ${result.getToDoResultDataList($record4.UserId.Value).size()})
+#end
 #end
 #end
 
@@ -142,6 +149,10 @@
 #set($colspanmax = $colspanmax + $todocolcount)
 #end
 #set($endHour = $!{result.EndHour} - 1)
+
+<p>term=$termcolcount</p>
+<p>todo=$todocolcount</p>
+
 #ALtableheaderCalendarAtt("100%" "calendarDisplayDay")
 <tr>
 #ALtdheadAtt("" "class='w10'")

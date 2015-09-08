@@ -384,13 +384,12 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         null);
     }
 
-    // グループ名からユーザを取得
+    // グループ名からユーザ（設備）を取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
-    List<Integer> flist = getFacilityIdAllList();// 使われたFacilityIdだけ取り出す？
     // グループにユーザが存在しない場合はダミーユーザを設定し、検索します。(0件ヒット)
     // ダミーユーザーID = -1
     int usize = ulist.size();
-    int fsize = flist.size();
+
     if (usize == 0) {
       ulist.add(Integer.valueOf(-1));
     } else {
@@ -404,20 +403,26 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         this.todomap.put(id, new ArrayList<ScheduleToDoResultData>());
       }
     }
-    if (fsize == 0) {
-      flist.add(Integer.valueOf(-1));
-    } else {
-      for (int i = 0; i < fsize; i++) {
-        Integer fid = flist.get(i);
-        ScheduleOnedayContainer con = new ScheduleOnedayContainer();
-        con.initField();
-        con.initHour(startHour, endHour);
-        this.facilitytermmap
-          .put(fid, new ArrayList<ScheduleOnedayResultData>());
-        this.todomap.put(fid, new ArrayList<ScheduleToDoResultData>());
+    if (ulist.isEmpty()) {
+      List<Integer> flist =
+        FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
+      int fsize = flist.size();
+      if (fsize == 0) {
+        flist.add(Integer.valueOf(-1));
+      } else {
+        for (int i = 0; i < fsize; i++) {
+          Integer fid = flist.get(i);
+          ScheduleOnedayContainer con = new ScheduleOnedayContainer();
+          con.initField();
+          con.initHour(startHour, endHour);
+          this.facilitytermmap.put(
+            fid,
+            new ArrayList<ScheduleOnedayResultData>());
+          this.map.put(fid, con);
+          this.todomap.put(fid, new ArrayList<ScheduleToDoResultData>());
+        }
       }
     }
-
     // List facilityIds = FacilitiesUtils.getFacilityIds(filter);
     List<Integer> facilityIds = null;
     String[] filteres = filter.split(";");
