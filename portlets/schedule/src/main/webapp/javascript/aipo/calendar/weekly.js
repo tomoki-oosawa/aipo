@@ -148,7 +148,8 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 		}
 	}
 }
-
+aipo.schedule.scrollNeeds = [];
+aipo.schedule.func = function (_pId) {dojo.byId('weeklyScrollPane_'+_pId).scrollTop = ptConfig[_pId].contentScrollTop}
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     var _params;
     var member_to = dojo.byId('member_to-' + _portletId);
@@ -799,8 +800,12 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	            }
 
 	            if (!ptConfig[_portletId].isScroll) {
-	                dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
-	                ptConfig[_portletId].isScroll = true;
+	            	if(dojo.byId("portletsBody").style.display == "none"){
+	            		aipo.schedule.scrollNeeds.push(_portletId);
+	            	}else{
+		                dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
+		                ptConfig[_portletId].isScroll = true;
+	            	}
 	            }
 	            ptConfig[_portletId].isTooltipEnable = true;
 
