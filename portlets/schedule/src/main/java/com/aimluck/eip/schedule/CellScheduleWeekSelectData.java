@@ -295,7 +295,6 @@ public class CellScheduleWeekSelectData extends
         int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
         if (index < 0) {
           index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
-          // cal2.add(Calendar.MONTH, 1);
           cal_event.add(Calendar.MONTH, 1);
         }
         if (index >= 0
