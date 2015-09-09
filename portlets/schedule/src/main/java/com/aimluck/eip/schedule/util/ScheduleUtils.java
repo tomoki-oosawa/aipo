@@ -930,6 +930,8 @@ public class ScheduleUtils {
       if (ymonth == month && yday == day) {
         result = true;
         count = 5;
+      } else {
+        result = false;
       }
     } else {
       return true;
