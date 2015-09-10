@@ -1114,7 +1114,8 @@ aimluck.io.createMemberLists = function (ulId, params) {
 	  keyword = params["keyword"];
 	    var target_keyword = dojo.byId(keyword);
 	    if (target_keyword) {
-	      url = url + "&keyword=" + target_keyword.value;
+	    	var search = encodeURIComponent(target_keyword.value);
+	      url = url + "&keyword=" + search;
 	    }
   }
 
@@ -1164,6 +1165,7 @@ aimluck.io.createMemberLists = function (ulId, params) {
       if (callback) {
         callback.call(callbackTarget ? callbackTarget : callback, response);
       }
+		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, name);
     }
   });
 }
@@ -1288,7 +1290,7 @@ aimluck.io.addGroupList = function (ul, value, text, is_selected, widgetId) {
         li.setAttribute('data-param', value);
         var a = document.createElement("a");
         a.href = "javascript:void(0)";
-        a.text = text;
+    	a.innerHTML = text;
         if(is_selected){
             dojo.addClass(li, "selected");
             dojo.addClass(a, "selected");

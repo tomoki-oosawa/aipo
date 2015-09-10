@@ -47,22 +47,28 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     memberGroupUrl: "",
     changeGroupUrl: "",
     childTemplateString: "",
-    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><div class=\"auiSummaryMeta auiFilter clearfix\">" +
+    templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\">" +
+    	"<div class=\"auiSummaryMeta auiFilter clearfix\">" +
     	"<div class=\"filters floatLeft\" id=\"filters_${widgetId}\" >" +
     	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\"><span id=\"tlDisplayGroup_${widgetId}\" data-param=\"${groupSelectPreOptionKey}\">${groupSelectPreOptionValue}</span></a>" +
     	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\" style=\"display:none;\"><span id=\"tlDisplayView_${widgetId}\" data-param=\"0\">未選択</span></a>" +
-    	"</div><div class=\"auiSummarySearch floatRight\"><div class=\"auiSearch gray\" name=\"timelineSearchForm\"><input type=\"text\" value=\"\" name=\"${widgetId}-keyword\" id=\"${widgetId}-keyword\" placeholder=\"ユーザー検索\" onkeydown=\"return aipo.widget.MemberFilterList.filteredSearchCheck(arguments[0], '${widgetId}')\"><button type=\"button\" dojoAttachEvent=\"onclick:filteredSearch\"><i class=\"icon-search\"></i></button></div></div></div>" +
-    	"<div class=\"menubar multi\" id=\"menubar_auiFilter_${widgetId}\" style=\"width:260px;display:none; \"><div>" +
-    	"<p class=\"caption\">グループ</p><ul class=\"filtertype filtertype_${widgetId}\" id=\"${groupSelectId}\"></ul></div><div>" +
-    	"<p class=\"caption\">表示</p><ul class=\"filtertype filtertype_${widgetId}\" id=\"${viewSelectId}\">" +
+    	"</div>" +
+    	"<div class=\"auiSummarySearch floatRight\"><div class=\"auiSearch gray\" name=\"timelineSearchForm\"><input type=\"text\" value=\"\" name=\"${widgetId}-keyword\" id=\"${widgetId}-keyword\" placeholder=\"ユーザー検索\" onkeydown=\"return aipo.widget.MemberFilterList.filteredSearchCheck(arguments[0], '${widgetId}')\"><button type=\"button\" dojoAttachEvent=\"onclick:filteredSearch\"><i class=\"icon-search\"></i></button></div></div>" +
+    	"</div>" +
+    	"<div class=\"menubar multi\" id=\"menubar_auiFilter_${widgetId}\" style=\"width:260px;display:none; \">" +
+    	"<div><p class=\"caption\">グループ</p><ul class=\"filtertype filtertype_${widgetId}\" id=\"${groupSelectId}\"></ul></div>" +
+    	"<div><p class=\"caption\">表示</p><ul class=\"filtertype filtertype_${widgetId}\" id=\"${viewSelectId}\">" +
     	"<li class=\"selected\"><a href=\"javascript:void(0);\" class=\"selected\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\" data-param=\"0\">すべて</a></li>" +
     	"<li><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\" data-param=\"1\">選択済み</a></li>" +
     	"<li><a href=\"javascript:void(0);\" onclick=\"aipo.widget.MemberFilterList.filterCheckedDisplay('${widgetId}',this,'${memberFromId}')\" data-param=\"2\">未選択</a></li>" +
     	"</ul></div></div>" +
-    	"<div class=\"memberPopupDiv_ver3\" style=\"display:none;\"><div class=\"head\"><input type=\"checkbox\" id=\"tmp_head_checkbox_${widgetId}\"></div>" +
+    	"<div class=\"memberPopupDiv_ver3\">" +
+    	"<div class=\"head\" style=\"display:none;\"><input type=\"checkbox\" id=\"tmp_head_checkbox_${widgetId}\" disabled=\"disabled\"></div>" +
     	"<div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div>" +
     	"<ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul>" +
-    	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div></div>\n",
+    	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select>" +
+    	"</div>" +
+    	"</div>\n",
     postCreate: function(){
         this.id = this.widgetId;
         params = {
@@ -125,7 +131,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
       var ul=li.parentNode;
       aipo.widget.MemberFilterList.filterSelect(ul, li, node);
       aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, group_name, group_name_text);
-      aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberFromId);
+
     },
 	/**
 	 * 参加メンバー追加/削除チェックボックス
@@ -361,19 +367,20 @@ aipo.widget.MemberFilterList.toggleMenu = function (node,filters,event){
 			dojo.style(node, "display" , "block");
 		}, 0);
         if(html.right-node.clientWidth>rect.left){
-       		node.style.left=rect.left+scroll.left+"px";
+       	//	node.style.left=rect.left+scroll.left+"px";
         }else{
-        	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
+        //	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
         }
          if(html.bottom-node.clientHeight>rect.bottom||event){
-       		node.style.top=rect.bottom+scroll.top+"px";
+       	//	node.style.top=rect.bottom+scroll.top+"px";
         }else{
-        	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
+        //	node.style.top=rect.top-node.clientHeight+scroll.top+"px";
         }
         node.style.opacity="";
     } else {
         dojo.query("div.menubar").style("display", "none");
     }
+
 }
 
 
@@ -430,7 +437,7 @@ aipo.widget.MemberFilterList.filterSelectDisplayView = function(widgetId, node){
     var li=node.parentNode;
     var ul=li.parentNode;
 	var param = node.getAttribute("data-param");
-	dojo.byId("tlDisplayView_"+widgetId).innerHTML = node.text;
+	dojo.byId("tlDisplayView_"+widgetId).innerHTML = node.innerHTML;
 	dojo.byId("tlDisplayView_"+widgetId).setAttribute("data-param", param);
     var a = dojo.byId("tlDisplayView_"+widgetId).parentNode;
     if(param != 0){
@@ -511,7 +518,13 @@ aipo.widget.MemberFilterList.filterCheckedMember = function(checkbox, widgetId, 
  */
 aipo.widget.MemberFilterList.filteredSearchCheck =  function(e, widgetId) {
     var widget = dijit.byId(widgetId);
-    if ((e.which && e.which === 13) || (e.keyCode && e.keyCode === 13)) {
+	var keycode;
+	if (window.event){
+		keycode = window.event.keyCode;
+	}else if (e){
+		keycode = e.which;
+	}
+	if ((keycode == 13) | (keycode == 32)) {
         if (widget) {
           widget.filteredSearch();
         }
