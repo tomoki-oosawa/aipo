@@ -55,8 +55,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\">" +
     	"<div class=\"auiSummaryMeta auiFilter clearfix\">" +
     	"<div class=\"filters floatLeft\" id=\"filters_${widgetId}\" >" +
-    	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\"><span id=\"tlDisplayGroup_${widgetId}\" data-param=\"${groupSelectPreOptionKey}\">${groupSelectPreOptionValue}</span></a>" +
-    	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true);\" style=\"display:none;\"><span id=\"tlDisplayView_${widgetId}\" data-param=\"0\">未選択</span></a>" +
+    	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true,dojo.byId('${widgetId}'));\"><span id=\"tlDisplayGroup_${widgetId}\" data-param=\"${groupSelectPreOptionKey}\">${groupSelectPreOptionValue}</span></a>" +
+    	"<a href=\"javascript:void(0)\" class=\"customizeMenuIcon filterTip menubarOpenButton\" onclick=\"aipo.widget.MemberFilterList.toggleMenu(dojo.byId('menubar_auiFilter_${widgetId}'),dojo.byId('filters_${widgetId}'),true,dojo.byId('${widgetId}'));\" style=\"display:none;\"><span id=\"tlDisplayView_${widgetId}\" data-param=\"0\">未選択</span></a>" +
     	"</div>" +
     	"<div class=\"auiSummarySearch floatRight\"><div class=\"auiSearch gray\" name=\"timelineSearchForm\"><input type=\"text\" value=\"\" name=\"${widgetId}-keyword\" id=\"${widgetId}-keyword\" placeholder=\"ユーザー検索\" onkeydown=\"return aipo.widget.MemberFilterList.filteredSearchCheck(arguments[0], '${widgetId}')\"><button type=\"button\" dojoAttachEvent=\"onclick:filteredSearch\"><i class=\"icon-search\"></i></button></div></div>" +
     	"</div>" +
@@ -357,7 +357,7 @@ aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
 /**
  * フィルタ表示イベント
  */
-aipo.widget.MemberFilterList.toggleMenu = function (node,filters,event){
+aipo.widget.MemberFilterList.toggleMenu = function (node,filters,event, widgetId){
 	var rect=filters.getBoundingClientRect();
 	var html=document.documentElement.getBoundingClientRect();
 	if (node.style.display == "none") {
@@ -386,6 +386,25 @@ aipo.widget.MemberFilterList.toggleMenu = function (node,filters,event){
         dojo.query("div.menubar").style("display", "none");
     }
 
+	if (aipo.userAgent.isSmartPhone()) {
+	    var modalDialog = document.getElementById('modalDialog');
+	    if(modalDialog) {
+		dojo.connect(modalDialog, 'onclick', null, function(){
+			widgetId.style.height = "";
+			aipo.widget.MemberFilterList.setWrapperHeight();
+		});
+	    }
+
+		setTimeout( function(){
+			var rect2=node.getBoundingClientRect();
+			if(widgetId) {
+				if(html.bottom < rect2.bottom){
+					widgetId.style.height = rect2.bottom - rect.top +"px";
+				}
+			}
+			aipo.widget.MemberFilterList.setWrapperHeight();
+		}, 0);
+	}
 }
 
 
