@@ -24,8 +24,8 @@
 <div id="messageDiv"></div>
 
 #ALphotoheader()
-#AUIPooupHasPhoto($!result)
-#ALPooupName($!result $dlLink $!portlet)
+#AUIPooupHasPhoto($!result false)
+#ALPooupName($!result $!portlet false)
 #ALphotofooter()
 
 #ALtableheaderWide()

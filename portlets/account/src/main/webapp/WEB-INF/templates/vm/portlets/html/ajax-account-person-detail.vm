@@ -22,8 +22,8 @@
 ## ---------------------------------------------------------------------------
 
 #ALphotoheader()
-#AUIPooupHasPhoto($!result)
-#ALPooupName($!result $dlLink $!portlet)
+#AUIPooupHasPhoto($!result false)
+#ALPooupName($!result $!portlet true)
 #ALphotofooter()
 
 #ALajaxlistformheader($l10n.ACCOUNT_USER)

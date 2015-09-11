@@ -609,7 +609,7 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 #end
 
 #macro(ALajaxbuttonDelete $url $indicator_id $portlet_id $receive)
-	<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+  <input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 
 #macro(ALajaxbuttonClose)
@@ -617,7 +617,7 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 #end
 
 #macro(ALajaxbuttonDialogSubClose)
-	<input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialogSub();" />
+  <input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialogSub();" />
 #end
 
 #macro(ALajaxbuttonCancel)
@@ -728,11 +728,11 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-	<div class="roundMainWrapper">
+  <div class="roundMainWrapper">
 #end
 
 #macro(ALtabfooter)
-	</div>
+  </div>
 </div>
 #end
 
@@ -748,11 +748,11 @@ $item.get(0)
   </ul>
 </div>
 <div class="clearfix">
-	<div class="roundMainWrapper">
+  <div class="roundMainWrapper">
 #end
 
 #macro(ALajaxtabfooter)
-	</div>
+  </div>
 </div>
 #end
 
@@ -773,43 +773,43 @@ $item.get(0)
 ## #end
 <!-- PORTLET OUTER -->
 <div class="dojoDndItem auiPortlet" id="portletsBody">
-	#if(${client} == "IPHONE")
-	<!-- Smartphone  Header -->
-		<div id="mobileHeader_v3">
-		<div class="inner">
-		<h1><span id="portletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
-		<div class="mhLeft">
-			<a href="javascript:void(0)" class="auiMbBtnNavi" onClick="appsNaviSwitch()">
-				<i class="icon-reorder"></i>
-			</a>
-			#ALUnreadchecker()
-		</div>
-		<div class="hdNavigation">
-			<ul class="hdCommunications">
-			#ALMessage()
-			#if($data.User.getUserName() != "admin")
-			<li>
-				<a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
-				<div class="dropdown" id="dd_activity">
-					<div id="activityListPane"><div class="center loader" id="indicator-supportListPane"><i class="indicator"></i></div></div>
-				</div>
-			</li>
-			#end
-			#ALSupport()
-			</ul>
-		</div>
-		</div>
-	</div>
-	#ALMaintenance()
-	<!-- /Smartphone Header -->
-	#end
-	<div class="auiPortletHead"><div class="inner">
-		<div class="auiPortletTitle" #if(${client} == "IPHONE")style="visibility:hidden;"#end>#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
-		<div class="auiPortletTool"></div>
-	</div></div>
-	<!-- auiPortletBody -->
-	<div class="auiPortletBody"><div class="inner">
-				<div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
+  #if(${client} == "IPHONE")
+  <!-- Smartphone  Header -->
+    <div id="mobileHeader_v3">
+    <div class="inner">
+    <h1><span id="portletTitle">#if($!portlet.Title != "")$!portlet.Title #else $title #end</span></h1>
+    <div class="mhLeft">
+      <a href="javascript:void(0)" class="auiMbBtnNavi" onClick="appsNaviSwitch()">
+        <i class="icon-reorder"></i>
+      </a>
+      #ALUnreadchecker()
+    </div>
+    <div class="hdNavigation">
+      <ul class="hdCommunications">
+      #ALMessage()
+      #if($data.User.getUserName() != "admin")
+      <li>
+        <a href="javascript:void(0)" class="valid" id="mb_activity" onclick='aipo.menu.toggleDropdown("activity");' onmouseover="dojo.addClass(this, 'customizeMenuIconMouseenter');" onmouseout="dojo.removeClass(this, 'customizeMenuIconMouseenter');" title="$l10n.ACTIVITY_INFO_TO_YOU"><i class="sprite-notification"></i><span id="activityChecker"></span></a>
+        <div class="dropdown" id="dd_activity">
+          <div id="activityListPane"><div class="center loader" id="indicator-supportListPane"><i class="indicator"></i></div></div>
+        </div>
+      </li>
+      #end
+      #ALSupport()
+      </ul>
+    </div>
+    </div>
+  </div>
+  #ALMaintenance()
+  <!-- /Smartphone Header -->
+  #end
+  <div class="auiPortletHead"><div class="inner">
+    <div class="auiPortletTitle" #if(${client} == "IPHONE")style="visibility:hidden;"#end>#if($!portlet.Title != "")$!portlet.Title #else $title #end</div>
+    <div class="auiPortletTool"></div>
+  </div></div>
+  <!-- auiPortletBody -->
+  <div class="auiPortletBody"><div class="inner">
+        <div dojoType="aimluck:Contentpane" widgetId="widget_$!portlet.ID" id="portlet_$!portlet.ID">
 #end
 
 #macro(ALActivity)
@@ -817,10 +817,10 @@ $item.get(0)
 #end
 
 #macro(ALcontentfooter)
-				</div>
-	</div></div>
-	<!-- /auiPortletBody -->
-	<div class="auiPortletFoot"><div class="inner"></div></div>
+        </div>
+  </div></div>
+  <!-- /auiPortletBody -->
+  <div class="auiPortletFoot"><div class="inner"></div></div>
 </div>
 <!-- /PORTLET OUTER -->
 #end
@@ -850,17 +850,17 @@ $item.get(0)
 #end
 
 #macro(ALdialogheaderPrintAbstract $title $portlet_id $screen $view_date $userid $onclick $link)
-	<div class="auiPopup clearfix">
-		<div class="auiPopupHead clearfix">
-	    	<div class="auiPopupTool">
-	    		#if(($portlet_id!=""))
-	        	<div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="icon-print"></i></span></a></div>
-	        	#end
-	        	<div>#ALdialogCloseButton($onclick)</div>
-	    	</div>
-	    		<div class="auiPopupTitle">$title</div>
-		</div>
-		<div class="roundBlockContent">
+  <div class="auiPopup clearfix">
+    <div class="auiPopupHead clearfix">
+        <div class="auiPopupTool">
+          #if(($portlet_id!=""))
+            <div><a href="javascript:void(0)" class="auiButtonIcon" title="$l10n.SCHEDULE_OPEN_PRINT_VIEW" onClick="javascript:window.open('$link');void(0);"><span><i class="icon-print"></i></span></a></div>
+            #end
+            <div>#ALdialogCloseButton($onclick)</div>
+        </div>
+          <div class="auiPopupTitle">$title</div>
+    </div>
+    <div class="roundBlockContent">
 #end
 
 #macro(ALdialogheaderPrint $title $portlet_id $screen $view_date)
@@ -891,24 +891,24 @@ $item.get(0)
 
 #macro(ALdialogheaderCloseJS $title $js)
 <div class="auiPopup clearfix">
-	<div class="auiPopupHead clearfix">
-		<div class="auiPopupTool">
-			<div>#ALdialogCloseButton($js)</div>
-		</div>
-		<div class="auiPopupTitle">$title</div>
-	</div>
-	<div class="roundBlockContent">
+  <div class="auiPopupHead clearfix">
+    <div class="auiPopupTool">
+      <div>#ALdialogCloseButton($js)</div>
+    </div>
+    <div class="auiPopupTitle">$title</div>
+  </div>
+  <div class="roundBlockContent">
 #end
 #macro(ALdialogheaderDetailSmartPhoneAbstract $title $onclick)
-	<!-- Smartphone  Header -->
-	<div class="auiPopup clearfix">
-		<div class="auiPopupHead clearfix">
-	    	<div class="auiPopupTool">
-	        	<div>#ALdialogCloseButton($onclick)</div>
-	    	</div>
-    			<div class="auiPopupTitle">$title</div>
-		</div>
-	<div class="roundBlockContent">
+  <!-- Smartphone  Header -->
+  <div class="auiPopup clearfix">
+    <div class="auiPopupHead clearfix">
+        <div class="auiPopupTool">
+            <div>#ALdialogCloseButton($onclick)</div>
+        </div>
+          <div class="auiPopupTitle">$title</div>
+    </div>
+  <div class="roundBlockContent">
 #end
 
 #macro(ALdialogheaderDetailSmartPhone $title)
@@ -923,8 +923,8 @@ $item.get(0)
 
 
 #macro(ALdialogfooter)
-		</div>
-	</div>
+    </div>
+  </div>
 #end
 
 #macro(ALfileuploadDialogheader $title)
@@ -939,15 +939,15 @@ $item.get(0)
     <div style="float:right">#ALdialogCloseButtonCommon()</div>
   </div>
   <div class="clearfix">
-	<div class="roundMainWrapper">
-		<div class="spaceBoth">
-			<div class="clearfix">
+  <div class="roundMainWrapper">
+    <div class="spaceBoth">
+      <div class="clearfix">
 #end
 
 #macro(ALfileuploadDialogfooter)
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
   </div>
 </div>
 #end
@@ -964,15 +964,15 @@ $item.get(0)
     <div style="float:right">#ALdialogCloseButtonCommon()</div>
   </div>
   <div class="clearfix">
-	<div class="roundMainWrapper">
-		<div class="spaceBoth">
-			<div class="clearfix">
+  <div class="roundMainWrapper">
+    <div class="spaceBoth">
+      <div class="clearfix">
 #end
 
 #macro(ALaddressbookDialogfooter)
-			</div>
-		</div>
-	</div>
+      </div>
+    </div>
+  </div>
   </div>
 </div>
 #end
@@ -989,14 +989,14 @@ $item.get(0)
           <ul>
 #set($index = 0)
 #foreach($tab in $tabs)
-	#if($tab.Title.toString()!="ページ設定" && $tab.Title.toString()!="メッセージ")
+  #if($tab.Title.toString()!="ページ設定" && $tab.Title.toString()!="メッセージ")
             <li#if ($tab.isSelected() == true) class="selected"#end><a href="$!utils.escapeXML($tab.Link)">$tab.Title</a></li>
-	#end
+  #end
 #set($index = $index + 1)
 #end
           </ul>
         </div>
-	    <!-- /SUBMENU -->
+      <!-- /SUBMENU -->
       </td>
       <td class="wide top">
 #end
@@ -1127,21 +1127,21 @@ $item.get(0)
 #macro(ALcell_textarea $career $name $text $rows $cols $option $style)
 #set($style_option = '')
 #if($career == "docomo_imode" || $career == "docomo_foma")
-	#if($style == "h")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
-	#elseif($style == "en")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
-	#elseif($style == "n")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
-	#end
+  #if($style == "h")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
+  #elseif($style == "en")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
+  #elseif($style == "n")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
+  #end
 #else
-	#if($style == "h")
-		#set($style_option = 'istyle="1" format="*M" mode="hiragana"')
-	#elseif($style == "en")
-		#set($style_option = 'istyle="3" format="*m" mode="alphabet"')
-	#elseif($style == "n")
-		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
-	#end
+  #if($style == "h")
+    #set($style_option = 'istyle="1" format="*M" mode="hiragana"')
+  #elseif($style == "en")
+    #set($style_option = 'istyle="3" format="*m" mode="alphabet"')
+  #elseif($style == "n")
+    #set($style_option = 'istyle="4" format="*N" mode="numeric"')
+  #end
 #end
 #if("$cols" == "")
 #if($option == '')
@@ -1161,21 +1161,21 @@ $item.get(0)
 #macro(ALcell_textfield $career $name $value $size $max $option $style)
 #set($style_option = '')
 #if($career == "docomo_imode" || $career == "docomo_foma")
-	#if($style == "h")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
-	#elseif($style == "en")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
-	#elseif($style == "n")
-		#set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
-	#end
+  #if($style == "h")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:h&gt;&quot;"')
+  #elseif($style == "en")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:en&gt;&quot;"')
+  #elseif($style == "n")
+    #set($style_option = 'style="-wap-input-format:&quot;*&lt;ja:n&gt;&quot;"')
+  #end
 #else
-	#if($style == "h")
-		#set($style_option = 'istyle="1" format="*M" mode="hiragana"')
-	#elseif($style == "en")
-		#set($style_option = 'istyle="3" format="*m" mode="alphabet"')
-	#elseif($style == "n")
-		#set($style_option = 'istyle="4" format="*N" mode="numeric"')
-	#end
+  #if($style == "h")
+    #set($style_option = 'istyle="1" format="*M" mode="hiragana"')
+  #elseif($style == "en")
+    #set($style_option = 'istyle="3" format="*m" mode="alphabet"')
+  #elseif($style == "n")
+    #set($style_option = 'istyle="4" format="*N" mode="numeric"')
+  #end
 #end
 #if("$size" == "")
 <input type="text" name="$name" value="$value" maxlength="$max" $option $!style_option>
@@ -1355,15 +1355,15 @@ $link.get(0)
 
 #macro(ALtdcellEmoji $emoji $career)
       #if($career == "docomo_imode" || $career == "docomo_foma")
-		#if($emoji == "1")
-			&#xE6E2;
-		#elseif($emoji == "2")
-			&#xE6E3;
+    #if($emoji == "1")
+      &#xE6E2;
+    #elseif($emoji == "2")
+      &#xE6E3;
         #elseif($emoji == "3")
             &#xE6E4;
-		#elseif($emoji == "4")
+    #elseif($emoji == "4")
             &#xE6E5;
-		#elseif($emoji == "5")
+    #elseif($emoji == "5")
             &#xE6E6;
         #elseif($emoji == "6")
             &#xE6E7;
@@ -1373,11 +1373,11 @@ $link.get(0)
             &#xE6E9;
         #elseif($emoji == "9")
             &#xE6EA;
-	    #elseif($emoji == "0")
+      #elseif($emoji == "0")
             &#xE6EB;
-		#elseif($emoji == "keitai")
+    #elseif($emoji == "keitai")
             &#xE688;
-		#end
+    #end
       #elseif($career == "vodafone")
         #if($emoji == "1")
             $F<
@@ -1402,8 +1402,8 @@ $link.get(0)
         #elseif($emoji == "keitai")
 ##            $G*
         #end
-	  #else
-		#if($emoji == "1")
+    #else
+    #if($emoji == "1")
             <img localsrc="180">
         #elseif($emoji == "2")
             <img localsrc="181">
@@ -1425,8 +1425,8 @@ $link.get(0)
             <img localsrc="325">
         #elseif($emoji == "keitai")
             <img localsrc="161">
-		#end
-	  #end
+    #end
+    #end
 #end
 
 #macro(ALtdcellFooterLink $career)
@@ -1580,15 +1580,15 @@ $link.get(0)
 #macro(ALtabElementMaximizeAbstract $name $imageclass $prefix)
 #set($break=false)
 #foreach($tab in $menus)
-	#if($break==false)
-		#if($tab.Name.toString()==$name)
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
-		#set($break=true)
-		#elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
-		<li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
-		#set($break=true)
-		#end
-	#end
+  #if($break==false)
+    #if($tab.Name.toString()==$name)
+    <li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+    #set($break=true)
+    #elseif($tab.Name.toString()=="AjaxScheduleWeekly" && $name=="Schedule")
+    <li><a href="$!utils.escapeXML($tab.MaximizeLink)">$!{prefix}<span class="icon"><i class="$!{imageclass}"></i></span>$tab.Title</a></li>
+    #set($break=true)
+    #end
+  #end
 #end
 #end
 
@@ -1709,14 +1709,14 @@ $item.get(0)
     <div class="auiSelectButton floatLeft">
       <ul class="floatLeft">
 #if($currentPage > 1) #set($pre = $currentPage - 1)
-	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="前の $rowsNum 件"><i class="icon-caret-left"></i></a></li>
+      <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $pre))', '$!portlet.ID');" class="first arrow" title="前の $rowsNum 件"><i class="icon-caret-left"></i></a></li>
 #else
-	    <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" class="first arrow"><i class="icon-caret-left"></i></a></li>
+      <li title="$l10n.TIMELINE_PREV"><a href="javascript:void(0);" class="first arrow"><i class="icon-caret-left"></i></a></li>
 #end
 #if($pages > $currentPage) #set($next = $currentPage + 1)
         <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("start", $next))', '$!portlet.ID');" class="last arrow" title="次の $nextCount 件"><i class="icon-caret-right"></i></a></li>
 #else
-	    <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" class="last arrow"><i class="icon-caret-right"></i></a></li>
+      <li title="$l10n.TIMELINE_NEXT"><a href="javascript:void(0);" class="last arrow"><i class="icon-caret-right"></i></a></li>
 #end
       </ul>
     </div>
@@ -1828,10 +1828,10 @@ $item.get(0)
 
 ##表記揺れ
 #macro(AUISummaryDiv)
-	#AUISummaryDivHeader()
+  #AUISummaryDivHeader()
 #end
 #macro(AUISummaryDivfooter)
-	#AUISummaryDivFooter()
+  #AUISummaryDivFooter()
 #end
 
 #macro(AUIsubmit $name $value)
@@ -1840,11 +1840,11 @@ $item.get(0)
 
 #macro(AUIselectpdheader $name $width $onchange)
 <form class="auiForm">
-	<select name="$name" id="$name" style="width:$width;" onchange="$onchange">
+  <select name="$name" id="$name" style="width:$width;" onchange="$onchange">
 #end
 
 #macro(AUIselectfooter)
-	</select>
+  </select>
 </form>
 #end
 
@@ -1936,16 +1936,16 @@ $!{text}
 #end
 
 #macro(AUISearchInput $id $name $value $option)
-	<input class="text floatLeft long" type="text" id="$id" name="$name" value="$value" $option/>
+  <input class="text floatLeft long" type="text" id="$id" name="$name" value="$value" $option/>
 #end
 
 #macro(AUIButtonSearch $text)
-	<input type="submit" class="auiButtonSearch floatLeft" value="$text"/>
+  <input type="submit" class="auiButtonSearch floatLeft" value="$text"/>
 #end
 
 #macro(AUISearchIndicator)
 <div class="indicatorWrap floatLeft ml10" style="padding-top: 0.4em;">
-	#ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
+  #ALajaxIndicator("search-${indicator_id}" "$!{portlet.ID}" "&nbsp;")
 </div>
 #end
 
@@ -1954,10 +1954,10 @@ $!{text}
 #end
 
 #macro(AsyncLoad $async_url)
-	<div>
-		<div class="indicator">$l10n.WAR_ASYNCLOAD_LOADING</div>
-		<img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', '',  true);"/>
-	</div>
+  <div>
+    <div class="indicator">$l10n.WAR_ASYNCLOAD_LOADING</div>
+    <img src="images/common/dot.gif" width="0" height="0" style="display:none;"onload="aipo.asyncLoad(this.parentNode, '$async_url', '',  true);"/>
+  </div>
 #end
 
 #macro(AUIEmptyMessage $class $text)
@@ -2045,32 +2045,33 @@ $utils.getl10nFormat1("NOTIFICATION_RECOMMEND_MESSAGE",${alias})<span style="dis
 </div>
 #end
 
-#macro(ALPooupName $result $dlLink $portlet)
-	<div class="auiPooupName">
-		#AUIName($!result)
-       ## <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
-		#set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
-		<a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
-	</div>
+#macro(ALPooupName $result $portlet $edit_flag)
+  <div class="auiPooupName">
+    <strong>$!result.Detail.Name</strong>
+    <span>$result.getStringCR($result.Detail.NameKana)</span>
+    #if (${edit_flag})
+      #set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
+      <a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
+    #else
+      #if(!$!{result.Detail.isOwner()})
+        <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
+      #end
+    #end
+  </div>
 #end
 
-#macro(AUIPooupNewPhoto $result)
-#if($!{result.Detail.isNewPhotoSpec()})
-<img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" />
-#else
-<img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
-#end
-#end
-
-#macro(AUIPooupHasPhoto $result)
-#if($!{result.Detail.hasPhoto()})
-#AUIPooupNewPhoto($!result)
-#else
-<img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
-#end
-#end
-
-#macro(AUIName $result)
-	<strong>$!result.Detail.Name</strong>
-	<span>$result.getStringCR($result.Detail.NameKana)</span>
+#macro(AUIPooupHasPhoto $result $default_text_flag)
+  #if($!{result.Detail.hasPhoto()})
+    #if($!{result.Detail.isNewPhotoSpec()})
+      <img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" />
+    #else
+      <img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
+    #end
+  #else
+    #if (${default_text_flag})
+      $l10n.ACCOUNT_USER_NOT_CREATE
+    #else
+      <img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
+    #end
+  #end
 #end
