@@ -32,7 +32,6 @@
 #AUISearchFooter()
 #AUISummaryDivFooter()
 
-#parse("/portlets/html/scheduleMacro.vm")
 ## One day
 #if ($!result.Viewtype == "calendar")
 #parse("/portlets/html/schedule-calendar.vm")

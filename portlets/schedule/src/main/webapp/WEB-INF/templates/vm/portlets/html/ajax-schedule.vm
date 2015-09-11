@@ -27,7 +27,6 @@
 #set($tabs = [["$l10n.SCHEDULE_ONEDAY", "oneday","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday')"], ["$l10n.SCHEDULE_WEEKLY", "weekly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly')"], ["$l10n.SCHEDULE_MONTHLY", "monthly", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','monthly')"], ["$l10n.SCHEDULE_ONEDAY_GROUP", "oneday-group","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','oneday-group')"], ["$l10n.SCHEDULE_WEEKLY_GROUP", "weekly-group", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleScreen').addQueryData('tab','weekly-group')"]])
 
 #ALspacebothheader()
-#parse("/portlets/html/scheduleMacro.vm")
 ## One day
 #if ($!result.Viewtype == "calendar")
 #parse("/portlets/html/schedule-calendar.vm")
