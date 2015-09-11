@@ -2077,3 +2077,42 @@ $!{record.Date.Day}
 #set ($screen = 'ScheduleListScreen')
 <a href="javascript:void(0);" onclick="aipo.schedule.setIndicator('$portletID');aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($portletID).addQueryData("template","$screen").addQueryData("tab","oneday-group").addQueryData("view_start",$record.Today).addQueryData("filter",$filter).addQueryData("filtertype","group"))', '$portletID');">$!{record.Date.Day}</a>
 #end
+
+#macro(ALphotoheader)
+<div class="auiPooupThumbnail">
+ #end
+
+#macro(ALphotofooter)
+</div>
+ #end
+
+#macro(ALPooupName $result $portlet $edit_flag)
+  <div class="auiPooupName">
+    <strong>$!result.Detail.Name</strong>
+    <span>$result.getStringCR($result.Detail.NameKana)</span>
+    #if (${edit_flag})
+      #set($dlLink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPersonFormScreen')) )
+      <a class="auiButton" title="$l10n.ACCOUNT_DO_EDIT_ACCOUNT" href="javascript:void(0);" onclick="aipo.common.showDialog('$dlLink','$!portlet.ID','aipo.account_person.onLoadPersonInfoDialog');">$l10n.ACCOUNT_DO_EDIT_ACCOUNT</a>
+    #else
+      #if(!$!{result.Detail.isOwner()})
+        <a href="javascript:void(0)" class="auiButton" onclick="aipo.message.hideProfile();aipo.message.openDirect($!{result.Detail.UserId})"><i class="icon-comment-alt fcGray mr5"></i>$l10n.MESSAGE_DIRECT_MESSAGE</a>
+      #end
+    #end
+   </div>
+ #end
+
+#macro(AUIPooupHasPhoto $result $default_text_flag)
+  #if($!{result.Detail.hasPhoto()})
+    #if($!{result.Detail.isNewPhotoSpec()})
+      <img class="avatar" width="100" height="100" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified}" srcset="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=normal&t=$!{result.Detail.PhotoModified} 1x, ?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&size=large&t=$!{result.Detail.PhotoModified} 2x" alt="$l10n.USERLIST_PHOTO" />
+    #else
+      <img class="avatar" src="?template=FileuploadFacePhotoScreen&uid=$!{result.Detail.UserId}&t=$!{result.Detail.PhotoModified}" alt="$l10n.ACCOUNT_USER_PHOTO" />
+    #end
+  #else
+    #if (${default_text_flag})
+       $l10n.ACCOUNT_USER_NOT_CREATE
+    #else
+      <img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
+     #end
+  #end
+ #end
