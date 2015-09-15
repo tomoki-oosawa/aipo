@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備のResultDataです。 <BR>
- * 
+ *
  */
 public class FacilityResultData implements ALData {
 
@@ -176,7 +176,7 @@ public class FacilityResultData implements ALData {
 
   /**
    * ある設備が所属する設備グループのリストを取得します
-   * 
+   *
    * @param postid
    * @return
    */

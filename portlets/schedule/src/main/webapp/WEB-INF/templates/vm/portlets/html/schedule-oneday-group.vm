@@ -119,8 +119,11 @@
 #set($termcolcount = 0)
 #set($todocolcount = 0)
 #set($duplirowcount = 0)
+#set($hoge = 0)
+#set($hogehoge = 0)
 
 #foreach($record3 in $result.MemberList)
+#set($hogehoge = $hogehoge + 1)
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
 #end
@@ -130,12 +133,13 @@
 #end
 
 #if($termcolcount == 0)
-#foreach($record4 in $result.FacilitiyGroupList)
-#if($termcolcount < ${result.FacilityTermResultDataList($record4.UserId.Value).size()})
-#set($termcolcount = ${result.FacilityTermResultDataList($record4.UserId.Value).size()})
+#foreach($record4 in $result.FacilityMemberList)
+#set($hoge = $hoge + 1)
+#if($termcolcount < ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
+#set($termcolcount = ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
 #end
-#if($todocolcount < ${result.getToDoResultDataList($record4.UserId.Value).size()})
-#set($todocolcount = ${result.getToDoResultDataList($record4.UserId.Value).size()})
+#if($todocolcount < ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
+#set($todocolcount = ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
 #end
 #end
 #end
@@ -152,6 +156,8 @@
 
 <p>term=$termcolcount</p>
 <p>todo=$todocolcount</p>
+<p>mem=$hogehoge</p>
+<p>faci=$hoge</p>
 
 #ALtableheaderCalendarAtt("100%" "calendarDisplayDay")
 <tr>
@@ -234,6 +240,23 @@ $record.WbrName
 </a>
 </div>
 #end
+
+#foreach($record100 in ${result.getFacilityTermResultDataList($record4.FacilityId.Value)})
+#set($entityids = "$!{entityids}$!{record100.ScheduleId},")
+#if(${record100.isShowDetail()})
+<div class="schedule-$!{portlet.ID}-$!{record100.ScheduleId} calerndarTermScheduleDiv left">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record100.ScheduleId}).addQueryData("userid", $!{$record4.FacilityId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
+#if(! ${record100.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+$record100.WbrName
+#else
+<div class="calerndarTermScheduleDiv left">
+#if(! ${record100.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+$record100.WbrName
+#end
+</a>
+</div>
+#end
+
 #ALtdcellfooter()
 #end
 #if($userTermCount == 0 && $termcolcount > 0)
@@ -493,7 +516,6 @@ $record.WbrName
 
 </tr>
 #end
-
 #ALtablefooterCalendar()
 #end
 </div>

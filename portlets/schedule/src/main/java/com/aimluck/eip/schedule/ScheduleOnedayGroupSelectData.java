@@ -78,7 +78,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleOnedayResultData>> termmap;
 
-  /** <code>termmap</code> 設備期間スケジュールマップ 9.4 */
+  /** <code>facilitytermmap</code> 設備期間スケジュールマップ 9.4 */
   private Map<Integer, List<ScheduleOnedayResultData>> facilitytermmap;
 
   /** <code>map</code> スケジュールMap */
@@ -86,6 +86,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
+
+  /** <code>facilitymembers</code> 設備グループのメンバー 9.15 */
+  private List<FacilityResultData> facilitymembers;
 
   /** <code>groups</code> グループリスト */
   private List<ALEipGroup> groups;
@@ -392,18 +395,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
     if (usize == 0) {
       ulist.add(Integer.valueOf(-1));
-    } else {
-      for (int i = 0; i < usize; i++) {
-        Integer id = ulist.get(i);
-        ScheduleOnedayContainer con = new ScheduleOnedayContainer();
-        con.initField();
-        con.initHour(startHour, endHour);
-        this.termmap.put(id, new ArrayList<ScheduleOnedayResultData>());
-        this.map.put(id, con);
-        this.todomap.put(id, new ArrayList<ScheduleToDoResultData>());
-      }
-    }
-    if (ulist.isEmpty()) {
       List<Integer> flist =
         FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
       int fsize = flist.size();
@@ -421,6 +412,16 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
           this.map.put(fid, con);
           this.todomap.put(fid, new ArrayList<ScheduleToDoResultData>());
         }
+      }
+    } else {
+      for (int i = 0; i < usize; i++) {
+        Integer id = ulist.get(i);
+        ScheduleOnedayContainer con = new ScheduleOnedayContainer();
+        con.initField();
+        con.initHour(startHour, endHour);
+        this.termmap.put(id, new ArrayList<ScheduleOnedayResultData>());
+        this.map.put(id, con);
+        this.todomap.put(id, new ArrayList<ScheduleToDoResultData>());
       }
     }
     // List facilityIds = FacilitiesUtils.getFacilityIds(filter);
@@ -479,6 +480,8 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     }
 
     members = ALEipUtils.getUsers(filter);
+    facilitymembers =
+      FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
 
     String flag_changeturn =
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FLAG_CHANGE_TURN_STR);
@@ -634,15 +637,21 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
         is_hasspan = true;
-        List<ScheduleOnedayResultData> terms = termmap.get(record.getUserId());
-        if (terms == null) {
-          terms = facilitytermmap.get(record.getUserId());
+        if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(record.getType())) {
+          List<ScheduleOnedayResultData> terms =
+            termmap.get(record.getUserId());
+          if (terms != null) {
+            // 期間スケジュールを格納
+            terms.add(rd);
+          }
+        } else {
+          List<ScheduleOnedayResultData> terms =
+            facilitytermmap.get(record.getUserId());
+          if (terms != null) {
+            // 期間スケジュールを格納
+            terms.add(rd);
+          }
         }
-        if (terms != null) {
-          // 期間スケジュールを格納
-          terms.add(rd);
-        }
-
         return rd;
       }
 
@@ -963,6 +972,10 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    */
   public List<ALEipUser> getMemberList() {
     return members;
+  }
+
+  public List<FacilityResultData> getFacilityMemberList() {
+    return facilitymembers;
   }
 
   /**
