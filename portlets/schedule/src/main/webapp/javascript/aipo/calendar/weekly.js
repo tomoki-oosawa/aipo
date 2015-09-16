@@ -149,7 +149,7 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 	}
 }
 aipo.schedule.scrollNeeds = [];
-aipo.schedule.func = function (_pId) {dojo.byId('weeklyScrollPane_'+_pId).scrollTop = ptConfig[_pId].contentScrollTop}
+aipo.schedule.scrollFunc = function (_pId) {dojo.byId('weeklyScrollPane_'+_pId).scrollTop = ptConfig[_pId].contentScrollTop}
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     var _params;
     var member_to = dojo.byId('member_to-' + _portletId);

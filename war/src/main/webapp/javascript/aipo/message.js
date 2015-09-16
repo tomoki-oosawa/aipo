@@ -598,7 +598,7 @@ aipo.message.swapView = function() {
             }
 
             for(var i = 0; i < aipo.schedule.scrollNeeds.length; i++){
-            	aipo.schedule.func(aipo.schedule.scrollNeeds[i]);
+            	aipo.schedule.scrollFunc(aipo.schedule.scrollNeeds[i]);
             }
             while(aipo.schedule.scrollNeeds.length > 0){
             	aipo.schedule.scrollNeeds.pop();
