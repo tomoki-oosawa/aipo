@@ -574,8 +574,14 @@ public class TimelineSelectData extends
       // ユーザー
 
       if (resultList.getTotalCount() > 0) {
-        setPageParam(resultList.getTotalCount());
+        if (!"U".equals(displayParam)) {
+          setPageParam(resultList.getTotalCount());
+          // 「更新情報のみ」で表示できる総件数を返す
+        } else {
+          setPageParam(getActivities(parentIds).size());
+        }
       }
+
       list = new ArrayList<Object>();
       for (EipTTimeline model : resultList) {
         Object object = getResultData(model);
@@ -644,6 +650,7 @@ public class TimelineSelectData extends
 
   }
 
+  @SuppressWarnings("unchecked")
   public boolean doViewListNew(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
@@ -691,8 +698,14 @@ public class TimelineSelectData extends
       // ユーザー
 
       if (resultList.getTotalCount() > 0) {
-        setPageParam(resultList.getTotalCount());
+        if (!"U".equals(displayParam)) {
+          setPageParam(resultList.getTotalCount());
+          // 「更新情報のみ」で表示できる総件数を返す
+        } else {
+          setPageParam(getActivities(parentIds).size());
+        }
       }
+
       list = new ArrayList<Object>();
       for (EipTTimeline model : resultList) {
         Object object = getResultData(model);
