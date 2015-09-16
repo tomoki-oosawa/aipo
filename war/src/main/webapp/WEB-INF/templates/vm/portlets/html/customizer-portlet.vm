@@ -54,7 +54,6 @@
 #ALtditemheader()
 #if ($param.Type && $param.Type == "style")
 $jetspeed.getPortletParameter($data, $portlet, $param.Name, $param.Value)
-<p>$data,$portlet,$param.Name, $param.Value</p>
 #elseif ($param.Type && $param.Type == "boolean")
 <select name="$param.Name">
 <option #if ($param.Type && $param.Value == "false") selected="selected" #end>${l10n.CUSTOMIZER_PORTLET_FALSE_VM}</option>
