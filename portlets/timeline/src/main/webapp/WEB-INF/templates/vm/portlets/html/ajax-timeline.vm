@@ -180,7 +180,7 @@
 	#if($pages > $currentPage)
 		<div class="readMore clearfix">
 			#ALajaxIndicatorglayFloatRight("$indicator_id2" "$!portlet.ID" "&nbsp;")
-			<a href="javascript:void(0);" onClick="aipo.timeline.displayIndicatorNotViewPage('$!{portlet.ID}', '$indicator_id2');dojo.byId('readHiddenClick_$!{portlet.ID}').onclick();" style="display:block;">$l10n.TIMELINE_READ_MORE,$pages,$currentPage</a>
+			<a href="javascript:void(0);" onClick="aipo.timeline.displayIndicatorNotViewPage('$!{portlet.ID}', '$indicator_id2');dojo.byId('readHiddenClick_$!{portlet.ID}').onclick();" style="display:block;">$l10n.TIMELINE_READ_MORE</a>
 		</div>
 	#end
   #end

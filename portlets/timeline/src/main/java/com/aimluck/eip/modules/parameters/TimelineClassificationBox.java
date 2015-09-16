@@ -56,7 +56,7 @@ public class TimelineClassificationBox extends ListBox {
       String[] keys = new String[3];
       keys[0] = "all";
       keys[1] = "posting";
-      keys[2] = "updates";
+      keys[2] = "update";
       this.items = keys;
       String[] values = new String[3];
       values[0] = "すべて";

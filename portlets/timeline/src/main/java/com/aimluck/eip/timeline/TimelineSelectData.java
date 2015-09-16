@@ -31,6 +31,7 @@ import javax.activation.FileDataSource;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -169,6 +170,36 @@ public class TimelineSelectData extends
     int length = myGroups.size();
     for (int i = 0; i < length; i++) {
       myGroupList.add(myGroups.get(i));
+    }
+
+    try {
+      String groupFilter =
+        ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
+      if (groupFilter == null || groupFilter.equals("")) {
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
+        if (groupFilter != null) {
+          ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
+        }
+      }
+
+      String displayFilter =
+        ALEipUtils.getTemp(rundata, context, TARGET_DISPLAY_NAME);
+      if (displayFilter == null || displayFilter.equals("")) {
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        displayFilter =
+          portlet.getPortletConfig().getInitParameter("p4a-group");
+        if (displayFilter != null) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            TARGET_DISPLAY_NAME,
+            displayFilter);
+        }
+      }
+
+    } catch (Exception ex) {
+      logger.error("timeline", ex);
     }
 
     target_keyword = new ALStringField();
