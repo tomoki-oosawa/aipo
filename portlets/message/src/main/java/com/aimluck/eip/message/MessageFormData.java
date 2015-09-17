@@ -248,16 +248,12 @@ public class MessageFormData extends ALAbstractFormData {
 
       List<String> recipients = new ArrayList<String>();
       for (EipTMessageRoomMember member : members) {
-        if (member.getUserId().intValue() != (int) login_user
-          .getUserId()
-          .getValue()) {
-          EipTMessageRead record = Database.create(EipTMessageRead.class);
-          record.setEipTMessage(model);
-          record.setIsRead("F");
-          record.setUserId(member.getUserId());
-          record.setRoomId(room.getRoomId());
-          recipients.add(member.getLoginName());
-        }
+        EipTMessageRead record = Database.create(EipTMessageRead.class);
+        record.setEipTMessage(model);
+        record.setIsRead("F");
+        record.setUserId(member.getUserId());
+        record.setRoomId(room.getRoomId());
+        recipients.add(member.getLoginName());
       }
 
       room
