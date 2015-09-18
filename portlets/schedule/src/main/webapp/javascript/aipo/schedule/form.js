@@ -211,7 +211,9 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
 
         var obj = dojo.byId("name");
         if(obj){
-           obj.focus();
+           dojo.connect(obj, "onclick", function(){
+        	   obj.focus();
+           });
         }
 
         var btn_ma = dojo.byId("button_member_add");
