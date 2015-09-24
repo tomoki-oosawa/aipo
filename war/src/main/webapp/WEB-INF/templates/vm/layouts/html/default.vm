@@ -264,7 +264,7 @@ dojo.addOnLoad(function() {
             }
         });
     }
-    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class=modalDialogUnderlayWrapper id='$!{id}_underlay'><div dojoAttachPoint='node'></div></div>" });
+    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class='modalDialogUnderlayWrapper' id='$!{id}_underlay'><div dojoAttachPoint='node'></div></div>" });
     dojo.connect(underlay.domNode, "onmousemove", underlay.domNode, function(){
         underlay.hide();
     });
