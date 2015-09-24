@@ -59,7 +59,7 @@
             </meta-info>
         </parameter>
         <parameter name="p3a-group.style" value="TimelineGroupBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p3a-group.style.initialvalue" value="（全体／設備の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p3a-group.style.initialvalue" value="すべてのグループ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
 
 
@@ -69,7 +69,9 @@
             </meta-info>
         </parameter>
         <parameter name="p4a-group.style" value="TimelineClassificationBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4a-group.style.initialvalue" value="（全体／設備の選択）" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-group.style.initialvalue" value="すべて" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-group.style.items" value="all,posting,update" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-group.style.values" value="すべて,投稿のみ,更新情報のみ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
 
 

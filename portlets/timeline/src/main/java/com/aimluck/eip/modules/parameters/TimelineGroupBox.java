@@ -33,16 +33,14 @@ import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
- * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
+ * タイムラインポートレット初期選択グループの設定値を処理するクラスです。 <br />
  */
 public class TimelineGroupBox extends ListBox {
 
   public static final String INITIAL_VALUE = "initialvalue";
 
-  public static final String FACILITY_VALUE = "Facility";
-
   private final String DEF_INITIAL_VALUE = ALLocalizationUtils
-    .getl10n("SCHEDULE_SELECT_FACILITY_AND_ALL");
+    .getl10n("TIMELINE_ALL_GROUP");
 
   /**
    * Initialize options

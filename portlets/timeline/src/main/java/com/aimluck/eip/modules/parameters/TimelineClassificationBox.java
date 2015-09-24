@@ -26,19 +26,11 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
- * スケジュールポートレット初期選択設備の設定値を処理するクラスです。 <br />
+ * タイムラインポートレット初期選択種別の設定値を処理するクラスです。 <br />
  */
 public class TimelineClassificationBox extends ListBox {
-
-  public static final String INITIAL_VALUE = "initialvalue";
-
-  public static final String FACILITY_VALUE = "Facility";
-
-  private final String DEF_INITIAL_VALUE = ALLocalizationUtils
-    .getl10n("SCHEDULE_SELECT_FACILITY_AND_ALL");
 
   /**
    * Initialize options
@@ -53,16 +45,8 @@ public class TimelineClassificationBox extends ListBox {
     try {
 
       this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
-      String[] keys = new String[3];
-      keys[0] = "all";
-      keys[1] = "posting";
-      keys[2] = "update";
-      this.items = keys;
-      String[] values = new String[3];
-      values[0] = "すべて";
-      values[1] = "投稿のみ";
-      values[2] = "更新のみ";
-      this.values = values;
+      this.items = this.getItems(data);
+      this.values = this.getValues(data);
       this.size = Integer.toString(3);
       this.multiple =
         Boolean

@@ -1040,7 +1040,8 @@ public class TimelineSelectData extends
     }
     target_group_name = ALEipUtils.getTemp(rundata, context, target_key);
 
-    if (idParam == null && target_group_name == null) {
+    if (idParam == null
+      && (target_group_name == null || "".equals(target_group_name))) {
       ALEipUtils.setTemp(rundata, context, target_key, "all");
       target_group_name = "all";
     } else if (idParam != null) {
@@ -1068,7 +1069,8 @@ public class TimelineSelectData extends
     }
     target_display_name = ALEipUtils.getTemp(rundata, context, target_key);
 
-    if (idParam == null && target_display_name == null) {
+    if (idParam == null
+      && (target_display_name == null || "".equals(target_display_name))) {
       ALEipUtils.setTemp(rundata, context, target_key, "all");
       target_display_name = "all";
     } else if (idParam != null) {
