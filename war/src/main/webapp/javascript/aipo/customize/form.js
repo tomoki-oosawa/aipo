@@ -277,7 +277,7 @@ aipo.customize.addAutoHideMenuTrigger = function(){
         });
     });
 
-	bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+	bodyHandle = dojo.connect(dojo.byId('wrapper'), 'onclick', null, function(){
         if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
             aipo.customize.hideMenu();
         }

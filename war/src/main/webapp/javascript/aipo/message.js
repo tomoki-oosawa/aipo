@@ -1233,7 +1233,7 @@ aipo.message.popupProfile = function(userId, event) {
 	    aipo.message.mobileUnderlay.show();
 	}
 	if(!profileHandle['body']) {
-		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
+		profileHandle['body'] = dojo.connect(dojo.byId('wrapper'), 'onmousedown', null, function(){
 			if (dojo.query('.profileMouseenter').length == 0) {
 				aipo.message.hideProfile();
 			}
