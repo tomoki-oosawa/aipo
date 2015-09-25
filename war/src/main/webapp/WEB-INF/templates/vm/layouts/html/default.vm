@@ -269,6 +269,13 @@ dojo.addOnLoad(function() {
         underlay.hide();
     });
     underlay.show();
+    var evt3 = document.createEvent( "MouseEvents" ); // マウスイベント作成
+    evt3.initEvent( "mousemove", true, true ); // イベントの設定
+    underlay.domNode.dispatchEvent( evt3 ); // イベントを強制的に発生
+    var wrapper = document.getElementById('wrapper');
+    var evt4 = document.createEvent( "MouseEvents" ); // マウスイベント作成
+    evt4.initEvent( "mousedown", true, true ); // イベントの設定
+    wrapper.dispatchEvent( evt4 );
 });
 #else
 dojo.require("dojo.dnd.Source");
