@@ -254,6 +254,12 @@ dojo.addOnLoad(function() {
         underlay.hide();
     });
     underlay.show();
+
+    if(aipo.userAgent.isIphone()){
+        var evt = document.createEvent("MouseEvents");
+        evt.initEvent("mousemove", true, true);
+        underlay.domNode.dispatchEvent(evt);
+    }
 });
 #end
 function activitySwitch(){
