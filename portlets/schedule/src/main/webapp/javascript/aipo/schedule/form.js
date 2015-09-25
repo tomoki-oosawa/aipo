@@ -211,9 +211,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
 
         var obj = dojo.byId("name");
         if(obj){
-           dojo.connect(obj, "onclick", function(){
         	   obj.focus();
-           });
         }
 
         var btn_ma = dojo.byId("button_member_add");
@@ -827,7 +825,6 @@ aipo.schedule.showScheduleAddDialog=function(td,event,url,portlet_id,callback){
 		return false;
 	}
 }
-
 aipo.schedule.setWrapperHeight = function() {
 	var modalDialog = document.getElementById('modalDialog');
     if(modalDialog) {
