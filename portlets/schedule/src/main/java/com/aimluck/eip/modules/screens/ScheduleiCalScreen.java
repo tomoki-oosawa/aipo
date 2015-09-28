@@ -128,18 +128,27 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
       Date dStart = null;
       Date dEnd = null;
+      String ptn = rd.getPattern();
 
       if ("S".equals(rd.getPattern())) {
         cStart.add(Calendar.DATE, 1);
         dStart = new Date(cStart.getTime());
         cEnd.add(Calendar.DATE, 2);
         dEnd = new Date(cEnd.getTime());
+      } else if (ptn.charAt(0) == 'Y') {
+        int month = Integer.parseInt(ptn.substring(1, 3));
+        int day = Integer.parseInt(ptn.substring(3, 5));
+        cStart.set(Calendar.MONTH, month - 1);
+        cStart.set(Calendar.DAY_OF_MONTH, day);
+        cEnd.set(Calendar.MONTH, month - 1);
+        cEnd.set(Calendar.DAY_OF_MONTH, day);
+        dStart = new Date(cStart.getTime());
+        dEnd = new Date(cEnd.getTime());
       } else {
         dStart = new DateTime(cStart.getTime());
         dEnd = new DateTime(cEnd.getTime());
       }
 
-      String ptn = rd.getPattern();
       java.util.Date currentStartDate = getRepeatStartDate(startDate, ptn);
 
       Recur recur = null;
@@ -180,13 +189,6 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         recur.getMonthDayList().add(mday);
         count = 3;
-      } else if (ptn.charAt(0) == 'Y') {
-        recur = new Recur(Recur.YEARLY, null);
-        int ymonth = Integer.parseInt(ptn.substring(1, 3));
-        int yday = Integer.parseInt(ptn.substring(3, 5));
-        recur.getMonthList().add(ymonth);
-        recur.getMonthDayList().add(yday);
-        count = 5;
       }
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
@@ -360,11 +362,6 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     } else if (ptn.charAt(0) == 'M') {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = cal.get(Calendar.DATE) == mday;
-    } else if (ptn.charAt(0) == 'Y') {
-      int ymonth = Integer.parseInt(ptn.substring(1, 3));
-      int yday = Integer.parseInt(ptn.substring(3, 5));
-      result =
-        (cal.get(Calendar.MONTH) == ymonth) && (cal.get(Calendar.DATE) == yday);
     } else {
       return true;
     }
