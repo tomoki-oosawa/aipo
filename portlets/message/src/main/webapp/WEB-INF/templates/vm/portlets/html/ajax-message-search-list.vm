@@ -86,7 +86,7 @@
 	</div>
 	<div class="messageContents">
 		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
-		<div class="body">$!record.MessageHtml
+		<div class="body">$!record.MessageHtml $!record.PreviewNote
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
 		#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('?template=FileuploadViewScreen&screen=MessageFileRawScreen&entryid=$!{record.MessageId}&attachmentIndex=$!{attachmentFile.FileId}')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="?template=MessageFileThumbnailScreen&entityid=${record.MessageId}&attachmentIndex=${attachmentFile.FileId}"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="?template=MessageFileRawScreen&entityid=$!record.MessageId&attachmentIndex=$attachmentFile.FileId&f=${attachmentFile.getURLEncodedValue()}">$result.getStringCR($attachmentFile.FileNameField)</a>

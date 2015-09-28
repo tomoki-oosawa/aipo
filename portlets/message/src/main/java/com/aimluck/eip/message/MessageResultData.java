@@ -53,6 +53,8 @@ public class MessageResultData implements ALData, Serializable {
 
   private ALStringField message;
 
+  private ALStringField keyword;
+
   private ALDateTimeField createDate;
 
   private Long photoModified;
@@ -79,6 +81,7 @@ public class MessageResultData implements ALData, Serializable {
     message.setTrim(false);
     createDate = new ALDateTimeField();
     attachmentFileList = new ArrayList<FileuploadBean>();
+    keyword = new ALStringField();
   }
 
   /**
@@ -215,7 +218,11 @@ public class MessageResultData implements ALData, Serializable {
   }
 
   public String getMessageHtml() {
-    return ALEipUtils.getMessageList(message.getValue());
+    return ALEipUtils.getMessageList(message.getValue(), keyword.getValue());
+  }
+
+  public String getPreviewNote() {
+    return ALEipUtils.highlihgtKeywords(message.toString(), keyword.toString());
   }
 
   /**
@@ -273,6 +280,21 @@ public class MessageResultData implements ALData, Serializable {
 
   public List<FileuploadBean> getAttachmentFileList() {
     return attachmentFileList;
+  }
+
+  /**
+   * @return keyword
+   */
+  public ALStringField getKeyword() {
+    return keyword;
+  }
+
+  /**
+   * @param keyword
+   *          セットする keyword
+   */
+  public void setKeyword(String keyword) {
+    this.keyword.setValue(keyword);
   }
 
   /**
