@@ -142,8 +142,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         cStart.set(Calendar.DAY_OF_MONTH, day);
         cEnd.set(Calendar.MONTH, month - 1);
         cEnd.set(Calendar.DAY_OF_MONTH, day);
-        dStart = new Date(cStart.getTime());
-        dEnd = new Date(cEnd.getTime());
+        if (cStart.get(Calendar.MONTH) == month - 1) {
+          dStart = new Date(cStart.getTime());
+          dEnd = new Date(cEnd.getTime());
+        }
+
       } else {
         dStart = new DateTime(cStart.getTime());
         dEnd = new DateTime(cEnd.getTime());
