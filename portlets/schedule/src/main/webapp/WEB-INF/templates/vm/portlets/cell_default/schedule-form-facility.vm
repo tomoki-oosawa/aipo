@@ -40,6 +40,7 @@
 
 #if ($!{result.isRepeat()})
 <input type="hidden" name="repeat_type" value="$!{result.FormData.RepeatType}">
+<input type="hidden" name="repeat_week" value="$!{result.FormData.RepeatWeek}">
 #if ($!{result.FormData.RepeatType.toString()} == "W")
 #if ($!{result.FormData.Week0.toString()} == "TRUE") <input type="hidden" name="week_0" value="TRUE"> #end
 #if ($!{result.FormData.Week1.toString()} == "TRUE") <input type="hidden" name="week_1" value="TRUE"> #end
