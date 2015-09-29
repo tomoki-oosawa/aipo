@@ -862,7 +862,6 @@ aipo.message.changeMember = function() {
     var node = dojo.byId("memberFieldDisplay");
     if (node) {
         var HTML = "";
-        HTML += "<table class=\"w100\"><tbody><tr><td style=\"border:none;\">";
         var m_t = dojo.byId("member_to");
         if (m_t) {
             var t_o = m_t.options;
@@ -876,12 +875,28 @@ aipo.message.changeMember = function() {
                 }
             }
         }
-        HTML += "</td></tr></tbody></table>";
         node.innerHTML = HTML;
     }
 
     aipo.message.setWrapperHeight();
 }
+
+aipo.message.toggleMemberSelect = function(bool){
+    var node = dojo.byId("memberField");
+    var buttonOn = dojo.byId("memberSelectButtonOn");
+    var buttonOff = dojo.byId("memberSelectButtonOff");
+    if(bool) {
+        dojo.style(buttonOn, "display" , "none");
+        dojo.style(buttonOff, "display" , "block");
+        dojo.style(node, "display" , "block");
+    } else {
+        dojo.style(buttonOn, "display" , "block");
+        dojo.style(buttonOff, "display" , "none");
+        dojo.style(node, "display" , "none");
+    }
+    aipo.message.setWrapperHeight();
+}
+
 
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg["error"]) {

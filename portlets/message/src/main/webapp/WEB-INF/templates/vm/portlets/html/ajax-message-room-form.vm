@@ -51,16 +51,17 @@
 
 #ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
 #ALtditemheader()
-<div id="memberFieldDisplay">
+<div>
 	<table class="w100">
 		<tbody>
 			<tr class="member">
-				<td style="border:none;"></td>
+				<td style="width:80%; border:none; display: table-cell" id="memberFieldDisplay"></td>
+				<td class="pc_hide" style="border:none; display: table-cell"><input #if($mode=="new_form")style="display:none"#end id="memberSelectButtonOn" type="button" class="alignright" value="$l10n.MESSAGE_SELECT_ENTRY_USER" onclick="aipo.message.toggleMemberSelect(true);"><input #if($mode!="new_form")style="display:none"#end id="memberSelectButtonOff" type="button" class="alignright" value="$l10n.MESSAGE_HIDE_SELECT_VIEW" onclick="aipo.message.toggleMemberSelect(false);"></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div id="memberField">
+<div id="memberField"  #if(${client}=="IPHONE" && $mode!="new_form")style="display:none"#end>
 <table class="none">
   <tr><td>
     <div dojoType="aipo.widget.MemberFilterList"
