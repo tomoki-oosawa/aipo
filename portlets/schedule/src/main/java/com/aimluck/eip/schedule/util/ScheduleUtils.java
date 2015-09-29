@@ -3191,6 +3191,7 @@ public class ScheduleUtils {
       Date end_date;
       String repeat_pattern;
       String repeat_type;
+      String repeat_week = null;
       boolean week_0;
       boolean week_1;
       boolean week_2;
@@ -3211,6 +3212,13 @@ public class ScheduleUtils {
         repeat_pattern = schedule.getRepeatPattern();
 
         repeat_type = repeat_pattern.substring(0, 0);
+        if (repeat_type == "W") {
+          if (repeat_pattern.length() == 9) {
+            repeat_week = "0";
+          } else {
+            repeat_week = repeat_pattern.substring(8, 8);
+          }
+        }
 
         limit_flag = repeat_pattern.substring(repeat_pattern.length() - 1);
 
@@ -3332,83 +3340,205 @@ public class ScheduleUtils {
           { // "W".equals(repeat_type.getValue())
             Expression wexp = null;
             List<Expression> wexps = new ArrayList<Expression>();
-            if (week_0 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W1_______");
-              wexps.add(wexp);
-            }
-            if (week_1 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W_1______");
-              wexps.add(wexp);
-            }
-            if (week_2 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W__1_____");
-              wexps.add(wexp);
-            }
-            if (week_3 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W___1____");
-              wexps.add(wexp);
-            }
-            if (week_4 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W____1___");
-              wexps.add(wexp);
-            }
-            if (week_5 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W_____1__");
-              wexps.add(wexp);
-            }
-            if (week_6 == true) {
-              wexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W______1_");
-              wexps.add(wexp);
-            }
-            if (wexps.size() > 0) {
-              rwexp = wexps.get(0);
-              int wexpssize = wexps.size();
-              for (int k = 1; k < wexpssize; k++) {
-                rwexp = rwexp.orExp(wexps.get(k));
+            if (repeat_week == "0") {
+              if (week_0 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W1_______");
+                wexps.add(wexp);
+              }
+              if (week_1 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_1______");
+                wexps.add(wexp);
+              }
+              if (week_2 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W__1_____");
+                wexps.add(wexp);
+              }
+              if (week_3 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W___1____");
+                wexps.add(wexp);
+              }
+              if (week_4 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W____1___");
+                wexps.add(wexp);
+              }
+              if (week_5 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_____1__");
+                wexps.add(wexp);
+              }
+              if (week_6 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W______1_");
+                wexps.add(wexp);
+              }
+              if (wexps.size() > 0) {
+                rwexp = wexps.get(0);
+                int wexpssize = wexps.size();
+                for (int k = 1; k < wexpssize; k++) {
+                  rwexp = rwexp.orExp(wexps.get(k));
+                }
+              } else {
+                rwexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W________");
               }
             } else {
-              rwexp =
-                ExpressionFactory.likeExp(
-                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                    + "."
-                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                  "W________");
+              if (week_0 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W1________");
+                wexps.add(wexp);
+              }
+              if (week_1 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_1_______");
+                wexps.add(wexp);
+              }
+              if (week_2 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W__1______");
+                wexps.add(wexp);
+              }
+              if (week_3 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W___1_____");
+                wexps.add(wexp);
+              }
+              if (week_4 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W____1____");
+                wexps.add(wexp);
+              }
+              if (week_5 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_____1___");
+                wexps.add(wexp);
+              }
+              if (week_6 == true) {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W______1__");
+                wexps.add(wexp);
+              }
+              if (repeat_week == "1") {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_______1_");
+                wexps.add(wexp);
+              } else if (repeat_week == "2") {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_______2_");
+                wexps.add(wexp);
+              } else if (repeat_week == "3") {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_______3_");
+                wexps.add(wexp);
+              } else if (repeat_week == "4") {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_______4_");
+                wexps.add(wexp);
+              } else if (repeat_week == "5") {
+                wexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_______5_");
+                wexps.add(wexp);
+              }
+              if (wexps.size() > 0) {
+                rwexp = wexps.get(0);
+                int wexpssize = wexps.size();
+                for (int k = 1; k < wexpssize; k++) {
+                  rwexp = rwexp.orExp(wexps.get(k));
+                }
+              } else {
+                rwexp =
+                  ExpressionFactory.likeExp(
+                    EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                      + "."
+                      + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                    "W_________");
+              }
             }
+
           }
 
           { // "M".equals(repeat_type.getValue())
@@ -3506,18 +3636,34 @@ public class ScheduleUtils {
                 containtsRs = true;
               }
             } else if (ptn.charAt(0) == 'W') {
-              if (ptn.charAt(8) == 'L') {
-                try {
-                  if ((dbStartDate.before(end_date) && dbEndDate
-                    .after(start_date))
-                    || unlimited_repeat) {
-                    containtsRs = true;
+              if (ptn.length() == 9) {
+                if (ptn.charAt(8) == 'L') {
+                  try {
+                    if ((dbStartDate.before(end_date) && dbEndDate
+                      .after(start_date))
+                      || unlimited_repeat) {
+                      containtsRs = true;
+                    }
+                  } catch (Exception e) {
+                    containtsRs = false;
                   }
-                } catch (Exception e) {
-                  containtsRs = false;
+                } else {
+                  containtsRs = true;
                 }
-              } else {
-                containtsRs = true;
+              } else if (ptn.length() == 10) {
+                if (ptn.charAt(9) == 'L') {
+                  try {
+                    if ((dbStartDate.before(end_date) && dbEndDate
+                      .after(start_date))
+                      || unlimited_repeat) {
+                      containtsRs = true;
+                    }
+                  } catch (Exception e) {
+                    containtsRs = false;
+                  }
+                } else {
+                  containtsRs = true;
+                }
               }
             } else if (ptn.charAt(0) == 'M') {
               if (ptn.charAt(3) == 'L') {
