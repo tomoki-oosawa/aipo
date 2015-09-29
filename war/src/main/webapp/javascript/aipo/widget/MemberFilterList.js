@@ -85,7 +85,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           child_html: this.childTemplateString,
           widgetId: this.widgetId,
           keyword: this.widgetId + "-keyword",
-          indicator: this.widgetId + "-memberlist-indicator"
+          indicator: this.widgetId + "-memberlist-indicator",
+          callback: this.fixScroll
         };
         aimluck.io.createMemberLists(this.memberFromId, params);
         params = {
@@ -124,7 +125,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
               child_html: this.childTemplateString,
               widgetId: this.widgetId,
               keyword: this.widgetId + "-keyword",
-              indicator: this.widgetId + "-memberlist-indicator"
+              indicator: this.widgetId + "-memberlist-indicator",
+              callback: this.fixScroll
       };
       aimluck.io.createMemberLists(this.memberFromId, params);
       var li=node.parentNode;
@@ -132,6 +134,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
       aipo.widget.MemberFilterList.filterSelect(ul, li, node);
       aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, group_name, group_name_text);
 
+      this.fixScroll();
     },
 	/**
 	 * 参加メンバー追加/削除チェックボックス
@@ -141,7 +144,16 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 		aipo.widget.MemberFilterList.changeMember(checkbox, dojo.byId(this.memberToId));
 		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberFromId);
 		aipo.widget.MemberFilterList.setWrapperHeight();
-	}
+	},
+    fixScroll: function() {
+    	// for chrome
+    	dojo.forEach(dojo.query(".memberPopupDiv_ver3 .memberPopupList"), function(item){
+    		item.style.overflow="hidden";
+    		setTimeout(function(){
+        		item.style["overflow-y"]="scroll";
+    		}, 100);
+    		});
+    }
 });
 
 
