@@ -3913,7 +3913,7 @@ public class ScheduleUtils {
       int year_day = Integer.parseInt(repeat_ptn.substring(3, 5));
       int ptn_month = cal.get(Calendar.MONTH);
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
-      return (year_day == ptn_day && year_month == ptn_month);
+      return (year_day == ptn_day && (year_month - 1) == ptn_month);
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       if (dow == Calendar.SUNDAY) {

@@ -136,6 +136,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         cEnd.add(Calendar.DATE, 2);
         dEnd = new Date(cEnd.getTime());
       } else if (ptn.charAt(0) == 'Y') {
+        /*
+         * Calendar date_now = Calendar.getInstance(); int year_now =
+         * date_now.get(Calendar.YEAR); int month_now =
+         * date_now.get(Calendar.MONTH); if (month_now > 3 || month_now < 10){
+         * cStart.set(Calendar.YEAR, year_now); cEnd.set(Calendar.YEAR,
+         * year_now); } else if (month_now <= 3 && )
+         */
         int month = Integer.parseInt(ptn.substring(1, 3));
         int day = Integer.parseInt(ptn.substring(3, 5));
         cStart.set(Calendar.MONTH, month - 1);
