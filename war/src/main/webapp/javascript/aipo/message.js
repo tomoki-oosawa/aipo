@@ -579,6 +579,9 @@ aipo.message.updateUnreadCount = function() {
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
+            for(var key in aipo.schedule.scrollNeeds){
+            	aipo.schedule.scrollNeeds[key] = parseInt(dojo.byId('weeklyScrollPane_'+key)["scrollTop"]);
+            }
             dojo.byId("portletsBody").style.display = "none";
             var copyright = dojo.byId("copyright");
             if(copyright) {
@@ -597,11 +600,8 @@ aipo.message.swapView = function() {
             	copyright.style.display = "";
             }
 
-            for(var i = 0; i < aipo.schedule.scrollNeeds.length; i++){
-            	aipo.schedule.scrollFunc(aipo.schedule.scrollNeeds[i]);
-            }
-            while(aipo.schedule.scrollNeeds.length > 0){
-            	aipo.schedule.scrollNeeds.pop();
+            for(var key in aipo.schedule.scrollNeeds){
+            	dojo.byId('weeklyScrollPane_'+key).scrollTop = aipo.schedule.scrollNeeds[key];
             }
         }
     }

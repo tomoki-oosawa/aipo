@@ -148,8 +148,8 @@ aipo.calendar.changeDisypayPeriod = function(period, pid) {
 		}
 	}
 }
-aipo.schedule.scrollNeeds = [];
-aipo.schedule.scrollFunc = function (_pId) {dojo.byId('weeklyScrollPane_'+_pId).scrollTop = ptConfig[_pId].contentScrollTop}
+aipo.schedule.scrollNeeds = new Object;
+//aipo.schedule.scrollFunc = function (_pId) {dojo.byId('weeklyScrollPane_'+_pId).scrollTop = ptConfig[_pId].contentScrollTop}
 aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
     var _params;
     var member_to = dojo.byId('member_to-' + _portletId);
@@ -801,11 +801,11 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 
 	            if (!ptConfig[_portletId].isScroll) {
 	            	if(dojo.byId("portletsBody").style.display == "none"){
-	            		aipo.schedule.scrollNeeds.push(_portletId);
 	            	}else{
 		                dojo.byId('weeklyScrollPane_'+_portletId).scrollTop = ptConfig[_portletId].contentScrollTop;
 		                ptConfig[_portletId].isScroll = true;
 	            	}
+            		aipo.schedule.scrollNeeds[_portletId] = null;
 	            }
 	            ptConfig[_portletId].isTooltipEnable = true;
 
