@@ -429,6 +429,7 @@ public class ScheduleSelectData extends
           rd.addText(new StringBuffer()
             .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
             .toString());
+          count = 8;
         } else {
           switch (ptn.charAt(8)) {
             case '1':
@@ -457,6 +458,7 @@ public class ScheduleSelectData extends
                 .toString());
               break;
           }
+          count = 9;
         }
         rd
           .addText(new StringBuffer()
@@ -483,7 +485,6 @@ public class ScheduleSelectData extends
                 .getl10n("SCHEDULE_SATURDAY") : "")
             .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
             .toString());
-        count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         rd.addText(new StringBuffer().append(
