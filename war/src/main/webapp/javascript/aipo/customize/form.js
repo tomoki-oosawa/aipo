@@ -277,7 +277,11 @@ aipo.customize.addAutoHideMenuTrigger = function(){
         });
     });
 
-	bodyHandle = dojo.connect(dojo.query('body')[0], 'onclick', null, function(){
+	var body = dojo.query('body')[0];
+	if(aipo.userAgent.isIphone8_4_1()){
+		body = dojo.byId('wrapper');
+	}
+	bodyHandle = dojo.connect(body, 'onclick', null, function(){
         if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
             aipo.customize.hideMenu();
         }

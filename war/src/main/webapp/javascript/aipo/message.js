@@ -1233,7 +1233,11 @@ aipo.message.popupProfile = function(userId, event) {
 	    aipo.message.mobileUnderlay.show();
 	}
 	if(!profileHandle['body']) {
-		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
+		var body = dojo.query('body')[0];
+		if(aipo.userAgent.isIphone8_4_1()){
+			body = dojo.byId('wrapper');
+		}
+		profileHandle['body'] = dojo.connect(body, 'onmousedown', null, function(){
 			if (dojo.query('.profileMouseenter').length == 0) {
 				aipo.message.hideProfile();
 			}
