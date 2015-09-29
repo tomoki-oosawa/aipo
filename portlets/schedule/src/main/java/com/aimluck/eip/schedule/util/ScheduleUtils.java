@@ -2073,6 +2073,27 @@ public class ScheduleUtils {
 
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
+    boolean dayexist = true;
+
+    switch ((int) year_month.getValue()) {
+      case 2:
+        if (year_day.getValue() == 30 || year_day.getValue() == 31) {
+          dayexist = false;
+        }
+        break;
+
+      case 4:
+      case 6:
+      case 9:
+      case 11:
+        if (year_day.getValue() == 31) {
+          dayexist = false;
+        }
+        break;
+
+      default:
+        break;
+    }
 
     if (end_date == null) {
       msgList.add(ALLocalizationUtils
@@ -2184,15 +2205,16 @@ public class ScheduleUtils {
             // 携帯画面用条件（月が未入力）
             msgList.add(ALLocalizationUtils
               .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_MONTH"));
+          } else if (year_day.getValue() == 0 && isCellPhone) {
+            // 携帯画面用条件（日が未入力）
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
+          } else if (!dayexist) {
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY_EXIST"));
           } else {
-            if (year_day.getValue() == 0 && isCellPhone) {
-              // 携帯画面用条件（日が未入力）
-              msgList.add(ALLocalizationUtils
-                .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
-            } else {
-              year_month.validate(msgList);
-              year_day.validate(msgList);
-            }
+            year_month.validate(msgList);
+            year_day.validate(msgList);
           }
         }
 
