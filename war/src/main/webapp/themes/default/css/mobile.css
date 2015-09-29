@@ -2229,6 +2229,43 @@ div.weeklyTermRights div.weeklyTermRightR {
 }
 
 /***************************************************
+	memberPopupDiv_ver3　　20150715
+--------------------------------------------------*/
+.memberPopupDiv_ver3 {
+  margin: 10px 0px;
+}
+.memberPopupDiv_ver3 .memberPopupList {
+  height: auto;
+  overflow-y: inherit;
+}
+.memberPopupDiv_ver3 .memberPopupList li label {
+  padding: 5px 10px 5px 70px;
+  position: relative;
+}
+.memberPopupDiv_ver3 .memberPopupList li label input[type="checkbox"] {
+  position: absolute;
+  left: 7px;
+  top: 5px;
+}
+.memberPopupDiv_ver3 .memberPopupList li label .avatar {
+  position: absolute;
+  left: 25px;
+  top: 5px;
+}
+.memberPopupDiv_ver3 .memberPopupList li label select {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+.memberPopupDiv_ver3 .memberPopupList li label .name {
+  min-width: 0;
+  width: inherit;
+  float: none;
+  margin: 0;
+  white-space: normal;
+}
+
+/***************************************************
 	profilePopup
 --------------------------------------------------*/
 .profilePopupWrap {
