@@ -98,7 +98,7 @@ aipo.menu.updateTitle = function() {
 var bodyHandle = bodyHandle || {};
 dojo.addOnLoad(function() {
 	var body = dojo.query('body')[0];
-	if(aipo.userAgent.isIphone()){
+	if(aipo.userAgent.isIphone8_4_1()){
 		body = dojo.byId('wrapper');
 	}
     bodyHandle = dojo.connect(body, 'onmousedown', null,

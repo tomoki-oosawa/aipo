@@ -255,7 +255,7 @@ dojo.addOnLoad(function() {
     });
     underlay.show();
 
-    if(aipo.userAgent.isIphone()){
+    if(aipo.userAgent.isIphone8_4_1()){
         var evt = document.createEvent("MouseEvents");
         evt.initEvent("mousemove", true, true);
         underlay.domNode.dispatchEvent(evt);
@@ -263,10 +263,11 @@ dojo.addOnLoad(function() {
         dojo.query('a').forEach(function(element) {
         var handle = dojo.connect(element, 'ontouchstart', null, function(){
             var link = this.getAttribute("href");
+            var onmouseover = this.getAttribute("onmouseover");
             var onclick = this.getAttribute("onclick");
             var target = this.getAttribute("target");
             var linktype = link.substring(0,1);
-            if (onclick != null) {
+            if (onclick != null && onmouseover == null) {
               this.onclick();
               dojo.disconnect(handle);
             }

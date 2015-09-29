@@ -124,7 +124,7 @@ var setMouseListener=function(){
     });
 
 	var body = dojo.query('body')[0];
-	if(aipo.userAgent.isIphone()){
+	if(aipo.userAgent.isIphone8_4_1()){
 		body = dojo.byId('wrapper');
 	}
     bodyHandle = dojo.connect(body, 'onclick', null, function(){
@@ -274,6 +274,13 @@ aipo.userAgent={
 	},
 	androidVersion:function(){
 		return this.__userAgent.match(/android ([\d]+)\.([\d]+)\.([\d]+)/);
+	},
+	iphoneVersion:function(){
+		return this.__userAgent.match(/iphone os ([\d]+)_([\d]+)_([\d]+)/);
+	},
+	isIphone8_4_1:function(){
+		var version = this.iphoneVersion();
+		return !!version && version[1]==8 && version[2]==4 && version[3]==1;
 	},
 	isIphone:function(){
 		return this.__userAgent.indexOf("iphone") > -1;

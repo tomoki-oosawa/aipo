@@ -278,7 +278,7 @@ aipo.customize.addAutoHideMenuTrigger = function(){
     });
 
 	var body = dojo.query('body')[0];
-	if(aipo.userAgent.isIphone()){
+	if(aipo.userAgent.isIphone8_4_1()){
 		body = dojo.byId('wrapper');
 	}
 	bodyHandle = dojo.connect(body, 'onclick', null, function(){
