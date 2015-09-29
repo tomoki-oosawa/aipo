@@ -133,8 +133,6 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
       var ul=li.parentNode;
       aipo.widget.MemberFilterList.filterSelect(ul, li, node);
       aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, group_name, group_name_text);
-
-      this.fixScroll();
     },
 	/**
 	 * 参加メンバー追加/削除チェックボックス
