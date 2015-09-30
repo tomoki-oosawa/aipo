@@ -146,7 +146,18 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 		aipo.widget.MemberFilterList.changeMember(checkbox, dojo.byId(this.memberToId));
 		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberFromId);
 		aipo.widget.MemberFilterList.setWrapperHeight();
-	}
+	},
+    fixScroll: function() {
+    	// for chrome
+      if (!dojo.isIE) {
+    	dojo.forEach(dojo.query(".memberPopupDiv_ver3 .memberPopupList"), function(item){
+    		item.style.overflow="hidden";
+    		setTimeout(function(){
+        		item.style["overflow-y"]="scroll";
+    		}, 100);
+    		});
+    	}
+    }
 });
 
 
