@@ -1441,22 +1441,6 @@ aipo.message.insertTransactionId = function(){
 	aipo.message.transactionIdList.push(transactionId);
 }
 
-aipo.message.insertTransactionId = function(){
-	function guid() {
-		  function s4() {
-		    return Math.floor((1 + Math.random()) * 0x10000)
-		      .toString(16)
-		      .substring(1).
-		      toUpperCase();
-		  }
-		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-		    s4() + '-' + s4() + s4() + s4();
-		}
-	var transactionId=guid();
-	dojo.query("[name='transactionId']")[0].setAttribute('value', transactionId);
-	aipo.message.transactionIdList.push(transactionId);
-}
-
 aipo.message.removeTransactionId = function(transactionId){
 	var transactionIdPos = aipo.message.transactionIdList.indexOf(transactionId);
 	if(transactionIdPos==-1){
