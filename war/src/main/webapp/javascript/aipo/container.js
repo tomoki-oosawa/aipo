@@ -333,7 +333,13 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 }
 
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
+	if(typeof(params.transactionId) !== 'undefined' && aipo.message.removeTransactionId(params.transactionId)){
+		return;
+	}
     var notify = true;
+    if(typeof(aipo.message.loginUserId) !== 'undefined' && aipo.message.loginUserId==params.userId){
+    	notify = false;
+    }
     if (aipo.message.isActive && aipo.message.isOpenWindow()
             && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
         aipo.message.latestMessageList();
