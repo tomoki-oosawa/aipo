@@ -286,7 +286,7 @@ public class TimelineResultData implements ALData {
         String sub = note.getValue().substring(0, PRE_NOTE_LENGTH);
         if (!isLastWordAddress(sub)
           && (!hasKeyword(sub) || !isLastWordKeyword(sub))) {
-          return subnote;
+          // return subnote;
         }
 
         sub = note.getValue();
