@@ -43,7 +43,7 @@ public class WebMailMultiRead extends ALAbstractCheckList {
     .getLogger(WebMailMultiRead.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
