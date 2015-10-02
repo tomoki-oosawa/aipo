@@ -3199,6 +3199,12 @@ public class ScheduleUtils {
       boolean week_4;
       boolean week_5;
       boolean week_6;
+      boolean day_of_week_in_month_1;
+      boolean day_of_week_in_month_2;
+      boolean day_of_week_in_month_3;
+      boolean day_of_week_in_month_4;
+      boolean day_of_week_in_month_5;
+      boolean[] day_of_week_in_month_array = new boolean[5];
       String limit_flag;
       int month_day = -1;
       Integer db_scheduleid = null;
@@ -3212,9 +3218,25 @@ public class ScheduleUtils {
         repeat_pattern = schedule.getRepeatPattern();
 
         repeat_type = repeat_pattern.substring(0, 1);
+
+        day_of_week_in_month_1 = repeat_pattern.matches("W.......1.?");
+
+        day_of_week_in_month_2 = repeat_pattern.matches("W.......2.?");
+
+        day_of_week_in_month_3 = repeat_pattern.matches("W.......3.?");
+
+        day_of_week_in_month_4 = repeat_pattern.matches("W.......4.?");
+
+        day_of_week_in_month_5 = repeat_pattern.matches("W.......5.?");
+
         if (repeat_type.equals("W")) {
           if (repeat_pattern.length() == 9) {
             repeat_week = "0";
+            day_of_week_in_month_1 = true;
+            day_of_week_in_month_2 = true;
+            day_of_week_in_month_3 = true;
+            day_of_week_in_month_4 = true;
+            day_of_week_in_month_5 = true;
           } else {
             repeat_week = repeat_pattern.substring(8, 9);
           }
@@ -3253,6 +3275,12 @@ public class ScheduleUtils {
           week_5 = (dow == Calendar.FRIDAY);
           week_6 = (dow == Calendar.SATURDAY);
           month_day = cal.get(Calendar.DAY_OF_MONTH);
+          int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+          day_of_week_in_month_1 = (dowim == 1);
+          day_of_week_in_month_2 = (dowim == 2);
+          day_of_week_in_month_3 = (dowim == 3);
+          day_of_week_in_month_4 = (dowim == 4);
+          day_of_week_in_month_5 = (dowim == 5);
         } else if (repeat_pattern.endsWith("N")) {
           unlimited_repeat = true;
         }
@@ -3264,6 +3292,12 @@ public class ScheduleUtils {
         week_array[4] = week_4;
         week_array[5] = week_5;
         week_array[6] = week_6;
+
+        day_of_week_in_month_array[0] = day_of_week_in_month_1;
+        day_of_week_in_month_array[1] = day_of_week_in_month_2;
+        day_of_week_in_month_array[2] = day_of_week_in_month_3;
+        day_of_week_in_month_array[3] = day_of_week_in_month_4;
+        day_of_week_in_month_array[4] = day_of_week_in_month_5;
 
       } catch (RuntimeException e) {
         logger.error("schedule", e);
@@ -3423,6 +3457,7 @@ public class ScheduleUtils {
             Expression wexp2 = null;
             List<Expression> wexps2 = new ArrayList<Expression>();
             Expression wnexp = null;
+            List<Expression> wnexp2 = new ArrayList<Expression>();
 
             if (week_0 == true) {
               wexp2 =
@@ -3487,49 +3522,71 @@ public class ScheduleUtils {
                   "W______1__");
               wexps2.add(wexp2);
             }
-            if (repeat_week != null && repeat_week.equals("1")) {
+            if (repeat_week != null
+              && repeat_week.equals("1")
+              || day_of_week_in_month_1) {
               wnexp =
                 ExpressionFactory.likeExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "W_______1_");
-            } else if (repeat_week != null && repeat_week.equals("2")) {
+              wnexp2.add(wnexp);
+            }
+            if (repeat_week != null
+              && repeat_week.equals("2")
+              || day_of_week_in_month_2) {
               wnexp =
                 ExpressionFactory.likeExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "W_______2_");
-            } else if (repeat_week != null && repeat_week.equals("3")) {
+              wnexp2.add(wnexp);
+            }
+            if (repeat_week != null
+              && repeat_week.equals("3")
+              || day_of_week_in_month_3) {
               wnexp =
                 ExpressionFactory.likeExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "W_______3_");
-            } else if (repeat_week != null && repeat_week.equals("4")) {
+              wnexp2.add(wnexp);
+            }
+            if (repeat_week != null
+              && repeat_week.equals("4")
+              || day_of_week_in_month_4) {
               wnexp =
                 ExpressionFactory.likeExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "W_______4_");
-            } else if (repeat_week != null && repeat_week.equals("5")) {
+              wnexp2.add(wnexp);
+            }
+            if (repeat_week != null
+              && repeat_week.equals("5")
+              || day_of_week_in_month_5) {
               wnexp =
                 ExpressionFactory.likeExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "W_______5_");
+              wnexp2.add(wnexp);
             }
-            if (wexps2.size() > 0) {
-              rwexp2 = wexps2.get(0);
-              int wexpssize = wexps2.size();
-              for (int k = 1; k < wexpssize; k++) {
-                rwexp2 = rwexp.orExp(wexps2.get(k));
+            if (wexps2.size() > 0 && wnexp2.size() > 0) {
+              for (int k = 0; k < wexps2.size(); k++) {
+                for (int l = 0; l < wnexp2.size(); l++) {
+                  if (k == 0 && l == 0) {
+                    rwexp2 = wexps2.get(k).andExp(wnexp2.get(l));
+                  } else {
+                    rwexp2 = rwexp2.orExp(wexps2.get(k).andExp(wnexp2.get(l)));
+                  }
+                }
               }
-              rwexp2 = rwexp.andExp(wnexp);
             } else {
               rwexp2 =
                 ExpressionFactory.likeExp(
@@ -3819,6 +3876,37 @@ public class ScheduleUtils {
                     while (!ddate.after(_end_date)) {
                       k = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen;
                       if ((week_array[k] == true) && matchDay(cald, ptn)) {
+                        try {
+                          dexp3 =
+                            ExpressionFactory.matchExp(
+                              EipTSchedule.START_DATE_PROPERTY,
+                              ddate);
+                          temp =
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
+                          if (temp == null || temp.size() <= 0) {
+                            existFacility = true;
+                            break;
+                          }
+                        } catch (Exception e) {
+                          logger.error("[DuplicateFacilityCheck]: ", e);
+                          existFacility = true;
+                          break;
+                        }
+                      }
+                      cald.add(Calendar.DATE, 1);
+                      ddate = cald.getTime();
+                    }
+                    int wlen2 = day_of_week_in_month_array.length;
+                    if (wlen2 < 1) {
+                      continue;
+                    }
+                    int l;
+                    while (!ddate.after(_end_date)) {
+                      l = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen2;
+                      if ((day_of_week_in_month_array[l] == true)
+                        && matchDay(cald, ptn)) {
                         try {
                           dexp3 =
                             ExpressionFactory.matchExp(
