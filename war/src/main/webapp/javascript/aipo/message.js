@@ -1425,7 +1425,7 @@ aipo.message.scrollTo = function(element, to, duration) {
 	  }, 10);
 }
 
-aipo.message.insertTransactionId = function(){
+aipo.message.insertTransactionId = function(targetUserId){
 	function guid() {
 		  function s4() {
 		    return Math.floor((1 + Math.random()) * 0x10000)
@@ -1437,7 +1437,7 @@ aipo.message.insertTransactionId = function(){
 		    s4() + '-' + s4() + s4() + s4();
 		}
 	var transactionId=guid();
-	dojo.query("[name='transactionId']")[0].setAttribute('value', transactionId);
+	dojo.query("#messageForm"+targetUserId+" [name='transactionId']")[0].setAttribute('value', transactionId);
 	aipo.message.transactionIdList.push(transactionId);
 }
 

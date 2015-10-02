@@ -77,7 +77,7 @@
 					<div class="tlInputControls clearfix">
 						<div class="floatRight">
 							<i class="indicator" id="indicator-dlg-global-$messagePortletId" style="display:none"></i>
-							<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aipo.message.insertTransactionId();aimluck.io.setHiddenValue(this);">
+							<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aipo.message.insertTransactionId('');aimluck.io.setHiddenValue(this);">
 						</div>
 						<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
 							<iframe name="if_fileupload_$messagePortletId" id="if_fileupload_$messagePortletId" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById("global-${messagePortletId}").addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
