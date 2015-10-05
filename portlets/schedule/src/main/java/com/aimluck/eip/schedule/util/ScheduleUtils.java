@@ -3869,43 +3869,17 @@ public class ScheduleUtils {
                   } else if (repeat_pattern.startsWith("W")) {
                     /* ダミースケジュールを探す */
                     int wlen = week_array.length;
-                    if (wlen < 1) {
+                    int wlen2 = day_of_week_in_month_array.length;
+                    if (wlen < 1 || wlen2 < 1) {
                       continue;
                     }
                     int k;
-                    while (!ddate.after(_end_date)) {
-                      k = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen;
-                      if ((week_array[k] == true) && matchDay(cald, ptn)) {
-                        try {
-                          dexp3 =
-                            ExpressionFactory.matchExp(
-                              EipTSchedule.START_DATE_PROPERTY,
-                              ddate);
-                          temp =
-                            Database.query(
-                              EipTSchedule.class,
-                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
-                          if (temp == null || temp.size() <= 0) {
-                            existFacility = true;
-                            break;
-                          }
-                        } catch (Exception e) {
-                          logger.error("[DuplicateFacilityCheck]: ", e);
-                          existFacility = true;
-                          break;
-                        }
-                      }
-                      cald.add(Calendar.DATE, 1);
-                      ddate = cald.getTime();
-                    }
-                    int wlen2 = day_of_week_in_month_array.length;
-                    if (wlen2 < 1) {
-                      continue;
-                    }
                     int l;
                     while (!ddate.after(_end_date)) {
-                      l = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen2;
-                      if ((day_of_week_in_month_array[l] == true)
+                      k = (cald.get(Calendar.DAY_OF_WEEK) - 1) % wlen;
+                      l = (cald.get(Calendar.DAY_OF_WEEK_IN_MONTH) - 1) % wlen2;
+                      if ((week_array[k] == true)
+                        && (day_of_week_in_month_array[l] == true)
                         && matchDay(cald, ptn)) {
                         try {
                           dexp3 =
