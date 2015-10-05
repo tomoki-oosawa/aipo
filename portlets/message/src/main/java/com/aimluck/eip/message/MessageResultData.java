@@ -221,11 +221,6 @@ public class MessageResultData implements ALData, Serializable {
     return ALEipUtils.getMessageList(message.getValue(), keyword.getValue());
   }
 
-  // public String getPreviewNote() {
-  // return ALEipUtils.highlihgtKeywords(message.toString(),
-  // keyword.toString());
-  // }
-
   /**
    * @param hasPhoto
    *          セットする hasPhoto
