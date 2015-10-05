@@ -184,8 +184,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         recur = new Recur(Recur.YEARLY, null);
         int ymonth = Integer.parseInt(ptn.substring(1, 3));
         int yday = Integer.parseInt(ptn.substring(3, 5));
-        recur.getYearDayList().add(ymonth);
-        recur.getYearDayList().add(yday);
+        recur.getMonthList().add(ymonth);
+        recur.getMonthDayList().add(yday);
         count = 5;
       }
 
@@ -243,6 +243,14 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cEnd.set(Calendar.MINUTE, min);
           dStart = new DateTime(cStart.getTime());
           dEnd = new DateTime(cEnd.getTime());
+          if (ptn.charAt(0) == 'Y') {
+            if (endDate.compareTo(cStart.getTime()) < 0
+              || startDate.compareTo(cEnd.getTime()) > 0) {
+              recur = null;
+              dStart = null;
+              dEnd = null;
+            }
+          }
         }
       }
 
@@ -276,11 +284,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dateList.add(new DateTime(dummyStart.getTime()));
           }
           event.getProperties().add(new ExDate(dateList));
-
         }
       }
-
       cal.getComponents().add(event);
+
     }
 
     ServletOutputStream out = null;
