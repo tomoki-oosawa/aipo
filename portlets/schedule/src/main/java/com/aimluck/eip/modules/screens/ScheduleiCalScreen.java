@@ -207,14 +207,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(currentStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            cStart.add(Calendar.MONTH, -1);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(currentStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
-            cEnd.add(Calendar.MONTH, -1);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           } else {
             java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
@@ -223,14 +221,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(RepeatStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            cStart.add(Calendar.MONTH, -1);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(RepeatStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
-            cEnd.add(Calendar.MONTH, -1);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           }
         } else {
@@ -240,14 +236,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cStart.setTime(currentStartDate);
           cStart.set(Calendar.HOUR_OF_DAY, hour);
           cStart.set(Calendar.MINUTE, min);
-          cStart.add(Calendar.MONTH, -1);
-          dStart = new DateTime(cStart.getTime());
           hour = cEnd.get(Calendar.HOUR_OF_DAY);
           min = cEnd.get(Calendar.MINUTE);
           cEnd.setTime(currentStartDate);
           cEnd.set(Calendar.HOUR_OF_DAY, hour);
           cEnd.set(Calendar.MINUTE, min);
-          cEnd.add(Calendar.MONTH, -1);
+          dStart = new DateTime(cStart.getTime());
           dEnd = new DateTime(cEnd.getTime());
         }
       }
@@ -371,7 +365,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       int ymonth = Integer.parseInt(ptn.substring(1, 3));
       int yday = Integer.parseInt(ptn.substring(3, 5));
       result =
-        cal.get(Calendar.MONTH) == ymonth && cal.get(Calendar.DATE) == yday;
+        cal.get(Calendar.MONTH) == ymonth - 1 && cal.get(Calendar.DATE) == yday;
     } else {
       return true;
     }
