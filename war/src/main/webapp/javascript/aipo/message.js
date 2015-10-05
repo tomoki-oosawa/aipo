@@ -579,7 +579,10 @@ aipo.message.updateUnreadCount = function() {
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
-            dojo.byId("portletsBody").style.visibility = "hidden";
+            for(var key in aipo.schedule.scrollPositions){
+            	aipo.schedule.scrollPositions[key] = parseInt(dojo.byId('weeklyScrollPane_'+key)["scrollTop"]);
+            }
+            dojo.byId("portletsBody").style.display = "none";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "none";
@@ -591,10 +594,21 @@ aipo.message.swapView = function() {
                 aipo.message.latestMessageList();
             }
         } else {
-            dojo.byId("portletsBody").style.visibility = "";
+            dojo.byId("portletsBody").style.display = "";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "";
+            }
+            for(var key in aipo.schedule.scrollPositions) {
+            	if(aipo.schedule.scrollPositions[key] != null) {
+            	    dojo.byId('weeklyScrollPane_'+key).scrollTop = aipo.schedule.scrollPositions[key];
+            	}
+            }
+            for(var key in aipo.schedule.scrollNeeds) {
+            	aipo.calendar.populateWeeklySchedule(aipo.schedule.scrollNeeds[key]);
+            }		
+            while(aipo.schedule.scrollNeeds.length > 0){
+             	aipo.schedule.scrollNeeds.pop();		
             }
         }
     }
