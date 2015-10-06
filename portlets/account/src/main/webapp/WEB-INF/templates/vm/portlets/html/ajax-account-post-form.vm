@@ -56,6 +56,8 @@
 #ALtditemheader()
 #ALtextfield('fax_number1' $!result.FaxNumber1 '20%' 5 'disabled')-&nbsp;#ALtextfield('fax_number2' $!result.FaxNumber2 '20%' 4 'disabled')-&nbsp;#ALtextfield('fax_number3' $!result.FaxNumber3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_NUM)
 #ALtditemfooter()
+
+#*
 #ALtdcaption($l10n.ACCOUNT_BELONG_MEMBER)
 #ALtditemheader()
 <div class="spaceTop spaceLeft small">$l10n.ACCOUNT_ADD_TO_LEFT_SIDE</div>
@@ -79,6 +81,8 @@
     changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
 </div>
 <select size="10" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+ *#
+
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
