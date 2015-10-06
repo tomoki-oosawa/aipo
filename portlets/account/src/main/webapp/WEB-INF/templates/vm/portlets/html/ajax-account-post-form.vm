@@ -57,31 +57,69 @@
 #ALtextfield('fax_number1' $!result.FaxNumber1 '20%' 5 'disabled')-&nbsp;#ALtextfield('fax_number2' $!result.FaxNumber2 '20%' 4 'disabled')-&nbsp;#ALtextfield('fax_number3' $!result.FaxNumber3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_NUM)
 #ALtditemfooter()
 
-#*
+
 #ALtdcaption($l10n.ACCOUNT_BELONG_MEMBER)
 #ALtditemheader()
-<div class="spaceTop spaceLeft small">$l10n.ACCOUNT_ADD_TO_LEFT_SIDE</div>
-<div dojoType="aipo.widget.MemberNormalSelectList"
-    id="membernormalselect"
-    widgetId="membernormalselect"
-    buttonAddId="button_member_add"
-    buttonRemoveId="button_member_remove"
-    memberFromId="tmp_member_from"
-    memberToTitle="$l10n.ACCOUNT_BELONG_MEMBER_LIST"
-    memberToId="member_to"
-    memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
-    memberFromOptionKey="name"
-    memberFromOptionValue="aliasName"
-    groupSelectId="tmp_group"
-    groupSelectPreOptionKey="LoginUser"
-    groupSelectPreOptionValue="$l10n.ACCOUNT_ALL_GLOUP"
-    groupSelectOptionKey="groupId"
-    groupSelectOptionValue="name"
-    memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserGroupLiteJSONScreen').addQueryData('mode','post')"
-    changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
+<div>
+	<table class="w100">
+		<tbody>
+			<tr class="member">
+				<td style="width:80%; border:none; display: table-cell" id="memberFieldDisplay"></td>
+				<td class="pc_hide" style="border:none; display: table-cell"><input #if($mode=="new_form")style="display:none"#end id="memberSelectButtonOn" type="button" class="alignright" value="$l10n.MESSAGE_SELECT_ENTRY_USER" onclick="aipo.message.toggleMemberSelect(true);"><input #if($mode!="new_form")style="display:none"#end id="memberSelectButtonOff" type="button" class="alignright" value="$l10n.MESSAGE_HIDE_SELECT_VIEW" onclick="aipo.message.toggleMemberSelect(false);"></td>
+			</tr>
+		</tbody>
+	</table>
 </div>
-<select size="10" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
- *#
+<div id="memberField"  #if(${client}=="IPHONE" && $mode!="new_form")style="display:none"#end>
+<table class="none">
+  <tr><td>
+    <div dojoType="aipo.widget.MemberFilterList"
+        id="memberfilterlist"
+        widgetId="memberfilterlist"
+        memberFromId="tmp_member_from"
+        memberToId="member_to"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+        clickEvent="aipo.message.changeMember()"
+        childTemplateString=""
+        viewSelectId="tmp_view"
+        groupSelectId="tmp_group"
+        groupSelectPreOptionKey="LoginUser"
+        groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"
+        groupSelectOptionKey="groupId"
+        groupSelectOptionValue="name"
+        memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
+        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group')">
+    </div>
+    <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+  </td></tr>
+</table>
+</div>
+#ALtditemfooter()
+
+#ALtdcaption($l10n.MESSAGE_ROOM_NAME)
+#ALtditemheader()
+#ALtextfieldw100('name' $!result.Name 50 'active')
+#ALtditemfooter()
+
+#if($mode!="new_form")
+#if($result.isFileUploadable())
+#ALtdcaption($l10n.MESSAGE_ROOM_ICON)
+#ALtditemheader()
+#IFFileUpload()
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+	#foreach($record in $!result.AttachmentFileNameList )
+	<li data-fileid="${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MESSAGE_DELETION</span>
+	<img class="avatar" id="facephoto_$!{portlet.ID}" src="$jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!result.RoomId).addQueryData("t", $record.PhotoModified)" alt="$l10n.MESSAGE_ROOM_ICON" style="display:block" />
+	</li>
+	#end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+#ALtditemfooter()
+#end
+#end
+
+#ALtablefooter()
+
 
 #ALtditemfooter()
 #ALtablefooter()
