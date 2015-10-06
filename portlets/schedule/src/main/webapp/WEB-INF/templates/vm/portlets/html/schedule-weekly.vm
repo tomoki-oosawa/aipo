@@ -175,8 +175,6 @@ $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #end
 #end
 <div class="calendarFooter"></div>
-
-
 </td>
 #end
 </tr>
