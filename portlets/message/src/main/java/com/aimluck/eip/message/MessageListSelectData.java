@@ -70,7 +70,7 @@ public class MessageListSelectData extends
 
   private EipTMessageRoom room;
 
-  private ALStringField keyword = null;
+  private ALStringField keyword;
 
   private boolean isSearch = false;
 
@@ -180,6 +180,7 @@ public class MessageListSelectData extends
     rd.setMemberCount(model.getMemberCount());
     rd.setUnreadCount(model.getUnreadCount());
     rd.setMessage(model.getMessage());
+    rd.setKeyword(keyword.getValue());
     rd.setCreateDate(model.getCreateDate());
     rd.setOwner(model.getUserId().intValue() == userId);
     if (model.getMessageId().intValue() > lastMessageId) {
