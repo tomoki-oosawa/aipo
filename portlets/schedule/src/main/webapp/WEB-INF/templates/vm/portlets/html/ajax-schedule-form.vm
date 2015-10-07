@@ -112,9 +112,11 @@
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_TYPE</h3>
+      <p>
       <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeD">$l10n.SCHEDULE_EVERY_DAY</label>
-      <br/>
+      </p>
+      <p>
       <input id="repeat_typeW" type="radio" value="W" #if ($!{result.RepeatType.toString()} == "W") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeW">$l10n.SCHEDULE_EVERY_WEEK</label>
       <input id="week_0_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_0"/>
@@ -131,7 +133,8 @@
       <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_5_id">$l10n.SCHEDULE_FRIDAY</label>
       <input id="week_6_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_6"/>
       <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_6_id">$l10n.SCHEDULE_SATURDAY</label>
-      <br/>
+      </p>
+      <p>
       <input id="repeat_typeM" type="radio" value="M" #if ($!{result.RepeatType.toString()} == "M") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeM">$l10n.SCHEDULE_EVERY_MONTH</label>
       <select onchange="aipo.schedule.enableMonth(this.form)" name="month_day">
@@ -139,7 +142,8 @@
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
-      <br/>
+      </p>
+      <p>
       <input id="repeat_typeY" type="radio" value="Y" #if ($!{result.RepeatType.toString()} == "Y") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeY">$l10n.SCHEDULE_EVERY_YEAR</label>
       <select onchange="aipo.schedule.enableYear(this.form)" name="year_month">
@@ -152,8 +156,9 @@
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+      </p>
    </div>
-    <div class="p auiSetDate">
+    <div class="p auiSetDate mt15">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
       <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag"/>
       <label for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
@@ -165,7 +170,7 @@
             &nbsp;-&nbsp;<span dojoType="aipo.widget.DropdownDatepicker" id="limitEndDateSpan" widgetId="limitEndDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="limit_end_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.LimitEndDateSub}"checked="checked" #end inputId="limit_end_date_input" dateId="limit_end_date" displayCheck="none"></span>
     </div>
   </div>
-  <div class="p auiSetDate">
+  <div class="p auiSetDate mt15">
     <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">$l10n.SCHEDULE_TIME</h3>
     <div id="timeField"  style="display:#if($!{result.Span})none#end">
         <span id="startTimeSpan">
