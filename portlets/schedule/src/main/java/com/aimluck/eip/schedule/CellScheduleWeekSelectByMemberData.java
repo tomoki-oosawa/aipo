@@ -260,7 +260,8 @@ public class CellScheduleWeekSelectByMemberData extends
         Calendar cal_event = Calendar.getInstance();
         cal2.setTime(getStartDate().getValue());
         cal2.set(Calendar.DAY_OF_MONTH, day);
-        cal2.set(Calendar.MONTH, month);
+        // JANUARY = 0 から始まるので月の設定は-1した値を使う
+        cal2.set(Calendar.MONTH, month - 1);
         cal_event.setTime(getStartDate().getValue());
 
         int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
