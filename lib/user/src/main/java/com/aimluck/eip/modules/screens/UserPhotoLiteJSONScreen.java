@@ -80,8 +80,7 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
           out.setUserId(Integer.valueOf(user.getUserId()));
           out.setName(user.getName());
           out.setAliasName("(" + user.getAliasName() + ")", user.getName());
-          out.setHasPhoto("T".equals(user.getHasPhoto())
-            || "N".equals(user.getHasPhoto()));
+          out.setHasPhoto(user.getHasPhoto());
           out.setPhotoModified(user.getPhotoModified());
           outputs.add(out);
         }
