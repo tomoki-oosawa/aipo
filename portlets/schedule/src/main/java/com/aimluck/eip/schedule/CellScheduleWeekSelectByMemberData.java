@@ -252,6 +252,41 @@ public class CellScheduleWeekSelectByMemberData extends
             scheduleMapList.set(index, list2);
           }
         }
+        // 毎年
+      } else if (pattern.startsWith("Y")) {
+        int day = Integer.parseInt(pattern.substring(3, 5));
+        int month = Integer.parseInt(pattern.substring(1, 3));
+        Calendar cal2 = Calendar.getInstance();
+        Calendar cal_event = Calendar.getInstance();
+        cal2.setTime(getStartDate().getValue());
+        cal2.set(Calendar.DAY_OF_MONTH, day);
+        cal2.set(Calendar.MONTH, month);
+        cal_event.setTime(getStartDate().getValue());
+
+        int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
+        if (index < 0) {
+          index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
+          cal_event.add(Calendar.MONTH, 1);
+        }
+        if (index >= 0
+          && index <= 6
+          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day
+          && (cal_event.get(Calendar.MONTH) + 1) == month) {
+          if (pattern.endsWith("L")) {
+            if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
+              cal2.add(Calendar.DAY_OF_MONTH, 1);
+              if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
+                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                list2.add(list.get(k));
+                scheduleMapList.set(index, list2);
+              }
+            }
+          } else {
+            List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+            list2.add(list.get(k));
+            scheduleMapList.set(index, list2);
+          }
+        }
       }
     }
 

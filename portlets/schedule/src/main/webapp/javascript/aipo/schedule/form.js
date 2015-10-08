@@ -549,6 +549,12 @@ aipo.schedule.repeatpickeron = function(){
     aipo.schedule.setWrapperHeight();
 }
 
+aipo.schedule.enableYear = function(form){
+    if(! form.repeat_type[3].checked){
+        form.repeat_type[3].checked = true;
+    }
+}
+
 aipo.schedule.buttonEdit = function(form, editurl) {
     aimluck.io.disableForm(form, true);
     aipo.common.showDialog(editurl);

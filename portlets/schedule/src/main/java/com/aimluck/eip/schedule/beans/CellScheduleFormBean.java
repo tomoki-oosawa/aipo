@@ -94,6 +94,12 @@ public class CellScheduleFormBean implements ALData {
   /** <code>month_day</code> 繰り返す日 */
   private ALCellNumberField month_day;
 
+  /** <code>month_day</code> 毎年繰り返す月 */
+  private ALCellNumberField year_month;
+
+  /** <code>month_day</code> 毎年繰り返す日 */
+  private ALCellNumberField year_day;
+
   /** <code>edit_schedule_flag</code> 繰り返しスケジュールの編集フラグ */
   private ALCellNumberField edit_repeat_flag;
 
@@ -226,6 +232,18 @@ public class CellScheduleFormBean implements ALData {
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
     month_day.limitValue(1, 31);
 
+    // 毎年繰り返し月（選択されたときのみ Validate する）
+    year_month = new ALCellNumberField();
+    year_month.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_MONTH"));
+    year_month.limitValue(1, 12);
+
+    // 毎年繰り返し日（選択されたときのみ Validate する）
+    year_day = new ALCellNumberField();
+    year_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
+    year_day.limitValue(1, 31);
+
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -290,6 +308,7 @@ public class CellScheduleFormBean implements ALData {
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
     // MnnN M25 -> 毎月25日
+    // YnnnnN Y0101N -> 毎年1月1日
     // S -> 期間での指定
     String ptn = record.getRepeatPattern();
     int count = 0;
@@ -345,6 +364,11 @@ public class CellScheduleFormBean implements ALData {
       repeat_type.setValue("M");
       month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
       count = 3;
+    } else if (ptn.charAt(0) == 'Y') {
+      repeat_type.setValue("Y");
+      year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      year_day.setValue(Integer.parseInt(ptn.substring(3, 5)));
+      count = 5;
     } else if (ptn.charAt(0) == 'S') {
       is_span = true;
       is_repeat = false;
@@ -450,6 +474,8 @@ public class CellScheduleFormBean implements ALData {
       getLimitStartDate(),
       getLimitEndDate(),
       getMonthDay(),
+      getYearMonth(),
+      getYearDay(),
       loginUser,
       entityId,
       msgList,
@@ -701,6 +727,24 @@ public class CellScheduleFormBean implements ALData {
    */
   public ALCellNumberField getMonthDay() {
     return month_day;
+  }
+
+  /**
+   * 毎年繰り返す日を取得します。
+   *
+   * @return
+   */
+  public ALCellNumberField getYearMonth() {
+    return year_month;
+  }
+
+  /**
+   * 毎年繰り返す日を取得します。
+   *
+   * @return
+   */
+  public ALCellNumberField getYearDay() {
+    return year_day;
   }
 
   /**

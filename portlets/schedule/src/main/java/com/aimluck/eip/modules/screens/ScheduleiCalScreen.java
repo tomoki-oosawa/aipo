@@ -128,6 +128,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
       Date dStart = null;
       Date dEnd = null;
+      String ptn = rd.getPattern();
 
       if ("S".equals(rd.getPattern())) {
         cStart.add(Calendar.DATE, 1);
@@ -139,7 +140,6 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         dEnd = new DateTime(cEnd.getTime());
       }
 
-      String ptn = rd.getPattern();
       java.util.Date currentStartDate = getRepeatStartDate(startDate, ptn);
 
       Recur recur = null;
@@ -205,7 +205,15 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         recur.getMonthDayList().add(mday);
         count = 3;
+      } else if (ptn.charAt(0) == 'Y') {
+        recur = new Recur(Recur.YEARLY, null);
+        int ymonth = Integer.parseInt(ptn.substring(1, 3));
+        int yday = Integer.parseInt(ptn.substring(3, 5));
+        recur.getMonthList().add(ymonth);
+        recur.getMonthDayList().add(yday);
+        count = 5;
       }
+
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
           if (endDate.compareTo(cStart.getTime()) < 0
@@ -224,12 +232,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(currentStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(currentStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           } else {
             java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
@@ -238,12 +246,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(RepeatStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(RepeatStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           }
         } else {
@@ -253,13 +261,21 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cStart.setTime(currentStartDate);
           cStart.set(Calendar.HOUR_OF_DAY, hour);
           cStart.set(Calendar.MINUTE, min);
-          dStart = new DateTime(cStart.getTime());
           hour = cEnd.get(Calendar.HOUR_OF_DAY);
           min = cEnd.get(Calendar.MINUTE);
           cEnd.setTime(currentStartDate);
           cEnd.set(Calendar.HOUR_OF_DAY, hour);
           cEnd.set(Calendar.MINUTE, min);
+          dStart = new DateTime(cStart.getTime());
           dEnd = new DateTime(cEnd.getTime());
+          if (ptn.charAt(0) == 'Y') {
+            if (endDate.compareTo(cStart.getTime()) < 0
+              || startDate.compareTo(cEnd.getTime()) > 0) {
+              recur = null;
+              dStart = null;
+              dEnd = null;
+            }
+          }
         }
       }
 
@@ -293,11 +309,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dateList.add(new DateTime(dummyStart.getTime()));
           }
           event.getProperties().add(new ExDate(dateList));
-
         }
       }
-
       cal.getComponents().add(event);
+
     }
 
     ServletOutputStream out = null;
@@ -383,6 +398,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     } else if (ptn.charAt(0) == 'M') {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = cal.get(Calendar.DATE) == mday;
+    } else if (ptn.charAt(0) == 'Y') {
+      int ymonth = Integer.parseInt(ptn.substring(1, 3));
+      int yday = Integer.parseInt(ptn.substring(3, 5));
+      result =
+        cal.get(Calendar.MONTH) == ymonth - 1 && cal.get(Calendar.DATE) == yday;
     } else {
       return true;
     }
