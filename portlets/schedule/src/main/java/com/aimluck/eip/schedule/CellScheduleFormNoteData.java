@@ -183,24 +183,26 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             .toString());
         } else if ("W".equals(form_data.getRepeatType().getValue())) {
           if (form_data.getRepeatWeek().getValue().equals("0")) {
-            schedule.setRepeatPattern(new StringBuffer().append('W').append(
-              form_data.getWeek0().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek1().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek2().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek3().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek4().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek5().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek6().getValue().equals("TRUE") ? 1 : 0).append(
-              lim).toString());
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('W')
+              .append(form_data.getWeek0().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek1().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek2().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek3().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek4().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek5().getValue() != null ? 1 : 0)
+              .append(form_data.getWeek6().getValue() != null ? 1 : 0)
+              .append(lim)
+              .toString());
           } else {
             schedule.setRepeatPattern(new StringBuffer().append('W').append(
-              form_data.getWeek0().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek1().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek2().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek3().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek4().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek5().getValue().equals("TRUE") ? 1 : 0).append(
-              form_data.getWeek6().getValue().equals("TRUE") ? 1 : 0).append(
+              form_data.getWeek0().getValue() != null ? 1 : 0).append(
+              form_data.getWeek1().getValue() != null ? 1 : 0).append(
+              form_data.getWeek2().getValue() != null ? 1 : 0).append(
+              form_data.getWeek3().getValue() != null ? 1 : 0).append(
+              form_data.getWeek4().getValue() != null ? 1 : 0).append(
+              form_data.getWeek5().getValue() != null ? 1 : 0).append(
+              form_data.getWeek6().getValue() != null ? 1 : 0).append(
               form_data.getRepeatWeek().getValue()).append(lim).toString());
           }
 
