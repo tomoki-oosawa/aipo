@@ -529,6 +529,10 @@ aipo.schedule.enablePerWeek = function(form){
     form.repeat_type[1].checked = true;
 }
 
+aipo.schedule.enableNthWeek = function(form){
+	form.repeat_type[1].checked = true;
+}
+
 aipo.schedule.enableMonth = function(form){
     if(! form.repeat_type[2].checked){
         form.repeat_type[2].checked = true;

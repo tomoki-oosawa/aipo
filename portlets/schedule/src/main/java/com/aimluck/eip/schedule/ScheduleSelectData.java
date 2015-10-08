@@ -412,6 +412,7 @@ public class ScheduleSelectData extends
 
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
+      // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -424,9 +425,43 @@ public class ScheduleSelectData extends
         count = 1;
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
+        if (ptn.length() == 9) {
+          rd.addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .toString());
+          count = 8;
+        } else {
+          switch (ptn.charAt(8)) {
+            case '1':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+                .toString());
+              break;
+            case '2':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+                .toString());
+              break;
+            case '3':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+                .toString());
+              break;
+            case '4':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+                .toString());
+              break;
+            case '5':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+                .toString());
+              break;
+          }
+          count = 9;
+        }
         rd
           .addText(new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
             .append(
               ptn.charAt(1) != '0' ? ALLocalizationUtils
                 .getl10n("SCHEDULE_SUNDAY") : "")
@@ -450,7 +485,6 @@ public class ScheduleSelectData extends
                 .getl10n("SCHEDULE_SATURDAY") : "")
             .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
             .toString());
-        count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         rd.addText(new StringBuffer().append(
@@ -697,7 +731,7 @@ public class ScheduleSelectData extends
 
   /**
    * ログインユーザーのIDかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */
