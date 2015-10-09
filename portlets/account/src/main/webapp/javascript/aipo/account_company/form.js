@@ -31,7 +31,7 @@ aipo.account_company.onLoadPostDialog = function(portlet_id){
         for(i = 0 ; i < s_o.length; i ++ ) {
             memberlist.addOptionSync(s_o[i].value,s_o[i].text,true);
         }
-    
+
         dojo.byId("post_name").focus();
     }
 }
@@ -70,4 +70,66 @@ aipo.account_company.onReceiveMessage = function(msg){
     }
 }
 
+//-----------------------------------------------------------------------------------------
+aipo.account_company.onLoadAccountMember = function() {
+    aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
+    aipo.account_company.changeMember();
+};
 
+aipo.account_company.changeMember = function() {
+    var node = dojo.byId("memberFieldDisplay");
+    if (node) {
+        var HTML = "";
+        var m_t = dojo.byId("member_to");
+        if (m_t) {
+            var t_o = m_t.options;
+            to_size = t_o.length;
+            for (i = 0; i < to_size; i++) {
+                var text = t_o[i].text.replace(/&/g, "&amp;").replace(/"/g,
+                        "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                HTML += "<span>" + text + "</span>";
+                if (i < to_size - 1) {
+                    HTML += ",<wbr/>";
+                }
+            }
+        }
+        node.innerHTML = HTML;
+    }
+
+    aipo.account_company.setWrapperHeight();
+}
+//--------------------------------------------
+aipo.account_company.toggleMemberSelect = function(bool){
+    var node = dojo.byId("memberField");
+    var buttonOn = dojo.byId("memberSelectButtonOn");
+    var buttonOff = dojo.byId("memberSelectButtonOff");
+    if(bool) {
+        dojo.style(buttonOn, "display" , "none");
+        dojo.style(buttonOff, "display" , "block");
+        dojo.style(node, "display" , "block");
+    } else {
+        dojo.style(buttonOn, "display" , "block");
+        dojo.style(buttonOff, "display" , "none");
+        dojo.style(node, "display" , "none");
+    }
+    aipo.account_company.setWrapperHeight();
+}
+//--------------------------------------------
+aipo.account_company.onReceiveAcountMember = function(msg) {
+    if (!msg["error"]) {
+        var arrDialog = dijit.byId("modalDialog");
+        if (arrDialog) {
+            arrDialog.hide();
+            aipo.account_company.currentUserId = null;
+            var tmpRoomId = parseInt(msg["params"]);
+            if (tmpRoomId != NaN) {
+                aipo.account_company.reloadRoomList(tmpRoomId);
+            } else {
+                aipo.account_company.reloadRoomList();
+            }
+        }
+    }
+    if (dojo.byId('messageDiv')) {
+        dojo.byId('messageDiv').innerHTML = msg["error"];
+    }
+};
