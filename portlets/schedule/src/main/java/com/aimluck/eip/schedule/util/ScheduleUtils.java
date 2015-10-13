@@ -2077,9 +2077,10 @@ public class ScheduleUtils {
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
       ALStringField week_5, ALStringField week_6, ALStringField repeat_week,
       ALStringField limit_flag, ALDateField limit_start_date,
-      ALDateField limit_end_date, ALNumberField month_day, ALNumberField year_month,
-      ALNumberField year_day, ALEipUser login_user, String entityid, List<String> msgList,
-      boolean isCellPhone) throws ALDBErrorException, ALPageNotFoundException {
+      ALDateField limit_end_date, ALNumberField month_day,
+      ALNumberField year_month, ALNumberField year_day, ALEipUser login_user,
+      String entityid, List<String> msgList, boolean isCellPhone)
+      throws ALDBErrorException, ALPageNotFoundException {
 
     int YEAR_FIRST = 2004;
     int YEAR_END = 2016;
@@ -3355,8 +3356,8 @@ public class ScheduleUtils {
           day_of_week_in_month_3 = (dowim == 3);
           day_of_week_in_month_4 = (dowim == 4);
           day_of_week_in_month_5 = (dowim == 5);
-          year_month = cal.get(Calendar.MONTH);
-          year_day = cal.get(Calendar.DAY_OF_YEAR);
+          year_month = cal.get(Calendar.MONTH) + 1;
+          year_day = cal.get(Calendar.DATE);
         } else if (repeat_pattern.endsWith("N")) {
           unlimited_repeat = true;
         }
