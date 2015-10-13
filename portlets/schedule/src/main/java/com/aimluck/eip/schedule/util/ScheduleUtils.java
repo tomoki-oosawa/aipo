@@ -4092,7 +4092,7 @@ public class ScheduleUtils {
 
                     if (year_month > 0 && year_day > 0) {
                       cald.set(Calendar.MONTH, year_month);
-                      cald.set(Calendar.DAY_OF_YEAR, year_day);
+                      cald.set(Calendar.DAY_OF_MONTH, year_day);
                     } else {
                       continue;
                     }
