@@ -3686,6 +3686,16 @@ public class ScheduleUtils {
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "M" + md_str + "_");
+
+            } else if (year_day > 0 && year_month > 0) { // 毎年の場合
+              DecimalFormat exG = new DecimalFormat("00");
+              String yd_str = exG.format(year_day);
+              rmexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "M" + yd_str + "_");
             } else {
               rmexp =
                 ExpressionFactory.likeExp(
@@ -3708,6 +3718,15 @@ public class ScheduleUtils {
                     + "."
                     + EipTSchedule.REPEAT_PATTERN_PROPERTY,
                   "Y" + ym_str + yd_str + "_");
+            } else if (month_day > 0) { // 毎月の場合
+              DecimalFormat exF = new DecimalFormat("00");
+              String md_str = exF.format(month_day);
+              ryexp =
+                ExpressionFactory.likeExp(
+                  EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                    + "."
+                    + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+                  "Y__" + md_str + "_");
             } else {
               ryexp =
                 ExpressionFactory.likeExp(
