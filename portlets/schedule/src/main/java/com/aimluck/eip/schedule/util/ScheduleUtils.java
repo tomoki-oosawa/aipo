@@ -3357,7 +3357,7 @@ public class ScheduleUtils {
           day_of_week_in_month_4 = (dowim == 4);
           day_of_week_in_month_5 = (dowim == 5);
           year_month = cal.get(Calendar.MONTH) + 1;
-          year_day = cal.get(Calendar.DATE);
+          year_day = cal.get(Calendar.DAY_OF_MONTH);
         } else if (repeat_pattern.endsWith("N")) {
           unlimited_repeat = true;
         }
