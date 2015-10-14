@@ -939,6 +939,8 @@ public class ScheduleFormData extends ALAbstractFormData {
           case '5':
             repeat_week.setValue("5");
             break;
+          default:
+            break;
         }
         count = 9;
         // 毎月
