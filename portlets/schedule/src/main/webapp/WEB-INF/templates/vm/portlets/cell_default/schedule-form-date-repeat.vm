@@ -37,12 +37,22 @@
 $l10n.SCHEDULE_EDIT_RANGE:#if ($!{result.getInt($!{result.FormData.EditRepeatFlag.getValue()})} == 0) $l10n.SCHEDULE_ALL_SCHEDULE #else $!{result.FormData.ViewDateFormatNoly} #end #ALcell_br($career)
 $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 <input id="repeat_typeD" name="repeat_type" type="radio" value="D" #if ($!{result.FormData.RepeatType.toString()} == "D") checked="checked" #end>$l10n.SCHEDULE_EVERY_DAY#ALcell_br($career)
-<input id="repeat_typeW" name="repeat_type" type="radio" value="W" #if ($!{result.FormData.RepeatType.toString()} == "W") checked="checked" #end>$l10n.SCHEDULE_EVERY_WEEK
+<input name="repeat_type" type="radio" value="W" #if ($!{result.FormData.RepeatType.toString()} == "W") checked="checked" #end>
+      <select id="repeat_week" name="repeat_week"/>
+	      <option value="0" #if ($!{result.FormData.RepeatWeek.toString()} == "0") selected="selected" #end>$l10n.SCHEDULE_EVERY_WEEK</option>
+	      <option value="1" #if ($!{result.FormData.RepeatWeek.toString()} == "1") selected="selected" #end>$l10n.SCHEDULE_1ST_WEEK</option>
+	      <option value="2" #if ($!{result.FormData.RepeatWeek.toString()} == "2") selected="selected" #end>$l10n.SCHEDULE_2ND_WEEK</option>
+	      <option value="3" #if ($!{result.FormData.RepeatWeek.toString()} == "3") selected="selected" #end>$l10n.SCHEDULE_3RD_WEEK</option>
+	      <option value="4" #if ($!{result.FormData.RepeatWeek.toString()} == "4") selected="selected" #end>$l10n.SCHEDULE_4TH_WEEK</option>
+	      <option value="5" #if ($!{result.FormData.RepeatWeek.toString()} == "5") selected="selected" #end>$l10n.SCHEDULE_5TH_WEEK</option>
+      </select>
 <BLOCKQUOTE>
 <input name="week_0" type="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SUNDAY<input name="week_1" type="checkbox" #if ($!{result.FormData.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_MONDAY<input name="week_2" type="checkbox" #if ($!{result.FormData.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_TUSEDAY<input name="week_3" type="checkbox" #if ($!{result.FormData.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_WEDNESDAY#ALcell_br($career)<input name="week_4" type="checkbox" #if ($!{result.FormData.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_THURSDAY<input name="week_5" type="checkbox" #if ($!{result.FormData.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_FRIDAY<input name="week_6" type="checkbox" #if ($!{result.FormData.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SATURDAY
 </BLOCKQUOTE>
-<input name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
+<input id="repeat_typeM" name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
+<input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
+<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
@@ -60,12 +70,22 @@ $l10n.SCHEDULE_TIME:#ALcell_br($career)
 #else
 $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 <input name="repeat_type" type="radio" value="D" #if ($!{result.FormData.RepeatType.toString()} == "D") checked="checked" #end>$l10n.SCHEDULE_EVERY_DAY#ALcell_br($career)
-<input name="repeat_type" type="radio" value="W" #if ($!{result.FormData.RepeatType.toString()} == "W") checked="checked" #end>$l10n.SCHEDULE_EVERY_WEEK
+<input name="repeat_type" type="radio" value="W" #if ($!{result.FormData.RepeatType.toString()} == "W") checked="checked" #end>
+      <select id="repeat_week" name="repeat_week"/>
+	      <option value="0" #if ($!{result.FormData.RepeatWeek.toString()} == "0") selected="selected" #end>$l10n.SCHEDULE_EVERY_WEEK</option>
+	      <option value="1" #if ($!{result.FormData.RepeatWeek.toString()} == "1") selected="selected" #end>$l10n.SCHEDULE_1ST_WEEK</option>
+	      <option value="2" #if ($!{result.FormData.RepeatWeek.toString()} == "2") selected="selected" #end>$l10n.SCHEDULE_2ND_WEEK</option>
+	      <option value="3" #if ($!{result.FormData.RepeatWeek.toString()} == "3") selected="selected" #end>$l10n.SCHEDULE_3RD_WEEK</option>
+	      <option value="4" #if ($!{result.FormData.RepeatWeek.toString()} == "4") selected="selected" #end>$l10n.SCHEDULE_4TH_WEEK</option>
+	      <option value="5" #if ($!{result.FormData.RepeatWeek.toString()} == "5") selected="selected" #end>$l10n.SCHEDULE_5TH_WEEK</option>
+      </select>
 <BLOCKQUOTE>
 <input name="week_0" type="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SUNDAY<input name="week_1" type="checkbox" #if ($!{result.FormData.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_MONDAY<input name="week_2" type="checkbox" #if ($!{result.FormData.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_TUSEDAY<input name="week_3" type="checkbox" #if ($!{result.FormData.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_WEDNESDAY#ALcell_br($career)<input name="week_4" type="checkbox" #if ($!{result.FormData.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_THURSDAY<input name="week_5" type="checkbox" #if ($!{result.FormData.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_FRIDAY<input name="week_6" type="checkbox" #if ($!{result.FormData.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SATURDAY
 </BLOCKQUOTE>
-<input name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
+<input id="repeat_typeM" name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
+<input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
+<BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
