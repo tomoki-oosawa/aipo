@@ -457,6 +457,8 @@ public class ScheduleSelectData extends
                 .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
                 .toString());
               break;
+            default:
+              break;
           }
           count = 9;
         }

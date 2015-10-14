@@ -27,7 +27,6 @@ import com.aimluck.commons.field.ALCellDateField;
 import com.aimluck.commons.field.ALCellDateTimeField;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALCellStringField;
-import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -331,7 +330,7 @@ public class CellScheduleFormBean implements ALData {
       week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
       week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
       count = 8;
-   // 第何週
+      // 第何週
     } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
       repeat_type.setValue("W");
       week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
@@ -357,6 +356,8 @@ public class CellScheduleFormBean implements ALData {
           break;
         case '5':
           repeat_week.setValue("5");
+          break;
+        default:
           break;
       }
       count = 9;
