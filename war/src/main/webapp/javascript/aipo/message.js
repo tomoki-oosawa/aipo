@@ -606,9 +606,9 @@ aipo.message.swapView = function() {
             }
             for(var key in aipo.schedule.scrollNeeds) {
             	aipo.calendar.populateWeeklySchedule(aipo.schedule.scrollNeeds[key]);
-            }		
+            }
             while(aipo.schedule.scrollNeeds.length > 0){
-             	aipo.schedule.scrollNeeds.pop();		
+             	aipo.schedule.scrollNeeds.pop();
             }
         }
     }
@@ -869,6 +869,7 @@ aipo.message.fixMessageWindow = function() {
 
 aipo.message.onLoadMessageRoomDialog = function() {
     aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
+//    aipo.widget.MemberFilterList.addAuthority("memberfilterlist", "init_memberlist", "member_to","tmp_authority_from",js);
     aipo.message.changeMember();
 };
 

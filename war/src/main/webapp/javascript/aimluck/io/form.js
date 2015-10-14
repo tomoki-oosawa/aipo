@@ -1180,10 +1180,12 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
       }
       var li = document.createElement("li");
       var input = document.createElement("input");
+      var selectId = "tmp_authority_from_"+ value;
       input.type = "checkbox";
       input.value = value;
       input.name = name;
       input.id = name + "_" + value;
+      li.className = 'checked';
       if(is_checked){
         input.setAttribute('checked', 'checked');
       }
@@ -1194,6 +1196,11 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
         + "<span class=\"name\">" + text + "</span>"
+        + "<select class=\"floatRight\" id=\""+ selectId +"\">"
+        + "<option selected=\"selected\" value=\"0\">---</option>"
+        + "<option value=\"1\">管理者</option>"
+        + "<option value=\"2\">メンバー</option>"
+        + "</select>"
         + child_html
         + "</label></li>";
       return ul.appendChild(li);

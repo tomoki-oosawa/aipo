@@ -37,6 +37,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     memberFromOptionImageVersionParam: "photoModified",
     memberFromOptionDefaultImage: "themes/default/images/common/icon_user100.png",
     memberToId: "",
+	authorityFromId: "",
     clickEvent: "",
     viewSelectId: "",
     groupSelectId: "",
@@ -96,6 +97,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           preOptions: { key:this.groupSelectPreOptionKey, value:this.groupSelectPreOptionValue },
           selectedId: this.groupSelectPreOptionKey,
           widgetId: this.widgetId,
+          child_html: this.childTemplateString,
         };
         aimluck.io.createGroupLists(this.groupSelectId, params);
         aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, this.groupSelectPreOptionKey, this.groupSelectPreOptionValue);
@@ -174,6 +176,21 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
     }
 }
 
+aipo.widget.MemberFilterList.addAuthority = function(widgetId, memberFromId, memberToId, authorityFromId, js){
+    var picker = dojo.byId(widgetId);
+    if (picker) {
+      var select = dojo.byId(memberToId).options;
+      var input = dojo.query("input[name=tmp_member_from]");
+      var user_param = select.getAttribute('data-user');
+      var name_param = input.getAttribute('data-name');
+      if(name_param == user_param){
+    	  //「管理者」を選択
+	  }else{
+		　//「メンバー」を選択
+	  }
+    }
+}
+
 /**
  * 選択済みユーザー読み込み
  */
@@ -184,6 +201,7 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     option.value = value;
     option.text = text;
     option.selected = is_selected;
+    option.setAttribute('data-user', text);
     if (select.options.length == 1 && select.options[0].value == ""){
             select.options.remove(0);
       }
@@ -193,6 +211,7 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     option.value = value;
     option.text = text;
     option.selected = is_selected;
+    option.setAttribute('data-user', text);
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
     }
