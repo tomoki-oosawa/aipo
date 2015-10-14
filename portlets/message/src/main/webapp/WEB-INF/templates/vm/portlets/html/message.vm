@@ -62,6 +62,7 @@
 					<input type="hidden" name="secid" value="$secid"/>
 					<input type="hidden" name="roomId" value=""/>
 					<input type="hidden" name="userId" value=""/>
+					<input type="hidden" name="transactionId" value="" />
 					 <input type="hidden" id="folderName_global-$messagePortletId" name="folderName" value="" />
 					<div class="tlInputMention relative">
 						<textarea class="elastic" cols="10" name="message" rows="1" style="height: 43px; color: black; " onKeyUp="aipo.message.resizeInput(this);" onPaste="aipo.message.onPaste(this);" onFocus="aipo.message.onFocus(this);"></textarea>
@@ -76,7 +77,7 @@
 					<div class="tlInputControls clearfix">
 						<div class="floatRight">
 							<i class="indicator" id="indicator-dlg-global-$messagePortletId" style="display:none"></i>
-							<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aimluck.io.setHiddenValue(this);">
+							<input type="submit" class="auiButtonAction" value="$l10n.MESSAGE_MESSAGE_SEND" onclick="aipo.message.insertTransactionId('');aimluck.io.setHiddenValue(this);">
 						</div>
 						<div class="floatLeft #if(!$!utils.isFileUploadable($data))mb_hide#end">
 							<iframe name="if_fileupload_$messagePortletId" id="if_fileupload_$messagePortletId" allowtransparency="true" class="auiInputFileFrame" src="$!jslink.getPortletById("global-${messagePortletId}").addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','miniform')" frameborder="0" scrolling="no" ></iframe>
@@ -106,6 +107,7 @@ dojo.addOnLoad(function() {
 	aipo.menu.toggleDropdown("message");
 	#end
     aipo.message.init("$portlet.ID", "$!jslink.getPortletById($portlet.ID)", true);
+    aipo.message.loginUserId = "$!{data.User.getUserName()}";
 });
 
 
