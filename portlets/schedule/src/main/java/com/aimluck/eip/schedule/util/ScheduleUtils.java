@@ -4112,7 +4112,7 @@ public class ScheduleUtils {
                     cald.set(Calendar.HOUR_OF_DAY, 0);
 
                     if (year_month > 0 && year_day > 0) {
-                      cald.set(Calendar.MONTH, year_month);
+                      cald.set(Calendar.MONTH, year_month - 1);
                       cald.set(Calendar.DAY_OF_MONTH, year_day);
                     } else {
                       continue;
