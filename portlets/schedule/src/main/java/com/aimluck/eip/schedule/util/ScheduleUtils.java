@@ -2223,6 +2223,8 @@ public class ScheduleUtils {
                 msgList.add(ALLocalizationUtils
                   .getl10n("SCHEDULE_MESSAGE_SELECT_5TH_WEEKLY"));
                 break;
+              default:
+                break;
             }
           }
         } else if ("M".equals(repeat_type.getValue())) {
