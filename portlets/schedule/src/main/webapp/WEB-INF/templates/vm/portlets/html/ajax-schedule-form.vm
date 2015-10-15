@@ -298,7 +298,7 @@
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
+<div id="facilityFieldButton" style="display:#if($!{result.PublicFlag.toString()} == "P")none#end">
 	<table class="w100">
 		<tbody>
 			<tr class="member">

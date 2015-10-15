@@ -120,11 +120,8 @@
 #set($termcolcount = 0)
 #set($todocolcount = 0)
 #set($duplirowcount = 0)
-#set($hoge = 0)
-#set($hogehoge = 0)
 
 #foreach($record3 in $result.MemberList)
-#set($hogehoge = $hogehoge + 1)
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
 #end
@@ -135,7 +132,6 @@
 
 #if($termcolcount == 0)
 #foreach($record4 in $result.FacilityMemberList)
-#set($hoge = $hoge + 1)
 #if($termcolcount < ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
 #set($termcolcount = ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
 #end
@@ -154,11 +150,6 @@
 #set($colspanmax = $colspanmax + $todocolcount)
 #end
 #set($endHour = $!{result.EndHour} - 1)
-
-<p>term=$termcolcount</p>
-<p>todo=$todocolcount</p>
-<p>mem=$hogehoge</p>
-<p>faci=$hoge</p>
 
 #ALtableheaderCalendarAtt("100%" "calendarDisplayDay")
 <tr>
