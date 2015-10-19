@@ -87,9 +87,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
 
-  /** <code>facilitymembers</code> 設備グループのメンバー 9.15 */
-  private List<FacilityResultData> facilitymembers;
-
   /** <code>groups</code> グループリスト */
   private List<ALEipGroup> groups;
 
@@ -395,24 +392,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
 
     if (usize == 0) {
       ulist.add(Integer.valueOf(-1));
-      List<Integer> flist =
-        FacilitiesUtils.getFacilityGroupIds(Integer.valueOf(filter));
-      int fsize = flist.size();
-      if (fsize == 0) {
-        flist.add(Integer.valueOf(-1));
-      } else {
-        for (int i = 0; i < fsize; i++) {
-          Integer fid = flist.get(i);
-          ScheduleOnedayContainer con = new ScheduleOnedayContainer();
-          con.initField();
-          con.initHour(startHour, endHour);
-          this.facilitytermmap.put(
-            fid,
-            new ArrayList<ScheduleOnedayResultData>());
-          this.map.put(fid, con);
-          this.todomap.put(fid, new ArrayList<ScheduleToDoResultData>());
-        }
-      }
     } else {
       for (int i = 0; i < usize; i++) {
         Integer id = ulist.get(i);
@@ -475,13 +454,12 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         ScheduleOnedayContainer con = new ScheduleOnedayContainer();
         con.initField();
         con.initHour(startHour, endHour);
+        this.facilitytermmap.put(id, new ArrayList<ScheduleOnedayResultData>());
         this.facilitymap.put(id, con);
       }
     }
 
     members = ALEipUtils.getUsers(filter);
-    facilitymembers =
-      FacilitiesUtils.getFacilityGroupList(Integer.valueOf(filter));
 
     String flag_changeturn =
       ALEipUtils.getTemp(rundata, context, ScheduleUtils.FLAG_CHANGE_TURN_STR);
@@ -972,10 +950,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    */
   public List<ALEipUser> getMemberList() {
     return members;
-  }
-
-  public List<FacilityResultData> getFacilityMemberList() {
-    return facilitymembers;
   }
 
   /**

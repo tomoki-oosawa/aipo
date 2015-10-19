@@ -131,7 +131,7 @@
 #end
 
 #if($termcolcount == 0)
-#foreach($record4 in $result.FacilityMemberList)
+#foreach($record4 in $result.FacilityList)
 #if($termcolcount < ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
 #set($termcolcount = ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
 #end
@@ -361,7 +361,7 @@ $record.WbrName
 ### 設備スケジュール表示（ここから） ###
 #set($duplirowcount = 0)
 #set($colspanmax = $!{result.Max} + 1)
-#foreach($record3 in $result.FacilityMemberList)
+#foreach($record3 in $result.FacilityList)
 #if($result.isDuplicate())
 #set($duplirowcount = ${result.getFacilityDuplicateScheduleListRowCount($record3.FacilityId.Value)})
 #if($duplirowcount > 0)
@@ -377,12 +377,10 @@ $record.WbrName
 #ALtdheadAtt("$record3.FacilityName" "class='groupOneday' rowspan='$duplirowmax'")
 #ALtdheadfooter()
 
-#if($todocolcount > 0)
-#ALtdcellAtt("" "colspan='$todorestcount'")
-#end
-
+### 設備期間スケジュール（ここから） ###
 #if($termcolcount > 0)
-#ALtdcellheaderAtt("colspan='$termcolcount'")
+<td rowspan="$duplirowmax">
+#foreach($record in ${result.getFacilityTermResultDataList($record3.FacilityId.Value)})
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv left">
@@ -396,8 +394,10 @@ $record.WbrName
 #end
 </a>
 </div>
+#end
 #ALtdcellfooter()
 #end
+### 設備期間スケジュール（ここまで） ###
 
 #foreach($record in $result.getFacilityScheduleList($record3.FacilityId.Value))
 #set($rows = $result.getFacilityRows($record3.FacilityId.Value))
