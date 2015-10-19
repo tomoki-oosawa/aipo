@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * EventlogScreen
- * 
+ *
  */
 public class EventlogScreen extends ALVelocityScreen {
 
@@ -38,7 +38,7 @@ public class EventlogScreen extends ALVelocityScreen {
     .getLogger(EventlogScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
