@@ -880,3 +880,265 @@ aimluck.io.onTextFieldBlur = function() {
 	  }
   }
 }
+
+
+/**
+ * MemberFilterList用 メンバー一覧生成
+ */
+aimluck.io.createMemberLists = function (ulId, params) {
+  var sel, pre, key, value, url, ind, callback, callbackTarget, widgetId, name, keyword, clickEvent, user_id, image_flag, image_version, default_image, child_html;
+  if (params["url"]) {
+    url = params["url"];
+  }
+  if (params["key"]) {
+    key = params["key"];
+  }
+  if (params["value"]) {
+    value = params["value"];
+  }
+  if (typeof params["userId"] == "undefined") {
+  } else {
+	  user_id = params["userId"];
+  }
+  if (typeof params["name"] == "undefined") {
+  } else {
+	  name = params["name"];
+  }
+  if (typeof params["image_flag"] == "undefined") {
+  } else {
+	  image_flag = params["image_flag"];
+  }
+  if (typeof params["image_version"] == "undefined") {
+  } else {
+	  image_version = params["image_version"];
+  }
+  if (typeof params["default_image"] == "undefined") {
+  } else {
+	  default_image = params["default_image"];
+  }
+  if (typeof params["child_html"] == "undefined") {
+  } else {
+	  child_html = params["child_html"];
+  }
+  if (typeof params["selectedId"] == "undefined") {
+  } else {
+    sel = params["selectedId"];
+  }
+  if (typeof params["preOptions"] == "undefined") {
+  } else {
+    pre = params["preOptions"];
+  }
+  if (typeof params["indicator"] == "undefined") {
+  } else {
+    ind = params["indicator"];
+    var indicator = dojo.byId(ind);
+    if (indicator) {
+      dojo.style(indicator, "display", "none");
+    }
+  }
+  if (typeof params["callback"] == "undefined") {
+  } else {
+    callback = params["callback"];
+    if (typeof params["callbackTarget"] == "undefined") {
+    } else {
+      callbackTarget = params["callbackTarget"];
+    }
+  }
+  if (typeof params["widgetId"] == "undefined") {
+  } else {
+    widgetId = params["widgetId"];
+  }
+  if (typeof params["clickEvent"] == "undefined") {
+  } else {
+    clickEvent = params["clickEvent"];
+  }
+  if (typeof params["keyword"] == "undefined") {
+  } else {
+	  keyword = params["keyword"];
+	    var target_keyword = dojo.byId(keyword);
+	    if (target_keyword) {
+	    	var search = encodeURIComponent(target_keyword.value);
+	      url = url + "&keyword=" + search;
+	    }
+  }
+
+  dojo.xhrGet({
+    url: url,
+    timeout: 10000,
+    encoding: "utf-8",
+    handleAs: "json-comment-filtered",
+    headers: {
+      X_REQUESTED_WITH: "XMLHttpRequest"
+    },
+    load: function (response, ioArgs) {
+      var ul = dojo.byId(ulId);
+      ul.innerHTML = "";
+      var init_member = [];
+      if (typeof sel == "undefined") {
+      } else {
+          var select = dojo.byId(sel);
+          var i;
+          if (select) {
+            var s_o = select.options;
+            if (s_o.length > 0){
+              for(i = 0 ; i < s_o.length; i ++ ) {
+            	  init_member[init_member.length] = s_o[i].value;
+              }
+            }
+          }
+      }
+
+      if (typeof pre == "undefined") {
+      } else {
+        aimluck.io.addMemberList(ul, pre["key"], pre["value"], false, widgetId, name, sel, clickEvent, false, "", "", default_image, child_html);
+      }
+      dojo.forEach(response, function (p) {
+        if (typeof p[key] == "undefined" || typeof p[value] == "undefined" || typeof p[user_id] == "undefined" || typeof p[image_flag] == "undefined" || typeof p[image_version] == "undefined") {
+        } else {
+		  if (dojo.indexOf(init_member, p[key]) != -1){
+        	aimluck.io.addMemberList(ul, p[key], p[value], true, widgetId, name, sel, clickEvent, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+          } else {
+        	aimluck.io.addMemberList(ul, p[key], p[value], false, widgetId, name, sel, clickEvent, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+          }
+        }
+      });
+      if (indicator) {
+        dojo.style(indicator, "display", "none");
+      }
+      if (callback) {
+        callback.call(callbackTarget ? callbackTarget : callback, response);
+      }
+		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, name);
+    }
+  });
+}
+
+/**
+ * MemberFilterList用 メンバー生成
+ */
+aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name, memberTo, clickEvent, has_photo, user_id, photo_modified, default_image, child_html) {
+      var img_src = default_image;
+      if(has_photo){
+          img_src = '?template=FileuploadFacePhotoScreen&uid=' + user_id + '&t=' + photo_modified;
+      }
+      var li = document.createElement("li");
+      var input = document.createElement("input");
+      input.type = "checkbox";
+      input.value = value;
+      input.name = name;
+      input.id = name + "_" + value;
+      if(is_checked){
+        input.setAttribute('checked', 'checked');
+      }
+      input.setAttribute('data-name', text);
+
+      input.setAttribute('onclick', 'dijit.byId("' + widgetId + '").onMemberCheck(this);'+ clickEvent);
+      li.innerHTML = "<label>"
+        + input.outerHTML
+        + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
+        + "<span class=\"name\">" + text + "</span>"
+        + child_html
+        + "</label></li>";
+      return ul.appendChild(li);
+}
+
+/**
+ * MemberFilterList用 グループ一覧生成
+ */
+aimluck.io.createGroupLists = function (ulId, params) {
+  var sel, pre, key, value, url, ind, callback, callbackTarget, widgetId;
+  if (params["url"]) {
+    url = params["url"];
+  }
+  if (params["key"]) {
+    key = params["key"];
+  }
+  if (params["value"]) {
+    value = params["value"];
+  }
+  if (typeof params["widgetId"] == "undefined") {
+  } else {
+      widgetId = params["widgetId"];
+  }
+  if (typeof params["selectedId"] == "undefined") {
+  } else {
+    sel = params["selectedId"];
+  }
+  if (typeof params["preOptions"] == "undefined") {
+  } else {
+    pre = params["preOptions"];
+  }
+  if (typeof params["indicator"] == "undefined") {
+  } else {
+    ind = params["indicator"];
+    var indicator = dojo.byId(ind);
+    if (indicator) {
+      dojo.style(indicator, "display", "none");
+    }
+  }
+  if (typeof params["callback"] == "undefined") {
+  } else {
+    callback = params["callback"];
+    if (typeof params["callbackTarget"] == "undefined") {
+    } else {
+      callbackTarget = params["callbackTarget"];
+    }
+  }
+
+  dojo.xhrGet({
+    url: url,
+    timeout: 10000,
+    encoding: "utf-8",
+    handleAs: "json-comment-filtered",
+    headers: {
+      X_REQUESTED_WITH: "XMLHttpRequest"
+    },
+    load: function (response, ioArgs) {
+      var ul = dojo.byId(ulId);
+      ul.innerHTML = "";
+
+      if (typeof pre == "undefined") {
+      } else {
+          if (pre["key"] == sel) {
+              aimluck.io.addGroupList(ul, pre["key"], pre["value"], true, widgetId);
+            } else {
+              aimluck.io.addGroupList(ul, pre["key"], pre["value"], false, widgetId);
+            }
+      }
+      dojo.forEach(response, function (p) {
+        if (typeof p[key] == "undefined" || typeof p[value] == "undefined") {
+        } else {
+          if (p[key] == sel) {
+            aimluck.io.addGroupList(ul, p[key], p[value], true, widgetId);
+          } else {
+            aimluck.io.addGroupList(ul, p[key], p[value], false, widgetId);
+          }
+        }
+      });
+      if (indicator) {
+        dojo.style(indicator, "display", "none");
+      }
+      if (callback) {
+        callback.call(callbackTarget ? callbackTarget : callback, response);
+      }
+    }
+  });
+}
+
+/**
+ * MemberFilterList用 グループ追加
+ */
+aimluck.io.addGroupList = function (ul, value, text, is_selected, widgetId) {
+        var li = document.createElement("li");
+        li.setAttribute('data-param', value);
+        var a = document.createElement("a");
+        a.href = "javascript:void(0)";
+    	a.innerHTML = text;
+        if(is_selected){
+            dojo.addClass(li, "selected");
+            dojo.addClass(a, "selected");
+        }
+        a.setAttribute('onclick', 'dijit.byId("' + widgetId + '").changeGroup(this, "' + value + '", "' + text + '");');
+        li.appendChild(a);
+        return ul.appendChild(li);
+}

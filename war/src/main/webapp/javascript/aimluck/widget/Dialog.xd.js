@@ -32,7 +32,7 @@ dojo.declare(
     "aimluck.widget.DialogUnderlay",
     [dijit.DialogUnderlay],
     {
-       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node'></div></div>",
+       templateString: "<div class='modalDialogUnderlayWrapper' id='${id}_underlay'><div class='modalDialogUnderlay' dojoAttachPoint='node'></div></div>",
        layout: function(){
 			// summary
 			//		Sets the background to the size of the viewport (rather than the size
@@ -59,7 +59,7 @@ dojo.declare(
 );
 
 dojo.declare( "aimluck.widget.Timeout",  [dijit._Widget, dijit._Templated] , {
-       templateString: "<div class=modalDialogUnderlayWrapper id='${id}_underlay'><div class=modalDialogUnderlay dojoAttachPoint='node' redirecturl=\"${redirectUrl}\"></div></div>",
+       templateString: "<div class='modalDialogUnderlayWrapper' id='${id}_underlay'><div class='modalDialogUnderlay' dojoAttachPoint='node' redirecturl=\"${redirectUrl}\"></div></div>",
        redirectUrl:"about:blank",
        postCreate: function(){
     window.location.href = this.redirectUrl;

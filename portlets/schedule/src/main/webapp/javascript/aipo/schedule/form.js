@@ -529,6 +529,10 @@ aipo.schedule.enablePerWeek = function(form){
     form.repeat_type[1].checked = true;
 }
 
+aipo.schedule.enableNthWeek = function(form){
+	form.repeat_type[1].checked = true;
+}
+
 aipo.schedule.enableMonth = function(form){
     if(! form.repeat_type[2].checked){
         form.repeat_type[2].checked = true;
@@ -543,6 +547,12 @@ aipo.schedule.repeatpickeron = function(){
 	dojo.byId('repeatpickerfield').style.display = "";
 
     aipo.schedule.setWrapperHeight();
+}
+
+aipo.schedule.enableYear = function(form){
+    if(! form.repeat_type[3].checked){
+        form.repeat_type[3].checked = true;
+    }
 }
 
 aipo.schedule.buttonEdit = function(form, editurl) {

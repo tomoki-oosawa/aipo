@@ -97,7 +97,11 @@ aipo.menu.updateTitle = function() {
 
 var bodyHandle = bodyHandle || {};
 dojo.addOnLoad(function() {
-    bodyHandle = dojo.connect(dojo.query('body')[0], 'onmousedown', null,
+	var body = dojo.query('body')[0];
+	if(aipo.userAgent.isIphone8_4_1()){
+		body = dojo.byId('wrapper');
+	}
+    bodyHandle = dojo.connect(body, 'onmousedown', null,
             function(e) {
                 if (dojo.query('a.customizeMenuIconMouseenter').length == 0) {
                     var srcElement;

@@ -445,6 +445,7 @@ $!{record.ToDoResultData.TodoName}
 #end
 #end
 #end
+<div class="calendarFooter"></div>
 #end
 #if($!{record.Date.Value.equals($result.Today.Value)})
 ##</td></tr></tbody></table>
