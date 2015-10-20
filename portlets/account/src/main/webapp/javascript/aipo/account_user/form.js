@@ -153,7 +153,7 @@ aipo.account_user.toggleMenu = function(node, filter, alwaysPulldown) {
 
   if (node.style.display == "none") {
     dojo.query("div.menubar").style("display", "none");
-    
+
     var scroll = {
       left : document.documentElement.scrollLeft
           || document.body.scrollLeft,
@@ -187,5 +187,19 @@ aipo.account_user.onChangePost = function(url, portlet_id, folder_id) {
 
 aipo.account_user.onChangeRole = function(url, portlet_id, group_id) {
   aipo.viewPage(url, portlet_id);
+}
+
+// ユーザー情報ダウンロード
+aipo.Aipo_users.downloadCvn = function(flog_over_size,Aipo_users_max,url){
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	var confirmString = dojo.string.substitute(nlsStrings.EVENTLOG_STR, {
+		max : Aipo_users_max
+	  });
+
+	if(flag_over_size){
+		alert(confirmString);
+	}else{
+		window.location.href=url;
+	}
 }
 
