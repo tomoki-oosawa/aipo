@@ -21,6 +21,7 @@
 #set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
 #set ($action_str = $l10n.SCHEDULE_ADD)
 #set ($event_submit = "eventSubmit_doSchedule_insert")
+//スケジュール追加というString
 #set ($subtitle = $l10n.SCHEDULE_SCHEDULE_ADD)
 #elseif($!result.isCopy())
 #set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
