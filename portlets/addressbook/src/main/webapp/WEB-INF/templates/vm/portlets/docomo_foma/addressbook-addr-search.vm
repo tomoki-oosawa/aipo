@@ -21,7 +21,6 @@
 #set($linklist = [["ｱﾄﾞﾚｽ帳へ", "$!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doAddressbook_menu','1')"]])
 #ALcell_pagetitle($career "ｱﾄﾞﾚｽ検索")
 #ALcell_formheader($career $jslink $portlet)
-<input value="syagai" #if($address_type && $address_type=="corp_address") checked="checked" #end>
 #ALcell_br($career)
 #ALcell_textfield($career 'sword' "" 14 100 '' 'h')#ALcell_br($career)
 #ALcell_submit($career 'submit' '検索')
