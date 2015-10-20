@@ -51,37 +51,35 @@
 
 #ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
 #ALtditemheader()
-<div id="memberFieldDisplay">
+<div>
 	<table class="w100">
 		<tbody>
 			<tr class="member">
-				<td style="border:none;"></td>
+				<td style="width:80%; border:none; display: table-cell" id="memberFieldDisplay"></td>
+				<td class="pc_hide" style="border:none; display: table-cell"><input #if($mode=="new_form")style="display:none"#end id="memberSelectButtonOn" type="button" class="alignright" value="$l10n.MESSAGE_SELECT_ENTRY_USER" onclick="aipo.message.toggleMemberSelect(true);"><input #if($mode!="new_form")style="display:none"#end id="memberSelectButtonOff" type="button" class="alignright" value="$l10n.MESSAGE_HIDE_SELECT_VIEW" onclick="aipo.message.toggleMemberSelect(false);"></td>
 			</tr>
 		</tbody>
 	</table>
 </div>
-<div id="memberField">
+<div id="memberField"  #if(${client}=="IPHONE" && $mode!="new_form")style="display:none"#end>
 <table class="none">
   <tr><td>
-    <div class="spaceTop spaceLeft small">$l10n.MESSAGE_ADD_ENTRY_USER</div>
-    <div dojoType="aipo.widget.MemberNormalSelectList"
-        id="membernormalselect"
-        widgetId="membernormalselect"
-        buttonAddId="button_member_add"
-        buttonRemoveId="button_member_remove"
+    <div dojoType="aipo.widget.MemberFilterList"
+        id="memberfilterlist"
+        widgetId="memberfilterlist"
         memberFromId="tmp_member_from"
-        memberToTitle="$l10n.MESSAGE_ENTRY_USER_LIST"
         memberToId="member_to"
-        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
-        memberFromOptionKey="name"
-        memberFromOptionValue="aliasName"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+        clickEvent="aipo.message.changeMember()"
+        childTemplateString=""
+        viewSelectId="tmp_view"
         groupSelectId="tmp_group"
         groupSelectPreOptionKey="LoginUser"
         groupSelectPreOptionValue="$l10n.MESSAGE_ALL_GROUP"
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
-        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserLiteJSONScreen').addQueryData('mode','group')">
+        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group')">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
   </td></tr>

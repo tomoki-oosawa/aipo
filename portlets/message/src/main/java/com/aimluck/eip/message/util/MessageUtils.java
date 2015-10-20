@@ -36,7 +36,6 @@ import org.apache.jetspeed.portal.Portlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
-import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
@@ -64,6 +63,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALJetspeedLink;
 
 /**
  *
@@ -89,7 +89,7 @@ public class MessageUtils {
   public static void setupContext(RunData rundata, Context context) {
     Portlet portlet = new MessageMockPortlet();
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
@@ -97,7 +97,7 @@ public class MessageUtils {
       String portletId) {
     Portlet portlet = new MessageMockPortlet(portletId);
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 

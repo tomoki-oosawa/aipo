@@ -34,13 +34,13 @@ import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
- * 複数のWebメールを既読にするクラスです。 <br />
+ * 複数のWebメールを未読にするクラスです。 <br />
  */
-public class WebMailMultiRead extends ALAbstractCheckList {
+public class WebMailMultiUnread extends ALAbstractCheckList {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WebMailMultiRead.class.getName());
+    .getLogger(WebMailMultiUnread.class.getName());
 
   /**
    *
@@ -86,7 +86,7 @@ public class WebMailMultiRead extends ALAbstractCheckList {
       ALFolder folder =
         handler.getALFolder(type_mail, orgId, userId, Integer
           .valueOf(accountId));
-      folder.readMails(values);
+      folder.unreadMails(values); // folder.readMails(values);
     } catch (Exception ex) {
       logger.error("webmail", ex);
       return false;

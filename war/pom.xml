@@ -109,7 +109,7 @@
                 <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
-                <include>aipo/widget/MemberNormalSelectList.js</include>
+                <include>aipo/widget/MemberFilterList.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.js</include>
                 <include>aipo/widget/DateCalendar.js</include>
                 <include>aipo/widget/DropdownDatepicker.js</include>
@@ -153,7 +153,7 @@
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
                 <include>aipo/widget/MemberSelectList.xd.js</include>
                 <include>aipo/widget/MemberNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+                <include>aipo/widget/MemberFilterList.xd.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/DateCalendar.xd.js</include>
                 <include>aipo/widget/DropdownDatepicker.xd.js</include>

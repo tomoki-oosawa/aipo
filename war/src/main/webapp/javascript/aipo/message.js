@@ -37,6 +37,7 @@ aipo.message.isInit = false;
 aipo.message.isDirect = false;
 aipo.message.jumpCursor = null;
 aipo.message.isSearched = false;
+aipo.message.transactionIdList = [];
 
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
@@ -579,7 +580,10 @@ aipo.message.updateUnreadCount = function() {
 aipo.message.swapView = function() {
     if (dojo.byId("portletsBody") && dojo.byId("dd_message")) {
         if (dojo.hasClass("dd_message", "open")) {
-            dojo.byId("portletsBody").style.visibility = "hidden";
+            for(var key in aipo.schedule.scrollPositions){
+            	aipo.schedule.scrollPositions[key] = parseInt(dojo.byId('weeklyScrollPane_'+key)["scrollTop"]);
+            }
+            dojo.byId("portletsBody").style.display = "none";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "none";
@@ -591,10 +595,21 @@ aipo.message.swapView = function() {
                 aipo.message.latestMessageList();
             }
         } else {
-            dojo.byId("portletsBody").style.visibility = "";
+            dojo.byId("portletsBody").style.display = "";
             var copyright = dojo.byId("copyright");
             if(copyright) {
             	copyright.style.display = "";
+            }
+            for(var key in aipo.schedule.scrollPositions) {
+            	if(aipo.schedule.scrollPositions[key] != null) {
+            	    dojo.byId('weeklyScrollPane_'+key).scrollTop = aipo.schedule.scrollPositions[key];
+            	}
+            }
+            for(var key in aipo.schedule.scrollNeeds) {
+            	aipo.calendar.populateWeeklySchedule(aipo.schedule.scrollNeeds[key]);
+            }		
+            while(aipo.schedule.scrollNeeds.length > 0){
+             	aipo.schedule.scrollNeeds.pop();		
             }
         }
     }
@@ -854,30 +869,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-    var mpicker = dijit.byId("membernormalselect");
-    if (mpicker) {
-        var select = dojo.byId('init_memberlist');
-        var i;
-        var s_o = select.options;
-        if (s_o.length == 1 && s_o[0].value == "")
-            return;
-        for (i = 0; i < s_o.length; i++) {
-            mpicker.addOptionSync(s_o[i].value, s_o[i].text, true);
-        }
-    }
-    var btn_ma = dojo.byId("button_member_add");
-    if (btn_ma) {
-        dojo.connect(btn_ma, "onclick", function() {
-            aipo.message.changeMember();
-        });
-    }
-
-    var btn_mr = dojo.byId("button_member_remove");
-    if (btn_mr) {
-        dojo.connect(btn_mr, "onclick", function() {
-            aipo.message.changeMember();
-        });
-    }
+    aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
     aipo.message.changeMember();
 };
 
@@ -885,7 +877,6 @@ aipo.message.changeMember = function() {
     var node = dojo.byId("memberFieldDisplay");
     if (node) {
         var HTML = "";
-        HTML += "<table class=\"w100\"><tbody><tr><td style=\"border:none;\">";
         var m_t = dojo.byId("member_to");
         if (m_t) {
             var t_o = m_t.options;
@@ -899,12 +890,28 @@ aipo.message.changeMember = function() {
                 }
             }
         }
-        HTML += "</td></tr></tbody></table>";
         node.innerHTML = HTML;
     }
 
     aipo.message.setWrapperHeight();
 }
+
+aipo.message.toggleMemberSelect = function(bool){
+    var node = dojo.byId("memberField");
+    var buttonOn = dojo.byId("memberSelectButtonOn");
+    var buttonOff = dojo.byId("memberSelectButtonOff");
+    if(bool) {
+        dojo.style(buttonOn, "display" , "none");
+        dojo.style(buttonOff, "display" , "block");
+        dojo.style(node, "display" , "block");
+    } else {
+        dojo.style(buttonOn, "display" , "block");
+        dojo.style(buttonOff, "display" , "none");
+        dojo.style(node, "display" , "none");
+    }
+    aipo.message.setWrapperHeight();
+}
+
 
 aipo.message.onReceiveMessage = function(msg) {
     if (!msg["error"]) {
@@ -1233,7 +1240,11 @@ aipo.message.popupProfile = function(userId, event) {
 	    aipo.message.mobileUnderlay.show();
 	}
 	if(!profileHandle['body']) {
-		profileHandle['body'] = dojo.connect(dojo.query('body')[0], 'onmousedown', null, function(){
+		var body = dojo.query('body')[0];
+		if(aipo.userAgent.isIphone8_4_1()){
+			body = dojo.byId('wrapper');
+		}
+		profileHandle['body'] = dojo.connect(body, 'onmousedown', null, function(){
 			if (dojo.query('.profileMouseenter').length == 0) {
 				aipo.message.hideProfile();
 			}
@@ -1422,4 +1433,31 @@ aipo.message.scrollTo = function(element, to, duration) {
 	    if (element.scrollTop == to) return;
 	    aipo.message.scrollTo(element, to, duration - 10);
 	  }, 10);
+}
+
+aipo.message.insertTransactionId = function(targetUserId){
+	function guid() {
+		  function s4() {
+		    return Math.floor((1 + Math.random()) * 0x10000)
+		      .toString(16)
+		      .substring(1).
+		      toUpperCase();
+		  }
+		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		    s4() + '-' + s4() + s4() + s4();
+		}
+	var transactionId=guid();
+	dojo.query("#messageForm"+targetUserId+" [name='transactionId']")[0].setAttribute('value', transactionId);
+	aipo.message.transactionIdList.push(transactionId);
+}
+
+aipo.message.removeTransactionId = function(transactionId){
+	var transactionIdPos = aipo.message.transactionIdList.indexOf(transactionId);
+	if(transactionIdPos==-1){
+		return false;
+	}
+	else{
+		aipo.message.transactionIdList.splice(transactionIdPos, 1);
+		return true;
+	}
 }

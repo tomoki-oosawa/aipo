@@ -77,7 +77,6 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.util.MimeType;
-import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
@@ -1554,7 +1553,7 @@ public class ALEipUtils {
 
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
@@ -1562,7 +1561,7 @@ public class ALEipUtils {
       Context context) {
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 

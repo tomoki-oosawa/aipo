@@ -249,11 +249,38 @@ dojo.addOnLoad(function() {
             }
         });
     }
-    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class=modalDialogUnderlayWrapper id='$!{id}_underlay'><div dojoAttachPoint='node'></div></div>" });
+    var underlay = new aimluck.widget.DialogUnderlay({ templateString: "<div class='modalDialogUnderlayWrapper' id='$!{id}_underlay'><div dojoAttachPoint='node'></div></div>" });
     dojo.connect(underlay.domNode, "onmousemove", underlay.domNode, function(){
         underlay.hide();
     });
     underlay.show();
+
+    if(aipo.userAgent.isIphone8_4_1()){
+        var evt = document.createEvent("MouseEvents");
+        evt.initEvent("mousemove", true, true);
+        underlay.domNode.dispatchEvent(evt);
+
+        dojo.query('a').forEach(function(element) {
+        var handle = dojo.connect(element, 'ontouchstart', null, function(){
+            var link = this.getAttribute("href");
+            var onmouseover = this.getAttribute("onmouseover");
+            var onclick = this.getAttribute("onclick");
+            var target = this.getAttribute("target");
+            var linktype = link.substring(0,1);
+            if (onclick != null && onmouseover == null) {
+              this.onclick();
+              dojo.disconnect(handle);
+            }
+            if(linktype != "#" && link.indexOf('javascript:void') != -1){
+                if(target == "_blank"){
+                    window.open(link);
+                } else{
+                    location.href = link;
+                }
+            }
+          });
+        });
+    }
 });
 #end
 function activitySwitch(){

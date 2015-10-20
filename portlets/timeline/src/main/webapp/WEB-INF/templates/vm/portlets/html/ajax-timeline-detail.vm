@@ -24,9 +24,13 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheaderPrintTimeline("$l10n.TIMELINE_TIMELINE_DETAIL" "" "" "")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
 <div id="timelineOuter">
   <div id="timeline_$!{portlet.ID}" class="timeline">
   <div id="content">
+  	<div id="messageDiv_$!portlet.ID"></div>
+  	<span id="getTimelinePortletId" style="display:none;">$!portlet.ID</span>
+  	<span id="getTimelineOnClick" style="display:none;"></span>
     #parse("/portlets/html/ajax-timeline-content-inner.vm")
   </div>
   </div>

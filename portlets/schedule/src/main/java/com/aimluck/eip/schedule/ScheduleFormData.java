@@ -151,6 +151,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>week_6</code> 繰り返し曜日 */
   private ALStringField week_6;
 
+  /** <code>repeat_week</code> 繰り返し週 */
+  private ALStringField repeat_week;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
 
@@ -162,6 +165,12 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>month_day</code> 繰り返す日 */
   private ALNumberField month_day;
+
+  /** <code>year_month</code> 毎年繰り返す月 */
+  private ALNumberField year_month;
+
+  /** <code>year_day</code> 毎年繰り返す日 */
+  private ALNumberField year_day;
 
   /** <code>memberList</code> メンバーリスト */
   private ArrayList<ALEipUser> memberList;
@@ -552,10 +561,23 @@ public class ScheduleFormData extends ALAbstractFormData {
     week_6.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
+    // 繰り返し週
+    repeat_week = new ALStringField();
+    repeat_week.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
+    repeat_week.setTrim(true);
     // 繰り返し日
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_MONTH"));
+    // 繰り返し年日
+    year_day = new ALNumberField();
+    year_day.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR_DAY"));
+    // 繰り返し年月
+    year_month = new ALNumberField();
+    year_month.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR_MONTH"));
     // 繰り返しフラグ
     limit_flag = new ALStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -774,10 +796,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         getWeek4(),
         getWeek5(),
         getWeek6(),
+        getRepeatWeek(),
         getLimitFlag(),
         getLimitStartDate(),
         getLimitEndDate(),
         getMonthDay(),
+        getYearMonth(),
+        getYearDay(),
         loginUser,
         null,
         msgList,
@@ -864,7 +889,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
+      // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
+      // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
       int count = 0;
@@ -875,7 +902,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         repeat_type.setValue("D");
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W') {
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
         repeat_type.setValue("W");
         week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
         week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -885,11 +912,48 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
         count = 8;
+        // 第何週
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+        repeat_type.setValue("W");
+        week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
+        week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
+        week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
+        week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
+        week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
+        week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
+        week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
+        repeat_week.setValue("0");
+        switch (ptn.charAt(8)) {
+          case '1':
+            repeat_week.setValue("1");
+            break;
+          case '2':
+            repeat_week.setValue("2");
+            break;
+          case '3':
+            repeat_week.setValue("3");
+            break;
+          case '4':
+            repeat_week.setValue("4");
+            break;
+          case '5':
+            repeat_week.setValue("5");
+            break;
+          default:
+            break;
+        }
+        count = 9;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         count = 3;
+        // 毎年
+      } else if (ptn.charAt(0) == 'Y') {
+        repeat_type.setValue("Y");
+        year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        year_day.setValue(Integer.parseInt(ptn.substring(3, 5)));
+        count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         is_span = true;
@@ -1138,18 +1202,35 @@ public class ScheduleFormData extends ALAbstractFormData {
             .append(lim)
             .toString());
         } else if ("W".equals(repeat_type.getValue())) {
-          schedule.setRepeatPattern(new StringBuffer().append('W').append(
-            week_0.getValue() != null ? 1 : 0).append(
-            week_1.getValue() != null ? 1 : 0).append(
-            week_2.getValue() != null ? 1 : 0).append(
-            week_3.getValue() != null ? 1 : 0).append(
-            week_4.getValue() != null ? 1 : 0).append(
-            week_5.getValue() != null ? 1 : 0).append(
-            week_6.getValue() != null ? 1 : 0).append(lim).toString());
-        } else {
+          if ("0".equals(repeat_week.getValue())) {
+            schedule.setRepeatPattern(new StringBuffer().append('W').append(
+              week_0.getValue() != null ? 1 : 0).append(
+              week_1.getValue() != null ? 1 : 0).append(
+              week_2.getValue() != null ? 1 : 0).append(
+              week_3.getValue() != null ? 1 : 0).append(
+              week_4.getValue() != null ? 1 : 0).append(
+              week_5.getValue() != null ? 1 : 0).append(
+              week_6.getValue() != null ? 1 : 0).append(lim).toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer().append('W').append(
+              week_0.getValue() != null ? 1 : 0).append(
+              week_1.getValue() != null ? 1 : 0).append(
+              week_2.getValue() != null ? 1 : 0).append(
+              week_3.getValue() != null ? 1 : 0).append(
+              week_4.getValue() != null ? 1 : 0).append(
+              week_5.getValue() != null ? 1 : 0).append(
+              week_6.getValue() != null ? 1 : 0).append(
+              repeat_week.getValue().charAt(0)).append(lim).toString());
+          }
+        } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
             format.format(month_day.getValue())).append(lim).toString());
+        } else {
+          DecimalFormat format = new DecimalFormat("00");
+          schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+            format.format(year_month.getValue())).append(
+            format.format(year_day.getValue())).append(lim).toString());
         }
       }
 
@@ -1672,21 +1753,40 @@ public class ScheduleFormData extends ALAbstractFormData {
               new StringBuffer().append('D').append(lim).toString();
             schedule.setRepeatPattern(tmpPattern);
           } else if ("W".equals(repeat_type.getValue())) {
-            String tmpPattern =
-              new StringBuffer().append('W').append(
-                week_0.getValue() != null ? 1 : 0).append(
-                week_1.getValue() != null ? 1 : 0).append(
-                week_2.getValue() != null ? 1 : 0).append(
-                week_3.getValue() != null ? 1 : 0).append(
-                week_4.getValue() != null ? 1 : 0).append(
-                week_5.getValue() != null ? 1 : 0).append(
-                week_6.getValue() != null ? 1 : 0).append(lim).toString();
-            schedule.setRepeatPattern(tmpPattern);
+            if ("0".equals(repeat_week.getValue())) {
+              String tmpPattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
 
-          } else {
+              schedule.setRepeatPattern(tmpPattern);
+            } else {
+              String tmpPattern =
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(
+                  repeat_week.getValue().charAt(0)).append(lim).toString();
+              schedule.setRepeatPattern(tmpPattern);
+            }
+          } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
               format.format(month_day.getValue())).append(lim).toString());
+          } else {
+            DecimalFormat format = new DecimalFormat("00");
+            schedule.setRepeatPattern(new StringBuffer().append('Y').append(
+              format.format(year_month.getValue())).append(
+              format.format(year_day.getValue())).append(lim).toString());
           }
         }
 
@@ -2830,6 +2930,24 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
+   * 毎年繰り返す月を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getYearMonth() {
+    return year_month;
+  }
+
+  /**
+   * 毎年繰り返す日を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getYearDay() {
+    return year_day;
+  }
+
+  /**
    * 繰り返しタイプを取得します。
    *
    * @return
@@ -2899,6 +3017,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getWeek6() {
     return week_6;
+  }
+
+  /**
+   * 繰り返し週を取得します。
+   *
+   * @return
+   */
+  public ALStringField getRepeatWeek() {
+    return repeat_week;
   }
 
   /**

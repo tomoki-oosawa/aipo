@@ -31,6 +31,7 @@ import javax.activation.FileDataSource;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
@@ -74,6 +75,8 @@ public class TimelineSelectData extends
 
   /** <code>TARGET_GROUP_NAME</code> グループによる表示切り替え用変数の識別子 */
   private final String TARGET_GROUP_NAME = "target_group_name";
+
+  private final String TARGET_DISPLAY_NAME = "target_display_name";
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -121,6 +124,11 @@ public class TimelineSelectData extends
   /** <code>target_group_name</code> 表示対象の部署名 */
   protected String target_group_name;
 
+  /** <code>target_display_name</code> 記事の絞り込み */
+  protected String target_display_name;
+
+  private String displayParam = "";
+
   /** <code>myGroupList</code> グループリスト（My グループと部署） */
   private List<ALEipGroup> myGroupList = null;
 
@@ -164,6 +172,36 @@ public class TimelineSelectData extends
       myGroupList.add(myGroups.get(i));
     }
 
+    try {
+      String groupFilter =
+        ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
+      if (groupFilter == null || groupFilter.equals("")) {
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
+        if (groupFilter != null) {
+          ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
+        }
+      }
+
+      String displayFilter =
+        ALEipUtils.getTemp(rundata, context, TARGET_DISPLAY_NAME);
+      if (displayFilter == null || displayFilter.equals("")) {
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        displayFilter =
+          portlet.getPortletConfig().getInitParameter("p4a-group");
+        if (displayFilter != null) {
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            TARGET_DISPLAY_NAME,
+            displayFilter);
+        }
+      }
+
+    } catch (Exception ex) {
+      logger.error("timeline", ex);
+    }
+
     target_keyword = new ALStringField();
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
@@ -200,6 +238,7 @@ public class TimelineSelectData extends
       }
 
       ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
+
       if ((useridList != null && useridList.size() > 0)) {
         // 表示するカラムのみデータベースから取得する．
         list =
@@ -211,14 +250,13 @@ public class TimelineSelectData extends
             getRowsNum(),
             0,
             useridList,
-            target_keyword.getValue());
+            target_keyword.getValue(),
+            displayParam);
       }
-
       return list;
     } catch (Exception ex) {
       logger.error("timeline", ex);
       return null;
-
     }
   }
 
@@ -241,7 +279,8 @@ public class TimelineSelectData extends
           0,
           minId,
           useridList,
-          null);
+          null,
+          displayParam);
 
       return list;
     } catch (Exception ex) {
@@ -380,7 +419,16 @@ public class TimelineSelectData extends
   protected Map<Integer, List<TimelineResultData>> getComments(
       List<Integer> parentIds) {
     List<EipTTimeline> list =
-      TimelineUtils.getTimelineList(uid, parentIds, "T", -1, -1, 0, null, null);
+      TimelineUtils.getTimelineList(
+        uid,
+        parentIds,
+        "T",
+        -1,
+        -1,
+        0,
+        null,
+        null,
+        "");
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
@@ -407,7 +455,8 @@ public class TimelineSelectData extends
         -1,
         0,
         useridList,
-        target_keyword.toString());
+        target_keyword.toString(),
+        "");
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -909,6 +958,7 @@ public class TimelineSelectData extends
 
     target_group_name = getTargetGroupName(rundata, context);
     current_filter = target_group_name;
+    target_display_name = getTargetDisplayName(rundata, context);
     if ((!target_group_name.equals("")) && (!target_group_name.equals("all"))) {
       boolean existPost = false;
       for (int i = 0; i < myGroupList.size(); i++) {
@@ -935,6 +985,14 @@ public class TimelineSelectData extends
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
+    if ((!"".equals(target_display_name))
+      && (!"all".equals(target_display_name))) {
+      if ("posting".equals(target_display_name)) {
+        displayParam = "P";
+      } else if ("update".equals(target_display_name)) {
+        displayParam = "U";
+      }
+    }
     for (int i = 0; i < userList.size(); i++) {
       useridList.add((int) (userList.get(i).getUserId().getValue()));
     }
@@ -951,6 +1009,17 @@ public class TimelineSelectData extends
    */
   protected String getTargetGroupName(RunData rundata, Context context) {
     return getTargetGroupName(rundata, context, TARGET_GROUP_NAME);
+  }
+
+  /**
+   * 更新情報のみ・投稿のみの記事を絞り込むIDを取得する
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  protected String getTargetDisplayName(RunData rundata, Context context) {
+    return getTargetDisplayName(rundata, context, TARGET_DISPLAY_NAME);
   }
 
   /**
@@ -971,7 +1040,8 @@ public class TimelineSelectData extends
     }
     target_group_name = ALEipUtils.getTemp(rundata, context, target_key);
 
-    if (idParam == null && target_group_name == null) {
+    if (idParam == null
+      && (target_group_name == null || "".equals(target_group_name))) {
       ALEipUtils.setTemp(rundata, context, target_key, "all");
       target_group_name = "all";
     } else if (idParam != null) {
@@ -982,12 +1052,45 @@ public class TimelineSelectData extends
   }
 
   /**
+   * 更新情報のみ・投稿のみの記事を絞り込むIDを取得する
+   *
+   * @param rundata
+   * @param target_key
+   * @param context
+   * @return
+   */
+  protected String getTargetDisplayName(RunData rundata, Context context,
+      String target_key) {
+    String target_display_name = null;
+    String idParam = null;
+    if (ALEipUtils.isMatch(rundata, context)) {
+      // 自ポートレットへのリクエストの場合に，グループ名を取得する．
+      idParam = rundata.getParameters().getString(target_key);
+    }
+    target_display_name = ALEipUtils.getTemp(rundata, context, target_key);
+
+    if (idParam == null
+      && (target_display_name == null || "".equals(target_display_name))) {
+      ALEipUtils.setTemp(rundata, context, target_key, "all");
+      target_display_name = "all";
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, target_key, idParam);
+      target_display_name = idParam;
+    }
+    return target_display_name;
+  }
+
+  /**
    * 表示切り替え時に指定するグループ名
    *
    * @return
    */
   public String getTargetGroupName() {
     return target_group_name;
+  }
+
+  public String getTargetDisplayName() {
+    return target_display_name;
   }
 
   public boolean isFileUploadable() {
