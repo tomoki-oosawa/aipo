@@ -344,8 +344,8 @@ public class MessageFormData extends ALAbstractFormData {
             if (member.getUserId().intValue() != (int) login_user
               .getUserId()
               .getValue()) {
+              recipients.add(member.getLoginName());
             }
-            recipients.add(member.getLoginName());
           }
         }
       }
