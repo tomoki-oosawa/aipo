@@ -86,8 +86,6 @@ public class MessageFormData extends ALAbstractFormData {
 
   private String folderName = null;
 
-  private String transactionId = null;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -96,7 +94,6 @@ public class MessageFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
     orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
-    transactionId = rundata.getParameters().getString("transactionId");
 
   }
 
@@ -259,8 +256,8 @@ public class MessageFormData extends ALAbstractFormData {
           record.setIsRead("F");
           record.setUserId(member.getUserId());
           record.setRoomId(room.getRoomId());
+          recipients.add(member.getLoginName());
         }
-        recipients.add(member.getLoginName());
       }
 
       room
@@ -278,10 +275,6 @@ public class MessageFormData extends ALAbstractFormData {
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
       params.put("messageId", String.valueOf(model.getMessageId()));
-      if (transactionId != null && !"".equals(transactionId)) {
-        params.put("transactionId", transactionId);
-      }
-      params.put("userId", login_user.getName().getValue());
 
       ALPushService.pushAsync("messagev2", params, recipients);
 
