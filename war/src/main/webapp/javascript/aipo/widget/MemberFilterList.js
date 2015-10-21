@@ -179,24 +179,25 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
 /**
  * 選択済みユーザー読み込み
  */
-aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, memberToId) {// <-管理者権限を引数に追加
+aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, memberToId) {
   var select = dojo.byId(memberToId);
   if (document.all) {
     var option = document.createElement("OPTION");
-    option.value = value;// value + "&" + 管理者権限 に変更
+    option.value = value;
     option.text = text;
     option.selected = is_selected;
-    option.setAttribute('data-user', text);
+
     if (select.options.length == 1 && select.options[0].value == ""){
             select.options.remove(0);
       }
       select.add(option, select.options.length);
+
   } else {
     var option = document.createElement("OPTION");
     option.value = value;
     option.text = text;
     option.selected = is_selected;
-    option.setAttribute('data-user', text);
+
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
     }

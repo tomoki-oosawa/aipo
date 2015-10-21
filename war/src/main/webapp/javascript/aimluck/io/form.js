@@ -1195,8 +1195,10 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         input.setAttribute('checked', 'checked');
         s_a = 'selected';
         s_m = 'disabled';
+//        input.value += "&A";
       }else{
         s_m = 'selected';
+//        input.value += "&M"; 「メンバー」or「管理者」どちらも設定できるようにする
       }
 
       input.setAttribute('data-name', text);
@@ -1206,9 +1208,9 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
         + "<span class=\"name\">" + text + "</span>"
-        + "<select class=\"floatRight authority\" id=\""+ selectId +"\">"
-        + "<option value=\"is_author\" " + s_a + ">管理者</option>"
-        + "<option value=\"is_member\" " + s_m + ">メンバー</option>"
+        + "<select class=\"floatRight\" id=\""+ selectId +"\">"　//onChange="処理"を追加する
+        + "<option value=\"A\" " + s_a + ">管理者</option>"
+        + "<option value=\"M\" " + s_m + ">メンバー</option>"
         + "</select>"
         + child_html
         + "</label></li>";
