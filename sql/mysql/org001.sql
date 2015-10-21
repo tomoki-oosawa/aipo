@@ -1328,7 +1328,6 @@ CREATE TABLE `eip_t_message_room` (
     `has_photo` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
     `create_date` datetime DEFAULT NULL,
     `update_date` datetime DEFAULT NULL,
-    `authority` varchar(1) DEFAULT 'A',
     PRIMARY KEY (`room_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

@@ -196,7 +196,7 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     option.value = value;
     option.text = text;
     option.selected = is_selected;
-
+    option.setAttribute('data-user', text);
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
     }

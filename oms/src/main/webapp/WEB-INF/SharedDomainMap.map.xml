@@ -1186,7 +1186,7 @@
 		<obj-attribute name="roomType" type="java.lang.String" db-attribute-path="ROOM_TYPE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
-	<obj-entity name="EipTMessageRoomMember" className="omaimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
+	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
 		<obj-attribute name="authority" type="java.lang.String" db-attribute-path="AUTHORITY"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
 		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>
