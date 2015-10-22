@@ -25,6 +25,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -303,6 +304,13 @@ public class ALUserManagement extends TurbineBaseService implements
 
       tuser.setDisabled(baseuser.getDisabled());
       tuser.setObjectdata(null);
+      String logincookie = (String) user.getPerm("logincookie", "");
+      if (!"".equals(logincookie)) {
+        Hashtable<String, Object> permData = new Hashtable<String, Object>();
+        permData.put("logincookie", logincookie);
+        tuser.setObjectdata(permData);
+      }
+
       tuser.setPasswordChanged(baseuser.getPasswordChanged());
       tuser.setCompanyId(Integer.valueOf(baseuser.getCompanyId()));
       tuser.setPositionId(Integer.valueOf(baseuser.getPositionId()));
