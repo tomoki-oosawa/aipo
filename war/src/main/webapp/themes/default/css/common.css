@@ -522,6 +522,7 @@ table.outer td.f08 {
 }
 .listTable.detail td {
   padding: 10px;
+  border-top: solid 1px #d2d2d2;
 }
 .listTable.detail caption {
   padding: 0 0 10px;
