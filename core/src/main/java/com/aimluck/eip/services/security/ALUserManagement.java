@@ -19,6 +19,8 @@
 package com.aimluck.eip.services.security;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.Principal;
@@ -65,6 +67,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.services.localization.Localization;
 import org.apache.turbine.services.resources.ResourceService;
 import org.apache.turbine.services.rundata.RunDataService;
+import org.apache.turbine.util.ObjectUtils;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
@@ -94,6 +97,8 @@ public class ALUserManagement extends TurbineBaseService implements
 
   private final static String CONFIG_SYSTEM_USERS = "system.users";
 
+  private final static String LOGIN_COOKIE_NAME = "logincookie";
+
   boolean securePasswords = false;
 
   String passwordsAlgorithm = "SHA";
@@ -116,6 +121,7 @@ public class ALUserManagement extends TurbineBaseService implements
 
   private JetspeedRunDataService runDataService = null;
 
+  @SuppressWarnings("rawtypes")
   protected JetspeedUser row2UserObject(TurbineUser tuser) throws UserException {
     try {
       JetspeedUser user = JetspeedUserFactory.getInstance(false);
@@ -132,7 +138,14 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setLastLogin(tuser.getLastLogin());
       // baseuser.setDisabled("T".equals(tuser.getDisabled()));
       baseuser.setDisabled(tuser.getDisabled());
-      // baseuser.setObjectdata(null);
+      // auto login
+      byte[] objectData = tuser.getObjectdata();
+      if (objectData != null) {
+        Hashtable tempHash = (Hashtable) ObjectUtils.deserialize(objectData);
+        if (tempHash != null && tempHash.containsKey(LOGIN_COOKIE_NAME)) {
+          baseuser.setPerm(LOGIN_COOKIE_NAME, tempHash.get(LOGIN_COOKIE_NAME));
+        }
+      }
       baseuser.setPasswordChanged(tuser.getPasswordChanged());
       baseuser.setCompanyId((tuser.getCompanyId() != null) ? tuser
         .getCompanyId()
@@ -260,6 +273,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void saveUser(JetspeedUser user) throws JetspeedSecurityException {
     if (!accountExists(user, true)) {
@@ -304,11 +318,13 @@ public class ALUserManagement extends TurbineBaseService implements
 
       tuser.setDisabled(baseuser.getDisabled());
       tuser.setObjectdata(null);
-      String logincookie = (String) user.getPerm("logincookie", "");
+      // auto login
+      String logincookie = (String) user.getPerm(LOGIN_COOKIE_NAME, "");
       if (!"".equals(logincookie)) {
-        Hashtable<String, Object> permData = new Hashtable<String, Object>();
-        permData.put("logincookie", logincookie);
-        tuser.setObjectdata(permData);
+        Hashtable permData = new Hashtable();
+        permData.put(LOGIN_COOKIE_NAME, logincookie);
+        byte[] serialize = serialize(permData);
+        tuser.setObjectdata(serialize);
       }
 
       tuser.setPasswordChanged(baseuser.getPasswordChanged());
@@ -355,6 +371,7 @@ public class ALUserManagement extends TurbineBaseService implements
   /**
    *
    */
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   @Override
   public void addUser(JetspeedUser user) throws JetspeedSecurityException {
     if (accountExists(user)) {
@@ -384,6 +401,14 @@ public class ALUserManagement extends TurbineBaseService implements
     // tuser.setDisabled((baseuser.getDisabled() ? "T" : "F"));
     tuser.setDisabled(baseuser.getDisabled());
     tuser.setObjectdata(null);
+    // auto login
+    String logincookie = (String) user.getPerm(LOGIN_COOKIE_NAME, "");
+    if (!"".equals(logincookie)) {
+      Hashtable permData = new Hashtable();
+      permData.put(LOGIN_COOKIE_NAME, logincookie);
+      byte[] serialize = serialize(permData);
+      tuser.setObjectdata(serialize);
+    }
     tuser.setPasswordChanged(baseuser.getPasswordChanged());
     tuser.setCompanyId(Integer.valueOf(baseuser.getCompanyId()));
     tuser.setPositionId(Integer.valueOf(baseuser.getPositionId()));
@@ -801,4 +826,28 @@ public class ALUserManagement extends TurbineBaseService implements
     return rundata;
   }
 
+  private byte[] serialize(Object object) {
+    byte[] byteArray = null;
+    if (object != null) {
+      ObjectOutputStream outputStream = null;
+      ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+      try {
+        outputStream = new ObjectOutputStream(byteStream);
+        outputStream.writeObject(object);
+        byteArray = byteStream.toByteArray();
+      } catch (Exception e) {
+      } finally {
+        try {
+          if (outputStream != null) {
+            outputStream.close();
+          }
+          if (byteStream != null) {
+            byteStream.close();
+          }
+        } catch (IOException e) {
+        }
+      }
+    }
+    return byteArray;
+  }
 }

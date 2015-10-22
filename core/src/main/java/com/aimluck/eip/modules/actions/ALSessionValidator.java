@@ -237,6 +237,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
     boolean isScreenTimeout = false;
     if (!isLogin(loginuser)
       && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      // 未ログインかつ自動ログインが有効の時(基底クラスで対処しているため、ここには来ない)
 
       if (data.getRequest().getCookies() != null) {
         String userName = data.getCookies().getString("username", "");
@@ -263,6 +264,7 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
     } else if (!isLogin(loginuser)
       && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      // 未ログインかつ自動ログインが無効の時
 
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
       // 対処方法：ログイン画面以外でユーザがログインしていない場合はエラーページへスクリーンを変更
