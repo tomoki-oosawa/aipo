@@ -275,7 +275,7 @@ $!data.Message
 <input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.ACCOUNT_SELECT_FROM_USER_LIST</label></p>
 #end
 <p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
-<p><input class="inlineCheckbox" name="rememberme" type="checkbox" value="1" id="rememberme" tabindex="7" />&nbsp;<label for="rememberme" class="inlineLabel">$l10n.LOGIN_REMEMBERME</label></p>
+<p><input class="inlineCheckbox" name="rememberme" value="true" type="checkbox" #if ( $data.getCookies().get("logincookie") ) checked #end id="rememberme" tabindex="7" />&nbsp;<label for="rememberme" class="inlineLabel">$l10n.LOGIN_REMEMBERME</label></p>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="$l10n.ACCOUNT_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />

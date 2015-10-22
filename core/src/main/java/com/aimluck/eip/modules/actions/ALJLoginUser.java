@@ -355,7 +355,7 @@ public class ALJLoginUser extends ActionEvent {
           String path =
             JetspeedResources.getString("automatic.logon.cookie.path", "/");
 
-          if (domain == null) {
+          if (domain == null || "".equals(domain)) {
             String server = data.getServerName();
             domain = "." + server;
           }
