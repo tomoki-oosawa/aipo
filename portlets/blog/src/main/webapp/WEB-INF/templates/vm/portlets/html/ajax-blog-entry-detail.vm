@@ -28,10 +28,10 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
-<table class="listTable wide">
+<table class="listTable wide detail">
 <caption>
-<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 $!{result.Detail.TitleHtml}
+<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 </cation>
 <tr>
 <td>

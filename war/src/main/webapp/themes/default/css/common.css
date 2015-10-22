@@ -516,6 +516,21 @@ table.outer td.f08 {
   background: #f6f6f6;
 }
 
+.listTable.detail {
+  border-bottom: none;
+  margin-bottom: 30px;
+}
+.listTable.detail td {
+  padding: 10px;
+}
+.listTable.detail caption {
+  padding: 0 0 10px;
+}
+.listTable.detail caption .subCaption {
+  margin-bottom: 0;
+  margin-top: 5px;
+}
+
 .listTableBorder {
   margin-bottom: 10px;
   margin-top: 5px;
