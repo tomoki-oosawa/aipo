@@ -1569,6 +1569,10 @@ ul.hdCommunications .num {
 .modalDialog .subTable .caption {
   width: auto !important;
 }
+.modalDialog .listTable.detail td {
+  padding: 10px 0;
+  border-top: solid 1px #d2d2d2;
+}
 
 .memberlistToTop,
 .memberlistToBody,
