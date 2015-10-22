@@ -93,7 +93,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 
 
 #if($!result.CommentList && $!result.CommentList.size() > 0 || ("$!{client}"!="IPHONE" && $!result.CommentList.size() == 0))
-<table class="listTable wide detail">
+<table class="listTable wide detail mb10">
 <caption>$l10n.BLOG_COMMENT</cation>
 #foreach ($record in $result.CommentList)
   <tr>
