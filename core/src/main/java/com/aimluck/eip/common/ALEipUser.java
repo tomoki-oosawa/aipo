@@ -26,7 +26,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ユーザー情報を表すクラスです。 <br />
- * 
+ *
  */
 public class ALEipUser implements ALData {
 
@@ -43,6 +43,8 @@ public class ALEipUser implements ALData {
 
   private long photoModified;
 
+  private ALStringField authority;
+
   private Date created;
 
   /**
@@ -54,12 +56,14 @@ public class ALEipUser implements ALData {
     name = new ALStringField();
     alias_name = new ALStringField();
     hasPhoto = false;
+    authority = new ALStringField();
+    authority.setValue("M");
     photoModified = 0L;
     created = null;
   }
 
   /**
-   * 
+   *
    * @param string
    */
   public void setName(String string) {
@@ -67,7 +71,7 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   * 
+   *
    * @param firstName
    * @param lastName
    */
@@ -77,7 +81,7 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getName() {
@@ -85,7 +89,7 @@ public class ALEipUser implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getAliasName() {
@@ -138,6 +142,21 @@ public class ALEipUser implements ALData {
    */
   public void setPhotoModified(long photoModified) {
     this.photoModified = photoModified;
+  }
+
+  /**
+   * @return authority
+   */
+  public ALStringField getAuthority() {
+    return authority;
+  }
+
+  /**
+   * @param authority
+   *          セットする authority
+   */
+  public void setAuthority(String string) {
+    authority.setValue(string);
   }
 
   /**

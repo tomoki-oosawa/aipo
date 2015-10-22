@@ -37,7 +37,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     memberFromOptionImageVersionParam: "photoModified",
     memberFromOptionDefaultImage: "themes/default/images/common/icon_user100.png",
     memberToId: "",
-	authorityFromId: "",
+    authorityFromId: "",
+    memberAuthorityToId: "",
     clickEvent: "",
     viewSelectId: "",
     groupSelectId: "",
@@ -68,6 +69,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     	"<div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div>" +
     	"<ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul>" +
     	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select>" +
+    	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberAuthorityToId}\" id=\"${memberAuthorityToId}\"></select>" +
     	"</div>" +
     	"</div>\n",
     postCreate: function(){
@@ -162,7 +164,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 /**
  * 選択済みユーザー読み込み
  */
-aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId){
+aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId, memberAuthorityToId){
     var picker = dojo.byId(widgetId);
     if (picker) {
         var select = dojo.byId(memberFromId);
@@ -171,7 +173,7 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
         if (s_o.length == 1 && s_o[0].value == "")
             return;
         for (i = 0; i < s_o.length; i++) {
-        	aipo.widget.MemberFilterList.addOptionSync(s_o[i].value, s_o[i].text, true, memberToId);
+        	aipo.widget.MemberFilterList.addOptionSync(s_o[i].value, s_o[i].text, true, s_o[i].getAttribute('data-authority'), memberToId, memberAuthorityToId);
         }
     }
 }
@@ -179,29 +181,48 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
 /**
  * 選択済みユーザー読み込み
  */
-aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, memberToId) {
+aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, authority, memberToId, memberAuthorityToId) {
   var select = dojo.byId(memberToId);
+  var selectAuth = dojo.byId(memberAuthorityToId);
   if (document.all) {
     var option = document.createElement("OPTION");
     option.value = value;
     option.text = text;
     option.selected = is_selected;
 
-    if (select.options.length == 1 && select.options[0].value == ""){
-            select.options.remove(0);
-      }
-      select.add(option, select.options.length);
+    if (select.options.length == 1 && select.options[0].value == "") {
+    	select.options.remove(0);
+    }
+
+    select.add(option, select.options.length);
+
+    var optionAuth = document.createElement("OPTION");
+    optionAuth.value = authority;
+    optionAuth.selected = is_selected;
+    if (selectAuth.options.length == 1 && selectAuth.options[0].value == ""){
+    	selectAuth.options.remove(0);
+    }
+    selectAuth.add(optionAuth, selectAuth.options.lenfth);
 
   } else {
     var option = document.createElement("OPTION");
     option.value = value;
     option.text = text;
     option.selected = is_selected;
+    option.setAttribute('data-authority',authority);
 
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
     }
     select.insertBefore(option, select.options[select.options.length]);
+
+    var optionAuth = document.createElement("OPTION");
+    optionAuth.value = authority;
+    optionAuth.selected = is_selected;
+    if (selectAuth.options.length == 1 && selectAuth.options[0].value == ""){
+    	selectAuth.removeChild(selectAuth.options[0]);
+    }
+    selectAuth.insertBefore(optionAuth, selectAuth.options[selectAuth.options.length]);
   }
 }
 

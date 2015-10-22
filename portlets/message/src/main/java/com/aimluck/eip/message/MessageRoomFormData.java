@@ -131,8 +131,14 @@ public class MessageRoomFormData extends ALAbstractFormData {
       try {
 
         String memberNames[] = rundata.getParameters().getStrings("member_to");
+        String memberAuthorities[] =
+          rundata.getParameters().getStrings("member_authority_to");
+
         memberList.clear();
-        if (memberNames != null && memberNames.length > 0) {
+        if (memberNames != null
+          && memberNames.length > 0
+          && memberAuthorities != null
+          && memberNames.length == memberAuthorities.length) {
           SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
           Expression exp =
             ExpressionFactory.inExp(
@@ -140,8 +146,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
               memberNames);
           query.setQualifier(exp);
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
+          for (int i = 0; i < memberList.size(); i++) {
+            memberList.get(i).setAuthority(memberAuthorities[i]);
+          }
         }
         if (memberList.size() == 0) {
+          login_user.setAuthority("A");
           memberList.add(login_user);
         }
 
@@ -224,13 +234,27 @@ public class MessageRoomFormData extends ALAbstractFormData {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
     }
     boolean hasOwn = false;
+    boolean hasAuthority = false;
+    boolean isMemberHasAuthority = false;
     for (ALEipUser user : memberList) {
       if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
         hasOwn = true;
+        if ("A".equals(user.getAuthority().getValue())) {
+          hasAuthority = true;
+        }
+      }
+      if ("A".equals(user.getAuthority().getValue())) {
+        isMemberHasAuthority = true;
       }
     }
     if (!hasOwn) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
+    }
+    if (!hasAuthority && roomId == 0) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
+    }
+    if (!isMemberHasAuthority) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
     }
     if (photo_vali_flag) {
       msgList.add(ALLocalizationUtils
@@ -256,11 +280,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
-      if (!MessageUtils.isJoinRoom(room, (int) login_user
+      if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
         .getUserId()
         .getValue())) {
         throw new ALPermissionException();
       }
+
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
@@ -275,6 +300,18 @@ public class MessageRoomFormData extends ALAbstractFormData {
         ExpressionFactory.inExp(TurbineUser.LOGIN_NAME_PROPERTY, memberNames);
       query.setQualifier(exp);
       memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
+
+      List<String> membersHasAuthority = new ArrayList<String>();
+      for (EipTMessageRoomMember member : members) {
+        if ("A".equals(member.getAuthority())) {
+          membersHasAuthority.add(member.getLoginName());
+        }
+      }
+      for (ALEipUser member : memberList) {
+        if (membersHasAuthority.contains(member.getName().getValue())) {
+          member.setAuthority("A");
+        }
+      }
 
       if (room.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
@@ -326,6 +363,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setTargetUserId(1);
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
+        map.setAuthority(user.getAuthority().getValue());
         if (!isFirst) {
           autoName.append(",");
         }
@@ -386,10 +424,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (model == null) {
         return false;
       }
-      if (!MessageUtils.isJoinRoom(model, (int) login_user
+      if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
         .getUserId()
         .getValue())) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_ACCESS_DENIED"));
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_AUTHORITY_DENIED"));
         return false;
       }
 
@@ -407,6 +445,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setTargetUserId(1);
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
+        map.setAuthority(user.getAuthority().getValue());
         if (!isFirst) {
           autoName.append(",");
         }
@@ -472,6 +511,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
     try {
       EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
       if (model == null) {
+        return false;
+      }
+      if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
+        .getUserId()
+        .getValue())) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_AUTHORITY_DENIED"));
         return false;
       }
       List<EipTMessageFile> files =
