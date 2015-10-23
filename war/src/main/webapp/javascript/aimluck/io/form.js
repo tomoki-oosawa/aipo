@@ -1181,7 +1181,9 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
 
       var li = document.createElement("li");
       var input = document.createElement("input");
+      var select = document.createElement("select");
       var selectId = "tmp_authority_from_"+ value;
+      var auth_outer = "authority_outer_"+ value;
       var s_a = '';
       var s_m = '';
 
@@ -1195,25 +1197,33 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         input.setAttribute('checked', 'checked');
         s_a = 'selected';
         s_m = 'disabled';
-//        input.value += "&A";
       }else{
         s_m = 'selected';
-//        input.value += "&M"; 「メンバー」or「管理者」どちらも設定できるようにする
       }
 
       input.setAttribute('data-name', text);
-
       input.setAttribute('onclick', 'dijit.byId("' + widgetId + '").onMemberCheck(this);'+ clickEvent);
+
+      select.name = 'tmp_authority_from';
+      select.id = selectId;
+      select.className = 'floatRight';
+      select.setAttribute('data-auth-name', text);
+      select.setAttribute('data-auth-value', value);
+      select.setAttribute('onchange', 'dijit.byId("' + widgetId + '").onAuthorityCheck(this);');
+
       li.innerHTML = "<label>"
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
         + "<span class=\"name\">" + text + "</span>"
-        + "<select class=\"floatRight\" id=\""+ selectId +"\">"　//onChange="処理"を追加する
-        + "<option value=\"A\" " + s_a + ">管理者</option>"
-        + "<option value=\"M\" " + s_m + ">メンバー</option>"
-        + "</select>"
         + child_html
         + "</label></li>";
+
+      select.innerHTML = "<option value=\"A\" " + s_a + ">管理者</option>"
+      	+ "<option value=\"M\" " + s_m + ">メンバー</option>"
+      	+ "</select>";
+
+      li.appendChild(select);
+
       return ul.appendChild(li);
 }
 

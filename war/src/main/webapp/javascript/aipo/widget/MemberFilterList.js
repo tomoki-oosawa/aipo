@@ -147,6 +147,13 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberFromId);
 		aipo.widget.MemberFilterList.setWrapperHeight();
 	},
+	/**
+	 * 参加メンバー追加/削除チェックボックス
+	 * クリック時アクション
+	 */
+	onAuthorityCheck : function(select){
+		aipo.widget.MemberFilterList.changeAuthority(select, dojo.byId(this.memberAuthorityToId));
+	},
     fixScroll: function() {
     	// for chrome
       if (!dojo.isIE) {
@@ -202,7 +209,7 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     if (selectAuth.options.length == 1 && selectAuth.options[0].value == ""){
     	selectAuth.options.remove(0);
     }
-    selectAuth.add(optionAuth, selectAuth.options.lenfth);
+    selectAuth.add(optionAuth, selectAuth.options.length);
 
   } else {
     var option = document.createElement("OPTION");
@@ -381,6 +388,77 @@ aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
             for( j = 0 ; j < t_o.length; j ++ ) {
             if( t_o[j].value == input.value ) {
             	select_member_to.removeChild(t_o[j]);
+            }
+            }
+        }
+  }
+}
+
+/**
+ * 管理者権限の選択状態切り替え
+ * プルダウン選択状態により、id="member_authority_to"のselectタグ追加・削除処理
+ *
+ * @fixed
+ */
+aipo.widget.MemberFilterList.changeAuthority = function(select, select_member_authority_to) {
+  if (document.all) {
+      var t_o = select_member_authority_to.options;
+      var selectValue = select.getAttribute("data-auth-value");
+      if (selectValue == "") return;
+      if (selectValue != ""){
+          var iseq = false;
+
+          for( j = 0 ; j < t_o.length; j ++ ) {
+          if( t_o[j].value == selectValue ) {
+              iseq = true;
+              break;
+          }
+          }
+
+          if(iseq) return;
+          var option = document.createElement("OPTION");
+          option.value = select.options.value;
+          option.text = select.getAttribute("data-auth-name");
+          option.selected = true;
+          if (t_o.length == 1 && t_o[0].value == ""){
+              t_o.remove(0);
+              }
+         if (this.memberLimit != 0 && select_member_authority_to.options.length >= this.memberLimit) return;
+          t_o.add(option, t_o.length);
+      }else{
+
+          for( j = 0 ; j < t_o.length; j ++ ) {
+          if( t_o[j].value == selectValue ) {
+              t_o.remove(j);
+          }
+          }
+      }
+} else {
+        var t_o = select_member_authority_to.options;
+        if (selectValue == "") return;
+        if (selectValue != ""){
+            var iseq = false;
+
+            for( j = 0 ; j < t_o.length; j ++ ) {
+            if( t_o[j].value == selectValue ) {
+                iseq = true;
+                break;
+            }
+            }
+
+            if(iseq) return;
+            var option = document.createElement("OPTION");
+            option.value = select.options.value;
+            option.text = select.getAttribute("data-auth-name");
+            option.selected = true;
+            if (select_member_authority_to.options.length == 1 && select_member_authority_to.options[0].value == ""){
+            	select_member_authority_to.removeChild(select_member_authority_to.options[0]);
+            }
+            select_member_to.insertBefore(option, t_o[t_o.length]);
+        }else{
+            for( j = 0 ; j < t_o.length; j ++ ) {
+            if( t_o[j].value == selectValue ) {
+            	select_member_authority_to.removeChild(t_o[j]);
             }
             }
         }
