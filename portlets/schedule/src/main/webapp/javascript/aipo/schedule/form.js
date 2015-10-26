@@ -258,6 +258,7 @@ aipo.schedule.onLoadScheduleDialog = function(portlet_id){
         aipo.schedule.shrinkFacility();
 
         var spanStart = dijit.byId('startDateSpan');
+        var spanFinish = dijit.byId('finishDateSpan');
         var spanEnd = dijit.byId('endDateSpan');
         if (spanStart != null && spanEnd != null) {
             var sDate = spanStart.dropDown.value;
@@ -369,6 +370,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('repeatButtonField').style.display = "none";
     dojo.byId('normalField').style.display = "";
     dojo.byId('spanField').style.display = "";
+    dojo.byId('spanFinishField').style.display = "";
     dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
@@ -381,6 +383,7 @@ aipo.schedule.formSpanOn = function(form) {
 
 aipo.schedule.formSpanOff = function(form) {
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').styele.display = "none";
     dojo.byId('repeatField').style.display = "none";
     dojo.byId('timeLabelField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "";
@@ -404,6 +407,7 @@ aipo.schedule.formRepeatOff = function(form) {
     dojo.byId('repeatField').style.display = "none";
     dojo.byId('timeLabelField').style.display = "none";
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "";
 
     dojo.byId('normalField').style.display = "";
@@ -421,6 +425,7 @@ aipo.schedule.formEditRepeatOne = function(form) {
     dojo.byId('repeatField').style.display = "none";
     dojo.byId('timeLabelField').style.display = "none";
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "none";
     dojo.byId('allDayField').style.display = "none";
@@ -437,6 +442,7 @@ aipo.schedule.formEditRepeatOne = function(form) {
 aipo.schedule.formEditRepeatAll = function(form) {
     dojo.byId('normalField').style.display = "none";
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatField').style.display = "";
     dojo.byId('repeatField').text = dojo.byId('schedule_val_repeat2').innerText;
@@ -455,6 +461,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
 aipo.schedule.formRepeatOn = function(form) {
     dojo.byId('normalField').style.display = "none";
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
 
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatField').style.display = "";
@@ -471,6 +478,7 @@ aipo.schedule.formRepeatOn = function(form) {
 
 aipo.schedule.formAllDayOn = function(checkbox) {
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
     dojo.byId('repeatField').style.display = "none";
     dojo.byId('timeLabelField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "none";
@@ -490,6 +498,7 @@ aipo.schedule.formAllDayOn = function(checkbox) {
 
 aipo.schedule.formAllDayOff = function(checkbox) {
     dojo.byId('spanField').style.display = "none";
+    dojo.byId('spanFinishField').style.display = "none";
     dojo.byId('repeatField').style.display = "none";
     dojo.byId('timeLabelField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "";
@@ -769,7 +778,9 @@ aipo.schedule.expandFacility = function(){
 
 aipo.schedule.onSpanStartChange = function(){
     var spanStart = dijit.byId('startDateSpan');
+    var spanFinish = dijit.byId('finishDateSpan');
     var spanEnd = dijit.byId('endDateSpan');
+    var spanFinishEnd = dijit.byId('finishEndDateSpan');
     if (spanStart != null && spanEnd != null) {
         var newDateMillis = spanStart.dropDown.value.getTime() + 86400000 * aipo.schedule.spanLength;
         var newDate = new Date();
@@ -777,11 +788,23 @@ aipo.schedule.onSpanStartChange = function(){
         spanEnd.dropDown.onChangeNoCallback(newDate);
         spanEnd.dropDown.setValue(newDate);
     }
+
+    if (spanFinish != null && spanFinishEnd != null) {
+    	var newFinishDateMillis = spanFinish.dropDown.value.getTime() + 86400000 * aipo.schedule.spanlength;
+    	var newFinishDate = new Date();
+    	newFinishDate.setTime(newFinishDateMillis);
+    	spanFinishEnd.dropDown.onChangeNoCallback(newFinishDate);
+    	spanFinishEnd.dropDown.setValue(newFinihshDate);
+    }
+
+
 }
 
 aipo.schedule.onSpanEndChange = function(){
     var spanStart = dijit.byId('startDateSpan');
+    var spanFinish = dijit.byId('finishDateSpan');
     var spanEnd = dijit.byId('endDateSpan');
+    var spanFinishEnd = dijit.byId('finishEndDateSpan');
     if (spanStart != null && spanEnd != null && spanStart.dropDown != null && spanEnd.dropDown != null) {
         var spanStartDate = spanStart.dropDown.value;
         var spanEndDate = spanEnd.dropDown.value;
@@ -792,6 +815,18 @@ aipo.schedule.onSpanEndChange = function(){
         } else {
             aipo.schedule.spanLength = (spanEndDate - spanStartDate) / 86400000;
         }
+    }
+
+    if (spanFinish != null && spanFinishEnd != null && spanFinish.dropDown != null && spanFinishEnd.dropDown != null) {
+    	var spanFinishDate = spanFinish.dropDown.value;
+    	var spanFinishEndDate = spanFinishEnd.dropDown.value;
+    	if (spanFinishDate >= spanFinishEndDate) {
+    		aipo.schedule.spanLength = 0;
+    		spanStart.dropDown.onChangeNoCallback(spanFinishEndDate);
+    		spanStart.dropDown.setValue(spanFinishEndDate);
+    	} else {
+    		aipo.schedule.spanLength = (spanFinishEndDate - spanFinishDate) / 86400000;
+    	}
     }
 }
 
