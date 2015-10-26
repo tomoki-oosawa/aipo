@@ -111,8 +111,7 @@
         <label for="all_day_flag_checkbox">$l10n.SCHEDULE_ALL_DAY</label>
       </span>
     </div>
-
-  </div>　#*id=narmalField*#
+	</div>　#*id=narmalField*#
 
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p auiSetDate">
@@ -153,6 +152,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <option value="$l10n.SCHEDULE_END_MONTH">$l10n.SCHEDULE_END_MONTH</option>
       </select>
 	</p>
       </p>
@@ -164,10 +164,12 @@
       	<option value="$num" #if ($!{result.YearMonth.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_MONTH</option>
       #end
       </select>
+
       <select onchange="aipo.schedule.enableYear(this.form)" name="year_day">
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+
       </select>
       </p>
    </div>
