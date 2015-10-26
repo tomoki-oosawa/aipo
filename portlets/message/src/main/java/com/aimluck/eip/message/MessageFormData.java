@@ -341,10 +341,6 @@ public class MessageFormData extends ALAbstractFormData {
         List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
-            if (member.getUserId().intValue() != (int) login_user
-              .getUserId()
-              .getValue()) {
-            }
             recipients.add(member.getLoginName());
           }
         }
