@@ -56,7 +56,6 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
-import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -122,9 +121,39 @@ public class ALSessionValidator extends TemplateSessionValidator {
 
           if (userName.length() > 0 && loginCookieValue.length() > 0) {
             try {
+              if (userName.equals(JetspeedSecurity.getAnonymousUser())) {
+                data.setUser(JetspeedSecurity.getAnonymousUser());
+                data.setMessage(ALLocalizationUtils
+                  .getl10n("LOGINACTION_INVALIDATION_USER"));
+                data.getUser().setHasLoggedIn(Boolean.FALSE);
+                return;
+                // throw new LoginException("Anonymous user cannot login");
+              }
               user = JetspeedSecurity.getUser(userName);
               if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
                 // cookie is present and correct - log the user in
+
+                if (ALEipConstants.USER_STAT_DISABLED
+                  .equals(user.getDisabled())) {
+                  logger.error("User deleted : " + userName);
+                  data.setUser(JetspeedSecurity.getAnonymousUser());
+                  data.setMessage(ALLocalizationUtils
+                    .getl10n("LOGINACTION_INVALIDATION_USER"));
+                  data.getUser().setHasLoggedIn(Boolean.FALSE);
+                  return;
+                  // throw new FailedLoginException(
+                  // ALEipConstants.USER_STAT_DISABLED);
+                } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user
+                  .getDisabled())) {
+                  logger.error("User disabled : " + userName);
+                  data.setUser(JetspeedSecurity.getAnonymousUser());
+                  data.setMessage(ALLocalizationUtils
+                    .getl10n("LOGINACTION_INVALIDATION_USER"));
+                  data.getUser().setHasLoggedIn(Boolean.FALSE);
+                  return;
+                  // throw new FailedLoginException(
+                  // ALEipConstants.USER_STAT_NUTRAL);
+                }
 
                 // IPA#70075625
                 // Sesion Fixation 対策
@@ -157,13 +186,37 @@ public class ALSessionValidator extends TemplateSessionValidator {
             } catch (LoginException noSuchUser) {
               // user not found - ignore it - they will not be logged in
               // automatically
+              logger
+                .warn("User denied authentication: " + userName, noSuchUser);
+              data.setUser(JetspeedSecurity.getAnonymousUser());
+              data.setMessage(ALLocalizationUtils
+                .getl10n("LOGINACTION_INVALIDATION_USER"));
+              data.getUser().setHasLoggedIn(Boolean.FALSE);
+              return;
+              // throw new LoginException(noSuchUser.toString());
+
             } catch (org.apache.jetspeed.services.security.UnknownUserException unknownUser) {
               // user not found - ignore it - they will not be logged in
               // automatically
               logger
                 .warn("Username from the cookie was not found: " + userName);
+              data.setUser(JetspeedSecurity.getAnonymousUser());
+              data.setMessage(ALLocalizationUtils
+                .getl10n("LOGINACTION_INVALIDATION_USER"));
+              data.getUser().setHasLoggedIn(Boolean.FALSE);
+              return;
+              // throw new FailedLoginException(unknownUser.toString());
+
             } catch (Exception other) {
               logger.error(other);
+              data.setUser(JetspeedSecurity.getAnonymousUser());
+              data.setMessage(ALLocalizationUtils
+                .getl10n("LOGINACTION_INVALIDATION_USER"));
+              data.getUser().setHasLoggedIn(Boolean.FALSE);
+              return;
+              // throw new LoginException("Failed to update last login ",
+              // other);
+
             }
           }
         }
@@ -253,45 +306,6 @@ public class ALSessionValidator extends TemplateSessionValidator {
           return;
         }
       }
-    }
-    if (isLogin(loginuser)
-      && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
-      // ログイン済かつ自動ログインが有効の時
-
-      HttpServletRequest request = HttpServletRequestLocator.get();
-      String automaticLogonFirsttim =
-        (String) request.getAttribute("automatic.logon.firsttime.request");
-
-      if (automaticLogonFirsttim != null
-        && !"".equals(automaticLogonFirsttim)
-        && "TRUE".equals(automaticLogonFirsttim)) {
-        // IPA#70075625
-        // Sesion Fixation 対策
-        JetspeedRunData automaticloginjdata = null;
-        try {
-          automaticloginjdata = (JetspeedRunData) data;
-        } catch (ClassCastException e) {
-          logger.error(
-            "The RunData object does not implement the expected interface, "
-              + "please verify the RunData factory settings",
-            e);
-          return;
-        }
-        // Session ID を再発行する
-        automaticloginjdata.getSession().invalidate();
-        automaticloginjdata.setSession(automaticloginjdata
-          .getRequest()
-          .getSession(true));
-
-        // for security
-        if (data != null) {
-          data.getUser().setTemp(
-            ALEipConstants.SECURE_ID,
-            ALCommonUtils.getSecureRandomString());
-        }
-
-      }
-
     }
 
     if (ALSessionUtils.isImageRequest(data)) {
