@@ -52,6 +52,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALConstants;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
@@ -85,6 +86,65 @@ public class ALSessionValidator extends JetspeedSessionValidator {
    */
   @Override
   public void doPerform(RunData data) throws Exception {
+
+    JetspeedUser automaticloginuser = (JetspeedUser) data.getUser();
+    if (!isLogin(automaticloginuser)
+      && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
+      // 未ログインかつ自動ログインが有効の時
+
+      if (data.getRequest().getCookies() != null) {
+        String userName = data.getCookies().getString("username", "");
+        String loginCookieValue =
+          data.getCookies().getString("logincookie", "");
+
+        if (userName.length() > 0 && loginCookieValue.length() > 0) {
+          try {
+            automaticloginuser = JetspeedSecurity.getUser(userName);
+            if (automaticloginuser.getPerm("logincookie", "").equals(
+              loginCookieValue)) {
+              // IPA#70075625
+              // Sesion Fixation 対策
+              JetspeedRunData automaticloginjdata = null;
+              try {
+                automaticloginjdata = (JetspeedRunData) data;
+              } catch (ClassCastException e) {
+                logger.error(
+                  "The RunData object does not implement the expected interface, "
+                    + "please verify the RunData factory settings",
+                  e);
+                return;
+              }
+              // Session ID を再発行する
+              automaticloginjdata.getSession().invalidate();
+              automaticloginjdata.setSession(automaticloginjdata
+                .getRequest()
+                .getSession(true));
+              data.setUser(automaticloginuser);
+              automaticloginuser.setHasLoggedIn(Boolean.TRUE);
+              automaticloginuser.updateLastLogin();
+              data.save();
+              // for security
+              if (data != null) {
+                data.getUser().setTemp(
+                  ALEipConstants.SECURE_ID,
+                  ALCommonUtils.getSecureRandomString());
+              }
+            }
+          } catch (LoginException noSuchUser) {
+          } catch (org.apache.jetspeed.services.security.UnknownUserException unknownUser) {
+            logger.warn("Username from the cookie was not found: " + userName);
+          } catch (Exception other) {
+            logger.error(
+              "ALSessionValidator.doPerform Failed to update last login ",
+              other);
+            data.setUser(JetspeedSecurity.getAnonymousUser());
+            data.setMessage(ALLocalizationUtils
+              .getl10n("LOGINACTION_INVALIDATION_USER"));
+            data.getUser().setHasLoggedIn(Boolean.FALSE);
+          }
+        }
+      }
+    }
 
     try {
       super.doPerform(data);
@@ -236,33 +296,6 @@ public class ALSessionValidator extends JetspeedSessionValidator {
 
     boolean isScreenTimeout = false;
     if (!isLogin(loginuser)
-      && JetspeedResources.getBoolean("automatic.logon.enable", false)) {
-      // 未ログインかつ自動ログインが有効の時(基底クラスで対処しているため、ここには来ない)
-
-      if (data.getRequest().getCookies() != null) {
-        String userName = data.getCookies().getString("username", "");
-        String loginCookieValue =
-          data.getCookies().getString("logincookie", "");
-
-        if (userName.length() > 0 && loginCookieValue.length() > 0) {
-          try {
-            loginuser = JetspeedSecurity.getUser(userName);
-            if (loginuser.getPerm("logincookie", "").equals(loginCookieValue)) {
-              data.setUser(loginuser);
-              loginuser.setHasLoggedIn(Boolean.TRUE);
-              loginuser.updateLastLogin();
-              data.save();
-            }
-          } catch (LoginException noSuchUser) {
-          } catch (org.apache.jetspeed.services.security.UnknownUserException unknownUser) {
-            logger.warn("Username from the cookie was not found: " + userName);
-          } catch (Exception other) {
-            logger.error("ALSessionValidator.doPerform", other);
-          }
-        }
-      }
-
-    } else if (!isLogin(loginuser)
       && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
       // 未ログインかつ自動ログインが無効の時
 
