@@ -122,65 +122,43 @@ public class ALSessionValidator extends TemplateSessionValidator {
           if (userName.length() > 0 && loginCookieValue.length() > 0) {
             try {
               if (userName.equals(JetspeedSecurity.getAnonymousUser())) {
-                data.setUser(JetspeedSecurity.getAnonymousUser());
-                data.setMessage(ALLocalizationUtils
-                  .getl10n("LOGINACTION_INVALIDATION_USER"));
-                data.getUser().setHasLoggedIn(Boolean.FALSE);
-                return;
-                // throw new LoginException("Anonymous user cannot login");
+
               }
               user = JetspeedSecurity.getUser(userName);
               if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
                 // cookie is present and correct - log the user in
+                if (user != null
+                  && !userName.equals(JetspeedSecurity.getAnonymousUser())
+                  && ALEipConstants.USER_STAT_ENABLED
+                    .equals(user.getDisabled())) {
 
-                if (ALEipConstants.USER_STAT_DISABLED
-                  .equals(user.getDisabled())) {
-                  logger.error("User deleted : " + userName);
-                  data.setUser(JetspeedSecurity.getAnonymousUser());
-                  data.setMessage(ALLocalizationUtils
-                    .getl10n("LOGINACTION_INVALIDATION_USER"));
-                  data.getUser().setHasLoggedIn(Boolean.FALSE);
-                  return;
-                  // throw new FailedLoginException(
-                  // ALEipConstants.USER_STAT_DISABLED);
-                } else if (ALEipConstants.USER_STAT_NUTRAL.equals(user
-                  .getDisabled())) {
-                  logger.error("User disabled : " + userName);
-                  data.setUser(JetspeedSecurity.getAnonymousUser());
-                  data.setMessage(ALLocalizationUtils
-                    .getl10n("LOGINACTION_INVALIDATION_USER"));
-                  data.getUser().setHasLoggedIn(Boolean.FALSE);
-                  return;
-                  // throw new FailedLoginException(
-                  // ALEipConstants.USER_STAT_NUTRAL);
-                }
-
-                // IPA#70075625
-                // Sesion Fixation 対策
-                JetspeedRunData automaticloginjdata = null;
-                try {
-                  automaticloginjdata = (JetspeedRunData) data;
-                } catch (ClassCastException e) {
-                  logger.error(
-                    "The RunData object does not implement the expected interface, "
-                      + "please verify the RunData factory settings",
-                    e);
-                  return;
-                }
-                // Session ID を再発行する
-                automaticloginjdata.getSession().invalidate();
-                automaticloginjdata.setSession(automaticloginjdata
-                  .getRequest()
-                  .getSession(true));
-                data.setUser(user);
-                user.setHasLoggedIn(Boolean.TRUE);
-                user.updateLastLogin();
-                data.save();
-                // for security
-                if (data != null) {
-                  data.getUser().setTemp(
-                    ALEipConstants.SECURE_ID,
-                    ALCommonUtils.getSecureRandomString());
+                  // IPA#70075625
+                  // Sesion Fixation 対策
+                  JetspeedRunData automaticloginjdata = null;
+                  try {
+                    automaticloginjdata = (JetspeedRunData) data;
+                  } catch (ClassCastException e) {
+                    logger.error(
+                      "The RunData object does not implement the expected interface, "
+                        + "please verify the RunData factory settings",
+                      e);
+                    return;
+                  }
+                  // Session ID を再発行する
+                  automaticloginjdata.getSession().invalidate();
+                  automaticloginjdata.setSession(automaticloginjdata
+                    .getRequest()
+                    .getSession(true));
+                  data.setUser(user);
+                  user.setHasLoggedIn(Boolean.TRUE);
+                  user.updateLastLogin();
+                  data.save();
+                  // for security
+                  if (data != null) {
+                    data.getUser().setTemp(
+                      ALEipConstants.SECURE_ID,
+                      ALCommonUtils.getSecureRandomString());
+                  }
                 }
               }
             } catch (LoginException noSuchUser) {
@@ -188,35 +166,13 @@ public class ALSessionValidator extends TemplateSessionValidator {
               // automatically
               logger
                 .warn("User denied authentication: " + userName, noSuchUser);
-              data.setUser(JetspeedSecurity.getAnonymousUser());
-              data.setMessage(ALLocalizationUtils
-                .getl10n("LOGINACTION_INVALIDATION_USER"));
-              data.getUser().setHasLoggedIn(Boolean.FALSE);
-              return;
-              // throw new LoginException(noSuchUser.toString());
-
             } catch (org.apache.jetspeed.services.security.UnknownUserException unknownUser) {
               // user not found - ignore it - they will not be logged in
               // automatically
               logger
                 .warn("Username from the cookie was not found: " + userName);
-              data.setUser(JetspeedSecurity.getAnonymousUser());
-              data.setMessage(ALLocalizationUtils
-                .getl10n("LOGINACTION_INVALIDATION_USER"));
-              data.getUser().setHasLoggedIn(Boolean.FALSE);
-              return;
-              // throw new FailedLoginException(unknownUser.toString());
-
             } catch (Exception other) {
               logger.error(other);
-              data.setUser(JetspeedSecurity.getAnonymousUser());
-              data.setMessage(ALLocalizationUtils
-                .getl10n("LOGINACTION_INVALIDATION_USER"));
-              data.getUser().setHasLoggedIn(Boolean.FALSE);
-              return;
-              // throw new LoginException("Failed to update last login ",
-              // other);
-
             }
           }
         }
@@ -410,9 +366,8 @@ public class ALSessionValidator extends TemplateSessionValidator {
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
 
     boolean isScreenTimeout = false;
-    if (!isLogin(loginuser)
-      && !JetspeedResources.getBoolean("automatic.logon.enable", false)) {
-      // 未ログインかつ自動ログインが無効の時
+    if (!isLogin(loginuser)) {
+      // 未ログインの時
 
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
       // 対処方法：ログイン画面以外でユーザがログインしていない場合はエラーページへスクリーンを変更
