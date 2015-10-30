@@ -49,17 +49,22 @@ $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 <BLOCKQUOTE>
 <input name="week_0" type="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SUNDAY<input name="week_1" type="checkbox" #if ($!{result.FormData.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_MONDAY<input name="week_2" type="checkbox" #if ($!{result.FormData.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_TUSEDAY<input name="week_3" type="checkbox" #if ($!{result.FormData.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_WEDNESDAY#ALcell_br($career)<input name="week_4" type="checkbox" #if ($!{result.FormData.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_THURSDAY<input name="week_5" type="checkbox" #if ($!{result.FormData.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_FRIDAY<input name="week_6" type="checkbox" #if ($!{result.FormData.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SATURDAY
 </BLOCKQUOTE>
+
 <input id="repeat_typeM" name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
+
 <input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
+
 <input name="limit_flag" type="radio" value="ON"  #if ($!{result.FormData.LimitFlag.toString()} == "ON") checked="checked" #end>$l10n.SCHEDULE_SET#ALcell_br($career)
+
 <BLOCKQUOTE>#ALcell_textfield($career 'limit_start_date' "$!{result.FormData.LimitStartDateDate}" 8 8 '' 'n') $l10n.SCHEDULE_FROM#ALcell_textfield($career 'limit_end_date' "$!{result.FormData.LimitEndDateDate}" 8 8 '' 'n')
 #ALcell_br($career)$l10n.SCHEDULE_SAMPLE_DATE
 </BLOCKQUOTE>
+
 #ALcell_hr($career '1')
 $l10n.SCHEDULE_TIME:#ALcell_br($career)
 #ALcell_textfield($career 'start_date_time' "$!{result.FormData.StartDateTime}" 4 4 '' 'n') $l10n.SCHEDULE_FROM#ALcell_textfield($career 'end_date_time' "$!{result.FormData.EndDateTime}" 4 4 '' 'n')

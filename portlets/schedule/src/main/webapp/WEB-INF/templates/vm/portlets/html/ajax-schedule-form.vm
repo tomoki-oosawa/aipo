@@ -21,6 +21,7 @@
 #set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
 #set ($action_str = $l10n.SCHEDULE_ADD)
 #set ($event_submit = "eventSubmit_doSchedule_insert")
+//スケジュール追加というString
 #set ($subtitle = $l10n.SCHEDULE_SCHEDULE_ADD)
 #elseif($!result.isCopy())
 #set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
@@ -98,17 +99,20 @@
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
+
     <div class="p auiSetDate">
         <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
           <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
         </span>
+
       <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
         <input id="all_day_flag_checkbox" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag_checkbox" onclick="aipo.schedule.formSwitchAllDay(this)"/>
         <label for="all_day_flag_checkbox">$l10n.SCHEDULE_ALL_DAY</label>
       </span>
     </div>
-  </div>
+	</div>　#*id=narmalField*#
+
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_TYPE</h3>
@@ -148,6 +152,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <option value="$l10n.SCHEDULE_END_MONTH">$l10n.SCHEDULE_END_MONTH</option>
       </select>
 	</p>
       </p>
@@ -159,10 +164,12 @@
       	<option value="$num" #if ($!{result.YearMonth.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_MONTH</option>
       #end
       </select>
+
       <select onchange="aipo.schedule.enableYear(this.form)" name="year_day">
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+
       </select>
       </p>
    </div>
