@@ -22,7 +22,9 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -42,9 +44,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadMinSizeException;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
@@ -146,14 +148,20 @@ public class MessageRoomFormData extends ALAbstractFormData {
               memberNames);
           query.setQualifier(exp);
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
-          for (int i = 0; i < memberList.size(); i++) {
-            memberList.get(i).setAuthority(memberAuthorities[i]);
+          Map<String, String> authMap = new HashMap<String, String>();
+
+          for (int i = 0; i < memberNames.length; i++) {
+            authMap.put(memberNames[i], memberAuthorities[i]);
+          }
+          for (ALEipUser member : memberList) {
+            member.setAuthority(authMap.get(member.getName().getValue()));
           }
         }
         if (memberList.size() == 0) {
           login_user.setAuthority("A");
           memberList.add(login_user);
         }
+        roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
 
         List<FileuploadLiteBean> fileBeanList =
           FileuploadUtils.getFileuploadList(rundata);
@@ -283,7 +291,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
         .getUserId()
         .getValue())) {
-        throw new ALPermissionException();
+        throw new ALPageNotFoundException();
       }
 
       if ("F".equals(room.getAutoName())) {
