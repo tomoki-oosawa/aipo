@@ -167,4 +167,8 @@ public class MessageRoomListSelectData extends
   public boolean hasKeyword() {
     return !StringUtils.isEmpty(keyword.getValue());
   }
+
+  public int getLoginUserId() {
+    return userId;
+  }
 }

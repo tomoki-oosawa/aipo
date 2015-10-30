@@ -24,7 +24,9 @@ import java.util.Date;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.message.util.MessageUtils;
 
 /**
  *
@@ -204,6 +206,14 @@ public class MessageRoomResultData implements ALData, Serializable {
    */
   public ALNumberField getUserId() {
     return userId;
+  }
+
+  /**
+   * @return authority
+   */
+  public String getAuthority(int userId) {
+    EipTMessageRoom room = MessageUtils.getRoom(roomId.getValueWithInt());
+    return MessageUtils.hasAuthorityRoom(room, userId) ? "A" : "M";
   }
 
 }
