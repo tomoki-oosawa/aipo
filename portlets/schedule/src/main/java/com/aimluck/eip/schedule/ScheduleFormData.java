@@ -151,6 +151,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>week_6</code> 繰り返し曜日 */
   private ALStringField week_6;
 
+  /** 月末かどうかの判定用 */
+  private ALStringField end_month;
+
+  /** 実際の月末の値を代入する用 */
+  private int real_end_month;
+
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
@@ -1226,6 +1232,14 @@ public class ScheduleFormData extends ALAbstractFormData {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
             format.format(month_day.getValue())).append(lim).toString());
+
+          // if (repeat_type.getValue() == end_month.toString()) {
+          // Calendar cal2 = Calendar.getInstance();
+          // cal2.add(Calendar.MONTH, 1);
+          // cal2.add(Calendar.DATE, -1);
+          // real_end_month = cal2.get(Calendar.DATE);
+          // }
+
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
@@ -3018,6 +3032,18 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getWeek6() {
     return week_6;
+  }
+
+  /**
+   * 月末を取得します。
+   */
+  public ALStringField getEndMonth() {
+    return end_month;
+  }
+
+  /** 実際の月末の値を代入するため */
+  public int getRealEndMonth() {
+    return real_end_month;
   }
 
   /**

@@ -152,7 +152,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
-      <option value="$l10n.SCHEDULE_END_MONTH">$l10n.SCHEDULE_END_MONTH</option>
+      	<option value="$!record.RealEndMonth">$l10n.SCHEDULE_END_MONTH</option>$!record.EndMonth
       </select>
 	</p>
       </p>
