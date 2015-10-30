@@ -193,6 +193,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>is_span</code> 期間指定かどうか */
   private boolean is_span;
 
+  /** 月末かどうか */
+  //private boolean is_endMonth;
+
   /** <code>all_day_flag</code> 終日予定フラグ */
   private ALStringField all_day_flag;
 
@@ -967,6 +970,14 @@ public class ScheduleFormData extends ALAbstractFormData {
       } else {
         is_repeat = false;
       }
+
+//      if (is_endMonth) {
+//        Calendar cal2 = Calendar.getInstance();
+//        cal2.add(Calendar.MONTH, 1);
+//        cal2.add(Calendar.DATE, -1);
+//        cal2.get(Calendar.DATE);
+//      }
+
       if (is_repeat) {
         // 開始日時
         Calendar tmpViewCal = Calendar.getInstance();
@@ -2857,6 +2868,11 @@ public class ScheduleFormData extends ALAbstractFormData {
   public boolean isSpan() {
     return is_span;
   }
+
+  /** 月末かどうか */
+//  public boolean isEndMonth() {
+//    return is_endMonth;
+//  }
 
   /**
    * コピーを作るかどうか。
