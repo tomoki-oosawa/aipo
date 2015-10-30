@@ -154,8 +154,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 	 * クリック時アクション
 	 */
 	onAuthorityCheck : function(select, checkbox){
-		aipo.widget.MemberFilterList.changeAuthority(select, checkbox, dojo.byId(this.memberAuthorityToId));
-		aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberAuthorityToId);
+		aipo.widget.MemberFilterList.changeAuthority(select, checkbox, dojo.byId(this.memberToId), dojo.byId(this.memberAuthorityToId));
+		//aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberAuthorityToId);
 		aipo.widget.MemberFilterList.setWrapperHeight();
 	},
     fixScroll: function() {
@@ -200,7 +200,6 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     option.value = value;
     option.text = text;
     option.selected = is_selected;
-    option.setAttribute('data-authority',authority);
 
     if (select.options.length == 1 && select.options[0].value == "") {
     	select.options.remove(0);
@@ -222,7 +221,6 @@ aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, 
     option.value = value;
     option.text = text;
     option.selected = is_selected;
-    option.setAttribute('data-authority',authority);
 
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
@@ -358,7 +356,6 @@ aipo.widget.MemberFilterList.changeMember = function(input, select, select_membe
           var option = document.createElement("OPTION");
           option.value = input.value;
           option.text = input.getAttribute("data-name");
-          option.setAttribute('data-authority',authority);
           option.selected = true;
           if (t_o.length == 1 && t_o[0].value == ""){
               t_o.remove(0);
@@ -406,7 +403,6 @@ aipo.widget.MemberFilterList.changeMember = function(input, select, select_membe
             var option = document.createElement("OPTION");
             option.value = input.value;
             option.text = input.getAttribute("data-name");
-            option.setAttribute('data-authority',authority);
             option.selected = true;
             if (select_member_to.options.length == 1 && select_member_to.options[0].value == ""){
               select_member_to.removeChild(select_member_to.options[0]);
@@ -416,7 +412,6 @@ aipo.widget.MemberFilterList.changeMember = function(input, select, select_membe
             var optionAuth = document.createElement("OPTION");
             optionAuth.value = authority;
             optionAuth.text = input.getAttribute("data-name");
-            option.setAttribute('data-authority',authority);
             optionAuth.selected = true;
 
             if (select_auth_to.options.length == 1 && select_auth_to.options[0].value == ""){
@@ -445,8 +440,18 @@ aipo.widget.MemberFilterList.changeMember = function(input, select, select_membe
  *
  * @fixed
  */
-aipo.widget.MemberFilterList.changeAuthority = function(select, input, select_auth_to) {
-	 //処理
+aipo.widget.MemberFilterList.changeAuthority = function(select, input,  select_member_to, select_auth_to) {
+    var t_o = select_member_to.options;
+    var a_o = select_auth_to.options;
+    var a_s = dojo.byId(select);
+    var authority = a_s.value;
+    var _input = dojo.byId(input);
+    if (_input.value == "") return;
+    for( j = 0 ; j < t_o.length; j ++ ) {
+        if( t_o[j].value == _input.value ) {
+            a_o[j].value = dojo.byId(select).value;
+        }
+    }
 }
 
 /**
@@ -543,7 +548,7 @@ aipo.widget.MemberFilterList.filterCheckedDisplay = function(widgetId, node, mem
     aipo.widget.MemberFilterList.filterSelectDisplayView(widgetId, node);
     aipo.widget.MemberFilterList.filterSelect(ul,li,node);
     aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, memberFromId);
-    aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, authorityFromId);
+    //aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, authorityFromId);
 }
 
 /**
