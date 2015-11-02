@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,6 +16,5 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
-
 
 #set($capabilities = ["HTML_3_2","HTML_4_0","HTML_TABLE","HTML_NESTED_TABLE","HTML_FORM","HTML_FRAME","HTML_IMAGE","HTML_JAVA","HTML_JAVA_1_0","HTML_JAVA_1_1","HTML_JAVA_JRE","HTML_JAVASCRIPT","HTML_JAVASCRIPT_1_0","HTML_JAVASCRIPT_1_1","HTML_JAVASCRIPT_1_2","HTML_ACTIVE_X","HTML_PLUGIN","HTML_CSS1","HTML_CSS2","HTML_CSSP","HTML_IFRAME","HTML_LAYER","","HTML_DOM_IE","HTML_DOM_NS4","HTML_DOM_1","HTML_DOM_2","","WML_1_0","WML_1_1","WML_TABLE","","XML_XSLT","XML_XPATH","XML_XINCLUDE","","HTTP_1_1","HTTP_COOKIE"])
