@@ -115,6 +115,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>end_date</code> 終了日時 */
   private ALDateTimeField end_date;
 
+  /** <code> finish_start_date</code> 追加開始日時 */
+  private ALDateTimeField finish_start_date;
+
+  /** <code>finish_end_date</code> 追加終了日時 */
+  private ALDateTimeField finish_end_date;
+
   /** <code>name</code> タイトル */
   private ALStringField name;
 
@@ -199,6 +205,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>tmpEnd</code> 終了日時の初期値 */
   private String tmpEnd;
 
+  /** <code>tmpFinishStart <code> 追加開始日時の初期値 */
+  private String tmpFinishStart;
+
+  /** <code>tmpFinishEnd</code> 追加終了日時の初期値 */
+  private String tmpFinishEnd;
+
   /** <code>selectData</code> 編集するスケジュールの1日の情報 */
   private ScheduleOnedayGroupSelectData selectData;
 
@@ -256,6 +268,9 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>is_same_date</code> 開始日時と終了日時が同じかどうか */
   private boolean is_same_date;
+
+  /** <code>追加開始日時と追加終了日時が同じかどうか</code> */
+  private boolean is_finish_time_same;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -485,6 +500,44 @@ public class ScheduleFormData extends ALAbstractFormData {
       end_date.setValue(tmpEndCal.getTime());
     } else {
       is_same_date = false;
+    }
+
+    // 追加開始日時
+    finish_start_date = new ALDateTimeField("yyyy-MM-dd-HH-mm");
+    if (tmpFinishStart == null || tmpFinishStart.equals("")) {
+      finish_start_date.setValue(now);
+    } else {
+      finish_start_date.setValue(tmpFinishStart);
+    }
+    finish_start_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_START_DATE"));
+
+    // 追加終了日時
+    finish_end_date = new ALDateTimeField("yyyy-MM-dd-HH-mm");
+    if (tmpFinishEnd == null || tmpFinishEnd.equals("")) {
+      if (tmpFinishStart == null || tmpFinishStart.equals("")) {
+        finish_end_date.setValue(now);
+      } else {
+        finish_end_date.setValue(tmpFinishStart);
+      }
+    } else {
+      finish_end_date.setValue(tmpFinishEnd);
+    }
+    finish_end_date.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
+
+    // 追加開始日時と追加終了日時が同じか
+    if (finish_start_date.toString().equals(finish_end_date.toString())) {
+      is_finish_time_same = true;
+      Calendar tmpFinishEndCal = Calendar.getInstance();
+      tmpFinishEndCal.setTime(finish_end_date.getValue());
+      int endFinishHour = tmpFinishEndCal.get(Calendar.HOUR_OF_DAY);
+      if (endFinishHour != 23) {
+        tmpFinishEndCal.set(Calendar.HOUR_OF_DAY, endFinishHour);
+      }
+      finish_end_date.setValue(tmpFinishEndCal.getTime());
+    } else {
+      is_finish_time_same = false;
     }
 
     // 分の端数切上げ
@@ -3112,6 +3165,11 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public boolean getIsSameDate() {
     return is_same_date;
+  }
+
+  /** */
+  public boolean getIsFinishTimeSame() {
+    return is_finish_time_same;
   }
 
   /**

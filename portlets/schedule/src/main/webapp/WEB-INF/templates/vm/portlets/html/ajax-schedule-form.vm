@@ -103,13 +103,13 @@
 
     <div class="p auiSetDate">
      <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
-        <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
+       <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
         <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
      </span>
 
-        <span dojoType="aipo.widget.DropdownDatepicker" id="finishDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
+        <span dojoType="aipo.widget.DropdownDatepicker" id="finishDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="finish_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="finish_start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
         <span id="spanFinishField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
-         <span dojoType="aipo.widget.DropdownDatepicker" id="finishEndDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
+         <span dojoType="aipo.widget.DropdownDatepicker" id="finishEndDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="finish_end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="finish_end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
         </span>
 
 
@@ -247,6 +247,7 @@
             </select>
         </span></div>
   </div>
+
   <span id="repeatButtonField" style="display:#if($!{result.Span})none#end"><input name="repeat_button" type="button" class="button" value=" #if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))$l10n.SCHEDULE_REPEATING#else$l10n.SCHEDULE_DONOT_REPEAT#end " onclick="aipo.schedule.formSwitchRepeat(this)" /></span>
   <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")$l10n.SCHEDULE_SET_TIME#else$l10n.SCHEDULE_SET_SPAN#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
 #ALtditemfooter()
