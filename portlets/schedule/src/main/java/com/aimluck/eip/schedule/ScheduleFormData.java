@@ -1599,9 +1599,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         newSchedule.setUpdateUserId(Integer.valueOf(ALEipUtils
           .getUserId(rundata)));
         // 終了日時
-        newSchedule.setEndDate(end_date.getValue());
+        newSchedule.setEndDate(finish_end_date.getValue());
         newSchedule.setRepeatPattern("N");
-        newSchedule.setStartDate(start_date.getValue());
+        newSchedule.setStartDate(finish_start_date.getValue());
 
         // 2007.3.28 ToDo連携
 

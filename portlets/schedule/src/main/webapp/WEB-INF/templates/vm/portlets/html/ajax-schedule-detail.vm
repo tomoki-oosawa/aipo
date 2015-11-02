@@ -56,8 +56,10 @@ $!{result.Detail.User.AliasNameHtml}
 #end
 #ALtditemfooter()
 #end
+#* 日時*#
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
+
 #if($!{result.Detail.isSpan()})
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} -
 $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
@@ -66,7 +68,7 @@ $!{result.Detail.Text}<br/>
 $!{result.Detail.Date}
 #else
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
-$!{result.Detail.Date}
+$!{result.Detail.StartDate} <text>-</text> $!{result.Detail.EndDate}
 #end
 #AUIiconScheduleSets($!{result.Detail})
 #ALtditemfooter()
