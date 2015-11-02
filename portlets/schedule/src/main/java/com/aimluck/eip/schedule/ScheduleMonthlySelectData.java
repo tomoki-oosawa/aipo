@@ -93,6 +93,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** <code>currentMonth</code> 今月 */
   private ALDateTimeField currentMonth;
 
+  /** 月末 */
+  private ALDateTimeField endMonth;
+
   /** <code>today</code> 今日 */
   private ALDateTimeField today;
 

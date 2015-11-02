@@ -151,12 +151,6 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>week_6</code> 繰り返し曜日 */
   private ALStringField week_6;
 
-  /** 月末かどうかの判定用 */
-  private ALStringField end_month;
-
-  /** 実際の月末の値を代入する用 */
-  private int real_end_month;
-
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
@@ -193,8 +187,8 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>is_span</code> 期間指定かどうか */
   private boolean is_span;
 
-  /** 月末かどうか */
-  //private boolean is_endMonth;
+  /** 月末 */
+  private ALStringField last_month;
 
   /** <code>all_day_flag</code> 終日予定フラグ */
   private ALStringField all_day_flag;
@@ -651,7 +645,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     view_date = new ALDateTimeField("yyyy-MM-dd");
     if (tmpView == null || tmpView.equals("")) {
       view_date.setValue(now);
-    } else {
+f    } else {
       view_date.setValue(tmpView);
     }
     view_date.setFieldName(ALLocalizationUtils
@@ -798,6 +792,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         getRepeatType(),
         is_repeat,
         is_span,
+        // is_endMonth,
         getWeek0(),
         getWeek1(),
         getWeek2(),
@@ -905,6 +900,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       String ptn = record.getRepeatPattern();
       int count = 0;
       is_repeat = true;
+      // is_endMonth = true;
       is_span = false;
       // 毎日
       if (ptn.charAt(0) == 'D') {
@@ -957,6 +953,10 @@ public class ScheduleFormData extends ALAbstractFormData {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         count = 3;
+        // 月末
+        if (month_day.getValue() == 32) {
+          last_month.setValue("32");
+        }
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
@@ -970,13 +970,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       } else {
         is_repeat = false;
       }
-
-//      if (is_endMonth) {
-//        Calendar cal2 = Calendar.getInstance();
-//        cal2.add(Calendar.MONTH, 1);
-//        cal2.add(Calendar.DATE, -1);
-//        cal2.get(Calendar.DATE);
-//      }
 
       if (is_repeat) {
         // 開始日時
@@ -2810,6 +2803,15 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
+   * 月末を取得します。
+   *
+   * @retuen
+   */
+  public ALStringField getLastMonth() {
+    return last_month;
+  }
+
+  /**
    *
    * @return
    */
@@ -2868,11 +2870,6 @@ public class ScheduleFormData extends ALAbstractFormData {
   public boolean isSpan() {
     return is_span;
   }
-
-  /** 月末かどうか */
-//  public boolean isEndMonth() {
-//    return is_endMonth;
-//  }
 
   /**
    * コピーを作るかどうか。
@@ -3048,18 +3045,6 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getWeek6() {
     return week_6;
-  }
-
-  /**
-   * 月末を取得します。
-   */
-  public ALStringField getEndMonth() {
-    return end_month;
-  }
-
-  /** 実際の月末の値を代入するため */
-  public int getRealEndMonth() {
-    return real_end_month;
   }
 
   /**

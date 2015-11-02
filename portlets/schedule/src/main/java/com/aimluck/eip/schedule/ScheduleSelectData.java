@@ -494,6 +494,13 @@ public class ScheduleSelectData extends
           Integer.parseInt(ptn.substring(1, 3))).append(
           ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 3;
+
+        // 月末
+        if (month_day.getValue() == "32") {
+          rd.addText(new StringBuffer().append(ALLocalizationUtils
+            .getl10n("SCHEDULE_END_MONTH")));
+        }
+
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         rd.addText(new StringBuffer().append(

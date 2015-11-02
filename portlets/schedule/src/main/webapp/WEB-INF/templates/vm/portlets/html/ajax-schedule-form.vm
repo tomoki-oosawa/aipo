@@ -152,9 +152,8 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
-       <option name="is_endMonth" value="$!{result.EndMonth}">$l10n.SCHEDULE_END_MONTH</option>
+    	<option value="32" #if ($!{result.LastMonth.toString()} == "32") selected #end>$l10n.SCHEDULE_END_MONTH</option>
       </select>
-	</p>
       </p>
       <p>
       <input id="repeat_typeY" type="radio" value="Y" #if ($!{result.RepeatType.toString()} == "Y") checked="checked" #end name="repeat_type"/>
