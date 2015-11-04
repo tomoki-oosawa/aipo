@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -24,61 +24,60 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 /**
- * Aimluck EIP でユーザーからのリクエストを処理するインターフェイスです。 <br />
- * 
+ *
  */
 public interface ALAction {
 
   /**
-   * 
+   *
    * @param obj
    */
   public void setResultData(Object obj);
 
   /**
-   * 
+   *
    * @param obj
    */
   public void addResultData(Object obj);
 
   /**
-   * 
+   *
    * @param objList
    */
   public void setResultDataList(List<Object> objList);
 
   /**
-   * 
+   *
    * @param msg
    */
   public void addErrorMessage(String msg);
 
   /**
-   * 
+   *
    * @param msg
    */
   public void addErrorMessages(List<String> msgs);
 
   /**
-   * 
+   *
    * @param msgs
    */
   public void setErrorMessages(List<String> msgs);
 
   /**
-   * 
+   *
    * @param mode
    */
   public void setMode(String mode);
 
   /**
-   * 
+   *
    * @return
    */
   public String getMode();
 
   /**
-   * 
+   *
    * @param context
    */
   public void putData(RunData rundata, Context context);
