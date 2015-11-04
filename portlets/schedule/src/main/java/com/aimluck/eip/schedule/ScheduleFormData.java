@@ -74,6 +74,10 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -259,6 +263,15 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
+
+  /** <code>public_flag</code> 通知フラグ */
+  private ALStringField reminder_flag;
+
+  private ALStringField notify_type_mail;
+
+  private ALStringField notify_type_message;
+
+  private ALNumberField notify_timing;
 
   /**
    *
@@ -682,6 +695,23 @@ public class ScheduleFormData extends ALAbstractFormData {
     common_category_id.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_CATEGORY"));
     common_category_id.setValue(1);
+
+    reminder_flag = new ALStringField();
+    reminder_flag.setTrim(true);
+    reminder_flag.setValue("F");
+    // TODO: 初期設定から読み込み
+
+    notify_type_mail = new ALStringField();
+    // notify_type_mail.setValue("TRUE");
+    // TODO: 初期設定から読み込み
+
+    notify_type_message = new ALStringField();
+    // notify_type_message.setValue("TRUE");
+    // TODO: 初期設定から読み込み
+
+    notify_timing = new ALNumberField();
+    notify_timing.setValue(0);
+    // TODO: 初期設定から読み込み
   }
 
   /**
@@ -769,6 +799,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     place.limitMaxLength(50);
     // 内容
     note.limitMaxLength(1000);
+
   }
 
   /**
@@ -821,6 +852,11 @@ public class ScheduleFormData extends ALAbstractFormData {
     note.validate(msgList);
 
     common_category_id.validate(msgList);
+
+    if (ALReminderService.isEnabled()) {
+      // TODO: 「通知する」の場合はメール、メッセージいずれかにチェックが入っている必要あり
+      // TODO: 通知タイミングは分で登録するが、プルダウンに存在しない数値がPOSTされてきたらはじく
+    }
 
     return (msgList.size() == 0);
   }
@@ -1071,6 +1107,10 @@ public class ScheduleFormData extends ALAbstractFormData {
         facilityList.addAll(FacilitiesUtils
           .getFacilitiesFromSelectQuery(fquery));
       }
+
+      if (ALReminderService.isEnabled()) {
+        // TODO: ReminderService.getJob で現在の値を取得、空の場合は「通知しない」
+      }
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
@@ -1240,6 +1280,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 2007.3.28 ToDo連携
       // // スケジュールを登録
       // orm.doInsert(schedule);
+      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         int userid = (int) user.getUserId().getValue();
@@ -1249,6 +1290,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
         if (userid == ALEipUtils.getUserId(rundata)) {
           map.setStatus("O");
+          isJoin = true;
         } else {
           map.setStatus("T");
         }
@@ -1316,6 +1358,64 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // スケジュールを登録
       Database.commit();
+
+      // アラーム
+      if (ALReminderService.isEnabled()) {
+        ALReminderItem item = new ALReminderItem();
+        item.setOrgId(Database.getDomainName());
+        if (isJoin) {
+          item.setUserId(login_user.getName().getValue());
+        }
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (login_user.getUserId().getValueWithInt() == memberId) {
+            continue;
+          }
+          item.addSharedUserId(user.getName().getValue());
+        }
+        item.setItemId(schedule.getScheduleId().intValue());
+        item.setCategory(ReminderCategory.SCHEDULE);
+        item.setNotifyTiming(notify_timing.getValueWithInt());
+        item.setRepeatPattern(schedule.getRepeatPattern());
+        if (is_repeat) {
+          // 次のアラーム日を算出
+          Calendar today = Calendar.getInstance();
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(schedule.getStartDate());
+          cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+          cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+          cal.set(Calendar.DATE, today.get(Calendar.DATE));
+          ALDateTimeField next = new ALDateTimeField();
+          next.setValue(cal.getTime());
+          ALDateTimeField field =
+            ScheduleUtils.getNextDate(
+              next,
+              schedule.getRepeatPattern(),
+              schedule.getStartDate(),
+              schedule.getEndDate());
+          if (field != null) {
+            item.setEventStartDate(field.getValue());
+            if ("ON".equals(limit_flag.getValue())) {
+              item.setLimitEndDate(schedule.getEndDate());
+            }
+          }
+        } else {
+          if (schedule.getStartDate().after(new Date())) {
+            item.setEventStartDate(schedule.getStartDate());
+          }
+        }
+        if ("T".equals(reminder_flag.getValue())) {
+          if ("TRUE".equals(notify_type_mail.getValue())) {
+            item.addNotifyType(ReminderNotifyType.MAIL);
+          }
+          if ("TRUE".equals(notify_type_message.getValue())) {
+            item.addNotifyType(ReminderNotifyType.MESSAGE);
+          }
+        }
+        if (!is_span && item.getEventStartDate() != null) {
+          ALReminderService.updateJob(item);
+        }
+      }
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -1422,7 +1522,8 @@ public class ScheduleFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ArrayList<ALEipUser> newmemberList = new ArrayList<ALEipUser>();
+    List<ALEipUser> newmemberList = new ArrayList<ALEipUser>();
+    List<ALEipUser> removememberList = new ArrayList<ALEipUser>();
     EipTSchedule schedule = null;
     EipTSchedule newSchedule = null;
     EipTSchedule tmpSchedule = null;
@@ -1506,10 +1607,16 @@ public class ScheduleFormData extends ALAbstractFormData {
           oldmemberIdList.add(map.getUserId());
         }
       }
+      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         int memberId = (int) user.getUserId().getValue();
+        if (login_user.getUserId().getValueWithInt() == memberId) {
+          isJoin = true;
+        }
         if (!isContains(oldmemberIdList, memberId)) {
           newmemberList.add(ALEipUtils.getALEipUser(memberId));
+        } else {
+          removememberList.add(ALEipUtils.getALEipUser(memberId));
         }
       }
 
@@ -1890,6 +1997,66 @@ public class ScheduleFormData extends ALAbstractFormData {
       // スケジュールを登録
       Database.commit();
 
+      // アラーム
+      // TODO: この日のみの繰り返し予定を変更した場合の処理
+      if (ALReminderService.isEnabled()) {
+        ALReminderItem item = new ALReminderItem();
+        item.setOrgId(Database.getDomainName());
+        if (isJoin) {
+          item.setUserId(login_user.getName().getValue());
+        }
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (login_user.getUserId().getValueWithInt() == memberId) {
+            continue;
+          }
+          item.addSharedUserId(user.getName().getValue());
+        }
+        item.setItemId(schedule.getScheduleId().intValue());
+        item.setCategory(ReminderCategory.SCHEDULE);
+        item.setNotifyTiming(notify_timing.getValueWithInt());
+        item.setRepeatPattern(schedule.getRepeatPattern());
+        if (is_repeat) {
+          // 次のアラーム日を算出
+          Calendar today = Calendar.getInstance();
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(schedule.getStartDate());
+          cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+          cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+          cal.set(Calendar.DATE, today.get(Calendar.DATE));
+          ALDateTimeField next = new ALDateTimeField();
+          next.setValue(cal.getTime());
+          ALDateTimeField field =
+            ScheduleUtils.getNextDate(
+              next,
+              schedule.getRepeatPattern(),
+              schedule.getStartDate(),
+              schedule.getEndDate());
+          if (field != null) {
+            item.setEventStartDate(field.getValue());
+            if ("ON".equals(limit_flag.getValue())) {
+              item.setLimitEndDate(schedule.getEndDate());
+            }
+          }
+        } else {
+          if (schedule.getStartDate().after(new Date())) {
+            item.setEventStartDate(schedule.getStartDate());
+          }
+        }
+        if ("T".equals(reminder_flag.getValue())) {
+          if ("TRUE".equals(notify_type_mail.getValue())) {
+            item.addNotifyType(ReminderNotifyType.MAIL);
+          }
+          if ("TRUE".equals(notify_type_message.getValue())) {
+            item.addNotifyType(ReminderNotifyType.MESSAGE);
+          }
+        }
+        if (!is_span && item.getEventStartDate() != null) {
+          ALReminderService.updateJob(item);
+        } else {
+          ALReminderService.removeJob(item);
+        }
+      }
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         schedule.getScheduleId(),
@@ -3138,4 +3305,23 @@ public class ScheduleFormData extends ALAbstractFormData {
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public ALStringField getReminderFlag() {
+    return reminder_flag;
+  }
+
+  public ALStringField getNotifyTypeMail() {
+    return notify_type_mail;
+  }
+
+  public ALStringField getNotifyTypeMessage() {
+    return notify_type_message;
+  }
+
+  public ALNumberField getNotifyTiming() {
+    return notify_timing;
+  }
+
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
 }
