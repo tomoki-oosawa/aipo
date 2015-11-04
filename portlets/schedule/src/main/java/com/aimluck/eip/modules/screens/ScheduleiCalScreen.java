@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -104,7 +104,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
     net.fortuna.ical4j.model.Calendar cal =
       new net.fortuna.ical4j.model.Calendar();
-    cal.getProperties().add(new ProdId("-//Aimluck,Inc. //Aipo //JP"));
+    cal.getProperties().add(new ProdId("-//TOWN, Inc. //Aipo //JP"));
     cal.getProperties().add(Version.VERSION_2_0);
     cal.getProperties().add(CalScale.GREGORIAN);
     cal.getProperties().add(Method.PUBLISH);
