@@ -499,18 +499,19 @@ public class WorkflowFormData extends ALAbstractFormData {
         List<EipTWorkflowRequestMap> requestMapList =
           WorkflowUtils.getEipTWorkflowRequestMap(request);
         EipTWorkflowRequestMap requestMap;
-        TurbineUser requestUser;
+        TurbineUser requestMapUser;
         int listLength = requestMapList.size();
-
         for (int i = 0; i < listLength; i++) {
           requestMap = requestMapList.get(i);
-          // 申請経路に自分が居る かつ 申請者が削除済みでない時は 削除しない
           if (requestMap.getUserId().intValue() == userId) {
-            requestUser =
-              WorkflowUtils.getTurbineUser(request.getUserId().toString());
-            if ("F".equals(requestUser.getDisabled())) {
-              return false;
-            }
+            break;
+          }
+
+          // 自分より前に差し戻せるなら、削除させない
+          requestMapUser =
+            WorkflowUtils.getTurbineUser(requestMap.getUserId().toString());
+          if ("F".equals(requestMapUser.getDisabled())) {
+            return false;
           }
         }
       }
