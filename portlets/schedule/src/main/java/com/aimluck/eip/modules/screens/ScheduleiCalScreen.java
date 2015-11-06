@@ -104,7 +104,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
     net.fortuna.ical4j.model.Calendar cal =
       new net.fortuna.ical4j.model.Calendar();
-    cal.getProperties().add(new ProdId("-//Aimluck,Inc. //Aipo //JP"));
+    cal.getProperties().add(new ProdId("-//TOWN, Inc. //Aipo //JP"));
     cal.getProperties().add(Version.VERSION_2_0);
     cal.getProperties().add(CalScale.GREGORIAN);
     cal.getProperties().add(Method.PUBLISH);
