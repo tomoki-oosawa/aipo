@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogEntryLatestSelectData extends
     ALAbstractMultiFilterSelectData<EipTBlogEntry, EipTBlogEntry> implements
@@ -107,7 +107,7 @@ public class BlogEntryLatestSelectData extends
   private String filterType = "";
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -259,7 +259,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -285,7 +285,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * パラメータをマップに変換します。
-   * 
+   *
    * @param key
    * @param val
    */
@@ -388,7 +388,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -401,7 +401,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -446,7 +446,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -458,7 +458,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -477,7 +477,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * エントリーの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getEntrySum() {
@@ -497,7 +497,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -508,7 +508,7 @@ public class BlogEntryLatestSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -525,7 +525,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * TitleDateの新しい順に並び替える。
-   * 
+   *
    * @param type
    * @param name
    * @return
@@ -551,7 +551,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 日付文字列をjava.util.Date型へ変換します。
-   * 
+   *
    * @param str
    *          変換対象の文字列
    * @return 変換後のjava.util.Dateオブジェクト
@@ -570,7 +570,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 引数dateの日時からday日前の日時を返します。
-   * 
+   *
    * @param date
    * @param day
    */
@@ -584,7 +584,7 @@ public class BlogEntryLatestSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -605,7 +605,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 部署一覧を取得します
-   * 
+   *
    * @return postList
    */
   public List<ALEipGroup> getPostList() {
@@ -614,7 +614,7 @@ public class BlogEntryLatestSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
