@@ -30,8 +30,7 @@ import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 
 /**
- * Aimluck Session のユーティリティクラスです。 <br />
- * 
+ *
  */
 public class ALSessionUtils {
 

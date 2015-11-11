@@ -121,7 +121,6 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 
 /**
- * Aimluck EIP のユーティリティクラスです。 <br />
  *
  */
 public class ALEipUtils {

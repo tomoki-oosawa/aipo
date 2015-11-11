@@ -21,8 +21,7 @@ package com.aimluck.eip.common;
 import org.apache.jetspeed.services.resources.JetspeedResources;
 
 /**
- * Aimluck EIP の定数です。 <br />
- * 
+ *
  */
 public class ALEipConstants {
 

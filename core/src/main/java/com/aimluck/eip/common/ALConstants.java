@@ -19,8 +19,7 @@
 package com.aimluck.eip.common;
 
 /**
- * Aimluck の定数です。
- * 
+ *
  */
 public class ALConstants {
 

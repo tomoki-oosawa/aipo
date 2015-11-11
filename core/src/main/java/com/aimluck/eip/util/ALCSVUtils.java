@@ -33,8 +33,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.modules.actions.common.ALAction;
 
 /**
- * Aimluck EIP のユーティリティクラスです。 <br />
- * 
+ *
  */
 public class ALCSVUtils {
 
