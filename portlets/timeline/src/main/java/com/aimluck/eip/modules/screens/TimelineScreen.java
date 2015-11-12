@@ -24,7 +24,6 @@ import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.timeline.TimelineSelectData;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -65,10 +64,10 @@ public class TimelineScreen extends ALVelocityScreen {
 
       ParameterParser parser = rundata.getParameters();
 
-      ALEipUtils.passPSML(rundata, context, "p12f-filters", parser
-        .getString(ALEipConstants.LIST_FILTER));
-      ALEipUtils.passPSML(rundata, context, "p12g-filtertypes", parser
-        .getString(ALEipConstants.LIST_FILTER_TYPE));
+      ALEipUtils.passPSML(rundata, context, "p3a-group", parser
+        .getString(TimelineUtils.TARGET_GROUP_NAME));
+      ALEipUtils.passPSML(rundata, context, "p4a-group", parser
+        .getString(TimelineUtils.TARGET_DISPLAY_NAME));
 
       TimelineSelectData listData = new TimelineSelectData();
       listData.initField();

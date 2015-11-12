@@ -70,7 +70,6 @@ public class TimelineAction extends ALBaseAction {
 
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
-    listData.setFiltersFromPSML(portlet, context, rundata);
     listData.setRowsNum(20);
     listData.doViewList(this, rundata, context);
 

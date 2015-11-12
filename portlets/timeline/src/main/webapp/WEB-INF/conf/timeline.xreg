@@ -53,7 +53,7 @@
 
 
 
-        <parameter name="p3a-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p3a-group" value="" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択グループ</title>
             </meta-info>
@@ -63,7 +63,7 @@
 
 
 
-        <parameter name="p4a-group" value="" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+        <parameter name="p4a-group" value="" type="style" hidden="true" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>初期選択種別</title>
             </meta-info>

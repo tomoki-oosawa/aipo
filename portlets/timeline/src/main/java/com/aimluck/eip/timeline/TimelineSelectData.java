@@ -1000,17 +1000,6 @@ public class TimelineSelectData extends
     useridList.add(2);
   }
 
-  public void setFiltersFromPSML(VelocityPortlet portlet, Context context,
-      RunData rundata) {
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, portlet
-      .getPortletConfig()
-      .getInitParameter("p12f-filters"));
-
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, portlet
-      .getPortletConfig()
-      .getInitParameter("p12g-filtertypes"));
-  }
-
   /**
    * 表示切り替えで指定したグループ ID を取得する．
    *

@@ -137,6 +137,10 @@ public class TimelineUtils {
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
 
+  public static final String TARGET_GROUP_NAME = "target_group_name";
+
+  public static final String TARGET_DISPLAY_NAME = "target_display_name";
+
   /**
    * トピックに対する返信数を返します
    *
