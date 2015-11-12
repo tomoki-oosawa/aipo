@@ -500,19 +500,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
     return memberList;
   }
 
-  public List<ALEipUser> getInvalidMemberList() {
-    List<ALEipUser> invalidMemberList = null;
-    for (int i = 0; i < memberList.size(); i++) {
-      ALEipUser tmp = memberList.get(i);
-      TurbineUser requestMapUser =
-        MessageUtils.getTurbineUser(tmp.getUserId().toString());
-      if (!"T".equals(requestMapUser.getDisabled())) {
-        invalidMemberList.add(tmp);
-      }
-    }
-    return invalidMemberList;
-  }
-
   public int getRoomId() {
     return roomId;
   }

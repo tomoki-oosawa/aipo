@@ -69,7 +69,7 @@
         widgetId="memberfilterlist"
         memberFromId="tmp_member_from"
         memberToId="member_to"
-        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
+        memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser').addQueryData('rid',$!result.RoomId)"
         clickEvent="aipo.message.changeMember()"
         childTemplateString=""
         viewSelectId="tmp_view"

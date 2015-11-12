@@ -223,7 +223,7 @@ public class UserUtils {
    */
   public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser,
-      String keyword) {
+      String keyword, String rid) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
     ArrayList<UserPhotoLiteBean> list = new ArrayList<UserPhotoLiteBean>();
     // SQLの作成
@@ -238,7 +238,16 @@ public class UserUtils {
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
-    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    if (rid == null) {
+      statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    } else {
+      statement.append("LEFT JOIN eip_t_message_room_member as E ");
+      statement.append("  on A.USER_ID = E.USER_ID ");
+      statement
+        .append("WHERE B.USER_ID > 3 AND (B.DISABLED = 'F' OR ( B.DISABLED = 'N' AND E.ROOM_ID = ");
+      statement.append(rid);
+      statement.append("))");
+    }
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     if (keyword != null && !keyword.equals("")) {
       statement.append(" AND ( ");
