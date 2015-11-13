@@ -218,7 +218,29 @@ public class UserUtils {
   /**
    *
    * @param rundata
+   * @param groupname
+   * @param includeLoginuser
    * @param keyword
+   * @return
+   */
+  public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
+      RunData rundata, String groupname, boolean includeLoginuser,
+      String keyword) {
+    return getUserPhotoLiteBeansFromGroup(
+      rundata,
+      groupname,
+      includeLoginuser,
+      keyword,
+      null);
+  }
+
+  /**
+   *
+   * @param rundata
+   * @param groupname
+   * @param includeLoginuser
+   * @param keyword
+   * @param rid
    * @return
    */
   public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
