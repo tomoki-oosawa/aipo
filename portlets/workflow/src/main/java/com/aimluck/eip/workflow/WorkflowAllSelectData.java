@@ -397,7 +397,8 @@ public class WorkflowAllSelectData extends
 
       Expression exp2 =
         ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, rd
-          .getRequestId());
+          .getRequestId()
+          .toString());
       Expression exp3 =
         ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "Workflow");
       Expression exp4 = exp2.andExp(exp3);
