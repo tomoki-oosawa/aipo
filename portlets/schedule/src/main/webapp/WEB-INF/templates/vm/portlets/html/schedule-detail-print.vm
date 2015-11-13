@@ -95,10 +95,10 @@ $!{result.Detail.Date2}
 #ALtditemfooter()
 
 #* 共有カテゴリ連携（ここから）  *#
-
+#if($!result.isDisplayManHour())
 #ALtdcaption($l10n.SCHEDULE_COMMON_CATEGORY)
 #ALtditem($!{result.Detail.CommonCategoryName})
-
+#end
 #* 共有カテゴリ連携（ここまで）  *#
 
 #ALtdcaption($l10n.SCHEDULE_PLACE)
