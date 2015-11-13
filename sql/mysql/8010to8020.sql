@@ -21,3 +21,7 @@
 DELETE FROM eip_t_timeline_like WHERE timeline_id NOT IN( SELECT timeline_id FROM eip_t_timeline );
 ALTER TABLE eip_t_timeline_like ADD FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE;
 -- 20150609
+
+-- 20151021
+ALTER TABLE EIP_T_MESSAGE_ROOM_MEMBER ADD authority VARCHAR(1) DEFAULT 'A';
+-- 20151021

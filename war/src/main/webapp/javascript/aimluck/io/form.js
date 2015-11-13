@@ -1043,7 +1043,7 @@ aimluck.io.onBlurSearch = function(pid) {
  * MemberFilterList用 メンバー一覧生成
  */
 aimluck.io.createMemberLists = function (ulId, params) {
-  var sel, pre, key, value, url, ind, callback, callbackTarget, widgetId, name, keyword, clickEvent, user_id, image_flag, image_version, default_image, child_html;
+  var sel, sel_auth, pre, key, value, url, ind, callback, callbackTarget, widgetId, name, keyword, clickEvent, user_id, image_flag, image_version, default_image, child_html;
   if (params["url"]) {
     url = params["url"];
   }
@@ -1080,6 +1080,10 @@ aimluck.io.createMemberLists = function (ulId, params) {
   if (typeof params["selectedId"] == "undefined") {
   } else {
     sel = params["selectedId"];
+  }
+  if (typeof params["selectedAuthId"] == "undefined") {
+  } else {
+    sel_auth = params["selectedAuthId"];
   }
   if (typeof params["preOptions"] == "undefined") {
   } else {
@@ -1145,6 +1149,23 @@ aimluck.io.createMemberLists = function (ulId, params) {
           }
       }
 
+      var init_auth_member = [];
+      if (typeof sel == "undefined"||typeof sel_auth == "undefined") {
+      } else {
+          var select = dojo.byId(sel_auth);
+          var i;
+          if (select) {
+            var s_o = select.options;
+            if (s_o.length > 0){
+              for(i = 0 ; i < s_o.length; i ++ ) {
+            	  if(s_o[i].value=="A"){
+                	  init_auth_member[init_auth_member.length] = init_member[i];
+            	  }
+              }
+            }
+          }
+      }
+
       if (typeof pre == "undefined") {
       } else {
         aimluck.io.addMemberList(ul, pre["key"], pre["value"], false, widgetId, name, sel, clickEvent, false, "", "", default_image, child_html);
@@ -1154,8 +1175,11 @@ aimluck.io.createMemberLists = function (ulId, params) {
         } else {
 		  if (dojo.indexOf(init_member, p[key]) != -1){
         	aimluck.io.addMemberList(ul, p[key], p[value], true, widgetId, name, sel, clickEvent, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+        	var is_auth = (dojo.indexOf(init_auth_member, p[key]) != -1);
+        	aimluck.io.addAuthoritySelect(p[key], p[value], is_auth, widgetId, name, clickEvent);
           } else {
         	aimluck.io.addMemberList(ul, p[key], p[value], false, widgetId, name, sel, clickEvent, p[image_flag], p[user_id], p[image_version], default_image, child_html);
+        	aimluck.io.addAuthoritySelect(p[key], p[value], false, widgetId, name, clickEvent);
           }
         }
       });
@@ -1174,29 +1198,71 @@ aimluck.io.createMemberLists = function (ulId, params) {
  * MemberFilterList用 メンバー生成
  */
 aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name, memberTo, clickEvent, has_photo, user_id, photo_modified, default_image, child_html) {
-      var img_src = default_image;
+
+	var img_src = default_image;
       if(has_photo){
           img_src = '?template=FileuploadFacePhotoScreen&uid=' + user_id + '&t=' + photo_modified;
       }
+
       var li = document.createElement("li");
       var input = document.createElement("input");
+      var authId = "authority_outer_"+ value;
+      var selectId = "tmp_authority_from_"+ value;
+
       input.type = "checkbox";
       input.value = value;
       input.name = name;
       input.id = name + "_" + value;
+      li.className = 'checked';
+
       if(is_checked){
         input.setAttribute('checked', 'checked');
       }
-      input.setAttribute('data-name', text);
 
-      input.setAttribute('onclick', 'dijit.byId("' + widgetId + '").onMemberCheck(this);'+ clickEvent);
+      input.setAttribute('data-name', text);
+      input.setAttribute('onclick', 'dijit.byId("' + widgetId + '").onMemberCheck(this,"' + selectId + '");'+ clickEvent);
+
       li.innerHTML = "<label>"
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
         + "<span class=\"name\">" + text + "</span>"
+        + "<div id=\"" + authId + "\"></div>"
         + child_html
         + "</label></li>";
+
       return ul.appendChild(li);
+}
+
+/**
+ * MemberFilterList用 管理者権限選択プルダウン生成
+ */
+aimluck.io.addAuthoritySelect = function (value, text, is_auth, widgetId, name, clickEvent) {
+
+	var authId = "authority_outer_"+ value;
+	var inputId = name + "_" + value;
+    var div = dojo.byId(authId);
+    var select = document.createElement("select");
+    var selectId = "tmp_authority_from_"+ value;
+
+    var s_a = '';
+    var s_m = '';
+
+    if(is_auth){
+        s_a = 'selected';
+      }else{
+        s_m = 'selected';
+      }
+
+    select.name = 'tmp_authority_from';
+    select.id = selectId;
+    select.className = 'floatRight';
+    select.setAttribute('onchange', 'dijit.byId("' + widgetId + '").onAuthorityCheck("'+ selectId +'","'+ inputId +'");'+ clickEvent);
+
+    select.innerHTML = "<option value=\"A\" " + s_a + ">管理者</option>"
+    + "<option value=\"M\" " + s_m + ">メンバー</option>"
+    + "</select>";
+
+    return div.appendChild(select);
 }
 
 /**

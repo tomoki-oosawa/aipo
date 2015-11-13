@@ -69,6 +69,7 @@
         widgetId="memberfilterlist"
         memberFromId="tmp_member_from"
         memberToId="member_to"
+        memberAuthorityToId="member_authority_to"
         memberFromUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('groupname','LoginUser')"
         clickEvent="aipo.message.changeMember()"
         childTemplateString=""
@@ -79,9 +80,10 @@
         groupSelectOptionKey="groupId"
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post')"
-        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group')">
+        changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group')"
+        authorityFromId="tmp_authority_from">
     </div>
-    <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name">$!record.AliasName</option>#end</select>
+    <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name" data-authority="$!record.Authority">$!record.AliasName</option>#end</select>
   </td></tr>
 </table>
 </div>

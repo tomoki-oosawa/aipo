@@ -1348,6 +1348,7 @@ CREATE TABLE `eip_t_message_room_member` (
     `user_id` int(11) NOT NULL,
     `login_name` varchar(32) NOT NULL,
     `target_user_id` int(11),
+    `authority` varchar(1) DEFAULT 'A',
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
