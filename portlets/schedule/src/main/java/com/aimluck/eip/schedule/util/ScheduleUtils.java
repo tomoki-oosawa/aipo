@@ -3287,13 +3287,11 @@ public class ScheduleUtils {
         start_date = schedule.getStartDate();
 
         end_date = schedule.getEndDate();
-
-        if (end_date.getHours() == 0) {// 終了時刻が0:00:00なら、23:59:59にする
-          end_date.setHours(23);
-          end_date.setMinutes(59);
-          end_date.setSeconds(59);
-        }
-
+        /*
+         * if (end_date.getHours() == 0) {// 終了時刻が0:00:00なら、23:59:59にする
+         * end_date.setHours(23); end_date.setMinutes(59);
+         * end_date.setSeconds(59); }
+         */
         repeat_pattern = schedule.getRepeatPattern();
 
         repeat_type = repeat_pattern.substring(0, 1);
