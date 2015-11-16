@@ -1595,8 +1595,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
           // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
           if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-            .toString()))
-            && !(is_span)) {
+            .toString()))) {
             for (Object record : facilityList) {
               FacilityResultData frd = (FacilityResultData) record;
               int facilityid = (int) frd.getFacilityId().getValue();
@@ -1843,8 +1842,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
         if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-          .toString()))
-          && !(is_span)) {
+          .toString()))) {
           for (Object record : facilityList) {
             FacilityResultData frd = (FacilityResultData) record;
             int facilityid = (int) frd.getFacilityId().getValue();
