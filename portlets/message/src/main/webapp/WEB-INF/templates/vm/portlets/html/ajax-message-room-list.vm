@@ -58,7 +58,9 @@
 			<span class="name">$!record.Name</span>
 			<span class="latest">$!record.LastMessage</span>
 			<span id="messageRoomType$!record.RoomId" style="display:none">$!record.RoomType</span>
-			<span id="messageRoomAuthority$!record.RoomId" style="display:none">$record.getAuthority($result.LoginUserId)</span>
+			#if($!record.getAuthority($result.LoginUserId) != "isNew")
+			<span id="messageRoomAuthority$!record.RoomId" style="display:none">$!record.getAuthority($result.LoginUserId)</span>
+			#end
 		</a>
 	</li>
 #end

@@ -217,6 +217,7 @@ public class MessageFormData extends ALAbstractFormData {
           map1.setUserId((int) login_user.getUserId().getValue());
           map1.setTargetUserId((int) targetUser.getUserId().getValue());
           map1.setLoginName(login_user.getName().getValue());
+          map1.setAuthority("A");
 
           EipTMessageRoomMember map2 =
             Database.create(EipTMessageRoomMember.class);
@@ -224,6 +225,7 @@ public class MessageFormData extends ALAbstractFormData {
           map2.setTargetUserId((int) login_user.getUserId().getValue());
           map2.setUserId((int) targetUser.getUserId().getValue());
           map2.setLoginName(targetUser.getName().getValue());
+          map2.setAuthority("A");
 
           room.setAutoName("T");
           room.setRoomType("O");
