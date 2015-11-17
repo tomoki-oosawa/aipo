@@ -209,7 +209,7 @@
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameTime) selected="selected" #end>--</option>
 			#foreach ( $num in [0..23] )
-            <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num") selected="selected" #end >$num</option>
+            <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num" && !($!result.EndDate.Minute == "59")) selected="selected" #end >$num</option>
             #end
             </select>
             :
