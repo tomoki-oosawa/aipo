@@ -490,7 +490,8 @@ public class NoteSelectData extends ALAbstractSelectData<EipTNoteMap, EipTNote> 
 
           Expression exp2 =
             ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, rd
-              .getNoteId());
+              .getNoteId()
+              .toString());
           Expression exp3 =
             ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "Note");
           Expression exp4 = exp2.andExp(exp3);
