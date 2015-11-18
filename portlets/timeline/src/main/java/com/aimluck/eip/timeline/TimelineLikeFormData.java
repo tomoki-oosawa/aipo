@@ -244,8 +244,9 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
             SelectQuery<Activity> dQuery = Database.query(Activity.class);
             Expression exp3 =
-              ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, String
-                .valueOf(parententry.getTimelineId().toString()));
+              ExpressionFactory.matchExp(
+                Activity.EXTERNAL_ID_PROPERTY,
+                parententry.getTimelineId().toString());
             Expression exp4 =
               ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "timeline");
 
