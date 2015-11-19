@@ -38,6 +38,9 @@ aipo.message.jumpCursor = null;
 aipo.message.isSearched = false;
 aipo.message.transactionIdList = [];
 
+
+
+
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
@@ -97,7 +100,16 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                         });
     }
     aipo.message.reloadRoomList();
+    //ここから追記
+    aipo.message.getLastRoomId();
+    //ここまで追記
     aipo.message.isInit = true;
+}
+
+//Cookieから最後に開いたRoomのIDを読み込む
+aipo.message.getLastRoomId = function() {
+	currentRoomId = document.cookie;
+
 }
 
 aipo.message.messagePane = null;
@@ -1459,4 +1471,14 @@ aipo.message.removeTransactionId = function(transactionId){
 		aipo.message.transactionIdList.splice(transactionIdPos, 1);
 		return true;
 	}
+}
+
+window.onbeforeunload = function() {
+	aipo.message.saveCurrentRoomId();
+}
+//CookieにcurrentRoomIdを保存する
+aipo.message.saveCurrentRoomId = function(currentRoomId){
+	var lastRoomId = aipo.message.currentRoomId;
+	document.cookie = encodeURIComponent(lastRoomId);
+
 }
