@@ -1014,7 +1014,8 @@ public class ALDefaultSocialApplicationHanlder extends
             .getAppId());
         exp4 =
           ExpressionFactory.matchExp(EipTTimeline.EXTERNAL_ID_PROPERTY, request
-            .getExternalId());
+            .getExternalId()
+            .toString());
         tQuery = Database.query(EipTTimeline.class);
         tQuery.andQualifier(exp1.andExp(exp2.andExp(exp3.andExp(exp4))));
         // tQuery.andQualifier(exp3);
