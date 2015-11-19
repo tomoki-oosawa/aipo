@@ -384,7 +384,7 @@ $record.WbrName
 #set($entityids = "$!{entityids}$!{record.ScheduleId},")
 #if(${record.isShowDetail()})
 <div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv left">
-<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("userid", $!{record3.UserId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("facilityid", $!{record3.FacilityId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
 #if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
 $record.WbrName
 #else
