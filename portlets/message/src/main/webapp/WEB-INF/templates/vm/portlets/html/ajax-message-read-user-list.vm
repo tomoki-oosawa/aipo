@@ -20,6 +20,8 @@
 <div class="borderAuiHead">
 #ALdialogheader($l10n.MESSAGE_READ)
     <div class="auiListWrapper">
+
+    </div>
 		<ul class="userList">
 			#foreach ($record in $result.List)
 			<li>

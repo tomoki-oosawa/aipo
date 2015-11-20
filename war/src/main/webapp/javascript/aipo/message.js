@@ -41,6 +41,7 @@ aipo.message.transactionIdList = [];
 
 
 
+
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
@@ -108,7 +109,13 @@ aipo.message.init = function(portletId, jslink, isMobile) {
 
 //Cookieから最後に開いたRoomのIDを読み込む
 aipo.message.getLastRoomId = function() {
-	currentRoomId = document.cookie;
+	if(window.navigator.cookieEnabled) {
+		currentRoomId = document.cookie;
+		console.log(currentRoomId);
+		aipo.message.selectRoom(currentRoomId, true);
+	} else {
+		document.write("ブラウザのCookieを有効にしてください");
+	}
 
 }
 
@@ -135,6 +142,8 @@ aipo.message.reloadMessageList = function() {
         	} else {
                 aipo.message.read(aipo.message.currentRoomId);
         	}
+        	//getlastRoomIdを呼び出し
+        	aipo.message.getLastRoomId(document.cookie);
             aipo.message.fixDateLine();
         }
     }
@@ -472,6 +481,7 @@ aipo.message.clearSearchMessageList = function() {
     	aipo.message.currentMessageSearchKeyword = null;
     	aipo.message.closeRightBlock();
     	aipo.message.onBlurSearch();
+    	aipo.message.saveCurrentRoomId();
     }
 }
 
@@ -744,6 +754,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
+        aipo.message.saveCurrentRoomId(aipo.message.currentRoomId);
     }
 }
 
@@ -1155,6 +1166,9 @@ aipo.message.getLastMessageRightId = function() {
 }
 
 aipo.message.isOpenWindow = function() {
+	//以下一文追記
+	currentRoomId = document.cookie;
+	console.log(currentRoomId);
     return aipo.message.isMobile ? true : dojo.hasClass("dd_message", "open");
 }
 
@@ -1477,8 +1491,15 @@ window.onbeforeunload = function() {
 	aipo.message.saveCurrentRoomId();
 }
 //CookieにcurrentRoomIdを保存する
-aipo.message.saveCurrentRoomId = function(currentRoomId){
-	var lastRoomId = aipo.message.currentRoomId;
-	document.cookie = encodeURIComponent(lastRoomId);
+aipo.message.saveCurrentRoomId = function(room_id){
+	if (window.navigator.cookieEnabled) {
+		var lastRoomId = room_id;
+		document.cookie = lastRoomId;
+		console.log(document.cookie);
+	} else {
+		document.write("ブラウザのCookieを有効にしてください");
+	}
+
+
 
 }

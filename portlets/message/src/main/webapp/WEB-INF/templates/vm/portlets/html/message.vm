@@ -23,6 +23,7 @@
 <input type="text" name="keyword" value="" placeholder="$l10n.MESSAGE_SEARCH" onFocus="aipo.message.onFocusSearch();" onBlur="aipo.message.onBlurSearch();"/><button type="submit"><i class="icon-search"></i></button>
 </form>
 <div id="messageSideBlock" class="sideBlock" #if($isMessageUser)style="display:none"#end>
+	<script type="text/javascript" src="message.js"　onload="aipo.message.getLastRoomId" onunLoad="aipo.message.saveCurrentRoomId"></text>
 	<div class="auiTabs" id="messageSideBlockTab">
 		<ul class="tab">
 			<li class="w50 active" id="messageRoomTab"><a href="javascript:void(0)" onclick="aipo.message.selectTab('room');">$l10n.MESSAGE_ROOM</a></li>
