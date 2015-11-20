@@ -153,7 +153,7 @@ ${record.FacilityNameHtml}<br/>
 #ALtablefooter()
 
 #ALbuttonheader()
-#if( ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
+#if( ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || $!{result.Detail.isLoginuser()}))
     <div align="left" style="padding:0px 0px 2px 0px" class="radioBlock">
     #if($viewDateEnable == "true" && $!ignore_viewdate == "false")
         #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} ||($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}&&$!{result.hasAuthoritySelfDelete()} &&($!{result.Detail.isTmpreserve()}||$!{result.Detail.isConfirm()}))|| (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
