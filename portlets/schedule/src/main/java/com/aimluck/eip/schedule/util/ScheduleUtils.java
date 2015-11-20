@@ -4266,7 +4266,6 @@ public class ScheduleUtils {
                     continue;
                   }
                 }
-                existFacility = true;
               }
             }
             if (existFacility) {
