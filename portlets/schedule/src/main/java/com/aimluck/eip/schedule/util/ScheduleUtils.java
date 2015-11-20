@@ -43,6 +43,7 @@ import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.cayenne.query.Ordering;
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
 import org.apache.jetspeed.om.security.UserIdPrincipal;
@@ -3288,12 +3289,6 @@ public class ScheduleUtils {
 
         end_date = schedule.getEndDate();
 
-        if (end_date.getHours() == 0) {// 終了時刻が0:00:00なら、23:59:59にする
-          end_date.setHours(23);
-          end_date.setMinutes(59);
-          end_date.setSeconds(59);
-        }
-
         repeat_pattern = schedule.getRepeatPattern();
 
         repeat_type = repeat_pattern.substring(0, 1);
@@ -3392,6 +3387,15 @@ public class ScheduleUtils {
         return false;
       }
 
+      if (repeat_type.equals("S")) {
+        // 期間スケジュールで終了時刻が0:00:00になっている分を23:59:59に補正する
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(end_date);
+        cal.add(Calendar.DATE, 1);
+        cal.add(Calendar.MINUTE, -1);
+        end_date = cal.getTime();
+      }
+
       // 設備予約状況をチェックする
       if (facilityIdList.size() > 0) {//
         List<Integer> fids = facilityIdList;
@@ -3455,18 +3459,27 @@ public class ScheduleUtils {
 
           try {
             if (!unlimited_repeat) {
+              // 期間スケジュールは、00:00に切り捨てたスケジュールで検索する
+              Calendar cal_end = Calendar.getInstance();
+              cal_end.setTime(end_date);
+              cal_end = DateUtils.truncate(cal_end, Calendar.DAY_OF_MONTH);
               Expression exp201 =
                 ExpressionFactory.lessOrEqualExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.START_DATE_PROPERTY,
-                  end_date);// EipTSchedule.START_DATE_PROPERTY <= end_date
+                  cal_end.getTime());
+              // EipTSchedule.START_DATE_PROPERTY <= end_date
+              Calendar cal_start = Calendar.getInstance();
+              cal_start.setTime(start_date);
+              cal_start = DateUtils.truncate(cal_start, Calendar.DAY_OF_MONTH);
               Expression exp202 =
-                ExpressionFactory.greaterExp(
+                ExpressionFactory.greaterOrEqualExp(
                   EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
                     + "."
                     + EipTSchedule.END_DATE_PROPERTY,
-                  start_date);// EipTSchedule.END_DATE_PROPERTY > start_date
+                  cal_start.getTime());
+              // EipTSchedule.END_DATE_PROPERTY >= start_date
 
               spanexp = exp200.andExp(exp201.andExp(exp202));
 
@@ -3829,6 +3842,13 @@ public class ScheduleUtils {
             String ptn = map.getEipTSchedule().getRepeatPattern();
             if (ptn.charAt(0) == 'S') { // 期間スケジュール
               try {
+                // 期間スケジュールで終了時刻が0:00:00になっている分を23:59:59に補正する
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dbEndDate);
+                cal.add(Calendar.DATE, 1);
+                cal.add(Calendar.MINUTE, -1);
+                dbEndDate = cal.getTime();
+
                 if ((end_date.after(dbStartDate) && start_date
                   .before(dbEndDate))
                   || unlimited_repeat) {
