@@ -356,12 +356,12 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
       endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
       endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
       form_data.getEndDate().setValue(endDate.getTime());
+    }
 
-      if (!is_first) {
-        form_data.getFacilityMemberList().clear();
-        form_data.getFacilityMemberList().addAll(
-          CellScheduleUtils.getShareFacilityMemberList(rundata));
-      }
+    if (!is_first) {
+      form_data.getFacilityMemberList().clear();
+      form_data.getFacilityMemberList().addAll(
+        CellScheduleUtils.getShareFacilityMemberList(rundata));
     }
     return true;
   }

@@ -74,7 +74,7 @@ if(document.all!=undefined){
 <table><tbody>
 
 #ALtdcaption($l10n.SCHEDULE_NAME)
-#ALtditem($!{result.Detail.User.AliasName})
+#ALtditem($!{result.User.AliasName})
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})

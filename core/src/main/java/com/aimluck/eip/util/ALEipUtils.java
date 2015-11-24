@@ -525,7 +525,6 @@ public class ALEipUtils {
           .sql(TurbineUser.class, query)
           .param("groupName", groupname)
           .fetchList();
-
       for (TurbineUser tuser : list2) {
         list.add(getALEipUser(tuser));
       }

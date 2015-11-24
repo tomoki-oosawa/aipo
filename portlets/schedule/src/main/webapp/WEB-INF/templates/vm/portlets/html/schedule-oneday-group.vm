@@ -120,12 +120,24 @@
 #set($termcolcount = 0)
 #set($todocolcount = 0)
 #set($duplirowcount = 0)
+
 #foreach($record3 in $result.MemberList)
 #if($termcolcount < ${result.getTermResultDataList($record3.UserId.Value).size()})
 #set($termcolcount = ${result.getTermResultDataList($record3.UserId.Value).size()})
 #end
 #if($todocolcount < ${result.getToDoResultDataList($record3.UserId.Value).size()})
 #set($todocolcount = ${result.getToDoResultDataList($record3.UserId.Value).size()})
+#end
+#end
+
+#if($termcolcount == 0)
+#foreach($record4 in $result.FacilityList)
+#if($termcolcount < ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
+#set($termcolcount = ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
+#end
+#if($todocolcount < ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
+#set($todocolcount = ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
+#end
 #end
 #end
 
@@ -138,6 +150,7 @@
 #set($colspanmax = $colspanmax + $todocolcount)
 #end
 #set($endHour = $!{result.EndHour} - 1)
+
 #ALtableheaderCalendarAtt("100%" "calendarDisplayDay")
 <tr>
 #ALtdheadAtt("" "class='w10'")
@@ -348,7 +361,6 @@ $record.WbrName
 ### 設備スケジュール表示（ここから） ###
 #set($duplirowcount = 0)
 #set($colspanmax = $!{result.Max} + 1)
-
 #foreach($record3 in $result.FacilityList)
 #if($result.isDuplicate())
 #set($duplirowcount = ${result.getFacilityDuplicateScheduleListRowCount($record3.FacilityId.Value)})
@@ -365,13 +377,27 @@ $record.WbrName
 #ALtdheadAtt("$record3.FacilityName" "class='groupOneday' rowspan='$duplirowmax'")
 #ALtdheadfooter()
 
-#if($todocolcount > 0)
-#ALtdcellAtt("" "colspan='$todorestcount'")
-#end
-
+### 設備期間スケジュール（ここから） ###
 #if($termcolcount > 0)
-#ALtdcellAtt("" "colspan='$termcolcount'")
+<td rowspan="$duplirowmax">
+#foreach($record in ${result.getFacilityTermResultDataList($record3.FacilityId.Value)})
+#set($entityids = "$!{entityids}$!{record.ScheduleId},")
+#if(${record.isShowDetail()})
+<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv left">
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleDetailScreen").addQueryData("entityid", $!{record.ScheduleId}).addQueryData("facilityid", $!{record3.FacilityId}).addQueryData('view_date', $!{result.ViewDate.toString()}))', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail)">
+#if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+$record.WbrName
+#else
+<div class="calerndarTermScheduleDiv left">
+#if(! ${record.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
+$record.WbrName
 #end
+</a>
+</div>
+#end
+#ALtdcellfooter()
+#end
+### 設備期間スケジュール（ここまで） ###
 
 #foreach($record in $result.getFacilityScheduleList($record3.FacilityId.Value))
 #set($rows = $result.getFacilityRows($record3.FacilityId.Value))

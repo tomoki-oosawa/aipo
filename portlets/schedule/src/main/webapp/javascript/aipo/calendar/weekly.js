@@ -606,6 +606,9 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                        if(item.userCount > 1){
 	                            str_tmpflgmb   =  "[共有]";
 	                        }
+		                    if(item.facilityCount > 0){
+			                    str_tmpflgmb   += "[設備]";
+			                }
 	                    }
 	                    name = str_tmpflgmb + name;
 

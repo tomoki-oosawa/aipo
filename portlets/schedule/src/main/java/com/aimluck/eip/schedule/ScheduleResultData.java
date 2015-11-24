@@ -377,7 +377,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 重複スケジュールかどうかを設定島します。
+   * 重複スケジュールかどうかを設定します。
    *
    * @param bool
    */
