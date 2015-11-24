@@ -130,6 +130,14 @@ public class ScheduleAction extends ALBaseAction {
       }
       context.put("display_month", display_month);
 
+      // 表示形式（週始まり）を取得する
+      String display_week_start =
+        portlet.getPortletConfig().getInitParameter("p196-rows");
+      if (display_week_start == null || "".equals(display_week_start)) {
+        display_week_start = "sunday";
+      }
+      context.put("display_week_start", display_week_start);
+
       // 表示開始時間を取得する．
       String time_start =
         portlet.getPortletConfig().getInitParameter("p1a-rows");
