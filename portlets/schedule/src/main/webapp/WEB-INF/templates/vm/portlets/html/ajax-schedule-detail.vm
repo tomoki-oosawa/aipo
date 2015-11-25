@@ -153,10 +153,10 @@ ${record.FacilityNameHtml}<br/>
 #ALtablefooter()
 
 #ALbuttonheader()
-#if( ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || $!{result.Detail.isLoginuser()}))
+#if( ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
     <div align="left" style="padding:0px 0px 2px 0px" class="radioBlock">
     #if($viewDateEnable == "true" && $!ignore_viewdate == "false")
-        #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} ||($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}&&$!{result.hasAuthoritySelfDelete()} &&($!{result.Detail.isTmpreserve()}||$!{result.Detail.isConfirm()}))|| (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
+        #if( ($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()}) || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherEdit()})))
         <h3> $l10n.SCHEDULE_DELETE_CASE</h3>
         #set($prestr = "$!{result.Detail.User.AliasNameHtml} の")
 
@@ -178,7 +178,7 @@ ${record.FacilityNameHtml}<br/>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="1"/>
             #else
-            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>&nbsp;${prestr}$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
+            <label for="$!{portlet.ID}del_flag_2_id" onclick="aipo.schedule.delFlag2(this.form)"><input name="del_flag" type="radio" value="2"  id="$!{portlet.ID}del_flag_2_id" checked="checked" onclick="aipo.schedule.delFlag2(this.form)"/>&nbsp;$l10n.SCHEDULE_DELETE_THE_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="1"/>
             <input type="hidden" name="del_range_flag" value="0"/>
             #end
@@ -198,7 +198,7 @@ ${record.FacilityNameHtml}<br/>
 		#end
 	#else
        #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || ($!{result.Detail.isLoginuser()} && $!{result.Detail.isEditable()}) || (!$!{result.Detail.isLoginuser()} && $!{result.hasAuthorityOtherDelete()}))
-        <h3>削除する場合の条件</h3>
+        <h3>$l10n.SCHEDULE_DELETE_CASE</h3>
             #if(($hasMember || $!{result.Detail.Type}=="F") && $!{result.Detail.isRepeat()})
             <label for="$!{portlet.ID}del_flag_0_id" onclick="aipo.schedule.delFlag0(this.form)"><input name="del_flag" type="radio" value="0"  id="$!{portlet.ID}del_flag_0_id" checked="checked" onclick="aipo.schedule.delFlag0(this.form)"/>&nbsp;$l10n.SCHEDULE_DELETE_THE_ENTRY_USERS_SCHEDULE</label>
             <input type="hidden" name="del_member_flag" value="0"/>
@@ -222,7 +222,7 @@ ${record.FacilityNameHtml}<br/>
     </div>
 
     <span style="vertical-align:middle;">
-    #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()})
+    #if($!{result.Detail.isOwner()} || $!{result.Detail.isCreateuser()} || (!$!{result.Detail.isOwner()} && $!{result.hasAuthorityOtherDelete()}))
         #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
             #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
         #end
