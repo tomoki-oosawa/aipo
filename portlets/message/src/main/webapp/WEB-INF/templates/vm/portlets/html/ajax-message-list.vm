@@ -33,7 +33,7 @@
 #set($currentMessageId = $!record.MessageId)
 #set($currentDateKey = $!record.CreateDateKey.toString())
 <div id="message$!record.MessageId" class="message">
-</div>
+
 	<div class="avatar">
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())

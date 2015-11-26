@@ -37,7 +37,7 @@
 #end
 #foreach ($record in $result.List)
 	<li id="messageRoom$!record.RoomId" #if("$!currentRoom" == "$!record.RoomId")class="active"#end #if($!record.RoomId.toString() == "0")style="display:none"#end>
-		<a href="javascript:void(0)" onclick="aipo.message.c($!record.RoomId);">
+		<a href="javascript:void(0)" onclick="aipo.message.selectRoom($!record.RoomId);">
 			<span class="avatar">
 			#if($!record.getRoomType().getValue() == "O")
 			#if($!record.isHasPhoto())

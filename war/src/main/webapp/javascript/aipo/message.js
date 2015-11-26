@@ -63,7 +63,7 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                 && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
             aipo.message.latestMessageList();
         }
-    });
+    }	);
     dojo.connect(window, "onblur", null, function(e) {
         aipo.message.isActive = false;
         //
@@ -100,24 +100,25 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                             }
                         });
     }
+    //この関数の引数にCookieで保存したIDを入れたい
     aipo.message.reloadRoomList();
     //ここから追記
-    aipo.message.getLastRoomId();
+//    aipo.message.getLastRoomId();
     //ここまで追記
     aipo.message.isInit = true;
 }
 
 //Cookieから最後に開いたRoomのIDを読み込む
-aipo.message.getLastRoomId = function() {
-	if(window.navigator.cookieEnabled) {
-		currentRoomId = document.cookie;
-		console.log(currentRoomId);
-		aipo.message.selectRoom(currentRoomId, true);
-	} else {
-		document.write("ブラウザのCookieを有効にしてください");
-	}
-
-}
+//aipo.message.getLastRoomId = function() {
+//	if(window.navigator.cookieEnabled) {
+//		currentRoomId = document.cookie;
+//		console.log(currentRoomId);
+//		aipo.message.selectRoom(currentRoomId, true);
+//	} else {
+//		document.write("ブラウザのCookieを有効にしてください");
+//	}
+//
+//}
 
 aipo.message.messagePane = null;
 aipo.message.reloadMessageList = function() {
@@ -143,7 +144,7 @@ aipo.message.reloadMessageList = function() {
                 aipo.message.read(aipo.message.currentRoomId);
         	}
         	//getlastRoomIdを呼び出し
-        	aipo.message.getLastRoomId(document.cookie);
+//        	aipo.message.getLastRoomId(document.cookie);
             aipo.message.fixDateLine();
         }
     }
@@ -307,6 +308,10 @@ aipo.message.moreMessageRightList = function() {
 
 aipo.message.messageRoomListPane = null;
 aipo.message.reloadRoomList = function(roomId, userId) {
+	//以下1文追加
+	var currentRoomId = aipo.message.getCookieRoomId();
+	console.log(currentRoomId);
+
     if (!aipo.message.messageRoomListPane) {
         aipo.message.messageRoomListPane = dijit.byId("messageRoomListPane");
         aipo.message.messageRoomListPane = new aimluck.widget.Contentpane({},
@@ -328,7 +333,8 @@ aipo.message.reloadRoomList = function(roomId, userId) {
             if (aipo.message.messageRoomListPane.userId) {
                 var messageCurrentRoomValue = dojo
                         .byId("messageCurrentRoomValue");
-                var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
+//                var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
+                currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
                 if (currentRoomId != NaN) {
                     aipo.message.selectRoom(currentRoomId);
                 } else {
@@ -481,7 +487,7 @@ aipo.message.clearSearchMessageList = function() {
     	aipo.message.currentMessageSearchKeyword = null;
     	aipo.message.closeRightBlock();
     	aipo.message.onBlurSearch();
-    	aipo.message.saveCurrentRoomId();
+//    	aipo.message.saveCurrentRoomId();
     }
 }
 
@@ -678,6 +684,7 @@ aipo.message.selectTab = function(tab) {
     }
 }
 
+//Messageの右側のRoomの列からRoomを選択されたときに呼ばれています。
 aipo.message.inputHistory = {};
 aipo.message.selectRoom = function(room_id, scroll) {
     var messageSideBlock = dojo.byId("messageSideBlock");
@@ -756,6 +763,9 @@ aipo.message.selectRoom = function(room_id, scroll) {
         aipo.message.reloadMessageList();
         aipo.message.saveCurrentRoomId(aipo.message.currentRoomId);
     }
+
+    //選択が行われるたびにCookieにroom_idを保存する
+    aipo.message.saveCurrentRoomId(room_id);
 }
 
 aipo.message.unselectRoom = function() {
@@ -1492,15 +1502,30 @@ window.onbeforeunload = function() {
 }
 */
 //CookieにcurrentRoomIdを保存する
-aipo.message.saveCurrentRoomId = function(room_id){
-	if (window.navigator.cookieEnabled) {
-		var lastRoomId = room_id;
-		document.cookie = lastRoomId;
-		console.log(document.cookie);
-	} else {
-		document.write("ブラウザのCookieを有効にしてください");
-	}
+aipo.message.saveCurrentRoomId = function(roomId){
 
+//		var lastRoomId = room_id;
 
+	    var cookieName = "lastRoomId";
+		var cookieValue = cookieName + 	"=" + roomId　+ ";";
+		document.cookie = cookieValue;
 
 }
+//cookieからroom_idを取得する
+//http://www.seta-blog.co.jp/javascript%E3%81%A7cookie%E3%82%92%E6%89%B1%E3%81%86%E3%81%A8%E3%81%8D%E3%81%AB%E4%BE%BF%E5%88%A9%E3%81%AA3%E3%81%A4%E3%81%AE%E9%96%A2%E6%95%B0%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%BE/を参考に
+
+aipo.message.getCookieRoomId = function() {
+	var cookieName = "lastRoomId=";
+	var allCookies = document.cookie;
+
+	if (allCookies.indexOf(cookieName) != -1) {
+		var number = allCookies.indexOf(cookieName) + cookieName.length;
+		var number2 = allCookies.indexOf(";", number);
+		if (number2 == -1) {
+			number2 = allCookies.length;
+		}
+		var room_id = decodeURIComponent(allCookies.substring(number, number2));
+	}
+	return room_id;
+}
+
