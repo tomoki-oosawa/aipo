@@ -123,18 +123,6 @@ public class ScheduleWeekContainer implements ALData {
     return false;
   }
 
-  // 追加（週始まり）
-  public void setViewStartDate2(Calendar cal) {
-    for (int i = 1; i <= 7; i++) {
-      Calendar con = Calendar.getInstance();
-      con.setFirstDayOfWeek(Calendar.MONDAY);
-      int targetDayOfWeek = 0;
-      con.add(Calendar.DATE, -targetDayOfWeek
-        + con.getFirstDayOfWeek()
-        + (con.getFirstDayOfWeek() > targetDayOfWeek ? -7 : 0));
-    }
-  }
-
   /**
    * 期間スケジュールをコンテナに格納します。
    *
