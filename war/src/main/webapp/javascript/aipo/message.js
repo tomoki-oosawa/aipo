@@ -1486,10 +1486,11 @@ aipo.message.removeTransactionId = function(transactionId){
 		return true;
 	}
 }
-
+/*
 window.onbeforeunload = function() {
 	aipo.message.saveCurrentRoomId();
 }
+*/
 //CookieにcurrentRoomIdを保存する
 aipo.message.saveCurrentRoomId = function(room_id){
 	if (window.navigator.cookieEnabled) {
