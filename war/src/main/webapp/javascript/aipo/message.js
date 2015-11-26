@@ -160,6 +160,7 @@ aipo.message.reloadMessageList = function() {
         screen += "&c=" + aipo.message.jumpCursor;
         screen += "&jump=1";
     }
+
     aipo.message.moreMessageLock = false;
     aipo.message.messagePane.viewPage(screen);
 }
@@ -309,8 +310,12 @@ aipo.message.moreMessageRightList = function() {
 aipo.message.messageRoomListPane = null;
 aipo.message.reloadRoomList = function(roomId, userId) {
 	//以下1文追加
-	var currentRoomId = aipo.message.getCookieRoomId();
-	console.log(currentRoomId);
+	var selectedRoomId = aipo.message.getCookieRoomId();
+
+	if (selectedRoomId == null) {
+		selectedRoomId = 0
+	}
+
 
     if (!aipo.message.messageRoomListPane) {
         aipo.message.messageRoomListPane = dijit.byId("messageRoomListPane");
@@ -327,18 +332,18 @@ aipo.message.reloadRoomList = function(roomId, userId) {
             }
             if (aipo.message.messageRoomListPane.roomId) {
                 aipo.message
-                        .selectRoom(aipo.message.messageRoomListPane.roomId);
+                        .selectRoom(aipo.message.messageRoomListPane.roomId, true);
                 aipo.message.messageRoomListPane.roomId = null;
             }
             if (aipo.message.messageRoomListPane.userId) {
                 var messageCurrentRoomValue = dojo
                         .byId("messageCurrentRoomValue");
-//                var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
-                currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
+                var currentRoomId = parseInt(messageCurrentRoomValue.innerHTML);
+
                 if (currentRoomId != NaN) {
                     aipo.message.selectRoom(currentRoomId);
                 } else {
-                    aipo.message.selectRoom(0);
+                	aipo.message.selectRoom(selectedRoomId);
                 }
                 aipo.message.messageRoomListPane.userId = null;
             }
@@ -347,6 +352,9 @@ aipo.message.reloadRoomList = function(roomId, userId) {
             }
         }
     }
+    //ここでRoomをもう一度選ぶメソッドを足すとどんな感じになるか？
+
+
 
     if (roomId) {
         aipo.message.messageRoomListPane.roomId = roomId;
@@ -642,7 +650,7 @@ aipo.message.swapView = function() {
     }
 }
 
-
+//ルームかユーザーか選択している
 aipo.message.selectTab = function(tab) {
     var messageRoomTab = dojo.byId("messageRoomTab");
     var messageUserTab = dojo.byId("messageUserTab");
@@ -1176,8 +1184,7 @@ aipo.message.getLastMessageRightId = function() {
 }
 
 aipo.message.isOpenWindow = function() {
-	//以下一文追記
-	currentRoomId = document.cookie;
+
 	console.log(currentRoomId);
     return aipo.message.isMobile ? true : dojo.hasClass("dd_message", "open");
 }
