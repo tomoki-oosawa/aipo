@@ -52,12 +52,17 @@ aipo.message.init = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
     aipo.message.isMobile = isMobile;
+
+//    var lastRoomId = aipo.message.getCookieRoomId("lastRoomId");
+//    var targetUserId = aipo.message.getCookieRoomId("targetUserId");
+
     if(!aipo.message.isMobile) {
        dojo.connect(window, "onresize", null, function(e) {
            aipo.message.fixMessageWindow();
        });
     }
     dojo.connect(window, "onfocus", null, function(e) {
+
         aipo.message.isActive = true;
         if (aipo.message.isOpenWindow()
                 && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
@@ -100,13 +105,21 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                             }
                         });
     }
+
+
+//    currentUserId = aipo.message.getCookieRoomId("targetUserId=");
+//aipo.message.unselectRoom();
+//    aipo.message.selectTab("user");
+//    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
+//    aipo.message.reloadUserList(aipo.message.getCookieRoomId("targetUserId="));
+
     //この関数の引数にCookieで保存したIDを入れたい
-    aipo.message.reloadRoomList(aipo.message.getCookieRoomId());
-//    aipo.message.reloadRoomList();
-    //ここから追記
-//    aipo.message.getLastRoomId()
-    //ここまで追記
+    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
+    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+
     aipo.message.isInit = true;
+
+
 }
 
 
@@ -479,8 +492,8 @@ aipo.message.clearSearchMessageList = function() {
     	aipo.message.currentMessageSearchKeyword = null;
     	aipo.message.closeRightBlock();
     	aipo.message.onBlurSearch();
-//    	aipo.message.saveCurrentRoomId();
     }
+
 }
 
 aipo.message.clearSearchRoomList = function() {
@@ -753,11 +766,11 @@ aipo.message.selectRoom = function(room_id, scroll) {
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
-        aipo.message.saveCurrentRoomId(aipo.message.currentRoomId);
+        //cookieへ保存する名前とIDを引数に取ってと保存する。
+        aipo.message.saveCookieTargetId("lastRoomId",aipo.message.currentRoomId);
     }
 
-    //選択が行われるたびにCookieにroom_idを保存する
-    aipo.message.saveCurrentRoomId(room_id);
+
 }
 
 aipo.message.unselectRoom = function() {
@@ -824,6 +837,8 @@ aipo.message.selectUser = function(user_id) {
             dojo.addClass(messageUser, "active");
         }
         aipo.message.reloadRoomList(null, user_id);
+        //ここでUserIdを保存
+        aipo.message.saveCookieTargetId("targetUserId", user_id)
     }
 }
 
@@ -1475,6 +1490,9 @@ aipo.message.insertTransactionId = function(targetUserId){
 	var transactionId=guid();
 	dojo.query("#messageForm"+targetUserId+" [name='transactionId']")[0].setAttribute('value', transactionId);
 	aipo.message.transactionIdList.push(transactionId);
+	//一文追加
+	//cookieへの保存はcookieの名前とあｔ
+//	aipo.message.saveCurrentRoomId();
 }
 
 aipo.message.removeTransactionId = function(transactionId){
@@ -1487,27 +1505,25 @@ aipo.message.removeTransactionId = function(transactionId){
 		return true;
 	}
 }
-/*
-window.onbeforeunload = function() {
-	aipo.message.saveCurrentRoomId();
-}
-*/
-//CookieにcurrentRoomIdを保存する
-aipo.message.saveCurrentRoomId = function(roomId){
 
-//		var lastRoomId = room_id;
+//CookieにcurrentRoomIdあるいはUserIdを保存する
+// Room -> lastRoomId / User -> targetUserId
+aipo.message.saveCookieTargetId = function(cookieName, targetId){
 
-	    var cookieName = "lastRoomId";
-		var cookieValue = cookieName + 	"=" + roomId　+ ";";
+//	    var cookieName = "lastRoomId";
+		var cookieValue = cookieName + 	"=" + targetId　+ ";";
 		document.cookie = cookieValue;
 
 }
-//cookieからroom_idを取得する
-//http://www.seta-blog.co.jp/javascript%E3%81%A7cookie%E3%82%92%E6%89%B1%E3%81%86%E3%81%A8%E3%81%8D%E3%81%AB%E4%BE%BF%E5%88%A9%E3%81%AA3%E3%81%A4%E3%81%AE%E9%96%A2%E6%95%B0%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%BE/を参考に
+
+
+
+
+
 
 //CookieをからRoomのIdを取得する
-aipo.message.getCookieRoomId = function() {
-	var cookieName = "lastRoomId=";
+
+aipo.message.getCookieRoomId = function(cookieName) {
 	var allCookies = document.cookie;
 
 	if (allCookies.indexOf(cookieName) != -1) {
