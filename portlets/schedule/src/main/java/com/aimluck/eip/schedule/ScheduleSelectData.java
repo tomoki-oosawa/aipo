@@ -327,7 +327,8 @@ public class ScheduleSelectData extends
 
       List<Integer> users = new ArrayList<Integer>();
       List<Integer> facilityIds = new ArrayList<Integer>();
-      rd.setMember(false);
+      // 表示するユーザーがスケジュールの参加者かどうか
+      boolean isMember = false;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = list.get(i);
@@ -340,7 +341,7 @@ public class ScheduleSelectData extends
             // 確定スケジュールかどうか
             rd.setConfirm("C".equals(map.getStatus()));
             // スケジュールの参加者かどうか
-            rd.setMember(!"R".equals(map.getStatus()));
+            isMember = !"R".equals(map.getStatus());
           }
           users.add(map.getUserId());
 
@@ -389,9 +390,9 @@ public class ScheduleSelectData extends
       } else {
         // ユーザー
         rd.setUser(ALEipUtils.getALEipUser(userid));
-        // もし選択したユーザーが、ログインユーザーかつ参加していないユーザーの場合（タイムラインの更新情報から、ログインユーザーが作成者かつ参加していない予定を開いた場合）には、
-        // 選択したユーザーを適当な参加ユーザーで置き換える
-        if (isLoginUserID(userid) && !rd.isMember()) {
+        // もし表示するユーザーが、ログインユーザーかつ参加していないユーザーの場合（タイムラインの更新情報から、ログインユーザーが作成者でログインユーザーが参加していない予定を開いた場合）には、
+        // 表示するユーザーを適当な参加ユーザーで置き換える
+        if (isLoginUserID(userid) && !isMember) {
           for (EipTScheduleMap map : list) {
             if (!"R".equals(map.getStatus())) {
               rd.setUser(ALEipUtils.getALEipUser(map.getUserId()));
