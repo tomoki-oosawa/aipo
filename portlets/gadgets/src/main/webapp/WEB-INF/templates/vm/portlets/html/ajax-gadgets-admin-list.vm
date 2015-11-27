@@ -90,12 +90,8 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
-#if($record.Parent == "GadgetsTemplate")
 #set($appId = $!result.getStringNumber($!record.Name))
 #ALtdcellAtt("<input name='check$!appId' type='checkbox' value='$!appId'/>" 'align="center"  class="auiMTCheck"')
-#else
-#ALtdcellAtt("" "")
-#end
 #if($record.Type == "active")
 #ALtdcellAtt($l10n.GADGETS_ENABLE 'class="center" nowrap="nowrap"')
 #else

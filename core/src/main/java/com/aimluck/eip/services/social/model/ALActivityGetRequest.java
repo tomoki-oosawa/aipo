@@ -265,4 +265,26 @@ public class ALActivityGetRequest {
     return this;
   }
 
+  public static enum Status {
+    ALL {
+      @Override
+      public int intValue() {
+        return -1;
+      }
+    },
+    ACTIVE {
+      @Override
+      public int intValue() {
+        return 1;
+      }
+    },
+    INACTIVE {
+      @Override
+      public int intValue() {
+        return 0;
+      }
+    };
+    public abstract int intValue();
+  }
+
 }
