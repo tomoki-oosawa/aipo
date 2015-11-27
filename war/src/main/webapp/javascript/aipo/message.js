@@ -101,24 +101,15 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                         });
     }
     //この関数の引数にCookieで保存したIDを入れたい
-    aipo.message.reloadRoomList();
+    aipo.message.reloadRoomList(aipo.message.getCookieRoomId());
+//    aipo.message.reloadRoomList();
     //ここから追記
-//    aipo.message.getLastRoomId();
+//    aipo.message.getLastRoomId()
     //ここまで追記
     aipo.message.isInit = true;
 }
 
-//Cookieから最後に開いたRoomのIDを読み込む
-//aipo.message.getLastRoomId = function() {
-//	if(window.navigator.cookieEnabled) {
-//		currentRoomId = document.cookie;
-//		console.log(currentRoomId);
-//		aipo.message.selectRoom(currentRoomId, true);
-//	} else {
-//		document.write("ブラウザのCookieを有効にしてください");
-//	}
-//
-//}
+
 
 aipo.message.messagePane = null;
 aipo.message.reloadMessageList = function() {
@@ -309,13 +300,6 @@ aipo.message.moreMessageRightList = function() {
 
 aipo.message.messageRoomListPane = null;
 aipo.message.reloadRoomList = function(roomId, userId) {
-	//以下1文追加
-	var selectedRoomId = aipo.message.getCookieRoomId();
-
-	if (selectedRoomId == null) {
-		selectedRoomId = 0
-	}
-
 
     if (!aipo.message.messageRoomListPane) {
         aipo.message.messageRoomListPane = dijit.byId("messageRoomListPane");
@@ -332,7 +316,7 @@ aipo.message.reloadRoomList = function(roomId, userId) {
             }
             if (aipo.message.messageRoomListPane.roomId) {
                 aipo.message
-                        .selectRoom(aipo.message.messageRoomListPane.roomId, true);
+                        .selectRoom(aipo.message.messageRoomListPane.roomId);
                 aipo.message.messageRoomListPane.roomId = null;
             }
             if (aipo.message.messageRoomListPane.userId) {
@@ -343,7 +327,7 @@ aipo.message.reloadRoomList = function(roomId, userId) {
                 if (currentRoomId != NaN) {
                     aipo.message.selectRoom(currentRoomId);
                 } else {
-                	aipo.message.selectRoom(selectedRoomId);
+                	aipo.message.selectRoom(0);
                 }
                 aipo.message.messageRoomListPane.userId = null;
             }
@@ -1521,6 +1505,7 @@ aipo.message.saveCurrentRoomId = function(roomId){
 //cookieからroom_idを取得する
 //http://www.seta-blog.co.jp/javascript%E3%81%A7cookie%E3%82%92%E6%89%B1%E3%81%86%E3%81%A8%E3%81%8D%E3%81%AB%E4%BE%BF%E5%88%A9%E3%81%AA3%E3%81%A4%E3%81%AE%E9%96%A2%E6%95%B0%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%81%BE/を参考に
 
+//CookieをからRoomのIdを取得する
 aipo.message.getCookieRoomId = function() {
 	var cookieName = "lastRoomId=";
 	var allCookies = document.cookie;
