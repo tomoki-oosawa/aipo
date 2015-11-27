@@ -42,6 +42,7 @@ aipo.message.transactionIdList = [];
 
 
 
+
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
@@ -109,13 +110,17 @@ aipo.message.init = function(portletId, jslink, isMobile) {
 
 //    currentUserId = aipo.message.getCookieRoomId("targetUserId=");
 //aipo.message.unselectRoom();
-//    aipo.message.selectTab("user");
-//    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
-//    aipo.message.reloadUserList(aipo.message.getCookieRoomId("targetUserId="));
 
-    //この関数の引数にCookieで保存したIDを入れたい
-    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
-    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+//    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
+    currentRoomId = 0;
+    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
+    aipo.message.selectTab("user");
+//    alert(aipo.message.getCookieRoomId("targetUserId="));
+
+
+    //以下2行によりルームをリロード後もエラーなしで表示したままにできます。
+//    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
+//    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
 
     aipo.message.isInit = true;
 
