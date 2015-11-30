@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -478,6 +480,32 @@ public class TimelineSelectData extends
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
+    Map<Integer, Integer> schedule_id_list =
+      new HashMap<Integer, Integer>(list.size());
+
+    if (!hasScheduleOtherAclList) {
+      int list_size = list.size();
+      for (int i = 0; i < list_size; i++) {
+        EipTTimeline model = list.get(i);
+        String schedule_id = null;
+        if (model.getAppId().equals("Schedule")) {
+          Matcher m =
+            Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
+          if (m.find()) {
+            schedule_id = m.group(1);
+          }
+        }
+        if (schedule_id != null) {
+          schedule_id_list.put(Integer.parseInt(schedule_id), i);
+        }
+      }
+
+      for (Map.Entry<Integer, Integer> e : schedule_id_list.entrySet()) {
+        if (!TimelineUtils.hasRelation(uid, e.getKey())) {
+          list.remove(e.getValue());
+        }
+      }
+    }
     for (EipTTimeline model : list) {
       Integer id = model.getParentId();
       List<TimelineResultData> rdList = result.get(id);
