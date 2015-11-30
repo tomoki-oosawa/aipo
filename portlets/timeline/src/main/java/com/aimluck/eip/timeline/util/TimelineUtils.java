@@ -46,6 +46,7 @@ import org.xml.sax.InputSource;
 
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
@@ -1485,5 +1486,25 @@ public class TimelineUtils {
   public static boolean hasResetFlag(RunData rundata, Context context) {
     String resetflag = rundata.getParameters().getString(RESET_FLAG);
     return resetflag != null;
+  }
+
+  public static boolean hasRelation(int userId, int scheduleId) {
+    Expression exp11 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+        scheduleId);
+    Expression exp12 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
+    List<EipTScheduleMap> list =
+      Database
+        .query(EipTScheduleMap.class, exp11)
+        .andQualifier(exp12)
+        .fetchList();
+    if (list.size() == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
