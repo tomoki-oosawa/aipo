@@ -480,12 +480,9 @@ public class TimelineSelectData extends
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
-    Map<Integer, Integer> schedule_id_list =
-      new HashMap<Integer, Integer>(list.size());
 
     if (!hasScheduleOtherAclList) {
-      int list_size = list.size();
-      for (int i = 0; i < list_size; i++) {
+      for (int i = list.size() - 1; i >= 0; i--) {
         EipTTimeline model = list.get(i);
         String schedule_id = null;
         if (model.getAppId().equals("Schedule")) {
@@ -496,16 +493,13 @@ public class TimelineSelectData extends
           }
         }
         if (schedule_id != null) {
-          schedule_id_list.put(Integer.parseInt(schedule_id), i);
-        }
-      }
-
-      for (Map.Entry<Integer, Integer> e : schedule_id_list.entrySet()) {
-        if (!TimelineUtils.hasRelation(uid, e.getKey())) {
-          list.remove(e.getValue());
+          if (!TimelineUtils.hasRelation(uid, Integer.parseInt(schedule_id))) {
+            list.remove(i);
+          }
         }
       }
     }
+
     for (EipTTimeline model : list) {
       Integer id = model.getParentId();
       List<TimelineResultData> rdList = result.get(id);
