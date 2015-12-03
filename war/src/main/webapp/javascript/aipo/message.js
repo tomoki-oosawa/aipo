@@ -107,21 +107,23 @@ aipo.message.init = function(portletId, jslink, isMobile) {
 
 
 //aipo.message.unselectRoom();
-
-//    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
-//    currentRoomId = 0;
+if (aipo.message.getCookieIsLastRoomOrUser() == "User") {
+//Userを選んだ時もCookieから最後に選んだUserへのフォームが開いたままにしておくことができます。
     aipo.message.currentUserId = aipo.message.getCookieRoomId("targetUserId=");
     aipo.message.reloadRoomList(null, aipo.message.currentUserId);
     aipo.message.selectTab("user");
     aipo.message.selectUser(aipo.message.currentUserId);
     currentRoomId = aipo.message.getCookieRoomId("targetUserId=");
+} else if (aipo.message.getCookieIsLastRoomOrUser() == "Room"){
+	//以下2行によりルームをリロード後もエラーなしで表示したままにできます。
+    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
+    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+}else {
+	//ignore
+}
 
-//    alert(aipo.message.getCookieRoomId("targetUserId="));
 
 
-    //以下2行によりルームをリロード後もエラーなしで表示したままにできます。
-//    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
-//    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
 
     aipo.message.isInit = true;
 
@@ -148,6 +150,7 @@ aipo.message.reloadMessageList = function() {
         			    aipo.message.scrollTo(pane, max < active.offsetTop - 50 ? max : active.offsetTop - 50, 100);
         			}
         		    dojo.addClass(active, "active");
+
         		}
                 aipo.message.jumpCursor = null;
         	} else {
@@ -677,6 +680,7 @@ aipo.message.selectTab = function(tab) {
         dojo.removeClass(messageUserTab, "active");
         dojo.addClass(messageRoomContents, "active");
         dojo.removeClass(messageUserContents, "active");
+
     }
 
     if ("user" == tab) {
@@ -688,6 +692,8 @@ aipo.message.selectTab = function(tab) {
         dojo.removeClass(messageRoomTab, "active");
         dojo.addClass(messageUserContents, "active");
         dojo.removeClass(messageRoomContents, "active");
+
+
 
         aipo.message.reloadUserList();
 
@@ -771,8 +777,14 @@ aipo.message.selectRoom = function(room_id, scroll) {
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
+        if (dojo.hasClass("MessageRoomTab", "active")) {
+        	aipo.message.getCookieIsLastRoomOrUser("Room");
+        } else if (dojo.hasClass("MessageUserTab", "active")) {
+        	aipo.message.getCookieIsLastRoomOrUser("User");
+        }
         //cookieへ保存する名前とIDを引数に取ってと保存する。
         aipo.message.saveCookieTargetId("lastRoomId",aipo.message.currentRoomId);
+
     }
 
 
@@ -825,6 +837,7 @@ aipo.message.unselectRoom = function() {
 }
 
 aipo.message.selectUser = function(user_id) {
+
     var messageForm = dojo.byId("messageForm");
     var messageUser = dojo.byId("messageUser" + user_id);
     if (messageForm && messageUser) {
@@ -836,14 +849,18 @@ aipo.message.selectUser = function(user_id) {
         aipo.message.inputHistory[aipo.message.currentRoomId] = messageForm.message.value;
         aipo.message.inputHistory[0] = "";
         dojo.query(".messageUserlist li").forEach(function(item) {
-            dojo.removeClass(item, "active")
+            dojo.removeClass(item, "active");
         });
         if(!aipo.message.isMobile) {
             dojo.addClass(messageUser, "active");
+
         }
         aipo.message.reloadRoomList(null, user_id);
         //ここでUserIdを保存
-        aipo.message.saveCookieTargetId("targetUserId", user_id)
+        aipo.message.saveCookieTargetId("targetUserId", user_id);
+        //ここで最後に選んだのがUserだと指定して、Cookieへ保存
+
+
     }
 }
 
@@ -1521,7 +1538,27 @@ aipo.message.saveCookieTargetId = function(cookieName, targetId){
 
 }
 
+//最後に選ばれたのが、RoomなのかUserなのかCookieへ保存する
+aipo.message.saveCookieIsLastRoomOrUser = function(cookieTarget){
+	var cookieValue = "lastIsRoomOrUser=" + cookieTarget + ";";
+	document.cookie = cookieValue;
+}
 
+//最後に選ばれたのが、RoomなのかUserなのかCookieから取得する
+aipo.message.getCookieIsLastRoomOrUser = function(){
+	var allCookies = document.cookie;
+	var cookieName = "lastIsRoomOrUser="
+
+	if (allCookies.indexOf(cookieName) != -1) {
+		var number = allCookies.indexOf(cookieName) + cookieName.length;
+		var number2 = allCookies.indexOf(";", number);
+		if (number2 == -1) {
+			number2 = allCookies.length;
+		}
+		var userOrRoom = decodeURIComponent(allCookies.substring(number, number2));
+	}
+	return userOrRoom;
+}
 
 
 
