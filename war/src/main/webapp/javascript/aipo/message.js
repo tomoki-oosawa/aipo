@@ -54,8 +54,6 @@ aipo.message.init = function(portletId, jslink, isMobile) {
     aipo.message.jslink = jslink;
     aipo.message.isMobile = isMobile;
 
-//    var lastRoomId = aipo.message.getCookieRoomId("lastRoomId");
-//    var targetUserId = aipo.message.getCookieRoomId("targetUserId");
 
     if(!aipo.message.isMobile) {
        dojo.connect(window, "onresize", null, function(e) {
@@ -108,13 +106,16 @@ aipo.message.init = function(portletId, jslink, isMobile) {
     }
 
 
-//    currentUserId = aipo.message.getCookieRoomId("targetUserId=");
 //aipo.message.unselectRoom();
 
 //    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
-    currentRoomId = 0;
-    aipo.message.selectUser(aipo.message.getCookieRoomId("targetUserId="));
+//    currentRoomId = 0;
+    aipo.message.currentUserId = aipo.message.getCookieRoomId("targetUserId=");
+    aipo.message.reloadRoomList(null, aipo.message.currentUserId);
     aipo.message.selectTab("user");
+    aipo.message.selectUser(aipo.message.currentUserId);
+    currentRoomId = aipo.message.getCookieRoomId("targetUserId=");
+
 //    alert(aipo.message.getCookieRoomId("targetUserId="));
 
 
@@ -152,8 +153,7 @@ aipo.message.reloadMessageList = function() {
         	} else {
                 aipo.message.read(aipo.message.currentRoomId);
         	}
-        	//getlastRoomIdを呼び出し
-//        	aipo.message.getLastRoomId(document.cookie);
+
             aipo.message.fixDateLine();
         }
     }
