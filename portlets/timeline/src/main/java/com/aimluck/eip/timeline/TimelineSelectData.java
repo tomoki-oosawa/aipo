@@ -43,6 +43,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
@@ -481,21 +482,33 @@ public class TimelineSelectData extends
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
 
+    ArrayList<Integer> schedule_id_list = new ArrayList<Integer>();
+    List<EipTScheduleMap> schedule_map_list = new ArrayList<EipTScheduleMap>();
     if (!hasScheduleOtherAclList) {
       for (int i = list.size() - 1; i >= 0; i--) {
         EipTTimeline model = list.get(i);
-        String schedule_id = null;
+        int schedule_id;
         if (model.getAppId().equals("Schedule")) {
           Matcher m =
             Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
           if (m.find()) {
-            schedule_id = m.group(1);
+            schedule_id = Integer.parseInt(m.group(1));
+            schedule_id_list.add(i, schedule_id);
+          } else {
+            schedule_id_list.add(i, 0);
           }
         }
-        if (schedule_id != null) {
-          if (!TimelineUtils.hasRelation(uid, Integer.parseInt(schedule_id))) {
-            list.remove(i);
-          }
+      }
+
+      schedule_map_list =
+        TimelineUtils.getRelatedEipTScheduleMap(uid, schedule_id_list);
+
+      for (int j = list.size() - 1; j >= 0; j--) {
+        if (!TimelineUtils.hasRelation(
+          uid,
+          schedule_id_list.get(j),
+          schedule_map_list)) {
+          list.remove(j);
         }
       }
     }
