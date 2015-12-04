@@ -60,8 +60,10 @@ import org.apache.turbine.services.rundata.RunDataService;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.account.EipMInactiveApplication;
 import com.aimluck.eip.common.ALApplication;
 import com.aimluck.eip.http.HttpServletRequestLocator;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.services.social.ALApplicationService;
@@ -212,10 +214,17 @@ public class CustomizeUtils {
     list = new ArrayList<PortletEntry>();
     Iterator<?> i = Registry.get(Registry.PORTLET).listEntryNames();
 
+    List<EipMInactiveApplication> fetchList =
+      Database.query(EipMInactiveApplication.class).fetchList();
+
     while (i.hasNext()) {
       PortletEntry entry =
         (PortletEntry) Registry.getEntry(Registry.PORTLET, (String) i.next());
-      entry.setType("active");
+
+      entry.setType((fetchList.contains(entry.getName()))
+        ? "inactive"
+        : "active");
+
       // Iterator medias;
       // Make a master portlet list, we will eventually us this to build a
       // category list
