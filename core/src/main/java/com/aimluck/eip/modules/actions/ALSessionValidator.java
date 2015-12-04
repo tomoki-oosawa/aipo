@@ -61,6 +61,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.preexecute.ALPreExecuteService;
 import com.aimluck.eip.services.social.gadgets.ALGadgetContext;
@@ -153,6 +154,13 @@ public class ALSessionValidator extends TemplateSessionValidator {
                   user.setHasLoggedIn(Boolean.TRUE);
                   user.updateLastLogin();
                   data.save();
+
+                  int loginUserId = Integer.parseInt(user.getUserId());
+                  ALEventlogFactoryService
+                    .getInstance()
+                    .getEventlogHandler()
+                    .logLogin(loginUserId);
+
                   // for security
                   if (data != null) {
                     data.getUser().setTemp(
