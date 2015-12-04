@@ -72,12 +72,12 @@ public class ALJLogoutUser extends ActionEvent {
 
       userName.setMaxAge(0);
       userName.setComment(comment);
-      userName.setDomain(domain);
+      // userName.setDomain(domain);
       userName.setPath(path);
 
       loginCookie.setMaxAge(0);
       loginCookie.setComment(comment);
-      loginCookie.setDomain(domain);
+      // loginCookie.setDomain(domain);
       loginCookie.setPath(path);
 
       data.getResponse().addCookie(userName);

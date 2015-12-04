@@ -383,12 +383,12 @@ public class ALJLoginUser extends ActionEvent {
 
           userName.setMaxAge(maxage);
           userName.setComment(comment);
-          userName.setDomain(domain);
+          // userName.setDomain(domain);
           userName.setPath(path);
 
           loginCookie.setMaxAge(maxage);
           loginCookie.setComment(comment);
-          loginCookie.setDomain(domain);
+          // loginCookie.setDomain(domain);
           loginCookie.setPath(path);
 
           data.getResponse().addCookie(userName);
