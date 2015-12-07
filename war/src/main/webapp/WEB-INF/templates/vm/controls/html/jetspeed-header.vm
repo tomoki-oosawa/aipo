@@ -167,7 +167,7 @@
 #if ($data.User.isAdmin())
 						<li><a href="$!utils.escapeXML($!utils.getPortletURIinPersonalConfigPane($data,'SysInfo').addQueryData('action','controls.Restore'))">$l10n.TOP_MANAGE_SETTING</a></li>
 #end#end
-						<li><a href="$l10n.URL_MOVE_TO_CLOUD">$l10n.MOVE_TO_CLOUD</a></li>
+						<li><a href="$!utils.getCloudUrl()">$l10n.MOVE_TO_CLOUD</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:void(0)" onclick="location.href='$jslink.setAction($config.getString("action.logout"))'">$l10n.TOP_LOGOUT</a></li>
 					</ul>
