@@ -1488,24 +1488,44 @@ public class TimelineUtils {
     return resetflag != null;
   }
 
-  public static boolean hasRelation(int userId, int scheduleId,
+  /**
+   * schedule_map_list に scheduleId のスケジュールがあるか調べる
+   *
+   * @param scheduleId
+   * @param schedule_map_list
+   * @return
+   */
+  public static boolean hasRelation(int scheduleId,
       List<EipTScheduleMap> schedule_map_list) {
     for (EipTScheduleMap e : schedule_map_list) {
-      if (e.getScheduleId() == scheduleId && e.getScheduleId() == userId) {
+      if (e.getScheduleId() == scheduleId) {
         return true;
       }
     }
     return false;
   }
 
+  /**
+   * userIdが一致し、scheduleId_listのいずれかに一致するeip_t_schedule_mapのデータを返す
+   *
+   * @param userId
+   * @param scheduleId_list
+   * @return
+   */
   public static List<EipTScheduleMap> getRelatedEipTScheduleMap(int userId,
       ArrayList<Integer> scheduleId_list) {
     Expression exp11 =
       ExpressionFactory.inExp(
         EipTScheduleMap.SCHEDULE_ID_PROPERTY,
         scheduleId_list);
+    Expression exp12 =
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
     List<EipTScheduleMap> list =
-      Database.query(EipTScheduleMap.class, exp11).fetchList();
+      Database
+        .query(EipTScheduleMap.class, exp11)
+        .andQualifier(exp12)
+        .fetchList();
     return list;
   }
 

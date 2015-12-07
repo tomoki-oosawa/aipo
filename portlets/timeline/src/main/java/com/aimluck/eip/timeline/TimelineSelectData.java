@@ -479,13 +479,16 @@ public class TimelineSelectData extends
         target_keyword.toString(),
         "");
 
-    Map<Integer, List<TimelineResultData>> result =
-      new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
-
-    ArrayList<Integer> schedule_id_list = new ArrayList<Integer>();
-    List<EipTScheduleMap> schedule_map_list = new ArrayList<EipTScheduleMap>();
+    /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
-      for (int i = list.size() - 1; i >= 0; i--) {
+      int list_size = list.size();
+      ArrayList<Integer> schedule_id_list = new ArrayList<Integer>(list_size);
+      for (int i = 0; i < list_size; i++) {
+        schedule_id_list.add(0);
+      }
+      List<EipTScheduleMap> schedule_map_list =
+        new ArrayList<EipTScheduleMap>();
+      for (int i = list_size - 1; i >= 0; i--) {
         EipTTimeline model = list.get(i);
         int schedule_id;
         if (model.getAppId().equals("Schedule")) {
@@ -493,9 +496,8 @@ public class TimelineSelectData extends
             Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
           if (m.find()) {
             schedule_id = Integer.parseInt(m.group(1));
-            schedule_id_list.add(i, schedule_id);
-          } else {
-            schedule_id_list.add(i, 0);
+            /* listと対応させた位置にschedule_idをセット */
+            schedule_id_list.set(i, schedule_id);
           }
         }
       }
@@ -503,16 +505,20 @@ public class TimelineSelectData extends
       schedule_map_list =
         TimelineUtils.getRelatedEipTScheduleMap(uid, schedule_id_list);
 
-      for (int j = list.size() - 1; j >= 0; j--) {
-        if (!TimelineUtils.hasRelation(
-          uid,
-          schedule_id_list.get(j),
-          schedule_map_list)) {
-          list.remove(j);
+      /* 自分が関係しない場合、listから削除 */
+      for (int j = list_size - 1; j >= 0; j--) {
+        if (uid != list.get(j).getOwnerId()) {
+          if (!TimelineUtils.hasRelation(
+            schedule_id_list.get(j),
+            schedule_map_list)) {
+            list.remove(j);
+          }
         }
       }
     }
 
+    Map<Integer, List<TimelineResultData>> result =
+      new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
       Integer id = model.getParentId();
       List<TimelineResultData> rdList = result.get(id);
