@@ -267,7 +267,7 @@ public class UserUtils {
       statement.append("  on A.USER_ID = E.USER_ID ");
       statement
         .append("WHERE B.USER_ID > 3 AND (B.DISABLED = 'F' OR ( B.DISABLED = 'N' AND E.ROOM_ID = ");
-      statement.append(rid);
+      statement.append(" #bind($roomid) ");
       statement.append("))");
     }
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
@@ -284,9 +284,12 @@ public class UserUtils {
     statement.append("ORDER BY D.POSITION");
     String query = statement.toString();
 
-    SQLTemplate<TurbineUser> param =
-      Database.sql(TurbineUser.class, query).param("groupname", groupname);
+    SQLTemplate<TurbineUser> param = Database.sql(TurbineUser.class, query);
 
+    if (rid != null) {
+      param.param("roomid", Integer.valueOf(rid));
+    }
+    param.param("groupname", groupname);
     if (keyword != null && !keyword.equals("")) {
       param.param("keyword1", "%" + keyword + "%");
       param.param("keyword2", "%" + keyword + "%");
