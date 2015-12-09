@@ -121,43 +121,46 @@ public class ALSessionValidator extends TemplateSessionValidator {
 
           if (userName.length() > 0 && loginCookieValue.length() > 0) {
             try {
-              if (userName.equals(JetspeedSecurity.getAnonymousUser())) {
+              if (userName.equals(JetspeedSecurity
+                .getAnonymousUser()
+                .getUserName())) {
 
               }
               user = JetspeedSecurity.getUser(userName);
-              if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
-                // cookie is present and correct - log the user in
-                if (user != null
-                  && !userName.equals(JetspeedSecurity.getAnonymousUser())
-                  && ALEipConstants.USER_STAT_ENABLED
-                    .equals(user.getDisabled())) {
+              if (user != null
+                && !userName.equals(JetspeedSecurity
+                  .getAnonymousUser()
+                  .getUserName())) {
+                if (user.getPerm("logincookie", "").equals(loginCookieValue)) {
+                  // cookie is present and correct - log the user in
+                  if (ALEipConstants.USER_STAT_ENABLED.equals(user
+                    .getDisabled())) {
 
-                  // IPA#70075625
-                  // Sesion Fixation 対策
-                  JetspeedRunData automaticloginjdata = null;
-                  try {
-                    automaticloginjdata = (JetspeedRunData) data;
-                  } catch (ClassCastException e) {
-                    logger.error(
-                      "The RunData object does not implement the expected interface, "
-                        + "please verify the RunData factory settings",
-                      e);
-                    return;
-                  }
-                  // Session ID を再発行する
-                  automaticloginjdata.getSession().invalidate();
-                  automaticloginjdata.setSession(automaticloginjdata
-                    .getRequest()
-                    .getSession(true));
-                  data.setUser(user);
-                  user.setHasLoggedIn(Boolean.TRUE);
-                  user.updateLastLogin();
-                  data.save();
+                    // IPA#70075625
+                    // Sesion Fixation 対策
+                    JetspeedRunData automaticloginjdata = null;
+                    try {
+                      automaticloginjdata = (JetspeedRunData) data;
+                    } catch (ClassCastException e) {
+                      logger.error(
+                        "The RunData object does not implement the expected interface, "
+                          + "please verify the RunData factory settings",
+                        e);
+                      return;
+                    }
+                    // Session ID を再発行する
+                    automaticloginjdata.getSession().invalidate();
+                    automaticloginjdata.setSession(automaticloginjdata
+                      .getRequest()
+                      .getSession(true));
+                    data.setUser(user);
+                    user.setHasLoggedIn(Boolean.TRUE);
+                    user.updateLastLogin();
+                    data.save();
 
-                  // イベントログに自動ログイン時にはイベントログを残さない。
+                    // イベントログに自動ログイン時にはイベントログを残さない。
 
-                  // for security
-                  if (data != null) {
+                    // for security
                     data.getUser().setTemp(
                       ALEipConstants.SECURE_ID,
                       ALCommonUtils.getSecureRandomString());
