@@ -23,5 +23,5 @@ ALTER TABLE eip_t_timeline_like ADD FOREIGN KEY (`timeline_id`) REFERENCES `eip_
 -- 20150609
 
 -- 20151021
-ALTER TABLE EIP_T_MESSAGE_ROOM_MEMBER ADD authority VARCHAR(1) DEFAULT 'A';
+ALTER TABLE `eip_t_message_room_member` ADD `authority` varchar(1) DEFAULT 'A' AFTER `target_user_id`;
 -- 20151021
