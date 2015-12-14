@@ -887,7 +887,6 @@ public class TimelineUtils {
       }
 
       InputSource source = new InputSource(reader);
-      parser.setFeature("http://xml.org/sax/features/namespaces", false);
       parser.parse(source);
 
       // documentからmetaタグのcharsetを読み込む
