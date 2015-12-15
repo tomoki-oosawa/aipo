@@ -112,6 +112,12 @@
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
+
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserListCsvExportScreen')))
+
+#set($title = "$l10n.ACCOUNT_USER_LIST_DOWNLOAD")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
+
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
