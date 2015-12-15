@@ -21,3 +21,8 @@
 DELETE FROM eip_t_timeline_like WHERE timeline_id NOT IN( SELECT timeline_id FROM eip_t_timeline );
 ALTER TABLE eip_t_timeline_like ADD FOREIGN KEY (`timeline_id`) REFERENCES `eip_t_timeline` (`timeline_id`) ON DELETE CASCADE;
 -- 20150609
+
+-- 20151109
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 19 WHERE `feature_name` = 'workflow_request_other' AND `feature_alias_name` = 'ワークフロー（他ユーザーの依頼）操作';
+UPDATE `eip_t_acl_role` SET `acl_type` = 19 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'workflow_request_other') AND `role_name` = 'ワークフロー（他ユーザーの依頼）管理者';
+-- 20151109
