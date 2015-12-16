@@ -2180,7 +2180,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(142,'todo_todo_other','ToDo（他�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(143,'todo_category_self','ToDo（カテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(144,'todo_category_other','ToDo（他ユーザのカテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(151,'workflow_request_self','ワークフロー（自分の依頼）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',3);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',19);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(161,'addressbook_address_inside','ユーザー名簿操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(162,'addressbook_address_outside','アドレス帳（社外アドレス）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(163,'addressbook_company','アドレス帳（会社情報）操作',31);
@@ -2225,7 +2225,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(30,'ToDo（他ユーザのカテゴリ）管�
 
 -- workflow
 INSERT INTO EIP_T_ACL_ROLE VALUES(15,'ワークフロー（自分の依頼）管理者',151,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません ＊承認、再申請や差し戻しは編集の権限が必要です');
-INSERT INTO EIP_T_ACL_ROLE VALUES(16,'ワークフロー（他ユーザーの依頼）管理者',152,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(16,'ワークフロー（他ユーザーの依頼）管理者',152,19,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
 
 -- addressbook
 INSERT INTO EIP_T_ACL_ROLE VALUES(17,'ユーザー名簿管理者',161,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
