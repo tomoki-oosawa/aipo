@@ -148,6 +148,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <option value="$l10n.SCHEDULE_END_MONTH">$l10n.SCHEDULE_END_MONTH</option>
       </select>
 	</p>
       </p>
@@ -188,6 +189,7 @@
             #foreach ( $num in [0..23] )
             <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num</option>
             #end
+
             </select>
             :
             <select name="start_date_minute" size="1">
@@ -211,6 +213,7 @@
 			#foreach ( $num in [0..23] )
             <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num" && !($!result.EndDate.Minute == "59")) selected="selected" #end >$num</option>
             #end
+
             </select>
             :
             <select name="end_date_minute" size="1" onchange="aipo.schedule.changeEnd(this.form)">

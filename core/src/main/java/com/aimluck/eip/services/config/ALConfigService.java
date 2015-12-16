@@ -21,7 +21,7 @@ package com.aimluck.eip.services.config;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 
 /**
- * 
+ *
  */
 public class ALConfigService {
 
@@ -48,4 +48,5 @@ public class ALConfigService {
   public static void put(String property, String value) {
     getService().put(property, value);
   }
+
 }

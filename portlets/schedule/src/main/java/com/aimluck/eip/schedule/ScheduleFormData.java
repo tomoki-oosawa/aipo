@@ -154,6 +154,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
+  /** <code>repeat_endofmonth</code> 繰り返し月末 */
+  private ALStringField repeat_endofmonth;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
 
@@ -566,6 +569,13 @@ public class ScheduleFormData extends ALAbstractFormData {
     repeat_week.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
     repeat_week.setTrim(true);
+
+    // 繰り返し月末
+    repeat_endofmonth = new ALStringField();
+    repeat_endofmonth.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_ENDOFMONTH"));
+    repeat_endofmonth.setTrim(true);
+
     // 繰り返し日
     month_day = new ALNumberField();
     month_day.setFieldName(ALLocalizationUtils
@@ -912,6 +922,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
         count = 8;
+
         // 第何週
       } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
         repeat_type.setValue("W");
@@ -943,11 +954,19 @@ public class ScheduleFormData extends ALAbstractFormData {
             break;
         }
         count = 9;
+
+        // 月末
+      } else if (ptn.charAt(0) == 'M') {
+        repeat_type.setValue("M");
+        repeat_endofmonth.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        count = 1;
+
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         count = 3;
+
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
@@ -1231,6 +1250,7 @@ public class ScheduleFormData extends ALAbstractFormData {
               week_6.getValue() != null ? 1 : 0).append(
               repeat_week.getValue().charAt(0)).append(lim).toString());
           }
+
         } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
@@ -3033,6 +3053,15 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getRepeatWeek() {
     return repeat_week;
+  }
+
+  /**
+   * 繰り返し週を取得します。
+   *
+   * @return
+   */
+  public ALStringField getRepeatEndofmonth() {
+    return repeat_endofmonth;
   }
 
   /**
