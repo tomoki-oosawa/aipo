@@ -154,9 +154,6 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
-  /** <code>repeat_endofmonth</code> 繰り返し月末 */
-  private ALStringField repeat_endofmonth;
-
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
 
@@ -165,6 +162,9 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   /** <code>limit_date</code> 繰り返し期限（終了日） */
   private ALDateField limit_end_date;
+
+  /** <code>repeat_endofmonth</code> 繰り返し月末 */
+  private ALNumberField repeat_endofmonth;
 
   /** <code>month_day</code> 繰り返す日 */
   private ALNumberField month_day;
@@ -570,11 +570,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
     repeat_week.setTrim(true);
 
-    // 繰り返し月末
-    repeat_endofmonth = new ALStringField();
-    repeat_endofmonth.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_ENDOFMONTH"));
-    repeat_endofmonth.setTrim(true);
+    // 繰り返し月末不要
 
     // 繰り返し日
     month_day = new ALNumberField();
@@ -806,6 +802,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         getWeek4(),
         getWeek5(),
         getWeek6(),
+        getRepeatEndofmonth(),
         getRepeatWeek(),
         getLimitFlag(),
         getLimitStartDate(),
@@ -901,6 +898,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
+      // MnnL ->月末
       // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -955,17 +953,12 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
         count = 9;
 
-        // 月末
-      } else if (ptn.charAt(0) == 'M') {
-        repeat_type.setValue("M");
-        repeat_endofmonth.setValue(Integer.parseInt(ptn.substring(1, 3)));
-        count = 1;
-
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
-        count = 3;
+        repeat_endofmonth.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        count = 4;
 
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
@@ -1254,13 +1247,16 @@ public class ScheduleFormData extends ALAbstractFormData {
         } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('M').append(
+            format.format(repeat_endofmonth.getValue())).append(
             format.format(month_day.getValue())).append(lim).toString());
+
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
             format.format(year_month.getValue())).append(
             format.format(year_day.getValue())).append(lim).toString());
         }
+
       }
 
       EipTCommonCategory category1 =
@@ -1809,6 +1805,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              format.format(repeat_endofmonth.getValue())).append(
               format.format(month_day.getValue())).append(lim).toString());
           } else {
             DecimalFormat format = new DecimalFormat("00");
@@ -2957,6 +2954,15 @@ public class ScheduleFormData extends ALAbstractFormData {
   }
 
   /**
+   * 繰り返し月末を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getRepeatEndofmonth() {
+    return repeat_endofmonth;
+  }
+
+  /**
    * 毎年繰り返す月を取得します。
    *
    * @return
@@ -3053,15 +3059,6 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getRepeatWeek() {
     return repeat_week;
-  }
-
-  /**
-   * 繰り返し週を取得します。
-   *
-   * @return
-   */
-  public ALStringField getRepeatEndofmonth() {
-    return repeat_endofmonth;
   }
 
   /**

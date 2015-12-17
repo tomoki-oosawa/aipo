@@ -2057,11 +2057,15 @@ public class ScheduleUtils {
    * @param week_4
    * @param week_5
    * @param week_6
+   * @param alNumberField
    * @param repeat_week
    * @param limit_flag
+   * @param alStringField
    * @param limit_start_date
    * @param limit_end_date
+   * @param alDateField
    * @param month_day
+   * @param rereat_endofmonth
    * @param login_user
    * @param entityid
    * @param msgList
@@ -2076,9 +2080,11 @@ public class ScheduleUtils {
       ALDateTimeField end_date, ALStringField repeat_type, boolean is_repeat,
       boolean is_span, ALStringField week_0, ALStringField week_1,
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
-      ALStringField week_5, ALStringField week_6, ALStringField repeat_week,
-      ALStringField limit_flag, ALDateField limit_start_date,
-      ALDateField limit_end_date, ALNumberField month_day,
+      ALStringField week_5, ALStringField week_6, ALNumberField alNumberField,
+      ALStringField repeat_week, ALStringField limit_flag,
+      ALStringField alStringFielf, ALDateField limit_start_date,
+      ALDateField limit_end_date, ALDateField alDateField,
+      ALNumberField month_day, ALNumberField repeat_endofmonth,
       ALNumberField year_month, ALNumberField year_day, ALEipUser login_user,
       String entityid, List<String> msgList, boolean isCellPhone)
       throws ALDBErrorException, ALPageNotFoundException {
