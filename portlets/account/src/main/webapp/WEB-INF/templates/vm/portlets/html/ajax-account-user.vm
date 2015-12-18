@@ -116,7 +116,7 @@
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserListCsvExportScreen')))
 
 #set($title = "$l10n.ACCOUNT_USER_LIST_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.eventlog.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account_user.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
 
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)

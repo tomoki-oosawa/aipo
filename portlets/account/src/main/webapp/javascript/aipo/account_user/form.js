@@ -39,6 +39,20 @@ aipo.account_user.onLoadUserDialog = function(portlet_id){
     }
 }
 
+aipo.account_user.downloadCvn = function(flag_over_size,eventlog_max,url){
+	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	var confirmString = dojo.string.substitute(nlsStrings.EVENTLOG_STR, {
+		max : eventlog_max
+	  });
+
+	if(flag_over_size){
+		alert(confirmString);
+	}else{
+		window.location.href=url;
+	}
+}
+
+
 aipo.account_user.formSwitchPostInput = function(button) {
 	var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 
@@ -153,7 +167,7 @@ aipo.account_user.toggleMenu = function(node, filter, alwaysPulldown) {
 
   if (node.style.display == "none") {
     dojo.query("div.menubar").style("display", "none");
-    
+
     var scroll = {
       left : document.documentElement.scrollLeft
           || document.body.scrollLeft,
@@ -188,4 +202,3 @@ aipo.account_user.onChangePost = function(url, portlet_id, folder_id) {
 aipo.account_user.onChangeRole = function(url, portlet_id, group_id) {
   aipo.viewPage(url, portlet_id);
 }
-
