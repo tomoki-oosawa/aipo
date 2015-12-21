@@ -110,7 +110,10 @@ aipo.message.init = function(portletId, jslink, isMobile) {
     	    }else if ("Room" == aipo.message.getCookieIsLastRoomOrUser()){
 
     		//以下2行によりルームをリロード後もエラーなしで表示したままにできます。
-    	    aipo.message.reloadRoomList(aipo.message.getCookieRoomId("lastRoomId="));
+    	    aipo.message.currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+    	    aipo.message.reloadRoomList(null,aipo.message.currentRoomId);
+    	    aipo.message.selectTab("room");
+    	    aipo.message.selectRoom(aipo.message.currentRoomId);
     	    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
 
     	    }
