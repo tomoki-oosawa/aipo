@@ -964,6 +964,8 @@ aipo.message.onReceiveMessage = function(msg) {
             }
             aipo.message.selectTab("room");
             aipo.message.getCookieIsLastRoomOrUser("Room");
+            aipo.message.saveCookieIsLastRoomOrUser("Room");
+            aipo.message.saveCookieTargetId("lastRoomId",aipo.message.currentRoomId);
         }
     }
     else if (dojo.byId('messageFormDiv')){
