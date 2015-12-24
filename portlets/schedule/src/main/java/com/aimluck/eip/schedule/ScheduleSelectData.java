@@ -428,6 +428,7 @@ public class ScheduleSelectData extends
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
+      // MnnL ->月末
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
       int count = 0;

@@ -27,6 +27,8 @@ import com.aimluck.commons.field.ALCellDateField;
 import com.aimluck.commons.field.ALCellDateTimeField;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALCellStringField;
+import com.aimluck.commons.field.ALNumberField;
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -89,6 +91,9 @@ public class CellScheduleFormBean implements ALData {
 
   /** <code>limit_date</code> 繰り返し期限（終了日） */
   private ALCellDateField limit_end_date;
+
+  /** <code>repeat_endofmonth</code> 繰り返す月末 */
+  private ALCellNumberField repeat_endofmonth;
 
   /** <code>month_day</code> 繰り返す日 */
   private ALCellNumberField month_day;
@@ -457,6 +462,7 @@ public class CellScheduleFormBean implements ALData {
       week_6.setValue(null);
     }
 
+    ALStringField all_day_flag;
     return ScheduleUtils.validateDelegate(
       getStartDate(),
       getEndDate(),
@@ -470,17 +476,28 @@ public class CellScheduleFormBean implements ALData {
       getWeek4(),
       getWeek5(),
       getWeek6(),
+      getRepeatEndofmonth(),
       getRepeatWeek(),
       getLimitFlag(),
+      loginUser.getAliasName().all_day_flag(),
       getLimitStartDate(),
       getLimitEndDate(),
+      limit_end_date,
       getMonthDay(),
       getYearMonth(),
       getYearDay(),
+      loginUser.getUserId(),
       loginUser,
       entityId,
       msgList,
       true);
+  }
+
+  /**
+   * @return
+   */
+  private ALNumberField getRepeatEndofmonth() {
+    return null;
   }
 
   /**
