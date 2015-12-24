@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -41,7 +41,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * データベースを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
- * 
+ *
  */
 public class ALDbLocalFolder extends ALAbstractFolder {
 
@@ -50,7 +50,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param parentFolder
    *          親フォルダ
    * @param folderName
@@ -63,7 +63,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを取得します。
-   * 
+   *
    * @param index
    * @return
    */
@@ -100,7 +100,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたファイルを読み込み，mail メッセージを取得する．
-   * 
+   *
    * @param fileName
    * @return
    */
@@ -125,7 +125,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを保存する。
-   * 
+   *
    * @param messages
    * @return
    */
@@ -144,7 +144,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   /**
    * 受信サーバから受信した受信可能サイズを超えたメールを保存する。<br />
    * このメールはヘッダ情報のみ、受信サーバから取得し、他の情報は取得しない。
-   * 
+   *
    * @param localMailMessage
    * @return
    */
@@ -161,7 +161,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   * 
+   *
    * @param mailid
    * @return
    */
@@ -198,7 +198,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   * 
+   *
    * @param msgIndexes
    * @return
    */
@@ -208,7 +208,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -223,7 +223,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を取得する。
-   * 
+   *
    * @return
    */
   @Override
@@ -233,7 +233,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を更新する．
-   * 
+   *
    * @param num
    */
   @Override
@@ -243,7 +243,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内のメールの総数を取得する。
-   * 
+   *
    * @param type
    *          送受信フラグ
    * @return
@@ -254,7 +254,7 @@ public class ALDbLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内の未読メール数を取得する．
-   * 
+   *
    * @return
    */
   @Override
@@ -275,6 +275,15 @@ public class ALDbLocalFolder extends ALAbstractFolder {
    */
   @Override
   public boolean readMails(List<String> msgIndexes) {
+    return false;
+  }
+
+  /**
+   * @param msgIndexes
+   * @return
+   */
+  @Override
+  public boolean unreadMails(List<String> msgIndexes) {
     return false;
   }
 

@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムライントピックのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class TimelineLikeFormData extends ALAbstractFormData {
 
@@ -63,12 +63,12 @@ public class TimelineLikeFormData extends ALAbstractFormData {
   private int timeline_id;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -79,8 +79,8 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -89,7 +89,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
   /**
    * いいね！の各フィールドに対する制約条件を設定します。 <BR>
    * →なし
-   * 
+   *
    */
   @Override
   protected void setValidator() {
@@ -97,10 +97,10 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -109,7 +109,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
   /**
    * いいねをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -182,7 +182,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -244,8 +244,9 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
             SelectQuery<Activity> dQuery = Database.query(Activity.class);
             Expression exp3 =
-              ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, String
-                .valueOf(parententry.getTimelineId()));
+              ExpressionFactory.matchExp(
+                Activity.EXTERNAL_ID_PROPERTY,
+                parententry.getTimelineId().toString());
             Expression exp4 =
               ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "timeline");
 
@@ -283,7 +284,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているトピックを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -296,7 +297,7 @@ public class TimelineLikeFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList

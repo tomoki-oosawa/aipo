@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -50,6 +50,9 @@
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
 #AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_ALREADY_READ "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#end
+#if($!result.currentTab == "receive")
+#AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_UNREAD "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_unread')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #end
 #AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #if(($!result.FolderList.size() > 1) && ($!result.currentTab == "receive"))
@@ -119,6 +122,9 @@ $!record.Person
 <div class="floatLeft auiForm">
 #if($!result.currentTab == "receive")
 #AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_ALREADY_READ "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_read')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
+#end
+#if($!result.currentTab == "receive")
+#AUIajaxbuttonCheckboxAction($l10n.WEBMAIL_DO_UNREAD "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_unread')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #end
 #AUIajaxbuttonCheckboxDeleteIcon("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','WebMailFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.webmail.onReceiveMessage")
 #if(($!result.FolderList.size() > 1) && ($!result.currentTab == "receive"))

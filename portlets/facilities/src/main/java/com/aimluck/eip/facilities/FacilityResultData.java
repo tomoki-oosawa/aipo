@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備のResultDataです。 <BR>
- * 
+ *
  */
 public class FacilityResultData implements ALData {
 
@@ -176,7 +176,7 @@ public class FacilityResultData implements ALData {
 
   /**
    * ある設備が所属する設備グループのリストを取得します
-   * 
+   *
    * @param postid
    * @return
    */

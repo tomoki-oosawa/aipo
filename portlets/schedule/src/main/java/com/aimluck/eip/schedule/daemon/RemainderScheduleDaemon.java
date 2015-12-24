@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -79,19 +79,19 @@ import com.aimluck.eip.util.ALServletUtils;
  * are remote it will pull them locally into the JetspeedDiskCache class via the
  * bulkdownloader class.
  * </p>
- * 
+ *
  * <p>
  * The major goals of this Daemon are:
- * 
+ *
  * <ul>
  * <li>Parse out OCS feeds</li>
  * <li>Put the new Entry into the PortletRegistry</li>
  * <li>Get the URL from the Internet if it hasn't been placed in the cache.</li>
  * <li>Instantiate the Portlet if it already isn't in the cache.</li>
  * </ul>
- * 
+ *
  * </p>
- * 
+ *
  */
 public class RemainderScheduleDaemon implements Daemon {
 
@@ -195,7 +195,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -325,7 +325,7 @@ public class RemainderScheduleDaemon implements Daemon {
   }
 
   /**
-   * 
+   *
    * @param userid
    * @return
    */
@@ -434,7 +434,7 @@ public class RemainderScheduleDaemon implements Daemon {
 
   /**
    * 検索条件を設定した SelectQuery を返します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -539,7 +539,7 @@ public class RemainderScheduleDaemon implements Daemon {
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */

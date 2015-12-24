@@ -1,7 +1,6 @@
-
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -37,6 +36,7 @@ aipo.message.isInit = false;
 aipo.message.isDirect = false;
 aipo.message.jumpCursor = null;
 aipo.message.isSearched = false;
+aipo.message.transactionIdList = [];
 
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
@@ -1434,4 +1434,31 @@ aipo.message.scrollTo = function(element, to, duration) {
 	    if (element.scrollTop == to) return;
 	    aipo.message.scrollTo(element, to, duration - 10);
 	  }, 10);
+}
+
+aipo.message.insertTransactionId = function(targetUserId){
+	function guid() {
+		  function s4() {
+		    return Math.floor((1 + Math.random()) * 0x10000)
+		      .toString(16)
+		      .substring(1).
+		      toUpperCase();
+		  }
+		  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+		    s4() + '-' + s4() + s4() + s4();
+		}
+	var transactionId=guid();
+	dojo.query("#messageForm"+targetUserId+" [name='transactionId']")[0].setAttribute('value', transactionId);
+	aipo.message.transactionIdList.push(transactionId);
+}
+
+aipo.message.removeTransactionId = function(transactionId){
+	var transactionIdPos = aipo.message.transactionIdList.indexOf(transactionId);
+	if(transactionIdPos==-1){
+		return false;
+	}
+	else{
+		aipo.message.transactionIdList.splice(transactionIdPos, 1);
+		return true;
+	}
 }

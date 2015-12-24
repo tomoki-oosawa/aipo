@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -287,7 +287,8 @@ $l10n.WAR_CANNOT_LOGIN_COMMON_USER
 #if($enable_userlist)
 <p><input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.WORKFLOW_SELECT_MEMBER_FROM_LIST</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_password" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.WAR_SAVE_LOGIN_INFO</label></p>
+<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
+<p><input class="inlineCheckbox" name="rememberme" value="true" type="checkbox" #if ( $data.getCookies().get("logincookie") ) checked #end id="rememberme" tabindex="7" />&nbsp;<label for="rememberme" class="inlineLabel">$l10n.LOGIN_REMEMBERME</label></p>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="$l10n.LOGIN_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />

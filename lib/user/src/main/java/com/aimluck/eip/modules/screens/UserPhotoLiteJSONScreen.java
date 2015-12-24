@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -51,6 +51,7 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
 
       String keyword = rundata.getParameters().getString("keyword");
       String mode = rundata.getParameters().getString("mode");
+      String rid = rundata.getParameters().getString("rid");
       if ("group".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
 
@@ -63,7 +64,8 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
             rundata,
             groupname,
             include_loginuser,
-            keyword));
+            keyword,
+            rid));
       } else if ("group_loginname".equals(mode)) {
         String groupname = rundata.getParameters().getString("groupname");
         List<UserPhotoLiteBean> users =
@@ -71,7 +73,8 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
             rundata,
             groupname,
             false,
-            keyword);
+            keyword,
+            rid);
         List<UserPhotoLiteBean> outputs = new ArrayList<UserPhotoLiteBean>();
         for (UserPhotoLiteBean datarow : users) {
           UserPhotoLiteBean user = datarow;
@@ -80,8 +83,7 @@ public class UserPhotoLiteJSONScreen extends ALJSONScreen {
           out.setUserId(Integer.valueOf(user.getUserId()));
           out.setName(user.getName());
           out.setAliasName("(" + user.getAliasName() + ")", user.getName());
-          out.setHasPhoto("T".equals(user.getHasPhoto())
-            || "N".equals(user.getHasPhoto()));
+          out.setHasPhoto(user.getHasPhoto());
           out.setPhotoModified(user.getPhotoModified());
           outputs.add(out);
         }

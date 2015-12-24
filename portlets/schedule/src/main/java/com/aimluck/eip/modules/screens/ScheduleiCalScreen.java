@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -104,7 +104,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
     net.fortuna.ical4j.model.Calendar cal =
       new net.fortuna.ical4j.model.Calendar();
-    cal.getProperties().add(new ProdId("-//Aimluck,Inc. //Aipo //JP"));
+    cal.getProperties().add(new ProdId("-//TOWN, Inc. //Aipo //JP"));
     cal.getProperties().add(Version.VERSION_2_0);
     cal.getProperties().add(CalScale.GREGORIAN);
     cal.getProperties().add(Method.PUBLISH);
@@ -128,18 +128,24 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
       Date dStart = null;
       Date dEnd = null;
+      String ptn = rd.getPattern();
 
       if ("S".equals(rd.getPattern())) {
         cStart.add(Calendar.DATE, 1);
         dStart = new Date(cStart.getTime());
-        cEnd.add(Calendar.DATE, 2);
+        if (cEnd.get(Calendar.HOUR_OF_DAY) == 0
+          && cEnd.get(Calendar.MINUTE) == 0
+          && cEnd.get(Calendar.SECOND) == 0) {
+          cEnd.add(Calendar.DATE, 2);
+        } else {
+          cEnd.add(Calendar.DATE, 1);
+        }
         dEnd = new Date(cEnd.getTime());
       } else {
         dStart = new DateTime(cStart.getTime());
         dEnd = new DateTime(cEnd.getTime());
       }
 
-      String ptn = rd.getPattern();
       java.util.Date currentStartDate = getRepeatStartDate(startDate, ptn);
 
       Recur recur = null;
@@ -149,7 +155,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         recur = new Recur(Recur.DAILY, null);
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W') {
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
         recur = new Recur(Recur.WEEKLY, null);
         if (ptn.charAt(1) != '0') {
           recur.getDayList().add(WeekDay.SU);
@@ -173,6 +179,31 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           recur.getDayList().add(WeekDay.SA);
         }
         count = 8;
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+        recur = new Recur(Recur.MONTHLY, null);
+        int offset = Character.getNumericValue(ptn.charAt(8));
+        if (ptn.charAt(1) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.SU, offset));
+        }
+        if (ptn.charAt(2) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.MO, offset));
+        }
+        if (ptn.charAt(3) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.TU, offset));
+        }
+        if (ptn.charAt(4) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.WE, offset));
+        }
+        if (ptn.charAt(5) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.TH, offset));
+        }
+        if (ptn.charAt(6) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.FR, offset));
+        }
+        if (ptn.charAt(7) != '0') {
+          recur.getDayList().add(new WeekDay(WeekDay.SA, offset));
+        }
+        count = 9;
       } else if (ptn.charAt(0) == 'M') {
         recur = new Recur(Recur.MONTHLY, null);
         int mday = Integer.parseInt(ptn.substring(1, 3));
@@ -180,7 +211,15 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         recur.getMonthDayList().add(mday);
         count = 3;
+      } else if (ptn.charAt(0) == 'Y') {
+        recur = new Recur(Recur.YEARLY, null);
+        int ymonth = Integer.parseInt(ptn.substring(1, 3));
+        int yday = Integer.parseInt(ptn.substring(3, 5));
+        recur.getMonthList().add(ymonth);
+        recur.getMonthDayList().add(yday);
+        count = 5;
       }
+
       if (count > 0) {
         if (ptn.charAt(count) == 'L') {
           if (endDate.compareTo(cStart.getTime()) < 0
@@ -199,12 +238,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(currentStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(currentStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           } else {
             java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
@@ -213,12 +252,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(RepeatStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            dStart = new DateTime(cStart.getTime());
             hour = cEnd.get(Calendar.HOUR_OF_DAY);
             min = cEnd.get(Calendar.MINUTE);
             cEnd.setTime(RepeatStartDate);
             cEnd.set(Calendar.HOUR_OF_DAY, hour);
             cEnd.set(Calendar.MINUTE, min);
+            dStart = new DateTime(cStart.getTime());
             dEnd = new DateTime(cEnd.getTime());
           }
         } else {
@@ -228,13 +267,21 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cStart.setTime(currentStartDate);
           cStart.set(Calendar.HOUR_OF_DAY, hour);
           cStart.set(Calendar.MINUTE, min);
-          dStart = new DateTime(cStart.getTime());
           hour = cEnd.get(Calendar.HOUR_OF_DAY);
           min = cEnd.get(Calendar.MINUTE);
           cEnd.setTime(currentStartDate);
           cEnd.set(Calendar.HOUR_OF_DAY, hour);
           cEnd.set(Calendar.MINUTE, min);
+          dStart = new DateTime(cStart.getTime());
           dEnd = new DateTime(cEnd.getTime());
+          if (ptn.charAt(0) == 'Y') {
+            if (endDate.compareTo(cStart.getTime()) < 0
+              || startDate.compareTo(cEnd.getTime()) > 0) {
+              recur = null;
+              dStart = null;
+              dEnd = null;
+            }
+          }
         }
       }
 
@@ -268,11 +315,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dateList.add(new DateTime(dummyStart.getTime()));
           }
           event.getProperties().add(new ExDate(dateList));
-
         }
       }
-
       cal.getComponents().add(event);
+
     }
 
     ServletOutputStream out = null;
@@ -316,43 +362,53 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     } else if (ptn.charAt(0) == 'W') {
 
       int dow = cal.get(Calendar.DAY_OF_WEEK);
-      switch (dow) {
-      // 日
-        case Calendar.SUNDAY:
-          result = ptn.charAt(1) != '0';
-          break;
-        // 月
-        case Calendar.MONDAY:
-          result = ptn.charAt(2) != '0';
-          break;
-        // 火
-        case Calendar.TUESDAY:
-          result = ptn.charAt(3) != '0';
-          break;
-        // 水
-        case Calendar.WEDNESDAY:
-          result = ptn.charAt(4) != '0';
-          break;
-        // 木
-        case Calendar.THURSDAY:
-          result = ptn.charAt(5) != '0';
-          break;
-        // 金
-        case Calendar.FRIDAY:
-          result = ptn.charAt(6) != '0';
-          break;
-        // 土
-        case Calendar.SATURDAY:
-          result = ptn.charAt(7) != '0';
-          break;
-        default:
-          result = false;
-          break;
+      int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+      if (ptn.charAt(8) == 'N'
+        || ptn.charAt(8) == 'L'
+        || dowim == Character.getNumericValue(ptn.charAt(8))) {
+        switch (dow) {
+        // 日
+          case Calendar.SUNDAY:
+            result = ptn.charAt(1) != '0';
+            break;
+          // 月
+          case Calendar.MONDAY:
+            result = ptn.charAt(2) != '0';
+            break;
+          // 火
+          case Calendar.TUESDAY:
+            result = ptn.charAt(3) != '0';
+            break;
+          // 水
+          case Calendar.WEDNESDAY:
+            result = ptn.charAt(4) != '0';
+            break;
+          // 木
+          case Calendar.THURSDAY:
+            result = ptn.charAt(5) != '0';
+            break;
+          // 金
+          case Calendar.FRIDAY:
+            result = ptn.charAt(6) != '0';
+            break;
+          // 土
+          case Calendar.SATURDAY:
+            result = ptn.charAt(7) != '0';
+            break;
+          default:
+            result = false;
+            break;
+        }
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
       int mday = Integer.parseInt(ptn.substring(1, 3));
       result = cal.get(Calendar.DATE) == mday;
+    } else if (ptn.charAt(0) == 'Y') {
+      int ymonth = Integer.parseInt(ptn.substring(1, 3));
+      int yday = Integer.parseInt(ptn.substring(3, 5));
+      result =
+        cal.get(Calendar.MONTH) == ymonth - 1 && cal.get(Calendar.DATE) == yday;
     } else {
       return true;
     }

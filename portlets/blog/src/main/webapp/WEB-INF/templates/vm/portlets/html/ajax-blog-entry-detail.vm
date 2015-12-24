@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
-<table class="listTable wide">
+<table class="listTable wide detail">
 <caption>
-<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 $!{result.Detail.TitleHtml}
+<span class="subCaption">$!{result.Detail.ThemaNameHtml}</span>
 </cation>
 <tr>
 <td>
@@ -93,7 +93,7 @@ $!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.Crea
 
 
 #if($!result.CommentList && $!result.CommentList.size() > 0 || ("$!{client}"!="IPHONE" && $!result.CommentList.size() == 0))
-<table class="listTable wide mb0">
+<table class="listTable wide detail mb10">
 <caption>$l10n.BLOG_COMMENT</cation>
 #foreach ($record in $result.CommentList)
   <tr>

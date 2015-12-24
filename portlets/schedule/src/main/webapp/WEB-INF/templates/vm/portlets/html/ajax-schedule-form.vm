@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -112,26 +112,36 @@
   <div id="repeatField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">
     <div class="p auiSetDate">
       <h3>$l10n.SCHEDULE_REPEAT_TYPE</h3>
-      <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
-      <label for="repeat_typeD">$l10n.SCHEDULE_EVERY_DAY</label>
-      <br/>
-      <input id="repeat_typeW" type="radio" value="W" #if ($!{result.RepeatType.toString()} == "W") checked="checked" #end name="repeat_type"/>
-      <label for="repeat_typeW">$l10n.SCHEDULE_EVERY_WEEK</label>
-      <input id="week_0_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_0"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_0_id">$l10n.SCHEDULE_SUNDAY</label>
-      <input id="week_1_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_1"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_1_id">$l10n.SCHEDULE_MONDAY</label>
-      <input id="week_2_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_2"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_2_id">$l10n.SCHEDULE_TUSEDAY</label>
-      <input id="week_3_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_3"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_3_id">$l10n.SCHEDULE_WEDNESDAY</label>
-      <input id="week_4_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_4"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_4_id">$l10n.SCHEDULE_THURSDAY</label>
-      <input id="week_5_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_5"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_5_id">$l10n.SCHEDULE_FRIDAY</label>
-      <input id="week_6_id" type="checkbox" onclick="aipo.schedule.enablePerWeek(this.form)" #if ($!{result.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_6"/>
-      <label onclick="aipo.schedule.enablePerWeek(this.form)" for="week_6_id">$l10n.SCHEDULE_SATURDAY</label>
-      <br/>
+      <p>
+	      <input id="repeat_typeD" type="radio" value="D" #if ($!{result.RepeatType.toString()} == "D") checked="checked" #end name="repeat_type"/>
+	      <label for="repeat_typeD">$l10n.SCHEDULE_EVERY_DAY</label>
+      </p>
+      <p>
+	      <input id="repeat_typeW" type="radio" value="W" #if ($!{result.RepeatType.toString()} == "W") checked="checked" #end name="repeat_type"/>
+	      <select id="repeat_week" onChange="aipo.schedule.enableNthWeek(this.form);" name="repeat_week"/>
+		      <option value="0" #if ($!{result.RepeatWeek.toString()} == "0") selected="selected" #end>$l10n.SCHEDULE_EVERY_WEEK</option>
+		      <option value="1" #if ($!{result.RepeatWeek.toString()} == "1") selected="selected" #end>$l10n.SCHEDULE_1ST_WEEK</option>
+		      <option value="2" #if ($!{result.RepeatWeek.toString()} == "2") selected="selected" #end>$l10n.SCHEDULE_2ND_WEEK</option>
+		      <option value="3" #if ($!{result.RepeatWeek.toString()} == "3") selected="selected" #end>$l10n.SCHEDULE_3RD_WEEK</option>
+		      <option value="4" #if ($!{result.RepeatWeek.toString()} == "4") selected="selected" #end>$l10n.SCHEDULE_4TH_WEEK</option>
+		      <option value="5" #if ($!{result.RepeatWeek.toString()} == "5") selected="selected" #end>$l10n.SCHEDULE_5TH_WEEK</option>
+	      </select>
+	      <input id="week_0_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_0"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_0_id">$l10n.SCHEDULE_SUNDAY</label>
+	      <input id="week_1_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_1"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_1_id">$l10n.SCHEDULE_MONDAY</label>
+	      <input id="week_2_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_2"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_2_id">$l10n.SCHEDULE_TUSEDAY</label>
+	      <input id="week_3_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_3"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_3_id">$l10n.SCHEDULE_WEDNESDAY</label>
+	      <input id="week_4_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_4"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_4_id">$l10n.SCHEDULE_THURSDAY</label>
+	      <input id="week_5_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_5"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_5_id">$l10n.SCHEDULE_FRIDAY</label>
+	      <input id="week_6_id" type="checkbox" onclick="aipo.schedule.enableNthWeek(this.form)" #if ($!{result.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE" name="week_6"/>
+	      <label onclick="aipo.schedule.enableNthWeek(this.form)" for="week_6_id">$l10n.SCHEDULE_SATURDAY</label>
+	</p>
+	<p>
       <input id="repeat_typeM" type="radio" value="M" #if ($!{result.RepeatType.toString()} == "M") checked="checked" #end name="repeat_type"/>
       <label for="repeat_typeM">$l10n.SCHEDULE_EVERY_MONTH</label>
       <select onchange="aipo.schedule.enableMonth(this.form)" name="month_day">
@@ -139,8 +149,24 @@
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+	</p>
+      </p>
+      <p>
+      <input id="repeat_typeY" type="radio" value="Y" #if ($!{result.RepeatType.toString()} == "Y") checked="checked" #end name="repeat_type"/>
+      <label for="repeat_typeY">$l10n.SCHEDULE_EVERY_YEAR</label>
+      <select onchange="aipo.schedule.enableYear(this.form)" name="year_month">
+      #foreach ( $num in [1..12] )
+      	<option value="$num" #if ($!{result.YearMonth.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_MONTH</option>
+      #end
+      </select>
+      <select onchange="aipo.schedule.enableYear(this.form)" name="year_day">
+      #foreach ( $num in [1..31] )
+      	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
+      #end
+      </select>
+      </p>
    </div>
-    <div class="p auiSetDate">
+    <div class="p auiSetDate mt15">
       <h3>$l10n.SCHEDULE_REPEAT_SPAN</h3>
       <input id="limit_flagOFF" type="radio" #if ($!{result.LimitFlag.toString()} == "OFF") checked="checked" #end value="OFF" name="limit_flag" onclick="aipo.schedule.repeatpickeroff()"/>
       <label for="limit_flagOFF">$l10n.SCHEDULE_DONOT_SELECT_REPEAT_SPAN</label>
@@ -154,7 +180,7 @@
       </div>
     </div>
   </div>
-  <div class="p auiSetDate">
+  <div class="p auiSetDate mt15">
     <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">$l10n.SCHEDULE_TIME</h3>
     <div id="timeField"  style="display:#if($!{result.Span})none#end">
         <span id="startTimeSpan">
@@ -183,7 +209,7 @@
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameTime) selected="selected" #end>--</option>
 			#foreach ( $num in [0..23] )
-            <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num") selected="selected" #end >$num</option>
+            <option value="$num" #if (!($!result.isSameTime) && $!result.EndDate.Hour == "$num" && !($!result.EndDate.Minute == "59")) selected="selected" #end >$num</option>
             #end
             </select>
             :
@@ -219,7 +245,6 @@
 #ALtditemfooter()
 #end
 #* 共有カテゴリ連携（ここまで） *#
-
 #ALtdcaption("$!result.getFieldName('place')")
 #ALtditem("#ALtextfield('place' $!result.Place '100%' 50 'active')")
 #ALtdcaption("$!result.getFieldName('note')")
@@ -301,7 +326,7 @@
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_FACILITY)
 #ALtditemheader()
-<div id="facilityFieldButton" style="display:#if($!{result.Span} || $!{result.PublicFlag.toString()} == "P")none#end">
+<div id="facilityFieldButton" style="display:#if($!{result.PublicFlag.toString()} == "C" || $!{result.PublicFlag.toString()} == "P")none#end">
 	<table class="w100">
 		<tbody>
 			<tr class="member">

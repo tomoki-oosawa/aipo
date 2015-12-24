@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -372,7 +372,7 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('allDayField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
-    dojo.byId('facilityFieldButton').style.display = "none";
+    dojo.byId('facilityFieldButton').style.display = "block";
 
     form.is_span.value = 'TRUE';
 
@@ -478,7 +478,7 @@ aipo.schedule.formAllDayOn = function(checkbox) {
     dojo.byId('timeField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
 
-    dojo.byId('facilityFieldButton').style.display = "none";
+    dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
 
     checkbox.form.is_repeat.value = 'FALSE';
@@ -529,6 +529,10 @@ aipo.schedule.enablePerWeek = function(form){
     form.repeat_type[1].checked = true;
 }
 
+aipo.schedule.enableNthWeek = function(form){
+	form.repeat_type[1].checked = true;
+}
+
 aipo.schedule.enableMonth = function(form){
     if(! form.repeat_type[2].checked){
         form.repeat_type[2].checked = true;
@@ -543,6 +547,12 @@ aipo.schedule.repeatpickeron = function(){
 	dojo.byId('repeatpickerfield').style.display = "";
 
     aipo.schedule.setWrapperHeight();
+}
+
+aipo.schedule.enableYear = function(form){
+    if(! form.repeat_type[3].checked){
+        form.repeat_type[3].checked = true;
+    }
 }
 
 aipo.schedule.buttonEdit = function(form, editurl) {

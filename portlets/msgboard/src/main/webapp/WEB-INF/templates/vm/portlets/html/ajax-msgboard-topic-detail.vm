@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -29,7 +29,8 @@
 #ALajaxdetailformheader($l10n.MSGBOARD_WRITE)
 <table class="listTable wide">
 	<caption>
-	<span class="subCaption">$!result.ParentTopic.CategoryNameHtml&nbsp;#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'" "")#end</span>$!{result.ParentTopic.TopicNameHtml}
+	$!{result.ParentTopic.TopicNameHtml}
+	<span class="subCaption">$!result.ParentTopic.CategoryNameHtml&nbsp;#if(! $!{result.ParentTopic.isPublic()})#AUIiconSecretAtt("title='$l10n.MSGBOARD_CLOSE_PUBLIC'" "")#end</span>
 	</caption>
 		<tbody>
 			<tr>

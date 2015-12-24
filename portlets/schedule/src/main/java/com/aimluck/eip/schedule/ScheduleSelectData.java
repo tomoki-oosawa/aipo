@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -327,6 +327,8 @@ public class ScheduleSelectData extends
 
       List<Integer> users = new ArrayList<Integer>();
       List<Integer> facilityIds = new ArrayList<Integer>();
+      // 表示するユーザーがスケジュールの参加者かどうか
+      boolean isMember = false;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = list.get(i);
@@ -338,6 +340,8 @@ public class ScheduleSelectData extends
             rd.setTmpreserve("T".equals(map.getStatus()));
             // 確定スケジュールかどうか
             rd.setConfirm("C".equals(map.getStatus()));
+            // スケジュールの参加者かどうか
+            isMember = !"R".equals(map.getStatus());
           }
           users.add(map.getUserId());
 
@@ -386,6 +390,16 @@ public class ScheduleSelectData extends
       } else {
         // ユーザー
         rd.setUser(ALEipUtils.getALEipUser(userid));
+        // もし表示するユーザーが、ログインユーザーかつ参加していないユーザーの場合（タイムラインの更新情報から、ログインユーザーが作成者でログインユーザーが参加していない予定を開いた場合）には、
+        // 表示するユーザーを適当な参加ユーザーで置き換える
+        if (isLoginUserID(userid) && !isMember) {
+          for (EipTScheduleMap map : list) {
+            if (!"R".equals(map.getStatus())) {
+              rd.setUser(ALEipUtils.getALEipUser(map.getUserId()));
+              break;
+            }
+          }
+        }
       }
       // タイプ
       rd.setType(type);
@@ -412,6 +426,7 @@ public class ScheduleSelectData extends
 
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
+      // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -424,9 +439,45 @@ public class ScheduleSelectData extends
         count = 1;
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
+        if (ptn.length() == 9) {
+          rd.addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .toString());
+          count = 8;
+        } else {
+          switch (ptn.charAt(8)) {
+            case '1':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+                .toString());
+              break;
+            case '2':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+                .toString());
+              break;
+            case '3':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+                .toString());
+              break;
+            case '4':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+                .toString());
+              break;
+            case '5':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+                .toString());
+              break;
+            default:
+              break;
+          }
+          count = 9;
+        }
         rd
           .addText(new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
             .append(
               ptn.charAt(1) != '0' ? ALLocalizationUtils
                 .getl10n("SCHEDULE_SUNDAY") : "")
@@ -450,7 +501,6 @@ public class ScheduleSelectData extends
                 .getl10n("SCHEDULE_SATURDAY") : "")
             .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
             .toString());
-        count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         rd.addText(new StringBuffer().append(
@@ -458,6 +508,15 @@ public class ScheduleSelectData extends
           Integer.parseInt(ptn.substring(1, 3))).append(
           ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 3;
+        // 毎年
+      } else if (ptn.charAt(0) == 'Y') {
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+          Integer.parseInt(ptn.substring(3, 5))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         rd.setSpan(true);
@@ -697,7 +756,7 @@ public class ScheduleSelectData extends
 
   /**
    * ログインユーザーのIDかどうかを返します。
-   * 
+   *
    * @param id
    * @return
    */

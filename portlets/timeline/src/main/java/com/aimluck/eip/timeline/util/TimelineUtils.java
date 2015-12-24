@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package com.aimluck.eip.timeline.util;
 
 import java.io.BufferedReader;
@@ -38,7 +37,9 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.cyberneko.html.parsers.DOMParser;
+import org.apache.xerces.parsers.DOMParser;
+import org.apache.xerces.xni.parser.XMLDocumentFilter;
+import org.cyberneko.html.HTMLConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -137,6 +138,10 @@ public class TimelineUtils {
 
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
+
+  public static final String TARGET_GROUP_NAME = "target_group_name";
+
+  public static final String TARGET_DISPLAY_NAME = "target_display_name";
 
   /**
    * トピックに対する返信数を返します
@@ -843,7 +848,8 @@ public class TimelineUtils {
   }
 
   public static Document getDocument(String string, String defaultCharset) {
-    DOMParser parser = new DOMParser();
+    HTMLConfiguration config = new HTMLConfiguration();
+    DOMParser parser = new DOMParser(config);
     try {
       if (string.indexOf(" ") != -1) {
         string = string.substring(0, string.indexOf(" "));
@@ -885,6 +891,25 @@ public class TimelineUtils {
 
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/elems",
+        "default");
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/attrs",
+        "default");
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags",
+        false);
+      parser
+        .setFeature(
+          "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+          true);
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags/document-fragment",
+        true);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/filters",
+        new XMLDocumentFilter[0]);
       parser.parse(source);
 
       // documentからmetaタグのcharsetを読み込む
@@ -912,6 +937,26 @@ public class TimelineUtils {
             .getInputStream(), metaTagCharset));
         source = new InputSource(reader);
         parser.setFeature("http://xml.org/sax/features/namespaces", false);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/elems",
+          "default");
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/attrs",
+          "default");
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags",
+          false);
+        parser
+          .setFeature(
+            "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+            true);
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags/document-fragment",
+          true);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/filters",
+          new XMLDocumentFilter[0]);
+
         parser.parse(source);
         document = parser.getDocument();
         if (document == null) {

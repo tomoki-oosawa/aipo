@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,6 +20,7 @@ package com.aimluck.eip.modules.screens;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.util.ParameterParser;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -29,7 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムライントピックの一覧を処理するクラスです。
- * 
+ *
  */
 public class TimelineScreen extends ALVelocityScreen {
 
@@ -38,7 +39,7 @@ public class TimelineScreen extends ALVelocityScreen {
     .getLogger(TimelineScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -60,6 +61,14 @@ public class TimelineScreen extends ALVelocityScreen {
       if (rundata.getUserAgent().trim().indexOf("Mac") != -1) {
         context.put("isMacOS", "true");
       }
+
+      ParameterParser parser = rundata.getParameters();
+
+      ALEipUtils.passPSML(rundata, context, "p3a-group", parser
+        .getString(TimelineUtils.TARGET_GROUP_NAME));
+      ALEipUtils.passPSML(rundata, context, "p4a-group", parser
+        .getString(TimelineUtils.TARGET_DISPLAY_NAME));
+
       TimelineSelectData listData = new TimelineSelectData();
       listData.initField();
       listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(

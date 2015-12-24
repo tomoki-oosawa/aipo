@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -25,13 +25,13 @@ import org.apache.jetspeed.modules.parameters.ParameterPresentationStyle;
 import org.apache.jetspeed.services.TemplateLocator;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.turbine.services.localization.LocalizationTool;
 import org.apache.turbine.services.velocity.TurbineVelocity;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALJetspeedLink;
 
 /**
  * Generic Velocity-based presentation style. The following default objects are
@@ -42,28 +42,28 @@ import com.aimluck.eip.util.ALCommonUtils;
  * <LI>value - current value of the parameter</LI>
  * <LI>parms - map of additional style parameters</LI>
  * </UL>
- * 
+ *
  * <P>
  * Supporting Velocity templates should be placed in
  * ${velocity-templates-root}/parameters folder.
  * </p>
- * 
+ *
  * <P>
  * It may be used directly with "template" as the only required parameter. This
  * is useful when the no additional objects are needed by the template.
  * </P>
- * 
+ *
  * <P>
  * If additional objects need to be put in the context, a new class extending
  * VelocityParameterPresentationStyle should be created. Override buildContext
  * to place custom objects in the Velocity context.
  * </P>
- * 
+ *
  * <P>
  * If "template" parameter is not specified, it is assumed that the template
  * name is "classname.vm".
  * </P>
- * 
+ *
  * @author <a href="mailto:morciuch@apache.org">Mark Orciuch</a>
  */
 
@@ -78,7 +78,7 @@ public class VelocityParameterPresentationStyle extends
 
   /**
    * Returns presentation control
-   * 
+   *
    * @param data
    *          - rundata object
    * @param name
@@ -106,7 +106,7 @@ public class VelocityParameterPresentationStyle extends
     LocalizationTool lt = new LocalizationTool();
     lt.init(data);
     context.put("l10n", lt);
-    context.put("jslink", new BaseJetspeedLink(data));
+    context.put("jslink", new ALJetspeedLink(data));
     context.put("utils", new ALCommonUtils());
 
     try {
@@ -139,7 +139,7 @@ public class VelocityParameterPresentationStyle extends
 
   /**
    * Override this method to put your own objects in the Velocity context
-   * 
+   *
    * @param data
    * @param name
    * @param value

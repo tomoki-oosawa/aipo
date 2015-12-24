@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -218,12 +218,34 @@ public class UserUtils {
   /**
    *
    * @param rundata
+   * @param groupname
+   * @param includeLoginuser
    * @param keyword
    * @return
    */
   public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
       RunData rundata, String groupname, boolean includeLoginuser,
       String keyword) {
+    return getUserPhotoLiteBeansFromGroup(
+      rundata,
+      groupname,
+      includeLoginuser,
+      keyword,
+      null);
+  }
+
+  /**
+   *
+   * @param rundata
+   * @param groupname
+   * @param includeLoginuser
+   * @param keyword
+   * @param rid
+   * @return
+   */
+  public static synchronized List<UserPhotoLiteBean> getUserPhotoLiteBeansFromGroup(
+      RunData rundata, String groupname, boolean includeLoginuser,
+      String keyword, String rid) {
     int login_user_id = null != rundata ? ALEipUtils.getUserId(rundata) : 0;
     ArrayList<UserPhotoLiteBean> list = new ArrayList<UserPhotoLiteBean>();
     // SQLの作成
@@ -238,7 +260,16 @@ public class UserUtils {
     statement.append("  on A.GROUP_ID = C.GROUP_ID ");
     statement.append("LEFT JOIN eip_m_user_position as D ");
     statement.append("  on A.USER_ID = D.USER_ID ");
-    statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    if (rid == null) {
+      statement.append("WHERE B.USER_ID > 3 AND B.DISABLED = 'F'");
+    } else {
+      statement.append("LEFT JOIN eip_t_message_room_member as E ");
+      statement.append("  on A.USER_ID = E.USER_ID ");
+      statement
+        .append("WHERE B.USER_ID > 3 AND (B.DISABLED = 'F' OR ( B.DISABLED = 'N' AND E.ROOM_ID = ");
+      statement.append(" #bind($roomid) ");
+      statement.append("))");
+    }
     statement.append(" AND C.GROUP_NAME = #bind($groupname) ");
     if (keyword != null && !keyword.equals("")) {
       statement.append(" AND ( ");
@@ -253,9 +284,12 @@ public class UserUtils {
     statement.append("ORDER BY D.POSITION");
     String query = statement.toString();
 
-    SQLTemplate<TurbineUser> param =
-      Database.sql(TurbineUser.class, query).param("groupname", groupname);
+    SQLTemplate<TurbineUser> param = Database.sql(TurbineUser.class, query);
 
+    if (rid != null) {
+      param.param("roomid", Integer.valueOf(rid));
+    }
+    param.param("groupname", groupname);
     if (keyword != null && !keyword.equals("")) {
       param.param("keyword1", "%" + keyword + "%");
       param.param("keyword2", "%" + keyword + "%");

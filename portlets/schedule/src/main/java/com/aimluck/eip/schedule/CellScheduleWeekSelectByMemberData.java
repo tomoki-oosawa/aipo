@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 週間スケジュールの検索結果を管理するクラスです。
- * 
+ *
  */
 public class CellScheduleWeekSelectByMemberData extends
     CellScheduleWeekSelectData {
@@ -194,22 +194,29 @@ public class CellScheduleWeekSelectByMemberData extends
         for (int l = 0; l < 7; l++) {
           if (pattern.charAt(l + 1) == '1') {
             int index = (l - cal.get(Calendar.DAY_OF_WEEK) + 7 + 1) % 7;
-            Calendar cal2 = Calendar.getInstance();
-            cal2.setTime(getStartDate().getValue());
-            cal2.add(Calendar.DAY_OF_MONTH, index);
-            if (pattern.endsWith("L")) {
-              if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-                cal2.add(Calendar.DAY_OF_MONTH, 1);
-                if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                  List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                  list2.add(list.get(k));
-                  scheduleMapList.set(index, list2);
+            Calendar cal3 = Calendar.getInstance();
+            cal3.setTime(cal.getTime());
+            cal3.add(Calendar.DAY_OF_MONTH, -(7 - index));
+            if (pattern.length() == 9
+              || cal3.get(Calendar.DAY_OF_WEEK_IN_MONTH) == Character
+                .getNumericValue(pattern.charAt(8))) {
+              Calendar cal2 = Calendar.getInstance();
+              cal2.setTime(getStartDate().getValue());
+              cal2.add(Calendar.DAY_OF_MONTH, index);
+              if (pattern.endsWith("L")) {
+                if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
+                  cal2.add(Calendar.DAY_OF_MONTH, 1);
+                  if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
+                    List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                    list2.add(list.get(k));
+                    scheduleMapList.set(index, list2);
+                  }
                 }
+              } else {
+                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                list2.add(list.get(k));
+                scheduleMapList.set(index, list2);
               }
-            } else {
-              List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-              list2.add(list.get(k));
-              scheduleMapList.set(index, list2);
             }
           }
         }
@@ -230,6 +237,42 @@ public class CellScheduleWeekSelectByMemberData extends
         if (index >= 0
           && index <= 6
           && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
+          if (pattern.endsWith("L")) {
+            if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
+              cal2.add(Calendar.DAY_OF_MONTH, 1);
+              if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
+                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+                list2.add(list.get(k));
+                scheduleMapList.set(index, list2);
+              }
+            }
+          } else {
+            List<EipTScheduleMap> list2 = scheduleMapList.get(index);
+            list2.add(list.get(k));
+            scheduleMapList.set(index, list2);
+          }
+        }
+        // 毎年
+      } else if (pattern.startsWith("Y")) {
+        int day = Integer.parseInt(pattern.substring(3, 5));
+        int month = Integer.parseInt(pattern.substring(1, 3));
+        Calendar cal2 = Calendar.getInstance();
+        Calendar cal_event = Calendar.getInstance();
+        cal2.setTime(getStartDate().getValue());
+        cal2.set(Calendar.DAY_OF_MONTH, day);
+        // JANUARY = 0 から始まるので月の設定は-1した値を使う
+        cal2.set(Calendar.MONTH, month - 1);
+        cal_event.setTime(getStartDate().getValue());
+
+        int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
+        if (index < 0) {
+          index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
+          cal_event.add(Calendar.MONTH, 1);
+        }
+        if (index >= 0
+          && index <= 6
+          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day
+          && (cal_event.get(Calendar.MONTH) + 1) == month) {
           if (pattern.endsWith("L")) {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);

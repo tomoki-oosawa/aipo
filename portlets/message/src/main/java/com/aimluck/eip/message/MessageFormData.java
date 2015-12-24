@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -86,6 +86,8 @@ public class MessageFormData extends ALAbstractFormData {
 
   private String folderName = null;
 
+  private String transactionId = null;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -94,6 +96,7 @@ public class MessageFormData extends ALAbstractFormData {
     login_user = ALEipUtils.getALEipUser(rundata);
     orgId = Database.getDomainName();
     folderName = rundata.getParameters().getString("folderName");
+    transactionId = rundata.getParameters().getString("transactionId");
 
   }
 
@@ -256,8 +259,8 @@ public class MessageFormData extends ALAbstractFormData {
           record.setIsRead("F");
           record.setUserId(member.getUserId());
           record.setRoomId(room.getRoomId());
-          recipients.add(member.getLoginName());
         }
+        recipients.add(member.getLoginName());
       }
 
       room
@@ -275,6 +278,10 @@ public class MessageFormData extends ALAbstractFormData {
       Map<String, String> params = new HashMap<String, String>();
       params.put("roomId", String.valueOf(room.getRoomId()));
       params.put("messageId", String.valueOf(model.getMessageId()));
+      if (transactionId != null && !"".equals(transactionId)) {
+        params.put("transactionId", transactionId);
+      }
+      params.put("userId", login_user.getName().getValue());
 
       ALPushService.pushAsync("messagev2", params, recipients);
 
@@ -334,11 +341,7 @@ public class MessageFormData extends ALAbstractFormData {
         List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
-            if (member.getUserId().intValue() != (int) login_user
-              .getUserId()
-              .getValue()) {
-              recipients.add(member.getLoginName());
-            }
+            recipients.add(member.getLoginName());
           }
         }
       }

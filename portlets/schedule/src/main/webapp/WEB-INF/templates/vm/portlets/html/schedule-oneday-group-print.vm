@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -160,6 +160,17 @@ if(document.all!=undefined){
 #end
 #if($todocolcount < ${result.getToDoResultDataList($record3.UserId.Value).size()})
 #set($todocolcount = ${result.getToDoResultDataList($record3.UserId.Value).size()})
+#end
+#end
+
+#if($termcolcount == 0)
+#foreach($record4 in $result.FacilityList)
+#if($termcolcount < ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
+#set($termcolcount = ${result.getFacilityTermResultDataList($record4.FacilityId.Value).size()})
+#end
+#if($todocolcount < ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
+#set($todocolcount = ${result.getToDoResultDataList($record4.FacilityId.Value).size()})
+#end
 #end
 #end
 
@@ -407,9 +418,39 @@ $record.WbrName
 #ALtdcellAtt("" "colspan='$todorestcount'")
 #end
 
+### 設備期間スケジュール（ここから） ###
 #if($termcolcount > 0)
-#ALtdcellAtt("" "colspan='$termcolcount'")
+<td class="termWeek" rowspan="$duplirowmax">
+#foreach($record in ${result.getFacilityTermResultDataList($record3.FacilityId.Value)})
+#set($entityids = "$!{entityids}$!{record.ScheduleId},")
+#if(${record.isShowDetail()})
+<div class="schedule-$!{portlet.ID}-$!{record.ScheduleId} calerndarTermScheduleDiv small">
+$record.WbrName
+#if(! ${record.isPublic()})
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+<img class="dot_schedule" src="images/common/dot.gif" alt="" />
 #end
+#if(${record.isTmpreserve()})
+<i class="auiIcon auiIconTmpreserve"></i>
+#end
+</div>
+#else
+<div class="calerndarTermScheduleDiv small">
+$record.WbrName
+#if(! ${record.isPublic()})
+&nbsp;#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")
+#else
+<img class="dot_schedule" src="images/common/dot.gif" alt="" />
+#end
+#if(${record.isTmpreserve()})
+<i class="auiIcon auiIconTmpreserve"></i>
+#end
+</div>
+#end
+#end
+#ALtdcellfooter()
+#end
+### 設備期間スケジュール（ここまで） ###
 
 #foreach($record in $result.getFacilityScheduleList($record3.FacilityId.Value))
 #set($rows = $result.getFacilityRows($record3.FacilityId.Value))

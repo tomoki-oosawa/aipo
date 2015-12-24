@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -355,7 +355,7 @@ public class ALJLoginUser extends ActionEvent {
           String path =
             JetspeedResources.getString("automatic.logon.cookie.path", "/");
 
-          if (domain == null) {
+          if (domain == null || "".equals(domain)) {
             String server = data.getServerName();
             domain = "." + server;
           }
@@ -383,12 +383,12 @@ public class ALJLoginUser extends ActionEvent {
 
           userName.setMaxAge(maxage);
           userName.setComment(comment);
-          userName.setDomain(domain);
+          // userName.setDomain(domain);
           userName.setPath(path);
 
           loginCookie.setMaxAge(maxage);
           loginCookie.setComment(comment);
-          loginCookie.setDomain(domain);
+          // loginCookie.setDomain(domain);
           loginCookie.setPath(path);
 
           data.getResponse().addCookie(userName);

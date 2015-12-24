@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -356,12 +356,12 @@ public abstract class AbstractCellScheduleFormData extends ALAbstractFormData {
       endDate.set(Calendar.MONTH, startDate.get(Calendar.MONTH));
       endDate.set(Calendar.DATE, startDate.get(Calendar.DATE));
       form_data.getEndDate().setValue(endDate.getTime());
+    }
 
-      if (!is_first) {
-        form_data.getFacilityMemberList().clear();
-        form_data.getFacilityMemberList().addAll(
-          CellScheduleUtils.getShareFacilityMemberList(rundata));
-      }
+    if (!is_first) {
+      form_data.getFacilityMemberList().clear();
+      form_data.getFacilityMemberList().addAll(
+        CellScheduleUtils.getShareFacilityMemberList(rundata));
     }
     return true;
   }

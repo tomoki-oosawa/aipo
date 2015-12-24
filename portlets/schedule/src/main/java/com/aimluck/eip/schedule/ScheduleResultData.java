@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -377,7 +377,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 重複スケジュールかどうかを設定島します。
+   * 重複スケジュールかどうかを設定します。
    *
    * @param bool
    */

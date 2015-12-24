@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALCommonUtils;
 
 /**
  * ローカルのファイルシステムを利用し、送受信したメールを保持するローカルフォルダのクラスです。 <br />
- * 
+ *
  */
 public class ALFileLocalFolder extends ALAbstractFolder {
 
@@ -62,7 +62,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * コンストラクタ
-   * 
+   *
    * @param parentFolder
    *          親フォルダ
    * @param folderName
@@ -75,7 +75,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを取得します。
-   * 
+   *
    * @param index
    * @return
    */
@@ -115,7 +115,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたファイルを読み込み，mail メッセージを取得する．
-   * 
+   *
    * @param fileName
    * @return
    */
@@ -139,7 +139,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールを保存する。
-   * 
+   *
    * @param messages
    * @return
    */
@@ -165,7 +165,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   /**
    * 受信サーバから受信した受信可能サイズを超えたメールを保存する。<br />
    * このメールはヘッダ情報のみ、受信サーバから取得し、他の情報は取得しない。
-   * 
+   *
    * @param localMailMessage
    * @return
    */
@@ -188,7 +188,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * メールをファイルに保存します。
-   * 
+   *
    * @param mail
    * @return
    */
@@ -251,7 +251,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   * 
+   *
    * @return
    */
   @Override
@@ -298,7 +298,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定されたインデックスのメールを削除する．
-   * 
+   *
    * @param msgIndexes
    * @return
    */
@@ -337,7 +337,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -353,7 +353,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を取得する。
-   * 
+   *
    * @return
    */
   @Override
@@ -363,7 +363,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新着メール数を更新する．
-   * 
+   *
    * @param num
    */
   @Override
@@ -373,7 +373,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内のメールの総数を取得する。
-   * 
+   *
    * @param type
    *          送受信フラグ
    * @return
@@ -384,7 +384,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 指定したフォルダ内の未読メール数を取得する．
-   * 
+   *
    * @return
    */
   @Override
@@ -401,7 +401,7 @@ public class ALFileLocalFolder extends ALAbstractFolder {
 
   /**
    * 新しいファイル名を生成する．
-   * 
+   *
    * @return
    */
   public String getNewFileName() {
@@ -435,6 +435,34 @@ public class ALFileLocalFolder extends ALAbstractFolder {
     } catch (Throwable t) {
       Database.rollback();
       logger.error("ALFileLocalFolder.readMails", t);
+      return false;
+    }
+    return true;
+  }
+
+  @Override
+  public boolean unreadMails(List<String> msgIndexes) {
+    try {
+      SelectQuery<EipTMail> query = Database.query(EipTMail.class);
+      Expression exp1 =
+        ExpressionFactory.inDbExp(EipTMail.MAIL_ID_PK_COLUMN, msgIndexes);
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTMail.USER_ID_PROPERTY, Integer
+          .valueOf(user_id));
+
+      List<EipTMail> mail_list =
+        query.andQualifier(exp1).andQualifier(exp2).fetchList();
+      if (mail_list == null || mail_list.size() == 0) {
+        logger.debug("[ALFileLocalFolder] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      for (EipTMail record : mail_list) {
+        record.setReadFlg("F");
+      }
+      Database.commit();
+    } catch (Throwable t) {
+      Database.rollback();
+      logger.error("ALFileLocalFolder.unreadMails", t);
       return false;
     }
     return true;

@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -60,7 +60,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールのアクションクラスです。
- * 
+ *
  */
 public class CellScheduleAction extends ALBaseAction {
 
@@ -79,7 +79,7 @@ public class CellScheduleAction extends ALBaseAction {
     ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY_CELL") };
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -91,7 +91,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -137,7 +137,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -205,7 +205,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -231,7 +231,7 @@ public class CellScheduleAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param is_repeat
@@ -255,7 +255,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールコピーのフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -275,7 +275,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -298,7 +298,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -322,7 +322,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -335,7 +335,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -348,7 +348,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -371,7 +371,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -395,7 +395,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -417,7 +417,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを登録します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -445,7 +445,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを更新します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -473,7 +473,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -492,7 +492,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを削除します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -519,7 +519,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -537,7 +537,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールの状態を変更します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -549,6 +549,7 @@ public class CellScheduleAction extends ALBaseAction {
       formData.initField();
       if (formData.doUpdate(this, rundata, context)) {
         String viewDate = formData.getViewDate().toString();
+        String entityid = rundata.getParameters().getString("entityid");
         setTemplate(rundata, "schedule-detail");
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
         if (viewDate == null || viewDate.equals("")) {
@@ -560,7 +561,9 @@ public class CellScheduleAction extends ALBaseAction {
         rundata.setRedirectURI(jsLink.getPortletById(
           ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
           "eventSubmit_doSchedule_detail",
-          "1").addQueryData("view_date", viewDate).toString());
+          "1").addQueryData("view_date", viewDate).addQueryData(
+          "entityid",
+          entityid).toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       }
@@ -572,7 +575,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -655,7 +658,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -675,7 +678,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール登録のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -695,7 +698,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールのメニュー(週間スケジュール)を表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -763,7 +766,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを詳細表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -798,7 +801,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * 日付指定用のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -831,7 +834,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュールを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -886,7 +889,7 @@ public class CellScheduleAction extends ALBaseAction {
 
   /**
    * スケジュール削除のフォームを表示する．
-   * 
+   *
    * @param rundata
    * @param context
    */

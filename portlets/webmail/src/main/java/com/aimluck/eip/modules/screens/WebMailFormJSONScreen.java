@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -31,10 +31,11 @@ import com.aimluck.eip.webmail.WebMailFormData;
 import com.aimluck.eip.webmail.WebMailMultiDelete;
 import com.aimluck.eip.webmail.WebMailMultiMove;
 import com.aimluck.eip.webmail.WebMailMultiRead;
+import com.aimluck.eip.webmail.WebMailMultiUnread;
 
 /**
  * WebメールをJSONデータとして出力するクラスです。 <br />
- * 
+ *
  */
 public class WebMailFormJSONScreen extends ALJSONScreen {
   /** logger */
@@ -100,6 +101,18 @@ public class WebMailFormJSONScreen extends ALJSONScreen {
         WebMailMultiRead read = new WebMailMultiRead();
         if (read.doMultiAction(this, rundata, context)) {
           this.setMode("multi_read");
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
+
+        // 一括未読化
+      } else if ("multi_unread".equals(mode)) {
+        WebMailMultiUnread unread = new WebMailMultiUnread();
+        if (unread.doMultiAction(this, rundata, context)) {
+          this.setMode("multi_unread");
         } else {
           JSONArray json =
             JSONArray

@@ -1,6 +1,6 @@
 #*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -45,12 +45,8 @@ function submit2(form) {
 #if($enable_userlist)
   set_cookie("login_type", form.login_type.checked);
 #end
-  if (form.save_username.checked) {
-    set_cookie("username", form.username.value);
-  } else {
-    remove_cookie("username");
-  }
-  set_cookie("save_username", form.save_username.checked);
+  set_cookie("username", form.username.value);
+  set_cookie("rememberme", form.rememberme.checked);
 }
 
 function init() {
@@ -58,27 +54,27 @@ function init() {
   var form = document.forms[0];
   var logintypeStr = get_cookie("login_type");
   var logintypeObj = form.login_type;
-  var saveUsernameStr = get_cookie("save_username");
-  var saveUsernameObj = form.save_username;
+  var remembermeStr = get_cookie("rememberme");
+  var remembermeObj = form.rememberme;
   if (logintypeStr == "false") {
     logintypeObj.checked = false;
   } else {
     logintypeObj.checked = true;
   }
-  if (saveUsernameStr == "true") {
-    saveUsernameObj.checked = true;
+  if (remembermeStr == "true") {
+    remembermeObj.checked = true;
   } else {
-    saveUsernameObj.checked = false;
+    remembermeObj.checked = false;
   }
   change_login_type(form, logintypeObj);
 #else
   var form = document.forms[0];
-  var saveUsernameStr = get_cookie("save_username");
-  var saveUsernameObj = form.save_username;
-  if (saveUsernameStr == "true") {
-    saveUsernameObj.checked = true;
+  var remembermeStr = get_cookie("rememberme");
+  var remembermeObj = form.rememberme;
+  if (remembermeStr == "true") {
+    remembermeObj.checked = true;
   } else {
-    saveUsernameObj.checked = false;
+    remembermeObj.checked = false;
   }
   change_login_type(form);
 #end
@@ -87,9 +83,7 @@ function init() {
 function set_input_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_username.checked) {
-      usernameStr = get_cookie("username");
-    }
+    usernameStr = get_cookie("username");
   } else {
     usernameStr = tmpUsername;
   }
@@ -120,9 +114,7 @@ function set_input_value(form) {
 function set_select_value(form) {
   var usernameStr = "";
   if (tmpUsername == "") {
-    if (form.save_username.checked) {
-      usernameStr = get_cookie("username");
-    }
+    usernameStr = get_cookie("username");
   } else {
     usernameStr = tmpUsername;
   }
@@ -135,9 +127,7 @@ function set_select_value(form) {
     }
   }
 #end
-  if (form.save_username.checked) {
-    form.username.value = get_cookie("username");
-  }
+form.username.value = get_cookie("username");
 }
 
 function get_cookie(strName) {
@@ -274,7 +264,8 @@ $!data.Message
 <p>
 <input class="inlineCheckbox" name="login_type" type="checkbox" value="select" id="usr_list" onClick="change_login_type(this.form, this)" tabindex="5" />&nbsp;<label for="usr_list" class="inlineLabel">$l10n.ACCOUNT_SELECT_FROM_USER_LIST</label></p>
 #end
-<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
+##<p><input class="inlineCheckbox" name="save_username" type="checkbox" value="save" id="pass" tabindex="6" />&nbsp;<label for="pass" class="inlineLabel">$l10n.ACCOUNT_SAVE_USER_ACCOUNT</label></p>
+<p><input class="inlineCheckbox" name="rememberme" value="true" type="checkbox" id="rememberme" tabindex="7" />&nbsp;<label for="rememberme" class="inlineLabel">$l10n.LOGIN_REMEMBERME</label></p>
 </div>
 <div class="floatRight">
 <input name="login_submit" class="button" type="submit" value="$l10n.ACCOUNT_LOGIN" onclick="aimluck.io.setHiddenValue(this);setHiddenValue(this)" tabindex="4" />

@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -77,7 +77,6 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.jetspeed.services.security.JetspeedSecurityException;
 import org.apache.jetspeed.util.MimeType;
-import org.apache.jetspeed.util.template.BaseJetspeedLink;
 import org.apache.jetspeed.util.template.ContentTemplateLink;
 import org.apache.jetspeed.util.template.JetspeedLink;
 import org.apache.jetspeed.util.template.JetspeedLinkFactory;
@@ -122,7 +121,6 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 
 /**
- * Aimluck EIP のユーティリティクラスです。 <br />
  *
  */
 public class ALEipUtils {
@@ -527,7 +525,6 @@ public class ALEipUtils {
           .sql(TurbineUser.class, query)
           .param("groupName", groupname)
           .fetchList();
-
       for (TurbineUser tuser : list2) {
         list.add(getALEipUser(tuser));
       }
@@ -1555,7 +1552,7 @@ public class ALEipUtils {
 
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 
@@ -1563,7 +1560,7 @@ public class ALEipUtils {
       Context context) {
     Portlet portlet = getPortlet(rundata, js_peid);
     context.put("portlet", portlet);
-    context.put("jslink", new BaseJetspeedLink(rundata));
+    context.put("jslink", new ALJetspeedLink(rundata));
     context.put("clink", new ContentTemplateLink(rundata));
   }
 

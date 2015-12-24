@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -56,6 +57,8 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -494,26 +497,13 @@ public class WorkflowFormData extends ALAbstractFormData {
         WorkflowUtils.getEipTWorkflowRequestAll(rundata, context);
       int userId = ALEipUtils.getUserId(rundata);
 
-      if (!request.getUserId().equals(userId)) {
-        // 自分のワークフローではない場合、そのワークフローが自分より前に差し戻せるか確かめる
-        List<EipTWorkflowRequestMap> requestMapList =
-          WorkflowUtils.getEipTWorkflowRequestMap(request);
-        EipTWorkflowRequestMap requestMap;
-        TurbineUser requestMapUser;
-        int listLength = requestMapList.size();
-        for (int i = 0; i < listLength; i++) {
-          requestMap = requestMapList.get(i);
-          if (requestMap.getUserId().intValue() == userId) {
-            break;
-          }
-
-          // 自分より前に差し戻せるなら、削除させない
-          requestMapUser =
-            WorkflowUtils.getTurbineUser(requestMap.getUserId().toString());
-          if ("F".equals(requestMapUser.getDisabled())) {
-            return false;
-          }
-        }
+      // 自分のワークフローではなく、かつ ワークフロー（他ユーザーの依頼）の削除権限が無い場合、削除できない
+      if (!request.getUserId().equals(userId)
+        && !doCheckAclPermissionOther(
+          rundata,
+          context,
+          ALAccessControlConstants.VALUE_ACL_DELETE)) {
+        return false;
       }
 
       // イベントログ用
@@ -912,6 +902,39 @@ public class WorkflowFormData extends ALAbstractFormData {
     }
 
     return true;
+  }
+
+  /**
+   * アクセス権限(他のユーザー)をチェックします。
+   *
+   * @return
+   */
+  protected boolean doCheckAclPermissionOther(RunData rundata, Context context,
+      int defineAclType) throws ALPermissionException {
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    boolean tmp =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
+        defineAclType);
+
+    // 詳細表示、追加、削除は一覧表示の権限が必要
+    if (defineAclType == ALAccessControlConstants.VALUE_ACL_DETAIL
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_INSERT
+      || defineAclType == ALAccessControlConstants.VALUE_ACL_DELETE) {
+      tmp =
+        (tmp && aclhandler.hasAuthority(
+          ALEipUtils.getUserId(rundata),
+          ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST));
+    }
+
+    return tmp;
   }
 
   /**

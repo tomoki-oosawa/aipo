@@ -1,6 +1,6 @@
 --
--- Aipo is a groupware program developed by Aimluck,Inc.
--- Copyright (C) 2004-2015 Aimluck,Inc.
+-- Aipo is a groupware program developed by TOWN, Inc.
+-- Copyright (C) 2004-2015 TOWN, Inc.
 -- http://www.aipo.com
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -26,3 +26,8 @@ ALTER TABLE EIP_T_TIMELINE_LIKE ADD FOREIGN KEY (TIMELINE_ID) REFERENCES EIP_T_T
 -- 20151021
 ALTER TABLE EIP_T_MESSAGE_ROOM_MEMBER ADD AUTHORITY VARCHAR(1) DEFAULT 'A';
 -- 20151021
+
+-- 20151109
+UPDATE EIP_T_ACL_PORTLET_FEATURE SET ACL_TYPE = 19 WHERE FEATURE_NAME = 'workflow_request_other' AND FEATURE_ALIAS_NAME = 'ワークフロー（他ユーザーの依頼）操作';
+UPDATE EIP_T_ACL_ROLE SET ACL_TYPE = 19 WHERE  FEATURE_ID IN (SELECT FEATURE_ID FROM EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'workflow_request_other') AND ROLE_NAME = 'ワークフロー（他ユーザーの依頼）管理者';
+-- 20151109

@@ -1,6 +1,6 @@
 /*
- * Aipo is a groupware program developed by Aimluck,Inc.
- * Copyright (C) 2004-2015 Aimluck,Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,13 +18,8 @@
  */
 package com.aimluck.eip.modules.parameters;
 
-import java.util.Collection;
-import java.util.Map;
-
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.eip.common.ALEipManager;
-import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -39,9 +34,6 @@ public class TimelineClassificationBox extends ListBox {
    */
   @Override
   protected void init(RunData data) {
-    // 部署の取得
-    Map<Integer, ALEipPost> postMap = ALEipManager.getInstance().getPostMap();
-    Collection<ALEipPost> postCollection = postMap.values();
     try {
 
       this.layout = (String) this.getParm(LAYOUT, LAYOUT_COMBO);
