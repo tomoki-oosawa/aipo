@@ -99,6 +99,14 @@ public class _EipMPost extends org.apache.cayenne.CayenneDataObject {
     return (String) readProperty("postName");
   }
 
+  public void setSort(Integer sort) {
+    writeProperty("sort", sort);
+  }
+
+  public Integer getSort() {
+    return (Integer) readProperty("sort");
+  }
+
   public void setUpdateDate(java.util.Date updateDate) {
     writeProperty("updateDate", updateDate);
   }
