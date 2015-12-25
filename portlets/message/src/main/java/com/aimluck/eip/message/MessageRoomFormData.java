@@ -258,7 +258,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
     if (!hasOwn) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
     }
-    if (!hasAuthority && roomId == 0) {
+    if (!hasAuthority) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
     }
     if (!isMemberHasAuthority) {
