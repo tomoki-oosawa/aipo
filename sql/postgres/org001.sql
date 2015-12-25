@@ -284,6 +284,26 @@ CREATE INDEX eip_t_schedule_map_schedule_id_index ON EIP_T_SCHEDULE_MAP (SCHEDUL
 CREATE INDEX eip_t_schedule_map_schedule_id_user_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID, USER_ID);
 
 -----------------------------------------------------------------------------
+-- EIP_T_SCHEDULE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_SCHEDULE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    SCHEDULE_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (SCHEDULE_ID) REFERENCES EIP_T_SCHEDULE (SCHEDULE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_file_schedule_id_index ON EIP_T_SCHEDULE_FILE (SCHEDULE_ID);
+
+-----------------------------------------------------------------------------
 -- EIP_T_TODO_CATEGORY
 -----------------------------------------------------------------------------
 
@@ -1918,6 +1938,7 @@ CREATE SEQUENCE pk_eip_t_note INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_note_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_schedule INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_schedule_map INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_schedule_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timecard INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timecard_settings INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_todo INCREMENT 20;
@@ -2001,6 +2022,7 @@ ALTER SEQUENCE pk_eip_m_user_position OWNED BY EIP_M_USER_POSITION.ID;
 ALTER SEQUENCE pk_eip_t_common_category OWNED BY EIP_T_COMMON_CATEGORY.COMMON_CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_schedule OWNED BY EIP_T_SCHEDULE.SCHEDULE_ID;
 ALTER SEQUENCE pk_eip_t_schedule_map OWNED BY EIP_T_SCHEDULE_MAP.ID;
+ALTER SEQUENCE pk_eip_t_schedule_file OWNED BY EIP_T_SCHEDULE_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_t_todo_category OWNED BY EIP_T_TODO_CATEGORY.CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_todo OWNED BY EIP_T_TODO.TODO_ID;
 ALTER SEQUENCE pk_eip_m_mail_account OWNED BY EIP_M_MAIL_ACCOUNT.ACCOUNT_ID;
