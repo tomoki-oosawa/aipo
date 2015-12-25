@@ -68,6 +68,10 @@ public class ALCommonUtils {
     return StringEscapeUtils.escapeXml(uri.toString());
   }
 
+  public static String getCloudUrl() {
+    return JetspeedResources.getString("aipo.cloud.url");
+  }
+
   /**
    * * 長いアルファベットのテキストを自動的に折り返すヘルパー
    *
