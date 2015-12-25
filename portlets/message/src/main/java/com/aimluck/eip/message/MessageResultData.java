@@ -303,4 +303,15 @@ public class MessageResultData implements ALData, Serializable {
         ? new ArrayList<FileuploadBean>(0)
         : attachmentFileList;
   }
+
+  public ALStringField getDisplayName() {
+    ALStringField displayName = new ALStringField();
+
+    if (userId.getValue() < 4) {
+      displayName.setValue("Aipo.com");
+    } else {
+      displayName.setValue(lastName.getValue() + " " + firstName.getValue());
+    }
+    return displayName;
+  }
 }

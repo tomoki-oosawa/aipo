@@ -213,6 +213,9 @@ public class MessageRoomResultData implements ALData, Serializable {
    */
   public String getAuthority(int userId) {
     EipTMessageRoom room = MessageUtils.getRoom(roomId.getValueWithInt());
+    if (room == null) {
+      return "M";
+    }
     return MessageUtils.hasAuthorityRoom(room, userId) ? "A" : "M";
   }
 
