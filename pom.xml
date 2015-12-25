@@ -4,14 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <properties>
-    <aipo.version>8.0.1</aipo.version>
+    <aipo.version>8.1.0</aipo.version>
     <tomcat.version>7.0.57</tomcat.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>aipo</artifactId>
-  <version>8.0.1</version>
+  <version>8.1.0</version>
   <packaging>pom</packaging>
 
   <name>Aipo Project</name>
