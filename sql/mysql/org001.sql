@@ -648,6 +648,20 @@ CREATE TABLE `eip_t_schedule_map` (
   KEY `eip_t_schedule_map_schedule_id_user_id_index` (`schedule_id`, `user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `eip_t_schedule_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11),
+  `schedule_id` int(11),
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  FOREIGN KEY (`schedule_id`) REFERENCES `eip_t_schedule` (`schedule_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`file_id`),
+  KEY `eip_t_file_schedule_id_index` (`schedule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `eip_t_timecard` (
   `timecard_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -1348,6 +1362,8 @@ CREATE TABLE `eip_t_message_room_member` (
     `user_id` int(11) NOT NULL,
     `login_name` varchar(32) NOT NULL,
     `target_user_id` int(11),
+    `authority` varchar(1) DEFAULT 'A',
+    FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 

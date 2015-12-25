@@ -26,3 +26,21 @@ ALTER TABLE eip_t_timeline_like ADD FOREIGN KEY (`timeline_id`) REFERENCES `eip_
 UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 19 WHERE `feature_name` = 'workflow_request_other' AND `feature_alias_name` = 'ワークフロー（他ユーザーの依頼）操作';
 UPDATE `eip_t_acl_role` SET `acl_type` = 19 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'workflow_request_other') AND `role_name` = 'ワークフロー（他ユーザーの依頼）管理者';
 -- 20151109
+
+-- 20151225
+CREATE TABLE `eip_t_schedule_file` (
+  `file_id` int(11) NOT NULL AUTO_INCREMENT,
+  `owner_id` int(11),
+  `schedule_id` int(11),
+  `file_name` varchar(128) NOT NULL,
+  `file_path` text NOT NULL,
+  `file_thumbnail` blob,
+  `create_date` date DEFAULT NULL,
+  `update_date` datetime DEFAULT NULL,
+  FOREIGN KEY (`schedule_id`) REFERENCES `eip_t_schedule` (`schedule_id`) ON DELETE CASCADE,
+  PRIMARY KEY (`file_id`),
+  KEY `eip_t_file_schedule_id_index` (`schedule_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+ALTER TABLE `eip_t_message_room_member` ADD `authority` varchar(1) DEFAULT 'A' AFTER `target_user_id`;
+-- 20151225
