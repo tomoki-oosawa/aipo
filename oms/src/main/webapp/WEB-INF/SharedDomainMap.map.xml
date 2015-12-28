@@ -925,12 +925,6 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
-	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.portlet.EipMPosition" dbEntityName="eip_m_position">
-		<obj-attribute name="createDate" type="java.sql.Date"/>
-		<obj-attribute name="positionName" type="java.lang.String"/>
-		<obj-attribute name="sort" type="java.lang.Integer"/>
-		<obj-attribute name="updateDate" type="java.util.Date"/>
-	</obj-entity>
 	<obj-entity name="EipMProjectKubun" className="com.aimluck.eip.cayenne.om.portlet.EipMProjectKubun" dbEntityName="eip_m_project_kubun">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="projectKubunCd" type="java.lang.String" db-attribute-path="PROJECT_KUBUN_CD"/>
