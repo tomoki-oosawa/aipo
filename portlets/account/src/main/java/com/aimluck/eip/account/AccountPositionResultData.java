@@ -18,6 +18,9 @@
  */
 package com.aimluck.eip.account;
 
+import java.util.Date;
+
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
@@ -34,10 +37,10 @@ public class AccountPositionResultData implements ALData {
   private ALStringField position_name;
 
   /** 作成日 */
-  private ALStringField create_date;
+  private ALDateTimeField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
 
   /**
    *
@@ -47,14 +50,14 @@ public class AccountPositionResultData implements ALData {
   public void initField() {
     position_id = new ALNumberField();
     position_name = new ALStringField();
-    create_date = new ALStringField();
-    update_date = new ALStringField();
+    create_date = new ALDateTimeField();
+    update_date = new ALDateTimeField();
   }
 
   /**
    * @return
    */
-  public ALStringField getCreateDate() {
+  public ALDateTimeField getCreateDate() {
     return create_date;
   }
 
@@ -75,15 +78,15 @@ public class AccountPositionResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
+  public ALDateTimeField getUpdateDate() {
     return update_date;
   }
 
   /**
    * @param string
    */
-  public void setCreateDate(String string) {
-    create_date.setValue(string);
+  public void setCreateDate(Date date) {
+    create_date.setValue(date);
   }
 
   /**
@@ -103,8 +106,8 @@ public class AccountPositionResultData implements ALData {
   /**
    * @param string
    */
-  public void setUpdate_date(String string) {
-    update_date.setValue(string);
+  public void setUpdate_date(Date date) {
+    update_date.setValue(date);
   }
 
 }
