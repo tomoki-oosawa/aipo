@@ -491,13 +491,17 @@ public class TimelineSelectData extends
       for (int i = list_size - 1; i >= 0; i--) {
         EipTTimeline model = list.get(i);
         int schedule_id;
-        if (model.getAppId().equals("Schedule")) {
-          Matcher m =
-            Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
-          if (m.find()) {
-            schedule_id = Integer.parseInt(m.group(1));
-            /* listと対応させた位置にschedule_idをセット */
-            schedule_id_list.set(i, schedule_id);
+        if (model.getParams() == null) {
+          System.out.println("error");
+        } else {
+          if (model.getAppId().equals("Schedule")) {
+            Matcher m =
+              Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
+            if (m.find()) {
+              schedule_id = Integer.parseInt(m.group(1));
+              /* listと対応させた位置にschedule_idをセット */
+              schedule_id_list.set(i, schedule_id);
+            }
           }
         }
       }
