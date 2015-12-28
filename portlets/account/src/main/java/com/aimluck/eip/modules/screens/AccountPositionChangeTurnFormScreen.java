@@ -66,7 +66,7 @@ public class AccountPositionChangeTurnFormScreen extends ALVelocityScreen {
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =
-      "portlets/html/ja/ajax-account-position-change-turn-form.vm";
+      "portlets/html/ajax-account-position-change-turn-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

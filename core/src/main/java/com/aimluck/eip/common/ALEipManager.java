@@ -319,7 +319,9 @@ public class ALEipManager {
     Map<Integer, ALEipPosition> positionMap =
       new LinkedHashMap<Integer, ALEipPosition>();
     try {
-      List<EipMPosition> list = Database.query(EipMPosition.class).fetchList();
+      List<EipMPosition> list =
+        Database.query(EipMPosition.class).orderAscending(
+          EipMPosition.SORT_PROPERTY).fetchList();
       for (EipMPosition record : list) {
         ALEipPosition position = new ALEipPosition();
         position.initField();

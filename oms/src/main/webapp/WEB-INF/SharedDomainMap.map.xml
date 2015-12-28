@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
-	<db-entity name="EipMPosition">
-		<db-attribute name="position_id" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
-		<db-attribute name="position_name" type="VARCHAR" isMandatory="true" length="64"/>
-		<db-attribute name="sort" type="INTEGER"/>
-		<db-attribute name="update_date" type="TIMESTAMP"/>
-	</db-entity>
 	<db-entity name="eip_facility_group">
 		<db-attribute name="FACILITY_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="GROUP_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -931,11 +925,11 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
-	<obj-entity name="EipMPosition1" className="com.aimluck.eip.cayenne.om.portlet.EipMPosition" dbEntityName="EipMPosition">
+	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.portlet.EipMPosition" dbEntityName="eip_m_position">
 		<obj-attribute name="createDate" type="java.sql.Date"/>
-		<obj-attribute name="positionName" type="java.lang.String" db-attribute-path="position_name"/>
-		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="sort"/>
-		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="update_date"/>
+		<obj-attribute name="positionName" type="java.lang.String"/>
+		<obj-attribute name="sort" type="java.lang.Integer"/>
+		<obj-attribute name="updateDate" type="java.util.Date"/>
 	</obj-entity>
 	<obj-entity name="EipMProjectKubun" className="com.aimluck.eip.cayenne.om.portlet.EipMProjectKubun" dbEntityName="eip_m_project_kubun">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>

@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.cayenne.om.account;
 
+import org.apache.cayenne.ObjectId;
+
 import com.aimluck.eip.cayenne.om.account.auto._EipMPosition;
 
 public class EipMPosition extends _EipMPosition {
@@ -82,5 +84,9 @@ public class EipMPosition extends _EipMPosition {
     } else {
       return null;
     }
+  }
+
+  public void setPositionId(int id) {
+    setObjectId(new ObjectId("EipMPosition", POSITION_ID_PK_COLUMN, id));
   }
 }
