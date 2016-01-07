@@ -55,6 +55,7 @@
 <tr>
 #ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
 #ALtdhead("#ALajaxsort('position_name' $l10n.ACCOUNT_POSITION_NAME $result 'AccountPositionListScreen')")
+#ALajaxsortLoaded("sort" $result "AccountPositionListScreen" "asc")
 </tr>
 #foreach ($record in $result.List)
 <tr>
