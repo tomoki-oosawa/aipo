@@ -34,7 +34,7 @@
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
 $l10n.ACCOUNT_POSITION_MSG_OPERATION_ORDER1<br>
  $l10n.ACCOUNT_POSITION_MSG_OPETATION_ORDER2</div>
-#ALajaxscreenformheader("AccountPositionChangeTurnForm" $jslink $portlet "AccountPositionChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_position.onReceiveMessage)")
+#ALajaxscreenformheader("AccountPositionChangeTurnForm" $jslink $portlet "AccountPositionChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_company.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 <table class="dialogTable wide">
@@ -62,7 +62,7 @@ $l10n.ACCOUNT_POSITION_MSG_OPERATION_ORDER1<br>
 </table>
 #ALtablefooter()
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doAccount_position_change_turn_update' "$l10n.ACCOUNT_POSITION_UPDATE" 'setHiddenValue(this);aipo.account_position.sortsubmit(this.form)')
+#ALsubmitJS('eventSubmit_doAccount_position_change_turn_update' "$l10n.ACCOUNT_POSITION_UPDATE" 'setHiddenValue(this);aipo.account_company.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
