@@ -21,6 +21,7 @@ package com.aimluck.eip.account;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -47,7 +48,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 　役職を管理するフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccountPositionFormData extends ALAbstractFormData {
 
@@ -63,7 +64,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -76,8 +77,8 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -90,8 +91,8 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -100,7 +101,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -128,10 +129,10 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -174,7 +175,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 『役職』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -199,7 +200,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 『役職』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -210,8 +211,34 @@ public class AccountPositionFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
 
+      // 役職の順番を調整
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement.append("SELECT MAX(sort) as max_sort FROM eip_m_position");
+      String querydata = statement.toString();
+      List<DataRow> maxnum =
+        Database.sql(EipMPosition.class, querydata).fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      // 最大のソートナンバーの後ろに振られていないデータを追加
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMPosition.SORT_PROPERTY, null);
+      SelectQuery<EipMPosition> querynotsort =
+        Database.query(EipMPosition.class);
+      querynotsort.orderAscending(EipMPosition.UPDATE_DATE_PROPERTY);
+      querynotsort.setQualifier(exp2);
+      List<EipMPosition> position_notsort_list = querynotsort.fetchList();
+      for (EipMPosition positiondata2 : position_notsort_list) {
+        positiondata2.setSort(++lastnum);
+      }
+
       EipMPosition position = Database.create(EipMPosition.class);
       position.setPositionName(position_name.getValue());
+      position.setSort(++lastnum);
       Date now = new Date();
       position.setCreateDate(now);
       position.setUpdateDate(now);
@@ -236,7 +263,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 『役職』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -272,7 +299,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 『役職』を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -318,7 +345,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
 
   /**
    * 『役職名』を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPositionName() {
@@ -326,7 +353,7 @@ public class AccountPositionFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPositionId() {
