@@ -22,6 +22,7 @@
 #set ($newUrl2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPositionFormScreen").addQueryData("entityid","new")))
 #set ($newAfterFunction2 = "aipo.account_company.onLoadPositionDialog")
 #set ($indicator_id = "indicator-list-")
+#set ($orderPost = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountPostChangeTurnFormScreen"))
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
@@ -41,6 +42,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPostFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonLink($l10n.ACCOUNT_POST_SORT $orderPost)
 </div>
 #AUIajaxpageview('AccountPostListScreen' $result)
 #AUISummaryDivfooter()
@@ -68,6 +70,7 @@
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPostFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
+#AUIajaxbuttonLink($l10n.ACCOUNT_POST_SORT $orderPost)
 </div>
 #AUIajaxpageview('AccountPostListScreen' $result)
 #AUISummaryDivfooter()

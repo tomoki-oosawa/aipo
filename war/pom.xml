@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <project
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
@@ -256,3 +257,255 @@
   </dependencies>
 
 </project>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <artifactId>aipo</artifactId>
+    <groupId>com.aimluck.eip</groupId>
+    <version>7.0.2</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>com.aimluck.eip</groupId>
+  <artifactId>war</artifactId>
+  <version>${aipo.version}</version>
+  <packaging>war</packaging>
+
+  <name>Aipo Webapp</name>
+
+  <build>
+    <finalName>aipo</finalName>
+    <!--pluginManagement>
+       <plugins>
+         <plugin>
+         <groupId>aipo.plugin</groupId>
+         <artifactId>maven-aipo-plugin</artifactId>
+         <version>1.0-SNAPSHOT</version>
+       </plugin>
+     </plugins>
+    </pluginManagement-->
+        <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>net.sf.alchim</groupId>
+          <artifactId>yuicompressor-maven-plugin</artifactId>
+          <version>0.7.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>net.sf.alchim</groupId>
+        <artifactId>yuicompressor-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compress</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <sourceDirectory>${basedir}/src/main/webapp</sourceDirectory>
+          <nosuffix>true</nosuffix>
+          <encoding>UTF-8</encoding>
+          <gzip>false</gzip>
+          <aggregations>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo.js</output>
+              <includes>
+                <include>dojo/dojo-aipo.js</include>
+                <include>dijit/dijit-aipo.js</include>
+                <include>aimluck/aimluck.js</include>
+                <include>aimluck/utils/utils.js</include>
+                <include>aimluck/utils/form.js</include>
+                <include>aimluck/io/*.js</include>
+                <include>aipo/aipo.js</include>
+                <include>aipo/common/*.js</include>
+                <include>aipo/io/*.js</include>
+                <include>aimluck/dnd/*.js</include>
+                <include>aimluck/widget/*.js</include>
+                <include>aipo/widget/ActivityList.js</include>
+                <include>aipo/widget/GroupSelectList.js</include>
+                <include>aipo/widget/GroupNormalSelectList.js</include>
+                <include>aipo/widget/GroupNormalSelectList.js</include>
+                <include>aipo/widget/MemberSelectList.js</include>
+                <include>aipo/widget/MemberNormalSelectList.js</include>
+                <include>aipo/widget/MemberNormalSelectList.js</include>
+                <include>aipo/workflow/MemberNormalSelectList.js</include>
+                <include>aipo/widget/DateCalendar.js</include>
+                <include>aipo/widget/DropdownActivityChecker.js</include>
+                <include>aipo/widget/DropdownDatepicker.js</include>
+                <include>aipo/widget/DropdownGrouppicker.js</include>
+                <include>aipo/widget/DropdownMemberpicker.js</include>
+                <include>aipo/widget/ToolTip.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.js</include>
+                <include>aipo/gadgets.js</include>
+                <include>aipo/container.js</include>
+              </includes>
+              <excludes>
+                <exclude>**/*.xd.js</exclude>
+              </excludes>
+            </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo.xd.js</output>
+              <includes>
+                <include>modules.js</include>
+                <include>dojo/dojo-aipo.xd.js</include>
+                <include>dijit/dijit-aipo.xd.js</include>
+                <include>aimluck/aimluck.js</include>
+                <include>aimluck/utils/utils.js</include>
+                <include>aimluck/utils/form.js</include>
+                <include>aimluck/io/*.xd.js</include>
+                <include>aipo/aipo.js</include>
+                <include>aipo/common/*.xd.js</include>
+                <include>aipo/io/*.xd.js</include>
+                <include>aimluck/dnd/*.xd.js</include>
+                <include>aimluck/widget/*.xd.js</include>
+                <include>aipo/widget/ActivityList.xd.js</include>
+                <include>aipo/widget/GroupSelectList.xd.js</include>
+                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
+                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
+                <include>aipo/widget/MemberSelectList.xd.js</include>
+                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
+                <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
+                <include>aipo/widget/DateCalendar.xd.js</include>
+                <include>aipo/widget/DropdownActivityChecker.xd.js</include>
+                <include>aipo/widget/DropdownDatepicker.xd.js</include>
+                <include>aipo/widget/DropdownGrouppicker.xd.js</include>
+                <include>aipo/widget/DropdownMemberpicker.xd.js</include>
+                <include>aipo/widget/ToolTip.xd.js</include>
+                <include>aipo/fileupload/widget/FileuploadDialog.xd.js</include>
+                <include>aipo/fileupload/widget/FileuploadViewDialog.xd.js</include>
+                <include>aipo/gadgets.js</include>
+                <include>aipo/container.js</include>
+              </includes>
+            </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/javascript/aipo/common.js</output>
+              <includes>
+                <include>../../../../target/aipo/javascript/aipo/customize/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/fileupload/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/schedule/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/todo/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/workflow/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/blog/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/msgboard/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/note/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/exttimecard/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/report/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/activity/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/account_user/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/account_person/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/account_post/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/gadgets_admin/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/timeline/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/page/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/tutorial/tutorial.js</include>
+                <include>../../../../target/aipo/javascript/aipo/calendar/weekly.js</include>
+                <include>../../../../target/aipo/javascript/aipo/mygroup/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/gpdb/form.js</include>
+                <include>../../../../target/aipo/javascript/aipo/fileuploadadv/form.js</include>
+              </includes>
+            </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/themes/default/css/aui-all.css</output>
+              <includes>
+                <include>extend.css</include>
+                <include>common.css</include>
+                <include>aui.css</include>
+             </includes>
+            </aggregation>
+            <aggregation>
+              <insertNewLine>true</insertNewLine>
+              <output>target/aipo/themes/default/css/mobile-all.css</output>
+              <includes>
+                <include>extend.css</include>
+                <include>common.css</include>
+                <include>aui.css</include>
+                <include>mobile.css</include>
+             </includes>
+            </aggregation>
+          </aggregations>
+          <includes>
+            <include>**/*.css</include>
+            <include>**/*.js</include>
+          </includes>
+          <excludes>
+            <exclude>**/nls/**/*.js</exclude>
+            <exclude>**/*.xml</exclude>
+            <exclude>**/*.html</exclude>
+            <exclude>**/*.properties</exclude>
+          </excludes>
+          <jswarn>false</jswarn>
+          <statistics>false</statistics>
+          <force>true</force>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>1.5</version>
+        <configuration>
+          <target>
+            <echo message="copy localization files from ja.properties"/>
+            <property name="localizationDir" value="src/main/resources/com/aimluck/eip/modules/localization"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_de.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_el.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_en.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_es.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_fr.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_it.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_ko.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_my.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_nl.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_no.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pl.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_pt.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_tr.properties"/>
+            <copy file="${localizationDir}/AipoLocalization_ja.properties" tofile="${localizationDir}/AipoLocalization_zh.properties"/>
+          </target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>portlets</artifactId>
+      <version>${aipo.version}</version>
+      <type>pom</type>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.4</version>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>el-api</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.tomcat</groupId>
+      <artifactId>jasper-el</artifactId>
+      <version>${tomcat.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+>>>>>>> refs/remotes/origin/features/post-order

@@ -178,7 +178,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
       // ユーザーが所属する部署リスト
 
       int id = ALEipUtils.getUserId(rundata);
-      SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+      SelectQuery<EipMPost> query = Database.query(EipMPost.class).orderAscending(EipMPost.SORT_PROPERTY);
       List<EipMPost> list = query.fetchList();
       List<Integer> idlist = null;
       EipMPost mpost = null;

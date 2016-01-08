@@ -151,6 +151,7 @@ public class AccountPostSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("post_name", EipMPost.POST_NAME_PROPERTY);
+    map.putValue("sort", EipMPost.SORT_PROPERTY);
     return map;
   }
 
