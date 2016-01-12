@@ -95,11 +95,10 @@ public class AccountPositionSelectData extends
 
   public static List<AccountPositionResultData> getAccountPositionList(
       String groupname) {
-    List<AccountPositionResultData> list =
-      new ArrayList<AccountPositionResultData>();
     SelectQuery<EipMPosition> query = Database.query(EipMPosition.class);
     query.orderAscending(EipMPosition.SORT_PROPERTY);
-    list = AccountUtils.getAccountPositionResultList(query.fetchList());
+    List<AccountPositionResultData> list =
+      AccountUtils.getAccountPositionResultList(query.fetchList());
     return list;
   }
 
