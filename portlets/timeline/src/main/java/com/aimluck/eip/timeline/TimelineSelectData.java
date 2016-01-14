@@ -481,16 +481,8 @@ public class TimelineSelectData extends
 
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
-      int list_size = list.size();
-      ArrayList<Integer> schedule_id_list = new ArrayList<Integer>(list_size);
-      for (int i = 0; i < list_size; i++) {
-        schedule_id_list.add(0);
-      }
-      List<EipTScheduleMap> schedule_map_list =
-        new ArrayList<EipTScheduleMap>();
-      for (int i = list_size - 1; i >= 0; i--) {
-        EipTTimeline model = list.get(i);
-        int schedule_id;
+      ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
+      for (EipTTimeline model : list) {
         if (model.getParams() == null) {
           System.out.println("error");
         } else {
@@ -498,26 +490,45 @@ public class TimelineSelectData extends
             Matcher m =
               Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
             if (m.find()) {
-              schedule_id = Integer.parseInt(m.group(1));
-              /* listと対応させた位置にschedule_idをセット */
-              schedule_id_list.set(i, schedule_id);
+              Integer scheduleId = Integer.parseInt(m.group(1));
+              scheduleIdList.add(scheduleId);
             }
           }
         }
       }
 
-      schedule_map_list =
-        TimelineUtils.getRelatedEipTScheduleMap(uid, schedule_id_list);
+      if (scheduleIdList.size() > 0) {
+        List<EipTScheduleMap> scheduleMapList =
+          TimelineUtils.getRelatedEipTScheduleMap(uid, scheduleIdList);
 
-      /* 自分が関係しない場合、listから削除 */
-      for (int j = list_size - 1; j >= 0; j--) {
-        if (uid != list.get(j).getOwnerId()) {
-          if (!TimelineUtils.hasRelation(
-            schedule_id_list.get(j),
-            schedule_map_list)) {
-            list.remove(j);
+        List<EipTTimeline> list2 = new ArrayList<EipTTimeline>();
+        for (EipTTimeline e : list) {
+          if (!e.getAppId().equals("Schedule")) {
+            list2.add(e);
+          } else {
+            if (uid == e.getOwnerId()) {
+              list2.add(e);
+            } else {
+              if (e.getParams() == null) {
+                System.out.println("error");
+              } else {
+                Matcher m =
+                  Pattern.compile("entityid=([0-9]+)").matcher(e.getParams());
+                if (m.find()) {
+                  Integer scheduleId = Integer.parseInt(m.group(1));
+                  for (EipTScheduleMap map : scheduleMapList) {
+                    if (map.getScheduleId() == scheduleId) {
+                      list2.add(e);
+                    }
+                  }
+                }
+              }
+            }
           }
         }
+
+        list = list2;
+
       }
     }
 
