@@ -24,7 +24,7 @@ import com.aimluck.eip.common.ALData;
 
 /**
  * アップロードファイルのBeanです。 <br />
- * 
+ *
  */
 public class FileuploadLiteBean implements ALData {
 
@@ -60,7 +60,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param string
    */
   public void setFolderName(String string) {
@@ -68,7 +68,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param i
    */
   public void setFileId(int i) {
@@ -76,7 +76,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param string
    */
   public void setFileName(String string) {
@@ -84,7 +84,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param i
    */
   public void setUserId(int i) {
@@ -92,7 +92,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param string
    */
   public void setPhotoModified(String string) {
@@ -100,7 +100,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setFlagNewFile(boolean bool) {
@@ -108,7 +108,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getFolderName() {
@@ -116,7 +116,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getFileId() {
@@ -124,7 +124,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getFileName() {
@@ -136,7 +136,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getUserId() {
@@ -144,7 +144,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public String getPhotoModified() {
@@ -156,7 +156,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getFileNameField() {
@@ -164,7 +164,7 @@ public class FileuploadLiteBean implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isNewFile() {

@@ -29,11 +29,17 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * サムネイル画像を画像データとして出力するクラスです。 <br />
- * 
+ *
  */
 public class FileuploadThumbnailScreen extends RawScreen {
 
@@ -50,7 +56,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
   private Date lastModified = null;
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -61,7 +67,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected String getFileName() {
@@ -70,7 +76,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected byte[] getFile() {
@@ -94,7 +100,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -138,5 +144,20 @@ public class FileuploadThumbnailScreen extends RawScreen {
         logger.error("FileuploadThumbnailScreen.doOutput", ex);
       }
     }
+  }
+
+  protected boolean doCheckAclPermission(RunData rundata, String pfeature,
+      int defineAclType) throws ALPermissionException {
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    if (!aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      pfeature,
+      defineAclType)) {
+      throw new ALPermissionException();
+    }
+    return true;
   }
 }
