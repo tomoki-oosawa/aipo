@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.facilities;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -32,6 +31,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -39,6 +39,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 設備の順番情報のフォームデータを管理するためのクラスです。 <br />
@@ -52,7 +53,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   // 設備名のリスト　ソート後
   private ALStringField positions;
 
-  private String[] facilityIds = null;
+  private String[] GroupIds = null;
 
   /** 設備グループのリスト */
   private List<FacilityResultData> facilityGroupList = null;
@@ -84,7 +85,8 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   public void initField() {
     // ユーザ名のリスト
     positions = new ALStringField();
-    positions.setFieldName("設備名リスト");
+    positions.setFieldName(ALLocalizationUtils
+      .getl10n("FACILITIES_FACILITY_NAME_LIST"));
     positions.setTrim(true);
   }
 
@@ -109,22 +111,25 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
             FacilitiesUtils.getFacilityResultList(query.fetchList());
         } else {// データ送信時
           StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
-          facilityIds = new String[st.countTokens()];
+          GroupIds = new String[st.countTokens()];
           int count = 0;
           while (st.hasMoreTokens()) {
-            facilityIds[count] = st.nextToken();
+            GroupIds[count] = st.nextToken();
             count++;
           }
-          SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
-          List<EipMFacility> list = query.fetchList();
+          EipMFacilityGroup facilitygroup =
+            Database.create(EipMFacilityGroup.class);
+          rundata.getParameters().setProperties(facilitygroup);
 
-          for (int i = 0; i < facilityIds.length; i++) {
-            EipMFacility facility =
-              getEipMFacilityFromFacilityId(list, facilityIds[i]);
-            facilityGroupList.add(FacilitiesUtils
-              .getFacilityResultData(facility));
-            // rawFacilityGroupList.add(facility);
+          for (Object record : facilityGroupList) {
+            FacilityResultData frd = (FacilityResultData) record;
+
+            EipMFacilityGroupMap map =
+              Database.create(EipMFacilityGroupMap.class);
+            map.setFacilityId((int) frd.getFacilityId().getValue());
+            map.setEipMFacilityGroupId(facilitygroup);
           }
+          Database.commit();
         }
       }
     } catch (Exception ex) {
@@ -202,7 +207,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
     try {
       int newPosition = 1;
       for (EipMFacilityGroup facilityGroup : rawFacilityGroupList) {
-        // facilityGroup.setSort(newPosition);
+        facilityGroup.setSort(newPosition);
         newPosition++;
       }
       Database.commit();
@@ -229,55 +234,11 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 指定したchar型文字が記号であるかを判断します。
-   *
-   * @param ch
-   * @return
-   */
-  protected boolean isSymbol(char ch) {
-    byte[] chars;
-
-    try {
-      chars = (Character.valueOf(ch).toString()).getBytes("shift_jis");
-    } catch (UnsupportedEncodingException ex) {
-      return false;
-    }
-
-    if (chars == null
-      || chars.length == 2
-      || Character.isDigit(ch)
-      || Character.isLetter(ch)) {
-      return false;
-    } else {
-      return true;
-    }
-
-  }
-
-  /**
-   * 指定した設備IDのオブジェクトを取得する．
-   *
-   * @param userList
-   * @param userName
-   * @return
-   */
-  private EipMFacility getEipMFacilityFromFacilityId(
-      List<EipMFacility> facilityGroupList, String facilityId) {
-    for (int i = 0; i < facilityGroupList.size(); i++) {
-      EipMFacility facility = facilityGroupList.get(i);
-      if (facility.getFacilityId().toString().equals(facilityId)) {
-        return facility;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * ユーザグループリストを取得する．
+   * 設備グループリストを取得する．
    *
    * @return
    */
-  public List<FacilityResultData> getFacilityList() {
+  public List<FacilityResultData> getFacilityGroupList() {
     return facilityGroupList;
   }
 

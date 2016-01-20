@@ -25,7 +25,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.facilities.FacilityChangeTurnFormData;
+import com.aimluck.eip.facilities.FacilityGroupChangeTurnFormData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -61,7 +61,8 @@ public class FacilityGroupChangeTurnFormScreen extends ALVelocityScreen {
     // セッションに残る ENTITY_ID を削除する．
     ALEipUtils.removeTemp(rundata, context, ALEipConstants.ENTITY_ID);
 
-    FacilityChangeTurnFormData formData = new FacilityChangeTurnFormData();
+    FacilityGroupChangeTurnFormData formData =
+      new FacilityGroupChangeTurnFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
     String layout_template =

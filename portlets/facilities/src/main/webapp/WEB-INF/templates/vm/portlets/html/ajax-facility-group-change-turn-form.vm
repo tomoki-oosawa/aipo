@@ -51,8 +51,8 @@ $l10n.FACILITIES_MSG_OPERATION_ORDER1<br>
 #if(($!result.UserList) && $!result.UserList.size() <= 0)
 <option value=""></option>
 #else
-#foreach($record in $!result.FacilityList)
-<option value="$!record.FaciltyId">$!record.FacilityName</option>
+#foreach($record in $!result.FacilityGroupList)
+<option value="$!record.FaciltyId">$!record.FacilityGroupName</option>
 #end
 #end
 </select>
