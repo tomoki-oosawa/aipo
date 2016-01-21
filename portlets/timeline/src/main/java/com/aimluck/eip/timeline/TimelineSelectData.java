@@ -498,6 +498,8 @@ public class TimelineSelectData extends
       }
 
       if (scheduleIdList.size() > 0) {
+        // eip_t_schedule_mapから、schedule_idがscheduleIdListに含まれ、
+        // user_idが自分のもののリストを得る
         List<EipTScheduleMap> scheduleMapList =
           TimelineUtils.getRelatedEipTScheduleMap(uid, scheduleIdList);
 
@@ -506,7 +508,7 @@ public class TimelineSelectData extends
           if (!e.getAppId().equals("Schedule")) {
             list2.add(e);
           } else {
-            if (uid == e.getOwnerId()) {
+            if (uid == e.getOwnerId().intValue()) {
               list2.add(e);
             } else {
               if (e.getParams() == null) {
@@ -516,19 +518,19 @@ public class TimelineSelectData extends
                   Pattern.compile("entityid=([0-9]+)").matcher(e.getParams());
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
-                  for (EipTScheduleMap map : scheduleMapList) {
-                    if (map.getScheduleId() == scheduleId) {
-                      list2.add(e);
+                  if (scheduleMapList != null) {
+                    for (EipTScheduleMap map : scheduleMapList) {
+                      if (map.getScheduleId().equals(scheduleId)) {
+                        list2.add(e);
+                      }
                     }
                   }
                 }
               }
             }
           }
+          list = list2;
         }
-
-        list = list2;
-
       }
     }
 
