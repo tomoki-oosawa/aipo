@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アカウントデータと　部署を表示するためのフォームデータです。
- * 
+ *
  */
 public class AccountPersonPostFormData extends ALAbstractFormData {
 
@@ -143,7 +143,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -178,7 +178,8 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
       // ユーザーが所属する部署リスト
 
       int id = ALEipUtils.getUserId(rundata);
-      SelectQuery<EipMPost> query = Database.query(EipMPost.class);
+      SelectQuery<EipMPost> query =
+        Database.query(EipMPost.class).orderAscending(EipMPost.SORT_PROPERTY);
       List<EipMPost> list = query.fetchList();
       List<Integer> idlist = null;
       EipMPost mpost = null;
@@ -199,7 +200,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -212,7 +213,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -225,7 +226,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -527,7 +528,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyAddress() {
@@ -536,7 +537,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 会社名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyName() {
@@ -545,7 +546,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyFaxNumber() {
@@ -554,7 +555,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyTelephone() {
@@ -563,7 +564,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyZipcode() {
@@ -572,7 +573,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostName() {
@@ -581,7 +582,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostAddress() {
@@ -590,7 +591,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostFaxNumber() {
@@ -599,7 +600,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostOutTelephone() {
@@ -608,7 +609,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostInTelephone() {
@@ -617,7 +618,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostZipcode() {
@@ -626,7 +627,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -635,7 +636,7 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
 
   /**
    * 部署IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public Object getPostID(int i) {
