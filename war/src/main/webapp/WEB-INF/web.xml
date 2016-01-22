@@ -68,6 +68,11 @@
       <filter-class>com.aimluck.eip.filter.ALDigestAuthenticationFilter</filter-class>
     </filter>
 
+        <filter>
+      <filter-name>oauth2Filter</filter-name>
+      <filter-class>com.aimluck.eip.filter.ALOAuth2Filter</filter-class>
+    </filter>
+
     <servlet-mapping>
        <servlet-name>
           aipo
@@ -80,6 +85,12 @@
        </servlet-name>
        <url-pattern>
          /ical/*
+       </url-pattern>
+       <servlet-name>
+          aipo
+       </servlet-name>
+       <url-pattern>
+         /oauth2/*
        </url-pattern>
     </servlet-mapping>
 
@@ -96,6 +107,7 @@
      <filter-name>baseFilter</filter-name>
      <url-pattern>/portal/*</url-pattern>
      <url-pattern>/ical/*</url-pattern>
+     <url-pattern>/oauth2/*</url-pattern>
      <url-pattern>/push/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
      <dispatcher>FORWARD</dispatcher>
@@ -104,6 +116,13 @@
    <filter-mapping>
      <filter-name>authFilter</filter-name>
      <url-pattern>/ical/*</url-pattern>
+     <dispatcher>REQUEST</dispatcher>
+     <dispatcher>FORWARD</dispatcher>
+    </filter-mapping>
+
+    <filter-mapping>
+     <filter-name>oauth2Filter</filter-name>
+     <url-pattern>/oauth2/*</url-pattern>
      <dispatcher>REQUEST</dispatcher>
      <dispatcher>FORWARD</dispatcher>
     </filter-mapping>

@@ -56,6 +56,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.filter.ALDigestAuthenticationFilter;
+import com.aimluck.eip.filter.ALOAuth2Filter;
 import com.aimluck.eip.http.ServletContextLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -340,6 +341,14 @@ public class ALSessionValidator extends TemplateSessionValidator {
     context.put("utils", new ALCommonUtils());
 
     context.put("l10n", ALLocalizationUtils.createLocalization(data));
+
+    if (data.getRequest().getAttribute(ALOAuth2Filter.OAUTH2_REQUEST) != null) {
+      if (isAuthorizeRequest(data)) {
+        if (isLogin(loginuser)) {
+
+        }
+      }
+    }
 
     // Cookie無効エラーを検知している場合、ログインさせない
     if (!isLogin(loginuser)
@@ -631,6 +640,16 @@ public class ALSessionValidator extends TemplateSessionValidator {
     HttpServletRequest hreq = data.getRequest();
     String requestURI = hreq.getRequestURI();
     return requestURI.equalsIgnoreCase(contextPath + "/ical/calendar.ics");
+  }
+
+  protected boolean isAuthorizeRequest(RunData data) {
+    String contextPath = ServletContextLocator.get().getContextPath();
+    if ("/".equals(contextPath)) {
+      contextPath = "";
+    }
+    HttpServletRequest hreq = data.getRequest();
+    String requestURI = hreq.getRequestURI();
+    return requestURI.equalsIgnoreCase(contextPath + "/oauth2/authorize");
   }
 
   private void setOrgParametersForError(RunData data) {
