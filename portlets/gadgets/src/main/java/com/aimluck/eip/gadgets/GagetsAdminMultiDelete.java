@@ -36,6 +36,7 @@ import com.aimluck.eip.services.social.ALApplicationService;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest;
 import com.aimluck.eip.services.social.model.ALApplicationGetRequest.Status;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -71,11 +72,14 @@ public class GagetsAdminMultiDelete extends ALAbstractCheckList {
           if (deletedApp != null) {
             titles.add(deletedApp.getTitle().toString());
           }
+          if (deletedApp.equals(value)) {
+            msgList.add(ALLocalizationUtils.getl10nFormat("削除できないアプリが含まれています"));
+          }
         }
       }
 
       // 削除
-      ALApplicationService.delete(values);
+      // ALApplicationService.delete(values);
 
       // イベントログに保存
       for (String title : titles) {
