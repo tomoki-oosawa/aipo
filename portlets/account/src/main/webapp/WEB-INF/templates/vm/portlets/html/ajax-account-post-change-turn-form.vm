@@ -35,7 +35,7 @@
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
 $l10n.ACCOUNT_MULTICHOICE_MSG0<br>
 $l10n.ACCOUNT_MULTICHOICE_MSG</div>
-#ALajaxscreenformheader("accountPostChangeTurnForm" $jslink $portlet "AccountPostChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_user.onReceiveMessage)")
+#ALajaxscreenformheader("AccountPostChangeTurnForm" $jslink $portlet "AccountPostChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_company.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 <table class="dialogTable wide">
@@ -53,7 +53,7 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 <option value=""></option>
 #else
 #foreach($record in $!result.PostList)
-<option value="$!record.PostName">$!record.PostName</option>
+<option value="$!record.PostId">$!record.PostName</option>
 #end
 #end
 </select>
@@ -62,7 +62,7 @@ $l10n.ACCOUNT_MULTICHOICE_MSG</div>
 </tbody>
 </table>
 #ALbuttonheader()
-#ALsubmitJS('eventSubmit_doAccount_change_turn_update' $l10n.ACCOUNT_UPDATE 'setHiddenValue(this);aipo.account_user.submit2(this.form)')
+#ALsubmitJS('eventSubmit_doAccount_post_change_turn_update' $l10n.ACCOUNT_UPDATE 'setHiddenValue(this);aipo.account_company.sortsubmit(this.form)')
 #ALajaxbuttonCancel()
 #ALbuttonfooter()
 #ALformfooter()
