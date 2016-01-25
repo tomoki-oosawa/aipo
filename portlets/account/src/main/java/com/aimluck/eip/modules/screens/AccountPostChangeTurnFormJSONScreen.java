@@ -26,6 +26,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.account.AccountPostChangeTurnFormData;
 import com.aimluck.eip.common.ALEipConstants;
 
 /**
