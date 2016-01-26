@@ -33,15 +33,15 @@
 <span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
-$l10n.ACCOUNT_MULTICHOICE_MSG0<br>
-$l10n.ACCOUNT_MULTICHOICE_MSG</div>
+$l10n.ACCOUNT_POST_MULTICHOICE_MSG0<br>
+$l10n.ACCOUNT_POST_MULTICHOICE_MSG</div>
 #ALajaxscreenformheader("AccountPostChangeTurnForm" $jslink $portlet "AccountPostChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.account_company.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
 <input type="hidden" name="positions" value="">
 <table class="dialogTable wide">
 <tbody>
 <tr>
-<td class="caption" width="30%" nowrap="">$l10n.ACCOUNT_USER_LIST</td>
+<td class="caption" width="30%" nowrap="">$l10n.ACCOUNT_POST_LIST</td>
 <td width="5%">
 <div class="mb10"><a href="javascript:doUpOptions10(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_10" class="auiButtonIcon"><span><i class="icon-double-angle-up"></i></span></a></div>
 <div class="mb40"><a href="javascript:doUpOptions(dojo.byId('member_so_$!portlet.ID'))" title="$l10n.ACCOUNT_ACEND_ORDER_1" class="auiButtonIcon"><span><i class="icon-angle-up"></i></span></a></div
