@@ -45,6 +45,7 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.AccountPositionResultData;
+import com.aimluck.eip.account.AccountPostResultData;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -234,7 +235,9 @@ public class AccountUtils {
       Expression exp =
         ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
           .valueOf(id));
-      List<EipMPost> list = Database.query(EipMPost.class, exp).fetchList();
+      List<EipMPost> list =
+        Database.query(EipMPost.class, exp).orderAscending(
+          EipMPost.SORT_PROPERTY).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
@@ -1067,6 +1070,32 @@ public class AccountUtils {
       }
     }
     return null;
+  }
+
+  public static List<AccountPostResultData> getAccountPostResultList(
+      List<EipMPost> result) {
+    List<AccountPostResultData> list = new ArrayList<AccountPostResultData>();
+    for (EipMPost model : result) {
+      list.add(getAccountPostResultData(model));
+    }
+    return list;
+  }
+
+  public static AccountPostResultData getAccountPostResultData(EipMPost model) {
+    AccountPostResultData data = new AccountPostResultData();
+    data.initField();
+    data.setPostId(model.getPostId());
+    data.setCompanyId(model.getCompanyId());
+    data.setPostName(model.getPostName());
+    data.setZipcode(model.getZipcode());
+    data.setAddress(model.getAddress());
+    data.setInTelephone(model.getInTelephone());
+    data.setOutTelephone(model.getOutTelephone());
+    data.setFaxNumber(model.getFaxNumber());
+    data.setCreateDate(model.getCreateDate().toString());
+    data.setUpdateDate(model.getUpdateDate().toString());
+    data.setGroupName(model.getGroupName());
+    return data;
   }
 
 }

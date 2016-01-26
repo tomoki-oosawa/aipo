@@ -18,6 +18,7 @@
  */
 package com.aimluck.eip.account;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
@@ -52,10 +53,13 @@ public class AccountPostResultData implements ALData {
   private ALStringField fax_number;
 
   /** 作成日 */
-  private ALStringField create_date;
+  private ALDateTimeField create_date;
 
   /** 更新日 */
-  private ALStringField update_date;
+  private ALDateTimeField update_date;
+
+  /** ソート */
+  private ALNumberField sort;
 
   /** グループ名 */
   private ALStringField group_name;
@@ -74,8 +78,9 @@ public class AccountPostResultData implements ALData {
     in_telephone = new ALStringField();
     out_telephone = new ALStringField();
     fax_number = new ALStringField();
-    create_date = new ALStringField();
-    update_date = new ALStringField();
+    create_date = new ALDateTimeField();
+    update_date = new ALDateTimeField();
+    sort = new ALNumberField();
     group_name = new ALStringField();
   }
 
@@ -96,7 +101,7 @@ public class AccountPostResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getCreate_date() {
+  public ALDateTimeField getCreate_date() {
     return create_date;
   }
 
@@ -123,7 +128,7 @@ public class AccountPostResultData implements ALData {
 
   /**
    * 電話番号（外線）を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone() {
@@ -132,7 +137,7 @@ public class AccountPostResultData implements ALData {
 
   /**
    * 電話番号（内線）を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -142,7 +147,7 @@ public class AccountPostResultData implements ALData {
   /**
    * @return
    */
-  public ALStringField getUpdateDate() {
+  public ALDateTimeField getUpdateDate() {
     return update_date;
   }
 
@@ -151,6 +156,20 @@ public class AccountPostResultData implements ALData {
    */
   public ALStringField getZipcode() {
     return zipcode;
+  }
+
+  /**
+   * @return
+   */
+  public ALNumberField getSort() {
+    return sort;
+  }
+
+  /**
+   * @param int
+   */
+  public void setSort(int num) {
+    sort.setValue(num);
   }
 
   /**
@@ -225,7 +244,7 @@ public class AccountPostResultData implements ALData {
 
   /**
    * グループ名を取得します
-   * 
+   *
    * @return
    */
   public ALStringField getGroupName() {
@@ -234,7 +253,7 @@ public class AccountPostResultData implements ALData {
 
   /**
    * グループ名をセットします
-   * 
+   *
    * @param string
    */
   public void setGroupName(String string) {
