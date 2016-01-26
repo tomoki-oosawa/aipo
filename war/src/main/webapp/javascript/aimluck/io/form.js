@@ -1244,23 +1244,26 @@ aimluck.io.addAuthoritySelect = function (value, text, is_auth, widgetId, name, 
     var select = document.createElement("select");
     var selectId = "tmp_authority_from_"+ value;
 
-    var s_a = '';
-    var s_m = '';
-
-    if(is_auth){
-        s_a = 'selected';
-      }else{
-        s_m = 'selected';
-      }
-
     select.name = 'tmp_authority_from';
     select.id = selectId;
     select.className = 'floatRight';
     select.setAttribute('onchange', 'dijit.byId("' + widgetId + '").onAuthorityCheck("'+ selectId +'","'+ inputId +'");'+ clickEvent);
 
-    select.innerHTML = "<option value=\"A\" " + s_a + ">管理者</option>"
-    + "<option value=\"M\" " + s_m + ">メンバー</option>"
-    + "</select>";
+	var option1 = document.createElement("option");
+	var option2 = document.createElement("option");
+	option1.innerText = "管理者";
+	option1.value = "A";
+	option2.innerText = "メンバー";
+	option2.value = "M";
+
+    if(is_auth){
+    	option1.selected = true;
+      }else{
+    	option2.selected = true;
+      }
+
+	select.appendChild(option1);
+	select.appendChild(option2);
 
     return div.appendChild(select);
 }
