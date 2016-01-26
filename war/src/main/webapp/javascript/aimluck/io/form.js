@@ -1226,7 +1226,7 @@ aimluck.io.addMemberList = function (ul, value, text, is_checked, widgetId, name
         + input.outerHTML
         + "<span class=\"avatar\"><img class=\"avatar_s\" src=\"" + img_src + "\"></span>"
         + "<span class=\"name\">" + text + "</span>"
-        + "<div id=\"" + authId + "\"></div>"
+        + "<span id=\"" + authId + "\"></span>"
         + child_html
         + "</label></li>";
 
@@ -1240,9 +1240,14 @@ aimluck.io.addAuthoritySelect = function (value, text, is_auth, widgetId, name, 
 
 	var authId = "authority_outer_"+ value;
 	var inputId = name + "_" + value;
-    var div = dojo.byId(authId);
+    var span = dojo.byId(authId);
     var select = document.createElement("select");
     var selectId = "tmp_authority_from_"+ value;
+
+    // プルダウンがクリックされる時にチェックボックスが押されるのを防止
+    dojo.connect(select, "onclick", function(e){
+        dojo.stopEvent(e);
+    });
 
     select.name = 'tmp_authority_from';
     select.id = selectId;
@@ -1265,7 +1270,7 @@ aimluck.io.addAuthoritySelect = function (value, text, is_auth, widgetId, name, 
 	select.appendChild(option1);
 	select.appendChild(option2);
 
-    return div.appendChild(select);
+    return span.appendChild(select);
 }
 
 /**
