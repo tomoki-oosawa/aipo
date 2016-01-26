@@ -1257,8 +1257,11 @@ aimluck.io.addAuthoritySelect = function (value, text, is_auth, widgetId, name, 
 	var option1 = document.createElement("option");
 	var option2 = document.createElement("option");
 	option1.innerText = "管理者";
+	//Firefox表示対策
+	option1.textContent = "管理者";
 	option1.value = "A";
 	option2.innerText = "メンバー";
+	option2.textContent = "メンバー";
 	option2.value = "M";
 
     if(is_auth){
