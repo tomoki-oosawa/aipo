@@ -28,6 +28,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -308,7 +309,7 @@ public class MessageResultData implements ALData, Serializable {
     ALStringField displayName = new ALStringField();
 
     if (userId.getValue() < 4) {
-      displayName.setValue("Aipo.com");
+      displayName.setValue(ALOrgUtilsService.getAlias());
     } else {
       displayName.setValue(lastName.getValue() + " " + firstName.getValue());
     }

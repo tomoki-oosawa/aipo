@@ -23,7 +23,7 @@
             #else
             <img width="50" height="50" alt="$!result.Detail.Name" src="themes/default/images/common/icon_user100.png" class="avatar_l">
             #end<div class="popupInner">
-            <span class="name">Aipo.com</span>
+            <span class="name">${alias}</span>
             <span class="name_kana">$!result.Detail.NameKana</span>
             <span class="post_name">#foreach($record in $!result.Detail.getPostNameList())$!record <br />#end</span></div>
         </div>

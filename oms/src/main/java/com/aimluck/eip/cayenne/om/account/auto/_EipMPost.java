@@ -17,6 +17,7 @@ public class _EipMPost extends org.apache.cayenne.CayenneDataObject {
     public static final String IN_TELEPHONE_PROPERTY = "inTelephone";
     public static final String OUT_TELEPHONE_PROPERTY = "outTelephone";
     public static final String POST_NAME_PROPERTY = "postName";
+    public static final String SORT_PROPERTY = "sort";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String ZIPCODE_PROPERTY = "zipcode";
     public static final String TURBINE_GROUP_PROPERTY = "turbineGroup";
@@ -84,6 +85,14 @@ public class _EipMPost extends org.apache.cayenne.CayenneDataObject {
     }
     public String getPostName() {
         return (String)readProperty("postName");
+    }
+    
+    
+    public void setSort(Integer sort) {
+        writeProperty("sort", sort);
+    }
+    public Integer getSort() {
+        return (Integer)readProperty("sort");
     }
     
     
