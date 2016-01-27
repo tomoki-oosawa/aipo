@@ -25,7 +25,9 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -39,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilityGroupSelectData extends
     ALAbstractSelectData<EipMFacilityGroup, EipMFacilityGroup> implements
@@ -56,7 +58,7 @@ public class FacilityGroupSelectData extends
   protected String viewtype;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -78,7 +80,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -105,7 +107,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -119,7 +121,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -140,7 +142,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -152,7 +154,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -172,7 +174,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 設備の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getFacilityGroupSum() {
@@ -181,7 +183,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -190,17 +192,19 @@ public class FacilityGroupSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group_name", EipMFacilityGroup.GROUP_NAME_PROPERTY);
+    map.putValue("group_id", EipMFacilityGroupMap.GROUP_ID_PROPERTY);
+    map.putValue("sort", EipMFacility.SORT_PROPERTY);
     return map;
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
