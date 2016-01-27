@@ -29,9 +29,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
-import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -56,7 +54,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   private String[] GroupIds = null;
 
   /** 設備グループのリスト */
-  private List<FacilityResultData> facilityGroupList = null;
+  private List<FacilityGroupResultData> facilityGroupList = null;
 
   private List<EipMFacilityGroup> rawFacilityGroupList = null;
 
@@ -72,7 +70,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    facilityGroupList = new ArrayList<FacilityResultData>();
+    facilityGroupList = new ArrayList<FacilityGroupResultData>();
     rawFacilityGroupList = new ArrayList<EipMFacilityGroup>();
   }
 
@@ -105,10 +103,11 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
       res = super.setFormData(rundata, context, msgList);
       if (res) {
         if (positions.getValue() == null || positions.getValue().equals("")) {// 初期
-          SelectQuery<EipMFacility> query = Database.query(EipMFacility.class);
-          query.orderAscending(EipMFacility.SORT_PROPERTY);
+          SelectQuery<EipMFacilityGroup> query =
+            Database.query(EipMFacilityGroup.class);
+          query.orderAscending(EipMFacilityGroup.SORT_PROPERTY);
           facilityGroupList =
-            FacilitiesUtils.getFacilityResultList(query.fetchList());
+            FacilitiesUtils.getFacilityGroupResultList(query.fetchList());
         } else {// データ送信時
           StringTokenizer st = new StringTokenizer(positions.getValue(), ",");
           GroupIds = new String[st.countTokens()];
@@ -117,19 +116,17 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
             GroupIds[count] = st.nextToken();
             count++;
           }
-          EipMFacilityGroup facilitygroup =
-            Database.create(EipMFacilityGroup.class);
-          rundata.getParameters().setProperties(facilitygroup);
+          SelectQuery<EipMFacilityGroup> query =
+            Database.query(EipMFacilityGroup.class);
+          List<EipMFacilityGroup> list = query.fetchList();
 
-          for (Object record : facilityGroupList) {
-            FacilityResultData frd = (FacilityResultData) record;
-
-            EipMFacilityGroupMap map =
-              Database.create(EipMFacilityGroupMap.class);
-            map.setFacilityId((int) frd.getFacilityId().getValue());
-            map.setEipMFacilityGroupId(facilitygroup);
+          for (int i = 0; i < GroupIds.length; i++) {
+            EipMFacilityGroup facility =
+              getEipMFacilityGroupFromGroupId(list, GroupIds[i]);
+            facilityGroupList.add(FacilitiesUtils
+              .getFacilityGroupResultData(facility));
+            rawFacilityGroupList.add(facility);
           }
-          Database.commit();
         }
       }
     } catch (Exception ex) {
@@ -160,7 +157,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を読み込みます。 <BR>
+   * 『設備グループ』を読み込みます。 <BR>
    *
    * @param rundata
    * @param context
@@ -179,7 +176,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を追加します。 <BR>
+   * 『設備グループ』を追加します。 <BR>
    *
    * @param rundata
    * @param context
@@ -193,7 +190,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を更新します。 <BR>
+   * 『設備グループ』を更新します。 <BR>
    *
    * @param rundata
    * @param context
@@ -206,8 +203,8 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
     boolean res = true;
     try {
       int newPosition = 1;
-      for (EipMFacilityGroup facilityGroup : rawFacilityGroupList) {
-        facilityGroup.setSort(newPosition);
+      for (EipMFacilityGroup facility : rawFacilityGroupList) {
+        facility.setSort(newPosition);
         newPosition++;
       }
       Database.commit();
@@ -220,7 +217,7 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
-   * 『設備』を削除します。 <BR>
+   * 『設備グループ』を削除します。 <BR>
    *
    * @param rundata
    * @param context
@@ -234,11 +231,29 @@ public class FacilityGroupChangeTurnFormData extends ALAbstractFormData {
   }
 
   /**
+   * 指定した設備IDのオブジェクトを取得する．
+   *
+   * @param userList
+   * @param userName
+   * @return
+   */
+  private EipMFacilityGroup getEipMFacilityGroupFromGroupId(
+      List<EipMFacilityGroup> facilityGroupList, String GroupId) {
+    for (int i = 0; i < facilityGroupList.size(); i++) {
+      EipMFacilityGroup facility = facilityGroupList.get(i);
+      if (facility.getGroupId().toString().equals(GroupId)) {
+        return facility;
+      }
+    }
+    return null;
+  }
+
+  /**
    * 設備グループリストを取得する．
    *
    * @return
    */
-  public List<FacilityResultData> getFacilityGroupList() {
+  public List<FacilityGroupResultData> getFacilityGroupList() {
     return facilityGroupList;
   }
 

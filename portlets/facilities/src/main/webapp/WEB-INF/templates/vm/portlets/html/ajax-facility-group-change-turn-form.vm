@@ -23,7 +23,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALerrmsg($errmsgs)
-#if((! $!result.FacilityList) || $result.FacilityList.size() == 0)
+#if((! $!result.FacilityGroupList) || $result.FacilityGroupList.size() == 0)
 <div class="message">$l10n.FACILITIES_MSG_NO_FACILITIES_REGISTERED</div>
 #else
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
@@ -52,7 +52,7 @@ $l10n.FACILITIES_MSG_OPERATION_ORDER1<br>
 <option value=""></option>
 #else
 #foreach($record in $!result.FacilityGroupList)
-<option value="$!record.FaciltyId">$!record.FacilityGroupName</option>
+<option value="$!record.GroupId">$!record.GroupName</option>
 #end
 #end
 </select>
