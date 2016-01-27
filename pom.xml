@@ -5,7 +5,7 @@
 
   <properties>
     <aipo.version>8.1.0</aipo.version>
-    <tomcat.version>7.0.57</tomcat.version>
+    <tomcat.version>7.0.67</tomcat.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 

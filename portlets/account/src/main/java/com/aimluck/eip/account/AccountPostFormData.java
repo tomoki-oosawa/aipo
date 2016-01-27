@@ -26,6 +26,7 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.JetspeedSecurity;
@@ -56,7 +57,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 部署のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccountPostFormData extends ALAbstractFormData {
 
@@ -110,7 +111,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -123,8 +124,8 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -186,7 +187,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -237,8 +238,8 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -267,10 +268,10 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -351,7 +352,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgListF
@@ -431,7 +432,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -463,6 +464,33 @@ public class AccountPostFormData extends ALAbstractFormData {
       EipMPost record = Database.create(EipMPost.class);
       // 部署名
       record.setPostName(post_name.getValue());
+
+      // 設備の順番を調整
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement.append("SELECT MAX(sort) as max_sort FROM eip_m_post");
+      String querydata = statement.toString();
+      List<DataRow> maxnum =
+        Database.sql(EipMPost.class, querydata).fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      // 最大のソートナンバーの後ろに振られていないデータを追加
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMPost.SORT_PROPERTY, null);
+      SelectQuery<EipMPost> querynotsort = Database.query(EipMPost.class);
+      querynotsort.orderAscending(EipMPost.UPDATE_DATE_PROPERTY);
+      querynotsort.setQualifier(exp2);
+      List<EipMPost> post_notsort_list = querynotsort.fetchList();
+      for (EipMPost postdata2 : post_notsort_list) {
+        postdata2.setSort(++lastnum);
+      }
+
+      record.setSort(++lastnum);
+
       // 会社ID
       record.setCompanyId(Integer.valueOf(1));
       // 郵便番号
@@ -547,7 +575,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 『部署』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -665,7 +693,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   /**
    * 『部署』を削除します。 <BR>
    * このとき部署に関連づけられているグループも削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -717,7 +745,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostName() {
@@ -726,7 +754,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getAddress() {
@@ -735,7 +763,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -744,7 +772,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -753,7 +781,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -762,7 +790,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone1() {
@@ -771,7 +799,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone2() {
@@ -780,7 +808,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（外線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getOutTelephone3() {
@@ -789,7 +817,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 電話番号（内線）を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getInTelephone() {
@@ -798,7 +826,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode1() {
@@ -807,7 +835,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode2() {
@@ -816,7 +844,7 @@ public class AccountPostFormData extends ALAbstractFormData {
 
   /**
    * 所属メンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -828,7 +856,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -843,7 +871,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -851,7 +879,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param bool
    */
   public void setJoinMember(boolean bool) {
@@ -859,7 +887,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public boolean isJoinMember() {
@@ -867,7 +895,7 @@ public class AccountPostFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public int getPostId() {

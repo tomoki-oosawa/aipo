@@ -279,7 +279,7 @@ public class ALEipManager {
     Map<Integer, ALEipPost> postMap = new LinkedHashMap<Integer, ALEipPost>();
     try {
       SelectQuery<EipMPost> query = Database.query(EipMPost.class);
-      query.orderAscending(EipMPost.POST_NAME_PROPERTY);
+      query.orderAscending(EipMPost.SORT_PROPERTY);
       List<EipMPost> list = query.fetchList();
       for (EipMPost record : list) {
         ALEipPost post = new ALEipPost();
@@ -319,7 +319,9 @@ public class ALEipManager {
     Map<Integer, ALEipPosition> positionMap =
       new LinkedHashMap<Integer, ALEipPosition>();
     try {
-      List<EipMPosition> list = Database.query(EipMPosition.class).fetchList();
+      List<EipMPosition> list =
+        Database.query(EipMPosition.class).orderAscending(
+          EipMPosition.SORT_PROPERTY).fetchList();
       for (EipMPosition record : list) {
         ALEipPosition position = new ALEipPosition();
         position.initField();
