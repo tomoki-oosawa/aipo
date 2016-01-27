@@ -37,14 +37,14 @@
 	<div class="avatar">
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" width="50" height="50" class="avatar_l"/>
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.DisplayName" width="50" height="50" class="avatar_l"/>
 		#else
-			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" width="50" height="50"/>
+			<img src="themes/default/images/common/icon_user100.png" alt="$!record.DisplayName" width="50" height="50"/>
 		#end
 		</a>
 	</div>
 	<div class="messageContents">
-		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.DisplayName</a></div>
 		<div class="body">$!record.MessageHtml
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
@@ -55,7 +55,7 @@
 		<div class="time">
 			$!record.CreateDate&nbsp;
 			#if($!record.isOwner())<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageReadUserListScreen").addQueryData("m",$!record.MessageId)','$!portlet.ID',aipo.message.onLoadMessageReadUserList);" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end</a>#end
-			#if($!record.isOwner())
+			#if($!record.isOwner() || (!$!result.isDirect() && $!result.isAdmin()))
 					<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 					<input type="hidden" name="_name" value="$l10n.MESSAGE_MESSAGE" />
 					<input type="hidden" name="secid" value="$secid" />

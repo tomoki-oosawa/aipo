@@ -78,7 +78,6 @@ public class MessageListSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
     userId = ALEipUtils.getUserId(rundata);
   }
 
@@ -347,5 +346,19 @@ public class MessageListSelectData extends
     return a.getYear().equals(b.getYear())
       && a.getMonth().equals(b.getMonth())
       && a.getDay().equals(b.getDay());
+  }
+
+  public boolean isAdmin() {
+    if (room == null) {
+      return false;
+    }
+    return MessageUtils.hasAuthorityRoom(room, userId);
+  }
+
+  public boolean isDirect() {
+    if (room == null) {
+      return false;
+    }
+    return "O".equals(room.getRoomType());
   }
 }

@@ -37,6 +37,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     memberFromOptionImageVersionParam: "photoModified",
     memberFromOptionDefaultImage: "themes/default/images/common/icon_user100.png",
     memberToId: "",
+    authorityFromId: "",
+    memberAuthorityToId: "",
     clickEvent: "",
     viewSelectId: "",
     groupSelectId: "",
@@ -67,6 +69,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     	"<div style=\"display: none;\" id=\"${widgetId}-memberlist-indicator\" class=\"indicator alignleft\">読み込み中</div>" +
     	"<ul class=\"memberPopupList\" id=\"${memberFromId}\"></ul>" +
     	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberToId}\" id=\"${memberToId}\"></select>" +
+    	"<select multiple=\"multiple\" style=\"display:none\" name=\"${memberAuthorityToId}\" id=\"${memberAuthorityToId}\"></select>" +
     	"</div>" +
     	"</div>\n",
     postCreate: function(){
@@ -77,6 +80,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           value: this.memberFromOptionValue,
           clickEvent: this.clickEvent,
           selectedId: this.memberToId,
+          selectedAuthId: this.memberAuthorityToId,
           name: this.memberFromId,
           userId: this.memberFromOptionUserId,
           image_flag: this.memberFromOptionImageFlag,
@@ -96,6 +100,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
           preOptions: { key:this.groupSelectPreOptionKey, value:this.groupSelectPreOptionValue },
           selectedId: this.groupSelectPreOptionKey,
           widgetId: this.widgetId,
+          child_html: this.childTemplateString,
         };
         aimluck.io.createGroupLists(this.groupSelectId, params);
         aipo.widget.MemberFilterList.filterSelectDisplay(this.widgetId, this.groupSelectPreOptionKey, this.groupSelectPreOptionValue);
@@ -117,6 +122,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
               value: this.memberFromOptionValue,
               clickEvent: this.clickEvent,
               selectedId: this.memberToId,
+              selectedAuthId: this.memberAuthorityToId,
               name: this.memberFromId,
               userId: this.memberFromOptionUserId,
               image_flag: this.memberFromOptionImageFlag,
@@ -138,17 +144,26 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 	 * 参加メンバー追加/削除チェックボックス
 	 * クリック時アクション
 	 */
-	onMemberCheck : function(checkbox){
-		aipo.widget.MemberFilterList.changeMember(checkbox, dojo.byId(this.memberToId));
+	onMemberCheck : function(checkbox,select){
+		aipo.widget.MemberFilterList.changeMember(checkbox, select, dojo.byId(this.memberToId), dojo.byId(this.memberAuthorityToId));
 		aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberFromId);
+		aipo.widget.MemberFilterList.setWrapperHeight();
+	},
+	/**
+	 * 参加メンバー追加/削除チェックボックス
+	 * クリック時アクション
+	 */
+	onAuthorityCheck : function(select, checkbox){
+		aipo.widget.MemberFilterList.changeAuthority(select, checkbox, dojo.byId(this.memberToId), dojo.byId(this.memberAuthorityToId));
+		//aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+this.widgetId), this.widgetId, this.memberAuthorityToId);
 		aipo.widget.MemberFilterList.setWrapperHeight();
 	},
     fixScroll: function() {
     	// for chrome
       if (!dojo.isIE) {
     	dojo.forEach(dojo.query(".memberPopupDiv_ver3 .memberPopupList"), function(item){
-    		item.style.overflow="hidden";
     		setTimeout(function(){
+        		item.style.overflow="hidden";
         		item.style["overflow-y"]="scroll";
     		}, 100);
     		});
@@ -160,7 +175,7 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
 /**
  * 選択済みユーザー読み込み
  */
-aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId){
+aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId, memberAuthorityToId){
     var picker = dojo.byId(widgetId);
     if (picker) {
         var select = dojo.byId(memberFromId);
@@ -169,7 +184,7 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
         if (s_o.length == 1 && s_o[0].value == "")
             return;
         for (i = 0; i < s_o.length; i++) {
-        	aipo.widget.MemberFilterList.addOptionSync(s_o[i].value, s_o[i].text, true, memberToId);
+        	aipo.widget.MemberFilterList.addOptionSync(s_o[i].value, s_o[i].text, true, s_o[i].getAttribute('data-authority'), memberToId, memberAuthorityToId);
         }
     }
 }
@@ -177,26 +192,49 @@ aipo.widget.MemberFilterList.setup = function(widgetId, memberFromId, memberToId
 /**
  * 選択済みユーザー読み込み
  */
-aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, memberToId) {
+aipo.widget.MemberFilterList.addOptionSync = function(value, text, is_selected, authority, memberToId, memberAuthorityToId) {
   var select = dojo.byId(memberToId);
+  var selectAuth = dojo.byId(memberAuthorityToId);
   if (document.all) {
     var option = document.createElement("OPTION");
     option.value = value;
     option.text = text;
     option.selected = is_selected;
-    if (select.options.length == 1 && select.options[0].value == ""){
-            select.options.remove(0);
-      }
-      select.add(option, select.options.length);
+
+    if (select.options.length == 1 && select.options[0].value == "") {
+    	select.options.remove(0);
+    }
+
+    select.add(option, select.options.length);
+
+    var optionAuth = document.createElement("OPTION");
+    optionAuth.value = authority;
+    optionAuth.text = text;
+    optionAuth.selected = is_selected;
+    if (selectAuth.options.length == 1 && selectAuth.options[0].value == ""){
+    	selectAuth.options.remove(0);
+    }
+    selectAuth.add(optionAuth, selectAuth.options.length);
+
   } else {
     var option = document.createElement("OPTION");
     option.value = value;
     option.text = text;
     option.selected = is_selected;
+
     if (select.options.length == 1 && select.options[0].value == ""){
         select.removeChild(select.options[0]);
     }
     select.insertBefore(option, select.options[select.options.length]);
+
+    var optionAuth = document.createElement("OPTION");
+    optionAuth.value = authority;
+    optionAuth.text = text;
+    optionAuth.selected = is_selected;
+    if (selectAuth.options.length == 1 && selectAuth.options[0].value == ""){
+    	selectAuth.removeChild(selectAuth.options[0]);
+    }
+    selectAuth.insertBefore(optionAuth, selectAuth.options[selectAuth.options.length]);
   }
 }
 
@@ -297,9 +335,12 @@ aipo.widget.MemberFilterList.removeAllMember = function(select) {
  *
  * @fixed
  */
-aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
+aipo.widget.MemberFilterList.changeMember = function(input, select, select_member_to, select_auth_to) {
   if (document.all) {
       var t_o = select_member_to.options;
+      var a_o = select_auth_to.options;
+      var a_s = dojo.byId(select);
+      var authority = a_s.value;
       if (input.value == "") return;
       if (input.checked){
           var iseq = false;
@@ -321,16 +362,32 @@ aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
               }
          if (this.memberLimit != 0 && select_member_to.options.length >= this.memberLimit) return;
           t_o.add(option, t_o.length);
+
+          var optionAuth = document.createElement("OPTION");
+          optionAuth.value = authority;
+          optionAuth.text = input.getAttribute("data-name");
+          optionAuth.selected = true;
+          if (a_o.length == 1 && a_o[0].value == ""){
+        	  a_o.remove(0);
+              }
+          if (this.memberLimit != 0 && select_auth_to.options.length >= this.memberLimit) return;
+          a_o.add(optionAuth, a_o.length);
+
       }else{
 
           for( j = 0 ; j < t_o.length; j ++ ) {
           if( t_o[j].value == input.value ) {
               t_o.remove(j);
+              a_o.remove(j);
           }
           }
+
       }
 } else {
         var t_o = select_member_to.options;
+        var a_o = select_auth_to.options;
+        var a_s = dojo.byId(select);
+        var authority = a_s.value;
         if (input.value == "") return;
         if (input.checked){
             var iseq = false;
@@ -351,14 +408,50 @@ aipo.widget.MemberFilterList.changeMember = function(input, select_member_to) {
               select_member_to.removeChild(select_member_to.options[0]);
             }
             select_member_to.insertBefore(option, t_o[t_o.length]);
+
+            var optionAuth = document.createElement("OPTION");
+            optionAuth.value = authority;
+            optionAuth.text = input.getAttribute("data-name");
+            optionAuth.selected = true;
+
+            if (select_auth_to.options.length == 1 && select_auth_to.options[0].value == ""){
+            	select_auth_to.removeChild(select_auth_to.options[0]);
+            }
+            select_auth_to.insertBefore(optionAuth, a_o[a_o.length]);
+
         }else{
+
             for( j = 0 ; j < t_o.length; j ++ ) {
             if( t_o[j].value == input.value ) {
             	select_member_to.removeChild(t_o[j]);
+            	select_auth_to.removeChild(a_o[j]);
             }
             }
         }
   }
+}
+
+/**
+ * 管理者権限の選択状態切り替え
+ *
+ * ユーザー選択チェックボックス:ON　の状態 で
+ * 管理者権限を操作した場合、
+ * id="member_authority_to"のselectタグを更新
+ *
+ * @fixed
+ */
+aipo.widget.MemberFilterList.changeAuthority = function(select, input,  select_member_to, select_auth_to) {
+    var t_o = select_member_to.options;
+    var a_o = select_auth_to.options;
+    var a_s = dojo.byId(select);
+    var authority = a_s.value;
+    var _input = dojo.byId(input);
+    if (_input.value == "") return;
+    for( j = 0 ; j < t_o.length; j ++ ) {
+        if( t_o[j].value == _input.value ) {
+            a_o[j].value = dojo.byId(select).value;
+        }
+    }
 }
 
 /**
@@ -455,6 +548,7 @@ aipo.widget.MemberFilterList.filterCheckedDisplay = function(widgetId, node, mem
     aipo.widget.MemberFilterList.filterSelectDisplayView(widgetId, node);
     aipo.widget.MemberFilterList.filterSelect(ul,li,node);
     aipo.widget.MemberFilterList.filterCheckedMember(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, memberFromId);
+    //aipo.widget.MemberFilterList.filterCheckedMemberAuthority(dojo.byId("tmp_head_checkbox_"+widgetId), widgetId, authorityFromId);
 }
 
 /**
