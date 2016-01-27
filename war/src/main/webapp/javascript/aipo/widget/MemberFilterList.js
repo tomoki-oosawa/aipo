@@ -162,8 +162,8 @@ dojo.declare("aipo.widget.MemberFilterList", [dijit._Widget, dijit._Templated], 
     	// for chrome
       if (!dojo.isIE) {
     	dojo.forEach(dojo.query(".memberPopupDiv_ver3 .memberPopupList"), function(item){
-    		item.style.overflow="hidden";
     		setTimeout(function(){
+        		item.style.overflow="hidden";
         		item.style["overflow-y"]="scroll";
     		}, 100);
     		});
