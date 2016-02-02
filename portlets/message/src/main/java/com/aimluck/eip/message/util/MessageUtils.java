@@ -175,6 +175,17 @@ public class MessageUtils {
     return isJoinRoom(room, userId);
   }
 
+  public static boolean hasAuthorityRoom(EipTMessageRoom room, int userId) {
+    @SuppressWarnings("unchecked")
+    List<EipTMessageRoomMember> list = room.getEipTMessageRoomMember();
+    for (EipTMessageRoomMember member : list) {
+      if (member.getUserId().intValue() == userId) {
+        return "A".equals(member.getAuthority());
+      }
+    }
+    return false;
+  }
+
   public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
       int limit, boolean isLatest) {
     StringBuilder select = new StringBuilder();

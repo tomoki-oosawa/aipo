@@ -49,7 +49,7 @@ public class AccountPostSelectData extends
     .getLogger(AccountPostSelectData.class.getName());
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -91,7 +91,7 @@ public class AccountPostSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -102,7 +102,7 @@ public class AccountPostSelectData extends
 
   /**
    * 詳細情報を取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -151,11 +151,12 @@ public class AccountPostSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("post_name", EipMPost.POST_NAME_PROPERTY);
+    map.putValue("sort", EipMPost.SORT_PROPERTY);
     return map;
   }
 
   /**
-   * 
+   *
    * @param postid
    * @return
    */
@@ -165,7 +166,7 @@ public class AccountPostSelectData extends
 
   /**
    * あるグループに所属するメンバーのリストを取得します
-   * 
+   *
    * @param postid
    * @return
    */

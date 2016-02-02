@@ -7,6 +7,7 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String AUTHORITY_PROPERTY = "authority";
     public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String TARGET_USER_ID_PROPERTY = "targetUserId";
     public static final String USER_ID_PROPERTY = "userId";
@@ -14,6 +15,14 @@ public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject
 
     public static final String ID_PK_COLUMN = "ID";
 
+    public void setAuthority(String authority) {
+        writeProperty("authority", authority);
+    }
+    public String getAuthority() {
+        return (String)readProperty("authority");
+    }
+    
+    
     public void setLoginName(String loginName) {
         writeProperty("loginName", loginName);
     }
