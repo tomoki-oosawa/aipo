@@ -65,19 +65,19 @@ public class ALJLogoutUser extends ActionEvent {
       String path =
         JetspeedResources.getString("automatic.logon.cookie.path", "/");
 
-      if (domain == null) {
+      if (domain == null || "".equals(domain)) {
         String server = data.getServerName();
         domain = "." + server;
       }
 
       userName.setMaxAge(0);
       userName.setComment(comment);
-      userName.setDomain(domain);
+      // userName.setDomain(domain);
       userName.setPath(path);
 
       loginCookie.setMaxAge(0);
       loginCookie.setComment(comment);
-      loginCookie.setDomain(domain);
+      // loginCookie.setDomain(domain);
       loginCookie.setPath(path);
 
       data.getResponse().addCookie(userName);

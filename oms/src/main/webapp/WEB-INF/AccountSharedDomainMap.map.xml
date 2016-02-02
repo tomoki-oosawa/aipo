@@ -1,24 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by TOWN, Inc.
-    Copyright (C) 2004-2015 TOWN, Inc.
-    http://www.aipo.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.account"/>
 	<db-entity name="aipo_license">
@@ -55,6 +35,7 @@
 		<db-attribute name="CREATE_DATE" type="DATE"/>
 		<db-attribute name="POSITION_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="POSITION_NAME" type="VARCHAR" isMandatory="true" length="64"/>
+		<db-attribute name="SORT" type="INTEGER"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_m_post">
@@ -168,6 +149,7 @@
 	<obj-entity name="EipMPosition" className="com.aimluck.eip.cayenne.om.account.EipMPosition" dbEntityName="eip_m_position">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="positionName" type="java.lang.String" db-attribute-path="POSITION_NAME"/>
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipMPost" className="com.aimluck.eip.cayenne.om.account.EipMPost" dbEntityName="eip_m_post">

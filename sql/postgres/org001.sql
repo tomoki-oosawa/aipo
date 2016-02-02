@@ -284,6 +284,26 @@ CREATE INDEX eip_t_schedule_map_schedule_id_index ON EIP_T_SCHEDULE_MAP (SCHEDUL
 CREATE INDEX eip_t_schedule_map_schedule_id_user_id_index ON EIP_T_SCHEDULE_MAP (SCHEDULE_ID, USER_ID);
 
 -----------------------------------------------------------------------------
+-- EIP_T_SCHEDULE_FILE
+-----------------------------------------------------------------------------
+
+CREATE TABLE EIP_T_SCHEDULE_FILE
+(
+    FILE_ID INTEGER NOT NULL,
+    OWNER_ID INTEGER,
+    SCHEDULE_ID INTEGER,
+    FILE_NAME VARCHAR (128) NOT NULL,
+    FILE_PATH TEXT NOT NULL,
+    FILE_THUMBNAIL bytea,
+    CREATE_DATE DATE,
+    UPDATE_DATE TIMESTAMP,
+    FOREIGN KEY (SCHEDULE_ID) REFERENCES EIP_T_SCHEDULE (SCHEDULE_ID) ON DELETE CASCADE,
+    PRIMARY KEY (FILE_ID)
+);
+
+CREATE INDEX eip_t_file_schedule_id_index ON EIP_T_SCHEDULE_FILE (SCHEDULE_ID);
+
+-----------------------------------------------------------------------------
 -- EIP_T_TODO_CATEGORY
 -----------------------------------------------------------------------------
 
@@ -1826,6 +1846,7 @@ CREATE TABLE EIP_T_MESSAGE_ROOM_MEMBER
     USER_ID INTEGER NOT NULL,
     LOGIN_NAME VARCHAR (32) NOT NULL,
     TARGET_USER_ID INTEGER NOT NULL,
+    AUTHORITY VARCHAR (1) DEFAULT 'A',
     FOREIGN KEY (ROOM_ID) REFERENCES EIP_T_MESSAGE_ROOM (ROOM_ID) ON DELETE CASCADE,
     PRIMARY KEY (ID)
 );
@@ -1917,6 +1938,7 @@ CREATE SEQUENCE pk_eip_t_note INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_note_map INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_schedule INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_schedule_map INCREMENT 20;
+CREATE SEQUENCE pk_eip_t_schedule_file INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timecard INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_timecard_settings INCREMENT 20;
 CREATE SEQUENCE pk_eip_t_todo INCREMENT 20;
@@ -2000,6 +2022,7 @@ ALTER SEQUENCE pk_eip_m_user_position OWNED BY EIP_M_USER_POSITION.ID;
 ALTER SEQUENCE pk_eip_t_common_category OWNED BY EIP_T_COMMON_CATEGORY.COMMON_CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_schedule OWNED BY EIP_T_SCHEDULE.SCHEDULE_ID;
 ALTER SEQUENCE pk_eip_t_schedule_map OWNED BY EIP_T_SCHEDULE_MAP.ID;
+ALTER SEQUENCE pk_eip_t_schedule_file OWNED BY EIP_T_SCHEDULE_FILE.FILE_ID;
 ALTER SEQUENCE pk_eip_t_todo_category OWNED BY EIP_T_TODO_CATEGORY.CATEGORY_ID;
 ALTER SEQUENCE pk_eip_t_todo OWNED BY EIP_T_TODO.TODO_ID;
 ALTER SEQUENCE pk_eip_m_mail_account OWNED BY EIP_M_MAIL_ACCOUNT.ACCOUNT_ID;
@@ -2105,7 +2128,7 @@ INSERT INTO TURBINE_GROUP VALUES(3,'Facility',NULL,NULL,NULL,NULL);
 SELECT setval('pk_turbine_group',3);
 
 INSERT INTO TURBINE_USER VALUES(1,'admin','0DPiKuNIrrVmD8IUCuw1hQxNqZc=',' ','Admin','','CONFIRMED',now(),now(),now(),'F',NULL,now(),0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'T',0,NULL);
-INSERT INTO TURBINE_USER VALUES(2,'template','MibsvmUCE6Sc0DrmcUB1Dk80AIM=','Aimluck','Template','','CONFIRMED',now(),now(),now(),'T',NULL, now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),NULL,0,NULL);
+INSERT INTO TURBINE_USER VALUES(2,'template','MibsvmUCE6Sc0DrmcUB1Dk80AIM=','Aipo','Template','','CONFIRMED',now(),now(),now(),'T',NULL, now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),NULL,0,NULL);
 INSERT INTO TURBINE_USER VALUES(3,'anon','YVGPsXFatNaYrKMqeECsey5QfT4=','Anonymous','User','','CONFIRMED',now(),now(),now(),'F',NULL, now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),NULL,0,NULL);
 SELECT setval('pk_turbine_user',3);
 
@@ -2180,7 +2203,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(142,'todo_todo_other','ToDo（他�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(143,'todo_category_self','ToDo（カテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(144,'todo_category_other','ToDo（他ユーザのカテゴリ）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(151,'workflow_request_self','ワークフロー（自分の依頼）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',3);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',19);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(161,'addressbook_address_inside','ユーザー名簿操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(162,'addressbook_address_outside','アドレス帳（社外アドレス）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(163,'addressbook_company','アドレス帳（会社情報）操作',31);
@@ -2225,7 +2248,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(30,'ToDo（他ユーザのカテゴリ）管�
 
 -- workflow
 INSERT INTO EIP_T_ACL_ROLE VALUES(15,'ワークフロー（自分の依頼）管理者',151,31,'＊詳細表示、追加、削除は一覧表示の権限を持っていないと使用できません ＊承認、再申請や差し戻しは編集の権限が必要です');
-INSERT INTO EIP_T_ACL_ROLE VALUES(16,'ワークフロー（他ユーザーの依頼）管理者',152,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(16,'ワークフロー（他ユーザーの依頼）管理者',152,19,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
 
 -- addressbook
 INSERT INTO EIP_T_ACL_ROLE VALUES(17,'ユーザー名簿管理者',161,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');

@@ -38,7 +38,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ユーザアカウントを複数有効化するためのクラス． <BR>
- * 
+ *
  */
 public class AccountUserMultiEnable extends ALAbstractCheckList {
 
@@ -47,7 +47,7 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
     .getLogger(AccountUserMultiDelete.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param values
@@ -95,7 +95,6 @@ public class AccountUserMultiEnable extends ALAbstractCheckList {
             TurbineUser.class,
             TurbineUser.LOGIN_NAME_COLUMN,
             user_name);
-        user.setPositionId(Integer.valueOf(0));
         user.setDisabled("F");
 
         // イベントログに保存

@@ -37,7 +37,9 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.cyberneko.html.parsers.DOMParser;
+import org.apache.xerces.parsers.DOMParser;
+import org.apache.xerces.xni.parser.XMLDocumentFilter;
+import org.cyberneko.html.HTMLConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -847,7 +849,8 @@ public class TimelineUtils {
   }
 
   public static Document getDocument(String string, String defaultCharset) {
-    DOMParser parser = new DOMParser();
+    HTMLConfiguration config = new HTMLConfiguration();
+    DOMParser parser = new DOMParser(config);
     try {
       if (string.indexOf(" ") != -1) {
         string = string.substring(0, string.indexOf(" "));
@@ -889,6 +892,25 @@ public class TimelineUtils {
 
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/elems",
+        "default");
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/attrs",
+        "default");
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags",
+        false);
+      parser
+        .setFeature(
+          "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+          true);
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags/document-fragment",
+        true);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/filters",
+        new XMLDocumentFilter[0]);
       parser.parse(source);
 
       // documentからmetaタグのcharsetを読み込む
@@ -916,6 +938,26 @@ public class TimelineUtils {
             .getInputStream(), metaTagCharset));
         source = new InputSource(reader);
         parser.setFeature("http://xml.org/sax/features/namespaces", false);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/elems",
+          "default");
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/attrs",
+          "default");
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags",
+          false);
+        parser
+          .setFeature(
+            "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+            true);
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags/document-fragment",
+          true);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/filters",
+          new XMLDocumentFilter[0]);
+
         parser.parse(source);
         document = parser.getDocument();
         if (document == null) {
