@@ -4072,6 +4072,9 @@ ul.attachments {
 #timelineOuter .auiSummaryMeta{
   margin: 0;
 }
+#timelineOuter .message .avatar a {
+  text-decoration:none !important;
+}
 
 .tlInputMention {
   padding: 4px;
