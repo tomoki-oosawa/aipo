@@ -42,7 +42,9 @@ $portlet.getContent($data)
 <div class="roundMainWrapper" style="min-height:1000px">
 #end
 <noscript><div class="alert">$utils.getl10nFormat1("WAR_CANNOT_USE_JAVASCRIPT",$!{alias})</div></noscript>
+#if(${data.User.UserId} > 4)
 #AUINotificationCheck()
+#end
 #ALMaintenance()
 #AuiInformation($information_title $information_text $information_cookie_name $information_display)
 #if(!$run)
