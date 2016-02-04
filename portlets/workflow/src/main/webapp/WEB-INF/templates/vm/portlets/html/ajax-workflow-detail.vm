@@ -77,7 +77,7 @@ $!result.Detail.RouteName
 #ALtditemheader()
 <ul>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
+<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
 #end
 </ul>
 #ALtditemfooter()

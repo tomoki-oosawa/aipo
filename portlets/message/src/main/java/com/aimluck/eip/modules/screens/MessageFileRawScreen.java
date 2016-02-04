@@ -39,24 +39,27 @@ public class MessageFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(MessageFileRawScreen.class.getName());
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTMessageFile file = MessageUtils.getEipTMessageFile(rundata);
+    if (!MessageUtils.isJoinRoom(file, ALEipUtils.getUserId(rundata))) {
+      throw new FileNotFoundException();
+    }
+    super.setFilePath(MessageUtils.getSaveDirPath(
+      Database.getDomainName(),
+      file.getOwnerId().intValue())
+      + file.getFilePath());
+    super.setFileName(file.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTMessageFile file = MessageUtils.getEipTMessageFile(rundata);
-      if (!MessageUtils.isJoinRoom(file, ALEipUtils.getUserId(rundata))) {
-        throw new FileNotFoundException();
-      }
-
-      super.setFilePath(MessageUtils.getSaveDirPath(
-        Database.getDomainName(),
-        file.getOwnerId().intValue())
-        + file.getFilePath());
-      super.setFileName(file.getFileName());
       super.doOutput(rundata);
     } catch (ALPermissionException e) {
       throw new Exception();

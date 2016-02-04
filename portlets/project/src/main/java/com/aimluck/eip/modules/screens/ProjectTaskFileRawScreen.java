@@ -42,8 +42,20 @@ public class ProjectTaskFileRawScreen extends FileuploadRawScreen {
     new ProjectFile<EipTProjectTaskFile, EipTProjectTask>(
       EipTProjectTaskFile.class);
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTProjectTaskFile projectTaskfile =
+      pfile.getEipTFile(rundata, EipTProjectTaskFile.FILE_ID_PK_COLUMN);
+
+    setFilePath(ProjectFile.getSaveDirPath(projectTaskfile
+      .getOwnerId()
+      .intValue())
+      + projectTaskfile.getFilePath());
+    setFileName(projectTaskfile.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    *          RunData
    * @throws Exception

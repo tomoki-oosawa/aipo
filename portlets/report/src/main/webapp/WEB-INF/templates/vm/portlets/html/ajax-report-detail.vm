@@ -70,7 +70,7 @@
 #ALtditemheader()
 <ul>
 #foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
-<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.URLEncodedValue})">$attachmentFile.FileName</a>
+<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.ParentReport.UserId}).addPathInfo("entityid", $!result.ParentReport.ReportId).addPathInfo("f", ${attachmentFile.URLEncodedValue})">$attachmentFile.FileName</a>
 #if($attachmentFile.isImage())
 <div id='popc' style='position:absolute'></div>
 <div class="thumbBlock">
@@ -130,7 +130,7 @@ ${record.Note}
 <div style="padding-top:15px;">
 <ul>
 #foreach( $attachmentFile in $!record.AttachmentFileList )
-<li><a href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a>
+<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("ReportFileRawScreen").addQueryData("userid", ${record.UserId}).addQueryData("entityid", $record.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)">$result.getStringCR($attachmentFile.FileNameField)</a>
 #if($attachmentFile.isImage())
 	<div class="thumbBlock">
 		<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ReportFileRawScreen').addPathInfo("ownerid",  $!{result.ParentReport.UserId}).addPathInfo("entityid",$!result.ParentReport.ReportId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">

@@ -65,7 +65,7 @@
 								<div style="padding-top:15px;">
 									<ul>
 									#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
-										<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+										<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addPathInfo("ownerid", $!{result.ParentTopic.OwnerId}).addPathInfo("entityid", $!result.ParentTopic.TopicId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
 										#if($attachmentFile.isImage())
 											<div id='popc' style='position:absolute'></div>
 											<div class="thumbBlock">
@@ -121,7 +121,7 @@
 					<div style="padding-top:15px;">
 						<ul>
 						#foreach( $attachmentFile in $!record.AttachmentFileList )
-						<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+						<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("MsgboardTopicFileRawScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
 							#if($attachmentFile.isImage())
 								<div id='popc' style='position:absolute'></div>
 								<div class="thumbBlock">

@@ -35,8 +35,19 @@ public class ProjectFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ProjectFileRawScreen.class.getName());
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTProjectFile projectfile = ProjectUtils.getEipTProjectFile(rundata);
+
+    setFilePath(ProjectUtils.getSaveDirPath(
+      Database.getDomainName(),
+      projectfile.getOwnerId().intValue())
+      + projectfile.getFilePath());
+    setFileName(projectfile.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */

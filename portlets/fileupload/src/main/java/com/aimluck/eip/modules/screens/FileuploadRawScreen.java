@@ -26,6 +26,7 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ecs.ConcreteElement;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
@@ -33,12 +34,13 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
 
-public class FileuploadRawScreen extends RawScreen {
+public abstract class FileuploadRawScreen extends RawScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -50,6 +52,14 @@ public class FileuploadRawScreen extends RawScreen {
   /** ローカルディスクに保存されているファイルへのフルパス */
   private String filepath = null;
 
+  @Override
+  protected ConcreteElement build(RunData data) throws Exception {
+    init(data);
+    return doBuild(data);
+  }
+
+  protected abstract void init(RunData rundata) throws Exception;
+
   /**
    *
    * @param rundata
@@ -57,7 +67,12 @@ public class FileuploadRawScreen extends RawScreen {
    */
   @Override
   protected String getContentType(RunData rundata) {
-    return "application/octet-stream";
+    String contentType = FileuploadUtils.getInlineContentType(getFileName());
+    if (contentType == null) {
+      return "application/octet-stream";
+    } else {
+      return contentType;
+    }
   }
 
   /**
@@ -117,9 +132,13 @@ public class FileuploadRawScreen extends RawScreen {
         }
       }
 
+      String type =
+        FileuploadUtils.isAcceptInline(getFileName()) ? "inline" : "attachment";
+
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
-      response.setHeader("Content-disposition", "attachment; filename=\""
+      response.setHeader("Content-disposition", type
+        + "; filename=\""
         + attachmentRealName
         + "\"");
       response.setHeader("Cache-Control", "aipo");

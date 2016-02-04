@@ -56,7 +56,7 @@
 <dt>添付ファイル</dt>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
 <dd>
-<a href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a>
+<a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a>
 </dd>
 #end
 #end

@@ -32,9 +32,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
@@ -122,6 +124,8 @@ public class FileuploadUtils {
   /** アカウントの添付ファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
     JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
+
+  private static final String[] ACCEPT_CONTENT_TYPES = { "application/pdf" };
 
   public static String getRealFileName(String name) {
     String filename = null;
@@ -940,5 +944,25 @@ public class FileuploadUtils {
     public byte[] getFixImage() {
       return this.fixImage;
     }
+  }
+
+  public static String getInlineContentType(String filename) {
+    MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
+    mimeTypesMap.addMimeTypes("application/pdf pdf");
+    String contentType = null;
+    try {
+      contentType = mimeTypesMap.getContentType(filename);
+    } catch (Throwable ignore) {
+      // ignore
+    }
+    if (!Arrays.asList(ACCEPT_CONTENT_TYPES).contains(contentType)) {
+      return null;
+    } else {
+      return contentType;
+    }
+  }
+
+  public static boolean isAcceptInline(String filename) {
+    return getInlineContentType(filename) != null;
   }
 }
