@@ -1561,6 +1561,13 @@ div.off, td.off {
   background: #f6f6f6;
 }
 
+.topNone.saturday.off.addScheduleCell .calendarBody,
+.topNone.saturday.off.addScheduleCell .calendarFooter,
+.topNone.sunday.off.addScheduleCell .calendarBody,
+.topNone.sunday.off.addScheduleCell .calendarFooter {
+  background-color : none !important;
+}
+
 .calendarWrapper {
   /*overflow-x: auto;*/
 }
