@@ -1,5 +1,5 @@
 /*
-z * Aipo is a groupware program developed by TOWN, Inc.
+ * Aipo is a groupware program developed by TOWN, Inc.
  * Copyright (C) 2004-2015 TOWN, Inc.
  * http://www.aipo.com
  *
