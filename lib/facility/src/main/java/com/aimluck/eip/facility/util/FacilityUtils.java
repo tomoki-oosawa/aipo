@@ -37,7 +37,7 @@ import com.aimluck.eip.orm.query.SelectQuery;
 
 /**
  * 設備のユーティリティクラスです。 <br />
- * 
+ *
  */
 public class FacilityUtils {
 
@@ -133,7 +133,7 @@ public class FacilityUtils {
         Database.query(EipMFacilityGroup.class);
 
       List<EipMFacilityGroup> facility_list =
-        query.orderAscending(EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+        query.orderAscending(EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup record : facility_list) {
         FacilityGroupLiteBean bean = new FacilityGroupLiteBean();
