@@ -490,8 +490,6 @@ public class FacilitiesUtils {
     data.initField();
     data.setGroupId(model.getGroupId());
     data.setGroupName(model.getGroupName());
-    data.setUpdateDate(model.getUpdateDate());
-    data.setCreateDate(model.getCreateDate());
     return data;
   }
 }

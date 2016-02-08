@@ -333,7 +333,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         ExpressionFactory.matchExp(EipMFacilityGroup.SORT_PROPERTY, null);
       SelectQuery<EipMFacilityGroup> querynotsort =
         Database.query(EipMFacilityGroup.class);
-      querynotsort.orderAscending(EipMFacilityGroup.UPDATE_DATE_PROPERTY);
+      querynotsort.orderAscending(EipMFacilityGroup.SORT_PROPERTY);
       querynotsort.setQualifier(exp2);
       List<EipMFacilityGroup> group_notsort_list = querynotsort.fetchList();
       for (EipMFacilityGroup group_data2 : group_notsort_list) {
