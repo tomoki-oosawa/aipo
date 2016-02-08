@@ -66,7 +66,7 @@
 
 <ul>
 	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-	<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
+	<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("ProjectFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("entityid", $!result.Detail.ProjectId).addPathInfo("f", ${attachmentFile.FileName})">$attachmentFile.FileName</a><br>
 		#if($attachmentFile.isImage())
 		<div id='popc' style='position:absolute'></div>
 		<div class="thumbBlock">

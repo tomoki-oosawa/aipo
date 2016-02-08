@@ -26,6 +26,7 @@ import com.aimluck.eip.cabinet.util.CabinetUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTCabinetFolder;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.eventlog.action.ALActionEventlogConstants;
 import com.aimluck.eip.orm.Database;
@@ -35,7 +36,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 
 /**
  * 共有フォルダのファイルの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class CabinetFileRawScreen extends FileuploadRawScreen {
 
@@ -45,18 +46,23 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
 
   private EipTCabinetFolder cabinetfolder;
 
-  /**
-   * 
-   * @param rundata
-   * @return
-   */
   @Override
-  protected String getContentType(RunData rundata) {
-    return "application/octet-stream";
+  protected void init(RunData rundata) throws Exception {
+    int fileindex = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
+    EipTCabinetFile file =
+      Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
+    if (null == file) {
+      throw new ALPageNotFoundException();
+    }
+    doFileCheckView(rundata, file);
+
+    setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
+      + file.getFilePath());
+    setFileName(file.getFileName());
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -78,11 +84,7 @@ public class CabinetFileRawScreen extends FileuploadRawScreen {
         Database.get(EipTCabinetFile.class, Integer.valueOf(fileindex));
 
       if (cabinetfile != null) {
-        doFileCheckView(rundata, cabinetfile);
 
-        super.setFilePath(CabinetUtils.getSaveDirPath(Database.getDomainName())
-          + cabinetfile.getFilePath());
-        super.setFileName(cabinetfile.getFileName());
         super.doOutput(rundata);
 
         cabinetfile.setCounter(cabinetfile.getCounter() + 1);

@@ -53,7 +53,7 @@
     <div style="padding-top:15px;">
     	<ul>
     	#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-    		<li>&nbsp;<a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
+    		<li>&nbsp;<a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("WikiFileRawScreen").addPathInfo("entityid", $!result.Detail.Id).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a><br />
     		#if($attachmentFile.isImage())
     			<div id='popc' style='position:absolute'></div>
     			<div class="thumbBlock">

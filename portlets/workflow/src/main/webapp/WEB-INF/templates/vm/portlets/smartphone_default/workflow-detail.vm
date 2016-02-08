@@ -45,7 +45,7 @@
 <tr><th>$l10n.WORKFLOW_ATTACHMENT</th>
 <td>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-	<a href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a><br />
+	<a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addQueryData("attachmentIndex", $attachmentFile.FileId).addQueryData("ownerid", $!{result.Detail.UserId}).addQueryData("entityid", $!result.Detail.RequestId)">$!{attachmentFile.FileName}</a><br />
 #end
 </td></tr>
 #end

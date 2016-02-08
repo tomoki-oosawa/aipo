@@ -36,22 +36,25 @@ public class TimelineFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineFileRawScreen.class.getName());
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTTimelineFile timelinefile = TimelineUtils.getEipTTimelineFile(rundata);
+
+    setFilePath(TimelineUtils.getSaveDirPath(
+      Database.getDomainName(),
+      timelinefile.getOwnerId().intValue())
+      + timelinefile.getFilePath());
+    setFileName(timelinefile.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     try {
-      EipTTimelineFile timelinefile =
-        TimelineUtils.getEipTTimelineFile(rundata);
-
-      super.setFilePath(TimelineUtils.getSaveDirPath(
-        Database.getDomainName(),
-        timelinefile.getOwnerId().intValue())
-        + timelinefile.getFilePath());
-      super.setFileName(timelinefile.getFileName());
       super.doOutput(rundata);
     } catch (ALPermissionException e) {
       throw new Exception();

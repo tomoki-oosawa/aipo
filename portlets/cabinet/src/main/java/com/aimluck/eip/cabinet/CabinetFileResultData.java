@@ -24,6 +24,7 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -339,4 +340,7 @@ public class CabinetFileResultData implements ALData {
     return is_editable;
   }
 
+  public boolean isAcceptInline() {
+    return FileuploadUtils.isAcceptInline(getFileName().getValue());
+  }
 }
