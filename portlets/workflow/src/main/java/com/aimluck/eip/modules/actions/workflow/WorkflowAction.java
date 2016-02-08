@@ -35,7 +35,7 @@ import com.aimluck.eip.workflow.WorkflowSelectData;
 
 /**
  * ワークフローのアクションクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowAction extends ALBaseAction {
 
@@ -45,7 +45,7 @@ public class WorkflowAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -73,7 +73,7 @@ public class WorkflowAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -105,7 +105,7 @@ public class WorkflowAction extends ALBaseAction {
 
   /**
    * 依頼を一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -129,7 +129,7 @@ public class WorkflowAction extends ALBaseAction {
 
   /**
    * 全依頼を一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -157,11 +157,10 @@ public class WorkflowAction extends ALBaseAction {
     list.add("submenu");
     list.add("tab");
     list.add("alltab");
-    list.add("com.aimluck.eip.workflow.WorkflowSelectDatasort");
-    list.add("com.aimluck.eip.workflow.WorkflowAllSelectDatasort");
-    list.add("com.aimluck.eip.workflow.WorkflowSelectDatafiltertype");
-    list.add("com.aimluck.eip.workflow.WorkflowSelectDatafilter");
+    list.add("WorkflowSelectDatasort");
+    list.add("WorkflowAllSelectDatasort");
+    list.add("WorkflowSelectDatafiltertype");
+    list.add("WorkflowSelectDatafilter");
     ALEipUtils.removeTemp(rundata, context, list);
   }
-
 }
