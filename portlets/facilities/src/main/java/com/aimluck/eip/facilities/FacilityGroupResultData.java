@@ -18,11 +18,13 @@
  */
 package com.aimluck.eip.facilities;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
@@ -31,7 +33,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 
 /**
  * 設備グループのResultDataです。 <BR>
- * 
+ *
  */
 public class FacilityGroupResultData implements ALData {
 
@@ -46,6 +48,15 @@ public class FacilityGroupResultData implements ALData {
   /** 名前 */
   private ALStringField group_name;
 
+  /** ソート */
+  private ALNumberField sort;
+
+  /** 作成日 */
+  private ALDateTimeField create_date;
+
+  /** 更新日 */
+  private ALDateTimeField update_date;
+
   /**
    *
    *
@@ -54,6 +65,9 @@ public class FacilityGroupResultData implements ALData {
   public void initField() {
     group_id = new ALNumberField();
     group_name = new ALStringField();
+    create_date = new ALDateTimeField();
+    update_date = new ALDateTimeField();
+    sort = new ALNumberField();
   }
 
   /**
@@ -92,8 +106,50 @@ public class FacilityGroupResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALNumberField getSort() {
+    return sort;
+  }
+
+  /**
+   * @return
+   */
+  public ALDateTimeField getCreateDate() {
+    return create_date;
+  }
+
+  /**
+   * @return
+   */
+  public ALDateTimeField getUpdateDate() {
+    return update_date;
+  }
+
+  /**
+   * @return
+   */
+  public void setCreateDate(Date date) {
+    create_date.setValue(date);
+  }
+
+  /**
+   * @return
+   */
+  public void setUpdateDate(Date date) {
+    update_date.setValue(date);
+  }
+
+  /**
+   * @param int
+   */
+  public void setSort(int num) {
+    sort.setValue(num);
+  }
+
+  /**
    * あるグループに所属する設備のリストを取得します
-   * 
+   *
    * @param postid
    * @return
    */
@@ -102,4 +158,5 @@ public class FacilityGroupResultData implements ALData {
       FacilitiesUtils.getFacilityListByGroupId(Integer.parseInt(groupid));
     return FacilitiesUtils.getFacilityResultList(result);
   }
+
 }

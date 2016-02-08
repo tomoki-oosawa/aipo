@@ -318,7 +318,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
       int lastnum = 0;
       StringBuffer statement = new StringBuffer();
       statement
-        .append("SELECT MAX(sort) as max_sort FROM eip_m_position");
+        .append("SELECT MAX(sort) as max_sort FROM eip_m_facility_group");
       String querydata = statement.toString();
       List<DataRow> maxnum =
         Database.sql(EipMFacilityGroup.class, querydata).fetchListAsDataRow();
@@ -333,11 +333,11 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         ExpressionFactory.matchExp(EipMFacilityGroup.SORT_PROPERTY, null);
       SelectQuery<EipMFacilityGroup> querynotsort =
         Database.query(EipMFacilityGroup.class);
-      querynotsort.orderAscending(EipMFacilityGroup.GROUP_ID_PK_COLUMN);
+      querynotsort.orderAscending(EipMFacilityGroup.UPDATE_DATE_PROPERTY);
       querynotsort.setQualifier(exp2);
-      List<EipMFacilityGroup> position_notsort_list = querynotsort.fetchList();
-      for (EipMFacilityGroup positiondata2 : position_notsort_list) {
-        positiondata2.setSort(++lastnum);
+      List<EipMFacilityGroup> group_notsort_list = querynotsort.fetchList();
+      for (EipMFacilityGroup group_data2 : group_notsort_list) {
+        group_data2.setSort(++lastnum);
       }
 
       EipMFacilityGroup group = Database.create(EipMFacilityGroup.class);

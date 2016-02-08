@@ -99,7 +99,8 @@ public class FacilitiesUtils {
           EipMFacilityGroup.GROUP_ID_PK_COLUMN,
           faclitygroupid);
       List<EipMFacilityGroup> facilities =
-        Database.query(EipMFacilityGroup.class, exp).fetchList();
+        Database.query(EipMFacilityGroup.class, exp).orderAscending(
+          EipMFacilityGroup.SORT_PROPERTY).fetchList();
       if (facilities == null || facilities.size() == 0) {
         // 指定したFacilities IDのレコードが見つからない場合
         logger.debug("[Facilities] Not found ID...");
@@ -403,7 +404,7 @@ public class FacilitiesUtils {
     try {
       List<EipMFacilityGroup> result =
         Database.query(EipMFacilityGroup.class).orderAscending(
-          EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+          EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup group : result) {
         FacilityGroupResultData data = new FacilityGroupResultData();
@@ -489,6 +490,8 @@ public class FacilitiesUtils {
     data.initField();
     data.setGroupId(model.getGroupId());
     data.setGroupName(model.getGroupName());
+    data.setUpdateDate(model.getUpdateDate());
+    data.setCreateDate(model.getCreateDate());
     return data;
   }
 }

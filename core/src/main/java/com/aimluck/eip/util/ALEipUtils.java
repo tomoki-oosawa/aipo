@@ -920,7 +920,7 @@ public class ALEipUtils {
         Database.query(EipMFacilityGroup.class);
 
       List<EipMFacilityGroup> facility_list =
-        query.orderAscending(EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+        query.orderAscending(EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup record : facility_list) {
         ALEipGroup bean = new ALEipGroup();
@@ -942,7 +942,7 @@ public class ALEipUtils {
         Database.query(EipMFacilityGroup.class);
 
       List<EipMFacilityGroup> facility_list =
-        query.orderAscending(EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+        query.orderAscending(EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup record : facility_list) {
         ALEipGroup bean = new ALEipGroup();
