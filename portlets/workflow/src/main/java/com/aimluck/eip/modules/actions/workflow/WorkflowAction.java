@@ -32,6 +32,7 @@ import com.aimluck.eip.modules.actions.common.ALBaseAction;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.workflow.WorkflowAllSelectData;
 import com.aimluck.eip.workflow.WorkflowSelectData;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローのアクションクラスです。 <BR>
@@ -161,6 +162,7 @@ public class WorkflowAction extends ALBaseAction {
     list.add("WorkflowAllSelectDatasort");
     list.add("WorkflowSelectDatafiltertype");
     list.add("WorkflowSelectDatafilter");
+    list.add(WorkflowUtils.TARGET_KEYWORD);
     ALEipUtils.removeTemp(rundata, context, list);
   }
 }
