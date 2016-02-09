@@ -21,6 +21,7 @@ package com.aimluck.eip.facilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -47,7 +48,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 設備のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilityGroupFormData extends ALAbstractFormData {
 
@@ -67,12 +68,12 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   private List<FacilityResultData> facilityAllList;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -87,8 +88,8 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -105,8 +106,8 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備の各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -117,7 +118,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -157,10 +158,10 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -205,7 +206,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備グループをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -256,7 +257,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備グループをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -303,7 +304,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備グループをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -313,12 +314,39 @@ public class FacilityGroupFormData extends ALAbstractFormData {
   protected boolean insertFormData(RunData rundata, Context context,
       List<String> msgList) {
     try {
+      // 設備グループの順番を調整
+      int lastnum = 0;
+      StringBuffer statement = new StringBuffer();
+      statement
+        .append("SELECT MAX(sort) as max_sort FROM eip_m_facility_group");
+      String querydata = statement.toString();
+      List<DataRow> maxnum =
+        Database.sql(EipMFacilityGroup.class, querydata).fetchListAsDataRow();
+      if (maxnum != null && maxnum.size() > 0) {
+        Integer maxnum2 = (Integer) maxnum.get(0).get("max_sort");
+        if (maxnum2 != null) {
+          lastnum = maxnum2;
+        }
+      }
+      // 最大のソートナンバーの後ろに振られていないデータを追加
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipMFacilityGroup.SORT_PROPERTY, null);
+      SelectQuery<EipMFacilityGroup> querynotsort =
+        Database.query(EipMFacilityGroup.class);
+      querynotsort.orderAscending(EipMFacilityGroup.SORT_PROPERTY);
+      querynotsort.setQualifier(exp2);
+      List<EipMFacilityGroup> group_notsort_list = querynotsort.fetchList();
+      for (EipMFacilityGroup group_data2 : group_notsort_list) {
+        group_data2.setSort(++lastnum);
+      }
+
       // 新規オブジェクトモデル
       EipMFacilityGroup facilitygroup =
         Database.create(EipMFacilityGroup.class);
       rundata.getParameters().setProperties(facilitygroup);
       // 設備グループ名
       facilitygroup.setGroupName(facility_group_name.getValue());
+      facilitygroup.setSort(++lastnum);
 
       for (Object record : facilityList) {
         FacilityResultData frd = (FacilityResultData) record;
@@ -347,7 +375,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている設備を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -425,7 +453,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備グループ名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFacilityGroupName() {
@@ -434,7 +462,7 @@ public class FacilityGroupFormData extends ALAbstractFormData {
 
   /**
    * 設備グループIdを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public String getFacilityGroupId() {

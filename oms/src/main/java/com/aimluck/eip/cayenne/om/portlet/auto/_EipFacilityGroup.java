@@ -7,11 +7,20 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
   */
 public class _EipFacilityGroup extends org.apache.cayenne.CayenneDataObject {
 
+    public static final String SORT_PROPERTY = "sort";
     public static final String EIP_MFACILITY_PROPERTY = "eipMFacility";
     public static final String TURBINE_GROUP_PROPERTY = "turbineGroup";
 
     public static final String ID_PK_COLUMN = "ID";
 
+    public void setSort(Integer sort) {
+        writeProperty("sort", sort);
+    }
+    public Integer getSort() {
+        return (Integer)readProperty("sort");
+    }
+    
+    
     public void setEipMFacility(com.aimluck.eip.cayenne.om.portlet.EipMFacility eipMFacility) {
         setToOneTarget("eipMFacility", eipMFacility, true);
     }

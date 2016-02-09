@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備のユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class FacilitiesUtils {
 
@@ -53,7 +53,7 @@ public class FacilitiesUtils {
 
   /**
    * 設備オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -79,7 +79,7 @@ public class FacilitiesUtils {
 
   /**
    * 設備グループオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -99,7 +99,8 @@ public class FacilitiesUtils {
           EipMFacilityGroup.GROUP_ID_PK_COLUMN,
           faclitygroupid);
       List<EipMFacilityGroup> facilities =
-        Database.query(EipMFacilityGroup.class, exp).fetchList();
+        Database.query(EipMFacilityGroup.class, exp).orderAscending(
+          EipMFacilityGroup.SORT_PROPERTY).fetchList();
       if (facilities == null || facilities.size() == 0) {
         // 指定したFacilities IDのレコードが見つからない場合
         logger.debug("[Facilities] Not found ID...");
@@ -113,7 +114,7 @@ public class FacilitiesUtils {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -344,7 +345,7 @@ public class FacilitiesUtils {
 
   /**
    * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
-   * 
+   *
    * @param memberIdList
    * @param memberId
    * @return
@@ -403,7 +404,7 @@ public class FacilitiesUtils {
     try {
       List<EipMFacilityGroup> result =
         Database.query(EipMFacilityGroup.class).orderAscending(
-          EipMFacilityGroup.GROUP_NAME_PROPERTY).fetchList();
+          EipMFacilityGroup.SORT_PROPERTY).fetchList();
 
       for (EipMFacilityGroup group : result) {
         FacilityGroupResultData data = new FacilityGroupResultData();
@@ -470,6 +471,25 @@ public class FacilitiesUtils {
     data.setUpdateDate(model.getUpdateDate());
     data.setCreateDate(model.getCreateDate());
     data.setUserId(model.getUserId());
+    return data;
+  }
+
+  public static List<FacilityGroupResultData> getFacilityGroupResultList(
+      List<EipMFacilityGroup> result) {
+    List<FacilityGroupResultData> list =
+      new ArrayList<FacilityGroupResultData>();
+    for (EipMFacilityGroup model : result) {
+      list.add(getFacilityGroupResultData(model));
+    }
+    return list;
+  }
+
+  public static FacilityGroupResultData getFacilityGroupResultData(
+      EipMFacilityGroup model) {
+    FacilityGroupResultData data = new FacilityGroupResultData();
+    data.initField();
+    data.setGroupId(model.getGroupId());
+    data.setGroupName(model.getGroupName());
     return data;
   }
 }

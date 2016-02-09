@@ -31,7 +31,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 
 /**
  * 設備グループのResultDataです。 <BR>
- * 
+ *
  */
 public class FacilityGroupResultData implements ALData {
 
@@ -46,6 +46,9 @@ public class FacilityGroupResultData implements ALData {
   /** 名前 */
   private ALStringField group_name;
 
+  /** ソート */
+  private ALNumberField sort;
+
   /**
    *
    *
@@ -54,6 +57,7 @@ public class FacilityGroupResultData implements ALData {
   public void initField() {
     group_id = new ALNumberField();
     group_name = new ALStringField();
+    sort = new ALNumberField();
   }
 
   /**
@@ -92,8 +96,22 @@ public class FacilityGroupResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALNumberField getSort() {
+    return sort;
+  }
+
+  /**
+   * @param int
+   */
+  public void setSort(int num) {
+    sort.setValue(num);
+  }
+
+  /**
    * あるグループに所属する設備のリストを取得します
-   * 
+   *
    * @param postid
    * @return
    */
@@ -102,4 +120,5 @@ public class FacilityGroupResultData implements ALData {
       FacilitiesUtils.getFacilityListByGroupId(Integer.parseInt(groupid));
     return FacilitiesUtils.getFacilityResultList(result);
   }
+
 }
