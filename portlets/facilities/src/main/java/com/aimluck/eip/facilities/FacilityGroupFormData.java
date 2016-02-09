@@ -340,17 +340,13 @@ public class FacilityGroupFormData extends ALAbstractFormData {
         group_data2.setSort(++lastnum);
       }
 
-      EipMFacilityGroup group = Database.create(EipMFacilityGroup.class);
-      group.setGroupName(facility_group_name.getValue());
-      group.setSort(++lastnum);
-      Database.commit();
-
       // 新規オブジェクトモデル
       EipMFacilityGroup facilitygroup =
         Database.create(EipMFacilityGroup.class);
       rundata.getParameters().setProperties(facilitygroup);
       // 設備グループ名
       facilitygroup.setGroupName(facility_group_name.getValue());
+      facilitygroup.setSort(++lastnum);
 
       for (Object record : facilityList) {
         FacilityResultData frd = (FacilityResultData) record;
