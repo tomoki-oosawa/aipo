@@ -883,9 +883,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         record.getScheduleId()));
       List<EipTScheduleFile> scheduleFileList = querySelectFile.fetchList();
       for (EipTScheduleFile file : scheduleFileList) {
+        // スケジュールに添付ファイルがあった場合
+        // fileidを新しくセット
+        int fileid = file.getFileId();
+        int newfileid = fileid++;
         FileuploadLiteBean fbean = new FileuploadLiteBean();
         fbean.initField();
-        fbean.setFileId(file.getFileId());
+        fbean.setFileId(fileid);
         fbean.setFileName(file.getFileName());
         fileuploadList.add(fbean);
       }
@@ -1115,7 +1119,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
-
     }
     return true;
   }
