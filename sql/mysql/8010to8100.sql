@@ -46,5 +46,4 @@ CREATE TABLE `eip_t_schedule_file` (
   KEY `eip_t_file_schedule_id_index` (`schedule_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-ALTER TABLE `eip_t_message_room_member` ADD `authority` varchar(1) DEFAULT 'A' AFTER `target_user_id`;
 -- 20151225
