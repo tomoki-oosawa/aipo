@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 報告書のアクションクラスです。 <BR>
- * 
+ *
  */
 public class ReportAction extends ALBaseAction {
 
@@ -59,7 +59,7 @@ public class ReportAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -86,7 +86,7 @@ public class ReportAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -112,7 +112,7 @@ public class ReportAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param obj
    */
   public void setResultDataOnReportDetail(Object obj) {
@@ -120,7 +120,7 @@ public class ReportAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param msg
    */
   public void addErrorMessagesOnReportDetail(List<String> msgs) {
@@ -132,7 +132,7 @@ public class ReportAction extends ALBaseAction {
 
   /**
    * トピックに返信します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -157,7 +157,7 @@ public class ReportAction extends ALBaseAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -177,7 +177,7 @@ public class ReportAction extends ALBaseAction {
 
   /**
    * トピックを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -199,7 +199,7 @@ public class ReportAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param context
    */
   public void putDataOnReportDetail(RunData rundata, Context context) {
