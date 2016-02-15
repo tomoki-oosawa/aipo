@@ -4972,7 +4972,6 @@ public class ScheduleUtils {
           continue;
         }
       }
-
       try {
         SelectQuery<EipTScheduleFile> reqquery =
           Database.query(EipTScheduleFile.class);
@@ -4982,10 +4981,12 @@ public class ScheduleUtils {
             hadfileidsValue);
         reqquery.setQualifier(reqexp1);
         List<EipTScheduleFile> requests = reqquery.fetchList();
+
         for (EipTScheduleFile file : requests) {
+          int fileid = file.getFileId();
           filebean = new FileuploadBean();
           filebean.initField();
-          filebean.setFileId(file.getFileId());
+          filebean.setFileId(fileid);
           filebean.setFileName(file.getFileName());
           filebean.setFlagNewFile(false);
           fileNameList.add(filebean);
@@ -5042,9 +5043,9 @@ public class ScheduleUtils {
     // ファイル追加処理
     try {
       for (FileuploadLiteBean filebean : fileuploadList) {
-        if (!filebean.isNewFile()) {
-          continue;
-        }
+        // if (!filebean.isNewFile()) {
+        // continue;
+        // }
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();

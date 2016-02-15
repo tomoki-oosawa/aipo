@@ -886,7 +886,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         // スケジュールに添付ファイルがあった場合
         // fileidを新しくセット
         int fileid = file.getFileId();
-        int newfileid = fileid++;
         FileuploadLiteBean fbean = new FileuploadLiteBean();
         fbean.initField();
         fbean.setFileId(fileid);
