@@ -844,13 +844,22 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       tableName = "JETSPEED_USER_PROFILE";
       records = selectJetspeedUserProfilePeer(dataContext, locator, false);
       Iterator<?> iterator = records.iterator();
+      String defaultPage = null;
+      Portlets defaultPortlets = null;
+
       while (iterator.hasNext()) {
         JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
+        page = uprofile.getPage();
+        portlets = DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
         if ("default.psml".equalsIgnoreCase(uprofile.getPage())) {
-          page = uprofile.getPage();
-          portlets =
+          defaultPage = uprofile.getPage();
+          defaultPortlets =
             DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
         }
+      }
+      if (defaultPage != null && defaultPortlets != null) {
+        page = defaultPage;
+        portlets = defaultPortlets;
       }
     } else if (role != null) {
       tableName = "JETSPEED_ROLE_PROFILE";
