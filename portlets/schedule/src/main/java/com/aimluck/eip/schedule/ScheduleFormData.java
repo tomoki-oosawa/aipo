@@ -890,7 +890,10 @@ public class ScheduleFormData extends ALAbstractFormData {
         fbean.initField();
         fbean.setFileId(fileid);
         fbean.setFileName(file.getFileName());
-        fileuploadList.add(fbean);
+        // コピーの時はフォームに添付ファイルを表示しない(仮)
+        if (!is_copy) {
+          fileuploadList.add(fbean);
+        }
       }
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());

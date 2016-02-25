@@ -5043,9 +5043,9 @@ public class ScheduleUtils {
     // ファイル追加処理
     try {
       for (FileuploadLiteBean filebean : fileuploadList) {
-        // if (!filebean.isNewFile()) {
-        // continue;
-        // }
+        if (!filebean.isNewFile()) {
+          continue;
+        }
 
         // サムネイル処理
         String[] acceptExts = ImageIO.getWriterFormatNames();
