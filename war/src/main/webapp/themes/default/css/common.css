@@ -618,11 +618,11 @@ div.sunday,
 .tableWrapper tbody .sunday div,
 div.holiday,
 .tableWrapper tbody .holiday div{
-  /*background-color: #fef6f1 !important;*/
+  background-color: #fef6f1 !important;
 }
 div.saturday,
 .tableWrapper tbody .saturday div{
-  /*background-color: #f4f7fa !important;*/
+  background-color: #f4f7fa !important;
 }
 div.today,
 .tableWrapper tbody .today div{
