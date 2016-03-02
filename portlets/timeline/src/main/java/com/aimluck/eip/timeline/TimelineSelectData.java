@@ -483,9 +483,10 @@ public class TimelineSelectData extends
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
       for (EipTTimeline model : list) {
-        if (model.getParams() == null) {
-          logger.error("timeline");
-        } else {
+        if (model.getParams() != null
+          && !"".equals(model.getParams())
+          && model.getAppId() != null
+          && !"".equals(model.getAppId())) {
           if (model.getAppId().equals("Schedule")) {
             Matcher m =
               Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
@@ -497,39 +498,42 @@ public class TimelineSelectData extends
         }
       }
 
-      if (scheduleIdList.size() > 0) {
+      if (scheduleIdList != null && scheduleIdList.size() > 0) {
         // eip_t_schedule_mapから、schedule_idがscheduleIdListに含まれ、
         // user_idが自分のもののリストを得る
         List<EipTScheduleMap> scheduleMapList =
           TimelineUtils.getRelatedEipTScheduleMap(uid, scheduleIdList);
-
-        List<EipTTimeline> list2 = new ArrayList<EipTTimeline>();
-        for (EipTTimeline e : list) {
-          if (!e.getAppId().equals("Schedule")) {
-            list2.add(e);
-          } else {
-            if (uid == e.getOwnerId().intValue()) {
-              list2.add(e);
-            } else {
-              if (e.getParams() == null) {
-                logger.error("timeline");
-              } else {
+        ArrayList<Integer> relatedScheduleIdList = new ArrayList<Integer>();
+        if (scheduleMapList != null && scheduleMapList.size() > 0) {
+          for (EipTScheduleMap eipTScheduleMap : scheduleMapList) {
+            relatedScheduleIdList.add(eipTScheduleMap.getScheduleId());
+          }
+        }
+        for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
+          EipTTimeline tmpEipTTimeline = iter.next();
+          if (uid != tmpEipTTimeline.getOwnerId().intValue()) {
+            if (tmpEipTTimeline.getParams() != null
+              && !"".equals(tmpEipTTimeline.getParams())
+              && tmpEipTTimeline.getAppId() != null
+              && !"".equals(tmpEipTTimeline.getAppId())) {
+              if (tmpEipTTimeline.getAppId().equals("Schedule")) {
                 Matcher m =
-                  Pattern.compile("entityid=([0-9]+)").matcher(e.getParams());
+                  Pattern.compile("entityid=([0-9]+)").matcher(
+                    tmpEipTTimeline.getParams());
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
-                  if (scheduleMapList != null) {
-                    for (EipTScheduleMap map : scheduleMapList) {
-                      if (map.getScheduleId().equals(scheduleId)) {
-                        list2.add(e);
-                      }
-                    }
+                  if ((relatedScheduleIdList == null || (relatedScheduleIdList != null && relatedScheduleIdList
+                    .size() == 0))
+                    || (relatedScheduleIdList != null && !relatedScheduleIdList
+                      .contains(scheduleId))) {
+                    // relatedScheduleIdListが空 or
+                    // relatedScheduleIdListに含まれない時は削除
+                    iter.remove();
                   }
                 }
-              }
+              }// スケジュール以外のTimeline
             }
-          }
-          list = list2;
+          }// 自分がオーナーのTimeline
         }
       }
     }
