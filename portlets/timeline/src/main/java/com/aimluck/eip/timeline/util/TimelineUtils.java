@@ -144,6 +144,9 @@ public class TimelineUtils {
 
   public static final String TARGET_DISPLAY_NAME = "target_display_name";
 
+  /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
+  public static final String SCHEDULEMAP_TYPE_USER = "U";
+
   /**
    * トピックに対する返信数を返します
    *
@@ -1538,20 +1541,26 @@ public class TimelineUtils {
    * @return
    */
   public static List<EipTScheduleMap> getRelatedEipTScheduleMap(int userId,
-      ArrayList<Integer> scheduleId_list) {
-    if (scheduleId_list.size() > 0 && scheduleId_list != null) {
+      ArrayList<Integer> scheduleIdList) {
+    if (scheduleIdList != null && scheduleIdList.size() > 0) {
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
       Expression exp11 =
         ExpressionFactory.inExp(
           EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          scheduleId_list);
+          scheduleIdList);
+      mapquery.setQualifier(exp11);
       Expression exp12 =
         ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(userId));
-      List<EipTScheduleMap> list =
-        Database
-          .query(EipTScheduleMap.class, exp11)
-          .andQualifier(exp12)
-          .fetchList();
+      mapquery.andQualifier(exp12);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
+      List<EipTScheduleMap> list = mapquery.fetchList();
       return list;
     } else {
       return null;
