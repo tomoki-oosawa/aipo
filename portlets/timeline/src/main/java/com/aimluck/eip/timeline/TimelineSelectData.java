@@ -484,7 +484,7 @@ public class TimelineSelectData extends
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
       for (EipTTimeline model : list) {
         if (model.getParams() == null) {
-          System.out.println("error");
+          logger.error("timeline");
         } else {
           if (model.getAppId().equals("Schedule")) {
             Matcher m =
@@ -512,7 +512,7 @@ public class TimelineSelectData extends
               list2.add(e);
             } else {
               if (e.getParams() == null) {
-                System.out.println("error");
+                logger.error("timeline");
               } else {
                 Matcher m =
                   Pattern.compile("entityid=([0-9]+)").matcher(e.getParams());
