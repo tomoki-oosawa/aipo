@@ -120,7 +120,7 @@ public class WebMailUtils {
 
   /**
    * 選択したメールをローカルファイルシステムから取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -164,7 +164,7 @@ public class WebMailUtils {
   /**
    * 複数のメールアドレスを含む文字列の中のメールアドレス形式をチェックします。 想定メール形式は address@aimluck.com xxxyyy
    * <address@aimluck.com>
-   * 
+   *
    * @param argstr
    *          複数メールアドレス
    * @param delim
@@ -314,7 +314,7 @@ public class WebMailUtils {
 
   /**
    * POP3 サーバからメールを受信する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -362,7 +362,7 @@ public class WebMailUtils {
 
   /**
    * 未読メール総数を取得する。
-   * 
+   *
    * @param rundata
    * @param userId
    * @param accountId
@@ -381,7 +381,7 @@ public class WebMailUtils {
 
   /**
    * フォルダ別未読メール数を取得する。
-   * 
+   *
    * @param rundata
    * @param userId
    * @param accountId
@@ -424,7 +424,7 @@ public class WebMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -470,7 +470,7 @@ public class WebMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -514,7 +514,7 @@ public class WebMailUtils {
 
   /**
    * フィルタオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -554,7 +554,7 @@ public class WebMailUtils {
 
   /**
    * フィルタオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -599,7 +599,7 @@ public class WebMailUtils {
 
   /**
    * 指定されたアカウントのフィルタの最後のソート番号を取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -636,7 +636,7 @@ public class WebMailUtils {
 
   /**
    * セッションに保存されたString値から メール未読数のHashMap を作りなおします。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -662,7 +662,7 @@ public class WebMailUtils {
 
   /**
    * メールアカウントのセッション情報を削除します。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -673,7 +673,7 @@ public class WebMailUtils {
 
   /**
    * フォルダオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -687,9 +687,11 @@ public class WebMailUtils {
     List<WebMailFolderResultData> list =
       new ArrayList<WebMailFolderResultData>();
 
-    for (EipTMailFolder folder : folderList) {
-      WebMailFolderResultData data = new WebMailFolderResultData(folder);
-      list.add(data);
+    if (folderList != null && folderList.size() != 0) {
+      for (EipTMailFolder folder : folderList) {
+        WebMailFolderResultData data = new WebMailFolderResultData(folder);
+        list.add(data);
+      }
     }
 
     return list;

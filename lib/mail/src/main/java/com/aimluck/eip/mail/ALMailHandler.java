@@ -39,7 +39,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * メールの送受信を操作するインターフェイスです。 <br />
- * 
+ *
  */
 public abstract class ALMailHandler {
 
@@ -54,7 +54,7 @@ public abstract class ALMailHandler {
 
   /**
    * メールを受信する．
-   * 
+   *
    * @return
    * @throws Exception
    */
@@ -80,7 +80,7 @@ public abstract class ALMailHandler {
 
   /**
    * メールを送信する．
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @param smtpHost
@@ -185,7 +185,7 @@ public abstract class ALMailHandler {
 
   /**
    * 未読メールの総数を取得する．
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @param folderName
@@ -208,7 +208,7 @@ public abstract class ALMailHandler {
 
   /**
    * フォルダごとの未読メールの総数を取得する．
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @param folderName
@@ -219,36 +219,39 @@ public abstract class ALMailHandler {
     Map<Integer, Integer> mailSumMap = new HashMap<Integer, Integer>();
 
     try {
-      // アカウントのフォルダ一覧を取得する
-      EipMMailAccount account =
-        ALMailUtils.getMailAccount(rcontext.getUserId(), rcontext
-          .getAccountId());
-      List<EipTMailFolder> folders = ALMailUtils.getEipTMailFolderAll(account);
-      List<Integer> folder_ids = new ArrayList<Integer>();
+      if (rcontext != null) {
+        // アカウントのフォルダ一覧を取得する
+        EipMMailAccount account =
+          ALMailUtils.getMailAccount(rcontext.getUserId(), rcontext
+            .getAccountId());
+        List<EipTMailFolder> folders =
+          ALMailUtils.getEipTMailFolderAll(account);
+        List<Integer> folder_ids = new ArrayList<Integer>();
 
-      // folder_idsにフォルダIDの一覧を追加し、mailSumMapのキーを設定する
-      int folder_id;
-      for (EipTMailFolder folder : folders) {
-        folder_id = folder.getFolderId();
-        folder_ids.add(Integer.valueOf(folder_id));
-        mailSumMap.put(folder_id, 0);
-      }
+        // folder_idsにフォルダIDの一覧を追加し、mailSumMapのキーを設定する
+        int folder_id;
 
-      // フォルダーごとに未読メールの数を取得する
-      int count;
-      for (int _foler_id : folder_ids) {
-        List<Integer> list = new ArrayList<Integer>();
-        list.add(_foler_id);
-        SelectQuery<EipTMail> countquery = getUnReadMailQuery(rcontext, list);
-        if (countquery == null) {
-          count = 0;
-        } else {
-          count =
-            countquery.orderAscending(EipTMail.FOLDER_ID_PROPERTY).getCount();
+        for (EipTMailFolder folder : folders) {
+          folder_id = folder.getFolderId();
+          folder_ids.add(Integer.valueOf(folder_id));
+          mailSumMap.put(folder_id, 0);
         }
-        mailSumMap.put(_foler_id, count);
-      }
 
+        // フォルダーごとに未読メールの数を取得する
+        int count;
+        for (int _foler_id : folder_ids) {
+          List<Integer> list = new ArrayList<Integer>();
+          list.add(_foler_id);
+          SelectQuery<EipTMail> countquery = getUnReadMailQuery(rcontext, list);
+          if (countquery == null) {
+            count = 0;
+          } else {
+            count =
+              countquery.orderAscending(EipTMail.FOLDER_ID_PROPERTY).getCount();
+          }
+          mailSumMap.put(_foler_id, count);
+        }
+      }
     } catch (Exception e) {
       logger.error("ALMailHandler.getUnReadMailSumMap", e);
     }
@@ -257,7 +260,7 @@ public abstract class ALMailHandler {
 
   /**
    * 新着メール数を取得する．
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @param pop3Host
@@ -292,7 +295,7 @@ public abstract class ALMailHandler {
 
   /**
    * アカウントフォルダを削除する．
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @return
@@ -429,7 +432,7 @@ public abstract class ALMailHandler {
 
   /**
    * アカウントフォルダ容量計算
-   * 
+   *
    * @param userRootFolderName
    * @param accountName
    * @return
