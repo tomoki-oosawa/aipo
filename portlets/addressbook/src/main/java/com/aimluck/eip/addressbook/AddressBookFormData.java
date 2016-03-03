@@ -953,15 +953,10 @@ public class AddressBookFormData extends ALAbstractFormData {
       if (listsize != 0) {
         SelectQuery<EipTAddressbookGroupMap> query2 =
           Database.query(EipTAddressbookGroupMap.class);
-        Expression exp2 = ExpressionFactory.inExp("groupId", groupIds);
-        // Expression exp2 = ExpressionFactory.inDbExp("group_id", groupIds);
-
-        /*
-         * Expression exp12 = ExpressionFactory.inDbExp(
-         * EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY + "." +
-         * EipMAddressGroup.GROUP_ID_PK_COLUMN, groupIds);
-         */
-
+        Expression exp2 =
+          ExpressionFactory.inExp(
+            EipTAddressbookGroupMap.EIP_TADDRESS_GROUP_PROPERTY,
+            groupIds);
         query2.setQualifier(exp2);
         Expression exp3 =
           ExpressionFactory.matchExp(
