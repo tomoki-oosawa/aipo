@@ -522,9 +522,8 @@ public class TimelineSelectData extends
                     tmpEipTTimeline.getParams());
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
-                  if ((relatedScheduleIdList == null || (relatedScheduleIdList != null && relatedScheduleIdList
-                    .size() == 0))
-                    || (relatedScheduleIdList != null && !relatedScheduleIdList
+                  if (relatedScheduleIdList == null
+                    || (relatedScheduleIdList.size() == 0 || !relatedScheduleIdList
                       .contains(scheduleId))) {
                     // relatedScheduleIdListが空 or
                     // relatedScheduleIdListに含まれない時は削除
