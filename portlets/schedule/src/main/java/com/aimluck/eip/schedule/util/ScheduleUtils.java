@@ -423,9 +423,12 @@ public class ScheduleUtils {
           + "."
           + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
-      Expression mapexp3 =
-        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, type);
-      mapquery.andQualifier(mapexp3);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member =
@@ -436,7 +439,7 @@ public class ScheduleUtils {
       boolean is_public = "O".equals(record.getPublicFlag());
 
       // アクセス権限がない場合
-      if (type.equals("F") || is_public) {
+      if (is_public) {
       } else if (!is_member && (!(is_createuser || is_owner))) {
         return false;
       }
@@ -2889,10 +2892,15 @@ public class ScheduleUtils {
     Expression exp12 =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userId));
+    Expression exp3 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
+        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     List<EipTScheduleMap> list =
       Database
         .query(EipTScheduleMap.class, exp11)
         .andQualifier(exp12)
+        .andQualifier(exp3)
         .fetchList();
     if (list.size() == 0) {
       return false;
