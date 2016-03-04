@@ -4441,7 +4441,7 @@ public class ScheduleUtils {
       select.append(" t4.note,");
     }
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id)) AND (t0.type = 'U')) AS is_member,");
     select
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
     select

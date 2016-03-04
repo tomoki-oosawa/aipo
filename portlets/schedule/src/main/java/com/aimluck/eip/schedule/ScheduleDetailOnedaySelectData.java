@@ -42,7 +42,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * １日スケジュール（グループ）の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleDetailOnedaySelectData extends
     ScheduleOnedayGroupSelectData {
@@ -184,7 +184,9 @@ public class ScheduleDetailOnedaySelectData extends
         return rd;
       }
       if ("C".equals(record.getPublicFlag())
-        && (userid != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid != record
+          .getUserId()
+          .intValue()))
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
         rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
