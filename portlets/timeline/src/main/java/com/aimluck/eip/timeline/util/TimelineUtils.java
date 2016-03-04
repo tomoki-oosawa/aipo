@@ -48,7 +48,6 @@ import org.xml.sax.InputSource;
 
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
@@ -143,9 +142,6 @@ public class TimelineUtils {
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
   public static final String TARGET_DISPLAY_NAME = "target_display_name";
-
-  /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
-  public static final String SCHEDULEMAP_TYPE_USER = "U";
 
   /**
    * トピックに対する返信数を返します
@@ -1532,39 +1528,4 @@ public class TimelineUtils {
     String resetflag = rundata.getParameters().getString(RESET_FLAG);
     return resetflag != null;
   }
-
-  /**
-   * userIdが一致し、scheduleId_listのいずれかに一致するeip_t_schedule_mapのデータを返す
-   *
-   * @param userId
-   * @param scheduleId_list
-   * @return
-   */
-  public static List<EipTScheduleMap> getRelatedEipTScheduleMap(int userId,
-      ArrayList<Integer> scheduleIdList) {
-    if (scheduleIdList != null && scheduleIdList.size() > 0) {
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression exp11 =
-        ExpressionFactory.inExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          scheduleIdList);
-      mapquery.setQualifier(exp11);
-      Expression exp12 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .valueOf(userId));
-      mapquery.andQualifier(exp12);
-      // 設備は除外する
-      Expression exp3 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY,
-          SCHEDULEMAP_TYPE_USER);
-      mapquery.andQualifier(exp3);
-      List<EipTScheduleMap> list = mapquery.fetchList();
-      return list;
-    } else {
-      return null;
-    }
-  }
-
 }
