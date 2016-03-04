@@ -3232,7 +3232,8 @@ min-width: inherit;
   font-weight: bold;
 }
 .auiSummaryMeta form {
-  line-height: 32px;
+  /*line-height: 32px;*/
+  line-height: 30px;
 }
 .auiSummaryMeta .icon-print {
   font-size: 17px;
