@@ -944,10 +944,6 @@ public class AddressBookFormData extends ALAbstractFormData {
       for (int i = 0; i < listsize; i++) {
         groupIds[i] = list.get(i).getGroupId();
       }
-      // List<Integer> groupIds = new ArrayList<Integer>();
-      // for (int i = 0; i < listsize; i++) {
-      // groupIds.add(list.get(i).getGroupId());
-      // }
 
       // Address-Group Mapテーブル情報を一旦削除
       if (listsize != 0) {
