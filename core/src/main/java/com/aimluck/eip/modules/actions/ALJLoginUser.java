@@ -396,6 +396,7 @@ public class ALJLoginUser extends ActionEvent {
 
         }
       }
+
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
       String redirectUrl = data.getParameters().getString("redirect", "");
