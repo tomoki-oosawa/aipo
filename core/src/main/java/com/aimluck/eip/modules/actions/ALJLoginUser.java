@@ -395,7 +395,6 @@ public class ALJLoginUser extends ActionEvent {
           data.getResponse().addCookie(loginCookie);
 
         }
-
       }
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
