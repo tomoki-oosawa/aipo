@@ -891,6 +891,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
+      // MXXL -> 毎月月末
       // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -1232,9 +1233,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               repeat_week.getValue().charAt(0)).append(lim).toString());
           }
         } else if ("M".equals(repeat_type.getValue())) {
-          DecimalFormat format = new DecimalFormat("00");
-          schedule.setRepeatPattern(new StringBuffer().append('M').append(
-            format.format(month_day.getValue())).append(lim).toString());
+          if (month_day.getValue() == 32) {
+            DecimalFormat format = new DecimalFormat("XX");
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              format.format(month_day.getValue())).append(lim).toString());
+          } else {
+            DecimalFormat format = new DecimalFormat("00");
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              format.format(month_day.getValue())).append(lim).toString());
+          }
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
@@ -1787,9 +1794,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               schedule.setRepeatPattern(tmpPattern);
             }
           } else if ("M".equals(repeat_type.getValue())) {
-            DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer().append('M').append(
-              format.format(month_day.getValue())).append(lim).toString());
+            if (month_day.getValue() == 32) {
+              DecimalFormat format = new DecimalFormat("XX");
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                format.format(month_day.getValue())).append(lim).toString());
+            } else {
+              DecimalFormat format = new DecimalFormat("00");
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                format.format(month_day.getValue())).append(lim).toString());
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('Y').append(
