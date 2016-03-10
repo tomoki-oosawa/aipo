@@ -244,7 +244,7 @@ public class CellScheduleFormBean implements ALData {
     year_day = new ALCellNumberField();
     year_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
-    year_day.limitValue(1, 31);
+    year_day.limitValue(1, 32);
 
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
