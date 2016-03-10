@@ -93,6 +93,9 @@ public class CellScheduleFormBean implements ALData {
   /** <code>month_day</code> 繰り返す日 */
   private ALCellNumberField month_day;
 
+  /** <code>end_of_month</code> 繰り返し月末 */
+  private ALCellNumberField end_of_month;
+
   /** <code>month_day</code> 毎年繰り返す月 */
   private ALCellNumberField year_month;
 
@@ -229,7 +232,7 @@ public class CellScheduleFormBean implements ALData {
     month_day = new ALCellNumberField();
     month_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
-    month_day.limitValue(1, 31);
+    month_day.limitValue(1, 32);
 
     // 毎年繰り返し月（選択されたときのみ Validate する）
     year_month = new ALCellNumberField();

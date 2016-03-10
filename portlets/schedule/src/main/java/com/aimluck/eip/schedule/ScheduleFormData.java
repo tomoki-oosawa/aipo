@@ -949,6 +949,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         repeat_type.setValue("M");
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         count = 3;
+
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
@@ -1233,12 +1234,11 @@ public class ScheduleFormData extends ALAbstractFormData {
               repeat_week.getValue().charAt(0)).append(lim).toString());
           }
         } else if ("M".equals(repeat_type.getValue())) {
-          if (month_day.getValue() == 32) {
-            DecimalFormat format = new DecimalFormat("XX");
+          DecimalFormat format = new DecimalFormat("00");
+          if (32 == month_day.getValue()) {
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
-              format.format(month_day.getValue())).append(lim).toString());
+              "XX").append(lim).toString());
           } else {
-            DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
               format.format(month_day.getValue())).append(lim).toString());
           }
@@ -1794,12 +1794,11 @@ public class ScheduleFormData extends ALAbstractFormData {
               schedule.setRepeatPattern(tmpPattern);
             }
           } else if ("M".equals(repeat_type.getValue())) {
-            if (month_day.getValue() == 32) {
-              DecimalFormat format = new DecimalFormat("XX");
+            DecimalFormat format = new DecimalFormat("00");
+            if (32 == month_day.getValue()) {
               schedule.setRepeatPattern(new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString());
+                "XX").append(lim).toString());
             } else {
-              DecimalFormat format = new DecimalFormat("00");
               schedule.setRepeatPattern(new StringBuffer().append('M').append(
                 format.format(month_day.getValue())).append(lim).toString());
             }

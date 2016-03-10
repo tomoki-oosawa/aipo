@@ -2343,9 +2343,18 @@ public class ScheduleUtils {
             }
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            repeat_pattern =
-              new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString();
+            if (32 == month_day.getValue()) {
+              repeat_pattern =
+                new StringBuffer()
+                  .append('M')
+                  .append("XX")
+                  .append(lim)
+                  .toString();
+            } else {
+              repeat_pattern =
+                new StringBuffer().append('M').append(
+                  format.format(month_day.getValue())).append(lim).toString();
+            }
             date_count = 1;
           } else {
             DecimalFormat format = new DecimalFormat("00");
@@ -3250,7 +3259,6 @@ public class ScheduleUtils {
     return result.toString();
   }
 
-  @SuppressWarnings("deprecation")
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
       List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
