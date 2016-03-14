@@ -947,7 +947,11 @@ public class ScheduleFormData extends ALAbstractFormData {
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
-        month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        if (ptn.substring(1, 3).equals("XX")) {
+          month_day.setValue(32);
+        } else {
+          month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        }
         count = 3;
 
         // 毎年

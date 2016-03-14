@@ -930,7 +930,12 @@ public class ScheduleUtils {
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      int mday = Integer.parseInt(ptn.substring(1, 3));
+      int mday;
+      if (ptn.substring(1, 3).equals("XX")) {
+        mday = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        mday = Integer.parseInt(ptn.substring(1, 3));
+      }
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
     } else if (ptn.charAt(0) == 'Y') {
