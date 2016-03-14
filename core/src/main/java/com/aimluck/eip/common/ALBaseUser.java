@@ -62,6 +62,8 @@ public class ALBaseUser extends
 
   public static final String LAST_NAME_KANA = "LAST_NAME_KANA";
 
+  public static final String PROFILE = "PROFILE";
+
   public static final String PHOTO = "PHOTO";
 
   public static final String PHOTO_SMARTPHONE = "PHOTO_SMARTPHONE";
@@ -263,6 +265,15 @@ public class ALBaseUser extends
    */
   public void setLastNameKana(String str) {
     setImperm(LAST_NAME_KANA, str);
+  }
+
+  @Override
+  public String getProfile() {
+    return (String) getImperm(PROFILE);
+  }
+
+  public void serProfile(String str) {
+    setImperm(PROFILE, str);
   }
 
   /**

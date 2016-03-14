@@ -149,6 +149,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 顔写真 */
   private ALStringField photo = null;
 
+  /** プロフィール */
+  private ALStringField profile;
+
   /** プロフィール画像バリデートのサイズ(横幅) */
   public static final int DEF_PHOTO_VALIDATE_WIDTH = 200;
 
@@ -319,6 +322,10 @@ public class AccountUserFormData extends ALAbstractFormData {
     photo = new ALStringField();
     photo.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_USER_PHOTO"));
     photo.setTrim(true);
+    // プロフィール
+    profile = new ALStringField();
+    profile.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_PROFILE"));
 
     // 部署ID
     post_id = new ALNumberField();
@@ -448,6 +455,9 @@ public class AccountUserFormData extends ALAbstractFormData {
     // 姓（フリガナ）
     last_name_kana.setNotNull(true);
     last_name_kana.limitMaxLength(20);
+
+    // プロフィール
+    profile.limitMaxLength(10000);
 
     // 内線
     // in_telephone.setCharacterType(ALStringField.TYPE_ALPHABET_NUMBER);
@@ -635,6 +645,9 @@ public class AccountUserFormData extends ALAbstractFormData {
         .getl10nFormat("ACCOUNT_ALERT_EMAIL_MOBILE"));
     }
 
+    // プロフィール
+    profile.validate(msgList);
+
     // 顔写真
     if (photo_vali_flag) {
       msgList
@@ -709,6 +722,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       firstname.setValue(user.getFirstName());
       // 名前（姓）
       lastname.setValue(user.getLastName());
+      // プロフィール
+      profile.setValue(user.getProfile());
       // メールアドレス
       email.setValue(user.getEmail());
       // 電話番号（内線）
@@ -866,6 +881,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         user.setPostId((int) post_id.getValue());
         user.setFirstNameKana(first_name_kana.getValue());
         user.setLastNameKana(last_name_kana.getValue());
+        user.setProfile(profile.getValue());
 
         if (is_admin.getValue() != null) {
           // is_adminの値が渡されなかった場合はデフォルトとして処理。
@@ -1048,6 +1064,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         user.setPositionId((int) position_id.getValue());
         user.setFirstNameKana(first_name_kana.getValue());
         user.setLastNameKana(last_name_kana.getValue());
+        user.setProfile(profile.getValue());
         if (filebean != null) {
           if (filebean.getFileId() != 0) {
             // 顔写真を登録する．
@@ -1118,6 +1135,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           }
           currentUser.setFirstNameKana(user.getFirstNameKana());
           currentUser.setLastNameKana(user.getLastNameKana());
+          currentUser.setProfile(user.getProfile());
           currentUser.setHasPhoto(user.hasPhotoString());
           currentUser.setPhotoModified(user.getPhotoModified());
           currentUser.setHasPhotoSmartphone(user.hasPhotoSmartphoneString());
@@ -1436,6 +1454,15 @@ public class AccountUserFormData extends ALAbstractFormData {
    */
   public ALStringField getLastNameKana() {
     return last_name_kana;
+  }
+
+  /**
+   * プロフィールを取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getProfile() {
+    return profile;
   }
 
   /**

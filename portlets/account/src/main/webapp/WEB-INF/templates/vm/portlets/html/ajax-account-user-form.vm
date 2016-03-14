@@ -40,6 +40,9 @@
 #else
 <input type="hidden" name="mode" value="update" />
 #end
+
+##ここから表の記述
+
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($!result.getFieldName('username'))")
 #ALtditemheader()
@@ -73,8 +76,12 @@
 #ALtditemheader()
 #ALtextfield('cellular_phone1' $!result.CellularPhone1 '20%' 5 'disabled')-&nbsp;#ALtextfield('cellular_phone2' $!result.CellularPhone2 '20%' 4 'disabled')-&nbsp;#ALtextfield('cellular_phone3' $!result.CellularPhone3 '20%' 4 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_NUM)
 #ALtditemfooter()
+##携帯メールアドレス
 #ALtdcaption($!result.getFieldName("cellular_mail"))
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+
+#ALtdcaption($!result.getFieldName("profile"))
+
 #if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 
