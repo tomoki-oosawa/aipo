@@ -3200,11 +3200,19 @@ public class ScheduleUtils {
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      result
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-        .append(Integer.parseInt(ptn.substring(1, 3)))
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-        .toString();
+      if (ptn.substring(1, 3).equals("XX")) {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append("月末")
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      } else {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(Integer.parseInt(ptn.substring(1, 3)))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      }
       count = 3;
       // 毎年
     } else if (ptn.charAt(0) == 'Y') {

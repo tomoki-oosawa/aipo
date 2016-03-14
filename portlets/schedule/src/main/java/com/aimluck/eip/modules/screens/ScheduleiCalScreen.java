@@ -206,10 +206,15 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         count = 9;
       } else if (ptn.charAt(0) == 'M') {
         recur = new Recur(Recur.MONTHLY, null);
-        int mday = Integer.parseInt(ptn.substring(1, 3));
-        recur.getMonthList().addAll(
-          Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-        recur.getMonthDayList().add(mday);
+        int mday;
+        if (ptn.substring(1, 3).equals("XX")) {
+          mday = 32;
+        } else {
+          mday = Integer.parseInt(ptn.substring(1, 3));
+          recur.getMonthList().addAll(
+            Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+          recur.getMonthDayList().add(mday);
+        }
         count = 3;
       } else if (ptn.charAt(0) == 'Y') {
         recur = new Recur(Recur.YEARLY, null);
