@@ -4294,7 +4294,13 @@ public class ScheduleUtils {
       return false;
     }
     if (repeat_ptn.startsWith("M")) {
-      int month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      int month_day;
+      // 月末処理
+      if (repeat_ptn.substring(1, 3).equals("XX")) {
+        month_day = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      }
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
       return (month_day == ptn_day);
     }
