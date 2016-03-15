@@ -264,6 +264,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
     if (!isMemberHasAuthority) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
     }
+    if (memberList.size() > 300) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER5"));
+    }
     if (photo_vali_flag) {
       msgList.add(ALLocalizationUtils
         .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
