@@ -238,9 +238,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    if (memberList.size() < 2) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
-    }
+
     boolean hasOwn = false;
     boolean hasAuthority = false;
     boolean isMemberHasAuthority = false;
