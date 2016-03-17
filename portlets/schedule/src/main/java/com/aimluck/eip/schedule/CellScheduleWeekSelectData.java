@@ -258,7 +258,12 @@ public class CellScheduleWeekSelectData extends
         }
         // 毎月
       } else if (pattern.startsWith("M")) {
-        int day = Integer.parseInt(pattern.substring(1, pattern.length() - 1));
+        int day;
+        if (pattern.substring(1, 3).equals("XX")) {
+          day = cal.getActualMaximum(Calendar.DATE);
+        } else {
+          day = Integer.parseInt(pattern.substring(1, pattern.length() - 1));
+        }
         Calendar cal2 = Calendar.getInstance();
         Calendar cal_event = Calendar.getInstance();
         cal2.setTime(startDate.getValue());
