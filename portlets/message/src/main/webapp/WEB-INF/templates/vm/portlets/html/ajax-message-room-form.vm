@@ -81,7 +81,8 @@
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post').addQueryData('rid',$!result.RoomId)"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('rid',$!result.RoomId)"
-        authorityFromId="tmp_authority_from">
+        authorityFromId="tmp_authority_from"
+        isMessageUser=!$isMessageUser>
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name" data-authority="$!record.Authority">$!record.AliasName</option>#end</select>
   </td></tr>
@@ -110,6 +111,22 @@
 #ALtditemfooter()
 #end
 #end
+
+<tr>
+  #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
+  #ALtditemheader()
+    <h3 class="mt5">$l10n.MESSAGE_NOTIFICATION_DESKTOP</h3>
+    <input type="radio" name="desktop_notification" id="desktop_notificationA" checked="checked"/>
+    <label for="desktop_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
+    <input type="radio" name="desktop_notification" id="desktop_notificationF"/>
+    <label for="desktop_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
+    <h3 class="mt5">$l10n.MESSAGE_NOTIFICATION_MOBILE</h3>
+    <input type="radio" name="mobile_notification" id="mobile_notificationA" checked="checked"/>
+    <label for="mobile_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
+    <input type="radio" name="mobile_notification" id="mobile_notificationF"/>
+    <label for="mobile_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
+  #ALtditemfooter()
+</tr>
 
 #ALtablefooter()
 
