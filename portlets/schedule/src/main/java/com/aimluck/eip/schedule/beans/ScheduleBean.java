@@ -153,13 +153,15 @@ public class ScheduleBean implements ALData, Cloneable {
 
   public void setResultData(AjaxScheduleResultData rd) {
     try {
-      String rdName = rd.getName().toString();
+      String rdName = rd.getName().getValue();
       String lineSeparator = URLDecoder.decode("%E2%80%A8", "UTF-8");
       ALStringField name =
         new ALStringField(rdName.replace(lineSeparator, "\n"));
       this.name = name;
     } catch (UnsupportedEncodingException e1) {
-      e1.printStackTrace();
+      this.name = rd.getName();
+
+      // logger.error(e1);
     }
     this.schedule_id = rd.getScheduleId();
     this.parent_id = rd.getParentId();
