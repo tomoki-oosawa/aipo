@@ -52,6 +52,8 @@
 #ALtditem($!result.Detail.CellularPhone)
 #ALtdcaption($l10n.ACCOUNT_USER_CELLULAR_MAIL)
 #ALtditem($!result.Detail.CellularMail)
+#ALtdcaption($l10n.ACCOUNT_USER_PROFILE)
+#ALtditem($!result.Detail.Profile)
 #ALtdcaption($l10n.ACCOUNT_POST)
 #ALtditemheader()
 #foreach($record in $!result.Detail.getPostNameList())

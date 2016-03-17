@@ -38,6 +38,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String PHOTO_MODIFIED_SMARTPHONE_PROPERTY = "photoModifiedSmartphone";
     public static final String PHOTO_SMARTPHONE_PROPERTY = "photoSmartphone";
     public static final String POSITION_ID_PROPERTY = "positionId";
+    public static final String PROFILE_PROPERTY = "profile";
     public static final String TUTORIAL_FORBID_PROPERTY = "tutorialForbid";
     public static final String UPDATED_USER_ID_PROPERTY = "updatedUserId";
     public static final String EIP_MUSER_POSITION_PROPERTY = "eipMUserPosition";
@@ -48,6 +49,9 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String EIP_TGPDB_ITEM_PROPERTY = "eipTGpdbItem";
     public static final String EIP_TGPDB_RECORD_PROPERTY = "eipTGpdbRecord";
     public static final String EIP_TMSGBOARD_CATEGORY_PROPERTY = "eipTMsgboardCategory";
+    public static final String EIP_TPROJECT_PROPERTY = "eipTProject";
+    public static final String EIP_TPROJECT_TASK_PROPERTY = "eipTProjectTask";
+    public static final String EIP_TPROJECT_TASK_COMMENT_PROPERTY = "eipTProjectTaskComment";
     public static final String EIP_TREPORT_PROPERTY = "eipTReport";
     public static final String EIP_TTIMELINE_PROPERTY = "eipTTimeline";
     public static final String EIP_TTIMELINE_LIKE_PROPERTY = "eipTTimelineLike";
@@ -293,6 +297,14 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     
     
+    public void setProfile(String profile) {
+        writeProperty("profile", profile);
+    }
+    public String getProfile() {
+        return (String)readProperty("profile");
+    }
+    
+    
     public void setTutorialForbid(String tutorialForbid) {
         writeProperty("tutorialForbid", tutorialForbid);
     }
@@ -392,6 +404,39 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTMsgboardCategory() {
         return (List)readProperty("eipTMsgboardCategory");
+    }
+    
+    
+    public void addToEipTProject(com.aimluck.eip.cayenne.om.portlet.EipTProject obj) {
+        addToManyTarget("eipTProject", obj, true);
+    }
+    public void removeFromEipTProject(com.aimluck.eip.cayenne.om.portlet.EipTProject obj) {
+        removeToManyTarget("eipTProject", obj, true);
+    }
+    public List getEipTProject() {
+        return (List)readProperty("eipTProject");
+    }
+    
+    
+    public void addToEipTProjectTask(com.aimluck.eip.cayenne.om.portlet.EipTProjectTask obj) {
+        addToManyTarget("eipTProjectTask", obj, true);
+    }
+    public void removeFromEipTProjectTask(com.aimluck.eip.cayenne.om.portlet.EipTProjectTask obj) {
+        removeToManyTarget("eipTProjectTask", obj, true);
+    }
+    public List getEipTProjectTask() {
+        return (List)readProperty("eipTProjectTask");
+    }
+    
+    
+    public void addToEipTProjectTaskComment(com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment obj) {
+        addToManyTarget("eipTProjectTaskComment", obj, true);
+    }
+    public void removeFromEipTProjectTaskComment(com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment obj) {
+        removeToManyTarget("eipTProjectTaskComment", obj, true);
+    }
+    public List getEipTProjectTaskComment() {
+        return (List)readProperty("eipTProjectTaskComment");
     }
     
     

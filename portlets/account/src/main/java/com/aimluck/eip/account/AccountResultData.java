@@ -50,6 +50,9 @@ public class AccountResultData implements ALData {
   /** メールアドレス */
   private ALStringField email;
 
+  /** プロフィール */
+  private ALStringField profile;
+
   /** 電話番号（外線） */
   private ALStringField out_telephone;
 
@@ -125,6 +128,7 @@ public class AccountResultData implements ALData {
     name = new ALStringField();
     name_kana = new ALStringField();
     email = new ALStringField();
+    profile = new ALStringField();
     out_telephone = new ALStringField();
     in_telephone = new ALStringField();
     cellular_phone = new ALStringField();
@@ -266,6 +270,10 @@ public class AccountResultData implements ALData {
     return cellular_mail;
   }
 
+  public ALStringField getProfile() {
+    return profile;
+  }
+
   public String getWbrCellularMail() {
     return ALCommonUtils.replaceToAutoCR(getCellularMail().toString());
   }
@@ -319,6 +327,13 @@ public class AccountResultData implements ALData {
    */
   public void setCellularMail(String string) {
     cellular_mail.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setProfile(String string) {
+    profile.setValue(string);
   }
 
   /**

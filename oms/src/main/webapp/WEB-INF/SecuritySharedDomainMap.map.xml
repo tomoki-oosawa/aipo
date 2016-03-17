@@ -53,6 +53,7 @@
 		<db-attribute name="PHOTO_MODIFIED_SMARTPHONE" type="TIMESTAMP"/>
 		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
+		<db-attribute name="PROFILE" type="VARCHAR" length="10000"/>
 		<db-attribute name="TUTORIAL_FORBID" type="CHAR" length="64"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -120,6 +121,7 @@
 		<obj-attribute name="photoModifiedSmartphone" type="java.util.Date" db-attribute-path="PHOTO_MODIFIED_SMARTPHONE"/>
 		<obj-attribute name="photoSmartphone" type="byte[]" db-attribute-path="PHOTO_SMARTPHONE"/>
 		<obj-attribute name="positionId" type="java.lang.Integer" db-attribute-path="POSITION_ID"/>
+		<obj-attribute name="profile" type="java.lang.String" db-attribute-path="PROFILE"/>
 		<obj-attribute name="tutorialForbid" type="java.lang.String" db-attribute-path="TUTORIAL_FORBID"/>
 		<obj-attribute name="updatedUserId" type="java.lang.Integer" db-attribute-path="UPDATED_USER_ID"/>
 	</obj-entity>
@@ -249,6 +251,9 @@
 	<obj-relationship name="eipTGpdbItem" source="TurbineUser" target="EipTGpdbItem" db-relationship-path="eipTGpdbItem"/>
 	<obj-relationship name="eipTGpdbRecord" source="TurbineUser" target="EipTGpdbRecord" db-relationship-path="eipTGpdbRecord"/>
 	<obj-relationship name="eipTMsgboardCategory" source="TurbineUser" target="EipTMsgboardCategory" db-relationship-path="eipTMsgboardCategory"/>
+	<obj-relationship name="eipTProject" source="TurbineUser" target="EipTProject" db-relationship-path="eipTProject"/>
+	<obj-relationship name="eipTProjectTask" source="TurbineUser" target="EipTProjectTask" db-relationship-path="eipTProjectTask"/>
+	<obj-relationship name="eipTProjectTaskComment" source="TurbineUser" target="EipTProjectTaskComment" db-relationship-path="EipTProjectTaskComment"/>
 	<obj-relationship name="eipTReport" source="TurbineUser" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTTimeline" source="TurbineUser" target="EipTTimeline" db-relationship-path="eipTTimeline"/>
 	<obj-relationship name="eipTTimelineLike" source="TurbineUser" target="EipTTimelineLike" db-relationship-path="EipTTimelineLike"/>

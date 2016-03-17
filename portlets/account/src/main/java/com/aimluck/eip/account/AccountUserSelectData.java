@@ -473,6 +473,7 @@ public class AccountUserSelectData extends
       rd.setInTelephone(record.getInTelephone());
       rd.setCellularPhone(record.getCellularPhone());
       rd.setCellularMail(record.getCellularMail());
+      rd.setProfile(record.getProfile());
       rd.setPostNameList(ALEipUtils.getPostNameList(id.intValue()));
       rd.setPositionName(ALEipUtils.getPositionName(record.getPositionId()));
       rd.setDisabled(record.getDisabled());
