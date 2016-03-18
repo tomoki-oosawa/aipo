@@ -135,6 +135,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
         String memberNames[] = rundata.getParameters().getStrings("member_to");
         String memberAuthorities[] =
           rundata.getParameters().getStrings("member_authority_to");
+        String desktopNotification[] =
+          rundata.getParameters().getStrings("desktop_notification");
+        String mobileNotification[] =
+          rundata.getParameters().getStrings("mobile_notification");
 
         memberList.clear();
         if (memberNames != null
@@ -155,6 +159,24 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
           for (ALEipUser member : memberList) {
             member.setAuthority(authMap.get(member.getName().getValue()));
+          }
+
+          Map<String, String> d_notificationMap = new HashMap<String, String>();
+          for (int i = 0; i < memberNames.length; i++) {
+            d_notificationMap.put(memberNames[i], desktopNotification[i]);
+          }
+          for (ALEipUser member : memberList) {
+            member.setDesktopNotification(d_notificationMap.get(
+              member.getName().getValue()).substring(21, 21));
+          }
+
+          Map<String, String> m_notificationMap = new HashMap<String, String>();
+          for (int i = 0; i < memberNames.length; i++) {
+            m_notificationMap.put(memberNames[i], mobileNotification[i]);
+          }
+          for (ALEipUser member : memberList) {
+            member.setMobileNotification(m_notificationMap.get(
+              member.getName().getValue()).substring(20, 20));
           }
         }
         if (memberList.size() == 0) {
@@ -288,11 +310,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
-      if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
-        .getUserId()
-        .getValue())) {
-        throw new ALPageNotFoundException();
-      }
+      // if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
+      // .getUserId()
+      // .getValue())) {
+      // throw new ALPageNotFoundException();
+      // }
 
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
@@ -372,6 +394,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
         map.setAuthority(user.getAuthority().getValue());
+        map.setDesktopNotification(user.getDesktopNotification().getValue());
+        map.setMobileNotification(user.getMobileNotification().getValue());
         if (!isFirst) {
           autoName.append(",");
         }
@@ -454,6 +478,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
         map.setAuthority(user.getAuthority().getValue());
+        map.setDesktopNotification(user.getDesktopNotification().getValue());
+        map.setMobileNotification(user.getMobileNotification().getValue());
         if (!isFirst) {
           autoName.append(",");
         }

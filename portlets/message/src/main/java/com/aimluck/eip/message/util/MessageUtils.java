@@ -186,6 +186,28 @@ public class MessageUtils {
     return false;
   }
 
+  public static boolean isDesktopNotification(EipTMessageRoom room, int userId) {
+    @SuppressWarnings("unchecked")
+    List<EipTMessageRoomMember> list = room.getEipTMessageRoomMember();
+    for (EipTMessageRoomMember member : list) {
+      if (member.getUserId().intValue() == userId) {
+        return "A".equals(member.getDesktopNotification());
+      }
+    }
+    return false;
+  }
+
+  public static boolean isMobileNotification(EipTMessageRoom room, int userId) {
+    @SuppressWarnings("unchecked")
+    List<EipTMessageRoomMember> list = room.getEipTMessageRoomMember();
+    for (EipTMessageRoomMember member : list) {
+      if (member.getUserId().intValue() == userId) {
+        return "A".equals(member.getMobileNotification());
+      }
+    }
+    return false;
+  }
+
   public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
       int limit, boolean isLatest) {
     StringBuilder select = new StringBuilder();

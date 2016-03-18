@@ -735,9 +735,6 @@ aipo.message.selectRoom = function(room_id, scroll) {
             }
         }
 
-        messageRoomSetting.style.display = ("G" == messageRoomType.innerHTML&&"A" == messageRoomAuthority.innerHTML) ? ""
-                : "none";
-
         dojo.style(dojo.byId("messageInputAttachment"), "display", "none");
         dojo.byId("attachments_global-" + aipo.message.portletId).innerHTML="";
 

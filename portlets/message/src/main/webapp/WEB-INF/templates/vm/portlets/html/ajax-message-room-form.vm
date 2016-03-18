@@ -29,6 +29,11 @@
 #set ($modesrv = "update")
 #end
 #set ($indicator_id = "indicator-dlg-")
+#if($isMessageUser)
+#set ($form_actl = "active")
+#else
+#set ($form_actl = "disable")
+#end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
@@ -81,18 +86,16 @@
         groupSelectOptionValue="name"
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleUserGroupLiteJSONScreen').addQueryData('mode','mygroup_and_post').addQueryData('rid',$!result.RoomId)"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','UserPhotoLiteJSONScreen').addQueryData('mode','group').addQueryData('rid',$!result.RoomId)"
-        authorityFromId="tmp_authority_from"
-        isMessageUser=!$isMessageUser>
+        authorityFromId="tmp_authority_from">
     </div>
     <select size="5" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.MemberList)<option value="$!record.Name" data-authority="$!record.Authority">$!record.AliasName</option>#end</select>
   </td></tr>
 </table>
 </div>
 #ALtditemfooter()
-
 #ALtdcaption($l10n.MESSAGE_ROOM_NAME)
 #ALtditemheader()
-#ALtextfieldw100('name' $!result.Name 50 'active')
+#ALtextfieldw100('name' $!result.Name 50 $form_actl)
 #ALtditemfooter()
 
 #if($mode!="new_form")
