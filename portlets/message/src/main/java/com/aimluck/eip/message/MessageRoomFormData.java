@@ -310,11 +310,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
-      // if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
-      // .getUserId()
-      // .getValue())) {
-      // throw new ALPageNotFoundException();
-      // }
 
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());

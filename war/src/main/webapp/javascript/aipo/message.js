@@ -692,8 +692,8 @@ aipo.message.selectRoom = function(room_id, scroll) {
     var messageRoomAuthority = dojo.byId("messageRoomAuthority" + room_id);
     var messageRoomAvatar = dojo.byId("messageRoomAvatar");
     var messageRoomName = dojo.byId("messageRoomName");
-    var messageRoomSetting = dojo.byId("messageRoomSetting");
     var messageSearchForm = dojo.byId("messageSearchForm");
+
     if (messageForm && messageRoom) {
         if(aipo.message.isMobile) {
             dojo.removeClass(document.body, "messageRoomList");
