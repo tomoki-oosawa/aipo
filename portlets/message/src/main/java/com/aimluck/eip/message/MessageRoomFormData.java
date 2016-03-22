@@ -81,6 +81,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private ALEipUser login_user;
 
+  private boolean login_user_auth = true;
+
   private FileuploadLiteBean filebean = null;
 
   private String folderName = null;
@@ -310,6 +312,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
+
+      login_user_auth =
+        MessageUtils.hasAuthorityRoom(room, (int) login_user
+          .getUserId()
+          .getValue());
 
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
@@ -580,6 +587,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   public FileuploadLiteBean getFileBean() {
     return filebean;
+  }
+
+  public boolean hasAuth() {
+    return login_user_auth;
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
