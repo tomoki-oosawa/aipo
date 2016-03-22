@@ -30,7 +30,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザー名簿の一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class UserListScreen extends ALVelocityScreen {
 
@@ -39,7 +39,7 @@ public class UserListScreen extends ALVelocityScreen {
     .getLogger(UserListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -50,6 +50,7 @@ public class UserListScreen extends ALVelocityScreen {
     try {
       ALEipUtils.setTemp(rundata, context, "tab", "result");
       UserSelectData listData = new UserSelectData();
+      listData.clearFilter(rundata, context);
       listData.initField();
       listData.setRowsNum(Integer.parseInt(portlet
         .getPortletConfig()

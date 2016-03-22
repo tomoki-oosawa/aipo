@@ -594,4 +594,7 @@ public class UserSelectData extends
     return ALAccessControlConstants.POERTLET_FEATURE_ADDRESSBOOK_ADDRESS_INSIDE;
   }
 
+  public void clearFilter(RunData rundata, Context context) {
+    ALEipUtils.removeTemp(rundata, context, LIST_FILTER_STR);
+  }
 }
