@@ -367,9 +367,7 @@ public class CellScheduleFormBean implements ALData {
     } else if (ptn.charAt(0) == 'M') {
       repeat_type.setValue("M");
       if (ptn.substring(1, 3).equals("XX")) {
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(view_date.getValue());
-        month_day.setValue(cal.getActualMaximum(Calendar.DATE));
+        month_day.setValue(32);
       } else {
         month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
       }

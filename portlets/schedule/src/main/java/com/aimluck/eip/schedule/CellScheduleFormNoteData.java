@@ -1125,11 +1125,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             }
           } else if ("M".equals(form_data.getRepeatType().getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer()
-              .append('M')
-              .append(format.format(form_data.getMonthDay().getValue()))
-              .append(lim)
-              .toString());
+            String month_day =
+              format.format(form_data.getMonthDay().getValue());
+            if ("32".equals(month_day)) {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                "XX").append(lim).toString());
+            } else {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                month_day).append(lim).toString());
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer()
