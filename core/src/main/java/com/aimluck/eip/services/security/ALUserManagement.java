@@ -346,6 +346,7 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
       tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
       tuser.setMigrateVersion(baseuser.getMigrateVersion());
+      tuser.setProfile(baseuser.getProfile());
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {

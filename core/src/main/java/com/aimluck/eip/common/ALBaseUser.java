@@ -267,12 +267,11 @@ public class ALBaseUser extends
     setImperm(LAST_NAME_KANA, str);
   }
 
-  @Override
   public String getProfile() {
     return (String) getImperm(PROFILE);
   }
 
-  public void serProfile(String str) {
+  public void setProfile(String str) {
     setImperm(PROFILE, str);
   }
 
