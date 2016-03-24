@@ -195,11 +195,10 @@ public abstract class ALAbstractSelectData<M1, M2> implements ALData {
   public boolean doViewList(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
-      Boolean test =
-        doCheckAclPermission(
-          rundata,
-          context,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
       ResultList<M1> resultList = selectList(rundata, context);
       if (resultList != null) {

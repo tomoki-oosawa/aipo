@@ -3203,7 +3203,7 @@ public class ScheduleUtils {
       if (ptn.substring(1, 3).equals("XX")) {
         result
           .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-          .append("月末")
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
           .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
           .toString();
       } else {

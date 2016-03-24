@@ -359,7 +359,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         return getRepeatStartDate(cal.getTime(), ptn);
       }
     } catch (Exception e) {
-      logger.equals(e);
+      logger.error(e);
     }
     return new Date();
   }

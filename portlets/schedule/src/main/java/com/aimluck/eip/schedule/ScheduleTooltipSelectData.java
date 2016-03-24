@@ -417,11 +417,10 @@ public class ScheduleTooltipSelectData extends
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         if (ptn.substring(1, 3).equals("XX")) {
-          rd.addText(new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-            .append("月末")
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-            .toString());
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         } else {
           rd.addText(new StringBuffer().append(
             ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
