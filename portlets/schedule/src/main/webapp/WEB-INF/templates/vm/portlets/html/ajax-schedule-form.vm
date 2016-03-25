@@ -104,9 +104,7 @@
     <div class="p auiSetDate">
     	#* 一旦inputIdを上したそれぞれ start_date_input end_date_input のペアにします　→ inputIdもカレンダーの日にちを変更した時にFormに表示される日にちを操作してる*#
      <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
-　　　　<span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
-　　　<span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
-     </span>
+　　　　
 #* dateIdはカレンダーの日にちを変更した時にFormに表示される日にちを操作してる　*#
 #* hiddenIdを finish_start_dateからstart_dateに、finish_end_dateからend_dateに変更してみます*#
      <span dojoType="aipo.widget.DropdownDatepicker" id="finishDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="finish_start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="finish_start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
