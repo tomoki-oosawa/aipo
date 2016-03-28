@@ -146,6 +146,7 @@
 				<tr>
 					<td>
 						<div>
+						<span class="label">$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.ProjectName</span></a>
 						$!record.IndentString<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskDetailScreen").addQueryData("entityid",$record.TaskId))');">$!record.TaskName</a>
 						</div>
 					</td>
