@@ -5009,37 +5009,6 @@ public class ScheduleUtils {
     int uid = ALEipUtils.getUserId(rundata);
     String orgId = Database.getDomainName();
 
-    List<Integer> hadfileids = new ArrayList<Integer>();
-    for (FileuploadLiteBean file : fileuploadList) {
-      if (!file.isNewFile()) {
-        hadfileids.add(file.getFileId());
-      }
-    }
-
-    SelectQuery<EipTScheduleFile> dbquery =
-      Database.query(EipTScheduleFile.class);
-    dbquery.andQualifier(ExpressionFactory.matchDbExp(
-      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
-      schedule.getScheduleId()));
-    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
-    List<EipTScheduleFile> delFiles = new ArrayList<EipTScheduleFile>();
-    for (EipTScheduleFile file : existsFiles) {
-      if (!hadfileids.contains(file.getFileId())) {
-        delFiles.add(file);
-      }
-    }
-
-    // ローカルファイルに保存されているファイルを削除する．
-    if (delFiles.size() > 0) {
-      int delsize = delFiles.size();
-      for (int i = 0; i < delsize; i++) {
-        ALStorageService.deleteFile(ScheduleUtils.getSaveDirPath(orgId, uid)
-          + (delFiles.get(i)).getFilePath());
-      }
-      // データベースから添付ファイルのデータ削除
-      Database.deleteAll(delFiles);
-    }
-
     // ファイル追加処理
     try {
       for (FileuploadLiteBean filebean : fileuploadList) {
@@ -5103,7 +5072,51 @@ public class ScheduleUtils {
         }
       }
 
-      // 添付ファイル保存先のフォルダを削除
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("schedule", e);
+      return false;
+    }
+    return true;
+  }
+
+  public static boolean deleteLocalFile(RunData rundata, EipTSchedule schedule,
+      List<FileuploadLiteBean> fileuploadList, String folderName) {
+    try {
+      int uid = ALEipUtils.getUserId(rundata);
+      String orgId = Database.getDomainName();
+
+      List<Integer> hadfileids = new ArrayList<Integer>();
+      for (FileuploadLiteBean file : fileuploadList) {
+        if (!file.isNewFile()) {
+          hadfileids.add(file.getFileId());
+        }
+      }
+
+      SelectQuery<EipTScheduleFile> dbquery =
+        Database.query(EipTScheduleFile.class);
+      dbquery.andQualifier(ExpressionFactory.matchDbExp(
+        EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+        schedule.getScheduleId()));
+      List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+      List<EipTScheduleFile> delFiles = new ArrayList<EipTScheduleFile>();
+      for (EipTScheduleFile file : existsFiles) {
+        if (!hadfileids.contains(file.getFileId())) {
+          delFiles.add(file);
+        }
+      }
+
+      // ローカルファイルに保存されているファイルを削除する．
+      if (delFiles.size() > 0) {
+        int delsize = delFiles.size();
+        for (int i = 0; i < delsize; i++) {
+          ALStorageService.deleteFile(ScheduleUtils.getSaveDirPath(orgId, uid)
+            + (delFiles.get(i)).getFilePath());
+        }
+        // データベースから添付ファイルのデータ削除
+        Database.deleteAll(delFiles);
+      }
+
       ALStorageService.deleteTmpFolder(uid, folderName);
     } catch (Exception e) {
       Database.rollback();
