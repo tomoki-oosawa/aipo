@@ -469,12 +469,13 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   `resttime_out` int(11) DEFAULT NULL,
   `change_hour` int(11) DEFAULT NULL,
   `outgoing_add_flag` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `overtime_type` varchar(8) DEFAULT 'O',
   `create_date` date DEFAULT NULL,
   `update_date` datetime DEFAULT NULL,
   PRIMARY KEY (`system_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,4,'T',now(),now());
+INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,4,'T','L480',now(),now());
 
 CREATE TABLE `eip_t_ext_timecard_system_map` (
   `system_map_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1010,6 +1011,7 @@ CREATE TABLE `turbine_user` (
   `photo_modified_smartphone` datetime DEFAULT NULL,
   `tutorial_forbid` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
   `migrate_version` int(11) NOT NULL DEFAULT 0,
+  `code` varchar(255) DEFAULT NULL,
   `created_user_id` int(11) DEFAULT NULL,
   `updated_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
@@ -1363,6 +1365,9 @@ CREATE TABLE `eip_t_message_room_member` (
     `login_name` varchar(32) NOT NULL,
     `target_user_id` int(11),
     `authority` varchar(1) DEFAULT 'A',
+    `desktop_notification` varchar(1) DEFAULT 'A',
+    `mobile_notification` varchar(1) DEFAULT 'A',
+    `history_last_message_id` int(11) NOT NULL DEFAULT 0,
     FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
