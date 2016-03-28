@@ -800,6 +800,7 @@ table.simpleTable .caption {
   left: 50%;
   width: 300px;
   margin-left: -150px;
+  padding: 40px 0;
 }
 
 /* addressbookDialog */
