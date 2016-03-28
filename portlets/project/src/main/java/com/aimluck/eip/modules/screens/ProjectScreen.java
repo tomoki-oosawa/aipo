@@ -42,7 +42,7 @@ public class ProjectScreen extends ALVelocityScreen {
     .getLogger(ProjectScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context
@@ -81,7 +81,7 @@ public class ProjectScreen extends ALVelocityScreen {
 
   /**
    * ポートレット名取得
-   * 
+   *
    * @return ポートレット名
    */
   @Override
@@ -91,7 +91,7 @@ public class ProjectScreen extends ALVelocityScreen {
 
   /**
    * セッション情報をクリアする
-   * 
+   *
    * @param rundata
    *          RunData
    * @param context

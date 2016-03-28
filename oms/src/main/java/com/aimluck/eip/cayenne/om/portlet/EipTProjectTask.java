@@ -52,4 +52,18 @@ public class EipTProjectTask extends _EipTProjectTask {
   public void setIndent(int i) {
     indent = i;
   }
+
+  /**
+   * @param string
+   */
+  public void setProjectName(String projectName) {
+    writeProperty("projectName", projectName);
+  }
+
+  /**
+   * @return
+   */
+  public String getProjectName() {
+    return (String) readProperty("projectName");
+  }
 }

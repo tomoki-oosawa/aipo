@@ -58,6 +58,9 @@ public class ProjectTaskResultData implements ALData {
   /** タスク名 */
   protected ALStringField task_name;
 
+  /** プロジェクト名 **/
+  protected ALStringField project_name;
+
   /** 説明 */
   protected ALStringField explanation;
 
@@ -149,6 +152,7 @@ public class ProjectTaskResultData implements ALData {
     project_id = new ALNumberField();
     tracker = new ALStringField();
     task_name = new ALStringField();
+    project_name = new ALStringField();
     explanation = new ALStringField();
     status = new ALStringField();
     priority = new ALStringField();
@@ -293,6 +297,29 @@ public class ProjectTaskResultData implements ALData {
    */
   public void setTaskName(String string) {
     task_name.setValue(string);
+  }
+
+  /**
+   * プロジェクト名を取得する
+   *
+   * @return プロジェクト名
+   */
+  public ALStringField getProjectName() {
+    return project_name;
+  }
+
+  public String getProjectNameHtml() {
+    return ALCommonUtils.replaceToAutoCR(project_name.toString());
+  }
+
+  /**
+   * プロジェクト名を設定する
+   *
+   * @param string
+   *          プロジェクト名
+   */
+  public void setProjectName(String string) {
+    project_name.setValue(string);
   }
 
   /**
