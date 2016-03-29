@@ -81,7 +81,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private ALEipUser login_user;
 
-  private boolean login_user_auth = true;
+  private boolean login_user_room_auth = true;
+
+  private boolean isDesktopNotification = true;
+
+  private boolean isMobileNotification = true;
 
   private FileuploadLiteBean filebean = null;
 
@@ -95,6 +99,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
+  private int myId;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -103,6 +109,15 @@ public class MessageRoomFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     login_user = ALEipUtils.getALEipUser(rundata);
+
+    EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
+    login_user_room_auth =
+      MessageUtils.hasAuthorityRoom(room, (int) login_user
+        .getUserId()
+        .getValue());
+
+    myId =
+      new Integer(rundata.getUser().getPerm("USER_ID").toString()).intValue();
 
   }
 
@@ -137,10 +152,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
         String memberNames[] = rundata.getParameters().getStrings("member_to");
         String memberAuthorities[] =
           rundata.getParameters().getStrings("member_authority_to");
-        String desktopNotification[] =
-          rundata.getParameters().getStrings("desktop_notification");
-        String mobileNotification[] =
-          rundata.getParameters().getStrings("mobile_notification");
+        String desktopNotification =
+          rundata.getParameters().getString("desktop_notification");
+        String mobileNotification =
+          rundata.getParameters().getString("mobile_notification");
 
         memberList.clear();
         if (memberNames != null
@@ -163,23 +178,13 @@ public class MessageRoomFormData extends ALAbstractFormData {
             member.setAuthority(authMap.get(member.getName().getValue()));
           }
 
-          Map<String, String> d_notificationMap = new HashMap<String, String>();
-          for (int i = 0; i < memberNames.length; i++) {
-            d_notificationMap.put(memberNames[i], desktopNotification[i]);
-          }
           for (ALEipUser member : memberList) {
-            member.setDesktopNotification(d_notificationMap.get(
-              member.getName().getValue()).substring(21, 21));
+            if (member.getUserId().getValueWithInt() == myId) {
+              member.setDesktopNotification(desktopNotification);
+              member.setMobileNotification(mobileNotification);
+            }
           }
 
-          Map<String, String> m_notificationMap = new HashMap<String, String>();
-          for (int i = 0; i < memberNames.length; i++) {
-            m_notificationMap.put(memberNames[i], mobileNotification[i]);
-          }
-          for (ALEipUser member : memberList) {
-            member.setMobileNotification(m_notificationMap.get(
-              member.getName().getValue()).substring(20, 20));
-          }
         }
         if (memberList.size() == 0) {
           login_user.setAuthority("A");
@@ -262,38 +267,42 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    if (memberList.size() < 2) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
-    }
-    boolean hasOwn = false;
-    boolean hasAuthority = false;
-    boolean isMemberHasAuthority = false;
-    for (ALEipUser user : memberList) {
-      if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
-        hasOwn = true;
+    if (login_user_room_auth) {
+      if (memberList.size() < 2) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
+      }
+      boolean hasOwn = false;
+      boolean hasAuthority = false;
+      boolean isMemberHasAuthority = false;
+      for (ALEipUser user : memberList) {
+        if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
+          hasOwn = true;
+          if ("A".equals(user.getAuthority().getValue())) {
+            hasAuthority = true;
+          }
+        }
         if ("A".equals(user.getAuthority().getValue())) {
-          hasAuthority = true;
+          isMemberHasAuthority = true;
         }
       }
-      if ("A".equals(user.getAuthority().getValue())) {
-        isMemberHasAuthority = true;
+      if (!hasOwn) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
       }
+      if (!hasAuthority) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
+      }
+      if (!isMemberHasAuthority) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
+      }
+      if (photo_vali_flag) {
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
+      }
+      name.validate(msgList);
+      return msgList.size() == 0;
+    } else {
+      return true;
     }
-    if (!hasOwn) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
-    }
-    if (!hasAuthority) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
-    }
-    if (!isMemberHasAuthority) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
-    }
-    if (photo_vali_flag) {
-      msgList.add(ALLocalizationUtils
-        .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
-    }
-    name.validate(msgList);
-    return msgList.size() == 0;
   }
 
   /**
@@ -313,11 +322,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         throw new ALPageNotFoundException();
       }
 
-      login_user_auth =
-        MessageUtils.hasAuthorityRoom(room, (int) login_user
-          .getUserId()
-          .getValue());
-
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
@@ -326,6 +330,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       List<String> memberNames = new ArrayList<String>();
       for (EipTMessageRoomMember member : members) {
         memberNames.add(member.getLoginName());
+
+        if (member.getUserId().intValue() == myId) {
+          isDesktopNotification = member.getDesktopNotification().equals("A");
+          isMobileNotification = member.getMobileNotification().equals("A");
+        }
       }
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
@@ -461,8 +470,17 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
         .getUserId()
         .getValue())) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_AUTHORITY_DENIED"));
-        return false;
+        // TODO: 通知部分のみ更新する処理
+        for (ALEipUser user : memberList) {
+          if (user.getUserId().getValueWithInt() == myId) {
+            EipTMessageRoomMember map =
+              Database.create(EipTMessageRoomMember.class);
+            map
+              .setDesktopNotification(user.getDesktopNotification().getValue());
+            map.setMobileNotification(user.getMobileNotification().getValue());
+          }
+        }
+        return true;
       }
 
       Date now = new Date();
@@ -590,7 +608,15 @@ public class MessageRoomFormData extends ALAbstractFormData {
   }
 
   public boolean hasAuth() {
-    return login_user_auth;
+    return login_user_room_auth;
+  }
+
+  public boolean isDesktopNotification() {
+    return isDesktopNotification;
+  }
+
+  public boolean isMobileNotification() {
+    return isMobileNotification;
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {

@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+
 import net.sf.json.JSONObject;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -26,6 +28,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -68,6 +72,24 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         return json.toString();
       }
       if (MessageUtils.isJoinRoom(message, ALEipUtils.getUserId(rundata))) {
+        EipTMessageRoom room = message.getEipTMessageRoom();
+        List<EipTMessageRoomMember> memberList =
+          room.getEipTMessageRoomMember();
+        int myId =
+          new Integer(rundata.getUser().getPerm("USER_ID").toString())
+            .intValue();
+        boolean desktopNotification = true;
+        boolean mobileNotification = true;
+        for (EipTMessageRoomMember member : memberList) {
+          if (member.getUserId().intValue() == myId) {
+            if (member.getDesktopNotification().equals("M")) {
+              desktopNotification = false;
+            }
+            if (member.getMobileNotification().equals("M")) {
+              mobileNotification = false;
+            }
+          }
+        }
         Integer userId = message.getUserId();
         ALEipUser user = ALEipUtils.getALEipUser(userId);
         json.put("messageId", messageId);
