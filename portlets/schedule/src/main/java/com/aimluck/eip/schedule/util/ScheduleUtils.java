@@ -4454,7 +4454,7 @@ public class ScheduleUtils {
       body
         .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
       if (!auth) {
-        body.append(" AND t3.user_id = #bind($user_id)");
+        body.append(" AND t3.user_id = #bind($user_id) AND t3.type = 'U' ");
       }
       if ((users != null && users.size() > 0)
         || (facilities != null && facilities.size() > 0)) {
