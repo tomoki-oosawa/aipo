@@ -37,6 +37,7 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -114,6 +115,11 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   protected ResultList<VEipTScheduleList> getScheduleList(RunData rundata,
       Context context) {
 
+    boolean hasAuthority =
+      ScheduleUtils.hasAuthorityForOtherSchedule(
+        rundata,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
     List<Integer> tmpUsers = new ArrayList<Integer>();
     List<Integer> tmpFacilities = new ArrayList<Integer>();
     if ("all".equals(target_user_id)) {
@@ -144,7 +150,8 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
       tmpFacilities,
       target_keyword.getValue(),
       getCurrentPage(),
-      getRowsNum());
+      getRowsNum(),
+      hasAuthority);
   }
 
   /**

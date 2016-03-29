@@ -4354,7 +4354,7 @@ public class ScheduleUtils {
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
       List<Integer> users, List<Integer> facilities, String keyword, int page,
-      int limit) {
+      int limit, boolean auth) {
     return getScheduleList(
       userId,
       null,
@@ -4365,7 +4365,8 @@ public class ScheduleUtils {
       page,
       limit,
       true,
-      true);
+      true,
+      auth);
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
@@ -4381,7 +4382,8 @@ public class ScheduleUtils {
       -1,
       -1,
       false,
-      isDetail);
+      isDetail,
+      true);
   }
 
   public static List<VEipTScheduleList> getScheduleList(int userId,
@@ -4397,13 +4399,14 @@ public class ScheduleUtils {
       -1,
       -1,
       false,
-      false);
+      false,
+      true);
   }
 
   protected static List<VEipTScheduleList> getScheduleList(int userId,
       Date viewStart, Date viewEnd, List<Integer> users,
       List<Integer> facilities, String keyword, int page, int limit,
-      boolean isSearch, boolean isDetail) {
+      boolean isSearch, boolean isDetail, boolean auth) {
 
     boolean isMySQL = Database.isJdbcMySQL();
 
@@ -4450,6 +4453,9 @@ public class ScheduleUtils {
       body.append(" EXISTS ( ");
       body
         .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
+      if (!auth) {
+        body.append(" AND t3.user_id = #bind($user_id) AND t3.type = 'U' ");
+      }
       if ((users != null && users.size() > 0)
         || (facilities != null && facilities.size() > 0)) {
         body.append(" AND (t3.type, t3.user_id) IN ( ");
