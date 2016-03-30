@@ -26,6 +26,8 @@ public class EipTProjectTask extends _EipTProjectTask {
 
   int indent = 0;
 
+  String projectName;
+
   public Integer getTaskId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(TASK_ID_PK_COLUMN);
@@ -56,14 +58,14 @@ public class EipTProjectTask extends _EipTProjectTask {
   /**
    * @param string
    */
-  public void setProjectName(String projectName) {
-    writeProperty("projectName", projectName);
+  public void setProjectName(String project_name) {
+    projectName = project_name;
   }
 
   /**
    * @return
    */
   public String getProjectName() {
-    return (String) readProperty("projectName");
+    return projectName;
   }
 }
