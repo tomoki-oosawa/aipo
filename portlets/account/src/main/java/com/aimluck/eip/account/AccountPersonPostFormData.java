@@ -77,6 +77,8 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   /** 携帯メールアドレス */
   private ALStringField cellular_mail;
 
+  private ALStringField profile;
+
   /** 部署名 */
   private List<String> post_name_list;
 
@@ -270,6 +272,9 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
     // 携帯メール
     cellular_mail = new ALStringField();
     cellular_mail.setFieldName("携帯メールアドレス");
+    // プロフィール
+    profile = new ALStringField();
+    profile.setFieldName("プロフィール");
     // 部署のリスト
     post_name_list = new ArrayList<String>();
     // 役職のリスト
@@ -437,6 +442,13 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
   /**
    * @return
    */
+  public ALStringField getProfile() {
+    return profile;
+  }
+
+  /**
+   * @return
+   */
   public ALStringField getEmail() {
     return email;
   }
@@ -474,6 +486,13 @@ public class AccountPersonPostFormData extends ALAbstractFormData {
    */
   public void setEmail(String string) {
     email.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setProfile(String string) {
+    profile.setValue(string);
   }
 
   /**

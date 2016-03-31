@@ -92,6 +92,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** メールアドレス */
   private ALStringField email;
 
+  /** プロフィール */
+  private ALStringField profile;
+
   /** 電話番号（内線） */
   private ALStringField in_telephone;
 
@@ -217,6 +220,11 @@ public class AccountEditFormData extends ALAbstractFormData {
     email = new ALStringField();
     email.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_USER_EMAIL"));
     email.setTrim(true);
+    // プロフィール
+    profile = new ALStringField();
+    profile.setFieldName(ALLocalizationUtils
+      .getl10nFormat("ACCOUNT_USER_PROFILE"));
+    profile.setTrim(false);
     // 内線番号
     in_telephone = new ALStringField();
     in_telephone.setFieldName(ALLocalizationUtils
@@ -385,6 +393,8 @@ public class AccountEditFormData extends ALAbstractFormData {
     in_telephone.limitMaxLength(13);
     // メールアドレス
     email.setCharacterType(ALStringField.TYPE_ASCII);
+    // プロフィール
+    profile.limitMaxLength(10000);
 
     // 外線
     out_telephone1.setCharacterType(ALStringField.TYPE_NUMBER);
@@ -447,6 +457,9 @@ public class AccountEditFormData extends ALAbstractFormData {
       && !ALStringUtil.isMailAddress(email.getValue())) {
       msgList.add(ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_EMAIL"));
     }
+
+    // プロフィール
+    profile.validate(msgList);
 
     // 携帯メールアドレス
     cellular_mail.validate(msgList);
@@ -535,6 +548,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       firstname.setValue(user.getFirstName());
       lastname.setValue(user.getLastName());
       email.setValue(user.getEmail());
+      profile.setValue(user.getProfile());
       // 電話番号（内線）
       in_telephone.setValue(user.getInTelephone());
       // 電話番号（外線）
@@ -683,6 +697,7 @@ public class AccountEditFormData extends ALAbstractFormData {
       user.setFirstNameKana(first_name_kana.getValue());
       user.setLastNameKana(last_name_kana.getValue());
       user.setEmail(email.getValue());
+      user.setProfile(profile.getValue());
 
       if (filebean != null && filebean.getFileId() != 0) {
         // 顔写真を登録する．
@@ -771,6 +786,15 @@ public class AccountEditFormData extends ALAbstractFormData {
    */
   public ALStringField getEmail() {
     return email;
+  }
+
+  /**
+   * プロフィールを取得します。 <BR>
+   *
+   * @return
+   */
+  public ALStringField getProfile() {
+    return profile;
   }
 
   /**

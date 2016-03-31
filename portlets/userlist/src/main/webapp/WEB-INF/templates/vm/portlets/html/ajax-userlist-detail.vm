@@ -47,6 +47,8 @@ $!record <br />
 #ALtditemfooter()
 #ALtdcaption($l10n.USERLIST_POSITION_NAME)
 #ALtditem($result.getStringCR($!result.Detail.PositionName))
+#ALtdcaption($l10n.USERLIST_PROFILE)
+#ALtditem($!result.Detail.Profile)
 #ALtablefooter()
 #ALbuttonheader()
 #ALajaxbuttonClose()

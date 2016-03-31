@@ -58,6 +58,8 @@ $!result.LoginName
 #ALtditemfooter()
 #ALtdcaption($!result.CellularMail.FieldName)
 #ALtditem("#ALtextfield('cellular_mail' $!result.CellularMail '70%' 50 'disabled')#ALcaution($l10n.ACCOUNT_HALFWIDTH_ALPHANUM)")
+#ALtdcaption($!result.Profile.FieldName)
+#ALtditem("#ALtextareas('profile' $!result.Profile)")
 #if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
 

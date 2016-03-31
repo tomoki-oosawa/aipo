@@ -105,6 +105,7 @@ public class AccountEditSelectData extends
         .append(record.getFirstNameKana())
         .toString());
       rd.setEmail(record.getEmail());
+      rd.setProfile(record.getProfile());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
       rd.setCellularPhone(record.getCellularPhone());

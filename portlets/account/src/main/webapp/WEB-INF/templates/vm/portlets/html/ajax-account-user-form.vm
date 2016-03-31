@@ -83,7 +83,6 @@
 ##プロフィール
 #ALtdcaption($!result.getFieldName("profile"))
 #ALtditem("#ALtextareas('profile' $!result.Profile)#ALcaution($l10n.ACCOUNT_TEN_THOUSAND)")
-##ALtditem("<textarea rows="4"></textarea>#ALcaution($l10n.ACCOUNT_TEN_THOUSAND)")
 
 #if($result.isFileUploadable())
 #ALtdcaption($l10n.ACCOUNT_USER_PHOTO)
