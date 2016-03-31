@@ -125,7 +125,27 @@ public class FileuploadUtils {
   public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
     JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
 
-  private static final String[] ACCEPT_CONTENT_TYPES = { "application/pdf" };
+  private static final String[] ACCEPT_CONTENT_TYPES = {
+    "application/pdf",
+    "image/jpeg",
+    "image/x-bmp",
+    "image/x-ms-bmp",
+    "image/cgm",
+    "drawing/x-dwf",
+    "image/fif",
+    "image/fpx",
+    "image/x-fpx",
+    "image/gif",
+    "image/pcd",
+    "image/x-photo-cd",
+    "image/pict",
+    "image/x-png",
+    "image/png",
+    "image/x-targa",
+    "image/tiff",
+    "image/x-tiff",
+    "image/x-bitmap",
+    "image/x-xpixmap" };
 
   public static String getRealFileName(String name) {
     String filename = null;

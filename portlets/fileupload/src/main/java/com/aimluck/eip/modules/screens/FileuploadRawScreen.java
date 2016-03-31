@@ -67,8 +67,10 @@ public abstract class FileuploadRawScreen extends RawScreen {
    */
   @Override
   protected String getContentType(RunData rundata) {
+    String download = rundata.getParameters().get("download");
     String contentType = FileuploadUtils.getInlineContentType(getFileName());
-    if (contentType == null) {
+
+    if (contentType == null || "1".equals(download)) {
       return "application/octet-stream";
     } else {
       return contentType;
