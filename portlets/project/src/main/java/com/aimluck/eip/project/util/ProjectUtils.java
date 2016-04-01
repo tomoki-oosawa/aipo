@@ -760,7 +760,7 @@ public class ProjectUtils {
     data.setProjectId(model.getProjectId()); // プロジェクトID
     data.setTracker(model.getTracker()); // 分類
     data.setTaskName(model.getTaskName()); // タスク
-    data.setProjectName(model.getProjectName()); //プロジェクト名
+    data.setProjectName(model.getProjectName()); // プロジェクト名
     data.setExplanation(model.getExplanation()); // 説明
     data.setStatus(model.getStatus()); // ステータス
     data.setPriority(model.getPriority()); // 優先度

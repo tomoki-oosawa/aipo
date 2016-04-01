@@ -376,7 +376,7 @@ public class ProjectTaskSelectData extends
     sb.append("    WHERE ");
     sb.append("      task.project_id = project.project_id AND");
     if (0 != selectedProjectId) {
-      sb.append("task.project_id = #bind($project_id) AND ");
+      sb.append(" task.project_id = #bind($project_id) AND ");
     }
     sb.append("       task.parent_task_id IS NULL");
     return sb.toString();
