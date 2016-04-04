@@ -110,12 +110,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
     login_user = ALEipUtils.getALEipUser(rundata);
 
-    EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
-    login_user_room_auth =
-      MessageUtils.hasAuthorityRoom(room, (int) login_user
-        .getUserId()
-        .getValue());
-
     myId =
       new Integer(rundata.getUser().getPerm("USER_ID").toString()).intValue();
 
@@ -186,6 +180,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
 
         }
+        // TODO: 下の処理で権限がAになってしまっていて現在登録できない。
         if (memberList.size() == 0) {
           login_user.setAuthority("A");
           memberList.add(login_user);
@@ -267,42 +262,39 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    if (login_user_room_auth) {
-      if (memberList.size() < 2) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
-      }
-      boolean hasOwn = false;
-      boolean hasAuthority = false;
-      boolean isMemberHasAuthority = false;
-      for (ALEipUser user : memberList) {
-        if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
-          hasOwn = true;
-          if ("A".equals(user.getAuthority().getValue())) {
-            hasAuthority = true;
-          }
-        }
+
+    boolean hasOwn = false;
+    boolean hasAuthority = false;
+    boolean isMemberHasAuthority = false;
+    for (ALEipUser user : memberList) {
+      if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
+        hasOwn = true;
         if ("A".equals(user.getAuthority().getValue())) {
-          isMemberHasAuthority = true;
+          hasAuthority = true;
         }
       }
-      if (!hasOwn) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
+      if ("A".equals(user.getAuthority().getValue())) {
+        isMemberHasAuthority = true;
       }
-      if (!hasAuthority) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
-      }
-      if (!isMemberHasAuthority) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
-      }
-      if (photo_vali_flag) {
-        msgList.add(ALLocalizationUtils
-          .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
-      }
-      name.validate(msgList);
-      return msgList.size() == 0;
-    } else {
+    }
+    if (!hasAuthority) {
       return true;
     }
+    if (memberList.size() < 2) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
+    }
+    if (!hasOwn) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
+    }
+    if (!isMemberHasAuthority) {
+      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
+    }
+    if (photo_vali_flag) {
+      msgList.add(ALLocalizationUtils
+        .getl10nFormat("MESSAGE_VALIDATE_ROOM_PHOTO_SIZE"));
+    }
+    name.validate(msgList);
+    return msgList.size() == 0;
   }
 
   /**
@@ -318,6 +310,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
+      login_user_room_auth =
+        MessageUtils.hasAuthorityRoom(room, (int) login_user
+          .getUserId()
+          .getValue());
+
       if (room == null || "O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
       }
@@ -391,6 +388,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       EipTMessageRoom model = Database.create(EipTMessageRoom.class);
+      login_user_room_auth =
+        MessageUtils.hasAuthorityRoom(model, (int) login_user
+          .getUserId()
+          .getValue());
 
       Date now = new Date();
 
@@ -464,22 +465,37 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
     try {
       EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
+
       if (model == null) {
         return false;
       }
+
+      // ログインユーザーに権限がない場合、通知設定のみ更新
       if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
         .getUserId()
         .getValue())) {
-        // TODO: 通知部分のみ更新する処理
-        for (ALEipUser user : memberList) {
-          if (user.getUserId().getValueWithInt() == myId) {
-            EipTMessageRoomMember map =
-              Database.create(EipTMessageRoomMember.class);
-            map
-              .setDesktopNotification(user.getDesktopNotification().getValue());
-            map.setMobileNotification(user.getMobileNotification().getValue());
+        EipTMessageRoomMember currentMember = null;
+        List<EipTMessageRoomMember> memberLists =
+          model.getEipTMessageRoomMember();
+
+        for (EipTMessageRoomMember member : memberLists) {
+          if (member.getUserId() == myId) {
+            currentMember = member;
           }
         }
+
+        for (ALEipUser user : memberList) {
+          if (user.getUserId().getValueWithInt() == myId) {
+            currentMember.setDesktopNotification(user
+              .getDesktopNotification()
+              .getValue());
+            currentMember.setMobileNotification(user
+              .getMobileNotification()
+              .getValue());
+            Database.commit();
+          }
+        }
+
         return true;
       }
 
