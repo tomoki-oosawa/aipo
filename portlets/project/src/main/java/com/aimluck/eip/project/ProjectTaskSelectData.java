@@ -514,7 +514,7 @@ public class ProjectTaskSelectData extends
       sb.append(" ( " + lapsed_days + " ) ");
       sb.append(" * 100 / ");
       sb.append(" ( " + task_days + " ) ");
-      sb.append(" > progress_rate ");
+      sb.append(" > task.progress_rate ");
       sb.append(" ) ");
       sb.append(" ) ");
       whereList.add(sb.toString());
