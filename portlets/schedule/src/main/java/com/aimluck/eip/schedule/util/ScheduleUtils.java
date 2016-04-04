@@ -691,7 +691,12 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
 
-      return schedules.get(0);
+      // typeが"U"(ユーザー)かどうかで場合分け
+      if ("U".equals(schedules.get(0).getType())) {
+        return schedules.get(0);
+      } else {
+        return schedules.get(1);
+      }
 
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
