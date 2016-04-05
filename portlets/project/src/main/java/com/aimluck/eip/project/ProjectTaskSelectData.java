@@ -374,7 +374,7 @@ public class ProjectTaskSelectData extends
     sb.append("    FROM");
     sb.append("      eip_t_project_task AS task, eip_t_project AS project");
     sb.append("    WHERE ");
-    sb.append("      task.project_id = project.project_id AND");
+    sb.append("      task.project_id = project.project_id AND ");
     if (0 != selectedProjectId) {
       sb.append(" task.project_id = #bind($project_id) AND ");
     }
