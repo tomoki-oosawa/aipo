@@ -102,20 +102,13 @@ body {
 .dropdown_list {
   max-height: none;
 }
-
+/***************************************************
+	label
+--------------------------------------------------*/
 .label {
-  background: #eee;
-  font-size: 10px;
-  border-radius: 3px;
-  display: block;
-  float: left;
-  margin: 0 5px 0 0;
-  padding: 3px 5px;
-  max-width: 50px;
-  text-shadow: 0 1px 0 #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 3px;
+  float: none;
+  max-width: 100px;
 }
 
 

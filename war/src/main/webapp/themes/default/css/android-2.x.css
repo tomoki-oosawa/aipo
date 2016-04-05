@@ -69,13 +69,15 @@
 .messageSummary .nrCount {
   line-height: 15px;
 }
-
+/***************************************************
+	label
+--------------------------------------------------*/
 .label {
   background: #eee;
   font-size: 10px;
   border-radius: 3px;
   display: block;
-  float: left;
+  float: none;
   margin: 0 5px 0 0;
   padding: 3px 5px;
   max-width: 50px;
