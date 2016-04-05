@@ -78,15 +78,11 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         int myId =
           new Integer(rundata.getUser().getPerm("USER_ID").toString())
             .intValue();
-        boolean desktopNotification = true;
-        boolean mobileNotification = true;
+        boolean isDesktopNotification = true;
         for (EipTMessageRoomMember member : memberList) {
           if (member.getUserId().intValue() == myId) {
-            if (member.getDesktopNotification().equals("M")) {
-              desktopNotification = false;
-            }
-            if (member.getMobileNotification().equals("M")) {
-              mobileNotification = false;
+            if (member.getDesktopNotification().equals("F")) {
+              isDesktopNotification = false;
             }
           }
         }
@@ -94,9 +90,12 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         ALEipUser user = ALEipUtils.getALEipUser(userId);
         json.put("messageId", messageId);
         json.put("userId", userId);
-        json.put("displayName", user.getAliasName().getValue());
-        json.put("text", ALCommonUtils
-          .compressString(message.getMessage(), 100));
+        if (isDesktopNotification) {
+          json.put("displayName", user.getAliasName().getValue());
+          json.put("text", ALCommonUtils.compressString(
+            message.getMessage(),
+            100));
+        }
         json.put("hasPhoto", user.hasPhoto());
         json.put("photoModified", user.getPhotoModified());
       }
