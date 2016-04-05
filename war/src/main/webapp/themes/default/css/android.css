@@ -106,8 +106,8 @@ body {
 	label
 --------------------------------------------------*/
 .label {
-  margin: 0 0 3px;
-  float: none;
+  margin: 5px 0 5px;
+  float: none !important;
   max-width: 100px;
 }
 
