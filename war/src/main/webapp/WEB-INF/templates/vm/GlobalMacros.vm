@@ -248,6 +248,12 @@ $theLink
       <td class="caption">$text</td>
 #end
 
+#macro(ALtdcaptionHidden $text)
+    <tr hidden>
+      <td class="caption">$text</td>
+#end
+
+
 #macro(ALtdcaptionheader)
     <tr>
       <td class="caption">
@@ -514,6 +520,10 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 
 #macro(ALtextfieldw100 $name $value $max $mode)
 <input class="text w100" type="text" name="$name" id="$name" value="$value" maxlength="$max" style="ime-mode:$mode" />
+#end
+
+#macro(ALtextfieldw100readonly $name $value $max $mode)
+<input class="text w100" readonly="" type="text" name="$name" id="$name" value="$value" maxlength="$max" style="ime-mode:$mode" />
 #end
 
 #macro(ALtextfieldw100mb5 $name $value $max $mode)
