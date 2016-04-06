@@ -451,7 +451,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -516,7 +516,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -556,7 +556,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -644,7 +644,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -683,12 +683,10 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       Database.delete(account);
       Database.commit();
 
-      // delete from database
-      String sql =
-        "DELETE FROM eip_t_mail WHERE account_id = "
-          + String.valueOf(account.getAccountId());
-      SQLTemplate<EipTMail> sqlTemplate = Database.sql(EipTMail.class, sql);
-      sqlTemplate.execute();
+      // delete from database eip_t_mail, eip_t_mail_folder, eip_t_mail_filter
+      executeSQL(account, "eip_t_mail");
+      executeSQL(account, "eip_t_mail_folder");
+      executeSQL(account, "eip_t_mail_filter");
 
       // セッション変数を削除する
       WebMailUtils.clearWebMailAccountSession(rundata, context);
@@ -704,6 +702,13 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       return false;
     }
     return true;
+  }
+
+  protected void executeSQL(EipMMailAccount account, String table_name) {
+    String id = String.valueOf(account.getAccountId());
+    String sql = "DELETE FROM " + table_name + " WHERE account_id = " + id;
+    SQLTemplate<EipTMail> sqlTemplate = Database.sql(EipTMail.class, sql);
+    sqlTemplate.execute();
   }
 
   @Override
