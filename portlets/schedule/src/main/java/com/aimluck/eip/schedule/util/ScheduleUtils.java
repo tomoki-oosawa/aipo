@@ -683,6 +683,13 @@ public class ScheduleUtils {
           .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
+      // typeが"U"のとき抽出
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          SCHEDULEMAP_TYPE_USER);
+      query.andQualifier(exp3);
+
       List<EipTScheduleMap> schedules = query.fetchList();
 
       // 指定したIDのレコードが見つからない場合
@@ -691,12 +698,7 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
 
-      // typeが"U"(ユーザー)かどうかで場合分け
-      if ("U".equals(schedules.get(0).getType())) {
-        return schedules.get(0);
-      } else {
-        return schedules.get(1);
-      }
+      return schedules.get(0);
 
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
