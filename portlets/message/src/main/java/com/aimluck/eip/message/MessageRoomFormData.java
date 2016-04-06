@@ -91,8 +91,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private boolean photo_vali_flag = false;
 
-  private boolean zero_member_flg = false;
-
   private int roomId;
 
   @Override
@@ -158,11 +156,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
           for (ALEipUser member : memberList) {
             member.setAuthority(authMap.get(member.getName().getValue()));
           }
-        }
-        if (memberList.size() < 1) {
-          zero_member_flg = true;
-          login_user.setAuthority("A");
-          memberList.add(login_user);
         }
         roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
 
@@ -242,7 +235,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    if (memberList.size() < 1 || zero_member_flg) {
+    if (memberList.size() < 1) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
     } else {
       boolean hasOwn = false;
