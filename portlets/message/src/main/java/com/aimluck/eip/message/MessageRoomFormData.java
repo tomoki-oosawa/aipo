@@ -242,31 +242,32 @@ public class MessageRoomFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    if (zero_member_flg) {
+    if (memberList.size() < 1 || zero_member_flg) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
-    }
-    boolean hasOwn = false;
-    boolean hasAuthority = false;
-    boolean isMemberHasAuthority = false;
-    for (ALEipUser user : memberList) {
-      if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
-        hasOwn = true;
+    } else {
+      boolean hasOwn = false;
+      boolean hasAuthority = false;
+      boolean isMemberHasAuthority = false;
+      for (ALEipUser user : memberList) {
+        if (user.getUserId().getValue() == login_user.getUserId().getValue()) {
+          hasOwn = true;
+          if ("A".equals(user.getAuthority().getValue())) {
+            hasAuthority = true;
+          }
+        }
         if ("A".equals(user.getAuthority().getValue())) {
-          hasAuthority = true;
+          isMemberHasAuthority = true;
         }
       }
-      if ("A".equals(user.getAuthority().getValue())) {
-        isMemberHasAuthority = true;
+      if (!hasOwn) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
       }
-    }
-    if (!hasOwn) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER2"));
-    }
-    if (!hasAuthority) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
-    }
-    if (!isMemberHasAuthority) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
+      if (!hasAuthority) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER3"));
+      }
+      if (!isMemberHasAuthority) {
+        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
+      }
     }
     if (photo_vali_flag) {
       msgList.add(ALLocalizationUtils
