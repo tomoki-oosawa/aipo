@@ -29,7 +29,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.services.config.ALConfigHandler;
 
 /**
- * 
+ *
  */
 public class ALDefaultConfigHanlder extends ALConfigHandler {
 
@@ -47,7 +47,7 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
   }
 
   /**
-   * 
+   *
    * @param property
    * @return
    */
@@ -57,7 +57,7 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
   }
 
   /**
-   * 
+   *
    * @param property
    * @param value
    */
@@ -120,6 +120,7 @@ public class ALDefaultConfigHanlder extends ALConfigHandler {
       config.setValue(value);
       Database.commit();
     } catch (Throwable t) {
+      logger.error("ALDefaultConfigHanlder", t);
       Database.rollback();
       if (t instanceof CayenneRuntimeException) {
         throw (CayenneRuntimeException) t;
