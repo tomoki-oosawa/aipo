@@ -26,5 +26,5 @@ ALTER TABLE `eip_t_message_room_member` ADD `mobile_notification` varchar(1) DEF
 ALTER TABLE `eip_t_message_room_member` ADD `history_last_message_id` int(11) NOT NULL DEFAULT 0 AFTER `mobile_notification`;
 
 ALTER TABLE `eip_t_ext_timecard_system` ADD `overtime_type` varchar(8) DEFAULT 'O' AFTER `outgoing_add_flag`;
-UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'L480';
+UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
 -- 20160328
