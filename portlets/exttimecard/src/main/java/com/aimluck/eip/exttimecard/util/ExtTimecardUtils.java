@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class ExtTimecardUtils {
 
@@ -67,6 +67,15 @@ public class ExtTimecardUtils {
   /** 出退勤フラグ（ダミー） */
   public static final String WORK_FLG_DUMMY = "-1";
 
+  /** 分を超える労働を残業とする */
+  public static final String OVERTIME_TYPE_L = "L";
+
+  /** 分を超える労働を残業とする */
+  public static final Integer OVERTIME_TYPE_DEFAULT_MINUTE = 480;
+
+  /** 勤務時間外の労働を残業とする */
+  public static final String OVERTIME_TYPE_O = "O";
+
   /** タイムカードファイルを一時保管するディレクトリの指定 */
   public static final String FOLDER_TMP_FOR_TIMECARD_FILES = JetspeedResources
     .getString("aipo.tmp.timecard.directory", "");
@@ -78,7 +87,7 @@ public class ExtTimecardUtils {
 
   /**
    * ExtTimecard オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -135,7 +144,7 @@ public class ExtTimecardUtils {
 
   /**
    * 現在ログイン中のユーザーのEipTExtTimecardSystemを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -148,7 +157,7 @@ public class ExtTimecardUtils {
 
   /**
    * 特定ユーザーのEipTExtTimecardSystemを取得します。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -195,7 +204,7 @@ public class ExtTimecardUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static List<EipTExtTimecardSystem> getAllEipTExtTimecardSystem() {
@@ -216,7 +225,7 @@ public class ExtTimecardUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static EipTExtTimecardSystem getEipTExtTimecardSystem(RunData rundata,
@@ -254,7 +263,7 @@ public class ExtTimecardUtils {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -284,7 +293,7 @@ public class ExtTimecardUtils {
 
   /**
    * 現在時刻とEipTTimecardSettingsの情報から update文を発行すべきかどうかを判断します。
-   * 
+   *
    * @param org_id
    * @param userId
    * @return
@@ -327,7 +336,7 @@ public class ExtTimecardUtils {
 
   /**
    * 集計した時間を丸めます。
-   * 
+   *
    * @return
    */
   public static float roundHour(float time) {
