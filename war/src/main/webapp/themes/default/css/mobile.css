@@ -2728,22 +2728,22 @@ body.messageRoomList .messageUserlist .index {
 	Project Name Display
 --------------------------------------------------*/
 /*// ガントチャートのタスク名表示幅（200→130）*/
-#gantt_task > table td > div {
-  max-width: 130px;
-}
+/*#gantt_task > table td > div {*/
+  /*max-width: 130px;*/
+/*}*/
 
 /*// ガントチャートのタスク名表示高さ （30→50）*/
-#gantt_task > table td {
-  height: 50px;
-}
+/*#gantt_task > table td {*/
+  /*height: 50px;*/
+/*}*/
 
 /*// ガントチャートのタスク表示セル高さ  （30→50）*/
-#gantt_area .gantt_area_cell td {
-  height: 50px;
-}
+/*#gantt_area .gantt_area_cell td {*/
+  /*height: 50px;*/
+/*}*/
 
-.label {
-  margin: 0 0 3px;
-  float: none;
-  max-width: 100px;
-}
+/*.label {*/
+  /*margin: 0 0 3px;*/
+  /*float: none;*/
+  /*max-width: 100px;*/
+/*}*/
