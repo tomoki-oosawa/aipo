@@ -249,9 +249,6 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** 添付フォルダ名 */
   private String folderName = null;
 
-  /** 編集時引き継ぎ添付フォルダIDリスト */
-  private List<Integer> editFileIdList = null;
-
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
@@ -693,9 +690,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     // 添付ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();
 
-    // 添付ファイルリスト
-    editFileIdList = new ArrayList<Integer>();
-
     // 2007.3.28 ToDo連携
     common_category_id = new ALNumberField();
     common_category_id.setFieldName(ALLocalizationUtils
@@ -898,7 +892,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         fbean.setFileName(file.getFileName());
         if (!is_copy) {
           fileuploadList.add(fbean);
-          editFileIdList.add(fbean.getFileId());
         }
       }
       // 公開フラグ
@@ -1377,14 +1370,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         return false;
       }
 
-      if (!ScheduleUtils.deleteLocalFile(
-        rundata,
-        schedule,
-        fileuploadList,
-        folderName)) {
-        return false;
-      }
-
       // スケジュールを登録
       Database.commit();
 
@@ -1560,16 +1545,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
           check = false;
         }
-      }
-
-      if (!ScheduleUtils.insertFileDataDelegate(
-        rundata,
-        context,
-        schedule,
-        fileuploadList,
-        folderName,
-        msgList)) {
-        return false;
       }
 
       Database.commit();
@@ -1976,14 +1951,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         fileuploadList,
         folderName,
         msgList)) {
-        return false;
-      }
-
-      if (!ScheduleUtils.deleteLocalFile(
-        rundata,
-        tmpSchedule,
-        fileuploadList,
-        folderName)) {
         return false;
       }
 
@@ -3244,10 +3211,6 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   public boolean isDisplayManHour() {
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
-  }
-
-  public List<Integer> getEditFileIdList() {
-    return editFileIdList;
   }
 
 }

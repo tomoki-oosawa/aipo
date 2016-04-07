@@ -424,6 +424,7 @@ aipo.schedule.formEditRepeatOne = function(form) {
     dojo.byId('spanButtonField').style.display = "none";
     dojo.byId('repeatButtonField').style.display = "none";
     dojo.byId('allDayField').style.display = "none";
+    dojo.query(".isEditFile").style("display", "none");
 
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
@@ -442,6 +443,7 @@ aipo.schedule.formEditRepeatAll = function(form) {
     dojo.byId('repeatField').text = dojo.byId('schedule_val_repeat2').innerText;
     dojo.byId('repeatButtonField').style.display = "";
     dojo.byId('allDayField').style.display = "none";
+    dojo.query(".isEditFile").style("display", "");
 
     dojo.byId('timeLabelField').style.display = "";
     dojo.byId('timeField').style.display = "";
