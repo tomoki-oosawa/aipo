@@ -1635,6 +1635,8 @@ ul.hdCommunications .num {
 .imgPopup img {
   width: 100%;
   height: auto;
+  max-width: none;
+  max-height: none;
 }
 
 .auiPopup iframe {
