@@ -591,6 +591,11 @@ public class AccountUtils {
       // ユーザーIDを取得する
       String userId = user.getUserId().toString();
 
+      // ユーザー名を取得する
+      String userName =
+        new StringBuffer().append(user.getLastName()).append(" ").append(
+          user.getFirstName()).toString();
+
       // 対象ユーザのユーザーグループロールをすべて削除する
       SelectQuery<TurbineUserGroupRole> ugr_query =
         Database.query(TurbineUserGroupRole.class);
@@ -783,7 +788,6 @@ public class AccountUtils {
         .query(EipTMessageRoomMember.class)
         .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
         .deleteAll();
-
       Database.commit();
 
       // イベントログに保存
@@ -792,9 +796,7 @@ public class AccountUtils {
         && !" ".equals(user.getLastName())
         && user.getFirstName() != null
         && !" ".equals(user.getFirstName())) {
-        name =
-          new StringBuffer().append(user.getLastName()).append(" ").append(
-            user.getFirstName()).toString();
+        name = userName;
       } else {
         name = user.getEmail();
       }
