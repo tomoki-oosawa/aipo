@@ -585,6 +585,28 @@ public class Database {
     return column;
   }
 
+  public static String castToDateTimeRawColumn(String column) {
+    if (isJdbcMySQL()) {
+      return "CAST(" + column + " AS DATETIME)";
+    } else if (isJdbcPostgreSQL()) {
+      return "CAST(" + column + " AS TIMESTAMP)";
+    }
+    return column;
+  }
+
+  public static String castToDateRawColumn(String column) {
+    if (isJdbcMySQL()) {
+      return "CAST(" + column + " AS DATE)";
+    } else if (isJdbcPostgreSQL()) {
+      return "CAST(CASE WHEN length("
+        + column
+        + " ) = 0 THEN NULL ELSE "
+        + column
+        + "  END AS DATE)";
+    }
+    return column;
+  }
+
   private Database() {
   }
 
