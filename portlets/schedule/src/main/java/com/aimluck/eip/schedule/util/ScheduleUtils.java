@@ -683,6 +683,13 @@ public class ScheduleUtils {
           .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
+      // typeが"U"のとき抽出
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          SCHEDULEMAP_TYPE_USER);
+      query.andQualifier(exp3);
+
       List<EipTScheduleMap> schedules = query.fetchList();
 
       // 指定したIDのレコードが見つからない場合
