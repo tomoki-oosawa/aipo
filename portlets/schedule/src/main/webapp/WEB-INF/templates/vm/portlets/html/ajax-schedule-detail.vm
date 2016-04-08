@@ -257,11 +257,14 @@ ${record.FacilityNameHtml}<br/>
         #ALbutton('eventSubmit_doSchedule_change_status' $l10n.SCHEDULE_CHANGE_STATUS_TEMP_SCHEDULE "aipo.schedule.buttonChangeStatus(this.form, this.form.change_status_url.value, 'T', '$indicator_id', '$!portlet.ID')")
         #if($!{result.Detail.isEditable()})
             #if($!{result.hasAuthoritySelfEdit()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
-            #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
-        #end
-        #if($!{result.hasAuthoritySelfDelete()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
-            #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
-        #end
+            	#if(${client} == "IPHONE")
+            		<br/>
+            	#end
+            	#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('ignore_viewdate', $!ignore_viewdate)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog")
+        	#end
+        	#if($!{result.hasAuthoritySelfDelete()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
+            	#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.schedule.onReceiveMessage")
+        	#end
         #end
     #end
     #if (${client} == "IPHONE")
