@@ -70,11 +70,10 @@ public abstract class FileuploadRawScreen extends RawScreen {
     String inline = rundata.getParameters().get("inline");
     String contentType = FileuploadUtils.getInlineContentType(getFileName());
 
-    if (contentType == null || !"1".equals(inline)) {
-      return "application/octet-stream";
-    } else {
-      return contentType;
-    }
+    return (contentType != null && (FileuploadUtils
+      .isAcceptInline(getFileName()) || "1".equals(inline)))
+      ? contentType
+      : "application/octet-stream";
   }
 
   /**
