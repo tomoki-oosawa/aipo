@@ -684,9 +684,9 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       Database.commit();
 
       // delete from database eip_t_mail, eip_t_mail_folder, eip_t_mail_filter
-      executeSQL(account, "eip_t_mail");
-      executeSQL(account, "eip_t_mail_folder");
-      executeSQL(account, "eip_t_mail_filter");
+      deleteSQLTemplate(account, "eip_t_mail").execute();
+      deleteSQLTemplate(account, "eip_t_mail_folder").execute();
+      deleteSQLTemplate(account, "eip_t_mail_filter").execute();
 
       // セッション変数を削除する
       WebMailUtils.clearWebMailAccountSession(rundata, context);
@@ -704,11 +704,13 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     return true;
   }
 
-  protected void executeSQL(EipMMailAccount account, String table_name) {
+  // webメールアカウント削除のSQL文を返すメソッド
+  protected SQLTemplate<EipTMail> deleteSQLTemplate(EipMMailAccount account,
+      String table_name) {
     String id = String.valueOf(account.getAccountId());
     String sql = "DELETE FROM " + table_name + " WHERE account_id = " + id;
     SQLTemplate<EipTMail> sqlTemplate = Database.sql(EipTMail.class, sql);
-    sqlTemplate.execute();
+    return sqlTemplate;
   }
 
   @Override
