@@ -163,6 +163,8 @@ public abstract class FileuploadRawScreen extends RawScreen {
       while ((length = in.read(buf)) > 0) {
         out.write(buf, 0, length);
       }
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("FileuploadRawScreen.doOutput", e);
     } finally {
