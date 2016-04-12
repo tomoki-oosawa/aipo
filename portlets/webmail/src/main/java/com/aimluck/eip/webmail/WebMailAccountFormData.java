@@ -34,6 +34,8 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipMMailAccount;
 import com.aimluck.eip.cayenne.om.portlet.EipTMail;
+import com.aimluck.eip.cayenne.om.portlet.EipTMailFilter;
+import com.aimluck.eip.cayenne.om.portlet.EipTMailFolder;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
@@ -47,7 +49,6 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.modules.screens.WebMailAdminFormJSONScreen;
 import com.aimluck.eip.modules.screens.WebMailAdminFormScreen;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
@@ -684,9 +685,23 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       Database.commit();
 
       // delete from database eip_t_mail, eip_t_mail_folder, eip_t_mail_filter
-      deleteSQLTemplate(account, "eip_t_mail").execute();
-      deleteSQLTemplate(account, "eip_t_mail_folder").execute();
-      deleteSQLTemplate(account, "eip_t_mail_filter").execute();
+      String filterSql =
+        "DELETE FROM eip_t_mail_filter WHERE account_id = #bind($accountId)";
+      Database.sql(EipTMailFilter.class, filterSql).param(
+        "accountId",
+        account.getAccountId()).execute();
+
+      String folderSql =
+        "DELETE FROM eip_t_mail_folder WHERE account_id = #bind($accountId)";
+      Database.sql(EipTMailFolder.class, folderSql).param(
+        "accountId",
+        account.getAccountId()).execute();
+
+      String sql =
+        "DELETE FROM eip_t_mail WHERE account_id = #bind($accountId)";
+      Database.sql(EipTMail.class, sql).param(
+        "accountId",
+        account.getAccountId()).execute();
 
       // セッション変数を削除する
       WebMailUtils.clearWebMailAccountSession(rundata, context);
@@ -702,15 +717,6 @@ public class WebMailAccountFormData extends ALAbstractFormData {
       return false;
     }
     return true;
-  }
-
-  // webメールアカウント削除のSQL文を返すメソッド
-  protected SQLTemplate<EipTMail> deleteSQLTemplate(EipMMailAccount account,
-      String table_name) {
-    String id = String.valueOf(account.getAccountId());
-    String sql = "DELETE FROM " + table_name + " WHERE account_id = " + id;
-    SQLTemplate<EipTMail> sqlTemplate = Database.sql(EipTMail.class, sql);
-    return sqlTemplate;
   }
 
   @Override
