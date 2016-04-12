@@ -45,7 +45,7 @@ public class ALHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     String header = getHeader("X-FORWARDED-FOR");
 
-    if (header != null && header != "") {
+    if (header != null && !"".equals(header)) {
       String[] split = header.split(",");
       remoteAddr = split[0];
     } else {
@@ -58,20 +58,20 @@ public class ALHttpServletRequestWrapper extends HttpServletRequestWrapper {
 
     String hfor = getHeader("X-FORWARDED-FOR");
 
-    if (hfor != null && hfor != "") {
+    if (hfor != null && !"".equals(hfor)) {
       String[] split = hfor.split(",");
       remoteAddr = split[0];
     } else {
       remoteAddr = null;
     }
     String hport = getHeader("X-FORWARDED-PORT");
-    if (hport != null && hport != "") {
+    if (hport != null && !"".equals(hport)) {
       port = Integer.valueOf(hport);
     } else {
       port = -1;
     }
     String hhttps = getHeader("X-FORWARDED-PROTO");
-    if (hhttps != null && hhttps != "") {
+    if (hhttps != null && !"".equals(hhttps)) {
       protocol = hhttps;
     } else {
       protocol = null;
