@@ -902,7 +902,7 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
         user.setMigrateVersion(0);
 
-        // ユーザーを追加
+        // ユーザーを追加 ここで追加！！
         JetspeedSecurity.addUser(user);
         logger.debug("JOIN GROUP:" + "LoginUser");
 

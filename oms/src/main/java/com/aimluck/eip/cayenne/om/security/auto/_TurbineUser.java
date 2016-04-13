@@ -43,7 +43,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String UPDATED_USER_ID_PROPERTY = "updatedUserId";
     public static final String EIP_MUSER_POSITION_PROPERTY = "eipMUserPosition";
     public static final String EIP_TACL_USER_ROLE_MAPS_PROPERTY = "eipTAclUserRoleMaps";
-    public static final String EIP_TCABINET_FILE_PROPERTY = "eipTCabinetFile";
+    public static final String EIP_TCABINET_PROPERTY = "eipTCabinet";
     public static final String EIP_TEVENTLOG_PROPERTY = "eipTEventlog";
     public static final String EIP_TGPDB_PROPERTY = "eipTGpdb";
     public static final String EIP_TGPDB_ITEM_PROPERTY = "eipTGpdbItem";
@@ -341,14 +341,14 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToEipTCabinetFile(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
-        addToManyTarget("eipTCabinetFile", obj, true);
+    public void addToEipTCabinet(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
+        addToManyTarget("eipTCabinet", obj, true);
     }
-    public void removeFromEipTCabinetFile(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
-        removeToManyTarget("eipTCabinetFile", obj, true);
+    public void removeFromEipTCabinet(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
+        removeToManyTarget("eipTCabinet", obj, true);
     }
-    public List getEipTCabinetFile() {
-        return (List)readProperty("eipTCabinetFile");
+    public List getEipTCabinet() {
+        return (List)readProperty("eipTCabinet");
     }
     
     

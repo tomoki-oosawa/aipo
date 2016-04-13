@@ -18,4 +18,4 @@
 --
 
 -- 2016-03-17
-ALTER TABLE turbine_user ADD PROFILE VARCHAR;
+ALTER TABLE turbine_user ADD PROFILE TEXT;

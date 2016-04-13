@@ -53,7 +53,7 @@
 		<db-attribute name="PHOTO_MODIFIED_SMARTPHONE" type="TIMESTAMP"/>
 		<db-attribute name="PHOTO_SMARTPHONE" type="LONGVARBINARY"/>
 		<db-attribute name="POSITION_ID" type="INTEGER"/>
-		<db-attribute name="PROFILE" type="VARCHAR" length="10000"/>
+		<db-attribute name="PROFILE" type="CLOB" length="10000"/>
 		<db-attribute name="TUTORIAL_FORBID" type="CHAR" length="64"/>
 		<db-attribute name="UPDATED_USER_ID" type="INTEGER"/>
 		<db-attribute name="USER_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
@@ -245,7 +245,7 @@
 	<obj-relationship name="turbineRole" source="TurbineRolePermission" target="TurbineRole" db-relationship-path="turbineRole"/>
 	<obj-relationship name="eipMUserPosition" source="TurbineUser" target="EipMUserPosition" db-relationship-path="eipMUserPosition"/>
 	<obj-relationship name="eipTAclUserRoleMaps" source="TurbineUser" target="EipTAclUserRoleMap" db-relationship-path="eipTAclUserRoleMaps"/>
-	<obj-relationship name="eipTCabinetFile" source="TurbineUser" target="EipTCabinetFile" db-relationship-path="eipTCabinet"/>
+	<obj-relationship name="eipTCabinet" source="TurbineUser" target="EipTCabinetFile" db-relationship-path="eipTCabinet"/>
 	<obj-relationship name="eipTEventlog" source="TurbineUser" target="EipTEventlog" db-relationship-path="eipTEventlog"/>
 	<obj-relationship name="eipTGpdb" source="TurbineUser" target="EipTGpdb" db-relationship-path="eipTGpdb"/>
 	<obj-relationship name="eipTGpdbItem" source="TurbineUser" target="EipTGpdbItem" db-relationship-path="eipTGpdbItem"/>
