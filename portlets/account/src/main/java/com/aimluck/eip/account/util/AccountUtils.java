@@ -57,6 +57,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -788,6 +789,13 @@ public class AccountUtils {
         .query(EipTMessageRoomMember.class)
         .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
         .deleteAll();
+      if (1 == userlist.size()) {
+        Database
+          .query(EipTMessageRoom.class)
+          .where(Operations.in(EipTMessageRoom.CREATE_USER_ID_PROPERTY, userId))
+          .deleteAll();
+      }
+
       Database.commit();
 
       // イベントログに保存
