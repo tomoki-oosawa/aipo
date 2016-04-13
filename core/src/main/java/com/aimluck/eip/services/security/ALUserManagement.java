@@ -358,6 +358,8 @@ public class ALUserManagement extends TurbineBaseService implements
         grantRoles(user, hasAdminCredential);
       }
 
+      tuser.setCode(baseuser.getCode());
+
       // ユーザを更新する．
       Database.commit();
     } catch (Exception e) {
@@ -428,6 +430,7 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     tuser.setMigrateVersion(baseuser.getMigrateVersion());
+    tuser.setCode(baseuser.getCode());
     // Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる

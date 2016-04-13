@@ -883,6 +883,9 @@ public class AccountUserFormData extends ALAbstractFormData {
             user.setPerm("isAdmin", false);
           }
         }
+        if (code.getValue() != null) {
+          user.setCode(code.getValue());
+        }
         if (filebean != null && filebean.getFileId() != 0) {
           // 顔写真を登録する．
           user.setPhotoSmartphone(facePhoto_smartphone);
@@ -1082,6 +1085,9 @@ public class AccountUserFormData extends ALAbstractFormData {
           } else {
             user.setPerm("isAdmin", false);
           }
+        }
+        if (code.getValue() != null) {
+          user.setCode(code.getValue());
         }
 
         // ユーザーを更新
