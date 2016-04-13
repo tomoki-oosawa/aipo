@@ -93,6 +93,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
+  /** 1ルームの最大人数 **/
+  private final int MAX_ROOM_MEMBER = 300;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -264,8 +267,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
     if (!isMemberHasAuthority) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER4"));
     }
-    if (memberList.size() > 300) {
-      msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER5"));
+    if (memberList.size() > MAX_ROOM_MEMBER) {
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "MESSAGE_VALIDATE_ROOM_MEMBER5",
+        MAX_ROOM_MEMBER));
     }
     if (photo_vali_flag) {
       msgList.add(ALLocalizationUtils
