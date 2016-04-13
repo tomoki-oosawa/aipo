@@ -178,6 +178,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** 管理者権限を付与するか */
   private ALStringField is_admin;
 
+  /** 社員コード */
+  private ALStringField code;
+
   /** */
   private boolean is_new_post;
 
@@ -334,6 +337,11 @@ public class AccountUserFormData extends ALAbstractFormData {
     is_admin
       .setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_ADMIN_ON"));
     is_admin.setTrim(true);
+
+    // 社員コード
+    code = new ALStringField();
+    code.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_CODE"));
+    code.setTrim(true);
 
     post = new AccountPostFormData();
     post.setJoinMember(false);
@@ -1648,5 +1656,12 @@ public class AccountUserFormData extends ALAbstractFormData {
 
   public boolean isNewPhotoSpec() {
     return isNewPhotoSpec;
+  }
+
+  /**
+   * @return code
+   */
+  public ALStringField getCode() {
+    return code;
   }
 }

@@ -73,6 +73,8 @@ $!record <br />
 #else
 #ALtdcell($l10n.ACCOUNT_ISNOT_ADMIN)
 #end
+#ALtdcaption($l10n.ACCOUNT_USER_CODE)
+#ALtdcell($!result.Detail.Code)
 #ALtdcaption($l10n.ACCOUNT_WEBMAIL_CAPACITY)
 #ALtdcellheader()
 #AsyncLoad("$async_url")

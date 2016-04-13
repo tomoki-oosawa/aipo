@@ -141,6 +141,8 @@
 <input name="is_admin_checkbox" type="checkbox" value="" id="$!{portlet.ID}is_admin_id" #if($!result.IsAdmin.toString() == "true") checked="checked" #end onchange="aipo.account_user.formAdminToggle(this);"/>&nbsp;<label for="$!{portlet.ID}is_admin_id">$!result.getFieldName("is_admin")</label>
 <input name="is_admin" type="hidden" id="is_admin" value="$!result.IsAdmin.toString()" />
 #ALtditemfooter()
+#ALtdcaption($!result.getFieldName("code"))
+#ALtditem("#ALtextfield('code' $!result.Code '70%' 50 'disabled')")
 #ALtablefooter()
 #ALbuttonheader()
 <input id="al_submit_$!{portlet.ID}" name="$event_submit" class="auiButtonAction" type="submit" value="$action_str" onclick="aimluck.io.setHiddenValue(this);" />
