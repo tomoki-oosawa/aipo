@@ -481,6 +481,7 @@ public class AccountUserSelectData extends
       rd.setIsNewPhotoSpec("N".equals(record.hasPhotoString()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
       rd.setIsOwner(userid == Integer.valueOf(record.getUserId()));
+      rd.setCode(record.getCode());
 
       return rd;
     } catch (Exception ex) {

@@ -170,6 +170,7 @@ public class ALUserManagement extends TurbineBaseService implements
         .intValue() : 0);
       baseuser.setPhotoModified(tuser.getPhotoModified());
       baseuser.setPhotoModifiedSmartphone(tuser.getPhotoModifiedSmartphone());
+      baseuser.setCode(tuser.getCode());
       baseuser.setHasPhoto(tuser.getHasPhoto());
       baseuser.setHasPhotoSmartphone(tuser.getHasPhotoSmartphone());
       baseuser.setMigrateVersion((tuser.getMigrateVersion() != null) ? tuser

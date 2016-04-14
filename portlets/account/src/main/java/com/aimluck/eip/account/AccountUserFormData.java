@@ -756,6 +756,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         is_admin.setValue("false");
       }
 
+      code.setValue(user.getCode());
+
       if (user.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
         filebean.initField();
