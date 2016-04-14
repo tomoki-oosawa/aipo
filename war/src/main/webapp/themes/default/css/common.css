@@ -1882,6 +1882,12 @@ td.topNone.holiday.off.addScheduleCell div,
 .holiday.addScheduleCell:hover div{
   background: none !important;
 }
+/*// マイページでの一覧スケジュールの背景色調整 */
+.scheduleList tr.saturday td div,
+.scheduleList tr.sunday td div,
+.scheduleList tr.holiday td div{
+  background: none !important;
+}
 
 .calendarDisplayMonth .calendar th {
   min-width: 7.5em;
