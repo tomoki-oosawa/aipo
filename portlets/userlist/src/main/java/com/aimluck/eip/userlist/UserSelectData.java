@@ -421,6 +421,7 @@ public class UserSelectData extends
       || "N".equals(model.getHasPhoto()));
     data.setIsNewPhotoSpec("N".equals(model.getHasPhoto()));
     data.setPhotoModified(model.getPhotoModified().getTime());
+    data.setCode(model.getCode());
   }
 
   private String getAliasName(String firstName, String lastName) {
