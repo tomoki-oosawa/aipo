@@ -1872,9 +1872,14 @@ div.off, td.off {
   text-align: center;
 }
 
+/*// マイページでの月スケジュールの背景色調整 */
 td.topNone.saturday.off.addScheduleCell div,
 td.topNone.sunday.off.addScheduleCell div,
-td.topNone.holiday.off.addScheduleCell div{
+td.topNone.holiday.off.addScheduleCell div,
+/*// マイページでの月スケジュールhover時の背景色調整 */
+.saturday.addScheduleCell:hover .calendarFooter,
+.sunday.addScheduleCell:hover .calendarFooter,
+.holiday.addScheduleCell:hover .calendarFooter{
   background: none !important;
 }
 
