@@ -1872,11 +1872,15 @@ div.off, td.off {
   text-align: center;
 }
 
-.topNone.saturday.off.addScheduleCell .calendarBody,
-.topNone.saturday.off.addScheduleCell .calendarFooter,
-.topNone.sunday.off.addScheduleCell .calendarBody,
-.topNone.sunday.off.addScheduleCell .calendarFooter{
-  background-color : none !important;
+td.topNone.saturday.off.addScheduleCell div.sunday,
+td.topNone.saturday.off.addScheduleCell .tableWrapper tbody .sunday div,
+td.topNone.saturday.off.addScheduleCell div.holiday,
+td.topNone.saturday.off.addScheduleCell .tableWrapper tbody .holiday div,
+td.topNone.sunday.off.addScheduleCell div.sunday,
+td.topNone.sunday.off.addScheduleCell .tableWrapper tbody .sunday div,
+td.topNone.sunday.off.addScheduleCell div.holiday,
+td.topNone.sunday.off.addScheduleCell .tableWrapper tbody .holiday div{
+  background: none !important;
 }
 
 .calendarDisplayMonth .calendar th {
