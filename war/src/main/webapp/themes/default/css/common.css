@@ -1877,12 +1877,9 @@ td.topNone.saturday.off.addScheduleCell div,
 td.topNone.sunday.off.addScheduleCell div,
 td.topNone.holiday.off.addScheduleCell div,
 /*// マイページでの月スケジュールhover時の背景色調整 */
-.saturday.addScheduleCell:hover .calendarScheduleDiv,
-.saturday.addScheduleCell:hover .calendarFooter,
-.sunday.addScheduleCell:hover .calendarScheduleDiv,
-.sunday.addScheduleCell:hover .calendarFooter,
-.holiday.addScheduleCell:hover .calendarScheduleDiv,
-.holiday.addScheduleCell:hover .calendarFooter{
+.saturday.addScheduleCell:hover div,
+.sunday.addScheduleCell:hover div,
+.holiday.addScheduleCell:hover div{
   background: none !important;
 }
 
