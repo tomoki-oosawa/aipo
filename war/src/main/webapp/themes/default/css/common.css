@@ -1873,7 +1873,8 @@ div.off, td.off {
 }
 
 td.topNone.saturday.off.addScheduleCell div,
-td.topNone.sunday.off.addScheduleCell div{
+td.topNone.sunday.off.addScheduleCell div,
+td.topNone.holiday.off.addScheduleCell div{
   background: none !important;
 }
 
