@@ -118,6 +118,7 @@ public class AccountEditSelectData extends
       rd.setPostIdList(postIds);
       rd.setPostNameList(postNames);
       rd.setPositionName(getPositionName(record.getPositionId()));
+      rd.setCode(record.getCode());
 
       EipMCompany company_data =
         AccountUtils.getEipMCompany(Long
