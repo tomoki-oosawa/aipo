@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.jetspeed.om.security.Group;
 import org.apache.jetspeed.om.security.JetspeedUser;
 import org.apache.jetspeed.om.security.Role;
@@ -789,12 +790,24 @@ public class AccountUtils {
         .query(EipTMessageRoomMember.class)
         .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
         .deleteAll();
-      if (1 == userlist.size()) {
+
+      // 削除対象ユーザーによって作成されたメッセージルームのリスト
+      List<EipTMessageRoom> deleteRoomList =
         Database
           .query(EipTMessageRoom.class)
           .where(Operations.in(EipTMessageRoom.CREATE_USER_ID_PROPERTY, userId))
-          .deleteAll();
-      }
+          .fetchList();
+      // 削除対象ユーザー以外にメンバーのいないメッセージルームを削除
+      // 削除対象ユーザー以外にメンバーのいるメッセージルームから削除対象メンバーの名前を削除
+      deleteRoomList.forEach(room -> {
+        String[] names = room.getName().split(",");
+        if (names.length == 1) {
+          Database.delete(room);
+        }
+        names = (String[]) ArrayUtils.removeElement(names, userName);
+        String name = String.join(",", names);
+        room.setName(name);
+      });
 
       Database.commit();
 
