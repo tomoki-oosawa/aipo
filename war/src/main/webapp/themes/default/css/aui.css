@@ -2372,8 +2372,10 @@ button[disabled]:active {
 }
 .imgPopup .meta {
   position: absolute;
-  right: -10px;
-  top: -40px;
+  /*right: -10px;*/
+  /*top: -40px;*/
+  right: 10px;
+  top: -32px;
 }
 .imgPopup .meta a {
   display: inline-block;
@@ -2381,6 +2383,10 @@ button[disabled]:active {
 }
 .imgPopup .meta [class*="icon-"] {
   font-size: 24px;
+}
+
+.imgPopup .dlLink {
+  padding: 12px 10px 7px;
 }
 
 /* imgPopupTutorial */
@@ -3232,7 +3238,8 @@ min-width: inherit;
   font-weight: bold;
 }
 .auiSummaryMeta form {
-  line-height: 32px;
+  /*line-height: 32px;*/
+  line-height: 30px;
 }
 .auiSummaryMeta .icon-print {
   font-size: 17px;
@@ -3371,6 +3378,10 @@ min-width: inherit;
 }
 .auiRowTable.scheduleList td {
   border-bottom: none;
+}
+
+.auiSTCaption{
+  width: 20%;
 }
 
 /***************************************************
@@ -4071,6 +4082,9 @@ ul.attachments {
 }
 #timelineOuter .auiSummaryMeta{
   margin: 0;
+}
+.avatar a {
+  text-decoration:none !important;
 }
 
 .tlInputMention {

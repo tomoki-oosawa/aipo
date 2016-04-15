@@ -27,6 +27,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -48,6 +49,8 @@ import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -96,6 +99,9 @@ public class WorkflowAllSelectData extends
   private ALNumberField previous_id;
 
   private ALStringField target_keyword;
+
+  /** 他ユーザーのワークフローの削除権限 */
+  private boolean hasAuthorityOtherDelete;
 
   /**
    *
@@ -189,6 +195,17 @@ public class WorkflowAllSelectData extends
     } catch (Exception e) {
       previous_id = null;
     }
+    // アクセス権限
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasAuthorityOtherDelete =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_WORKFLOW_REQUEST_OTHER,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
 
   }
 
@@ -397,7 +414,8 @@ public class WorkflowAllSelectData extends
 
       Expression exp2 =
         ExpressionFactory.matchExp(Activity.EXTERNAL_ID_PROPERTY, rd
-          .getRequestId());
+          .getRequestId()
+          .toString());
       Expression exp3 =
         ExpressionFactory.matchExp(Activity.APP_ID_PROPERTY, "Workflow");
       Expression exp4 = exp2.andExp(exp3);
@@ -577,6 +595,10 @@ public class WorkflowAllSelectData extends
    */
   public boolean hasAuthorityOther() {
     return hasAuthority;
+  }
+
+  public boolean getHasAuthorityOtherDelete() {
+    return hasAuthorityOtherDelete;
   }
 
   public ALStringField getTargetKeyword() {

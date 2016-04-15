@@ -47,7 +47,7 @@ public class NoteAction extends ALBaseAction {
     .getLogger(NoteAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -64,7 +64,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -92,7 +92,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -113,7 +113,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 新規に伝言メモを作成するページを表示する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -129,7 +129,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -150,7 +150,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -172,7 +172,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを一覧表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -193,7 +193,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを削除する（単数）。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -210,7 +210,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 伝言メモを削除する（複数）。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -227,7 +227,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * ノーマル画面の伝言メモを既読にする（複数）。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -241,7 +241,7 @@ public class NoteAction extends ALBaseAction {
 
   /**
    * 最大化画面の伝言メモを既読にする（複数）。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -254,7 +254,7 @@ public class NoteAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -263,9 +263,9 @@ public class NoteAction extends ALBaseAction {
     list.add("target_user_id");
     list.add("target_group_name");
 
-    list.add("com.aimluck.eip.note.NoteSelectDatasort");
-    list.add("com.aimluck.eip.note.NoteSelectDatasorttype");
-    list.add("com.aimluck.eip.note.NoteClientSelectDatasort");
+    list.add("NoteSelectDatasort");
+    list.add("NoteSelectDatasorttype");
+    list.add("NoteClientSelectDatasort");
 
     ALEipUtils.removeTemp(rundata, context, list);
   }

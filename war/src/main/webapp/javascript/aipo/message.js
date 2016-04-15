@@ -38,6 +38,7 @@ aipo.message.jumpCursor = null;
 aipo.message.isSearched = false;
 aipo.message.transactionIdList = [];
 
+
 aipo.message.setup = function(portletId, jslink, isMobile) {
     aipo.message.portletId = portletId;
     aipo.message.jslink = jslink;
@@ -96,7 +97,29 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                             }
                         });
     }
-    aipo.message.reloadRoomList();
+    if ("" != aipo.message.getCookieIsLastRoomOrUser()) {
+    	if ("User" == aipo.message.getCookieIsLastRoomOrUser()) {
+
+    	    //Userを選んだ時もCookieから最後に選んだUserへのフォームが開いたままにしておくことができます。
+    	    aipo.message.currentUserId = aipo.message.getCookieRoomId("targetUserId=");
+    	    aipo.message.reloadRoomList(null, aipo.message.currentUserId);
+    	    aipo.message.selectTab("user");
+    	    aipo.message.selectUser(aipo.message.currentUserId);
+    	    currentRoomId = aipo.message.getCookieRoomId("targetUserId=");
+
+    	    }else if ("Room" == aipo.message.getCookieIsLastRoomOrUser()){
+
+    		//以下2行によりルームをリロード後もエラーなしで表示したままにできます。
+    	    aipo.message.currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+    	    aipo.message.reloadRoomList(null,aipo.message.currentRoomId);
+    	    aipo.message.selectTab("room");
+    	    aipo.message.selectRoom(aipo.message.currentRoomId);
+    	    currentRoomId = aipo.message.getCookieRoomId("lastRoomId=");
+
+    	    }
+    }else{
+        aipo.message.reloadRoomList();
+    }
     aipo.message.isInit = true;
 }
 
@@ -614,7 +637,7 @@ aipo.message.swapView = function() {
     }
 }
 
-
+//ルームかユーザーか選択している
 aipo.message.selectTab = function(tab) {
     var messageRoomTab = dojo.byId("messageRoomTab");
     var messageUserTab = dojo.byId("messageUserTab");
@@ -656,6 +679,7 @@ aipo.message.selectTab = function(tab) {
     }
 }
 
+//Messageの右側のRoomの列からRoomを選択されたときに呼ばれています。
 aipo.message.inputHistory = {};
 aipo.message.selectRoom = function(room_id, scroll) {
     var messageSideBlock = dojo.byId("messageSideBlock");
@@ -665,6 +689,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
     var messageForm = dojo.byId("messageForm");
     var messageRoom = dojo.byId("messageRoom" + room_id);
     var messageRoomType = dojo.byId("messageRoomType" + room_id);
+    var messageRoomAuthority = dojo.byId("messageRoomAuthority" + room_id);
     var messageRoomAvatar = dojo.byId("messageRoomAvatar");
     var messageRoomName = dojo.byId("messageRoomName");
     var messageRoomSetting = dojo.byId("messageRoomSetting");
@@ -710,8 +735,9 @@ aipo.message.selectRoom = function(room_id, scroll) {
             }
         }
 
-        messageRoomSetting.style.display = "G" == messageRoomType.innerHTML ? ""
+        messageRoomSetting.style.display = ("G" == messageRoomType.innerHTML&&"A" == messageRoomAuthority.innerHTML) ? ""
                 : "none";
+
         dojo.style(dojo.byId("messageInputAttachment"), "display", "none");
         dojo.byId("attachments_global-" + aipo.message.portletId).innerHTML="";
 
@@ -732,6 +758,13 @@ aipo.message.selectRoom = function(room_id, scroll) {
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
         aipo.message.reloadMessageList();
+        if (dojo.hasClass("messageRoomTab", "active")) {
+        	aipo.message.saveCookieIsLastRoomOrUser("Room");
+        } else if (dojo.hasClass("messageUserTab", "active")) {
+        	aipo.message.saveCookieIsLastRoomOrUser("User");
+        }
+        //cookieへ保存する名前とIDを引数に取ってと保存する。
+        aipo.message.saveCookieTargetId("lastRoomId",aipo.message.currentRoomId);
     }
 }
 
@@ -793,12 +826,14 @@ aipo.message.selectUser = function(user_id) {
         aipo.message.inputHistory[aipo.message.currentRoomId] = messageForm.message.value;
         aipo.message.inputHistory[0] = "";
         dojo.query(".messageUserlist li").forEach(function(item) {
-            dojo.removeClass(item, "active")
+            dojo.removeClass(item, "active");
         });
         if(!aipo.message.isMobile) {
             dojo.addClass(messageUser, "active");
         }
         aipo.message.reloadRoomList(null, user_id);
+        //ここでUserIdを保存
+        aipo.message.saveCookieTargetId("targetUserId", user_id);
     }
 }
 
@@ -829,7 +864,6 @@ aipo.message.focusInput = function() {
     	}catch(e){
     		//ignore
     	}
-
     }
 }
 
@@ -868,7 +902,7 @@ aipo.message.fixMessageWindow = function() {
 };
 
 aipo.message.onLoadMessageRoomDialog = function() {
-    aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to");
+    aipo.widget.MemberFilterList.setup("memberfilterlist", "init_memberlist", "member_to", "member_authority_to");
     aipo.message.changeMember();
 };
 
@@ -931,6 +965,9 @@ aipo.message.onReceiveMessage = function(msg) {
                 aipo.message.reloadRoomList();
             }
             aipo.message.selectTab("room");
+            aipo.message.getCookieIsLastRoomOrUser("Room");
+            aipo.message.saveCookieIsLastRoomOrUser("Room");
+            aipo.message.saveCookieTargetId("lastRoomId",aipo.message.currentRoomId);
         }
     }
     else if (dojo.byId('messageFormDiv')){
@@ -1177,6 +1214,7 @@ aipo.message.openDirect = function(user_id) {
 	    aipo.message.currentUserId = user_id;
 	    aipo.menu.toggleDropdown("message");
 	    aipo.message.selectTab("user");
+	    aipo.message.getCookieIsLastRoomOrUser("User");
 	}
 }
 
@@ -1201,6 +1239,7 @@ aipo.message.openDirectMessage = function(user_id) {
 			aipo.message.reloadUserList();
 		} else {
 		    aipo.message.selectTab("user");
+		    aipo.message.getCookieIsLastRoomOrUser("User");
 		}
 }
 
@@ -1386,6 +1425,7 @@ aipo.message.jumpMessage = function(roomId, messageId){
 	aipo.message.jumpCursor = messageId;
 	aipo.message.selectTab('room');
 	aipo.message.selectRoom(roomId, true);
+	aipo.message.getCookieIsLastRoomOrUser("Room");
 }
 
 aipo.message.onFocusSearch = function() {
@@ -1459,4 +1499,49 @@ aipo.message.removeTransactionId = function(transactionId){
 		aipo.message.transactionIdList.splice(transactionIdPos, 1);
 		return true;
 	}
+}
+
+//CookieにcurrentRoomIdあるいはUserIdを保存する
+// Room -> lastRoomId / User -> targetUserId
+aipo.message.saveCookieTargetId = function(cookieName, targetId){
+		var cookieValue = cookieName + 	"=" + targetId　+ ";" + "path=/;";
+		document.cookie = cookieValue;
+}
+
+//最後に選ばれたのが、RoomなのかUserなのかCookieへ保存する
+aipo.message.saveCookieIsLastRoomOrUser = function(cookieTarget){
+	var cookieValue = "lastIsRoomOrUser=" + cookieTarget + ";" + "path=/;";
+	document.cookie = cookieValue;
+}
+
+//最後に選ばれたのが、RoomなのかUserなのかCookieから取得する
+aipo.message.getCookieIsLastRoomOrUser = function(){
+	var allCookies = document.cookie;
+	var cookieName = "lastIsRoomOrUser="
+	var userOrRoom = "";
+
+	if (allCookies.indexOf(cookieName) != -1) {
+		var number = allCookies.indexOf(cookieName) + cookieName.length;
+		var number2 = allCookies.indexOf(";", number);
+		if (number2 == -1) {
+			number2 = allCookies.length;
+		}
+		userOrRoom = decodeURIComponent(allCookies.substring(number, number2));
+	}
+	return userOrRoom;
+}
+
+//CookieをからRoomのIdを取得する
+aipo.message.getCookieRoomId = function(cookieName) {
+	var allCookies = document.cookie;
+
+	if (allCookies.indexOf(cookieName) != -1) {
+		var number = allCookies.indexOf(cookieName) + cookieName.length;
+		var number2 = allCookies.indexOf(";", number);
+		if (number2 == -1) {
+			number2 = allCookies.length;
+		}
+		var room_id = decodeURIComponent(allCookies.substring(number, number2));
+	}
+	return room_id;
 }

@@ -133,7 +133,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       if ("S".equals(rd.getPattern())) {
         cStart.add(Calendar.DATE, 1);
         dStart = new Date(cStart.getTime());
-        cEnd.add(Calendar.DATE, 2);
+        if (cEnd.get(Calendar.HOUR_OF_DAY) == 0
+          && cEnd.get(Calendar.MINUTE) == 0
+          && cEnd.get(Calendar.SECOND) == 0) {
+          cEnd.add(Calendar.DATE, 2);
+        } else {
+          cEnd.add(Calendar.DATE, 1);
+        }
         dEnd = new Date(cEnd.getTime());
       } else {
         dStart = new DateTime(cStart.getTime());

@@ -10,6 +10,7 @@ import java.util.List;
 public class _EipMFacilityGroup extends org.apache.cayenne.CayenneDataObject {
 
     public static final String GROUP_NAME_PROPERTY = "groupName";
+    public static final String SORT_PROPERTY = "sort";
     public static final String EIP_MFACILITY_GROUP_PROPERTY = "eipMFacilityGroup";
 
     public static final String GROUP_ID_PK_COLUMN = "GROUP_ID";
@@ -19,6 +20,14 @@ public class _EipMFacilityGroup extends org.apache.cayenne.CayenneDataObject {
     }
     public String getGroupName() {
         return (String)readProperty("groupName");
+    }
+    
+    
+    public void setSort(Integer sort) {
+        writeProperty("sort", sort);
+    }
+    public Integer getSort() {
+        return (Integer)readProperty("sort");
     }
     
     

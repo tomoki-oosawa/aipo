@@ -37,8 +37,18 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(BlogFileRawScreen.class.getName());
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTBlogFile blogfile = BlogUtils.getEipTBlogFile(rundata);
+    setFilePath(BlogUtils.getSaveDirPath(Database.getDomainName(), blogfile
+      .getOwnerId()
+      .intValue())
+      + blogfile.getFilePath());
+    setFileName(blogfile.getTitle());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -60,13 +70,6 @@ public class BlogFileRawScreen extends FileuploadRawScreen {
       }
     }
     try {
-      EipTBlogFile blogfile = BlogUtils.getEipTBlogFile(rundata);
-
-      super.setFilePath(BlogUtils.getSaveDirPath(
-        Database.getDomainName(),
-        blogfile.getOwnerId().intValue())
-        + blogfile.getFilePath());
-      super.setFileName(blogfile.getTitle());
       super.doOutput(rundata);
     } catch (Exception e) {
       logger.error("[BlogFileRawScreen]", e);

@@ -1038,7 +1038,16 @@ public class ScheduleFormData extends ALAbstractFormData {
         limit_start_date.setValue(record.getStartDate());
         limit_end_date.setValue(record.getEndDate());
 
-        if (record.getStartDate().equals(record.getEndDate())) {
+        Calendar startDate = Calendar.getInstance();
+        startDate.setTime(record.getStartDate());
+        Calendar endDate = Calendar.getInstance();
+        endDate.setTime(record.getEndDate());
+        startDate.add(Calendar.DATE, 1);
+        startDate.add(Calendar.SECOND, -1);
+        Date sDate = startDate.getTime();
+
+        if ((record.getStartDate().equals(record.getEndDate()))
+          || (sDate.equals(record.getEndDate()))) {
           // 終日予定
           all_day_flag.setValue("ON");
         }
@@ -1312,8 +1321,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
       if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-        .toString()))
-        && !(is_span)) {
+        .toString()))) {
         for (Object record : facilityList) {
           FacilityResultData frd = (FacilityResultData) record;
 
@@ -1703,8 +1711,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
           // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
           if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-            .toString()))
-            && !(is_span)) {
+            .toString()))) {
             for (Object record : facilityList) {
               FacilityResultData frd = (FacilityResultData) record;
               int facilityid = (int) frd.getFacilityId().getValue();
@@ -1951,8 +1958,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         // 完全に隠すスケジュール以外の場合は、グループに設備を追加する
         if (("O".equals(public_flag.toString()) || "C".equals(public_flag
-          .toString()))
-          && !(is_span)) {
+          .toString()))) {
           for (Object record : facilityList) {
             FacilityResultData frd = (FacilityResultData) record;
             int facilityid = (int) frd.getFacilityId().getValue();
@@ -3248,7 +3254,7 @@ public class ScheduleFormData extends ALAbstractFormData {
    * @return
    */
   public boolean isFacility() {
-    return (is_facility || facilityList.size() > 0);
+    return (is_facility || facilityList.size() > 0);// 設備を予約するまたは設備リストは空でない
   }
 
   public List<Object> getFacilityList() {

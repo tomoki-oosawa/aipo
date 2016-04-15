@@ -37,7 +37,9 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
-import org.cyberneko.html.parsers.DOMParser;
+import org.apache.xerces.parsers.DOMParser;
+import org.apache.xerces.xni.parser.XMLDocumentFilter;
+import org.cyberneko.html.HTMLConfiguration;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -46,6 +48,7 @@ import org.xml.sax.InputSource;
 
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineLike;
@@ -136,6 +139,13 @@ public class TimelineUtils {
 
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
+
+  public static final String TARGET_GROUP_NAME = "target_group_name";
+
+  public static final String TARGET_DISPLAY_NAME = "target_display_name";
+
+  /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
+  public static final String SCHEDULEMAP_TYPE_USER = "U";
 
   /**
    * トピックに対する返信数を返します
@@ -842,7 +852,8 @@ public class TimelineUtils {
   }
 
   public static Document getDocument(String string, String defaultCharset) {
-    DOMParser parser = new DOMParser();
+    HTMLConfiguration config = new HTMLConfiguration();
+    DOMParser parser = new DOMParser(config);
     try {
       if (string.indexOf(" ") != -1) {
         string = string.substring(0, string.indexOf(" "));
@@ -884,6 +895,25 @@ public class TimelineUtils {
 
       InputSource source = new InputSource(reader);
       parser.setFeature("http://xml.org/sax/features/namespaces", false);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/elems",
+        "default");
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/names/attrs",
+        "default");
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags",
+        false);
+      parser
+        .setFeature(
+          "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+          true);
+      parser.setFeature(
+        "http://cyberneko.org/html/features/balance-tags/document-fragment",
+        true);
+      parser.setProperty(
+        "http://cyberneko.org/html/properties/filters",
+        new XMLDocumentFilter[0]);
       parser.parse(source);
 
       // documentからmetaタグのcharsetを読み込む
@@ -911,6 +941,26 @@ public class TimelineUtils {
             .getInputStream(), metaTagCharset));
         source = new InputSource(reader);
         parser.setFeature("http://xml.org/sax/features/namespaces", false);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/elems",
+          "default");
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/names/attrs",
+          "default");
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags",
+          false);
+        parser
+          .setFeature(
+            "http://cyberneko.org/html/features/balance-tags/ignore-outside-content",
+            true);
+        parser.setFeature(
+          "http://cyberneko.org/html/features/balance-tags/document-fragment",
+          true);
+        parser.setProperty(
+          "http://cyberneko.org/html/properties/filters",
+          new XMLDocumentFilter[0]);
+
         parser.parse(source);
         document = parser.getDocument();
         if (document == null) {
@@ -1482,4 +1532,39 @@ public class TimelineUtils {
     String resetflag = rundata.getParameters().getString(RESET_FLAG);
     return resetflag != null;
   }
+
+  /**
+   * userIdが一致し、scheduleId_listのいずれかに一致するeip_t_schedule_mapのデータを返す
+   *
+   * @param userId
+   * @param scheduleId_list
+   * @return
+   */
+  public static List<EipTScheduleMap> getRelatedEipTScheduleMap(int userId,
+      ArrayList<Integer> scheduleIdList) {
+    if (scheduleIdList != null && scheduleIdList.size() > 0) {
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression exp11 =
+        ExpressionFactory.inExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          scheduleIdList);
+      mapquery.setQualifier(exp11);
+      Expression exp12 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userId));
+      mapquery.andQualifier(exp12);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
+      List<EipTScheduleMap> list = mapquery.fetchList();
+      return list;
+    } else {
+      return null;
+    }
+  }
+
 }

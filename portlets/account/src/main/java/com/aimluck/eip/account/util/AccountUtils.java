@@ -44,6 +44,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.account.AccountPositionResultData;
+import com.aimluck.eip.account.AccountPostResultData;
 import com.aimluck.eip.cayenne.om.account.EipMCompany;
 import com.aimluck.eip.cayenne.om.account.EipMPosition;
 import com.aimluck.eip.cayenne.om.account.EipMPost;
@@ -111,6 +113,8 @@ public class AccountUtils {
   public static final String ACCOUNT_PERSON_PORTLET_NAME = "AccountPerson";
 
   public static final String ACCOUNT_LOGIN_PORTLET_NAME = "AccountLogin";
+
+  public static final String ACCOUNT_POSITION_PORTLET_NAME = "AccountPosition";
 
   /** ユーザーの絞り込みに使用する項目 */
   private static final Map<Integer, FilterRole> roleMap =
@@ -231,7 +235,9 @@ public class AccountUtils {
       Expression exp =
         ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
           .valueOf(id));
-      List<EipMPost> list = Database.query(EipMPost.class, exp).fetchList();
+      List<EipMPost> list =
+        Database.query(EipMPost.class, exp).orderAscending(
+          EipMPost.SORT_PROPERTY).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
@@ -361,6 +367,49 @@ public class AccountUtils {
     }
 
     return resultList;
+  }
+
+  public static List<AccountPositionResultData> getAccountPositionAllList() {
+    List<AccountPositionResultData> AccountPositionAllList =
+      new ArrayList<AccountPositionResultData>();
+
+    try {
+      List<EipMPosition> aList =
+        Database.query(EipMPosition.class).orderAscending(
+          EipMPosition.SORT_PROPERTY).fetchList();
+
+      for (EipMPosition record : aList) {
+        AccountPositionResultData rd = new AccountPositionResultData();
+        rd.initField();
+        rd.setPositionId(record.getPositionId());
+        rd.setPositionName(record.getPositionName());
+        AccountPositionAllList.add(rd);
+      }
+    } catch (Exception ex) {
+      logger.error("accountposition", ex);
+    }
+    return AccountPositionAllList;
+  }
+
+  public static List<AccountPositionResultData> getAccountPositionResultList(
+      List<EipMPosition> result) {
+    List<AccountPositionResultData> list =
+      new ArrayList<AccountPositionResultData>();
+    for (EipMPosition model : result) {
+      list.add(getAccountPositionResultData(model));
+    }
+    return list;
+  }
+
+  public static AccountPositionResultData getAccountPositionResultData(
+      EipMPosition model) {
+    AccountPositionResultData data = new AccountPositionResultData();
+    data.initField();
+    data.setPositionId(model.getPositionId());
+    data.setPositionName(model.getPositionName());
+    data.setUpdate_date(model.getUpdateDate());
+    data.setCreateDate(model.getCreateDate());
+    return data;
   }
 
   /**
@@ -1022,4 +1071,31 @@ public class AccountUtils {
     }
     return null;
   }
+
+  public static List<AccountPostResultData> getAccountPostResultList(
+      List<EipMPost> result) {
+    List<AccountPostResultData> list = new ArrayList<AccountPostResultData>();
+    for (EipMPost model : result) {
+      list.add(getAccountPostResultData(model));
+    }
+    return list;
+  }
+
+  public static AccountPostResultData getAccountPostResultData(EipMPost model) {
+    AccountPostResultData data = new AccountPostResultData();
+    data.initField();
+    data.setPostId(model.getPostId());
+    data.setCompanyId(model.getCompanyId());
+    data.setPostName(model.getPostName());
+    data.setZipcode(model.getZipcode());
+    data.setAddress(model.getAddress());
+    data.setInTelephone(model.getInTelephone());
+    data.setOutTelephone(model.getOutTelephone());
+    data.setFaxNumber(model.getFaxNumber());
+    data.setCreateDate(model.getCreateDate().toString());
+    data.setUpdateDate(model.getUpdateDate().toString());
+    data.setGroupName(model.getGroupName());
+    return data;
+  }
+
 }

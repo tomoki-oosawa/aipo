@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.facilities;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -26,6 +28,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup;
+import com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -39,7 +42,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 設備検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilityGroupSelectData extends
     ALAbstractSelectData<EipMFacilityGroup, EipMFacilityGroup> implements
@@ -52,11 +55,14 @@ public class FacilityGroupSelectData extends
   /** 設備グループの総数 */
   private int facilitygroupSum;
 
+  /** フィルターなしの全設備グループリスト */
+  private List<FacilityGroupResultData> facilityGroupAllList;
+
   /** <code>viewtype</code> 表示タイプ */
   protected String viewtype;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -64,6 +70,7 @@ public class FacilityGroupSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    loadFacilityGroupAllList(rundata, context);
     String sort = ALEipUtils.getTemp(rundata, context, LIST_SORT_STR);
     if (sort == null || sort.equals("")) {
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, ALEipUtils
@@ -78,7 +85,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -103,9 +110,19 @@ public class FacilityGroupSelectData extends
     }
   }
 
+  public static List<FacilityGroupResultData> getFacilityGroupList(
+      String groupname) {
+    SelectQuery<EipMFacilityGroup> query =
+      Database.query(EipMFacilityGroup.class);
+    query.orderAscending(EipMFacilityGroup.SORT_PROPERTY);
+    List<FacilityGroupResultData> list =
+      FacilitiesUtils.getFacilityGroupResultList(query.fetchList());
+    return list;
+  }
+
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -119,7 +136,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -140,7 +157,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -152,7 +169,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -170,9 +187,14 @@ public class FacilityGroupSelectData extends
     }
   }
 
+  public void loadFacilityGroupAllList(RunData rundata, Context context) {
+    facilityGroupAllList = new ArrayList<FacilityGroupResultData>();
+    facilityGroupAllList.addAll(FacilitiesUtils.getFacilityGroupAllList());
+  }
+
   /**
    * 設備の総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getFacilityGroupSum() {
@@ -181,7 +203,7 @@ public class FacilityGroupSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -190,17 +212,19 @@ public class FacilityGroupSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("group_name", EipMFacilityGroup.GROUP_NAME_PROPERTY);
+    map.putValue("group_id", EipMFacilityGroupMap.GROUP_ID_PROPERTY);
+    map.putValue("sort", EipMFacilityGroup.SORT_PROPERTY);
     return map;
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */

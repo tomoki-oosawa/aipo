@@ -6,13 +6,13 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>8.0.1</version>
+    <version>8.1.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <groupId>com.aimluck.eip</groupId>
   <artifactId>portlets</artifactId>
-  <version>8.0.1</version>
+  <version>8.1.1</version>
   <packaging>pom</packaging>
 
   <name>Aipo Portlets</name>

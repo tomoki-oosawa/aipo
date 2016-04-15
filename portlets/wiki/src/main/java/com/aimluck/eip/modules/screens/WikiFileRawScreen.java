@@ -18,10 +18,13 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTWikiFile;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.wiki.util.WikiFileUtils;
 
@@ -30,23 +33,37 @@ import com.aimluck.eip.wiki.util.WikiFileUtils;
  */
 public class WikiFileRawScreen extends FileuploadRawScreen {
 
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(WikiFileRawScreen.class.getName());
+
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTWikiFile file = WikiFileUtils.getEipTWikiFile(rundata);
+    if (null == file) {
+      throw new ALPageNotFoundException();
+    }
+    setFilePath(WikiFileUtils.getSaveDirPath(Database.getDomainName(), file
+      .getOwnerId()
+      .intValue())
+      + file.getFilePath());
+    setFileName(file.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata) throws Exception {
-    EipTWikiFile file = WikiFileUtils.getEipTWikiFile(rundata);
-    if (null == file) {
-      throw new ALPageNotFoundException();
+    try {
+      super.doOutput(rundata);
+    } catch (ALPermissionException e) {
+      throw new Exception();
+    } catch (Exception e) {
+      logger.error("WikiFileRawScreen.doOutput", e);
     }
-    super.setFilePath(WikiFileUtils.getSaveDirPath(
-      Database.getDomainName(),
-      file.getOwnerId().intValue())
-      + file.getFilePath());
-    super.setFileName(file.getFileName());
-    super.doOutput(rundata);
   }
 
 }

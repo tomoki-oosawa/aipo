@@ -1,30 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-
-    Aipo is a groupware program developed by TOWN, Inc.
-    Copyright (C) 2004-2015 TOWN, Inc.
-    http://www.aipo.com
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation, either version 3 of the
-    License, or (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
--->
 <data-map project-version="2.0">
 	<property name="defaultPackage" value="com.aimluck.eip.cayenne.om.portlet"/>
 	<db-entity name="eip_facility_group">
 		<db-attribute name="FACILITY_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="GROUP_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="SORT" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="eip_m_address_group">
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
@@ -81,6 +62,7 @@
 	<db-entity name="eip_m_facility_group">
 		<db-attribute name="GROUP_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
 		<db-attribute name="GROUP_NAME" type="VARCHAR" length="64"/>
+		<db-attribute name="SORT" type="INTEGER"/>
 	</db-entity>
 	<db-entity name="eip_m_facility_group_map">
 		<db-attribute name="FACILITY_ID" type="INTEGER"/>
@@ -443,6 +425,7 @@
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 	</db-entity>
 	<db-entity name="eip_t_message_room_member">
+		<db-attribute name="AUTHORITY" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-attribute name="ROOM_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -842,6 +825,7 @@
 		<db-attribute name="USER_ID" type="INTEGER" isMandatory="true" length="4"/>
 	</db-entity>
 	<obj-entity name="EipFacilityGroup" className="com.aimluck.eip.cayenne.om.portlet.EipFacilityGroup" dbEntityName="eip_facility_group">
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
 	</obj-entity>
 	<obj-entity name="EipMAddressGroup" className="com.aimluck.eip.cayenne.om.portlet.EipMAddressGroup" dbEntityName="eip_m_address_group">
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
@@ -892,6 +876,7 @@
 	</obj-entity>
 	<obj-entity name="EipMFacilityGroup" className="com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroup" dbEntityName="eip_m_facility_group">
 		<obj-attribute name="groupName" type="java.lang.String" db-attribute-path="GROUP_NAME"/>
+		<obj-attribute name="sort" type="java.lang.Integer" db-attribute-path="SORT"/>
 	</obj-entity>
 	<obj-entity name="EipMFacilityGroupMap" className="com.aimluck.eip.cayenne.om.portlet.EipMFacilityGroupMap" dbEntityName="eip_m_facility_group_map">
 		<obj-attribute name="FacilityId" type="java.lang.Integer" db-attribute-path="FACILITY_ID"/>
@@ -1202,6 +1187,7 @@
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
+		<obj-attribute name="authority" type="java.lang.String" db-attribute-path="AUTHORITY"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
 		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>

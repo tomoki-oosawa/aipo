@@ -23,6 +23,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTGpdbRecordFile;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.gpdb.util.GpdbUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -36,8 +37,20 @@ public class GpdbRecordFileRawScreen extends FileuploadRawScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(GpdbRecordFileRawScreen.class.getName());
 
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTGpdbRecordFile file = GpdbUtils.getEipTGpdbRecordFile(rundata);
+    if (null == file) {
+      throw new ALPageNotFoundException();
+    }
+
+    setFilePath(GpdbUtils.getSaveDirPath(file.getOwnerId().intValue())
+      + file.getFilePath());
+    setFileName(file.getFileName());
+  }
+
   /**
-   * 
+   *
    * @param rundata
    *          RunData
    * @throws Exception
@@ -61,14 +74,6 @@ public class GpdbRecordFileRawScreen extends FileuploadRawScreen {
       }
     }
     try {
-      EipTGpdbRecordFile gpdbRecordfile =
-        GpdbUtils.getEipTGpdbRecordFile(rundata);
-
-      super.setFilePath(GpdbUtils.getSaveDirPath(gpdbRecordfile
-        .getOwnerId()
-        .intValue())
-        + gpdbRecordfile.getFilePath());
-      super.setFileName(gpdbRecordfile.getFileName());
       super.doOutput(rundata);
     } catch (ALPermissionException e) {
       throw new Exception();

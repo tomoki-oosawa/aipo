@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログのアクションクラスです。 <BR>
- * 
+ *
  */
 public class BlogAction extends ALBaseAction {
 
@@ -63,7 +63,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -102,7 +102,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -134,7 +134,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリー登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -150,7 +150,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -170,7 +170,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -190,7 +190,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -207,7 +207,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -229,7 +229,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -252,7 +252,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * 最新のエントリーを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -274,7 +274,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーの詳細を表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -296,7 +296,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * エントリーにコメントします。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -322,7 +322,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * コメントを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -339,7 +339,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマ登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -354,7 +354,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -374,7 +374,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -393,7 +393,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -410,7 +410,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -433,7 +433,7 @@ public class BlogAction extends ALBaseAction {
 
   /**
    * テーマを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -451,7 +451,7 @@ public class BlogAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param obj
    */
   public void setResultDataOnCommentDetail(Object obj) {
@@ -459,7 +459,7 @@ public class BlogAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param msg
    */
   public void addErrorMessagesOnCommentDetail(List<String> msgs) {
@@ -470,7 +470,7 @@ public class BlogAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param context
    */
   public void putDataOnCommentDetail(RunData rundata, Context context) {
@@ -485,10 +485,10 @@ public class BlogAction extends ALBaseAction {
     list.add("view_uid");
     list.add("target_group_name");
     list.add("Blogsword");
-    list.add("com.aimluck.eip.blog.BlogWordSelectDatasort");
-    list.add("com.aimluck.eip.blog.BlogEntrySelectDatafilter");
-    list.add("com.aimluck.eip.blog.BlogEntrySelectDatafiltertype");
-    list.add("com.aimluck.eip.blog.BlogThemaSelectDatasort");
+    list.add("BlogWordSelectDatasort");
+    list.add("BlogEntrySelectDatafilter");
+    list.add("BlogEntrySelectDatafiltertype");
+    list.add("BlogThemaSelectDatasort");
     list.add(BlogUtils.OWNER_ID);
     list.add(BlogUtils.SEARCH_WORD);
     list.add(BlogUtils.GROUP_ID);

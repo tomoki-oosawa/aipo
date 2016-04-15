@@ -35,6 +35,7 @@
 	<meta name="format-detection" content="telephone=no"/>
 #end
 <link type="image/x-icon" rel="shortcut icon" href="$!{external_resources_url}/images/favicon.ico?$!{utils.CacheBust}" />
+<link rel="mask-icon" sizes="any" href="$!{external_resources_url}/images/favicon.svg?$!{utils.CacheBust}" color="#ff9900"/>
 #if($!utils.isAndroidBrowser($data) && "${client}" == "PCIPHONE")
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/android-for-pc-page.css?$!{utils.CacheBust}" />
 #end

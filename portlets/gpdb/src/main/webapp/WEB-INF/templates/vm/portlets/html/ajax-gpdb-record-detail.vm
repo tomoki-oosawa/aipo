@@ -45,7 +45,7 @@
 			#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
 				<ul>
 				#foreach( $attachmentFile in $!record.AttachmentFileList )
-					<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a></li>
+					<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a></li>
 				#end
 				</ul>
 			#end
@@ -56,7 +56,7 @@
 			#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
 				<ul>
 				#foreach( $attachmentFile in $!record.AttachmentFileList )
-					<li><a #if(${client}=="IPHONE")target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
+					<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("GpdbRecordFileRawScreen").addQueryData("entityid", $record.GpdbRecordId).addQueryData("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})">$result.getStringCR($attachmentFile.FileNameField)</a>
 					#if($attachmentFile.isImage())
 						<div id='popc' style='position:absolute'>
 						</div>

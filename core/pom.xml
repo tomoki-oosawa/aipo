@@ -7,7 +7,7 @@
   <parent>
     <artifactId>aipo</artifactId>
     <groupId>com.aimluck.eip</groupId>
-    <version>8.0.1</version>
+    <version>8.1.1</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -105,7 +105,7 @@
     <dependency>
       <groupId>net.sourceforge.nekohtml</groupId>
       <artifactId>nekohtml</artifactId>
-      <version>1.9.15</version>
+      <version>1.9.22</version>
     </dependency>
     <dependency>
       <groupId>com.drewnoakes</groupId>

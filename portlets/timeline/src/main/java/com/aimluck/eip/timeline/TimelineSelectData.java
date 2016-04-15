@@ -25,6 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
@@ -34,12 +36,14 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.turbine.util.StringUtils;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
@@ -63,6 +67,8 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -139,6 +145,9 @@ public class TimelineSelectData extends
   /** AppNameからportletIdを取得するハッシュ */
   private HashMap<String, String> portletIdFromAppId;
 
+  /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
+  private boolean hasScheduleOtherAclList;
+
   /**
    *
    * @param action
@@ -197,6 +206,18 @@ public class TimelineSelectData extends
             displayFilter);
         }
       }
+
+      /** hasScheduleOtherAclListの権限チェック **/
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      hasScheduleOtherAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
       logger.error("timeline", ex);
@@ -457,6 +478,64 @@ public class TimelineSelectData extends
         useridList,
         target_keyword.toString(),
         "");
+
+    /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
+    if (!hasScheduleOtherAclList) {
+      ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
+      for (EipTTimeline model : list) {
+        if (model.getParams() != null
+          && !"".equals(model.getParams())
+          && model.getAppId() != null
+          && !"".equals(model.getAppId())) {
+          if (model.getAppId().equals("Schedule")) {
+            Matcher m =
+              Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
+            if (m.find()) {
+              Integer scheduleId = Integer.parseInt(m.group(1));
+              scheduleIdList.add(scheduleId);
+            }
+          }
+        }
+      }
+
+      if (scheduleIdList != null && scheduleIdList.size() > 0) {
+        // eip_t_schedule_mapから、schedule_idがscheduleIdListに含まれ、
+        // user_idが自分のもののリストを得る
+        List<EipTScheduleMap> scheduleMapList =
+          TimelineUtils.getRelatedEipTScheduleMap(uid, scheduleIdList);
+        ArrayList<Integer> relatedScheduleIdList = new ArrayList<Integer>();
+        if (scheduleMapList != null && scheduleMapList.size() > 0) {
+          for (EipTScheduleMap eipTScheduleMap : scheduleMapList) {
+            relatedScheduleIdList.add(eipTScheduleMap.getScheduleId());
+          }
+        }
+        for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
+          EipTTimeline tmpEipTTimeline = iter.next();
+          if (uid != tmpEipTTimeline.getOwnerId().intValue()) {
+            if (tmpEipTTimeline.getParams() != null
+              && !"".equals(tmpEipTTimeline.getParams())
+              && tmpEipTTimeline.getAppId() != null
+              && !"".equals(tmpEipTTimeline.getAppId())) {
+              if (tmpEipTTimeline.getAppId().equals("Schedule")) {
+                Matcher m =
+                  Pattern.compile("entityid=([0-9]+)").matcher(
+                    tmpEipTTimeline.getParams());
+                if (m.find()) {
+                  Integer scheduleId = Integer.parseInt(m.group(1));
+                  if (relatedScheduleIdList == null
+                    || (relatedScheduleIdList.size() == 0 || !relatedScheduleIdList
+                      .contains(scheduleId))) {
+                    // relatedScheduleIdListが空 or
+                    // relatedScheduleIdListに含まれない時は削除
+                    iter.remove();
+                  }
+                }
+              }// スケジュール以外のTimeline
+            }
+          }// 自分がオーナーのTimeline
+        }
+      }
+    }
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());

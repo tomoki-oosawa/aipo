@@ -42,7 +42,7 @@
 #else
 <span class="caution">#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #elseif($!result.Detail.Progress.Value == "R" || $!result.Detail.Progress.Value == "D") $l10n.WORKFLOW_DENIAL #else $l10n.WORKFLOW_WAITING_DECISION #end</span>
 #end
-#if($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value)
+#if(($!result.Detail.UserId.Value == $!result.LoginUser.UserId.Value) || $!result.HasAuthorityOtherDelete)
 &nbsp;&nbsp;#ALsubmitJS('eventSubmit_doWorkflow_delete' "$l10n.COMMON_DELETE" "aipo.workflow.onDelete('$!portlet.ID');aimluck.io.ajaxDeleteSubmit(this,'$!jslink.getPortletById($!portlet.ID).addQueryData('template','WorkflowFormJSONScreen').addQueryData('entityid',$!{result.Detail.RequestId})','$indicator_id','$!portlet.ID',aipo.workflow.onReceiveMessage)")
 #end
 #ALtditemfooter()
@@ -77,7 +77,7 @@ $!result.Detail.RouteName
 #ALtditemheader()
 <ul>
 #foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
-<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
+<li><a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="$jslink.getTemplate("WorkflowFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $!{result.Detail.UserId}).addPathInfo("entityid", $!result.Detail.RequestId).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
 #end
 </ul>
 #ALtditemfooter()

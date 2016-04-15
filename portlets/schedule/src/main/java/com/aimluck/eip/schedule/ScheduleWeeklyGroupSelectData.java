@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 週間スケジュール（グループ）の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
@@ -73,6 +73,9 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleTermWeekContainer>> termmap;
+
+  /** <code>facilitytermmap</code> 設備期間スケジュールマップ */
+  private Map<Integer, List<ScheduleTermWeekContainer>> facilitytermmap;
 
   /** <code>map</code> スケジュールマップ */
   private Map<Integer, ScheduleWeekContainer> map;
@@ -115,7 +118,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   private TurbineGroup target_group_name;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -147,6 +150,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
     viewtype = "weekly-group";
     try {
       termmap = new LinkedHashMap<Integer, List<ScheduleTermWeekContainer>>();
+      facilitytermmap =
+        new LinkedHashMap<Integer, List<ScheduleTermWeekContainer>>();
       map = new LinkedHashMap<Integer, ScheduleWeekContainer>();
       todomap = new LinkedHashMap<Integer, List<ScheduleToDoWeekContainer>>();
       facilitymap = new LinkedHashMap<Integer, ScheduleWeekContainer>();
@@ -211,7 +216,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -242,7 +247,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -277,7 +282,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       }
 
       if ("C".equals(record.getPublicFlag())
-        && (userid.intValue() != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid
+          .intValue() != record.getUserId().intValue()))
         && (userid.intValue() != record.getOwnerId().intValue())
         && !is_member) {
         // 名前
@@ -349,15 +355,28 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         }
         rd.setRowspan(col);
         if (col > 0) {
-          List<ScheduleTermWeekContainer> terms =
-            termmap.get(record.getUserId());
-          if (terms != null) {
-            // 期間スケジュールを格納
-            ScheduleUtils.addTermSchedule(
-              terms,
-              getViewStart().getValue(),
-              count,
-              rd);
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(record.getType())) {
+            List<ScheduleTermWeekContainer> terms =
+              termmap.get(record.getUserId());
+            if (terms != null) {
+              // 期間スケジュールを格納
+              ScheduleUtils.addTermSchedule(
+                terms,
+                getViewStart().getValue(),
+                count,
+                rd);
+            }
+          } else {
+            List<ScheduleTermWeekContainer> terms =
+              facilitytermmap.get(record.getUserId());
+            if (terms != null) {
+              // 期間スケジュールを格納
+              ScheduleUtils.addTermSchedule(
+                terms,
+                getViewStart().getValue(),
+                count,
+                rd);
+            }
           }
         }
         return rd;
@@ -372,7 +391,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
-   * 
+   *
    * @param query
    * @param rundata
    * @param context
@@ -479,6 +498,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
         ScheduleWeekContainer week = new ScheduleWeekContainer();
         week.initField();
         week.setViewStartDate(cal);
+        this.facilitytermmap
+          .put(id, new ArrayList<ScheduleTermWeekContainer>());
         this.facilitymap.put(id, week);
       }
     }
@@ -698,7 +719,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 週間スケジュールコンテナを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -708,7 +729,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -717,7 +738,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 部署マップを取得します。
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -726,7 +747,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getGroupList() {
@@ -734,7 +755,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -744,7 +765,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * ポートレット MyGroup へのリンクを取得する．
-   * 
+   *
    * @return
    */
   public String getMyGroupURI() {
@@ -753,7 +774,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 期間スケジュールコンテナを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -762,8 +783,18 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   }
 
   /**
+   * 設備期間スケジュールコンテナを取得します。
+   *
+   * @param id
+   * @return
+   */
+  public List<ScheduleTermWeekContainer> getFacilityTermContainer(long id) {
+    return facilitytermmap.get(Integer.valueOf((int) id));
+  }
+
+  /**
    * ToDo コンテナを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -782,7 +813,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 設備の週間スケジュールコンテナを取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -792,7 +823,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * ログインユーザの ID を取得する．
-   * 
+   *
    * @return
    */
   public long getUserId() {
@@ -802,7 +833,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -812,7 +843,7 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
 
   /**
    * 施設のグループリストを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getFacilitiyGroupList() {

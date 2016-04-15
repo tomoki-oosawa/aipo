@@ -95,7 +95,9 @@ function join() {
            if("activity" == type) {
                gadgets.rpc.call(null, "requestCheckActivity");
            }
-           join();
+           if(typeof type != "undefined"){
+               join();
+           }
        },
        error: function(data, status) {
            isConnect = false;

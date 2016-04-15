@@ -244,6 +244,8 @@ public class ProjectTaskSelectData extends
       }
       // プロジェクトID
       task.setProjectId(Integer.valueOf(row.get("project_id").toString()));
+      // プロジェクト名
+      task.setProjectName(row.get("project_name").toString());
       // 分類
       task.setTracker(row.get("tracker").toString());
       // 説明
@@ -370,10 +372,11 @@ public class ProjectTaskSelectData extends
     // -------------------------
     StringBuilder sb = new StringBuilder();
     sb.append("    FROM");
-    sb.append("      eip_t_project_task AS task");
+    sb.append("      eip_t_project_task AS task, eip_t_project AS project");
     sb.append("    WHERE ");
+    sb.append("      task.project_id = project.project_id AND ");
     if (0 != selectedProjectId) {
-      sb.append("task.project_id = #bind($project_id) AND ");
+      sb.append(" task.project_id = #bind($project_id) AND ");
     }
     sb.append("       task.parent_task_id IS NULL");
     return sb.toString();
@@ -388,6 +391,7 @@ public class ProjectTaskSelectData extends
     sb.append(", task.task_name"); // タスク名
     sb.append(", task.parent_task_id");// 親タスクID
     sb.append(", task.project_id");// プロジェクトID
+    sb.append(", project.project_name");
     sb.append(", task.tracker");// 分類
     sb.append(", task.explanation"); // 説明
     sb.append(", task.status"); // ステータス
@@ -510,7 +514,7 @@ public class ProjectTaskSelectData extends
       sb.append(" ( " + lapsed_days + " ) ");
       sb.append(" * 100 / ");
       sb.append(" ( " + task_days + " ) ");
-      sb.append(" > progress_rate ");
+      sb.append(" > task.progress_rate ");
       sb.append(" ) ");
       sb.append(" ) ");
       whereList.add(sb.toString());
@@ -727,6 +731,7 @@ public class ProjectTaskSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("task_name", "task_name");
+    map.putValue("project_name", "project_name");
     map.putValue("tracker", "tracker");
     map.putValue("status", "status");
     map.putValue("workload", "workload");

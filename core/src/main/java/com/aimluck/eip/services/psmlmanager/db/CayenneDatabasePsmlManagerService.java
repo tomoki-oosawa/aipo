@@ -75,7 +75,7 @@ import com.aimluck.eip.orm.Database;
 /**
  * This service is responsible for loading and saving PSML documents. It uses
  * database to persist the PSML documents.
- * 
+ *
  * @author <a href="mailto:adambalk@cisco.com">Atul Dambalkar</a>
  * @author <a href="mailto:mvaidya@cisco.com">Medha Vaidya</a>
  * @author <a href="mailto:taylor@apache.org">David Sean Taylor</a>
@@ -145,7 +145,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Loads the configuration parameters for this service from the
    * JetspeedResources.properties file.
-   * 
+   *
    * @exception throws a <code>InitializationException</code> if the service
    *            fails to initialize
    */
@@ -266,7 +266,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * A thread implementation of cache refreshing mechanism for database
    * persisted PSMLs. We have to refresh the cache after specific intervals if
    * someone manually updates the PSML database.
-   * 
+   *
    * @author <a href="mailto:adambalk@cisco.com">Atul Dambalkar</a>
    */
   class CacheRefresher extends Thread {
@@ -450,7 +450,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Returns a PSML document for the given locator
-   * 
+   *
    * @param locator
    *          The locator descriptor(ProfileLocator object) of the document to
    *          be retrieved.
@@ -505,7 +505,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Stores the PSML document in DB for the given profile
-   * 
+   *
    * @param profile
    *          The profile that holds the PSMLDocument.
    * @return PSMLDocument The PSMLDocument that got created in DB.
@@ -517,7 +517,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Update the PSML document in DB for the given profile
-   * 
+   *
    * @param profile
    *          The profile that holds the PSMLDocument.
    * @return PSMLDocument The PSMLDocument that got created in DB.
@@ -598,7 +598,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Remove the PSMLDocument/profile for given locator object.
-   * 
+   *
    * @param locator
    *          The profile locator criteria for profile to be removed.
    */
@@ -651,7 +651,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Query for a collection of profiles given a profile locator criteria. Use
    * SQL engine to get the required profiles.
-   * 
+   *
    * @param locator
    *          The profile locator criteria.
    * @return Iterator object with the PSMLDocuments satisfying query
@@ -731,7 +731,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Get profile iterator from given list of objects.
-   * 
+   *
    * @param data
    *          List of JetspeedUserProfile, JetspeedGroupProfile,
    *          JetspeedRoleProfile, objects
@@ -770,7 +770,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Get PSMLDocument object for given pagename and portlets.
-   * 
+   *
    * @param portlets
    *          Portlets for the given page name
    * @param page
@@ -787,7 +787,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Given ordered list of locators, find the first document matching a profile
    * locator, starting from the beginning of the list and working to the end.
-   * 
+   *
    * @param locator
    *          The ordered list of profile locators.
    * @return PSMLDocument object for the first document matching a locator
@@ -814,7 +814,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
   /**
    * Returns a PSML document for the given locator, it is called by the cache
    * refresher
-   * 
+   *
    * @param locator
    *          The locator descriptor(ProfileLocator object) of the document to
    *          be retrieved.
@@ -844,10 +844,22 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
       tableName = "JETSPEED_USER_PROFILE";
       records = selectJetspeedUserProfilePeer(dataContext, locator, false);
       Iterator<?> iterator = records.iterator();
+      String defaultPage = null;
+      Portlets defaultPortlets = null;
+
       while (iterator.hasNext()) {
         JetspeedUserProfile uprofile = (JetspeedUserProfile) iterator.next();
         page = uprofile.getPage();
         portlets = DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
+        if ("default.psml".equalsIgnoreCase(uprofile.getPage())) {
+          defaultPage = uprofile.getPage();
+          defaultPortlets =
+            DBUtils.bytesToPortlets(uprofile.getProfile(), this.mapping);
+        }
+      }
+      if (defaultPage != null && defaultPortlets != null) {
+        page = defaultPage;
+        portlets = defaultPortlets;
       }
     } else if (role != null) {
       tableName = "JETSPEED_ROLE_PROFILE";
@@ -904,7 +916,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Removes all documents for a given user.
-   * 
+   *
    * @param user
    *          The user object.
    */
@@ -930,7 +942,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Removes all documents for a given role.
-   * 
+   *
    * @param role
    *          The role object.
    */
@@ -955,7 +967,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Removes all documents for a given group.
-   * 
+   *
    * @param group
    *          The group object.
    */
@@ -982,7 +994,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
    * Query for a collection of profiles given a profile locator criteria. This
    * method should be used when importing or exporting profiles between
    * services.
-   * 
+   *
    * @param locator
    *          The profile locator criteria.
    * @return The count of profiles exported.
@@ -1025,7 +1037,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Creates a user profile from a JetspeedUserProfile database object.
-   * 
+   *
    * @param entity
    *          The user profile entity in the database.
    * @param portlets
@@ -1054,7 +1066,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Creates a group profile from a JetspeedGroupProfile database object.
-   * 
+   *
    * @param entity
    *          The group profile entity in the database.
    * @param portlets
@@ -1083,7 +1095,7 @@ public class CayenneDatabasePsmlManagerService extends TurbineBaseService
 
   /**
    * Creates a role profile from a JetspeedRoleProfile database object.
-   * 
+   *
    * @param entity
    *          The group profile entity in the database.
    * @param portlets

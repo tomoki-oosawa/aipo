@@ -89,7 +89,7 @@
 		<div class="body">$!record.MessageHtml
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">
-		#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('?template=FileuploadViewScreen&screen=MessageFileRawScreen&entryid=$!{record.MessageId}&attachmentIndex=$!{attachmentFile.FileId}')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="?template=MessageFileThumbnailScreen&entityid=${record.MessageId}&attachmentIndex=${attachmentFile.FileId}"/></a>#else<a #if("$!{client}"=="IPHONE")target="_blank"#end href="?template=MessageFileRawScreen&entityid=$!record.MessageId&attachmentIndex=$attachmentFile.FileId&f=${attachmentFile.getURLEncodedValue()}">$result.getStringCR($attachmentFile.FileNameField)</a>
+		#foreach( $attachmentFile in $!record.AttachmentFileList )#if($attachmentFile.isImage())<a href="javascript:aipo.fileupload.showImageDialog('?template=FileuploadViewScreen&screen=MessageFileRawScreen&entryid=$!{record.MessageId}&attachmentIndex=$!{attachmentFile.FileId}')"><img border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="?template=MessageFileThumbnailScreen&entityid=${record.MessageId}&attachmentIndex=${attachmentFile.FileId}"/></a>#else<a #if("$!{client}"=="IPHONE" || $!attachmentFile.AcceptInline)target="_blank"#end href="?template=MessageFileRawScreen&entityid=$!record.MessageId&attachmentIndex=$attachmentFile.FileId&f=${attachmentFile.getURLEncodedValue()}">$result.getStringCR($attachmentFile.FileNameField)</a>
 		#end#end
 				</div>#end
 		</div>

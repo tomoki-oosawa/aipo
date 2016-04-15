@@ -78,6 +78,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
   /** <code>termmap</code> 期間スケジュールマップ */
   private Map<Integer, List<ScheduleOnedayResultData>> termmap;
 
+  /** <code>facilitytermmap</code> 設備期間スケジュールマップ 9.4 */
+  private Map<Integer, List<ScheduleOnedayResultData>> facilitytermmap;
+
   /** <code>map</code> スケジュールMap */
   private Map<Integer, ScheduleOnedayContainer> map;
 
@@ -158,6 +161,10 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
     viewtype = "oneday-group";
     try {
       termmap = new LinkedHashMap<Integer, List<ScheduleOnedayResultData>>();
+
+      facilitytermmap =
+        new LinkedHashMap<Integer, List<ScheduleOnedayResultData>>();
+
       map = new LinkedHashMap<Integer, ScheduleOnedayContainer>();
       todomap = new LinkedHashMap<Integer, List<ScheduleToDoResultData>>();
       facilitymap = new LinkedHashMap<Integer, ScheduleOnedayContainer>();
@@ -377,16 +384,16 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         null);
     }
 
-    // グループ名からユーザを取得
+    // グループ名からユーザ（設備）を取得
     List<Integer> ulist = ALEipUtils.getUserIds(filter);
-
     // グループにユーザが存在しない場合はダミーユーザを設定し、検索します。(0件ヒット)
     // ダミーユーザーID = -1
-    int size = ulist.size();
-    if (size == 0) {
+    int usize = ulist.size();
+
+    if (usize == 0) {
       ulist.add(Integer.valueOf(-1));
     } else {
-      for (int i = 0; i < size; i++) {
+      for (int i = 0; i < usize; i++) {
         Integer id = ulist.get(i);
         ScheduleOnedayContainer con = new ScheduleOnedayContainer();
         con.initField();
@@ -396,7 +403,6 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         this.todomap.put(id, new ArrayList<ScheduleToDoResultData>());
       }
     }
-
     // List facilityIds = FacilitiesUtils.getFacilityIds(filter);
     List<Integer> facilityIds = null;
     String[] filteres = filter.split(";");
@@ -448,6 +454,7 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         ScheduleOnedayContainer con = new ScheduleOnedayContainer();
         con.initField();
         con.initHour(startHour, endHour);
+        this.facilitytermmap.put(id, new ArrayList<ScheduleOnedayResultData>());
         this.facilitymap.put(id, con);
       }
     }
@@ -561,7 +568,9 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
         return rd;
       }
       if ("C".equals(record.getPublicFlag())
-        && (userid != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid != record
+          .getUserId()
+          .intValue()))
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
         rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
@@ -608,12 +617,21 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
         is_hasspan = true;
-        List<ScheduleOnedayResultData> terms = termmap.get(record.getUserId());
-        if (terms != null) {
-          // 期間スケジュールを格納
-          terms.add(rd);
+        if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(record.getType())) {
+          List<ScheduleOnedayResultData> terms =
+            termmap.get(record.getUserId());
+          if (terms != null) {
+            // 期間スケジュールを格納
+            terms.add(rd);
+          }
+        } else {
+          List<ScheduleOnedayResultData> terms =
+            facilitytermmap.get(record.getUserId());
+          if (terms != null) {
+            // 期間スケジュールを格納
+            terms.add(rd);
+          }
         }
-
         return rd;
       }
 
@@ -999,6 +1017,16 @@ public class ScheduleOnedayGroupSelectData extends ScheduleOnedaySelectData {
    */
   public List<ScheduleOnedayResultData> getTermResultDataList(long id) {
     return termmap.get(Integer.valueOf((int) id));
+  }
+
+  /**
+   * 設備期間スケジュールリストを取得する.
+   *
+   * @param id
+   * @return
+   */
+  public List<ScheduleOnedayResultData> getFacilityTermResultDataList(long id) {
+    return facilitytermmap.get(Integer.valueOf((int) id));
   }
 
   /**
