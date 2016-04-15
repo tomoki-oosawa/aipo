@@ -854,8 +854,22 @@ public class ScheduleFormData extends ALAbstractFormData {
     common_category_id.validate(msgList);
 
     if (ALReminderService.isEnabled()) {
-      // TODO: 「通知する」の場合はメール、メッセージいずれかにチェックが入っている必要あり
-      // TODO: 通知タイミングは分で登録するが、プルダウンに存在しない数値がPOSTされてきたらはじく
+      if (reminder_flag.getValue().equals("T")
+        && ((notify_type_mail.getValue() == null || !notify_type_mail
+          .getValue()
+          .equals("TRUE")) && (notify_type_message.getValue() == null || !notify_type_message
+          .getValue()
+          .equals("TRUE")))) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_REMINDER_ON"));
+      }
+      if (reminder_flag.getValue().equals("T")
+        && !ScheduleUtils.notifyTimingList.contains(notify_timing
+          .getValueWithInt())) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_REMINDER_ONTIME"));
+
+      }
     }
 
     return (msgList.size() == 0);

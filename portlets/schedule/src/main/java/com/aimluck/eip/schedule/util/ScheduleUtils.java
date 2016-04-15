@@ -26,6 +26,7 @@ import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -198,6 +199,13 @@ public class ScheduleUtils {
   public static String getTabNameFromLayout(String Layout) {
     return LayOutTotab.get(Layout);
   }
+
+  public static final List<Integer> notifyTimingList = Arrays.asList(
+    0,
+    5,
+    15,
+    30,
+    60);
 
   /**
    * Scheudle オブジェクトモデルを取得します。

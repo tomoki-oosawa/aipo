@@ -367,16 +367,18 @@
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 <p>
-  <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end>
+  <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end onclick="aipo.schedule.reminderoff()" />
   <label for="reminder_off">$l10n.SCHEDULE_REMINDER_OFF</label>
 </p>
 <p>
-  <input type="radio" id="reminder_on" value="T" name="reminder_flag" #if("$!{result.ReminderFlag}"=="T") checked="checked" #end>
+  <input type="radio" id="reminder_on" value="T" name="reminder_flag" #if("$!{result.ReminderFlag}"=="T") checked="checked" #end onclick="aipo.schedule.reminderon()" />
   <label for="reminder_on">$l10n.SCHEDULE_REMINDER_ON</label>
+  <span id="remindernotifytype" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
   <label><input name="notify_type_mail" value="TRUE" type="checkbox" class="ml10" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL</label>
   <label><input name="notify_type_message" value="TRUE" type="checkbox" class="" #if ($!{result.NotifyTypeMessage.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MESSAGE</label>
+  </span>
 </p>
-<div class="ml5">
+<div class="ml5" id="remindernotifytiming" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
   <select class="mr5" name="notify_timing">
     <option value="0" #if ($!result.NotifyTiming.toString() == "0") selected="selected" #end>$l10n.SCHEDULE_REMINDER_ONTIME</option>
     <option value="5" #if ($!result.NotifyTiming.toString() == "5") selected="selected" #end>5$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
