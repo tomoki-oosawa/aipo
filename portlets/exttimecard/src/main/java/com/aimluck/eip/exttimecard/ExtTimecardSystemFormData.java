@@ -190,7 +190,13 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       change_hour.setValue(String.valueOf(record.getChangeHour()));
       outgoing_add_flag.setValue(record.getOutgoingAddFlag());
       overtime_type_flag.setValue(record.getOvertimeType().substring(0, 1));
-      overtime_type_minute.setValue(record.getOvertimeType().substring(1));
+      if (ExtTimecardUtils.OVERTIME_TYPE_L
+        .equals(overtime_type_flag.getValue())) {
+        overtime_type_minute.setValue(record.getOvertimeType().substring(1));
+      } else {
+        overtime_type_minute
+          .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_MINUTE);
+      }
 
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
