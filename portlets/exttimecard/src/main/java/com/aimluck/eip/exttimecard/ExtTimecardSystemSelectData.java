@@ -36,7 +36,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardSystemSelectData extends
     ALAbstractSelectData<EipTExtTimecardSystem, EipTExtTimecardSystem> {
@@ -54,7 +54,7 @@ public class ExtTimecardSystemSelectData extends
   private String portletName;
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -81,7 +81,7 @@ public class ExtTimecardSystemSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -95,7 +95,7 @@ public class ExtTimecardSystemSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -141,7 +141,7 @@ public class ExtTimecardSystemSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -167,6 +167,8 @@ public class ExtTimecardSystemSelectData extends
       rd.setOutgoingAddFlag(record.getOutgoingAddFlag());
       rd.setCreateDate(record.getCreateDate().toString());
       rd.setUpdateDate(record.getUpdateDate().toString());
+      rd.setOvertimeTypeFlag(record.getOvertimeType().substring(0, 1));
+      rd.setOvertimeTypeMinute(record.getOvertimeType().substring(1));
 
       return rd;
     } catch (Exception ex) {
@@ -177,7 +179,7 @@ public class ExtTimecardSystemSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -193,7 +195,7 @@ public class ExtTimecardSystemSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -202,7 +204,7 @@ public class ExtTimecardSystemSelectData extends
 
   /**
    * ポートレット名を取得します。
-   * 
+   *
    * @return portletName
    */
   public String getPortletName() {
@@ -211,7 +213,7 @@ public class ExtTimecardSystemSelectData extends
 
   /**
    * @param portletName
-   * 
+   *
    */
   public void setPortletName(String portletName) {
     this.portletName = portletName;

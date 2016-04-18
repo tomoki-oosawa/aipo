@@ -52,6 +52,14 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 	$l10n.EXTTIMECARD_DONT_ADD_OUTGOINGTIME
 #end
 #ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE)
+#ALtditemheader()
+#if($result.Detail.OvertimeTypeFlag == "L")
+	$!{result.Detail.OvertimeTypeMinute}$l10n.EXTTIMECARD_OVERTIME_TYPE_L
+#else
+	$l10n.EXTTIMECARD_OVERTIME_TYPE_O
+#end
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #if($!{result.PortletName} == "ExtTimecardSystem")
