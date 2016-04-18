@@ -1098,4 +1098,53 @@ public class AccountUtils {
     return data;
   }
 
+  /**
+   * 指定されたユーザーが削除／無効化されたとき、メッセージルームの管理者権限を他のユーザーに移します。
+   *
+   * @param uid
+   */
+  public static boolean shiftMessageroomAdmin(int uid) {
+    try {
+      String userId = Integer.toString(uid);
+
+      // user_idが自分で、管理者であるデータを取得する
+      SelectQuery<EipTMessageRoomMember> message_room_member_query =
+        Database.query(EipTMessageRoomMember.class);
+      Expression msgroom_exp =
+        ExpressionFactory.matchExp(
+          EipTMessageRoomMember.USER_ID_PROPERTY,
+          userId);
+      Expression msgroom_exp2 =
+        ExpressionFactory.matchExp(
+          EipTMessageRoomMember.AUTHORITY_PROPERTY,
+          "A");
+      message_room_member_query.setQualifier(msgroom_exp.andExp(msgroom_exp2));
+      List<EipTMessageRoomMember> message_room_member_list =
+        message_room_member_query.fetchList();
+
+      // message_room_member_listの一つずつについて、room_id が一致しuser_idが自分でないデータを全て取り出す
+      for (EipTMessageRoomMember message_room_member : message_room_member_list) {
+        SelectQuery<EipTMessageRoomMember> message_room_member_query2 =
+          Database.query(EipTMessageRoomMember.class);
+        Expression msgroom_exp3 =
+          ExpressionFactory.matchExp("room_id", message_room_member
+            .getEipTMessageRoom()
+            .getRoomId());
+        Expression msgroom_exp4 =
+          ExpressionFactory.noMatchExp(
+            EipTMessageRoomMember.USER_ID_PROPERTY,
+            message_room_member.getUserId());
+        message_room_member_query2.setQualifier(msgroom_exp3
+          .andExp(msgroom_exp4));
+        List<EipTMessageRoomMember> message_room_member_list2 =
+          message_room_member_query2.fetchList();
+      }
+      return true;
+
+    } catch (Exception e) {
+      logger.error("AccountUtils.shiftMessageroomAdmin", e);
+      return false;
+    }
+  }
+
 }

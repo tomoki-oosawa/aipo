@@ -1221,6 +1221,9 @@ public class AccountUserFormData extends ALAbstractFormData {
       // ワークフロー自動承認
       AccountUtils.acceptWorkflow(target_user.getUserId());
 
+      // メッセージルームの管理者権限移行
+      AccountUtils.shiftMessageroomAdmin(target_user.getUserId());
+
       Database.commit();
 
       // イベントログに保存
