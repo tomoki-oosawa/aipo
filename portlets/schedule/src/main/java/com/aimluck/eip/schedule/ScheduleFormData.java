@@ -77,6 +77,7 @@ import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
 import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -273,6 +274,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   private ALNumberField notify_timing;
 
+  private ALReminderDefaultItem defaultItem;
+
   /**
    *
    * @param action
@@ -311,6 +314,13 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     orgId = Database.getDomainName();
     loginUser = ALEipUtils.getALEipUser(rundata);
+    if (ALReminderService.isEnabled()) {
+      defaultItem =
+        ALReminderService.getDefault(
+          orgId,
+          loginUser.getName().getValue(),
+          ReminderCategory.SCHEDULE);
+    }
 
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
@@ -699,19 +709,13 @@ public class ScheduleFormData extends ALAbstractFormData {
     reminder_flag = new ALStringField();
     reminder_flag.setTrim(true);
     reminder_flag.setValue("F");
-    // TODO: 初期設定から読み込み
 
     notify_type_mail = new ALStringField();
-    // notify_type_mail.setValue("TRUE");
-    // TODO: 初期設定から読み込み
 
     notify_type_message = new ALStringField();
-    // notify_type_message.setValue("TRUE");
-    // TODO: 初期設定から読み込み
 
     notify_timing = new ALNumberField();
     notify_timing.setValue(0);
-    // TODO: 初期設定から読み込み
   }
 
   /**
@@ -782,6 +786,19 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       } catch (Exception ex) {
         logger.error("schedule", ex);
+      }
+      if (ALReminderService.isEnabled()) {
+        if (defaultItem != null) {
+          reminder_flag.setValue("T");
+          List<ReminderNotifyType> list = defaultItem.getNotifyType();
+          if (list.contains(ReminderNotifyType.MAIL)) {
+            notify_type_mail.setValue("TRUE");
+          }
+          if (list.contains(ReminderNotifyType.MESSAGE)) {
+            notify_type_message.setValue("TRUE");
+          }
+          notify_timing.setValue(Long.valueOf(defaultItem.getNotifyTiming()));
+        }
       }
     }
     return res;
@@ -1132,7 +1149,23 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       if (ALReminderService.isEnabled()) {
-        // TODO: ReminderService.getJob で現在の値を取得、空の場合は「通知しない」
+        ALReminderItem item =
+          ALReminderService.getJob(
+            orgId,
+            loginUser.getName().getValue(),
+            ReminderCategory.SCHEDULE,
+            record.getScheduleId().intValue());
+        if (item != null) {
+          reminder_flag.setValue("T");
+          List<ReminderNotifyType> list = item.getNotifyType();
+          if (list.contains(ReminderNotifyType.MAIL)) {
+            notify_type_mail.setValue("TRUE");
+          }
+          if (list.contains(ReminderNotifyType.MESSAGE)) {
+            notify_type_message.setValue("TRUE");
+          }
+          notify_timing.setValue(Long.valueOf(item.getNotifyTiming()));
+        }
       }
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);

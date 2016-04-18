@@ -83,7 +83,7 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
       defaultItem =
         ALReminderService.getDefault(
           orgId,
-          loginUser.getUserId().toString(),
+          loginUser.getName().getValue(),
           ReminderCategory.SCHEDULE);
     }
   }
@@ -105,7 +105,6 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
 
     notify_timing = new ALNumberField();
     notify_timing.setValue(0);
-    // TODO: 設定から読み込み
   }
 
   /**
@@ -247,7 +246,7 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
         if (defaultItem == null) {
           defaultItem = new ALReminderDefaultItem();
           defaultItem.setOrgId(orgId);
-          defaultItem.setUserId(loginUser.getUserId().toString());
+          defaultItem.setUserId(loginUser.getName().getValue());
           defaultItem.setEnabled(true);
           defaultItem.setCategory(ReminderCategory.SCHEDULE);
         }
@@ -265,7 +264,7 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
       } else {
         ALReminderService.removeDefault(
           orgId,
-          loginUser.getUserId().toString(),
+          loginUser.getName().getValue(),
           ReminderCategory.SCHEDULE);
       }
     }
