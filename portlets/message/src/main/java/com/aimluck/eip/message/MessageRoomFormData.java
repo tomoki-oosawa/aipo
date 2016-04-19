@@ -101,6 +101,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int myId;
 
+  private boolean isGroup = true;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -320,6 +322,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       if ("O".equals(room.getRoomType())) {
         login_user_room_auth = false;
+        isGroup = false;
       }
 
       if ("F".equals(room.getAutoName())) {
@@ -470,17 +473,21 @@ public class MessageRoomFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
 
     try {
+
+      String roomType = rundata.getParameters().getString("room_type");
       EipTMessageRoom model = MessageUtils.getRoom(rundata, context);
 
       if (model == null) {
         return false;
       }
 
-      // ログインユーザーに権限がない場合、通知設定のみ更新
+      // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定のみ更新
       if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
         .getUserId()
-        .getValue())) {
+        .getValue())
+        || roomType.equals("O")) {
         EipTMessageRoomMember currentMember = null;
+        @SuppressWarnings("unchecked")
         List<EipTMessageRoomMember> memberLists =
           model.getEipTMessageRoomMember();
 
@@ -639,6 +646,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   public boolean isMobileNotification() {
     return isMobileNotification;
+  }
+
+  public boolean isGroup() {
+    return isGroup;
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {

@@ -51,6 +51,11 @@
 #if($mode!="new_form")
 <input type="hidden" name="entityid" value="$!result.RoomId" />
 #end
+#if($result.isGroup())
+<input type="hidden" name="room_type" value="G" />
+#else
+<input type="hidden" name="room_type" value="O" />
+#end
 
 #ALtableheaderWide()
 #if($result.hasAuth())
@@ -95,6 +100,7 @@
   </td></tr>
 </table>
 </div>
+#if($result.isGroup())
 #ALtditemfooter()
 #ALtdcaption($l10n.MESSAGE_ROOM_NAME)
 #ALtditemheader()
@@ -102,8 +108,12 @@
 #ALtextfieldw100('name' $!result.Name 50 $form_actl)
 #else
 #ALtextfieldw100readonly('name' $!result.Name 50 $form_actl)
+#if(!$result.isGroup())
+<input type="hidden" name="room_type" value="O" />
+#end
 #end
 #ALtditemfooter()
+#end
 
 #if($mode!="new_form")
 #if($result.isFileUploadable())
