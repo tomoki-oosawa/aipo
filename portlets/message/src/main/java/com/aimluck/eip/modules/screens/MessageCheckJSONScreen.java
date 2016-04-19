@@ -81,7 +81,8 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         boolean isDesktopNotification = true;
         for (EipTMessageRoomMember member : memberList) {
           if (member.getUserId().intValue() == myId) {
-            if (member.getDesktopNotification().equals("F")) {
+            if (member.getDesktopNotification() != null
+              && member.getDesktopNotification().equals("F")) {
               isDesktopNotification = false;
             }
           }

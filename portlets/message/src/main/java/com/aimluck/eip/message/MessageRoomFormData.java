@@ -180,7 +180,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
 
         }
-        // TODO: 下の処理で権限がAになってしまっていて現在登録できない。
         if (memberList.size() == 0) {
           login_user.setAuthority("A");
           memberList.add(login_user);
@@ -315,8 +314,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getUserId()
           .getValue());
 
-      if (room == null || "O".equals(room.getRoomType())) {
+      if (room == null && !"O".equals(room.getRoomType())) {
         throw new ALPageNotFoundException();
+      }
+
+      if ("O".equals(room.getRoomType())) {
+        login_user_room_auth = false;
       }
 
       if ("F".equals(room.getAutoName())) {
@@ -329,8 +332,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
         memberNames.add(member.getLoginName());
 
         if (member.getUserId().intValue() == myId) {
-          isDesktopNotification = member.getDesktopNotification().equals("A");
-          isMobileNotification = member.getMobileNotification().equals("A");
+          if (member.getDesktopNotification() != null
+            && member.getMobileNotification() != null) {
+            isDesktopNotification = member.getDesktopNotification().equals("A");
+            isMobileNotification = member.getMobileNotification().equals("A");
+          }
         }
       }
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
