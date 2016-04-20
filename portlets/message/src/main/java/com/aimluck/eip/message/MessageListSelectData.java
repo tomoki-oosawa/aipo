@@ -74,6 +74,8 @@ public class MessageListSelectData extends
 
   private boolean isSearch = false;
 
+  private int historyLastMessageId;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -340,6 +342,17 @@ public class MessageListSelectData extends
 
   public ALStringField getKeyword() {
     return keyword;
+  }
+
+  /**
+   * @param history_last_message_id
+   */
+  public void setHistoryLastMessageId(int historyLastMessageId) {
+    this.historyLastMessageId = historyLastMessageId;
+  }
+
+  public int getHistoryLastMessageId() {
+    return historyLastMessageId;
   }
 
   public boolean isSameDate(ALDateTimeField a, ALDateTimeField b) {
