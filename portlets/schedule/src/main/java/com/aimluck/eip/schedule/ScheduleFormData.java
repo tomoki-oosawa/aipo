@@ -789,13 +789,17 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
       if (ALReminderService.isEnabled()) {
         if (defaultItem != null) {
-          reminder_flag.setValue("T");
-          List<ReminderNotifyType> list = defaultItem.getNotifyType();
-          if (list.contains(ReminderNotifyType.MAIL)) {
-            notify_type_mail.setValue("TRUE");
+          if (defaultItem.isEnabled()) {
+            reminder_flag.setValue("T");
           }
-          if (list.contains(ReminderNotifyType.MESSAGE)) {
-            notify_type_message.setValue("TRUE");
+          List<ReminderNotifyType> list = defaultItem.getNotifyType();
+          if (list != null && list.size() > 0) {
+            if (list.contains(ReminderNotifyType.MAIL)) {
+              notify_type_mail.setValue("TRUE");
+            }
+            if (list.contains(ReminderNotifyType.MESSAGE)) {
+              notify_type_message.setValue("TRUE");
+            }
           }
           notify_timing.setValue(Long.valueOf(defaultItem.getNotifyTiming()));
         }
