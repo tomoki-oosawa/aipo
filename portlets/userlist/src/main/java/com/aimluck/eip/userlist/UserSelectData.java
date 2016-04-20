@@ -271,10 +271,15 @@ public class UserSelectData extends
               + "."
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
             "%" + transWords[i] + "%");
+        Expression exp36 =
+          ExpressionFactory.likeExp(TurbineUser.PROFILE_PROPERTY, "%"
+            + transWords[i]
+            + "%");
 
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
           exp15).orExp(exp16).orExp(exp21).orExp(exp22).orExp(exp23).orExp(
-          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35));
+          exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(exp35).orExp(
+          exp36));
 
         query.distinct();
       }
@@ -414,6 +419,7 @@ public class UserSelectData extends
     data.setInTelephone(model.getInTelephone());
     data.setCellularPhone(model.getCellularPhone());
     data.setCellularMail(model.getCellularMail());
+    data.setProfile(model.getProfile());
     data.setPostNameList(ALEipUtils.getPostNameList(model.getUserId()));
     data.setPositionName(ALEipUtils.getPositionName(model.getPositionId()));
     data.setDisabled(model.getDisabled());

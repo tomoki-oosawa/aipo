@@ -160,6 +160,7 @@ public class ALUserManagement extends TurbineBaseService implements
       baseuser.setCelluarUId(tuser.getCellularUid());
       baseuser.setLastNameKana(tuser.getLastNameKana());
       baseuser.setFirstNameKana(tuser.getFirstNameKana());
+      baseuser.setProfile(tuser.getProfile());
       baseuser.setPhoto(tuser.getPhoto());
       baseuser.setPhotoSmartphone(tuser.getPhotoSmartphone());
       baseuser.setCreatedUserId((tuser.getCreatedUserId() != null) ? tuser
@@ -346,7 +347,7 @@ public class ALUserManagement extends TurbineBaseService implements
       tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
       tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
       tuser.setMigrateVersion(baseuser.getMigrateVersion());
-      tuser.setProfile(baseuser.getProfile());
+      tuser.setProfile(writeHTML(baseuser.getProfile()));
 
       if (hasAdminCredential != null) {
         if (hasAdminCredential) {
@@ -429,6 +430,7 @@ public class ALUserManagement extends TurbineBaseService implements
     tuser.setHasPhotoSmartphone(baseuser.hasPhotoSmartphoneString());
     tuser.setPhotoModifiedSmartphone(baseuser.getPhotoModifiedSmartphone());
     tuser.setMigrateVersion(baseuser.getMigrateVersion());
+    tuser.setProfile(writeHTML(baseuser.getProfile()));
     // Database.commit();
 
     // ログインユーザーにはグループ LoginUser に所属させる
@@ -850,5 +852,13 @@ public class ALUserManagement extends TurbineBaseService implements
       }
     }
     return byteArray;
+  }
+
+  /**
+   *
+   * @return
+   */
+  private String writeHTML(String str) {
+    return str.replaceAll("(\r\n|\r|\n)", "<br/>");
   }
 }

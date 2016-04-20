@@ -326,6 +326,7 @@ public class AccountUserFormData extends ALAbstractFormData {
     profile = new ALStringField();
     profile.setFieldName(ALLocalizationUtils
       .getl10nFormat("ACCOUNT_USER_PROFILE"));
+    profile.setTrim(false);
 
     // 部署ID
     post_id = new ALNumberField();

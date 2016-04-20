@@ -56,7 +56,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アドレス帳用入力フォームデータです。
- * 
+ *
  */
 public class AddressBookFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -234,8 +234,7 @@ public class AddressBookFormData extends ALAbstractFormData {
       .getl10n("ADDRESSBOOK_SETFIELDNAME_PUBLIC"));
     public_flag.setTrim(true);
     create_user = new ALStringField();
-    create_user.setFieldName(ALLocalizationUtils
-      .getl10n("COMMON_CREATE_USER"));
+    create_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_CREATE_USER"));
     update_user = new ALStringField();
     update_user.setFieldName(ALLocalizationUtils.getl10n("COMMON_UPDATE_USER"));
     create_date = new ALDateField();
@@ -301,7 +300,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 自分がオーナーのグループを取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -333,7 +332,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 指定アドレスのグループを取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -668,7 +667,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * アドレス情報の登録を行います。
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -994,7 +993,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * フォームへデータをセットします。
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -1267,7 +1266,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 会社情報一括登録を行うかを示す値を返す。
-   * 
+   *
    * @return
    */
   public boolean isNewCompany() {
@@ -1276,7 +1275,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * 現在ログイン中のユーザIDを返します。
-   * 
+   *
    * @return
    */
   public int getUserId() {
@@ -1285,7 +1284,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * オーナーIDを返します。
-   * 
+   *
    * @return
    */
   public int getOwnerId() {
@@ -1365,7 +1364,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -1375,7 +1374,7 @@ public class AddressBookFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   @Override
