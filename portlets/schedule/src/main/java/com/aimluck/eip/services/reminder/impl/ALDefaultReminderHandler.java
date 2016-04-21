@@ -20,6 +20,7 @@ package com.aimluck.eip.services.reminder.impl;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 
 import com.aimluck.eip.services.reminder.ALReminderHandler;
 import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
@@ -106,7 +107,7 @@ public class ALDefaultReminderHandler extends ALReminderHandler {
    */
   @Override
   public boolean isEnabled() {
-    return true;
+    return JetspeedResources.getBoolean("aipo.reminder.enabled", false);
   }
 
 }
