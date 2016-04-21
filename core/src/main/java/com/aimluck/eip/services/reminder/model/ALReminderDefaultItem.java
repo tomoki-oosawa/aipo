@@ -35,8 +35,6 @@ public class ALReminderDefaultItem {
 
   private ReminderCategory category;
 
-  private String repeatPattern; // 繰り返しパターン
-
   private boolean enabled;
 
   private int notifyTiming; // 分（何分前に通知するか）
@@ -86,21 +84,6 @@ public class ALReminderDefaultItem {
    */
   public void setCategory(ReminderCategory category) {
     this.category = category;
-  }
-
-  /**
-   * @return repeatPattern
-   */
-  public String getRepeatPattern() {
-    return repeatPattern;
-  }
-
-  /**
-   * @param repeatPattern
-   *          セットする repeatPattern
-   */
-  public void setRepeatPattern(String repeatPattern) {
-    this.repeatPattern = repeatPattern;
   }
 
   /**
