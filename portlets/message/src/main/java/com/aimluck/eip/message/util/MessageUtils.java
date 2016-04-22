@@ -163,6 +163,18 @@ public class MessageUtils {
     return false;
   }
 
+  public static EipTMessageRoomMember getEipTMessageRoomMember(
+      EipTMessageRoom room, int userId) {
+    @SuppressWarnings("unchecked")
+    List<EipTMessageRoomMember> list = room.getEipTMessageRoomMember();
+    for (EipTMessageRoomMember member : list) {
+      if (member.getUserId().intValue() == userId) {
+        return member;
+      }
+    }
+    return null;
+  }
+
   public static boolean isJoinRoom(EipTMessageFile file, int userId) {
     return isJoinRoom(file.getRoomId(), userId);
   }
