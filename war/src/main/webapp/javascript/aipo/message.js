@@ -741,9 +741,11 @@ aipo.message.selectRoom = function(room_id, scroll) {
         if (room_id == 0 && aipo.message.currentUserId) {
             messageForm.roomId.value = 0;
             messageForm.userId.value = aipo.message.currentUserId;
+            dojo.byId("messageRoomSetting").style.display = "none";
         } else {
             messageForm.userId.value = 0;
             messageForm.roomId.value = aipo.message.currentRoomId;
+            dojo.byId("messageRoomSetting").style.display = "";
         }
 
 		var pane = dojo.byId("messageSummary");
