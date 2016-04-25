@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.Persistent;
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.Group;
@@ -1123,21 +1125,52 @@ public class AccountUtils {
         message_room_member_query.fetchList();
 
       // message_room_member_listの一つずつについて、room_id が一致しuser_idが自分でないデータを全て取り出す
-      for (EipTMessageRoomMember message_room_member : message_room_member_list) {
+      for (EipTMessageRoomMember message_room_member1 : message_room_member_list) {
         SelectQuery<EipTMessageRoomMember> message_room_member_query2 =
           Database.query(EipTMessageRoomMember.class);
         Expression msgroom_exp3 =
-          ExpressionFactory.matchExp("room_id", message_room_member
-            .getEipTMessageRoom()
-            .getRoomId());
+          ExpressionFactory.matchExp(
+            EipTMessageRoomMember.EIP_TMESSAGE_ROOM_PROPERTY,
+            message_room_member1.getEipTMessageRoom().getRoomId());
         Expression msgroom_exp4 =
           ExpressionFactory.noMatchExp(
             EipTMessageRoomMember.USER_ID_PROPERTY,
-            message_room_member.getUserId());
+            message_room_member1.getUserId());
         message_room_member_query2.setQualifier(msgroom_exp3
           .andExp(msgroom_exp4));
         List<EipTMessageRoomMember> message_room_member_list2 =
           message_room_member_query2.fetchList();
+
+        // ルームに管理者が居る(authority が A のデータがある)か確認し、居なかったら、有効なメンバーを管理者に設定
+        EipTMessageRoomMember message_room_member_one_before =
+          message_room_member_list2.get(0); // 下の拡張for文の中で、一つ前のデータとして使用する変数
+        boolean flag = false;
+        DataContext ctx = DataContext.createDataContext();
+        Persistent obj = ctx.newObject(EipTMessageRoomMember.class);
+        message_room_member_list2.add((EipTMessageRoomMember) obj); // 末尾のデータにも処理を行うためにダミーデータを追加しておく
+        for (EipTMessageRoomMember message_room_member2 : message_room_member_list2) {
+          // ひとつ前と同じルームだったら、管理者のチェック
+          if (message_room_member_one_before.getEipTMessageRoom().getRoomId() == message_room_member2
+            .getEipTMessageRoom()
+            .getRoomId()) {
+            if (message_room_member2.getAuthority().equals("A")) {
+              // 管理者が居たらtrueにする
+              flag = true;
+            }
+          } else {
+            // ひとつ前と違うルームのデータで、flagがfalseだったら(管理者が居なかったら)、管理者権限をセットする
+            if (!flag) {
+              message_room_member_one_before.setAuthority("A");
+            }
+
+            flag = false;
+            if (message_room_member2.getAuthority().equals("A")) {
+              // 管理者が居たらtrueにする
+              flag = true;
+            }
+          }
+          message_room_member_one_before = message_room_member2;
+        }
       }
       return true;
 
