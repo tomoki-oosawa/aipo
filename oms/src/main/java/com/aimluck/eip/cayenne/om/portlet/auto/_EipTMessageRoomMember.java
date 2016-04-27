@@ -8,11 +8,13 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject {
 
     public static final String AUTHORITY_PROPERTY = "authority";
+    public static final String HISTORY_LAST_MESSAGE_ID_PROPERTY = "historyLastMessageId";
     public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String TARGET_USER_ID_PROPERTY = "targetUserId";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TMESSAGE_ROOM_PROPERTY = "eipTMessageRoom";
 
+    public static final String HISTORY_LAST_MESSAGE_ID_PK_COLUMN = "HISTORY_LAST_MESSAGE_ID";
     public static final String ID_PK_COLUMN = "ID";
 
     public void setAuthority(String authority) {
@@ -20,6 +22,14 @@ public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject
     }
     public String getAuthority() {
         return (String)readProperty("authority");
+    }
+    
+    
+    public void setHistoryLastMessageId(Integer historyLastMessageId) {
+        writeProperty("historyLastMessageId", historyLastMessageId);
+    }
+    public Integer getHistoryLastMessageId() {
+        return (Integer)readProperty("historyLastMessageId");
     }
     
     
