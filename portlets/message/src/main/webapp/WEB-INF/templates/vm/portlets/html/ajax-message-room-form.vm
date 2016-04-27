@@ -49,6 +49,7 @@
 
 #ALtableheaderWide()
 
+#if(!$result.isDirect())
 #ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
 #ALtditemheader()
 <div>
@@ -112,12 +113,14 @@
 #end
 
 #ALtablefooter()
+#end
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
 #if($mode!="new_form")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
 #end
+#ALajaxbuttonDeleteHistory()
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

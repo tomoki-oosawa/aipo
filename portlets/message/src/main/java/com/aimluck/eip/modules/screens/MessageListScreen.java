@@ -24,6 +24,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.MessageListSelectData;
 import com.aimluck.eip.message.util.MessageUtils;
@@ -94,6 +95,10 @@ public class MessageListScreen extends ALVelocityScreen {
         listData.setTargetUserId((int) targetUser.getUserId().getValue());
       } else {
         listData.setRoom(room);
+        EipTMessageRoomMember member =
+          MessageUtils.getEipTMessageRoomMember(room, userId);
+        Integer historyLastMessageId = member.getHistoryLastMessageId();
+        listData.setHistoryLastMessageId(historyLastMessageId);
       }
       listData.initField();
       listData.doViewList(this, rundata, context);

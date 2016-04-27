@@ -293,7 +293,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
       EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
-      if (room == null || "O".equals(room.getRoomType())) {
+      if (room == null) {
         throw new ALPageNotFoundException();
       }
       if (!MessageUtils.hasAuthorityRoom(room, (int) login_user
@@ -578,4 +578,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
     return list;
   }
 
+  public boolean isDirect() {
+    return memberList.size() == 2;
+  }
 }
