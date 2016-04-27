@@ -25,6 +25,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALCommonUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーザーアカウントのResultDataです。 <BR>
@@ -272,6 +273,10 @@ public class AccountResultData implements ALData {
 
   public ALStringField getProfile() {
     return profile;
+  }
+
+  public String getWbrProfile() {
+    return ALEipUtils.getMessageList(profile.toString());
   }
 
   public String getWbrCellularMail() {
