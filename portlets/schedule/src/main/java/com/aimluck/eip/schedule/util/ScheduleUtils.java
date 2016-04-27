@@ -228,6 +228,77 @@ public class ScheduleUtils {
    * @param context
    * @return
    */
+  public static EipTSchedule getEipTSchedule(int scheduleid, int userid)
+      throws ALPageNotFoundException, ALDBErrorException {
+
+    try {
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
+
+      // スケジュールID
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          Integer.valueOf(scheduleid));
+      query.setQualifier(exp1);
+
+      List<EipTSchedule> schedules = query.fetchList();
+
+      // 指定したSchedule IDのレコードが見つからない場合
+      if (schedules == null || schedules.size() == 0) {
+        logger.error("[ScheduleUtils] Not found record.");
+        throw new ALPageNotFoundException();
+      }
+
+      EipTSchedule record = schedules.get(0);
+
+      // 条件が足りないかも（by Komori 2006/06/09）
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
+      mapquery.setQualifier(mapexp1);
+      Expression mapexp2 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
+      mapquery.andQualifier(mapexp2);
+      Expression mapexp3 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
+      mapquery.andQualifier(mapexp3);
+
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
+
+      // boolean is_member = orm_map.count(new Criteria().add(
+      // EipTScheduleMapConstants.SCHEDULE_ID, record.getScheduleId()).add(
+      // EipTScheduleMapConstants.USER_ID, userid).add(
+      // EipTScheduleMapConstants.USER_ID, ALEipUtils.getUserId(rundata))) != 0;
+
+      boolean is_public = "O".equals(record.getPublicFlag());
+
+      // アクセス権限がない場合
+      if (!is_member && !is_public) {
+        logger.error("[ScheduleUtils] Cannnot access this record. ");
+        throw new ALPageNotFoundException();
+      }
+
+      return schedules.get(0);
+
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * Scheudle オブジェクトモデルを取得します。
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
   public static EipTSchedule getEipTSchedule(RunData rundata, int scheduleid,
       boolean isOwner, int userid) throws ALPageNotFoundException,
       ALDBErrorException {
@@ -3115,6 +3186,203 @@ public class ScheduleUtils {
       } else {
         throw new IllegalArgumentException();
       }
+      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
+      context.put("titleValue", schedule.getName().toString());
+      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
+      context.put("dateValue", date_detail);
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      ALEipUser destUser;
+      try {
+        destUser = ALEipUtils.getALEipUser(destUserID);
+      } catch (ALDBErrorException ex) {
+        logger.error("schedule", ex);
+        return "";
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/createSchedule.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (RuntimeException e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createReminderMsgForPc(EipTSchedule schedule,
+      List<ALEipUser> memberList, String userId) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+    String date_detail = "";
+
+    try {
+      loginUser = ALEipUtils.getALEipUser(Integer.valueOf(userId));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("userName", loginUser.getAliasName().toString());
+      context.put("mailAddress", user.getEmail());
+      context.put("addScheduleMSG", ALLocalizationUtils
+        .getl10n("SCHEDULE_REMINDER_SCHEDULE_FROM_USER"));
+      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
+      context.put("titleValue", schedule.getName().toString());
+      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
+      context.put("dateValue", date_detail);
+
+      if (schedule.getPlace().toString().length() > 0) {
+        context.put("place", ALLocalizationUtils.getl10n("SCHEDULE_SUB_PLACE"));
+        context.put("placeValue", schedule.getPlace().toString());
+      }
+
+      if (schedule.getNote().toString().length() > 0) {
+        context.put("note", ALLocalizationUtils.getl10n("SCHEDULE_SUB_NOTE"));
+        context.put("noteValue", schedule.getNote().toString());
+      }
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+
+      if (enableAsp) {
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      } else {
+        context.put("outsideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
+        context.put("insideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_INSIDE_OFFICE"));
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
+      }
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/createSchedule.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createReminderMsgForCellPhone(EipTSchedule schedule,
+      List<ALEipUser> memberList, int destUserID, String userId) {
+    ALEipUser loginUser = null;
+    ALBaseUser user = null;
+    String date_detail = "";
+    try {
+      loginUser = ALEipUtils.getALEipUser(Integer.valueOf(userId));
+      user =
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("userName", loginUser.getAliasName().toString());
+      context.put("mailAddress", user.getEmail());
+      context.put("addScheduleMSG", ALLocalizationUtils
+        .getl10n("SCHEDULE_REMINDER_SCHEDULE_FROM_USER"));
       context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
       context.put("titleValue", schedule.getName().toString());
       context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
