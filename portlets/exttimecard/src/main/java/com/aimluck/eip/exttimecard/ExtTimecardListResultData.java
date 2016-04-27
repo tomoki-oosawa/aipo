@@ -71,12 +71,6 @@ public class ExtTimecardListResultData implements ALData {
   /** 特定の日付より前から後かを示す変数 */
   private int beforeafter;
 
-  /** 残業の種類 */
-  private String overtime_type_flag;
-
-  /** 法定外残業の時間 */
-  private float overtime_type_minute;
-
   /**
    *
    *
@@ -282,8 +276,8 @@ public class ExtTimecardListResultData implements ALData {
           return true;
         }
       } else {
-        Calendar cal = Calendar.getInstance();
         // 法定外残業
+        Calendar cal = Calendar.getInstance();
         int now_hour = cal.get(Calendar.HOUR_OF_DAY);
         int now_minute = cal.get(Calendar.MINUTE);
         return false;// 仮

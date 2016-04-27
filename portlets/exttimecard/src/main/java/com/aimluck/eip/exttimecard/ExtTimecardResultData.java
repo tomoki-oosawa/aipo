@@ -210,13 +210,11 @@ public class ExtTimecardResultData implements ALData {
           return true;
         }
       } else {
-        Calendar cal = Calendar.getInstance();
         // 法定外残業
+        Calendar cal = Calendar.getInstance();
         int now_hour = cal.get(Calendar.HOUR_OF_DAY);
         int now_minute = cal.get(Calendar.MINUTE);
-
         Date clockInTime = getClockInTime().getValue();
-
         return false;// 仮
 
       }
