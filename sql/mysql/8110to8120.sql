@@ -19,4 +19,4 @@
 
 -- 20160317
 
-ALTER TABLE `turbine_user` ADD `profile` TEXT COLLATE utf8_unicode_ci AFTER `migrate_version`;
+ALTER TABLE `turbine_user` ADD `profile` text COLLATE utf8_unicode_ci AFTER `migrate_version`;

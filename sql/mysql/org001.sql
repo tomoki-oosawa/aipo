@@ -1010,7 +1010,7 @@ CREATE TABLE `turbine_user` (
   `photo_modified_smartphone` datetime DEFAULT NULL,
   `tutorial_forbid` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
   `migrate_version` int(11) NOT NULL DEFAULT 0,
-  `profile` TEXT COLLATE utf8_unicode_ci,
+  `profile` text COLLATE utf8_unicode_ci,
   `created_user_id` int(11) DEFAULT NULL,
   `updated_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
