@@ -43,15 +43,12 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String UPDATED_USER_ID_PROPERTY = "updatedUserId";
     public static final String EIP_MUSER_POSITION_PROPERTY = "eipMUserPosition";
     public static final String EIP_TACL_USER_ROLE_MAPS_PROPERTY = "eipTAclUserRoleMaps";
-    public static final String EIP_TCABINET_PROPERTY = "eipTCabinet";
+    public static final String EIP_TCABINET_FILE_PROPERTY = "eipTCabinetFile";
     public static final String EIP_TEVENTLOG_PROPERTY = "eipTEventlog";
     public static final String EIP_TGPDB_PROPERTY = "eipTGpdb";
     public static final String EIP_TGPDB_ITEM_PROPERTY = "eipTGpdbItem";
     public static final String EIP_TGPDB_RECORD_PROPERTY = "eipTGpdbRecord";
     public static final String EIP_TMSGBOARD_CATEGORY_PROPERTY = "eipTMsgboardCategory";
-    public static final String EIP_TPROJECT_PROPERTY = "eipTProject";
-    public static final String EIP_TPROJECT_TASK_PROPERTY = "eipTProjectTask";
-    public static final String EIP_TPROJECT_TASK_COMMENT_PROPERTY = "eipTProjectTaskComment";
     public static final String EIP_TREPORT_PROPERTY = "eipTReport";
     public static final String EIP_TTIMELINE_PROPERTY = "eipTTimeline";
     public static final String EIP_TTIMELINE_LIKE_PROPERTY = "eipTTimelineLike";
@@ -341,14 +338,14 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     
     
-    public void addToEipTCabinet(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
-        addToManyTarget("eipTCabinet", obj, true);
+    public void addToEipTCabinetFile(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
+        addToManyTarget("eipTCabinetFile", obj, true);
     }
-    public void removeFromEipTCabinet(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
-        removeToManyTarget("eipTCabinet", obj, true);
+    public void removeFromEipTCabinetFile(com.aimluck.eip.cayenne.om.portlet.EipTCabinetFile obj) {
+        removeToManyTarget("eipTCabinetFile", obj, true);
     }
-    public List getEipTCabinet() {
-        return (List)readProperty("eipTCabinet");
+    public List getEipTCabinetFile() {
+        return (List)readProperty("eipTCabinetFile");
     }
     
     
@@ -404,39 +401,6 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTMsgboardCategory() {
         return (List)readProperty("eipTMsgboardCategory");
-    }
-    
-    
-    public void addToEipTProject(com.aimluck.eip.cayenne.om.portlet.EipTProject obj) {
-        addToManyTarget("eipTProject", obj, true);
-    }
-    public void removeFromEipTProject(com.aimluck.eip.cayenne.om.portlet.EipTProject obj) {
-        removeToManyTarget("eipTProject", obj, true);
-    }
-    public List getEipTProject() {
-        return (List)readProperty("eipTProject");
-    }
-    
-    
-    public void addToEipTProjectTask(com.aimluck.eip.cayenne.om.portlet.EipTProjectTask obj) {
-        addToManyTarget("eipTProjectTask", obj, true);
-    }
-    public void removeFromEipTProjectTask(com.aimluck.eip.cayenne.om.portlet.EipTProjectTask obj) {
-        removeToManyTarget("eipTProjectTask", obj, true);
-    }
-    public List getEipTProjectTask() {
-        return (List)readProperty("eipTProjectTask");
-    }
-    
-    
-    public void addToEipTProjectTaskComment(com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment obj) {
-        addToManyTarget("eipTProjectTaskComment", obj, true);
-    }
-    public void removeFromEipTProjectTaskComment(com.aimluck.eip.cayenne.om.portlet.EipTProjectTaskComment obj) {
-        removeToManyTarget("eipTProjectTaskComment", obj, true);
-    }
-    public List getEipTProjectTaskComment() {
-        return (List)readProperty("eipTProjectTaskComment");
     }
     
     

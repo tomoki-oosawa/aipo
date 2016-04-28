@@ -71,8 +71,8 @@ public class BaseJetspeedUser /* extends SecurityObject */implements
    */
   public BaseJetspeedUser() {
     createDate = new Date();
-    tempStorage = new Hashtable(10);
-    permStorage = new Hashtable(10);
+    tempStorage = new Hashtable(11);
+    permStorage = new Hashtable(11);
     setHasLoggedIn(Boolean.FALSE);
     setDisabled("F");
     isNew = true;
@@ -338,6 +338,25 @@ public class BaseJetspeedUser /* extends SecurityObject */implements
   public boolean hasLoggedIn() {
     Boolean loggedIn = getHasLoggedIn();
     return (loggedIn != null && loggedIn.booleanValue());
+  }
+
+  /**
+   * Returns the profile for this user.
+   *
+   * @return A String with the user's profile.
+   */
+  @Override
+  public String getProfile() {
+    String temp = null;
+    try {
+      temp = (String) getPerm(JetspeedUser.PROFILE);
+      if (temp.length() == 0) {
+        temp = null;
+      }
+    } catch (Exception e) {
+      logger.error("getProfile(): " + e.getMessage(), e);
+    }
+    return temp;
   }
 
   /**
@@ -743,4 +762,10 @@ public class BaseJetspeedUser /* extends SecurityObject */implements
   public void setPasswordChanged(Date value) {
     setPerm(JetspeedUser.PASSWORD_CHANGED, value);
   }
+
+  @Override
+  public void setProfile(String value) {
+    setPerm(JetspeedUser.PROFILE, value);
+  }
+
 }

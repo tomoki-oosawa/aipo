@@ -68,4 +68,9 @@ public interface JetspeedUser extends User {
    *          Date
    */
   public void setPasswordChanged(Date value);
+
+  public String getProfile();
+
+  public void setProfile(String p);
+
 }
