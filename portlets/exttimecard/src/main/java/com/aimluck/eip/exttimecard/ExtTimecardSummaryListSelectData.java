@@ -1353,4 +1353,11 @@ public class ExtTimecardSummaryListSelectData extends
     return "ExtTimecardSummarySelectData";
   }
 
+  protected List<ALEipUser> getUserList() {
+    return this.userList;
+  }
+
+  protected Map<Integer, List<ExtTimecardResultData>> getUserMap() {
+    return this.usermap;
+  }
 }
