@@ -951,19 +951,19 @@ public class ScheduleUtils {
   }
 
   public static ALDateTimeField getNextDate(ALDateTimeField date, String ptn,
-      Date startDate, Date limitDate) {
+      Date startDate, Date limitDate, boolean isLimit) {
     if (isView(date, ptn, startDate, limitDate)) {
       return date;
     } else {
       Calendar cal = Calendar.getInstance();
       cal.setTime(date.getValue());
       cal.add(Calendar.DATE, 1);
-      if (cal.getTime().after(limitDate)) {
+      if (isLimit && cal.getTime().after(limitDate)) {
         return null;
       }
       ALDateTimeField field = new ALDateTimeField();
       field.setValue(cal.getTime());
-      return getNextDate(field, ptn, startDate, limitDate);
+      return getNextDate(field, ptn, startDate, limitDate, isLimit);
     }
   }
 

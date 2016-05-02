@@ -1433,7 +1433,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           for (ALEipUser user : memberList) {
             int memberId = (int) user.getUserId().getValue();
             if (login_user.getUserId().getValueWithInt() != memberId) {
-              item.addSharedUserId(user.getName().getValue());
+              item.addSharedUserId(user.getUserId().toString());
             }
           }
           item.setItemId(schedule.getScheduleId().intValue());
@@ -1448,14 +1448,23 @@ public class ScheduleFormData extends ALAbstractFormData {
             cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
             cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
             cal.set(Calendar.DATE, today.get(Calendar.DATE));
+            // 今日の時間が過ぎている場合は翌日にする
+            if (cal.getTime().before(today.getTime())) {
+              cal.add(Calendar.DATE, 1);
+            }
             ALDateTimeField next = new ALDateTimeField();
             next.setValue(cal.getTime());
+            boolean isLimit = false;
+            if ("ON".equals(limit_flag.getValue())) {
+              isLimit = true;
+            }
             ALDateTimeField field =
               ScheduleUtils.getNextDate(
                 next,
                 schedule.getRepeatPattern(),
                 schedule.getStartDate(),
-                schedule.getEndDate());
+                schedule.getEndDate(),
+                isLimit);
             if (field != null) {
               item.setEventStartDate(field.getValue());
               if ("ON".equals(limit_flag.getValue())) {
@@ -2088,12 +2097,17 @@ public class ScheduleFormData extends ALAbstractFormData {
           cal.set(Calendar.DATE, today.get(Calendar.DATE));
           ALDateTimeField next = new ALDateTimeField();
           next.setValue(cal.getTime());
+          boolean isLimit = false;
+          if ("ON".equals(limit_flag.getValue())) {
+            isLimit = true;
+          }
           ALDateTimeField field =
             ScheduleUtils.getNextDate(
               next,
               schedule.getRepeatPattern(),
               schedule.getStartDate(),
-              schedule.getEndDate());
+              schedule.getEndDate(),
+              isLimit);
           if (field != null) {
             item.setEventStartDate(field.getValue());
             if ("ON".equals(limit_flag.getValue())) {
