@@ -366,6 +366,7 @@
 #if($result.isReminderEnabled())
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
+<div id="reminderField" style="display:#if($!{result.Span})none#end">
 <p>
   <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end onclick="aipo.schedule.reminderoff()" />
   <label for="reminder_off">$l10n.SCHEDULE_REMINDER_OFF</label>
@@ -386,6 +387,7 @@
     <option value="30" #if ($!result.NotifyTiming.toString() == "30") selected="selected" #end>30$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
     <option value="60" #if ($!result.NotifyTiming.toString() == "60") selected="selected" #end>1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR</option>
   </select>$l10n.SCHEDULE_REMINDER_NOTIFY_TEXT
+</div>
 </div>
 #ALtditemfooter()
 #end
