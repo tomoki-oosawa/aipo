@@ -251,11 +251,11 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
           && reminder_flag.getValue().equals("T")) {
           if (defaultItem == null) {
             defaultItem = new ALReminderDefaultItem();
-            defaultItem.setOrgId(orgId);
-            defaultItem.setUserId(loginUser.getName().getValue());
-            defaultItem.setEnabled(true);
-            defaultItem.setCategory(ReminderCategory.SCHEDULE);
           }
+          defaultItem.setOrgId(orgId);
+          defaultItem.setUserId(loginUser.getName().getValue());
+          defaultItem.setEnabled(true);
+          defaultItem.setCategory(ReminderCategory.SCHEDULE);
           ArrayList<ReminderNotifyType> list =
             new ArrayList<ReminderNotifyType>();
           if (notify_type_mail.getValue() != null
