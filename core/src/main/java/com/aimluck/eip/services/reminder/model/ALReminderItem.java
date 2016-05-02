@@ -45,6 +45,8 @@ public class ALReminderItem {
 
   private Date eventStartDate; // イベントの日付・時間
 
+  private Date limitStartDate; // 繰り返し期間の開始日
+
   private Date limitEndDate; // 繰り返し期間の終了日
 
   private int notifyTiming; // 分（何分前に通知するか）
@@ -142,6 +144,21 @@ public class ALReminderItem {
    */
   public void setEventStartDate(Date eventStartDate) {
     this.eventStartDate = eventStartDate;
+  }
+
+  /**
+   * @return limitStartDate
+   */
+  public Date getLimitStartDate() {
+    return limitStartDate;
+  }
+
+  /**
+   * @param limitStartDate
+   *          セットする limitStartDate
+   */
+  public void setLimitStartDate(Date limitStartDate) {
+    this.limitStartDate = limitStartDate;
   }
 
   /**

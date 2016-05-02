@@ -1157,7 +1157,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         ALReminderItem item =
           ALReminderService.getJob(
             orgId,
-            loginUser.getName().getValue(),
+            record.getOwnerId().toString(),
             ReminderCategory.SCHEDULE,
             record.getScheduleId().intValue());
         if (item != null) {
@@ -1348,7 +1348,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 2007.3.28 ToDo連携
       // // スケジュールを登録
       // orm.doInsert(schedule);
-      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         int userid = (int) user.getUserId().getValue();
@@ -1358,7 +1357,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
         if (userid == ALEipUtils.getUserId(rundata)) {
           map.setStatus("O");
-          isJoin = true;
         } else {
           map.setStatus("T");
         }
@@ -1431,15 +1429,12 @@ public class ScheduleFormData extends ALAbstractFormData {
         if ("T".equals(reminder_flag.getValue())) {
           ALReminderItem item = new ALReminderItem();
           item.setOrgId(Database.getDomainName());
-          if (isJoin) {
-            item.setUserId(login_user.getName().getValue());
-          }
+          item.setUserId(schedule.getOwnerId().toString());
           for (ALEipUser user : memberList) {
             int memberId = (int) user.getUserId().getValue();
-            if (login_user.getUserId().getValueWithInt() == memberId) {
-              continue;
+            if (login_user.getUserId().getValueWithInt() != memberId) {
+              item.addSharedUserId(user.getName().getValue());
             }
-            item.addSharedUserId(user.getName().getValue());
           }
           item.setItemId(schedule.getScheduleId().intValue());
           item.setCategory(ReminderCategory.SCHEDULE);
@@ -1464,6 +1459,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             if (field != null) {
               item.setEventStartDate(field.getValue());
               if ("ON".equals(limit_flag.getValue())) {
+                item.setLimitStartDate(schedule.getStartDate());
                 item.setLimitEndDate(schedule.getEndDate());
               }
             }
@@ -1674,12 +1670,8 @@ public class ScheduleFormData extends ALAbstractFormData {
           oldmemberIdList.add(map.getUserId());
         }
       }
-      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         int memberId = (int) user.getUserId().getValue();
-        if (login_user.getUserId().getValueWithInt() == memberId) {
-          isJoin = true;
-        }
         if (!isContains(oldmemberIdList, memberId)) {
           newmemberList.add(ALEipUtils.getALEipUser(memberId));
         } else {
@@ -2067,20 +2059,25 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (ALReminderService.isEnabled()) {
         ALReminderItem item = new ALReminderItem();
         item.setOrgId(Database.getDomainName());
-        if (isJoin) {
-          item.setUserId(login_user.getName().getValue());
+        if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
+          item.setUserId(newSchedule.getOwnerId().toString());
+          item.setItemId(newSchedule.getScheduleId().intValue());
+          item.setRepeatPattern(newSchedule.getRepeatPattern());
+          // TODO: 元の繰り返しスケジュールに対して除外日設定を行う
+          // TODO: dummyに対しての通知設定を行う
+        } else {
+          item.setUserId(schedule.getOwnerId().toString());
+          item.setItemId(schedule.getScheduleId().intValue());
+          item.setRepeatPattern(schedule.getRepeatPattern());
         }
         for (ALEipUser user : memberList) {
           int memberId = (int) user.getUserId().getValue();
-          if (login_user.getUserId().getValueWithInt() == memberId) {
-            continue;
+          if (login_user.getUserId().getValueWithInt() != memberId) {
+            item.addSharedUserId(user.getName().getValue());
           }
-          item.addSharedUserId(user.getName().getValue());
         }
-        item.setItemId(schedule.getScheduleId().intValue());
         item.setCategory(ReminderCategory.SCHEDULE);
         item.setNotifyTiming(notify_timing.getValueWithInt());
-        item.setRepeatPattern(schedule.getRepeatPattern());
         if (is_repeat) {
           // 次のアラーム日を算出
           Calendar today = Calendar.getInstance();
@@ -2570,8 +2567,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       if (ALReminderService.isEnabled()) {
         ALReminderItem item = new ALReminderItem();
         item.setOrgId(Database.getDomainName());
-        // ToDo 他人のスケジュール操作時
-        item.setUserId(login_user.getName().getValue());
+        item.setUserId(schedule.getOwnerId().toString());
         item.setItemId(schedule.getScheduleId().intValue());
         item.setCategory(ReminderCategory.SCHEDULE);
         ALReminderService.removeJob(item);
