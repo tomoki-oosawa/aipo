@@ -922,6 +922,83 @@ public class ScheduleUtils {
   }
 
   /**
+   * 共有メンバーを取得します。
+   *
+   * @param rundata
+   * @param context
+   * @param includeLoginUser
+   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
+   * @return
+   */
+  public static List<ALEipUser> getUsers(EipTSchedule schedule)
+      throws ALPageNotFoundException, ALDBErrorException {
+    List<ALEipUser> list = new ArrayList<ALEipUser>();
+
+    if (schedule == null) {
+      logger.error("[ScheduleUtils] ENTITYID is empty.");
+      throw new ALPageNotFoundException();
+    }
+
+    try {
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+
+      // スケジュールID
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          schedule.getScheduleId());
+      mapquery.setQualifier(exp1);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
+
+      List<Integer> uidlist = new ArrayList<Integer>();
+      EipTScheduleMap map = null;
+      int mapsize = schedulemaps.size();
+      for (int i = 0; i < mapsize; i++) {
+        map = schedulemaps.get(i);
+        if (!uidlist.contains(map.getUserId())) {
+          uidlist.add(map.getUserId());
+        }
+      }
+
+      SelectQuery<TurbineUser> userquery = Database.query(TurbineUser.class);
+      Expression userexp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, uidlist);
+      userquery.setQualifier(userexp);
+      List<Ordering> orders = new ArrayList<Ordering>();
+      orders.add(new Ordering(TurbineUser.LAST_NAME_KANA_PROPERTY, true));
+      orders.add(new Ordering(TurbineUser.FIRST_NAME_KANA_PROPERTY, true));
+      userquery.getQuery().addOrderings(orders);
+
+      List<TurbineUser> ulist = userquery.fetchList();
+
+      TurbineUser tuser;
+      ALEipUser user;
+      for (int j = 0; j < ulist.size(); j++) {
+        tuser = ulist.get(j);
+        user = new ALEipUser();
+        user.initField();
+        user.setUserId(tuser.getUserId().intValue());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        list.add(user);
+      }
+
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+      throw new ALDBErrorException();
+
+    }
+    return list;
+  }
+
+  /**
    * 設備メンバーを取得します。
    *
    * @param rundata
