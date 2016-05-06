@@ -1430,14 +1430,14 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALReminderItem item = new ALReminderItem();
           item.setOrgId(Database.getDomainName());
           item.setUserId(schedule.getOwnerId().toString());
+          item.setItemId(schedule.getScheduleId().intValue());
+          item.setCategory(ReminderCategory.SCHEDULE);
           for (ALEipUser user : memberList) {
             int memberId = (int) user.getUserId().getValue();
             if (login_user.getUserId().getValueWithInt() != memberId) {
               item.addSharedUserId(user.getUserId().toString());
             }
           }
-          item.setItemId(schedule.getScheduleId().intValue());
-          item.setCategory(ReminderCategory.SCHEDULE);
           item.setNotifyTiming(notify_timing.getValueWithInt());
           item.setRepeatPattern(schedule.getRepeatPattern());
           if (is_repeat) {
@@ -2070,37 +2070,49 @@ public class ScheduleFormData extends ALAbstractFormData {
       Database.commit();
 
       // アラーム
-      // TODO: この日のみの繰り返し予定を変更した場合の処理
       if (ALReminderService.isEnabled()) {
-        ALReminderItem item = new ALReminderItem();
-        item.setOrgId(Database.getDomainName());
+        EipTSchedule targetSchedule = null;
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
-          item.setUserId(newSchedule.getOwnerId().toString());
-          item.setItemId(newSchedule.getScheduleId().intValue());
-          item.setRepeatPattern(newSchedule.getRepeatPattern());
-          // TODO: 元の繰り返しスケジュールに対して除外日設定を行う
-          // TODO: dummyに対しての通知設定を行う
+          targetSchedule = newSchedule;
         } else {
-          item.setUserId(schedule.getOwnerId().toString());
-          item.setItemId(schedule.getScheduleId().intValue());
-          item.setRepeatPattern(schedule.getRepeatPattern());
+          targetSchedule = schedule;
+        }
+        ALReminderItem item =
+          ALReminderService.getJob(Database.getDomainName(), targetSchedule
+            .getOwnerId()
+            .toString(), ReminderCategory.SCHEDULE, targetSchedule
+            .getScheduleId()
+            .intValue());
+        if (item == null) {
+          item = new ALReminderItem();
+          item.setOrgId(Database.getDomainName());
+          item.setUserId(targetSchedule.getOwnerId().toString());
+          item.setItemId(targetSchedule.getScheduleId().intValue());
+          item.setCategory(ReminderCategory.SCHEDULE);
         }
         for (ALEipUser user : memberList) {
           int memberId = (int) user.getUserId().getValue();
           if (login_user.getUserId().getValueWithInt() != memberId) {
-            item.addSharedUserId(user.getName().getValue());
+            item.addSharedUserId(user.getUserId().toString());
           }
         }
-        item.setCategory(ReminderCategory.SCHEDULE);
         item.setNotifyTiming(notify_timing.getValueWithInt());
+        item.setRepeatPattern(targetSchedule.getRepeatPattern());
         if (is_repeat) {
+          // すべての繰り返し予定を変更した場合
           // 次のアラーム日を算出
           Calendar today = Calendar.getInstance();
           Calendar cal = Calendar.getInstance();
-          cal.setTime(schedule.getStartDate());
+          cal.setTime(targetSchedule.getStartDate());
           cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
           cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
           cal.set(Calendar.DATE, today.get(Calendar.DATE));
+          // 今日のアラーム送信時間が過ぎている場合は翌日にする
+          today.add(Calendar.MINUTE, item.getNotifyTiming()
+            + ALReminderService.getGracePeriod());
+          if (cal.getTime().before(today.getTime())) {
+            cal.add(Calendar.DATE, 1);
+          }
           ALDateTimeField next = new ALDateTimeField();
           next.setValue(cal.getTime());
           boolean isLimit = false;
@@ -2110,19 +2122,24 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALDateTimeField field =
             ScheduleUtils.getNextDate(
               next,
-              schedule.getRepeatPattern(),
-              schedule.getStartDate(),
-              schedule.getEndDate(),
+              targetSchedule.getRepeatPattern(),
+              targetSchedule.getStartDate(),
+              targetSchedule.getEndDate(),
               isLimit);
           if (field != null) {
             item.setEventStartDate(field.getValue());
             if ("ON".equals(limit_flag.getValue())) {
-              item.setLimitEndDate(schedule.getEndDate());
+              item.setLimitStartDate(targetSchedule.getStartDate());
+              item.setLimitEndDate(targetSchedule.getEndDate());
             }
           }
         } else {
-          if (schedule.getStartDate().after(new Date())) {
-            item.setEventStartDate(schedule.getStartDate());
+          // アラーム送信時間チェック
+          Calendar today = Calendar.getInstance();
+          today.add(Calendar.MINUTE, item.getNotifyTiming()
+            + ALReminderService.getGracePeriod());
+          if (targetSchedule.getStartDate().after(today.getTime())) {
+            item.setEventStartDate(targetSchedule.getStartDate());
           }
         }
         if ("T".equals(reminder_flag.getValue())) {
@@ -2139,6 +2156,27 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALReminderService.updateJob(item);
         } else {
           ALReminderService.removeJob(item);
+        }
+        // 元の繰り返しスケジュールに対して除外日設定を行う
+        if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
+          ALReminderItem tmpItem =
+            ALReminderService.getJob(Database.getDomainName(), schedule
+              .getOwnerId()
+              .toString(), ReminderCategory.SCHEDULE, schedule
+              .getScheduleId()
+              .intValue());
+          if (tmpItem != null) {
+            Calendar cal = Calendar.getInstance();
+            Calendar cal2 = Calendar.getInstance();
+            cal2.setTime(view_date.getValue());
+            cal.setTime(tmpItem.getEventStartDate());
+            cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
+            cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
+            cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
+            cal.add(Calendar.MINUTE, -tmpItem.getNotifyTiming());
+            tmpItem.addExceptDate(cal.getTime());
+            ALReminderService.updateJob(tmpItem);
+          }
         }
       }
       // イベントログに保存

@@ -200,7 +200,8 @@ public class ALReminderItem {
 
   /**
    * @param exceptDate
-   *          セットする exceptDate
+   *          セットする exceptDate <br />
+   *          EventStartDate - NotifyTiming の日付を入れる
    */
   public void addExceptDate(Date exceptDate) {
     this.exceptDate.add(exceptDate);
