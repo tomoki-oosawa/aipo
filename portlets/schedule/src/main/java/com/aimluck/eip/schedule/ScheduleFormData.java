@@ -1448,7 +1448,9 @@ public class ScheduleFormData extends ALAbstractFormData {
             cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
             cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
             cal.set(Calendar.DATE, today.get(Calendar.DATE));
-            // 今日の時間が過ぎている場合は翌日にする
+            // 今日のアラーム送信時間が過ぎている場合は翌日にする
+            today.add(Calendar.MINUTE, item.getNotifyTiming()
+              + ALReminderService.getGracePeriod());
             if (cal.getTime().before(today.getTime())) {
               cal.add(Calendar.DATE, 1);
             }
@@ -1473,7 +1475,11 @@ public class ScheduleFormData extends ALAbstractFormData {
               }
             }
           } else {
-            if (schedule.getStartDate().after(new Date())) {
+            // アラーム送信時間チェック
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.MINUTE, item.getNotifyTiming()
+              + ALReminderService.getGracePeriod());
+            if (schedule.getStartDate().after(today.getTime())) {
               item.setEventStartDate(schedule.getStartDate());
             }
           }

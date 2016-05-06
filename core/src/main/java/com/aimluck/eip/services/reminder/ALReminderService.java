@@ -65,4 +65,8 @@ public class ALReminderService {
   public static boolean isEnabled() {
     return getService().isEnabled();
   }
+
+  public static int getGracePeriod() {
+    return getService().getGracePeriod();
+  }
 }

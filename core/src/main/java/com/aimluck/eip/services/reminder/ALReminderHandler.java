@@ -79,4 +79,7 @@ public abstract class ALReminderHandler {
       ReminderCategory category);
 
   public abstract boolean isEnabled();
+
+  public abstract int getGracePeriod();
+
 }
