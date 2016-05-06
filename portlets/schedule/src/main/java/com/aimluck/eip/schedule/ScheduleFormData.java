@@ -1432,12 +1432,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           item.setUserId(schedule.getOwnerId().toString());
           item.setItemId(schedule.getScheduleId().intValue());
           item.setCategory(ReminderCategory.SCHEDULE);
-          for (ALEipUser user : memberList) {
-            int memberId = (int) user.getUserId().getValue();
-            if (login_user.getUserId().getValueWithInt() != memberId) {
-              item.addSharedUserId(user.getUserId().toString());
-            }
-          }
           item.setNotifyTiming(notify_timing.getValueWithInt());
           item.setRepeatPattern(schedule.getRepeatPattern());
           if (is_repeat) {
@@ -1470,7 +1464,6 @@ public class ScheduleFormData extends ALAbstractFormData {
             if (field != null) {
               item.setEventStartDate(field.getValue());
               if ("ON".equals(limit_flag.getValue())) {
-                item.setLimitStartDate(schedule.getStartDate());
                 item.setLimitEndDate(schedule.getEndDate());
               }
             }
@@ -2083,12 +2076,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         item.setUserId(targetSchedule.getOwnerId().toString());
         item.setItemId(targetSchedule.getScheduleId().intValue());
         item.setCategory(ReminderCategory.SCHEDULE);
-        for (ALEipUser user : memberList) {
-          int memberId = (int) user.getUserId().getValue();
-          if (login_user.getUserId().getValueWithInt() != memberId) {
-            item.addSharedUserId(user.getUserId().toString());
-          }
-        }
         item.setNotifyTiming(notify_timing.getValueWithInt());
         item.setRepeatPattern(targetSchedule.getRepeatPattern());
         if (is_repeat) {
@@ -2122,7 +2109,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           if (field != null) {
             item.setEventStartDate(field.getValue());
             if ("ON".equals(limit_flag.getValue())) {
-              item.setLimitStartDate(targetSchedule.getStartDate());
               item.setLimitEndDate(targetSchedule.getEndDate());
             }
           }
