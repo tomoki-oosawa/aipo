@@ -2072,24 +2072,17 @@ public class ScheduleFormData extends ALAbstractFormData {
       // アラーム
       if (ALReminderService.isEnabled()) {
         EipTSchedule targetSchedule = null;
+        ALReminderItem item = new ALReminderItem();
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
           targetSchedule = newSchedule;
         } else {
           targetSchedule = schedule;
         }
-        ALReminderItem item =
-          ALReminderService.getJob(Database.getDomainName(), targetSchedule
-            .getOwnerId()
-            .toString(), ReminderCategory.SCHEDULE, targetSchedule
-            .getScheduleId()
-            .intValue());
-        if (item == null) {
-          item = new ALReminderItem();
-          item.setOrgId(Database.getDomainName());
-          item.setUserId(targetSchedule.getOwnerId().toString());
-          item.setItemId(targetSchedule.getScheduleId().intValue());
-          item.setCategory(ReminderCategory.SCHEDULE);
-        }
+
+        item.setOrgId(Database.getDomainName());
+        item.setUserId(targetSchedule.getOwnerId().toString());
+        item.setItemId(targetSchedule.getScheduleId().intValue());
+        item.setCategory(ReminderCategory.SCHEDULE);
         for (ALEipUser user : memberList) {
           int memberId = (int) user.getUserId().getValue();
           if (login_user.getUserId().getValueWithInt() != memberId) {
