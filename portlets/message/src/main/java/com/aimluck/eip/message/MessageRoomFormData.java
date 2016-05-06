@@ -93,6 +93,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
+  private ALStringField roomType;
+
   /** 1ルームの最大人数 **/
   private final int MAX_ROOM_MEMBER = 300;
 
@@ -117,6 +119,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
     members = new ALStringField();
     members.setTrim(true);
     memberList = new ArrayList<ALEipUser>();
+    roomType = new ALStringField();
   }
 
   /**
@@ -305,6 +308,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
+
+      roomType.setValue(room.getRoomType());
+
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
       List<String> memberNames = new ArrayList<String>();
@@ -380,6 +386,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
         map.setAuthority(user.getAuthority().getValue());
+        map.setHistoryLastMessageId(0);
         if (!isFirst) {
           autoName.append(",");
         }
@@ -462,6 +469,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
         map.setAuthority(user.getAuthority().getValue());
+        map.setHistoryLastMessageId(0);
         if (!isFirst) {
           autoName.append(",");
         }
@@ -579,6 +587,14 @@ public class MessageRoomFormData extends ALAbstractFormData {
   }
 
   public boolean isDirect() {
-    return memberList.size() == 2;
+    return "O".equals(roomType.getValue());
   }
+
+  /**
+   * @param messageRoomFormJSONScreen
+   * @param rundata
+   * @param context
+   * @return
+   */
+
 }

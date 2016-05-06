@@ -113,14 +113,16 @@
 #end
 
 #ALtablefooter()
-#end
+
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
 #if($mode!="new_form")
-#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
+#ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode','delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
 #end
-#ALajaxbuttonDeleteHistory()
+#else
+#ALajaxbuttonDeleteHistory("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode','delete_history')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

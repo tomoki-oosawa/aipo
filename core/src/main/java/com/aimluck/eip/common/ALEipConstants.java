@@ -33,6 +33,8 @@ public class ALEipConstants {
 
   public static final String MODE_DELETE = "delete";
 
+  public static final String MODE_DELETE_HISTORY = "delete_history";
+
   public static final String MODE_MULTI_DELETE = "multi_delete";
 
   public static final String MODE_INSERT = "insert";

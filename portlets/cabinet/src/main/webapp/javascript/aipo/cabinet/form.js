@@ -130,7 +130,7 @@ aipo.cabinet.toggleMenu = function(node, filter, alwaysPulldown) {
 
 	if (node.style.display == "none") {
 		dojo.query("div.menubar").style("display", "none");
-		
+
 		var scroll = {
 			left : document.documentElement.scrollLeft
 					|| document.body.scrollLeft,

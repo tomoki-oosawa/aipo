@@ -378,6 +378,15 @@ aimluck.io.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, r
   }
 }
 
+aimluck.io.ajaxDeleteHistorySubmit = function(button, url, indicator_id, portlet_id, receive) {
+	if (confirm('履歴をすべて削除してもよろしいですか？')) {
+		aimluck.io.disableForm(button.form, true);
+		aimluck.io.setHiddenValue(button);
+		button.form.action = url;
+		aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	}
+}
+
 // account
 aimluck.io.ajaxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
