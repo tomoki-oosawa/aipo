@@ -186,7 +186,7 @@ public class ExtTimecardResultData implements ALData {
    * @return boolean
    */
   public boolean getIsOverTime() {
-    if (getIsNullClockInTime()) {
+    if (!getIsNullClockInTime()) {
       if (ExtTimecardUtils.OVERTIME_TYPE_O.equals(timecard_system
         .getOvertimeType()
         .substring(0, 1))) {
@@ -212,10 +212,40 @@ public class ExtTimecardResultData implements ALData {
       } else {
         // 法定外残業
         Calendar cal = Calendar.getInstance();
-        int now_hour = cal.get(Calendar.HOUR_OF_DAY);
-        int now_minute = cal.get(Calendar.MINUTE);
-        Date clockInTime = getClockInTime().getValue();
-        return false;// 仮
+        float time = 0f;
+        time +=
+          (cal.getTime().getTime() - clock_in_time.getValue().getTime())
+            / (1000.0 * 60.0 * 60.0);
+
+        /** 外出時間を就業時間に含めない場合 */
+        if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+          int length = outgoing_time.size();
+          for (int i = 0; i < length; i++) {
+            if (!outgoing_time.get(i).isNullHour()
+              && !comeback_time.get(i).isNullHour()) {
+              time -=
+                (comeback_time.get(i).getValue().getTime() - outgoing_time.get(
+                  i).getValue().getTime())
+                  / (1000.0 * 60.0 * 60.0);
+            }
+          }
+        }
+
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimein = (timecard_system.getWorktimeIn() / 60f);
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        if (worktimein != 0F) {
+          int resttimes = (int) (time / worktimein);
+          time -= resttimes * resttimein;
+        }
+        float overTime =
+          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+        if (time >= overTime) {
+          return true;
+        } else {
+          return false;
+        }
 
       }
     }
