@@ -508,21 +508,21 @@ public class AccountUserFormData extends ALAbstractFormData {
     ArrayList<String> dummy = new ArrayList<String>();
 
     if (!code.getValue().equals("")) {
-      SelectQuery<TurbineUser> codeQuery = Database.query(TurbineUser.class);
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       if (ALEipConstants.MODE_INSERT.equals(getMode())) {
         Expression exp1 =
           ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
-        codeQuery.setQualifier(exp1);
+        query.setQualifier(exp1);
       } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
         Expression exp1 =
           ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
-        codeQuery.setQualifier(exp1);
+        query.setQualifier(exp1);
         Expression exp2 =
           ExpressionFactory.noMatchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
             .valueOf(target_uid));
-        codeQuery.andQualifier(exp2);
+        query.andQualifier(exp2);
       }
-      if (codeQuery.fetchList().size() > 0) {
+      if (query.fetchList().size() > 0) {
         msgList.add(ALLocalizationUtils.getl10nFormat(
           "ACCOUNT_ALERT_CODE_DUP",
           code));
