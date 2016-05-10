@@ -203,6 +203,9 @@ public class AccountUserFormData extends ALAbstractFormData {
   /** ログインしている人のユーザーID */
   private int login_uid;
 
+  /** アップデート対象のユーザーID */
+  private int target_uid;
+
   private boolean isSkipUsernameValidation = false;
 
   /**
@@ -483,6 +486,9 @@ public class AccountUserFormData extends ALAbstractFormData {
     // 携帯メール
     cellular_mail.setCharacterType(ALStringField.TYPE_ASCII);
 
+    // 社員コード
+    code.limitMaxLength(100);
+
     post.setValidator();
     position.setValidator();
   }
@@ -499,24 +505,42 @@ public class AccountUserFormData extends ALAbstractFormData {
     ArrayList<String> dummy = new ArrayList<String>();
     if (!isSkipUsernameValidation) {
       username.validate(msgList);
-      if (ALEipConstants.MODE_INSERT.equals(getMode())) {
-        try {
-          Expression exp =
+      SelectQuery<TurbineUser> query1 = Database.query(TurbineUser.class);
+      try {
+        if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+          Expression exp1 =
+            ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
+          query1.setQualifier(exp1);
+          Expression exp2 =
             ExpressionFactory.matchExp(
               TurbineUser.LOGIN_NAME_PROPERTY,
               username.getValue());
-          SelectQuery<TurbineUser> query =
-            Database.query(TurbineUser.class, exp);
-          List<TurbineUser> ulist = query.fetchList();
+          SelectQuery<TurbineUser> query2 =
+            Database.query(TurbineUser.class, exp2);
+          List<TurbineUser> ulist = query2.fetchList();
           if (ulist.size() > 0) {
             msgList.add(ALLocalizationUtils.getl10nFormat(
               "ACCOUNT_ALERT_LOGINNAME_DUP",
               username));
           }
-        } catch (Exception ex) {
-          logger.error("AccountUserFormData.validate", ex);
-          return false;
+        } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+          Expression exp1 =
+            ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
+          query1.setQualifier(exp1);
+          Expression exp2 =
+            ExpressionFactory.noMatchExp(
+              TurbineUser.USER_ID_PK_COLUMN,
+              target_uid);
+          query1.setQualifier(exp2);
         }
+        if (query1.fetchList().size() > 0) {
+          msgList.add(ALLocalizationUtils.getl10nFormat(
+            "ACCOUNT_ALERT_LOGINNAME_DUP",
+            username)); // TODO: メッセージを社員コードが既に存在します。みたいなのに変更
+        }
+      } catch (Exception ex) {
+        logger.error("AccountUserFormData.validate", ex);
+        return false;
       }
 
       if (!AccountUtils.isValidSymbolUserName(username.getValue())) {
@@ -755,8 +779,8 @@ public class AccountUserFormData extends ALAbstractFormData {
       } else {
         is_admin.setValue("false");
       }
-
       code.setValue(user.getCode());
+      target_uid = Integer.parseInt(user.getUserId());
 
       if (user.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
