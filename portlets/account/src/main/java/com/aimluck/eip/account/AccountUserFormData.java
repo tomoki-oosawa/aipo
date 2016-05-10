@@ -535,8 +535,8 @@ public class AccountUserFormData extends ALAbstractFormData {
         }
         if (query1.fetchList().size() > 0) {
           msgList.add(ALLocalizationUtils.getl10nFormat(
-            "ACCOUNT_ALERT_LOGINNAME_DUP",
-            username)); // TODO: メッセージを社員コードが既に存在します。みたいなのに変更
+            "ACCOUNT_ALERT_CODE_DUP",
+            code));
         }
       } catch (Exception ex) {
         logger.error("AccountUserFormData.validate", ex);
