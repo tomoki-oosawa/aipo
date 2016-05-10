@@ -528,10 +528,10 @@ public class AccountUserFormData extends ALAbstractFormData {
             ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
           query1.setQualifier(exp1);
           Expression exp2 =
-            ExpressionFactory.noMatchExp(
+            ExpressionFactory.noMatchDbExp(
               TurbineUser.USER_ID_PK_COLUMN,
-              target_uid);
-          query1.setQualifier(exp2);
+              Integer.valueOf(target_uid));
+          query1.andQualifier(exp2);
         }
         if (query1.fetchList().size() > 0) {
           msgList.add(ALLocalizationUtils.getl10nFormat(
