@@ -2572,6 +2572,8 @@ public class ScheduleFormData extends ALAbstractFormData {
         throw new ALPermissionException();
       }
 
+      String tmpOwnerIdForReminder = schedule.getOwnerId().toString();
+
       if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
         if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
           deleteMemberAllRangeAll(schedule, members);
@@ -2600,14 +2602,97 @@ public class ScheduleFormData extends ALAbstractFormData {
       Database.commit();
 
       // アラーム
-      // ToDo 一部更新処理
       if (ALReminderService.isEnabled()) {
-        ALReminderItem item = new ALReminderItem();
-        item.setOrgId(Database.getDomainName());
-        item.setUserId(schedule.getOwnerId().toString());
-        item.setItemId(schedule.getScheduleId().intValue());
-        item.setCategory(ReminderCategory.SCHEDULE);
-        ALReminderService.removeJob(item);
+        if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
+          if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
+            // 完全に削除する（元のスケジュール、関連するダミースケジュール）
+            ALReminderItem item =
+              ALReminderService.getJob(Database.getDomainName(), schedule
+                .getOwnerId()
+                .toString(), ReminderCategory.SCHEDULE, schedule
+                .getScheduleId()
+                .intValue());
+            if (item != null) {
+              ALReminderService.removeJob(item);
+            }
+          } else {
+            if (!"N".equals(schedule.getRepeatPattern())) {
+              // 元の繰り返しスケジュールに対して除外日設定を行う
+              ALReminderItem tmpItem =
+                ALReminderService.getJob(Database.getDomainName(), schedule
+                  .getOwnerId()
+                  .toString(), ReminderCategory.SCHEDULE, schedule
+                  .getScheduleId()
+                  .intValue());
+              if (tmpItem != null) {
+                Calendar cal = Calendar.getInstance();
+                Calendar cal2 = Calendar.getInstance();
+                cal2.setTime(view_date.getValue());
+                cal.setTime(tmpItem.getEventStartDate());
+                cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
+                cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
+                cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
+                cal.add(Calendar.MINUTE, -tmpItem.getNotifyTiming());
+                tmpItem.addExceptDate(cal.getTime());
+                ALReminderService.updateJob(tmpItem);
+              }
+            }
+          }
+        } else {
+          if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
+            // 自分の全てのスケジュールを削除する、最後のメンバーの場合は完全に削除する
+
+            SelectQuery<EipTSchedule> query =
+              Database.query(EipTSchedule.class);
+
+            // スケジュールID
+            Expression exp1 =
+              ExpressionFactory.matchDbExp(
+                EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+                schedule.getScheduleId());
+            query.setQualifier(exp1);
+
+            List<EipTSchedule> schedules = query.fetchList();
+
+            // 指定したSchedule IDのレコードが見つからない場合
+            if (schedules == null || schedules.size() == 0) {
+              ALReminderItem item =
+                ALReminderService.getJob(Database.getDomainName(), schedule
+                  .getOwnerId()
+                  .toString(), ReminderCategory.SCHEDULE, schedule
+                  .getScheduleId()
+                  .intValue());
+              if (item != null) {
+                ALReminderService.removeJob(item);
+              }
+            }
+            if (schedules != null && schedules.size() > 0) {
+              // オーナーを削除する場合はオーナーIDを０にして登録しなおし
+              EipTSchedule record = schedules.get(0);
+              if (record.getOwnerId() == 0) {
+                ALReminderItem item =
+                  ALReminderService.getJob(
+                    Database.getDomainName(),
+                    tmpOwnerIdForReminder,
+                    ReminderCategory.SCHEDULE,
+                    schedule.getScheduleId().intValue());
+                if (item != null) {
+                  ALReminderService.removeJob(item);
+                  item.setUserId(schedule.getOwnerId().toString());
+                  ALReminderService.updateJob(item);
+                }
+              }
+            }
+          } else {
+            // 自分の1日分の予定を削除する。ダミースケジュールを作成する
+            if (!"N".equals(schedule.getRepeatPattern())) {
+              if (!is_facility) {
+                // 元の繰り返しスケジュールに対して除外日設定を行う
+
+              }
+            }
+          }
+        }
       }
 
       if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL
