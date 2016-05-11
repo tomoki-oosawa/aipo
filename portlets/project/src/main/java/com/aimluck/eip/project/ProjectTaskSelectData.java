@@ -61,8 +61,8 @@ public class ProjectTaskSelectData extends
     ALData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ProjectTaskSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ProjectTaskSelectData.class.getName());
 
   /** タスクの総数 */
   private int taskCount;
@@ -283,8 +283,8 @@ public class ProjectTaskSelectData extends
       // 計画工数
       task.setPlanWorkload(new BigDecimal(row.get("plan_workload").toString()));
       // 進捗率
-      task
-        .setProgressRate(Integer.valueOf(row.get("progress_rate").toString()));
+      task.setProgressRate(
+        Integer.valueOf(row.get("progress_rate").toString()));
       // 更新日
       task.setUpdateDate((Date) updateDate);
       // タスク名表示インデント
@@ -437,10 +437,12 @@ public class ProjectTaskSelectData extends
     List<String> whereList = new ArrayList<String>();
     // キーワード
     if (target_keyword != null && target_keyword.trim().length() > 0) {
-      whereList.add(" task.task_name LIKE #bind($target_keyword)");
+      whereList.add(
+        " (task.task_name LIKE #bind($target_keyword) OR project.project_name LIKE #bind($target_keyword))");
     }
     // 担当者
-    if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {
+    if (StringUtils.isNotEmpty(target_user_id)
+      && !target_user_id.equals("all")) {
       StringBuilder where = new StringBuilder();
       where.append(" EXISTS(");
       where.append("   SELECT 0");
@@ -451,7 +453,8 @@ public class ProjectTaskSelectData extends
       whereList.add(String.valueOf(where));
     }
     // 分類
-    if (StringUtils.isNotEmpty(target_tracker) && !target_tracker.equals("all")) {
+    if (StringUtils.isNotEmpty(target_tracker)
+      && !target_tracker.equals("all")) {
       whereList.add(" task.tracker = #bind($target_tracker)");
     }
     // 優先度
@@ -478,32 +481,36 @@ public class ProjectTaskSelectData extends
       && target_delay.equals(ProjectUtils.FLG_ON)) {
 
       StringBuilder task_days = new StringBuilder();
-      task_days
-        .append(" CASE WHEN task.end_plan_date - task.start_plan_date + 1 < 0");
+      task_days.append(
+        " CASE WHEN task.end_plan_date - task.start_plan_date + 1 < 0");
       task_days.append("    THEN 0");
-      task_days
-        .append("    ELSE task.end_plan_date - task.start_plan_date + 1");
+      task_days.append(
+        "    ELSE task.end_plan_date - task.start_plan_date + 1");
       task_days.append("  END "); // タスク日数
 
       StringBuilder lapsed_days = new StringBuilder();
       lapsed_days.append(" CASE");
-      lapsed_days
-        .append("    WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
+      lapsed_days.append(
+        "    WHEN task.start_plan_date IS NULL OR task.end_plan_date IS NULL");
       lapsed_days.append("      THEN 0");
-      lapsed_days.append("    WHEN ").append(
-        ProjectUtils.getCurrentDateWithCast()).append(" < task.end_plan_date");
+      lapsed_days
+        .append("    WHEN ")
+        .append(ProjectUtils.getCurrentDateWithCast())
+        .append(" < task.end_plan_date");
       lapsed_days.append("      THEN");
-      lapsed_days.append("        CASE WHEN ").append(
-        ProjectUtils.getCurrentDateWithCast()).append(
-        " - task.start_plan_date + 1 < 0");
+      lapsed_days
+        .append("        CASE WHEN ")
+        .append(ProjectUtils.getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1 < 0");
       lapsed_days.append("          THEN 0");
-      lapsed_days.append("          ELSE ").append(
-        ProjectUtils.getCurrentDateWithCast()).append(
-        " - task.start_plan_date + 1");
+      lapsed_days
+        .append("          ELSE ")
+        .append(ProjectUtils.getCurrentDateWithCast())
+        .append(" - task.start_plan_date + 1");
       lapsed_days.append("        END");
       lapsed_days.append("      ELSE");
-      lapsed_days
-        .append("        task.end_plan_date - task.start_plan_date + 1");
+      lapsed_days.append(
+        "        task.end_plan_date - task.start_plan_date + 1");
       lapsed_days.append("  END "); // 基準日までのタスク経過日数
 
       StringBuilder sb = new StringBuilder();
@@ -534,12 +541,14 @@ public class ProjectTaskSelectData extends
       sqlCountTemp.param("target_keyword", "%" + target_keyword + "%");
     }
     // 担当者
-    if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {
+    if (StringUtils.isNotEmpty(target_user_id)
+      && !target_user_id.equals("all")) {
       sqltemp.param("target_user_id", Integer.valueOf(target_user_id));
       sqlCountTemp.param("target_user_id", Integer.valueOf(target_user_id));
     }
     // 分類
-    if (StringUtils.isNotEmpty(target_tracker) && !target_tracker.equals("all")) {
+    if (StringUtils.isNotEmpty(target_tracker)
+      && !target_tracker.equals("all")) {
       sqltemp.param("target_tracker", target_tracker);
       sqlCountTemp.param("target_tracker", target_tracker);
     }
@@ -557,18 +566,22 @@ public class ProjectTaskSelectData extends
     // 進捗率FROM
     if (StringUtils.isNotEmpty(target_progress_rate_from)
       && !target_progress_rate_from.equals("0")) {
-      sqltemp.param("target_progress_rate_from", Integer
-        .valueOf(target_progress_rate_from));
-      sqlCountTemp.param("target_progress_rate_from", Integer
-        .valueOf(target_progress_rate_from));
+      sqltemp.param(
+        "target_progress_rate_from",
+        Integer.valueOf(target_progress_rate_from));
+      sqlCountTemp.param(
+        "target_progress_rate_from",
+        Integer.valueOf(target_progress_rate_from));
     }
     // 進捗率TO
     if (StringUtils.isNotEmpty(target_progress_rate_to)
       && !target_progress_rate_to.equals("100")) {
-      sqltemp.param("target_progress_rate_to", Integer
-        .valueOf(target_progress_rate_to));
-      sqlCountTemp.param("target_progress_rate_to", Integer
-        .valueOf(target_progress_rate_to));
+      sqltemp.param(
+        "target_progress_rate_to",
+        Integer.valueOf(target_progress_rate_to));
+      sqlCountTemp.param(
+        "target_progress_rate_to",
+        Integer.valueOf(target_progress_rate_to));
     }
   }
 
@@ -648,14 +661,14 @@ public class ProjectTaskSelectData extends
 
     // 経過タスク日数
     int lapsedDays =
-      ProjectUtils.getLapsedDays(ProjectUtils.toString(record
-        .getStartPlanDate()), ProjectUtils.toString(Calendar
-        .getInstance()
-        .getTime()));
+      ProjectUtils.getLapsedDays(
+        ProjectUtils.toString(record.getStartPlanDate()),
+        ProjectUtils.toString(Calendar.getInstance().getTime()));
     // 予定タスク日数
     int taskDays =
-      ProjectUtils.getLapsedDays(ProjectUtils.toString(record
-        .getStartPlanDate()), ProjectUtils.toString(record.getEndPlanDate()));
+      ProjectUtils.getLapsedDays(
+        ProjectUtils.toString(record.getStartPlanDate()),
+        ProjectUtils.toString(record.getEndPlanDate()));
     data.setPlanTerm(taskDays);
 
     if (lapsedDays > taskDays) {
@@ -664,8 +677,8 @@ public class ProjectTaskSelectData extends
     }
 
     // 予定進捗率
-    data
-      .setPlanProgressRate(ProjectUtils.getPlanWorkload(lapsedDays, taskDays));
+    data.setPlanProgressRate(
+      ProjectUtils.getPlanWorkload(lapsedDays, taskDays));
 
     // 実績工数
     List<ProjectTaskMemberResultData> memberList = data.getMemberList();
@@ -1163,8 +1176,11 @@ public class ProjectTaskSelectData extends
   }
 
   private void setFilter(RunData rundata, Context context) {
-    ALEipUtils.setTemp(rundata, context, LIST_FILTER_STR, String
-      .valueOf(selectedProjectId));
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      LIST_FILTER_STR,
+      String.valueOf(selectedProjectId));
     ALEipUtils.setTemp(rundata, context, LIST_FILTER_TYPE_STR, "project_id");
   }
 
