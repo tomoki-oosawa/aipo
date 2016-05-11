@@ -47,8 +47,6 @@ public class ALReminderItem {
 
   private int notifyTiming; // 分（何分前に通知するか）
 
-  private final List<Date> exceptDate = new ArrayList<Date>(); // 除外する日付の一覧
-
   private final List<ReminderNotifyType> notifyType =
     new ArrayList<ReminderNotifyType>(); // 通知先（メール、メッセージ）
 
@@ -170,22 +168,6 @@ public class ALReminderItem {
    */
   public void setNotifyTiming(int notifyTiming) {
     this.notifyTiming = notifyTiming;
-  }
-
-  /**
-   * @return exceptDate
-   */
-  public List<Date> getExceptDate() {
-    return exceptDate;
-  }
-
-  /**
-   * @param exceptDate
-   *          セットする exceptDate <br />
-   *          EventStartDate - NotifyTiming の日付を入れる
-   */
-  public void addExceptDate(Date exceptDate) {
-    this.exceptDate.add(exceptDate);
   }
 
   /**

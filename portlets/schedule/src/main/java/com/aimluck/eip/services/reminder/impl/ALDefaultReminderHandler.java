@@ -110,12 +110,4 @@ public class ALDefaultReminderHandler extends ALReminderHandler {
     return JetspeedResources.getBoolean("aipo.reminder.enabled", false);
   }
 
-  /**
-   * @return
-   */
-  @Override
-  public int getGracePeriod() {
-    return JetspeedResources.getInt("aipo.reminder.gracePeriod", 0);
-  }
-
 }

@@ -80,6 +80,4 @@ public abstract class ALReminderHandler {
 
   public abstract boolean isEnabled();
 
-  public abstract int getGracePeriod();
-
 }

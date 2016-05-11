@@ -1443,8 +1443,7 @@ public class ScheduleFormData extends ALAbstractFormData {
             cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
             cal.set(Calendar.DATE, today.get(Calendar.DATE));
             // 今日のアラーム送信時間が過ぎている場合は翌日にする
-            today.add(Calendar.MINUTE, item.getNotifyTiming()
-              + ALReminderService.getGracePeriod());
+            today.add(Calendar.MINUTE, item.getNotifyTiming());
             if (cal.getTime().before(today.getTime())) {
               cal.add(Calendar.DATE, 1);
             }
@@ -1470,8 +1469,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           } else {
             // アラーム送信時間チェック
             Calendar today = Calendar.getInstance();
-            today.add(Calendar.MINUTE, item.getNotifyTiming()
-              + ALReminderService.getGracePeriod());
+            today.add(Calendar.MINUTE, item.getNotifyTiming());
             if (schedule.getStartDate().after(today.getTime())) {
               item.setEventStartDate(schedule.getStartDate());
             }
@@ -2088,8 +2086,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
           cal.set(Calendar.DATE, today.get(Calendar.DATE));
           // 今日のアラーム送信時間が過ぎている場合は翌日にする
-          today.add(Calendar.MINUTE, item.getNotifyTiming()
-            + ALReminderService.getGracePeriod());
+          today.add(Calendar.MINUTE, item.getNotifyTiming());
           if (cal.getTime().before(today.getTime())) {
             cal.add(Calendar.DATE, 1);
           }
@@ -2115,8 +2112,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         } else {
           // アラーム送信時間チェック
           Calendar today = Calendar.getInstance();
-          today.add(Calendar.MINUTE, item.getNotifyTiming()
-            + ALReminderService.getGracePeriod());
+          today.add(Calendar.MINUTE, item.getNotifyTiming());
           if (targetSchedule.getStartDate().after(today.getTime())) {
             item.setEventStartDate(targetSchedule.getStartDate());
           }
@@ -2135,27 +2131,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           ALReminderService.updateJob(item);
         } else {
           ALReminderService.removeJob(item);
-        }
-        // 元の繰り返しスケジュールに対して除外日設定を行う
-        if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
-          ALReminderItem tmpItem =
-            ALReminderService.getJob(Database.getDomainName(), schedule
-              .getOwnerId()
-              .toString(), ReminderCategory.SCHEDULE, schedule
-              .getScheduleId()
-              .intValue());
-          if (tmpItem != null) {
-            Calendar cal = Calendar.getInstance();
-            Calendar cal2 = Calendar.getInstance();
-            cal2.setTime(view_date.getValue());
-            cal.setTime(tmpItem.getEventStartDate());
-            cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
-            cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
-            cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
-            cal.add(Calendar.MINUTE, -tmpItem.getNotifyTiming());
-            tmpItem.addExceptDate(cal.getTime());
-            ALReminderService.updateJob(tmpItem);
-          }
         }
       }
       // イベントログに保存
@@ -2615,28 +2590,6 @@ public class ScheduleFormData extends ALAbstractFormData {
             if (item != null) {
               ALReminderService.removeJob(item);
             }
-          } else {
-            if (!"N".equals(schedule.getRepeatPattern())) {
-              // 元の繰り返しスケジュールに対して除外日設定を行う
-              ALReminderItem tmpItem =
-                ALReminderService.getJob(Database.getDomainName(), schedule
-                  .getOwnerId()
-                  .toString(), ReminderCategory.SCHEDULE, schedule
-                  .getScheduleId()
-                  .intValue());
-              if (tmpItem != null) {
-                Calendar cal = Calendar.getInstance();
-                Calendar cal2 = Calendar.getInstance();
-                cal2.setTime(view_date.getValue());
-                cal.setTime(tmpItem.getEventStartDate());
-                cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
-                cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
-                cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
-                cal.add(Calendar.MINUTE, -tmpItem.getNotifyTiming());
-                tmpItem.addExceptDate(cal.getTime());
-                ALReminderService.updateJob(tmpItem);
-              }
-            }
           }
         } else {
           if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
@@ -2681,14 +2634,6 @@ public class ScheduleFormData extends ALAbstractFormData {
                   item.setUserId(schedule.getOwnerId().toString());
                   ALReminderService.updateJob(item);
                 }
-              }
-            }
-          } else {
-            // 自分の1日分の予定を削除する。ダミースケジュールを作成する
-            if (!"N".equals(schedule.getRepeatPattern())) {
-              if (!is_facility) {
-                // 元の繰り返しスケジュールに対して除外日設定を行う
-
               }
             }
           }
