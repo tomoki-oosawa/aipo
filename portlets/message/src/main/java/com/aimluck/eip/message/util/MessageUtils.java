@@ -199,7 +199,7 @@ public class MessageUtils {
   }
 
   public static ResultList<EipTMessage> getMessageList(int roomId, int cursor,
-      int limit, boolean isLatest) {
+      int limit, boolean isLatest, int userId) {
     StringBuilder select = new StringBuilder();
 
     select.append("select");
@@ -222,7 +222,7 @@ public class MessageUtils {
 
     StringBuilder body = new StringBuilder();
     body
-      .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id = #bind($room_id) ");
+      .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id = #bind($room_id) and t1.message_id > #bind($history_message_id) ");
     if (cursor > 0) {
       if (isLatest) {
         body.append(" and t1.message_id > #bind($cursor) ");
@@ -248,6 +248,12 @@ public class MessageUtils {
     if (cursor > 0) {
       query.param("cursor", cursor);
     }
+
+    EipTMessageRoom room = MessageUtils.getRoom(roomId);
+    EipTMessageRoomMember member =
+      MessageUtils.getEipTMessageRoomMember(room, userId);
+    int history_message_id = member.getHistoryLastMessageId();
+    query.param("history_message_id", history_message_id);
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
 

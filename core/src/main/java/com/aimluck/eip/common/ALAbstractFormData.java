@@ -357,48 +357,6 @@ public abstract class ALAbstractFormData implements ALData {
     }
   }
 
-  public boolean doDelteHistory(ALAction action, RunData rundata,
-      Context context) {
-    try {
-      if (!doCheckSecurity(rundata, context)) {
-        return false;
-      }
-
-      init(action, rundata, context);
-
-      doCheckAclPermission(
-        rundata,
-        context,
-        ALAccessControlConstants.VALUE_ACL_DELETE);
-
-      action.setMode(ALEipConstants.MODE_DELETE_HISTORY);
-      mode = action.getMode();
-      rundata.getParameters().add(
-        ALEipConstants.MODE,
-        ALEipConstants.MODE_DELETE_HISTORY);
-
-      List<String> msgList = new ArrayList<String>();
-      boolean res = deleteFormDataHistory(rundata, context, msgList);
-      return false;
-    } catch (ALPermissionException e) {
-      ALEipUtils.redirectPermissionError(rundata);
-      return false;
-    } catch (ALPageNotFoundException e) {
-      ALEipUtils.redirectPageNotFound(rundata);
-      return false;
-    } catch (ALDBErrorException e) {
-      ALEipUtils.redirectDBError(rundata);
-      return false;
-    }
-  }
-
-  /**
-   * @param rundata
-   * @param context
-   * @param msgList
-   * @return
-   */
-
   /**
    * データに値を設定します。
    *
@@ -587,10 +545,6 @@ public abstract class ALAbstractFormData implements ALData {
    */
   protected abstract boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException;
-
-  protected abstract boolean deleteFormDataHistory(RunData rundata,
-      Context context, List<String> msgList) throws ALPageNotFoundException,
-      ALDBErrorException;
 
   /**
    * セキュリティをチェックします。

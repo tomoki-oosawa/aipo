@@ -96,8 +96,9 @@ public class MessageRoomFormJSONScreen extends ALJSONScreen {
       } else if (ALEipConstants.MODE_DELETE_HISTORY.equals(mode)) {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();
+        formData.setDeleteHistory(true);
 
-        if (formData.doDelteHistory(this, rundata, context)) {
+        if (formData.doDelete(this, rundata, context)) {
         } else {
           JSONArray json =
             JSONArray
