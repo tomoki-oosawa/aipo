@@ -97,8 +97,8 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  public String getDate() {
-    return date.getValue().toString();
+  public ALDateField getDate() {
+    return date;
   }
 
   /**
