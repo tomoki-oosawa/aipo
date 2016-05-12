@@ -592,11 +592,6 @@ public class AccountUtils {
       // ユーザーIDを取得する
       String userId = user.getUserId().toString();
 
-      // ユーザー名を取得する
-      String userName =
-        new StringBuffer().append(user.getLastName()).append(" ").append(
-          user.getFirstName()).toString();
-
       // 対象ユーザのユーザーグループロールをすべて削除する
       SelectQuery<TurbineUserGroupRole> ugr_query =
         Database.query(TurbineUserGroupRole.class);
@@ -808,9 +803,21 @@ public class AccountUtils {
 
       List<EipTMessageRoom> deleteRoomList =
         Database.sql(EipTMessageRoom.class, sql.toString()).fetchList();
-      deleteRoomList.forEach(room -> {
-        Database.delete(room);
-      });
+
+      for (EipTMessageRoom room : deleteRoomList) {
+        Integer roomId = room.getRoomId();
+        EipTMessageRoom model = Database.get(EipTMessageRoom.class, roomId);
+        List<EipTMessageFile> messageRoomfiles =
+          Database
+            .query(EipTMessageFile.class)
+            .where(Operations.eq(EipTMessageFile.ROOM_ID_PROPERTY, roomId))
+            .fetchList();
+
+        ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
+          .getUserId(), "message"), messageRoomfiles);
+
+        Database.delete(model);
+      }
       Database.commit();
 
       // イベントログに保存
@@ -819,7 +826,10 @@ public class AccountUtils {
         && !" ".equals(user.getLastName())
         && user.getFirstName() != null
         && !" ".equals(user.getFirstName())) {
-        name = userName;
+        name =
+          new StringBuffer().append(user.getLastName()).append(" ").append(
+            user.getFirstName()).toString();
+        ;
       } else {
         name = user.getEmail();
       }
