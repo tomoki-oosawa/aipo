@@ -804,9 +804,13 @@ public class AccountUtils {
       List<EipTMessageRoom> deleteRoomList =
         Database.sql(EipTMessageRoom.class, sql.toString()).fetchList();
 
+      List<Integer> deleteRoomIdList = new ArrayList<Integer>();
       for (EipTMessageRoom room : deleteRoomList) {
-        Integer roomId = room.getRoomId();
-        EipTMessageRoom model = Database.get(EipTMessageRoom.class, roomId);
+        deleteRoomIdList.add(room.getRoomId());
+      }
+
+      // 　メッセージルームの添付ファイルを削除
+      for (Integer roomId : deleteRoomIdList) {
         List<EipTMessageFile> messageRoomfiles =
           Database
             .query(EipTMessageFile.class)
@@ -815,9 +819,16 @@ public class AccountUtils {
 
         ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
           .getUserId(), "message"), messageRoomfiles);
-
-        Database.delete(model);
       }
+
+      // 　メッセージルームを削除
+      if (deleteRoomIdList.size() > 0) {
+        Database.query(EipTMessageRoom.class).andQualifier(
+          ExpressionFactory.inDbExp(
+            EipTMessageRoom.ROOM_ID_PK_COLUMN,
+            deleteRoomIdList)).deleteAll();
+      }
+
       Database.commit();
 
       // イベントログに保存
