@@ -1435,30 +1435,14 @@ public class ScheduleFormData extends ALAbstractFormData {
           item.setNotifyTiming(notify_timing.getValueWithInt());
           item.setRepeatPattern(schedule.getRepeatPattern());
           if (is_repeat) {
-            // 次のアラーム日を算出
-            Calendar today = Calendar.getInstance();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(schedule.getStartDate());
-            cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
-            cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
-            cal.set(Calendar.DATE, today.get(Calendar.DATE));
-            // 今日のアラーム送信時間が過ぎている場合は翌日にする
-            today.add(Calendar.MINUTE, item.getNotifyTiming());
-            if (cal.getTime().before(today.getTime())) {
-              cal.add(Calendar.DATE, 1);
-            }
-            ALDateTimeField next = new ALDateTimeField();
-            next.setValue(cal.getTime());
             boolean isLimit = false;
             if ("ON".equals(limit_flag.getValue())) {
               isLimit = true;
             }
             ALDateTimeField field =
-              ScheduleUtils.getNextDate(
-                next,
-                schedule.getRepeatPattern(),
-                schedule.getStartDate(),
-                schedule.getEndDate(),
+              ScheduleUtils.getNextDateRepeat(
+                schedule,
+                item.getNotifyTiming(),
                 isLimit);
             if (field != null) {
               item.setEventStartDate(field.getValue());
@@ -2079,30 +2063,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         if (is_repeat) {
           // すべての繰り返し予定を変更した場合
           // 次のアラーム日を算出
-          Calendar today = Calendar.getInstance();
-          Calendar cal = Calendar.getInstance();
-          cal.setTime(targetSchedule.getStartDate());
-          cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
-          cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
-          cal.set(Calendar.DATE, today.get(Calendar.DATE));
-          // 今日のアラーム送信時間が過ぎている場合は翌日にする
-          today.add(Calendar.MINUTE, item.getNotifyTiming());
-          if (cal.getTime().before(today.getTime())) {
-            cal.add(Calendar.DATE, 1);
-          }
-          ALDateTimeField next = new ALDateTimeField();
-          next.setValue(cal.getTime());
           boolean isLimit = false;
           if ("ON".equals(limit_flag.getValue())) {
             isLimit = true;
           }
           ALDateTimeField field =
-            ScheduleUtils.getNextDate(
-              next,
-              targetSchedule.getRepeatPattern(),
-              targetSchedule.getStartDate(),
-              targetSchedule.getEndDate(),
-              isLimit);
+            ScheduleUtils.getNextDateRepeat(targetSchedule, item
+              .getNotifyTiming(), isLimit);
           if (field != null) {
             item.setEventStartDate(field.getValue());
             if ("ON".equals(limit_flag.getValue())) {
