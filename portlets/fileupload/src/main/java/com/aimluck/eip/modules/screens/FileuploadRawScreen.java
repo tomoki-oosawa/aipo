@@ -67,12 +67,13 @@ public abstract class FileuploadRawScreen extends RawScreen {
    */
   @Override
   protected String getContentType(RunData rundata) {
+    String inline = rundata.getParameters().get("inline");
     String contentType = FileuploadUtils.getInlineContentType(getFileName());
-    if (contentType == null) {
-      return "application/octet-stream";
-    } else {
-      return contentType;
-    }
+
+    return (contentType != null && (FileuploadUtils
+      .isAcceptInline(getFileName()) || "1".equals(inline)))
+      ? contentType
+      : "application/octet-stream";
   }
 
   /**
@@ -132,8 +133,11 @@ public abstract class FileuploadRawScreen extends RawScreen {
         }
       }
 
+      String inline = rundata.getParameters().get("inline");
       String type =
-        FileuploadUtils.isAcceptInline(getFileName()) ? "inline" : "attachment";
+        FileuploadUtils.isAcceptInline(getFileName()) || "1".equals(inline)
+          ? "inline"
+          : "attachment";
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
@@ -159,6 +163,8 @@ public abstract class FileuploadRawScreen extends RawScreen {
       while ((length = in.read(buf)) > 0) {
         out.write(buf, 0, length);
       }
+    } catch (RuntimeException e) {
+      throw e;
     } catch (Exception e) {
       logger.error("FileuploadRawScreen.doOutput", e);
     } finally {

@@ -95,6 +95,20 @@ label {
   cursor: pointer;
   white-space: normal;
 }
+.label {
+  background: #eee;
+  font-size: 10px;
+  border-radius: 3px;
+  display: block;
+  float: left;
+  margin: 0 5px 0 0;
+  padding: 3px 5px;
+  max-width: 50px;
+  text-shadow: 0 1px 0 #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 a img {
   border: none;
@@ -800,6 +814,7 @@ table.simpleTable .caption {
   left: 50%;
   width: 300px;
   margin-left: -150px;
+  padding: 40px 0 0;
 }
 
 /* addressbookDialog */
@@ -1855,6 +1870,24 @@ div.off, td.off {
   display: inline-block;
   width: 1em;
   text-align: center;
+}
+
+/*// マイページでの月スケジュールの背景色調整 */
+td.topNone.saturday.off.addScheduleCell div,
+td.topNone.sunday.off.addScheduleCell div,
+td.topNone.holiday.off.addScheduleCell div,
+/*// マイページでの月スケジュールhover時の背景色調整 */
+.saturday.addScheduleCell:hover div,
+.sunday.addScheduleCell:hover div,
+.holiday.addScheduleCell:hover div{
+  background: none !important;
+}
+/*// マイページでの一覧スケジュールの背景色調整 */
+.scheduleList tr.today td div,
+.scheduleList tr.saturday td div,
+.scheduleList tr.sunday td div,
+.scheduleList tr.holiday td div{
+  background: none !important;
 }
 
 .calendarDisplayMonth .calendar th {

@@ -18,6 +18,9 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import net.sf.json.JSONObject;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,7 +34,7 @@ import com.aimluck.eip.schedule.ScheduleTooltipSelectData;
 
 /**
  * カレンダーを処理するクラスです。 <br />
- * 
+ *
  */
 public class ScheduleDetailJSONScreen extends ALJSONScreen {
 
@@ -57,10 +60,19 @@ public class ScheduleDetailJSONScreen extends ALJSONScreen {
     if (detailData.doViewDetail(this, rundata, context)) {
       ScheduleDetailResultData schedule =
         (ScheduleDetailResultData) detailData.getDetail();
+      try {
+        String scheduleName = schedule.getName().getValue();
+        String lineSeparator = URLDecoder.decode("%E2%80%A8", "UTF-8");
+        scheduleName = scheduleName.replace(lineSeparator, "\n");
+        scheduleJson.put("name", ALStringUtil.sanitizing(scheduleName));
+      } catch (UnsupportedEncodingException e1) {
+        scheduleJson.put("name", ALStringUtil.sanitizing(schedule
+          .getName()
+          .getValue()));
+        logger.error(e1);
+      }
       scheduleJson.put("id", schedule.getScheduleId().getValue());
-      scheduleJson.put("name", ALStringUtil.sanitizing(schedule
-        .getName()
-        .getValue()));
+
       scheduleJson.put("date", schedule.getDate2());
       scheduleJson.put("place", ALStringUtil.sanitizing(schedule
         .getPlace()

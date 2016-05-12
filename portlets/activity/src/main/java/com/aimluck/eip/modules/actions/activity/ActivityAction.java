@@ -42,7 +42,7 @@ public class ActivityAction extends ALBaseAction {
     .getLogger(ActivityAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -76,7 +76,7 @@ public class ActivityAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -116,8 +116,8 @@ public class ActivityAction extends ALBaseAction {
     // 選択しているタブ情報の削除2
     list.add("category");
 
-    list.add("com.aimluck.eip.activity.ActivityAllSelectDatafiltertype");
-    list.add("com.aimluck.eip.activity.ActivityAllSelectDatafilter");
+    list.add("ActivityAllSelectDatafiltertype");
+    list.add("ActivityAllSelectDatafilter");
     ALEipUtils.removeTemp(rundata, context, list);
   }
 

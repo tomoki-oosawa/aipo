@@ -44,7 +44,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳のアクションクラスです。
- * 
+ *
  */
 public class AddressBookAction extends ALBaseAction {
 
@@ -53,7 +53,7 @@ public class AddressBookAction extends ALBaseAction {
     .getLogger(AddressBookAction.class.getName());
 
   /**
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -69,7 +69,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -112,7 +112,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス情報の表示を行います。(社外アドレス、一覧表示)
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -134,7 +134,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス情報の表示を行います。（社内アドレス、一覧表示）
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -180,7 +180,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳へ登録するためのフォームを表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -200,7 +200,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳への新規登録処理
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -280,7 +280,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレスグループの詳細表示を行います。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -310,7 +310,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレスグループの追加。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -338,7 +338,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳に登録してある社外グループ情報を削除する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -354,7 +354,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレスグループの修正。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -394,7 +394,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * 会社情報の詳細を表示します。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -433,7 +433,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳に登録してある会社情報を削除する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -449,7 +449,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳登録済みの会社情報を修正する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -467,7 +467,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * アドレス帳登録済みの会社を削除する。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -481,7 +481,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * 検索ワードによる検索処理を行います。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -511,7 +511,7 @@ public class AddressBookAction extends ALBaseAction {
 
   /**
    * 会社情報を検索ワードで検索する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -536,18 +536,15 @@ public class AddressBookAction extends ALBaseAction {
     list.add("tab");
     list.add("entityid");
     list.add("AddressBooksCompanyword");
-    list.add("com.aimluck.eip.addressbook.AddressBookFilterdSelectDatasort");
-    list.add("com.aimluck.eip.addressbook.AddressBookFilterdSelectDatafilter");
-    list
-      .add("com.aimluck.eip.addressbook.AddressBookFilterdSelectDatafiltertype");
-    list
-      .add("com.aimluck.eip.addressbook.AddressBookCorpFilterdSelectDatasort");
-    list.add("com.aimluck.eip.addressbook.AddressBookCompanySelectDatasort");
-    list.add("com.aimluck.eip.addressbook.AddressBookGroupSelectDatasort");
+    list.add("AddressBookFilterdSelectDatasort");
+    list.add("AddressBookFilterdSelectDatafilter");
+    list.add("AddressBookFilterdSelectDatafiltertype");
+    list.add("AddressBookCorpFilterdSelectDatasort");
+    list.add("AddressBookCompanySelectDatasort");
+    list.add("AddressBookGroupSelectDatasort");
     list.add("AddressBooksword");
-    list.add("com.aimluck.eip.addressbook.AddressBookWordSelectDatasort");
-    list
-      .add("com.aimluck.eip.addressbook.AddressBookCompanyWordSelectDatasort");
+    list.add("AddressBookWordSelectDatasort");
+    list.add("AddressBookCompanyWordSelectDatasort");
     ALEipUtils.removeTemp(rundata, context, list);
   }
 }

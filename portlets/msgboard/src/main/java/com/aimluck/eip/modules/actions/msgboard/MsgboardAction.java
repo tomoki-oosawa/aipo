@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板のアクションクラス <BR>
- * 
+ *
  */
 public class MsgboardAction extends ALBaseAction {
 
@@ -64,7 +64,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -96,7 +96,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -128,7 +128,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピック登録のフォームを表示する. <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -144,7 +144,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -171,7 +171,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -195,7 +195,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * 返信記事を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -218,7 +218,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを削除します。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -238,7 +238,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -260,7 +260,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -283,7 +283,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリ登録のフォームを表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -298,7 +298,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを登録します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -324,7 +324,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -350,7 +350,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -374,7 +374,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを削除します。（複数） <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -394,7 +394,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -418,7 +418,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * カテゴリを詳細表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -438,7 +438,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックを別のカテゴリに移動する． <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -476,16 +476,16 @@ public class MsgboardAction extends ALBaseAction {
   // }
   /**
    * 掲示板で使用したセッション情報を消去する．
-   * 
+   *
    */
   public void clearMsgboardSession(RunData rundata, Context context) {
     List<String> list = new ArrayList<String>();
     list.add("entityid");
-    list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasort");
-    list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasorttype");
+    list.add("MsgboardTopicSelectDatasort");
+    list.add("MsgboardTopicSelectDatasorttype");
     // list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafilter");
     // list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatafiltertype");
-    list.add("com.aimluck.eip.msgboard.MsgboardTopicSelectDatasearch");
+    list.add("MsgboardTopicSelectDatasearch");
     ALEipUtils.removeTemp(rundata, context, list);
 
     // JetspeedRunData jdata = (JetspeedRunData) rundata;
@@ -522,7 +522,7 @@ public class MsgboardAction extends ALBaseAction {
 
   /**
    * トピックに返信します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -553,7 +553,7 @@ public class MsgboardAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param obj
    */
   public void setResultDataOnTopicDetail(Object obj) {
@@ -561,7 +561,7 @@ public class MsgboardAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param msg
    */
   public void addErrorMessagesOnTopicDetail(List<String> msgs) {
@@ -572,7 +572,7 @@ public class MsgboardAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param context
    */
   public void putDataOnTopicDetail(RunData rundata, Context context) {

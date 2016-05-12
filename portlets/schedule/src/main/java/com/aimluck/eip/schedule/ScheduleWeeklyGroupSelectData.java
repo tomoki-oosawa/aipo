@@ -282,7 +282,8 @@ public class ScheduleWeeklyGroupSelectData extends ScheduleWeeklySelectData {
       }
 
       if ("C".equals(record.getPublicFlag())
-        && (userid.intValue() != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid
+          .intValue() != record.getUserId().intValue()))
         && (userid.intValue() != record.getOwnerId().intValue())
         && !is_member) {
         // 名前

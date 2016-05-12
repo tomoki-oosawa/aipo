@@ -511,7 +511,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         return rd;
       }
       if ("C".equals(record.getPublicFlag())
-        && (userid_int != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid_int != record
+          .getUserId()
+          .intValue()))
         && (userid_int != record.getOwnerId().intValue())
         && !is_member) {
         // 名前

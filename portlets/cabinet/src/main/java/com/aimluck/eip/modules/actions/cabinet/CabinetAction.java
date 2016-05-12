@@ -150,8 +150,8 @@ public class CabinetAction extends ALBaseAction {
     list.add("entityid");
     list.add("folder_id");
     list.add("CabinetFileWord");
-    list.add("com.aimluck.eip.cabinet.CabinetFolderSelectDatasort");
-    list.add("com.aimluck.eip.cabinet.CabinetFileWordSelectDatasort");
+    list.add("CabinetFolderSelectDatasort");
+    list.add("CabinetFileWordSelectDatasort");
     list.add(CabinetUtils.TARGET_KEYWORD);
     ALEipUtils.removeTemp(rundata, context, list);
   }
