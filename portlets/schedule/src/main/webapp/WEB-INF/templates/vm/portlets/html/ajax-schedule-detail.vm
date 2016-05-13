@@ -140,6 +140,36 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
+#if($result.isReminderEnabled())
+#ALtdcaption($l10n.SCHEDULE_ALARM)
+#ALtditemheader()
+#if($result.hasReminderItem())
+#if ($!result.ReminderItem.NotifyTiming.toString() == "0")
+$l10n.SCHEDULE_REMINDER_ONTIME
+#end
+#if ($!result.ReminderItem.NotifyTiming.toString() == "5" || $!result.ReminderItem.NotifyTiming.toString() == "15" || $!result.ReminderItem.NotifyTiming.toString() == "30")
+$!result.ReminderItem.NotifyTiming.toString()$l10n.SCHEDULE_REMINDER_BEFORE_MIN
+#end
+#if ($!result.ReminderItem.NotifyTiming.toString() == "60")
+1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR
+#end
+$l10n.SCHEDULE_REMINDER_ON
+
+#set($count = 0)
+#if ($!{result.ReminderItem.NotifyTypeMail.toString()} == "TRUE") #set ($dest_type_mail_dist = $l10n.SCHEDULE_REMINDER_MAIL) #set($count = $count+1) #end
+#if ($!{result.ReminderItem.NotifyTypeMessage.toString()} == "TRUE") #set ($dest_type_message_dist = $l10n.SCHEDULE_REMINDER_MESSAGE) #set($count = $count+1) #end
+#if($count == 0)
+-----
+#else
+$!$dest_type_mail_dist #if($count == 2) と #end $!$dest_type_message_dist
+#end
+#else
+$l10n.SCHEDULE_REMINDER_OFF
+#end
+#ALtditemfooter()
+#end
+
+
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditemheader()
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>

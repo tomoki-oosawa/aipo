@@ -54,6 +54,9 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -121,6 +124,9 @@ public class ScheduleSelectData extends
   private boolean ignoreViewdate = false;
 
   private ScheduleDetailOnedaySelectData ondaySelectData = null;
+
+  /** <code>reminderItem</code> リマインダー */
+  private ALReminderItem reminderItem;
 
   /**
    *
@@ -605,6 +611,15 @@ public class ScheduleSelectData extends
 
       return null;
     }
+
+    if (ALReminderService.isEnabled()) {
+      reminderItem =
+        ALReminderService.getJob(Database.getDomainName(), record
+          .getOwnerId()
+          .toString(), ReminderCategory.SCHEDULE, record
+          .getScheduleId()
+          .intValue());
+    }
     return rd;
   }
 
@@ -798,4 +813,15 @@ public class ScheduleSelectData extends
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
+
+  public ALReminderItem getReminderItem() {
+    return reminderItem;
+  }
+
+  public boolean hasReminderItem() {
+    return reminderItem != null ? true : false;
+  }
 }
