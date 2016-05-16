@@ -19,12 +19,14 @@
 
 package com.aimluck.eip.services.reminder.model;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -183,5 +185,49 @@ public class ALReminderItem {
    */
   public void addNotifyType(ReminderNotifyType notifyType) {
     this.notifyType.add(notifyType);
+  }
+
+  /**
+   *
+   * @return
+   */
+  public boolean hasNotifyTypeMail() {
+    if (this.notifyType != null && this.notifyType.size() > 0) {
+      if (this.notifyType.contains(ReminderNotifyType.MAIL)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public boolean hasNotifyTypeMessage() {
+    if (this.notifyType != null && this.notifyType.size() > 0) {
+      if (this.notifyType.contains(ReminderNotifyType.MESSAGE)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public String getNotifyTimingText() {
+    if (this.notifyTiming == 0) {
+      return ALLocalizationUtils.getl10n("SCHEDULE_REMINDER_ONTIME");
+    } else if (this.notifyTiming < 60) {
+      return this.notifyTiming
+        + ALLocalizationUtils.getl10n("SCHEDULE_REMINDER_BEFORE_MIN");
+    } else if (this.notifyTiming >= 60) {
+      BigDecimal bd = new BigDecimal(this.notifyTiming / 60);
+      BigDecimal bd1 = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+      return bd1 + ALLocalizationUtils.getl10n("SCHEDULE_REMINDER_BEFORE_HOUR");
+    }
+    return "";
   }
 }
