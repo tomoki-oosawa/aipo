@@ -3539,6 +3539,82 @@ public class ScheduleUtils {
     return null;
   }
 
+  public static String createReminderMsgForMessage(EipTSchedule schedule,
+      List<ALEipUser> memberList) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+
+    String date_detail = "";
+
+    try {
+
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("titleValue", schedule.getName().toString());
+      context.put("dateValue", date_detail);
+
+      if (schedule.getPlace().toString().length() > 0) {
+        context.put("placeValue", schedule.getPlace().toString());
+      }
+
+      if (schedule.getNote().toString().length() > 0) {
+        context.put("noteValue", schedule.getNote().toString());
+      }
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      if (enableAsp) {
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      } else {
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
+      }
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/scheduleReminderMessage.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
+  }
+
   public static String getMsgDate(EipTSchedule schedule) {
     Calendar start_cal = Calendar.getInstance();
     start_cal.setTime(schedule.getStartDate());
