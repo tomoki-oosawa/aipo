@@ -135,7 +135,7 @@
 #ALtditemfooter()
 #end
 #end
-
+#if($mode!="new_form")
 <tr>
   #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
   #ALtditemheader()
@@ -153,7 +153,7 @@
     </div>
   #ALtditemfooter()
 </tr>
-
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
