@@ -55,8 +55,25 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return members;
   }
 
+  public String getMemberNames() {
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    for (ALEipUser user : members) {
+      b.append(user.getAliasName().getValue());
+      i++;
+      if (i < members.size()) {
+        b.append(",");
+      }
+    }
+    return b.toString();
+  }
+
   public void addMember(ALEipUser user) {
     members.add(user);
+  }
+
+  public void addAllMember(List<ALEipUser> users) {
+    members.addAll(users);
   }
 
   /**
@@ -66,8 +83,25 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return facilities;
   }
 
+  public String getFacilityNames() {
+    StringBuilder b = new StringBuilder();
+    int i = 0;
+    for (FacilityResultData rd : facilities) {
+      b.append(rd.getFacilityName().getValue());
+      i++;
+      if (i < facilities.size()) {
+        b.append(",");
+      }
+    }
+    return b.toString();
+  }
+
   public void addFacility(FacilityResultData facility) {
     facilities.add(facility);
+  }
+
+  public void addAllFacility(List<FacilityResultData> rds) {
+    facilities.addAll(rds);
   }
 
   public String getDateFull() {

@@ -59,6 +59,10 @@ public class ScheduleExportListContainer implements ALData {
     scheduleList = new ArrayList<ScheduleExportResultData>();
   }
 
+  public void removeResultData(ScheduleExportResultData rd) {
+    scheduleList.remove(rd);
+  }
+
   public boolean addResultData(ScheduleExportResultData rd) {
     isSort = false;
     Calendar startDate = Calendar.getInstance();
@@ -131,6 +135,8 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setNote(rd.getNoteStr());
           addRd.setPlace(rd.getPlace().getValue());
           addRd.setDescription(rd.getNoteStr());
+          addRd.addAllFacility(rd.getFacilities());
+          addRd.addAllMember(rd.getMembers());
           addResultDataInternal(addRd);
         }
       } else {

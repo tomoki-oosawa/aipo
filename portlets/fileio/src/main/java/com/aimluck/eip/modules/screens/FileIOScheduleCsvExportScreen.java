@@ -32,9 +32,10 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPermissionException;
-import com.aimluck.eip.facility.beans.FacilityLiteBean;
-import com.aimluck.eip.facility.util.FacilityUtils;
+import com.aimluck.eip.facilities.FacilityResultData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
@@ -62,6 +63,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   private ScheduleExportListContainer con;
 
   private List<Integer> scheduleIdList;
+
+  private List<ALEipUser> users;
+
+  private List<FacilityResultData> facilityAllList;
 
   /**
    *
@@ -101,16 +106,19 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       Date viewEnd =
         DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
           rundata.getParameters().get("end_day"));
+      int userid = ALEipUtils.getUserId(rundata);
 
       // 有効なユーザーを全て取得する
-      List<Integer> userIds = ALEipUtils.getUserIds("LoginUser");
-      int userid = ALEipUtils.getUserId(rundata);
+      users = ALEipUtils.getUsers("LoginUser");
+      List<Integer> userIds = new ArrayList<Integer>();
+      for (ALEipUser user : users) {
+        userIds.add(user.getUserId().getValueWithInt());
+      }
       // 有効な設備を全て取得する
-      List<FacilityLiteBean> facilityLiteBeans =
-        FacilityUtils.getFacilityLiteBeans(rundata);
+      facilityAllList = FacilitiesUtils.getFacilityAllList();
       ArrayList<Integer> facilityList = new ArrayList<Integer>();
-      for (FacilityLiteBean facility : facilityLiteBeans) {
-        facilityList.add(Integer.valueOf(facility.getFacilityId()));
+      for (FacilityResultData facility : facilityAllList) {
+        facilityList.add(facility.getFacilityId().getValueWithInt());
       }
 
       List<VEipTScheduleList> scheduleList =
@@ -158,6 +166,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append(record.getName());
           sb.append("\",\"");
           sb.append(record.getNoteExport());
+          sb.append("\",\"");
+          sb.append(record.getMemberNames());
+          sb.append("\",\"");
+          sb.append(record.getFacilityNames());
           sb.append("\"");
         }
 
@@ -172,6 +184,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   }
 
   /**
+   * @param facilityAllList
+   * @param users
    * @param previous
    * @return
    */
@@ -247,11 +261,36 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
       }
+      if ("F".equals(record.getType())) {
+        for (FacilityResultData facility : facilityAllList) {
+          if (record.getUserId() == facility.getFacilityId().getValueWithInt()) {
+            rd.addFacility(facility);
+          }
+        }
+      } else if ("U".equals(record.getType())) {
+        for (ALEipUser user : users) {
+          if (record.getUserId() == user.getUserId().getValueWithInt()) {
+            rd.addMember(user);
+          }
+        }
+      }
       if (!scheduleIdList.contains(rd.getScheduleId().getValueWithInt())) {
         scheduleIdList.add(rd.getScheduleId().getValueWithInt());
         con.addResultData(rd);
+      } else {
+        // 参加者、設備を追加したものに差し替える
+        List<ScheduleExportResultData> scheduleList = con.getScheduleList();
+        for (ScheduleExportResultData tmpRd : scheduleList) {
+          if (rd.getScheduleId().getValueWithInt() == tmpRd
+            .getScheduleId()
+            .getValueWithInt()) {
+            rd.addAllMember(tmpRd.getMembers());
+            rd.addAllFacility(tmpRd.getFacilities());
+            con.removeResultData(tmpRd);
+          }
+        }
+        con.addResultData(rd);
       }
-      // ToDo member,facilitiesリスト作成
 
     } catch (Exception e) {
       logger.error("schedule", e);
