@@ -152,10 +152,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
           ScheduleExportResultData resultData =
             getResultData(iterator.previous());
-          if (resultData != null
-            && !resultData.isDummy()
-            && resultData.isPublic()) {
-            // 公開スケジュールのみに限定
+          if (resultData != null) {
             List<ScheduleExportResultData> list =
               new ArrayList<ScheduleExportResultData>();
             if (map.containsKey(resultData.getScheduleId().getValueWithInt())) {
@@ -185,26 +182,29 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         }
         // データ出力
         for (ScheduleExportResultData record : con.getScheduleList()) {
-          sb.append(LINE_SEPARATOR);
-          sb.append("\"");
-          sb.append(record.getViewDate());
-          sb.append("\",\"");
-          sb.append(record.getStartDate());
-          sb.append("\",\"");
-          sb.append(record.getEndDateExport());
-          sb.append("\",\"");
-          sb.append(record.getEndDate());
-          sb.append("\",\"");
-          sb.append(record.getPlace());
-          sb.append("\",\"");
-          sb.append(record.getName());
-          sb.append("\",\"");
-          sb.append(record.getNoteExport());
-          sb.append("\",\"");
-          sb.append(record.getMemberNameExport());
-          sb.append("\",\"");
-          sb.append(record.getFacilityNameExport());
-          sb.append("\"");
+          if (record.isPublic()) {
+            // 公開スケジュールのみに限定
+            sb.append(LINE_SEPARATOR);
+            sb.append("\"");
+            sb.append(record.getViewDate());
+            sb.append("\",\"");
+            sb.append(record.getStartDate());
+            sb.append("\",\"");
+            sb.append(record.getEndDateExport());
+            sb.append("\",\"");
+            sb.append(record.getEndDate());
+            sb.append("\",\"");
+            sb.append(record.getPlace());
+            sb.append("\",\"");
+            sb.append(record.getName());
+            sb.append("\",\"");
+            sb.append(record.getNoteExport());
+            sb.append("\",\"");
+            sb.append(record.getMemberNameExport());
+            sb.append("\",\"");
+            sb.append(record.getFacilityNameExport());
+            sb.append("\"");
+          }
         }
 
         return sb.toString();
