@@ -72,7 +72,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   }
 
   public void addMember(ALEipUser user) {
-    members.add(user);
+    members.add(0, user);
   }
 
   public void addAllMember(List<ALEipUser> users) {
@@ -100,7 +100,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   }
 
   public void addFacility(FacilityResultData facility) {
-    facilities.add(facility);
+    facilities.add(0, facility);
   }
 
   public void addAllFacility(List<FacilityResultData> rds) {

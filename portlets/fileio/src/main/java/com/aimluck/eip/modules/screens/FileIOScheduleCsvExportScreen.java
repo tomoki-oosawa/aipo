@@ -147,27 +147,43 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         StringBuffer sb = new StringBuffer();
         sb.append("開始日,開始時刻,終了日,終了時刻,場所,タイトル,内容,参加者,設備");
 
+        // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
           resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
           ScheduleExportResultData resultData =
             getResultData(iterator.previous());
-          List<ScheduleExportResultData> list =
-            map.get(resultData.getScheduleId().getValueWithInt());
-          if (list == null || list.size() == 0) {
-            // list = new ArrayList<ScheduleExportResultData>();
+          if (resultData != null
+            && !resultData.isDummy()
+            && resultData.isPublic()) {
+            // 公開スケジュールのみに限定
+            List<ScheduleExportResultData> list =
+              new ArrayList<ScheduleExportResultData>();
+            if (map.containsKey(resultData.getScheduleId().getValueWithInt())) {
+              list = map.get(resultData.getScheduleId().getValueWithInt());
+            }
+            list.add(resultData);
+            map.put(resultData.getScheduleId().getValueWithInt(), list);
           }
-          list.add(resultData);
-          map.put(resultData.getScheduleId().getValueWithInt(), list);
         }
+        // 参加者、設備調整
         for (Map.Entry<Integer, List<ScheduleExportResultData>> e : map
           .entrySet()) {
           ScheduleExportResultData rd = e.getValue().get(0);
           for (ScheduleExportResultData tmpRd : e.getValue()) {
-            rd.addAllMember(tmpRd.getMembers());
-            rd.addAllFacility(tmpRd.getFacilities());
+            for (ALEipUser tmpMmber : tmpRd.getMembers()) {
+              if (!rd.getMembers().contains(tmpMmber)) {
+                rd.addMember(tmpMmber);
+              }
+            }
+            for (FacilityResultData tmpFacility : tmpRd.getFacilities()) {
+              if (!rd.getFacilities().contains(tmpFacility)) {
+                rd.addFacility(tmpFacility);
+              }
+            }
           }
           con.addResultData(rd);
         }
+        // データ出力
         for (ScheduleExportResultData record : con.getScheduleList()) {
           sb.append(LINE_SEPARATOR);
           sb.append("\"");
@@ -213,7 +229,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
     try {
       // スケジュールが棄却されている場合は表示しない
       if ("R".equals(record.getStatus())) {
-        return rd;
+        // return rd;
+        return null;
       }
 
       boolean is_member = record.isMember();
@@ -246,7 +263,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       }
 
       if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
-        return rd;
+        // return rd;
       }
 
       // ID
@@ -279,6 +296,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
       }
+      // 参加者、設備をセット
       if ("F".equals(record.getType())) {
         for (FacilityResultData facility : facilityAllList) {
           if (record.getUserId() == facility.getFacilityId().getValueWithInt()) {
