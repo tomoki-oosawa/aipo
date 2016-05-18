@@ -144,13 +144,6 @@
     <label for="desktop_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
     <input type="radio" name="desktop_notification" id="desktop_notificationF" value="F" #if(!$result.isDesktopNotification())checked="checked"#end/>
     <label for="desktop_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
-    <div hidden>
-    <h3 class="mt5">$l10n.MESSAGE_NOTIFICATION_MOBILE</h3>
-    <input type="radio" name="mobile_notification" id="mobile_notificationA" value="A" #if($result.isMobileNotification())checked="checked"#end/>
-    <label for="mobile_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
-    <input type="radio" name="mobile_notification" id="mobile_notificationF" value="F" #if(!$result.isMobileNotification())checked="checked"#end/>
-    <label for="mobile_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
-    </div>
   #ALtditemfooter()
 </tr>
 #end
