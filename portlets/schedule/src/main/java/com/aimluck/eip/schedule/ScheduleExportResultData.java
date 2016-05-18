@@ -43,6 +43,9 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   private final List<FacilityResultData> facilities =
     new ArrayList<FacilityResultData>();
 
+  /** 区切り文字 */
+  public static final String DISP_SEPARATOR = "、";
+
   @Override
   public void initField() {
     super.initField();
@@ -55,14 +58,14 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return members;
   }
 
-  public String getMemberNames() {
+  public String getMemberNameExport() {
     StringBuilder b = new StringBuilder();
     int i = 0;
     for (ALEipUser user : members) {
       b.append(user.getAliasName().getValue());
       i++;
       if (i < members.size()) {
-        b.append(",");
+        b.append(DISP_SEPARATOR);
       }
     }
     return b.toString();
@@ -83,14 +86,14 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return facilities;
   }
 
-  public String getFacilityNames() {
+  public String getFacilityNameExport() {
     StringBuilder b = new StringBuilder();
     int i = 0;
     for (FacilityResultData rd : facilities) {
       b.append(rd.getFacilityName().getValue());
       i++;
       if (i < facilities.size()) {
-        b.append(",");
+        b.append(DISP_SEPARATOR);
       }
     }
     return b.toString();

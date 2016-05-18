@@ -22,9 +22,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -62,8 +64,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private ScheduleExportListContainer con;
 
-  private List<Integer> scheduleIdList;
-
   private List<ALEipUser> users;
 
   private List<FacilityResultData> facilityAllList;
@@ -98,7 +98,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           userid,
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
-      scheduleIdList = new ArrayList<Integer>();
+      Map<Integer, List<ScheduleExportResultData>> map =
+        new HashMap<Integer, List<ScheduleExportResultData>>();
 
       Date viewStart =
         DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
@@ -148,7 +149,24 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
         for (ListIterator<VEipTScheduleList> iterator =
           resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
-          getResultData(iterator.previous());
+          ScheduleExportResultData resultData =
+            getResultData(iterator.previous());
+          List<ScheduleExportResultData> list =
+            map.get(resultData.getScheduleId().getValueWithInt());
+          if (list == null || list.size() == 0) {
+            // list = new ArrayList<ScheduleExportResultData>();
+          }
+          list.add(resultData);
+          map.put(resultData.getScheduleId().getValueWithInt(), list);
+        }
+        for (Map.Entry<Integer, List<ScheduleExportResultData>> e : map
+          .entrySet()) {
+          ScheduleExportResultData rd = e.getValue().get(0);
+          for (ScheduleExportResultData tmpRd : e.getValue()) {
+            rd.addAllMember(tmpRd.getMembers());
+            rd.addAllFacility(tmpRd.getFacilities());
+          }
+          con.addResultData(rd);
         }
         for (ScheduleExportResultData record : con.getScheduleList()) {
           sb.append(LINE_SEPARATOR);
@@ -167,9 +185,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append("\",\"");
           sb.append(record.getNoteExport());
           sb.append("\",\"");
-          sb.append(record.getMemberNames());
+          sb.append(record.getMemberNameExport());
           sb.append("\",\"");
-          sb.append(record.getFacilityNames());
+          sb.append(record.getFacilityNameExport());
           sb.append("\"");
         }
 
@@ -274,24 +292,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
       }
-      if (!scheduleIdList.contains(rd.getScheduleId().getValueWithInt())) {
-        scheduleIdList.add(rd.getScheduleId().getValueWithInt());
-        con.addResultData(rd);
-      } else {
-        // 参加者、設備を追加したものに差し替える
-        List<ScheduleExportResultData> scheduleList = con.getScheduleList();
-        for (ScheduleExportResultData tmpRd : scheduleList) {
-          if (rd.getScheduleId().getValueWithInt() == tmpRd
-            .getScheduleId()
-            .getValueWithInt()) {
-            rd.addAllMember(tmpRd.getMembers());
-            rd.addAllFacility(tmpRd.getFacilities());
-            con.removeResultData(tmpRd);
-          }
-        }
-        con.addResultData(rd);
-      }
-
     } catch (Exception e) {
       logger.error("schedule", e);
       return null;
