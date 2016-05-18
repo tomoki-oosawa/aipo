@@ -315,4 +315,8 @@ public class MessageResultData implements ALData, Serializable {
     }
     return displayName;
   }
+
+  public boolean isSystemUser() {
+    return userId.getValue() < 4;
+  }
 }
