@@ -138,8 +138,7 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setNote(rd.getNoteStr());
           addRd.setPlace(rd.getPlace().getValue());
           addRd.setDescription(rd.getNoteStr());
-          addRd.addAllFacility(rd.getFacilities());
-          addRd.addAllMember(rd.getMembers());
+          addRd.setUserId(rd.getUserId().getValueWithInt());
           addResultDataInternal(addRd);
         }
       } else {

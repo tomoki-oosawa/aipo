@@ -20,8 +20,11 @@ package com.aimluck.eip.schedule;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
@@ -36,12 +39,14 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  */
 public class ScheduleExportResultData extends ScheduleDetailResultData {
 
+  /** <code>user_id</code> ユーザー・設備 ID */
+  private ALNumberField user_id;
+
   /** <code>members</code> 共有メンバー */
-  private final List<ALEipUser> members = new ArrayList<ALEipUser>();
+  private List<ALEipUser> members;
 
   /** <code>facilities</code> 共有設備 */
-  private final List<FacilityResultData> facilities =
-    new ArrayList<FacilityResultData>();
+  private List<FacilityResultData> facilities;
 
   /** 区切り文字 */
   public static final String DISP_SEPARATOR = "、";
@@ -49,6 +54,21 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   @Override
   public void initField() {
     super.initField();
+    user_id = new ALNumberField();
+    members = new ArrayList<ALEipUser>();
+    facilities = new ArrayList<FacilityResultData>();
+  }
+
+  public void addAllMember(List<ALEipUser> users) {
+    // ソートした上で挿入する
+    Collections.sort(users, new Comparator<ALEipUser>() {
+      @Override
+      public int compare(ALEipUser users1, ALEipUser users2) {
+        return users1.getUserId().getValueWithInt()
+          - users2.getUserId().getValueWithInt();
+      }
+    });
+    members.addAll(users);
   }
 
   /**
@@ -71,16 +91,15 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return b.toString();
   }
 
-  public void addMember(ALEipUser user) {
-    members.add(0, user);
-  }
-
-  public void removeMember(List<ALEipUser> users) {
-    members.removeAll(users);
-  }
-
-  public void addAllMember(List<ALEipUser> users) {
-    members.addAll(users);
+  public void addAllFacility(List<FacilityResultData> rds) {
+    Collections.sort(rds, new Comparator<FacilityResultData>() {
+      @Override
+      public int compare(FacilityResultData rds1, FacilityResultData rds2) {
+        return rds1.getFacilityId().getValueWithInt()
+          - rds2.getFacilityId().getValueWithInt();
+      }
+    });
+    facilities.addAll(rds);
   }
 
   /**
@@ -101,18 +120,6 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
       }
     }
     return b.toString();
-  }
-
-  public void addFacility(FacilityResultData facility) {
-    facilities.add(0, facility);
-  }
-
-  public void removeFacility(List<FacilityResultData> rds) {
-    facilities.removeAll(rds);
-  }
-
-  public void addAllFacility(List<FacilityResultData> rds) {
-    facilities.addAll(rds);
   }
 
   public String getDateFull() {
@@ -224,5 +231,20 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     String str = getNoteStr().replaceAll("\r", "").replaceAll("\n", " ");
     field.setValue(str);
     return field;
+  }
+
+  /**
+   * @return user_id
+   */
+  public ALNumberField getUserId() {
+    return user_id;
+  }
+
+  /**
+   * @param user_id
+   *          セットする user_id
+   */
+  public void setUserId(int userId) {
+    user_id.setValue(userId);
   }
 }
