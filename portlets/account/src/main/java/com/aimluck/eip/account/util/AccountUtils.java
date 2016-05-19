@@ -136,6 +136,13 @@ public class AccountUtils {
   public static final String FOLDER_FILEDIR_ACCOUNT = JetspeedResources
     .getString("aipo.filedir", "");
 
+  /** メッセージの添付ファイルを保管するディレクトリの指定 */
+  public static final String FOLDER_FILEDIR_MESSAGE = JetspeedResources
+    .getString("aipo.filedir", "");
+
+  public static final String CATEGORY_KEY_MESSAGE = JetspeedResources
+    .getString("aipo.message.categorykey", "");
+
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
    *
@@ -809,7 +816,7 @@ public class AccountUtils {
         deleteRoomIdList.add(room.getRoomId());
       }
 
-      // 　メッセージルームの添付ファイルを削除
+      // 削除対象ユーザー以外にメンバーのいないメッセージルームの添付ファイルを削除
       for (Integer roomId : deleteRoomIdList) {
         List<EipTMessageFile> messageRoomfiles =
           Database
@@ -817,11 +824,12 @@ public class AccountUtils {
             .where(Operations.eq(EipTMessageFile.ROOM_ID_PROPERTY, roomId))
             .fetchList();
 
-        ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
-          .getUserId(), "message"), messageRoomfiles);
+        ALDeleteFileUtil.deleteFiles(
+          AccountUtils.FOLDER_FILEDIR_MESSAGE,
+          AccountUtils.CATEGORY_KEY_MESSAGE,
+          messageRoomfiles);
       }
 
-      // 　メッセージルームを削除
       if (deleteRoomIdList.size() > 0) {
         Database.query(EipTMessageRoom.class).andQualifier(
           ExpressionFactory.inDbExp(
