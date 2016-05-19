@@ -662,6 +662,7 @@ aipo.message.selectTab = function(tab) {
         dojo.removeClass(messageUserTab, "active");
         dojo.addClass(messageRoomContents, "active");
         dojo.removeClass(messageUserContents, "active");
+        dojo.byId("messageRoomSetting").style.display = "";
     }
 
     if ("user" == tab) {
