@@ -34,6 +34,8 @@
 		#elseif("${record.UserId.Value}" == "1")
 			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#elseif("${record.UserId.Value}" == "2")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "3")
 			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#else
 			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
@@ -56,6 +58,8 @@
 			#elseif("${record.UserId.Value}" == "1")
 			    <img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
 		    #elseif("${record.UserId.Value}" == "2")
+		    	<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
+		    #elseif("${record.UserId.Value}" == "3")
 		    	<img src="themes/default/images/common/icon_message100.png" alt="$!record.Name" class="avatar_s"/>
 		    #else
 				<img src="themes/default/images/common/icon_user100.png" alt="$!record.Name" class="avatar_s"/>
@@ -90,6 +94,8 @@
 		#elseif("${record.UserId.Value}" == "1")
 			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#elseif("${record.UserId.Value}" == "2")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "3")
 			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#else
 			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
