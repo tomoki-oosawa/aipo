@@ -181,8 +181,13 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
           for (ALEipUser member : memberList) {
             if (member.getUserId().getValueWithInt() == myId) {
-              member.setDesktopNotification(desktopNotification);
-              member.setMobileNotification(mobileNotification);
+              if (desktopNotification != null
+                && !"".equals(desktopNotification)) {
+                member.setDesktopNotification(desktopNotification);
+              }
+              if (mobileNotification != null && !"".equals(mobileNotification)) {
+                member.setMobileNotification(mobileNotification);
+              }
             }
           }
 
