@@ -75,6 +75,10 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     members.add(0, user);
   }
 
+  public void removeMember(List<ALEipUser> users) {
+    members.removeAll(users);
+  }
+
   public void addAllMember(List<ALEipUser> users) {
     members.addAll(users);
   }
@@ -101,6 +105,10 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
 
   public void addFacility(FacilityResultData facility) {
     facilities.add(0, facility);
+  }
+
+  public void removeFacility(List<FacilityResultData> rds) {
+    facilities.removeAll(rds);
   }
 
   public void addAllFacility(List<FacilityResultData> rds) {

@@ -23,7 +23,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.common.ALData;
@@ -34,6 +38,9 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
  *
  */
 public class ScheduleExportListContainer implements ALData {
+  /** logger */
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleExportListContainer.class.getName());
 
   private ALDateTimeField viewStartDate;
 
@@ -145,12 +152,13 @@ public class ScheduleExportListContainer implements ALData {
   }
 
   protected void addResultDataInternal(ScheduleExportResultData rd) {
-    int size = scheduleList.size();
     boolean canAdd = true;
     boolean repeat_del = false;
-    for (int i = 0; i < size; i++) {
+
+    Iterator<ScheduleExportResultData> i = scheduleList.iterator();
+    while (i.hasNext()) {
       repeat_del = false;
-      ScheduleExportResultData rd2 = scheduleList.get(i);
+      ScheduleExportResultData rd2 = i.next();
       if (rd.isRepeat()
         && rd2.isDummy()
         && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
@@ -168,7 +176,7 @@ public class ScheduleExportListContainer implements ALData {
           .getStartDate()
           .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
-        scheduleList.remove(rd2);
+        // i.remove();
         canAdd = true;
         repeat_del = true;
       }

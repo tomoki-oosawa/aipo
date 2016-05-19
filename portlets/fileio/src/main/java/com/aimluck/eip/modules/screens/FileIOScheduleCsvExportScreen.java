@@ -162,6 +162,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
             map.put(resultData.getScheduleId().getValueWithInt(), list);
           }
         }
+
         // 参加者、設備調整
         for (Map.Entry<Integer, List<ScheduleExportResultData>> e : map
           .entrySet()) {
@@ -264,6 +265,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
       if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         // return rd;
+        return null;
       }
 
       // ID
