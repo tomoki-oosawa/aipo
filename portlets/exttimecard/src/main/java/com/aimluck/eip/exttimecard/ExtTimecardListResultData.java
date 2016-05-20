@@ -97,8 +97,8 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  public String getDate() {
-    return date.getValue().toString();
+  public ALDateField getDate() {
+    return date;
   }
 
   /**
@@ -905,7 +905,7 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  private Date getStartDate() {
+  protected Date getStartDate() {
     int start_hour = timecard_system.getStartHour(), start_minute =
       timecard_system.getStartMinute();
     Calendar cal = Calendar.getInstance();
@@ -929,7 +929,7 @@ public class ExtTimecardListResultData implements ALData {
    * 
    * @return
    */
-  private Date getEndDate() {
+  protected Date getEndDate() {
     int end_hour = timecard_system.getEndHour(), end_minute =
       timecard_system.getEndMinute();
     Calendar cal = Calendar.getInstance();
@@ -948,7 +948,7 @@ public class ExtTimecardListResultData implements ALData {
     return cal.getTime();
   }
 
-  private Date getChangeDate() {
+  protected Date getChangeDate() {
     int change_hour = timecard_system.getChangeHour();
     Calendar cal = Calendar.getInstance();
     try {
@@ -963,7 +963,7 @@ public class ExtTimecardListResultData implements ALData {
     return cal.getTime();
   }
 
-  private Date getNextChangeDate() {
+  protected Date getNextChangeDate() {
     int change_hour = timecard_system.getChangeHour();
     Calendar cal = Calendar.getInstance();
     try {
@@ -986,7 +986,7 @@ public class ExtTimecardListResultData implements ALData {
    * @param to_date
    * @return
    */
-  private float getOutgoingTime(Date from_date, Date to_date) {
+  protected float getOutgoingTime(Date from_date, Date to_date) {
     long outgoing_time = 0;
     int comeback_num = 0, outgoing_num = 0, from_num = -1, to_num = -1;
     if (from_date.getTime() > to_date.getTime()) {
