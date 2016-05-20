@@ -279,9 +279,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
             sb.append("\",\"");
             sb.append(record.getEndDate());
             sb.append("\",\"");
-            sb.append(record.getPlace());
+            sb.append(record.getPlaceExport());
             sb.append("\",\"");
-            sb.append(record.getName());
+            sb.append(record.getNameExport());
             sb.append("\",\"");
             sb.append(record.getNoteExport());
             sb.append("\",\"");

@@ -49,7 +49,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   private List<FacilityResultData> facilities;
 
   /** 区切り文字 */
-  public static final String DISP_SEPARATOR = "、";
+  public static final String DISP_SEPARATOR = ",";
 
   @Override
   public void initField() {
@@ -82,7 +82,9 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     StringBuilder b = new StringBuilder();
     int i = 0;
     for (ALEipUser user : members) {
-      b.append(user.getAliasName().getValue());
+      // ダブルクオーテーションを削除
+      String str = user.getAliasName().getValue().replaceAll("\"", "");
+      b.append(str);
       i++;
       if (i < members.size()) {
         b.append(DISP_SEPARATOR);
@@ -113,7 +115,9 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     StringBuilder b = new StringBuilder();
     int i = 0;
     for (FacilityResultData rd : facilities) {
-      b.append(rd.getFacilityName().getValue());
+      // ダブルクオーテーションを削除
+      String str = rd.getFacilityName().getValue().replaceAll("\"", "");
+      b.append(str);
       i++;
       if (i < facilities.size()) {
         b.append(DISP_SEPARATOR);
@@ -228,7 +232,26 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   public ALStringField getNoteExport() {
     ALStringField field = new ALStringField();
 
-    String str = getNoteStr().replaceAll("\r", "").replaceAll("\n", " ");
+    // ダブルクオーテーションを削除
+    String str = getNoteStr().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
+
+  public ALStringField getPlaceExport() {
+    ALStringField field = new ALStringField();
+
+    // ダブルクオーテーションを削除
+    String str = getPlace().getValue().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
+
+  public ALStringField getNameExport() {
+    ALStringField field = new ALStringField();
+
+    // ダブルクオーテーションを削除
+    String str = getName().getValue().replaceAll("\"", "");
     field.setValue(str);
     return field;
   }
