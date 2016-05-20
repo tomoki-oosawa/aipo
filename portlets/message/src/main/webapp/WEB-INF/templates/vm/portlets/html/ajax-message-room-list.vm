@@ -42,9 +42,16 @@
 			#if($!record.getRoomType().getValue() == "O")
 			#if($!record.isHasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
+			#elseif("${record.UserId.Value}" == "1")
+			    <img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
+			#elseif("${record.UserId.Value}" == "2")
+			    <img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
+			#elseif("${record.UserId.Value}" == "3")
+			    <img src="themes/default/images/common/icon_message100.png" alt="$!record.Name" class="avatar_s"/>
 			#else
 				<img src="themes/default/images/common/icon_user100.png" alt="$!record.Name" class="avatar_s"/>
 			#end
+
 			#else
 			#if($!record.isHasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("MessageFileuploadRoomPhotoScreen").addQueryData("rid", $!record.RoomId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>

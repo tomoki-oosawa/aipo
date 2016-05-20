@@ -335,8 +335,9 @@ public class MessageFormData extends ALAbstractFormData {
       if (!(messageOwner.equals(user))) {
         EipTMessageRoom messageRoom = message.getEipTMessageRoom();
         // 管理者権限を持っているか判定（ダイレクトメッセージ以外）
+        // 管理者権限が持っていれシステム投稿は削除可能
         if (!MessageUtils.hasAuthorityRoom(messageRoom, user)
-          || "O".equals(messageRoom.getRoomType())) {
+          || ("O".equals(messageRoom.getRoomType()) && messageOwner.intValue() > 3)) {
           return false;
         }
       }
