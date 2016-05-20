@@ -76,6 +76,7 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
+import com.aimluck.eip.services.reminder.ALReminderManagement;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -1348,6 +1349,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 2007.3.28 ToDo連携
       // // スケジュールを登録
       // orm.doInsert(schedule);
+      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         EipTScheduleMap map = Database.create(EipTScheduleMap.class);
         int userid = (int) user.getUserId().getValue();
@@ -1357,6 +1359,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
         if (userid == ALEipUtils.getUserId(rundata)) {
           map.setStatus("O");
+          isJoin = true;
         } else {
           map.setStatus("T");
         }
@@ -1426,48 +1429,52 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // アラーム
       if (ALReminderService.isEnabled()) {
-        if ("T".equals(reminder_flag.getValue())) {
-          ALReminderItem item = new ALReminderItem();
-          item.setOrgId(Database.getDomainName());
-          item.setUserId(schedule.getOwnerId().toString());
-          item.setItemId(schedule.getScheduleId().intValue());
-          item.setCategory(ReminderCategory.SCHEDULE);
-          item.setNotifyTiming(notify_timing.getValueWithInt());
-          item.setRepeatPattern(schedule.getRepeatPattern());
-          if (is_repeat) {
-            boolean isLimit = false;
-            if ("ON".equals(limit_flag.getValue())) {
-              isLimit = true;
-            }
-            ALDateTimeField field =
-              ScheduleUtils.getNextDateRepeat(
-                schedule,
-                item.getNotifyTiming(),
-                isLimit);
-            if (field != null) {
-              item.setEventStartDate(field.getValue());
-              if ("ON".equals(limit_flag.getValue())) {
-                item.setLimitEndDate(schedule.getEndDate());
-              }
-            }
-          } else {
-            // アラーム送信時間チェック
-            Calendar today = Calendar.getInstance();
-            today.add(Calendar.MINUTE, item.getNotifyTiming());
-            if (schedule.getStartDate().after(today.getTime())) {
-              item.setEventStartDate(schedule.getStartDate());
-            }
-          }
+        if ("T".equals(reminder_flag.getValue()) && isJoin) {
+          boolean isMail = false;
+          boolean isMessage = false;
           if ("TRUE".equals(notify_type_mail.getValue())) {
-            item.addNotifyType(ReminderNotifyType.MAIL);
+            isMail = true;
           }
           if ("TRUE".equals(notify_type_message.getValue())) {
-            item.addNotifyType(ReminderNotifyType.MESSAGE);
+            isMessage = true;
           }
-          if (!is_span && item.getEventStartDate() != null) {
-            ALReminderService.updateJob(item);
+          setupReminderJob(
+            Database.getDomainName(),
+            login_user.getUserId().toString(),
+            schedule,
+            notify_timing.getValueWithInt(),
+            isMail,
+            isMessage);
+        }
+        // メンバーに対しては それぞれのDefaultJob をもとにリマインドを作成
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (login_user.getUserId().getValueWithInt() != memberId) {
+            ALReminderDefaultItem defaultItem =
+              ALReminderService.getDefault(
+                orgId,
+                user.getName().getValue(),
+                ReminderCategory.SCHEDULE);
+            if (defaultItem == null) {
+              // DefaultItemがない場合は標準設定を元にリマインドを登録
+              defaultItem =
+                ALReminderManagement.getRecommendDefault(
+                  Database.getDomainName(),
+                  user.getName().getValue(),
+                  ReminderCategory.SCHEDULE);
+            }
+            if (defaultItem.isEnabled()) {
+              setupReminderJob(
+                Database.getDomainName(),
+                user.getUserId().toString(),
+                schedule,
+                defaultItem.getNotifyTiming(),
+                defaultItem.hasNotifyTypeMail(),
+                defaultItem.hasNotifyTypeMessage());
+            }
           }
         }
+
       }
 
       // イベントログに保存
@@ -1561,6 +1568,56 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
     }
     return true;
+  }
+
+  /**
+   * @param domainName
+   * @param string
+   * @param schedule
+   * @param valueWithInt
+   */
+  private void setupReminderJob(String orgId, String userId,
+      EipTSchedule schedule, int notifyTiming, boolean isMail, boolean isMessage) {
+
+    ALReminderItem item = new ALReminderItem();
+    item.setOrgId(orgId);
+    item.setUserId(userId);
+    item.setItemId(schedule.getScheduleId().intValue());
+    item.setCategory(ReminderCategory.SCHEDULE);
+    item.setNotifyTiming(notifyTiming);
+    item.setRepeatPattern(schedule.getRepeatPattern());
+    if (is_repeat) {
+      boolean isLimit = false;
+      if ("ON".equals(limit_flag.getValue())) {
+        isLimit = true;
+      }
+      ALDateTimeField field =
+        ScheduleUtils.getNextDateRepeat(schedule, notifyTiming, isLimit);
+      if (field != null) {
+        item.setEventStartDate(field.getValue());
+        if ("ON".equals(limit_flag.getValue())) {
+          item.setLimitEndDate(schedule.getEndDate());
+        }
+      }
+    } else {
+      // アラーム送信時間チェック
+      Calendar today = Calendar.getInstance();
+      today.add(Calendar.MINUTE, notifyTiming);
+      if (schedule.getStartDate().after(today.getTime())) {
+        item.setEventStartDate(schedule.getStartDate());
+      }
+    }
+
+    if (isMail) {
+      item.addNotifyType(ReminderNotifyType.MAIL);
+    }
+    if (isMessage) {
+      item.addNotifyType(ReminderNotifyType.MESSAGE);
+    }
+    if (!is_span && item.getEventStartDate() != null) {
+      ALReminderService.updateJob(item);
+    }
+
   }
 
   /**

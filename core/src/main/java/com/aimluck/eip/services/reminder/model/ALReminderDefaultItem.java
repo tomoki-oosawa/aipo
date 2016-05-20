@@ -130,4 +130,30 @@ public class ALReminderDefaultItem {
   public void setEnabled(boolean enabled) {
     this.enabled = enabled;
   }
+
+  /**
+   *
+   * @return
+   */
+  public boolean hasNotifyTypeMail() {
+    if (this.notifyType != null && this.notifyType.size() > 0) {
+      if (this.notifyType.contains(ReminderNotifyType.MAIL)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public boolean hasNotifyTypeMessage() {
+    if (this.notifyType != null && this.notifyType.size() > 0) {
+      if (this.notifyType.contains(ReminderNotifyType.MESSAGE)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
