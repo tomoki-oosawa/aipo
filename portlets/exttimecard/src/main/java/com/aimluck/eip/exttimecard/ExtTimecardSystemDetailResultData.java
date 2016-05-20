@@ -25,8 +25,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード管理の勤務形態の情報を保持する。
- * 
- * 
+ *
+ *
  */
 public class ExtTimecardSystemDetailResultData extends
     ExtTimecardSystemResultData {
@@ -59,6 +59,10 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALStringField update_date;
 
+  private ALStringField overtime_type_flag;
+
+  private ALNumberField overtime_type_minute;
+
   /**
    *
    *
@@ -80,6 +84,8 @@ public class ExtTimecardSystemDetailResultData extends
     outgoing_add_flag = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
+    overtime_type_flag = new ALStringField();
+    overtime_type_minute = new ALNumberField();
   }
 
   public String getUserId() {
@@ -157,6 +163,14 @@ public class ExtTimecardSystemDetailResultData extends
     return update_date;
   }
 
+  public String getOvertimeTypeFlag() {
+    return overtime_type_flag.getValue();
+  }
+
+  public String getOvertimeTypeMinute() {
+    return overtime_type_minute.getValueAsString();
+  }
+
   public ALNumberField getStartDay() {
     return start_day;
   }
@@ -215,6 +229,14 @@ public class ExtTimecardSystemDetailResultData extends
 
   public void setStartDay(int i) {
     start_day.setValue(i);
+  }
+
+  public void setOvertimeTypeFlag(String str) {
+    overtime_type_flag.setValue(str);
+  }
+
+  public void setOvertimeTypeMinute(String str) {
+    overtime_type_minute.setValue(str);
   }
 
 }

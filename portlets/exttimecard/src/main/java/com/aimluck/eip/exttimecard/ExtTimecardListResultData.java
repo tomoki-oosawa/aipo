@@ -39,7 +39,7 @@ import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 
 /**
  * タイムカードのResultDataです。 <BR>
- * 
+ *
  */
 public class ExtTimecardListResultData implements ALData {
 
@@ -85,7 +85,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 日付を設定します。
-   * 
+   *
    * @param resultdata
    */
   public void setDate(Date date) {
@@ -94,7 +94,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 現在設定されている日付を取得します。
-   * 
+   *
    * @return
    */
   public ALDateField getDate() {
@@ -103,7 +103,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * タイムカードのResultDataを設定します。
-   * 
+   *
    * @param resultdata
    */
   public void setRd(ExtTimecardResultData resultdata) {
@@ -112,7 +112,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * タイムカードのResultDataを取得します。
-   * 
+   *
    * @param
    */
   public ExtTimecardResultData getRd() {
@@ -121,7 +121,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * ResultDataがあるかどうか
-   * 
+   *
    * @param
    */
   public boolean getIsResultData() {
@@ -130,7 +130,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 日付が今日より前であるかどうか
-   * 
+   *
    * @param
    */
   public int getIsBeforeOrAfterToday() {
@@ -180,7 +180,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 曜日が土曜日であるか、日曜日であるか、休日であるか取得
-   * 
+   *
    * @return int 0 ... 平日 1 ... 土曜日 2 ... 日曜日 3 ... 休日
    */
   public int getIsSaturdayOrSundayOrHoliday() {
@@ -206,7 +206,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 出勤時間が空かどうか
-   * 
+   *
    * @return
    */
   public boolean getIsNotNullClockInTime() {
@@ -221,7 +221,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 退勤時間が空かどうか
-   * 
+   *
    * @return
    */
   public boolean getIsNotNullClockOutTime() {
@@ -236,7 +236,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 外出／復帰の回数を得ます。
-   * 
+   *
    * @return
    */
   public int getOutgoingComebackTimes() {
@@ -250,29 +250,63 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 現在残業中かどうか調べます。
-   * 
+   *
    * @return boolean
    */
   public boolean getIsClockOverTime() {
     if (getIsNotNullClockInTime()) {
-      int end_hour = timecard_system.getEndHour(), end_minute =
-        timecard_system.getEndMinute();
+      if (isOvertimeTypeO()) {
+        int end_hour = timecard_system.getEndHour(), end_minute =
+          timecard_system.getEndMinute();
 
-      Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
 
-      int now_hour = cal.get(Calendar.HOUR_OF_DAY);
-      int now_minute = cal.get(Calendar.MINUTE);
+        int now_hour = cal.get(Calendar.HOUR_OF_DAY);
+        int now_minute = cal.get(Calendar.MINUTE);
 
-      if (now_hour < end_hour) {
-        return false;
-      } else if (now_hour == end_hour) {
-        if (now_minute < end_minute) {
+        if (now_hour < end_hour) {
           return false;
+        } else if (now_hour == end_hour) {
+          if (now_minute < end_minute) {
+            return false;
+          } else {
+            return true;
+          }
         } else {
           return true;
         }
       } else {
-        return true;
+        // 法定外残業
+        Calendar cal = Calendar.getInstance();
+        float time = 0f;
+        time +=
+          (cal.getTime().getTime() - rd.getClockInTime().getValue().getTime())
+            / (1000.0 * 60.0 * 60.0);
+
+        /** 外出時間を就業時間に含めない場合 */
+        if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+          float outgoing_time =
+            getOutgoingTime(getChangeDate(), getNextChangeDate());
+          if (outgoing_time != NO_DATA) {
+            time -= outgoing_time;
+          }
+        }
+
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimein = (timecard_system.getWorktimeIn() / 60f);
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        if (worktimein != 0F) {
+          int resttimes = (int) (time / worktimein);
+          time -= resttimes * resttimein;
+        }
+        float overTime =
+          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+        if (time >= overTime) {
+          return true;
+        } else {
+          return false;
+        }
       }
     }
     return false;
@@ -280,7 +314,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 外出／復帰の配列を得ます。
-   * 
+   *
    * @return
    */
   public List<Map<String, String>> getOutgoingComeback() {
@@ -317,7 +351,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 外出／復帰の配列を得ます。
-   * 
+   *
    * @return
    */
   public List<Map<String, String>> getOutgoingComeback_xls() {
@@ -373,7 +407,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 就業時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getWorkHour() {
@@ -400,7 +434,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * すべてを含めた就業時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getTotalWorkHour() {
@@ -425,7 +459,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 残業以外の時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getInworkHour() {
@@ -445,51 +479,80 @@ public class ExtTimecardListResultData implements ALData {
           / (1000.0 * 60.0 * 60.0);
 
       // 就業時間だけなので、残業を引く
-      float ovetTime = 0f;
-      Date start_date = getStartDate(), end_date = getEndDate();
-      long start_time = start_date.getTime(), end_time = end_date.getTime();
-      /** 早出残業 */
-      if (rd.getClockInTime().getValue().getTime() < start_time) {
-        ovetTime += start_time - rd.getClockInTime().getValue().getTime();
-        if (rd.getClockOutTime().getValue().getTime() < start_time) {
-          ovetTime -= start_time - rd.getClockOutTime().getValue().getTime();
+      float overTime = 0f;
+      if (isOvertimeTypeO()) {
+        Date start_date = getStartDate(), end_date = getEndDate();
+        long start_time = start_date.getTime(), end_time = end_date.getTime();
+        /** 早出残業 */
+        if (rd.getClockInTime().getValue().getTime() < start_time) {
+          overTime += start_time - rd.getClockInTime().getValue().getTime();
+          if (rd.getClockOutTime().getValue().getTime() < start_time) {
+            overTime -= start_time - rd.getClockOutTime().getValue().getTime();
+          }
         }
-      }
-      /** 残業 */
-      if (end_time < rd.getClockOutTime().getValue().getTime()) {
-        ovetTime += rd.getClockOutTime().getValue().getTime() - end_time;
-        if (end_time < rd.getClockInTime().getValue().getTime()) {
-          ovetTime -= rd.getClockInTime().getValue().getTime() - end_time;
+        /** 残業 */
+        if (end_time < rd.getClockOutTime().getValue().getTime()) {
+          overTime += rd.getClockOutTime().getValue().getTime() - end_time;
+          if (end_time < rd.getClockInTime().getValue().getTime()) {
+            overTime -= rd.getClockInTime().getValue().getTime() - end_time;
+          }
         }
-      }
-      ovetTime /= (1000.0 * 60.0 * 60.0);
-      time -= ovetTime;
+        overTime /= (1000.0 * 60.0 * 60.0);
+        time -= overTime;
 
-      /** 外出時間を就業時間に含めない場合 */
-      if (timecard_system.getOutgoingAddFlag().equals("F")) {
-        float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
-        if (outgoing_time != NO_DATA) {
-          time -= outgoing_time;
+        /** 外出時間を就業時間に含めない場合 */
+        if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+          float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
+          if (outgoing_time != NO_DATA) {
+            time -= outgoing_time;
+          } else {
+            return NO_DATA;
+          }
+        }
+
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimein = (timecard_system.getWorktimeIn() / 60f);
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        if (worktimein == 0F) {
+          return time;
+        }
+        int resttimes = (int) (time / worktimein);
+        return time - resttimes * resttimein;
+      } else {
+        // 法定外残業の場合　就業時間の合計が決められた残業時間以上の場合　残業時間を返す　
+        /** 外出時間を就業時間に含めない場合 */
+        if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+          float outgoing_time =
+            getOutgoingTime(getChangeDate(), getNextChangeDate());
+          if (outgoing_time != NO_DATA) {
+            time -= outgoing_time;
+          }
+        }
+
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimein = (timecard_system.getWorktimeIn() / 60f);
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        if (worktimein != 0F) {
+          int resttimes = (int) (time / worktimein);
+          time -= resttimes * resttimein;
+        }
+
+        overTime =
+          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+        if (time >= overTime) {
+          return overTime;
         } else {
-          return NO_DATA;
+          return time;
         }
       }
-
-      /** 就業時間の中で決まった時間の休憩を取らせます。 */
-      /** 決まった時間ごとの休憩時間を取らせます。 */
-      float worktimein = (timecard_system.getWorktimeIn() / 60f);
-      float resttimein = (timecard_system.getResttimeIn() / 60f);
-      if (worktimein == 0F) {
-        return time;
-      }
-      int resttimes = (int) (time / worktimein);
-      return time - resttimes * resttimein;
     }
   }
 
   /**
    * 残業時間を計算します。？
-   * 
+   *
    * @return float
    */
   public float getOutworkHour() {
@@ -498,53 +561,93 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       if (getIsSaturdayOrSundayOrHoliday() == 0) {
-        long start_time, end_time;
-        int start_hour = timecard_system.getStartHour(), start_minute =
-          timecard_system.getStartMinute();
-        int end_hour = timecard_system.getEndHour(), end_minute =
-          timecard_system.getEndMinute();
+        if (isOvertimeTypeO()) {
+          long start_time, end_time;
+          int start_hour = timecard_system.getStartHour(), start_minute =
+            timecard_system.getStartMinute();
+          int end_hour = timecard_system.getEndHour(), end_minute =
+            timecard_system.getEndMinute();
 
-        Calendar cal = Calendar.getInstance();
+          Calendar cal = Calendar.getInstance();
 
-        try {
-          cal.setTime(date.getValue().getDate());
-        } catch (Exception e) {
+          try {
+            cal.setTime(date.getValue().getDate());
+          } catch (Exception e) {
+          }
+
+          cal.set(Calendar.HOUR_OF_DAY, start_hour);
+          cal.set(Calendar.MINUTE, start_minute);
+          start_time = cal.getTime().getTime();
+
+          cal.set(Calendar.HOUR_OF_DAY, end_hour);
+          cal.set(Calendar.MINUTE, end_minute);
+          end_time = cal.getTime().getTime();
+
+          if (start_hour >= 0 && start_hour < timecard_system.getChangeHour()) {
+            start_time += 1000 * 60 * 60 * 24;
+            end_time += 1000 * 60 * 60 * 24;
+          } else if (end_hour >= 0
+            && end_hour < timecard_system.getChangeHour()) {
+            end_time += 1000 * 60 * 60 * 24;
+          }
+
+          /** 早出残業 */
+          if (rd.getClockInTime().getValue().getTime() < start_time) {
+            time += start_time - rd.getClockInTime().getValue().getTime();
+          }
+
+          /** 残業 */
+          if (end_time < rd.getClockOutTime().getValue().getTime()) {
+            time += rd.getClockOutTime().getValue().getTime() - end_time;
+          }
+
+          time /= (1000.0 * 60.0 * 60.0);
+          return time;
+
+        } else {
+          // 法定外残業
+          time +=
+            (rd.getClockOutTime().getValue().getTime() - rd
+              .getClockInTime()
+              .getValue()
+              .getTime())
+              / (1000.0 * 60.0 * 60.0);
+
+          /** 外出時間を就業時間に含めない場合 */
+          if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+            float outgoing_time =
+              getOutgoingTime(getChangeDate(), getNextChangeDate());
+            if (outgoing_time != NO_DATA) {
+              time -= outgoing_time;
+            }
+          }
+
+          /** 就業時間の中で決まった時間の休憩を取らせます。 */
+          /** 決まった時間ごとの休憩時間を取らせます。 */
+          /** 法定外残業は就業内の休憩の設定 */
+          float worktimein = (timecard_system.getWorktimeIn() / 60f);
+          float resttimein = (timecard_system.getResttimeIn() / 60f);
+          if (worktimein != 0F) {
+            int resttimes = (int) (time / worktimein);
+            time -= resttimes * resttimein;
+          }
+          float overTime =
+            Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+          if (time >= overTime) {
+            return time = time - overTime;
+          } else {
+            return 0f;
+          }
         }
-
-        cal.set(Calendar.HOUR_OF_DAY, start_hour);
-        cal.set(Calendar.MINUTE, start_minute);
-        start_time = cal.getTime().getTime();
-
-        cal.set(Calendar.HOUR_OF_DAY, end_hour);
-        cal.set(Calendar.MINUTE, end_minute);
-        end_time = cal.getTime().getTime();
-
-        if (start_hour >= 0 && start_hour < timecard_system.getChangeHour()) {
-          start_time += 1000 * 60 * 60 * 24;
-          end_time += 1000 * 60 * 60 * 24;
-        } else if (end_hour >= 0 && end_hour < timecard_system.getChangeHour()) {
-          end_time += 1000 * 60 * 60 * 24;
-        }
-
-        /** 早出残業 */
-        if (rd.getClockInTime().getValue().getTime() < start_time) {
-          time += start_time - rd.getClockInTime().getValue().getTime();
-        }
-
-        /** 残業 */
-        if (end_time < rd.getClockOutTime().getValue().getTime()) {
-          time += rd.getClockOutTime().getValue().getTime() - end_time;
-        }
-
-        time /= (1000.0 * 60.0 * 60.0);
+      } else {
+        return 0f;
       }
-      return time;
     }
   }
 
   /**
    * 休出時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getOffWorkHour() {
@@ -556,7 +659,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 休憩時間を差し引いた就業時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getWorkHourWithoutRestHour() {
@@ -578,7 +681,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 残業時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getOvertimeHour() {
@@ -591,34 +694,84 @@ public class ExtTimecardListResultData implements ALData {
       Date start_date = getStartDate(), end_date = getEndDate(), change_date =
         getChangeDate(), nextchange_date = getNextChangeDate();
       if (getIsSaturdayOrSundayOrHoliday() == 0) {
-        long start_time = start_date.getTime(), end_time = end_date.getTime();
-        /** 早出残業 */
-        if (rd.getClockInTime().getValue().getTime() < start_time) {
-          time += start_time - rd.getClockInTime().getValue().getTime();
-          if (rd.getClockOutTime().getValue().getTime() < start_time) {
-            time -= start_time - rd.getClockOutTime().getValue().getTime();
+        if (isOvertimeTypeO()) {
+          long start_time = start_date.getTime(), end_time = end_date.getTime();
+          /** 早出残業 */
+          if (rd.getClockInTime().getValue().getTime() < start_time) {
+            time += start_time - rd.getClockInTime().getValue().getTime();
+            if (rd.getClockOutTime().getValue().getTime() < start_time) {
+              time -= start_time - rd.getClockOutTime().getValue().getTime();
+            }
           }
-        }
 
-        /** 残業 */
-        if (end_time < rd.getClockOutTime().getValue().getTime()) {
-          time += rd.getClockOutTime().getValue().getTime() - end_time;
-          if (end_time < rd.getClockInTime().getValue().getTime()) {
-            time -= rd.getClockInTime().getValue().getTime() - end_time;
+          /** 残業 */
+          if (end_time < rd.getClockOutTime().getValue().getTime()) {
+            time += rd.getClockOutTime().getValue().getTime() - end_time;
+            if (end_time < rd.getClockInTime().getValue().getTime()) {
+              time -= rd.getClockInTime().getValue().getTime() - end_time;
+            }
           }
-        }
-        time /= (1000.0 * 60.0 * 60.0);
+          time /= (1000.0 * 60.0 * 60.0);
 
-        /** 外出時間を残業時間に含めない場合 */
-        if (timecard_system.getOutgoingAddFlag().equals("F")) {
-          float outgoing_time;
-          outgoing_time = getOutgoingTime(change_date, start_date);
-          if (outgoing_time != NO_DATA) {
-            time -= outgoing_time;
+          /** 外出時間を残業時間に含めない場合 */
+          if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+            float outgoing_time;
+            outgoing_time = getOutgoingTime(change_date, start_date);
+            if (outgoing_time != NO_DATA) {
+              time -= outgoing_time;
+            }
+            outgoing_time = getOutgoingTime(end_date, nextchange_date);
+            if (outgoing_time != NO_DATA) {
+              time -= outgoing_time;
+            }
           }
-          outgoing_time = getOutgoingTime(end_date, nextchange_date);
-          if (outgoing_time != NO_DATA) {
-            time -= outgoing_time;
+
+          /** 就業時間の中で決まった時間の休憩を取らせます。 */
+          /** 決まった時間ごとの休憩時間を取らせます。 */
+          float worktimeout = (timecard_system.getWorktimeOut() / 60f);
+          float resttimeout = (timecard_system.getResttimeOut() / 60f);
+          if (worktimeout == 0F) {// 0の時は休憩なし？
+            return time;
+          }
+          int resttimes = (int) (time / worktimeout);
+
+          calculated_overtime_hour = time - resttimes * resttimeout;
+          return time - resttimes * resttimeout;
+        } else {
+          // 法定外残業
+          time +=
+            (rd.getClockOutTime().getValue().getTime() - rd
+              .getClockInTime()
+              .getValue()
+              .getTime())
+              / (1000.0 * 60.0 * 60.0);
+
+          /** 外出時間を就業時間に含めない場合 */
+          if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+            float outgoing_time =
+              getOutgoingTime(getChangeDate(), getNextChangeDate());
+            if (outgoing_time != NO_DATA) {
+              time -= outgoing_time;
+            }
+          }
+
+          /** 就業時間の中で決まった時間の休憩を取らせます。 */
+          /** 決まった時間ごとの休憩時間を取らせます。 */
+          /** 法定外残業は就業内の休憩の設定 */
+          float worktimein = (timecard_system.getWorktimeIn() / 60f);
+          float resttimein = (timecard_system.getResttimeIn() / 60f);
+          if (worktimein != 0F) {
+            int resttimes = (int) (time / worktimein);
+            time -= resttimes * resttimein;
+          }
+          float overTime =
+            Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+          if (time >= overTime) {
+            calculated_overtime_hour = time - overTime;
+            return time = time - overTime;
+          } else {
+            calculated_overtime_hour = 0f;
+            return 0f;
           }
         }
       } else {// 祝日
@@ -633,25 +786,23 @@ public class ExtTimecardListResultData implements ALData {
         if (outgoing_time != NO_DATA) {
           time -= outgoing_time;
         }
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimeout = (timecard_system.getWorktimeOut() / 60f);
+        float resttimeout = (timecard_system.getResttimeOut() / 60f);
+        if (worktimeout == 0F) {// 0の時は休憩なし？
+          return time;
+        }
+        int resttimes = (int) (time / worktimeout);
+        calculated_overtime_hour = time - resttimes * resttimeout;
+        return time - resttimes * resttimeout;
       }
-
-      /** 就業時間の中で決まった時間の休憩を取らせます。 */
-      /** 決まった時間ごとの休憩時間を取らせます。 */
-      float worktimeout = (timecard_system.getWorktimeOut() / 60f);
-      float resttimeout = (timecard_system.getResttimeOut() / 60f);
-      if (worktimeout == 0F) {// 0の時は休憩なし？
-        return time;
-      }
-      int resttimes = (int) (time / worktimeout);
-
-      calculated_overtime_hour = time - resttimes * resttimeout;
-      return time - resttimes * resttimeout;
     }
   }
 
   /**
    * 休憩時間を差し引いた残業時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getOvertimeHourWithoutRestHour() {
@@ -679,7 +830,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 休出時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getOffHour() {
@@ -704,7 +855,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 休憩時間を計算します。
-   * 
+   *
    * @return float
    */
   public float getRestHour() {
@@ -758,7 +909,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * その日遅刻したかどうか
-   * 
+   *
    * @return boolean
    */
   public boolean isLateComing() {
@@ -774,7 +925,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * その日早退したかどうか
-   * 
+   *
    * @return boolean
    */
   public boolean isEarlyLeaving() {
@@ -790,7 +941,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * その日欠勤したかどうか
-   * 
+   *
    * @return boolean
    */
   public boolean isAbsent() {
@@ -810,7 +961,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDateStr() {
@@ -824,7 +975,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDateStr(String str) {
@@ -844,7 +995,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * タイムカードの設定を取得します。
-   * 
+   *
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
@@ -853,11 +1004,22 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * タイムカードの設定を読み込みます。
-   * 
+   *
    * @return
    */
   public void setTimecardSystem(EipTExtTimecardSystem system) {
     timecard_system = system;
+  }
+
+  /**
+   * 残業タイプが勤務時間外の残業のタイプか取得します。
+   *
+   * @return boolean
+   */
+  public boolean isOvertimeTypeO() {
+    return ExtTimecardUtils.OVERTIME_TYPE_O.equals(timecard_system
+      .getOvertimeType()
+      .substring(0, 1));
   }
 
   public Date getClockInDate() {
@@ -902,7 +1064,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 始業時間を取得します。
-   * 
+   *
    * @return
    */
   protected Date getStartDate() {
@@ -926,7 +1088,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 就業時間を取得します。
-   * 
+   *
    * @return
    */
   protected Date getEndDate() {
@@ -981,7 +1143,7 @@ public class ExtTimecardListResultData implements ALData {
 
   /**
    * 特定の時間中に含まれる外出時間を計算します。
-   * 
+   *
    * @param from_date
    * @param to_date
    * @return
