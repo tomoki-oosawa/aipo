@@ -40,6 +40,7 @@ import javax.activation.MimetypesFileTypeMap;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.imageio.stream.ImageOutputStream;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -48,6 +49,7 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -949,20 +951,35 @@ public class FileuploadUtils {
   public static String getInlineContentType(String filename) {
     MimetypesFileTypeMap mimeTypesMap = new MimetypesFileTypeMap();
     mimeTypesMap.addMimeTypes("application/pdf pdf");
+    mimeTypesMap.addMimeTypes("image/png png");
+    mimeTypesMap.addMimeTypes("image/gif gif");
+    mimeTypesMap.addMimeTypes("image/jpeg jpg jpeg");
+    mimeTypesMap.addMimeTypes("image/bmp bmp");
+    mimeTypesMap.addMimeTypes("image/vnd.wap.wbmp wbmp");
     String contentType = null;
     try {
       contentType = mimeTypesMap.getContentType(filename);
     } catch (Throwable ignore) {
       // ignore
     }
-    if (!Arrays.asList(ACCEPT_CONTENT_TYPES).contains(contentType)) {
-      return null;
-    } else {
-      return contentType;
+    return contentType;
+  }
+
+  public static boolean isDeskopApp() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    if (request != null) {
+      String userAgent = request.getHeader("User-Agent");
+      if (userAgent == null || "".equals(userAgent)) {
+        return false;
+      }
+      return userAgent.indexOf("Aipo.com/") > -1;
     }
+    return false;
   }
 
   public static boolean isAcceptInline(String filename) {
-    return getInlineContentType(filename) != null;
+    String contentType = getInlineContentType(filename);
+    return !isDeskopApp()
+      && Arrays.asList(ACCEPT_CONTENT_TYPES).contains(contentType);
   }
 }

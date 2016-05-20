@@ -42,7 +42,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュールの状態変更を行うクラスです。
- * 
+ *
  */
 public class ScheduleChangeStatusFormData extends ALAbstractFormData {
 
@@ -108,7 +108,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -126,7 +126,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -140,7 +140,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -154,7 +154,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -193,7 +193,7 @@ public class ScheduleChangeStatusFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList

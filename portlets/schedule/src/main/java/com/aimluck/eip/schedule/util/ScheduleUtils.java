@@ -423,9 +423,12 @@ public class ScheduleUtils {
           + "."
           + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
-      Expression mapexp3 =
-        ExpressionFactory.matchExp(EipTScheduleMap.TYPE_PROPERTY, type);
-      mapquery.andQualifier(mapexp3);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
       boolean is_member =
@@ -436,7 +439,7 @@ public class ScheduleUtils {
       boolean is_public = "O".equals(record.getPublicFlag());
 
       // アクセス権限がない場合
-      if (type.equals("F") || is_public) {
+      if (is_public) {
       } else if (!is_member && (!(is_createuser || is_owner))) {
         return false;
       }
@@ -682,6 +685,13 @@ public class ScheduleUtils {
         ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
           .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
+
+      // typeが"U"のとき抽出
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          SCHEDULEMAP_TYPE_USER);
+      query.andQualifier(exp3);
 
       List<EipTScheduleMap> schedules = query.fetchList();
 
@@ -2889,10 +2899,15 @@ public class ScheduleUtils {
     Expression exp12 =
       ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
         .valueOf(userId));
+    Expression exp3 =
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.TYPE_PROPERTY,
+        ScheduleUtils.SCHEDULEMAP_TYPE_USER);
     List<EipTScheduleMap> list =
       Database
         .query(EipTScheduleMap.class, exp11)
         .andQualifier(exp12)
+        .andQualifier(exp3)
         .fetchList();
     if (list.size() == 0) {
       return false;
@@ -4436,7 +4451,7 @@ public class ScheduleUtils {
       select.append(" t4.note,");
     }
     select
-      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id))) AS is_member,");
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id)) AND (t0.type = 'U')) AS is_member,");
     select
       .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
     select

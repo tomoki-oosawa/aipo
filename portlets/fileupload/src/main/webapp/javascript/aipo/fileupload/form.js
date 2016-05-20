@@ -113,9 +113,9 @@ aipo.fileupload.onLoadImage=function(image){
 		dialog.style.width= image.width + "px";
 	}
 	if(dojo.style(image, 'max-height')){
-		dialog.style.height= Math.min(image.height, dojo.style(image, 'max-height'))+"px";
+		dialog.style['min-height'] = Math.min(image.height, dojo.style(image, 'max-height'))+"px";
 	} else {
-		dialog.style.height= image.height + "px";
+		dialog.style['min-height'] = image.height + "px";
 	}
 	aipo.fileupload.ImageDialog._position();//再調整
 	//dojo.query("#imageDialog").removeClass("preLoadImage");

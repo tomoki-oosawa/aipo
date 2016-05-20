@@ -1011,13 +1011,14 @@ CREATE TABLE `turbine_user` (
   `photo_modified_smartphone` datetime DEFAULT NULL,
   `tutorial_forbid` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'F',
   `migrate_version` int(11) NOT NULL DEFAULT 0,
+  `code` varchar(255) DEFAULT NULL,
   `created_user_id` int(11) DEFAULT NULL,
   `updated_user_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `turbine_user_login_name_key` (`login_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `turbine_user` VALUES (1,'admin','0DPiKuNIrrVmD8IUCuw1hQxNqZc=',' ','Admin','','CONFIRMED',now(),now(),now(),'F',NULL,now(),0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL),(2,'template','MibsvmUCE6Sc0DrmcUB1Dk80AIM=','Aipo','Template','','CONFIRMED',now(),now(),now(),'T',NULL,now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL),(3,'anon','YVGPsXFatNaYrKMqeECsey5QfT4=','Anonymous','User','','CONFIRMED',now(),now(),now(),'F',NULL,now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL);
+INSERT INTO `turbine_user` VALUES (1,'admin','0DPiKuNIrrVmD8IUCuw1hQxNqZc=',' ','Admin','','CONFIRMED',now(),now(),now(),'F',NULL,now(),0,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL,NULL),(2,'template','MibsvmUCE6Sc0DrmcUB1Dk80AIM=','Aipo','Template','','CONFIRMED',now(),now(),now(),'T',NULL,now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL,NULL),(3,'anon','YVGPsXFatNaYrKMqeECsey5QfT4=','Anonymous','User','','CONFIRMED',now(),now(),now(),'F',NULL,now(),NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'F',now(),NULL,'F',now(),'F',0,NULL,NULL,NULL);
 
 CREATE TABLE `turbine_user_group_role` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1364,6 +1365,9 @@ CREATE TABLE `eip_t_message_room_member` (
     `login_name` varchar(32) NOT NULL,
     `target_user_id` int(11),
     `authority` varchar(1) DEFAULT 'A',
+    `desktop_notification` varchar(1) DEFAULT 'A',
+    `mobile_notification` varchar(1) DEFAULT 'A',
+    `history_last_message_id` int(11) NOT NULL DEFAULT 0,
     FOREIGN KEY (`room_id`) REFERENCES `eip_t_message_room` (`room_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

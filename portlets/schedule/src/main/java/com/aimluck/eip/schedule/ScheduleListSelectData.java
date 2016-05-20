@@ -265,7 +265,9 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         return null;
       }
       if ("C".equals(record.getPublicFlag())
-        && (userid != record.getUserId().intValue())
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid != record
+          .getUserId()
+          .intValue()))
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
         rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));

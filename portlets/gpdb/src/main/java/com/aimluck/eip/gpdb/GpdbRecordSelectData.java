@@ -186,6 +186,17 @@ public class GpdbRecordSelectData extends
           // 自動採番項目の場合は数値として扱う
           sortValue = Database.castToIntRawColumn("r2.value");
           nullSort = " IS NULL ";
+        } else if (item != null
+          && (GpdbUtils.ITEM_TYPE_CREATE_DATE.equals(item.getType()) || GpdbUtils.ITEM_TYPE_UPDATE_DATE
+            .equals(item.getType()))) {
+          // 作成日時、更新日時の場合はタイムスタンプとして扱う
+          sortValue = Database.castToDateTimeRawColumn("r2.value");
+          nullSort = " IS NULL ";
+        } else if (item != null
+          && GpdbUtils.ITEM_TYPE_DATE.equals(item.getType())) {
+          // 日付の場合は日付として扱う
+          sortValue = Database.castToDateRawColumn("r2.value");
+          nullSort = " IS NULL ";
         } else {
           sortValue = "r2.value";
           nullSort = " = '' ";

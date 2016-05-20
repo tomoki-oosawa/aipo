@@ -25,3 +25,6 @@
 	<div class="indicatorDialog center"><i class="auiIcon auiIconIndicator"></i> $l10n.FILEUPLOAD_READING</div></div>
 	<img id="popupImage" onload="aipo.fileupload.onLoadImage(this)" onerror="aipo.fileupload.onLoadImage(this)" src="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" style="display:none;" />
  </div>
+ <div class="dlLink clearfix">
+  <a onclick="window.open('$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName}).addPathInfo('inline','1')','popup');return false;" href="javascript:void(0);" class="floatLeft mb5"><i class="icon-external-link mr5"></i>オリジナルを表示</a>
+  <a href="$!jslink.getTemplate($!{result.RawScreen}).addPathInfo('ownerid', $!{result.OwnerId}).addPathInfo('entityid',$!{result.EntryId}).addPathInfo('attachmentIndex', $!{result.FileId}).addPathInfo('f', $!{result.FileName})" class="floatRight mb5"><i class="icon-download mr5"></i>画像をダウンロード</a></div>
