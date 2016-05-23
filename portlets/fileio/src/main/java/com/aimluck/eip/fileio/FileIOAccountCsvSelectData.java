@@ -47,7 +47,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
- * 
+ *
  */
 public class FileIOAccountCsvSelectData
     extends
@@ -71,7 +71,7 @@ public class FileIOAccountCsvSelectData
 
   /**
    * アカウント一覧を取得します。 ただし、論理削除されているアカウントは取得しません。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +130,7 @@ public class FileIOAccountCsvSelectData
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -268,6 +268,7 @@ public class FileIOAccountCsvSelectData
         user.setInTelephone(formData.getInTelephone().getValue());
         user.setCellularPhone(formData.getCellularPhone().getValue());
         user.setCellularMail(formData.getCellularMail().getValue());
+        user.setCode(formData.getCode().getValue());
 
         data.initField();
         data.setLineCount(line);
@@ -345,7 +346,7 @@ public class FileIOAccountCsvSelectData
 
   /**
    * CSVファイルを読み込んでページ毎の表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @param filepath
    * @param StartLine
@@ -463,6 +464,7 @@ public class FileIOAccountCsvSelectData
         user.setInTelephone(formData.getInTelephone().getValue());
         user.setCellularPhone(formData.getCellularPhone().getValue());
         user.setCellularMail(formData.getCellularMail().getValue());
+        user.setCode(formData.getCode().getValue());
 
         data.setUser(user);
         data.setLineCount(line + line_index);
@@ -497,7 +499,7 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
-   * 
+   *
    * @return
    */
   private Map<String, TurbineUser> getAllUsersFromDB() {
@@ -523,7 +525,7 @@ public class FileIOAccountCsvSelectData
   /**
    * @param obj
    * @return
-   * 
+   *
    */
   @Override
   protected Object getResultData(FileIOAccountCsvResultData obj) {
@@ -541,7 +543,7 @@ public class FileIOAccountCsvSelectData
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
