@@ -2569,8 +2569,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         throw new ALPermissionException();
       }
 
-      String tmpOwnerIdForReminder = schedule.getOwnerId().toString();
-
       if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
         if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
           deleteMemberAllRangeAll(schedule, members);
@@ -2603,14 +2601,16 @@ public class ScheduleFormData extends ALAbstractFormData {
         if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
           if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
             // 完全に削除する（元のスケジュール、関連するダミースケジュール）
-            ALReminderItem item =
-              ALReminderService.getJob(Database.getDomainName(), schedule
-                .getOwnerId()
-                .toString(), ReminderCategory.SCHEDULE, schedule
-                .getScheduleId()
-                .intValue());
-            if (item != null) {
-              ALReminderService.removeJob(item);
+            for (ALEipUser member : members) {
+              ALReminderItem item =
+                ALReminderService.getJob(Database.getDomainName(), member
+                  .getUserId()
+                  .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                  .getScheduleId()
+                  .intValue());
+              if (item != null) {
+                ALReminderService.removeJob(item);
+              }
             }
           }
         } else {
@@ -2631,30 +2631,29 @@ public class ScheduleFormData extends ALAbstractFormData {
 
             // 指定したSchedule IDのレコードが見つからない場合
             if (schedules == null || schedules.size() == 0) {
-              ALReminderItem item =
-                ALReminderService.getJob(Database.getDomainName(), schedule
-                  .getOwnerId()
-                  .toString(), ReminderCategory.SCHEDULE, schedule
-                  .getScheduleId()
-                  .intValue());
-              if (item != null) {
-                ALReminderService.removeJob(item);
+              // 完全削除
+              for (ALEipUser member : members) {
+                ALReminderItem item =
+                  ALReminderService.getJob(Database.getDomainName(), member
+                    .getUserId()
+                    .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                    .getScheduleId()
+                    .intValue());
+                if (item != null) {
+                  ALReminderService.removeJob(item);
+                }
               }
             }
             if (schedules != null && schedules.size() > 0) {
-              // オーナーを削除する場合はオーナーIDを０にして登録しなおし
-              EipTSchedule record = schedules.get(0);
-              if (record.getOwnerId() == 0) {
+              // 削除対象ユーザーのみ削除
+              if (!is_facility) {
                 ALReminderItem item =
-                  ALReminderService.getJob(
-                    Database.getDomainName(),
-                    tmpOwnerIdForReminder,
-                    ReminderCategory.SCHEDULE,
-                    schedule.getScheduleId().intValue());
+                  ALReminderService.getJob(Database.getDomainName(), String
+                    .valueOf(userid), ReminderCategory.SCHEDULE, schedule
+                    .getScheduleId()
+                    .intValue());
                 if (item != null) {
                   ALReminderService.removeJob(item);
-                  item.setUserId(schedule.getOwnerId().toString());
-                  ALReminderService.updateJob(item);
                 }
               }
             }

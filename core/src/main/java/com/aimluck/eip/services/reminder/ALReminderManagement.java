@@ -37,6 +37,14 @@ public class ALReminderManagement {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALReminderManagement.class.getName());
 
+  /**
+   * おすすめの通知設定
+   *
+   * @param orgId
+   * @param userId
+   * @param category
+   * @return
+   */
   public static ALReminderDefaultItem getRecommendDefault(String orgId,
       String userId, ReminderCategory category) {
     ALReminderDefaultItem item = new ALReminderDefaultItem();
