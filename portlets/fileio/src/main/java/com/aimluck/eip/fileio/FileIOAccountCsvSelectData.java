@@ -482,6 +482,18 @@ public class FileIOAccountCsvSelectData
           // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
             user.setLoginName(username);
+            if (!(tmpuser2.getCode() == code)) {
+              if (existedCodeList.contains(code)) {
+                same_code = true;
+                iserror = true;
+              } else {
+                // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
+                if (code != null && code.equals("")) {
+                  existedCodeList.set(existedCodeList.indexOf(tmpuser2
+                    .getCode()), code);
+                }
+              }
+            }
           } else {
             user.setLoginName(null);
             iserror = true;
@@ -492,11 +504,10 @@ public class FileIOAccountCsvSelectData
           newuser.setLoginName(username);
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
-        }
-
-        if (existedCodeList.contains(code)) {
-          same_code = true;
-          iserror = true;
+          if (existedCodeList.contains(code)) {
+            same_code = true;
+            iserror = true;
+          }
         }
 
         user.setPasswordValue(formData.getPassword().getValue());
