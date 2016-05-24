@@ -317,10 +317,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     loginUser = ALEipUtils.getALEipUser(rundata);
     if (ALReminderService.isEnabled()) {
       defaultItem =
-        ALReminderService.getDefault(
-          orgId,
-          loginUser.getName().getValue(),
-          ReminderCategory.SCHEDULE);
+        ALReminderService.getDefault(orgId, loginUser
+          .getUserId()
+          .getValueAsString(), ReminderCategory.SCHEDULE);
     }
 
     facilityAllList = new ArrayList<FacilityResultData>();
@@ -1451,10 +1450,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           int memberId = (int) user.getUserId().getValue();
           if (login_user.getUserId().getValueWithInt() != memberId) {
             ALReminderDefaultItem defaultItem =
-              ALReminderService.getDefault(
-                orgId,
-                user.getName().getValue(),
-                ReminderCategory.SCHEDULE);
+              ALReminderService.getDefault(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE);
             if (defaultItem == null) {
               // DefaultItemがない場合は標準設定を元にリマインドを登録
               defaultItem =

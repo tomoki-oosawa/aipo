@@ -81,10 +81,9 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
     loginUser = ALEipUtils.getALEipUser(rundata);
     if (ALReminderService.isEnabled()) {
       defaultItem =
-        ALReminderService.getDefault(
-          orgId,
-          loginUser.getName().getValue(),
-          ReminderCategory.SCHEDULE);
+        ALReminderService.getDefault(orgId, loginUser
+          .getUserId()
+          .getValueAsString(), ReminderCategory.SCHEDULE);
     }
   }
 
@@ -247,33 +246,32 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
 
     if (ALReminderService.isEnabled()) {
       try {
-        if (reminder_flag.getValue() != null
-          && reminder_flag.getValue().equals("T")) {
+        if (reminder_flag.getValue() != null) {
           if (defaultItem == null) {
             defaultItem = new ALReminderDefaultItem();
           }
           defaultItem.setOrgId(orgId);
-          defaultItem.setUserId(loginUser.getName().getValue());
-          defaultItem.setEnabled(true);
+          defaultItem.setUserId(loginUser.getUserId().getValueAsString());
           defaultItem.setCategory(ReminderCategory.SCHEDULE);
-          ArrayList<ReminderNotifyType> list =
-            new ArrayList<ReminderNotifyType>();
-          if (notify_type_mail.getValue() != null
-            && notify_type_mail.getValue().equals("TRUE")) {
-            list.add(ReminderNotifyType.MAIL);
+          if (reminder_flag.getValue().equals("T")) {
+            defaultItem.setEnabled(true);
+            ArrayList<ReminderNotifyType> list =
+              new ArrayList<ReminderNotifyType>();
+            if (notify_type_mail.getValue() != null
+              && notify_type_mail.getValue().equals("TRUE")) {
+              list.add(ReminderNotifyType.MAIL);
+            }
+            if (notify_type_message.getValue() != null
+              && notify_type_message.getValue().equals("TRUE")) {
+              list.add(ReminderNotifyType.MESSAGE);
+            }
+            defaultItem.setNotifyType(list);
+            defaultItem.setNotifyTiming(notify_timing.getValueWithInt());
+            ALReminderService.updateDefault(defaultItem);
+          } else {
+            defaultItem.setEnabled(false);
+            ALReminderService.updateDefault(defaultItem);
           }
-          if (notify_type_message.getValue() != null
-            && notify_type_message.getValue().equals("TRUE")) {
-            list.add(ReminderNotifyType.MESSAGE);
-          }
-          defaultItem.setNotifyType(list);
-          defaultItem.setNotifyTiming(notify_timing.getValueWithInt());
-          ALReminderService.updateDefault(defaultItem);
-        } else {
-          ALReminderService.removeDefault(
-            orgId,
-            loginUser.getName().getValue(),
-            ReminderCategory.SCHEDULE);
         }
       } catch (Exception e) {
         logger.error("Unable to save ReminderService ", e);
