@@ -497,6 +497,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       position_name.setValue("");
     }
 
+    if (!code.validate(msgList)) {
+      code.setValue(null);
+    }
+
     return (msgList.size() == 0);
   }
 
@@ -592,6 +596,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       user.setLastNameKana(last_name_kana.getValue());
       user.setEmail(getEmail().getValue());
       user.setMigrateVersion(0);
+      user.setCode(code.getValue());
 
       if (!position_name.getValue().equals("")) {
         EipMPosition position = getEipMPosition();

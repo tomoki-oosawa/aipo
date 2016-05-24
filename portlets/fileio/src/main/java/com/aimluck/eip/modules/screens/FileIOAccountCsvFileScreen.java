@@ -74,7 +74,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
 
       sb.append("yamada,a,山田,太郎");
       sb.append(",ヤマダ,タロウ,a@a.com");
-      sb.append(",99-99-91,1001,111-1111-1111,a@a.ne.jp,営業部/人事部,").append(
+      sb.append(",99-99-91,1001,111-1111-1111,a@a.ne.jp,営業部/人事部,,").append(
         LINE_SEPARATOR);
 
       sb.append("suzuki0,b,鈴木,花子");
@@ -105,7 +105,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
       StringBuffer sb = new StringBuffer();
       sb.append("ユーザー名,パスワード,名前（姓）,名前（名）");
       sb.append(",名前（姓・フリガナ）,名前（名・フリガナ）,メールアドレス");
-      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職").append(
+      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職,社員コード").append(
         LINE_SEPARATOR);
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp1 =
@@ -163,6 +163,8 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
           .append(record.getCellularPhone())
           .append(",")
           .append(record.getCellularMail())
+          .append(",")
+          .append(record.getCode())
           .append(",");
 
         for (int j = 0; j < postNames.size(); j++) {

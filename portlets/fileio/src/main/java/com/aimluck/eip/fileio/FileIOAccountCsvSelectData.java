@@ -155,13 +155,18 @@ public class FileIOAccountCsvSelectData
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
+    List<String> existedCodeList = getAllUsersCodeFromDB();
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
+    if (existedCodeList == null) {
+      existedCodeList = new ArrayList<String>();
+    }
     int ErrCount = 0;
 
-    // 同一ユーザの存在を確認するために，ユーザ名のリストを保持する．
+    // 同一ユーザ, 社員コードの存在を確認するために，ユーザ名と社員コードのリストを保持する．
     List<String> usernameList = new ArrayList<String>();
+    List<String> codeList = new ArrayList<String>();
     int i, j;
     String token;
     int line = 0;
@@ -173,6 +178,7 @@ public class FileIOAccountCsvSelectData
       line++;
       StringBuilder e_line = new StringBuilder();
       boolean same_user = false;
+      boolean same_code = false;
       boolean b_err = false;
       List<String> errmsg = new ArrayList<String>();
 
@@ -231,6 +237,15 @@ public class FileIOAccountCsvSelectData
         usernameList.add(formData.getUserName().getValue());
       }
 
+      if (codeList.contains(formData.getCode().getValue())) {
+        same_code = true;
+        b_err = true;
+      } else {
+        if (!(formData.getCode().getValue().equals(""))) {
+          codeList.add(formData.getCode().getValue());
+        }
+      }
+
       formData.setValidator();
       if (!formData.validate(errmsg)) {
         b_err = true;
@@ -238,6 +253,7 @@ public class FileIOAccountCsvSelectData
 
       try {
         String username = formData.getUserName().getValue();
+        String code = formData.getCode().getValue();
         FileIOAccountCsvResultData data = new FileIOAccountCsvResultData();
         TurbineUser user = new TurbineUser();
 
@@ -258,6 +274,11 @@ public class FileIOAccountCsvSelectData
           existedUserMap.put(username, newuser);
         }
 
+        if (existedCodeList.contains(code)) {
+          same_code = true;
+          b_err = true;
+        }
+
         user.setPasswordValue(formData.getPassword().getValue());
         user.setFirstName(formData.getFirstName().getValue());
         user.setLastName(formData.getLastName().getValue());
@@ -268,7 +289,7 @@ public class FileIOAccountCsvSelectData
         user.setInTelephone(formData.getInTelephone().getValue());
         user.setCellularPhone(formData.getCellularPhone().getValue());
         user.setCellularMail(formData.getCellularMail().getValue());
-        user.setCode(formData.getCode().getValue());
+        user.setCode(code);
 
         data.initField();
         data.setLineCount(line);
@@ -285,6 +306,7 @@ public class FileIOAccountCsvSelectData
         data.setPositionNotFound(formData.getPositionNotFound());
         data.setPositionName(formData.getPositionName().getValue());
         data.setSameUser(same_user);
+        data.setSameCode(same_code);
         data.setIsError(b_err);
 
         if (b_err) {
@@ -370,6 +392,11 @@ public class FileIOAccountCsvSelectData
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
 
+    List<String> existedCodeList = getAllUsersCodeFromDB();
+    if (existedCodeList == null) {
+      existedCodeList = new ArrayList<String>();
+    }
+
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
 
@@ -379,6 +406,7 @@ public class FileIOAccountCsvSelectData
     while (reader.eof != -1) {
       boolean iserror = false;
       boolean same_user = false;
+      boolean same_code = false;
       line++;
       if (line > LineLimit) {
         break;
@@ -433,6 +461,7 @@ public class FileIOAccountCsvSelectData
 
       try {
         String username = formData.getUserName().getValue();
+        String code = formData.getUserName().getValue();
         FileIOAccountCsvResultData data = new FileIOAccountCsvResultData();
         data.initField();
         TurbineUser user = new TurbineUser();
@@ -452,6 +481,11 @@ public class FileIOAccountCsvSelectData
           newuser.setLoginName(username);
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
+        }
+
+        if (existedCodeList.contains(code)) {
+          same_code = true;
+          iserror = true;
         }
 
         user.setPasswordValue(formData.getPassword().getValue());
@@ -481,6 +515,7 @@ public class FileIOAccountCsvSelectData
         data.setPositionNotFound(formData.getPositionNotFound());
         data.setPositionName(formData.getPositionName().getValue());
         data.setSameUser(same_user);
+        data.setSameCode(same_code);
         data.setIsError(iserror);
 
         list.add(data);
@@ -520,6 +555,28 @@ public class FileIOAccountCsvSelectData
       // throw new ALDBErrorException();
     }
     return map;
+  }
+
+  /**
+   *
+   * @return
+   */
+  private ArrayList<String> getAllUsersCodeFromDB() {
+    ArrayList<String> codeList = new ArrayList<String>();
+    try {
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      List<TurbineUser> list = query.fetchList();
+
+      for (TurbineUser user : list) {
+        if (user.getCode() != null && !(user.getCode().equals(""))) {
+          codeList.add(user.getCode());
+        }
+      }
+    } catch (Exception ex) {
+      logger.error("[ALEipUtils]", ex);
+      // throw new ALDBErrorException();
+    }
+    return codeList;
   }
 
   /**
