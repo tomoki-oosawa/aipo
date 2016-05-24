@@ -1632,6 +1632,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     List<ALEipUser> newmemberList = new ArrayList<ALEipUser>();
     List<ALEipUser> removememberList = new ArrayList<ALEipUser>();
+    List<Integer> memberIdsList = new ArrayList<Integer>();
     EipTSchedule schedule = null;
     EipTSchedule newSchedule = null;
     EipTSchedule tmpSchedule = null;
@@ -1715,11 +1716,20 @@ public class ScheduleFormData extends ALAbstractFormData {
           oldmemberIdList.add(map.getUserId());
         }
       }
+      boolean isJoin = false;
       for (ALEipUser user : memberList) {
         int memberId = (int) user.getUserId().getValue();
+        if (login_user.getUserId().getValueWithInt() == memberId) {
+          isJoin = true;
+        }
         if (!isContains(oldmemberIdList, memberId)) {
           newmemberList.add(ALEipUtils.getALEipUser(memberId));
-        } else {
+        }
+        memberIdsList.add(memberId);
+      }
+
+      for (Integer memberId : oldmemberIdList) {
+        if (!isContains(memberIdsList, memberId)) {
           removememberList.add(ALEipUtils.getALEipUser(memberId));
         }
       }
@@ -2102,59 +2112,67 @@ public class ScheduleFormData extends ALAbstractFormData {
       // アラーム
       if (ALReminderService.isEnabled()) {
         EipTSchedule targetSchedule = null;
-        ALReminderItem item = new ALReminderItem();
         if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
           targetSchedule = newSchedule;
         } else {
           targetSchedule = schedule;
         }
-
-        item.setOrgId(Database.getDomainName());
-        item.setUserId(targetSchedule.getOwnerId().toString());
-        item.setItemId(targetSchedule.getScheduleId().intValue());
-        item.setCategory(ReminderCategory.SCHEDULE);
-        item.setNotifyTiming(notify_timing.getValueWithInt());
-        item.setRepeatPattern(targetSchedule.getRepeatPattern());
-        if (is_repeat) {
-          // すべての繰り返し予定を変更した場合
-          // 次のアラーム日を算出
-          boolean isLimit = false;
-          if ("ON".equals(limit_flag.getValue())) {
-            isLimit = true;
-          }
-          ALDateTimeField field =
-            ScheduleUtils.getNextDateRepeat(targetSchedule, item
-              .getNotifyTiming(), isLimit);
-          if (field != null) {
-            item.setEventStartDate(field.getValue());
-            if ("ON".equals(limit_flag.getValue())) {
-              item.setLimitEndDate(targetSchedule.getEndDate());
-            }
-          }
-        } else {
-          // アラーム送信時間チェック
-          Calendar today = Calendar.getInstance();
-          today.add(Calendar.MINUTE, item.getNotifyTiming());
-          if (targetSchedule.getStartDate().after(today.getTime())) {
-            item.setEventStartDate(targetSchedule.getStartDate());
-          }
-        }
-        if ("T".equals(reminder_flag.getValue())) {
+        if ("T".equals(reminder_flag.getValue()) && isJoin) {
+          boolean isMail = false;
+          boolean isMessage = false;
           if ("TRUE".equals(notify_type_mail.getValue())) {
-            item.addNotifyType(ReminderNotifyType.MAIL);
+            isMail = true;
           }
           if ("TRUE".equals(notify_type_message.getValue())) {
-            item.addNotifyType(ReminderNotifyType.MESSAGE);
+            isMessage = true;
           }
-        }
-        if (!is_span
-          && item.getEventStartDate() != null
-          && "T".equals(reminder_flag.getValue())) {
-          ALReminderService.updateJob(item);
+          setupReminderJob(
+            Database.getDomainName(),
+            login_user.getUserId().toString(),
+            targetSchedule,
+            notify_timing.getValueWithInt(),
+            isMail,
+            isMessage);
         } else {
+          ALReminderItem item = new ALReminderItem();
+          item.setOrgId(Database.getDomainName());
+          item.setUserId(login_user.getUserId().toString());
+          item.setItemId(targetSchedule.getScheduleId().intValue());
+          item.setCategory(ReminderCategory.SCHEDULE);
           ALReminderService.removeJob(item);
         }
+        // メンバーからはずれた人のJobを削除する
+        for (ALEipUser user : removememberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (login_user.getUserId().getValueWithInt() != memberId) {
+            ALReminderItem item = new ALReminderItem();
+            item.setOrgId(Database.getDomainName());
+            item.setUserId(user.getUserId().toString());
+            item.setItemId(schedule.getScheduleId().intValue());
+            item.setCategory(ReminderCategory.SCHEDULE);
+            ALReminderService.removeJob(item);
+          }
+        }
+        // メンバーに対しては それぞれのJob をもとにリマインドを作成
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (login_user.getUserId().getValueWithInt() != memberId) {
+            ALReminderItem item =
+              ALReminderService.getJob(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                .getScheduleId()
+                .intValue());
+            if (item != null) {
+              setupReminderJob(Database.getDomainName(), user
+                .getUserId()
+                .toString(), targetSchedule, item.getNotifyTiming(), item
+                .hasNotifyTypeMail(), item.hasNotifyTypeMessage());
+            }
+          }
+        }
       }
+
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         schedule.getScheduleId(),
@@ -2631,7 +2649,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
             // 指定したSchedule IDのレコードが見つからない場合
             if (schedules == null || schedules.size() == 0) {
-              // 完全削除
+              // 最後のメンバーの場合は完全に削除する
               for (ALEipUser member : members) {
                 ALReminderItem item =
                   ALReminderService.getJob(Database.getDomainName(), member
