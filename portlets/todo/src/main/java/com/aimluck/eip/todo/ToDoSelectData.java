@@ -148,11 +148,6 @@ public class ToDoSelectData extends
       ALEipUtils.setTemp(
         rundata,
         context,
-        LIST_SORT_STR,
-        EipTTodo.UPDATE_TIME_PROPERTY);
-      ALEipUtils.setTemp(
-        rundata,
-        context,
         LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
@@ -723,7 +718,6 @@ public class ToDoSelectData extends
       + "."
       + TurbineUser.LAST_NAME_KANA_PROPERTY);
     map.putValue(EipTTodo.UPDATE_DATE_PROPERTY, EipTTodo.UPDATE_DATE_PROPERTY);
-    map.putValue(EipTTodo.UPDATE_TIME_PROPERTY, EipTTodo.UPDATE_TIME_PROPERTY);
     return map;
   }
 
