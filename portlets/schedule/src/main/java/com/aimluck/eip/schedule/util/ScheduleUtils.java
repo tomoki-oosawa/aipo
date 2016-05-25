@@ -109,6 +109,10 @@ import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
 import com.aimluck.eip.user.beans.UserLiteBean;
@@ -5355,4 +5359,56 @@ public class ScheduleUtils {
     return memberList;
   }
 
+  /**
+   *
+   * @param orgId
+   * @param userId
+   * @param schedule
+   * @param notifyTiming
+   * @param isMail
+   * @param isMessage
+   * @param isRepeat
+   * @param isLimit
+   * @param isSpan
+   */
+  public static void setupReminderJob(String orgId, String userId,
+      EipTSchedule schedule, int notifyTiming, boolean isMail,
+      boolean isMessage, boolean isRepeat, boolean isLimit, boolean isSpan) {
+
+    ALReminderItem item = new ALReminderItem();
+    item.setOrgId(orgId);
+    item.setUserId(userId);
+    item.setItemId(schedule.getScheduleId().intValue());
+    item.setCategory(ReminderCategory.SCHEDULE);
+    item.setNotifyTiming(notifyTiming);
+    item.setRepeatPattern(schedule.getRepeatPattern());
+    if (isRepeat) {
+      ALDateTimeField field =
+        ScheduleUtils.getNextDateRepeat(schedule, notifyTiming, isLimit);
+      if (field != null) {
+        item.setEventStartDate(field.getValue());
+        if (isLimit) {
+          item.setLimitEndDate(schedule.getEndDate());
+        }
+      }
+    } else {
+      // アラーム送信時間チェック
+      Calendar today = Calendar.getInstance();
+      today.add(Calendar.MINUTE, notifyTiming);
+      if (schedule.getStartDate().after(today.getTime())) {
+        item.setEventStartDate(schedule.getStartDate());
+      }
+    }
+
+    if (isMail) {
+      item.addNotifyType(ReminderNotifyType.MAIL);
+    }
+    if (isMessage) {
+      item.addNotifyType(ReminderNotifyType.MESSAGE);
+    }
+    if (!isSpan && item.getEventStartDate() != null) {
+      ALReminderService.updateJob(item);
+    }
+
+  }
 }

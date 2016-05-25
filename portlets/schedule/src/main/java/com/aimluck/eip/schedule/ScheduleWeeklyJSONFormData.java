@@ -55,6 +55,9 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.quota.ALQuotaService;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -517,6 +520,8 @@ public class ScheduleWeeklyJSONFormData {
 
         Database.commit();
         res = true;
+        updateReminder();
+
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
@@ -750,6 +755,29 @@ public class ScheduleWeeklyJSONFormData {
       res = false;
     }
     return res;
+  }
+
+  /**
+   * @param schedule2
+   */
+  private void updateReminder() {
+    if (ALReminderService.isEnabled()) {
+      for (ALEipUser user : memberList) {
+        ALReminderItem item =
+          ALReminderService.getJob(
+            orgId,
+            user.getUserId().getValueAsString(),
+            ReminderCategory.SCHEDULE,
+            schedule.getScheduleId().intValue());
+        if (item != null) {
+          ScheduleUtils.setupReminderJob(Database.getDomainName(), user
+            .getUserId()
+            .toString(), schedule, item.getNotifyTiming(), item
+            .hasNotifyTypeMail(), item.hasNotifyTypeMessage());
+        }
+      }
+    }
+
   }
 
   /**
