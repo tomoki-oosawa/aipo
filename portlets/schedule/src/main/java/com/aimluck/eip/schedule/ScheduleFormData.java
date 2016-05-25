@@ -1155,11 +1155,11 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       if (ALReminderService.isEnabled()) {
         ALReminderItem item =
-          ALReminderService.getJob(
-            orgId,
-            record.getOwnerId().toString(),
-            ReminderCategory.SCHEDULE,
-            record.getScheduleId().intValue());
+          ALReminderService.getJob(orgId, login_user
+            .getUserId()
+            .getValueAsString(), ReminderCategory.SCHEDULE, record
+            .getScheduleId()
+            .intValue());
         if (item != null) {
           reminder_flag.setValue("T");
           List<ReminderNotifyType> list = item.getNotifyType();

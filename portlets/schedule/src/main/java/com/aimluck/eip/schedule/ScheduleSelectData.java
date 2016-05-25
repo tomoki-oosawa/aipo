@@ -614,9 +614,8 @@ public class ScheduleSelectData extends
 
     if (ALReminderService.isEnabled()) {
       reminderItem =
-        ALReminderService.getJob(Database.getDomainName(), record
-          .getOwnerId()
-          .toString(), ReminderCategory.SCHEDULE, record
+        ALReminderService.getJob(Database.getDomainName(), String
+          .valueOf(loginuserid), ReminderCategory.SCHEDULE, record
           .getScheduleId()
           .intValue());
     }
