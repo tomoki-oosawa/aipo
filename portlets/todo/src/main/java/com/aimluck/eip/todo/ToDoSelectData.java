@@ -148,6 +148,11 @@ public class ToDoSelectData extends
       ALEipUtils.setTemp(
         rundata,
         context,
+        LIST_SORT_STR,
+        EipTTodo.UPDATE_TIME_PROPERTY);
+      ALEipUtils.setTemp(
+        rundata,
+        context,
         LIST_SORT_TYPE_STR,
         ALEipConstants.LIST_SORT_TYPE_DESC);
     }
@@ -535,6 +540,10 @@ public class ToDoSelectData extends
         .intValue()));
       rd.setUpdateDate(record.getUpdateDate());
 
+      String time =
+        ALDateUtil.format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) HH:MM");
+      rd.setUpdateTime(time);
+
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       // 期限状態を設定する．
@@ -638,6 +647,13 @@ public class ToDoSelectData extends
         .format(record.getCreateDate(), "yyyy年M月d日(E)"));
       rd.setUpdateDate(record.getUpdateDate());
 
+      String time =
+        ALDateUtil
+          .format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) ")
+          .toString()
+          + rd.getUpdateDate().getTime();
+      rd.setUpdateTime(time);
+
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);
 
@@ -707,6 +723,7 @@ public class ToDoSelectData extends
       + "."
       + TurbineUser.LAST_NAME_KANA_PROPERTY);
     map.putValue(EipTTodo.UPDATE_DATE_PROPERTY, EipTTodo.UPDATE_DATE_PROPERTY);
+    map.putValue(EipTTodo.UPDATE_TIME_PROPERTY, EipTTodo.UPDATE_TIME_PROPERTY);
     return map;
   }
 

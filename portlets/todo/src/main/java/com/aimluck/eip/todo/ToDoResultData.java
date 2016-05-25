@@ -96,6 +96,9 @@ public class ToDoResultData implements ALData {
   /** 更新日 */
   private ALDateTimeField update_date;
 
+  /** 更新日時　 */
+  private ALStringField update_time;
+
   /** ログインユーザーID */
   private ALNumberField login_user_id;
 
@@ -140,6 +143,7 @@ public class ToDoResultData implements ALData {
     state_string = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALDateTimeField();
+    update_time = new ALStringField();
     login_user_id = new ALNumberField();
     limit_state = new ALNumberField();
     create_user_id = new ALNumberField();
@@ -456,6 +460,17 @@ public class ToDoResultData implements ALData {
 
   public ALNumberField getLoginUserId() {
     return login_user_id;
+  }
+
+  public void setUpdateTime(String time) {
+    if (time == null) {
+      return;
+    }
+    this.update_time.setValue(time);
+  }
+
+  public ALStringField getUpdateTime() {
+    return update_time;
   }
 
   public boolean isSelfTodo() {
