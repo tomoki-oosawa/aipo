@@ -536,7 +536,10 @@ public class ToDoSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
 
       String time =
-        ALDateUtil.format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) HH:MM");
+        ALDateUtil
+          .format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) ")
+          .toString()
+          + rd.getUpdateDate().getTime();
       rd.setUpdateTime(time);
 
       // 公開/非公開を設定する．
