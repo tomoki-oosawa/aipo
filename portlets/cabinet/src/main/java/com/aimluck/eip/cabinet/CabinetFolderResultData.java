@@ -67,6 +67,9 @@ public class CabinetFolderResultData implements ALData {
   /** 更新日 */
   private ALStringField update_date;
 
+  /** 更新日時 */
+  private ALStringField update_time;
+
   /** 編集・削除を許可するか */
   private boolean can_update = true;
 
