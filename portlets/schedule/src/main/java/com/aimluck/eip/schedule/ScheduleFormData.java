@@ -46,6 +46,7 @@ import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -59,6 +60,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.mail.ALAdminMailContext;
 import com.aimluck.eip.mail.ALAdminMailMessage;
 import com.aimluck.eip.mail.ALMailService;
@@ -241,6 +243,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>todo_id</code> ToDo ID */
   private ALNumberField common_category_id;
 
+  /** 添付ファイルリスト */
+  private List<FileuploadLiteBean> fileuploadList = null;
+
+  /** 添付フォルダ名 */
+  private String folderName = null;
+
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
@@ -301,6 +309,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+
+    folderName = rundata.getParameters().getString("folderName");
 
     // 終日設定
     if (tmpEnd != null
@@ -677,6 +687,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     // 設備リスト
     facilityList = new ArrayList<Object>();
 
+    // 添付ファイルリスト
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
+
     // 2007.3.28 ToDo連携
     common_category_id = new ALNumberField();
     common_category_id.setFieldName(ALLocalizationUtils
@@ -753,6 +766,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       } catch (Exception ex) {
         logger.error("schedule", ex);
       }
+    }
+    try {
+      fileuploadList = ScheduleUtils.getFileuploadList(rundata);
+    } catch (Exception ex) {
+      logger.error("schedule", ex);
     }
     return res;
   }
@@ -857,6 +875,25 @@ public class ScheduleFormData extends ALAbstractFormData {
       place.setValue(record.getPlace());
       // 内容
       note.setValue(record.getNote());
+      // ファイル
+      SelectQuery<EipTScheduleFile> querySelectFile =
+        Database.query(EipTScheduleFile.class);
+      querySelectFile.andQualifier(ExpressionFactory.matchDbExp(
+        EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+        record.getScheduleId()));
+      List<EipTScheduleFile> scheduleFileList = querySelectFile.fetchList();
+      for (EipTScheduleFile file : scheduleFileList) {
+        // スケジュールに添付ファイルがあった場合
+        // fileidを新しくセット
+        int fileid = file.getFileId();
+        FileuploadLiteBean fbean = new FileuploadLiteBean();
+        fbean.initField();
+        fbean.setFileId(fileid);
+        fbean.setFileName(file.getFileName());
+        if (!is_copy) {
+          fileuploadList.add(fbean);
+        }
+      }
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
       // メールフラグ
@@ -1083,7 +1120,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
-
     }
     return true;
   }
@@ -1169,6 +1205,8 @@ public class ScheduleFormData extends ALAbstractFormData {
       // 更新日
       schedule.setUpdateDate(now);
       schedule.setUpdateUserId(Integer.valueOf(ownerid));
+
+      Database.commit();
 
       if (is_span) {
         // 期間スケジュール設定の場合
@@ -1320,6 +1358,16 @@ public class ScheduleFormData extends ALAbstractFormData {
             return false;
           }
         }
+      }
+      // ファイルをデータベースに登録する．
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        schedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
       }
 
       // スケジュールを登録
@@ -1498,6 +1546,9 @@ public class ScheduleFormData extends ALAbstractFormData {
           check = false;
         }
       }
+
+      Database.commit();
+
       // スケジュールのアップデート権限を検証する．
       /*
        * if (ownerid != schedule.getOwnerId().intValue() &&
@@ -1891,6 +1942,16 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
         }
+      }
+
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        tmpSchedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
       }
 
       // スケジュールを登録
@@ -3096,6 +3157,14 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   public List<FacilityResultData> getFacilityAllList() {
     return facilityAllList;
+  }
+
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    return fileuploadList;
+  }
+
+  public String getFolderName() {
+    return folderName;
   }
 
   /**
