@@ -42,6 +42,7 @@ import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
@@ -56,6 +57,7 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
@@ -2696,6 +2698,27 @@ public class ScheduleFormData extends ALAbstractFormData {
     Database.deleteAll(dellist);
 
     // 2007.3.28 ToDo連携
+
+    // 添付ファイルの削除
+    SelectQuery<EipTScheduleFile> dbquery =
+      Database.query(EipTScheduleFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
+    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+
+    if (existsFiles.size() > 0) {
+      try {
+        ALDeleteFileUtil.deleteFiles(
+          ScheduleUtils.FOLDER_FILEDIR_SCHEDULE,
+          ScheduleUtils.CATEGORY_KEY,
+          existsFiles);
+      } catch (ALFileNotRemovedException e) {
+        Database.rollback();
+        logger.error("schedule", e);
+      }
+    }
+
   }
 
   /**

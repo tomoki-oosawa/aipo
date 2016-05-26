@@ -148,11 +148,11 @@ public class ScheduleUtils {
   public static final String SCHEDULEMAP_TYPE_FACILITY = "F";
 
   /** スケジュールの添付ファイルを保管するディレクトリの指定 */
-  private static final String FOLDER_FILEDIR_SCHEDULE = JetspeedResources
+  public static final String FOLDER_FILEDIR_SCHEDULE = JetspeedResources
     .getString("aipo.filedir", "");
 
   /** スケジュールの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  protected static final String CATEGORY_KEY = JetspeedResources.getString(
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
     "aipo.schedule.categorykey",
     "");
 
@@ -4881,16 +4881,6 @@ public class ScheduleUtils {
     return true;
   }
 
-  public static void deleteFiles(int timelineId, String orgId, int uid,
-      List<String> fpaths) throws ALFileNotRemovedException {
-    ALDeleteFileUtil.deleteFiles(
-      timelineId,
-      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
-      getSaveDirPath(orgId, uid),
-      fpaths,
-      EipTScheduleFile.class);
-  }
-
   /**
    * 添付ファイルを取得します。
    *
@@ -5052,13 +5042,16 @@ public class ScheduleUtils {
 
     // ローカルファイルに保存されているファイルを削除する．
     if (delFiles.size() > 0) {
-      int delsize = delFiles.size();
-      for (int i = 0; i < delsize; i++) {
-        ALStorageService.deleteFile(ScheduleUtils.getSaveDirPath(orgId, uid)
-          + (delFiles.get(i)).getFilePath());
+      try {
+        ALDeleteFileUtil.deleteFiles(
+          ScheduleUtils.FOLDER_FILEDIR_SCHEDULE,
+          ScheduleUtils.CATEGORY_KEY,
+          delFiles);
+      } catch (ALFileNotRemovedException e) {
+        Database.rollback();
+        logger.error("schedule", e);
+        return false;
       }
-      // データベースから添付ファイルのデータ削除
-      Database.deleteAll(delFiles);
     }
 
     // ファイル追加処理
@@ -5140,7 +5133,7 @@ public class ScheduleUtils {
    * @param uid
    * @return
    */
-  public static String getSaveDirPath(String orgId, int uid) {
+  public static String getSaveDirPath(int uid) {
     return ALStorageService.getDocumentPath(
       FOLDER_FILEDIR_SCHEDULE,
       CATEGORY_KEY + ALStorageService.separator() + uid);

@@ -28,7 +28,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 
@@ -48,9 +47,7 @@ public class ScheduleFileRawScreen extends FileuploadRawScreen {
       throw new ALPageNotFoundException();
     }
 
-    setFilePath(ScheduleUtils.getSaveDirPath(Database.getDomainName(), file
-      .getOwnerId()
-      .intValue())
+    setFilePath(ScheduleUtils.getSaveDirPath(file.getOwnerId().intValue())
       + file.getFilePath());
     setFileName(file.getFileName());
   }
