@@ -141,6 +141,7 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 
 #if($result.isReminderEnabled())
+#if(!$!{result.Detail.isSpan()})
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 #if($result.hasReminderItem())
@@ -155,9 +156,12 @@ $l10n.SCHEDULE_REMINDER_NOTIFY_DETAIL_TEXT
  （ $!{dest_type_mail_dist} #if($count == 2) と #end $!{dest_type_message_dist} ）
 #end
 #else
+#if ($!{result.Detail.isLoginuser()})
 $l10n.SCHEDULE_REMINDER_OFF
 #end
+#end
 #ALtditemfooter()
+#end
 #end
 
 

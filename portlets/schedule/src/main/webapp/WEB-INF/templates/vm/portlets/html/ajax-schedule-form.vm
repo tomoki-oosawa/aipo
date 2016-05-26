@@ -388,6 +388,7 @@
     <option value="60" #if ($!result.NotifyTiming.toString() == "60") selected="selected" #end>1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR</option>
   </select>$l10n.SCHEDULE_REMINDER_NOTIFY_TEXT
 </div>
+<div>$l10n.SCHEDULE_REMINDER_MSG</div>
 </div>
 #ALtditemfooter()
 #end
