@@ -27,6 +27,7 @@ import org.apache.turbine.util.RunData;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -39,6 +40,20 @@ public class ScheduleFileRawScreen extends FileuploadRawScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleFileRawScreen.class.getName());
+
+  @Override
+  protected void init(RunData rundata) throws Exception {
+    EipTScheduleFile file = ScheduleUtils.getEipTScheduleFile(rundata);
+    if (null == file) {
+      throw new ALPageNotFoundException();
+    }
+
+    setFilePath(ScheduleUtils.getSaveDirPath(Database.getDomainName(), file
+      .getOwnerId()
+      .intValue())
+      + file.getFilePath());
+    setFileName(file.getFileName());
+  }
 
   /**
    *
@@ -81,11 +96,6 @@ public class ScheduleFileRawScreen extends FileuploadRawScreen {
           ALAccessControlConstants.VALUE_ACL_DETAIL);
       }
 
-      super.setFilePath(ScheduleUtils.getSaveDirPath(
-        Database.getDomainName(),
-        schedulefile.getOwnerId().intValue())
-        + schedulefile.getFilePath());
-      super.setFileName(schedulefile.getFileName());
       super.doOutput(rundata);
     } catch (Exception e) {
       logger.error("ScheduleFileRawScreen.doOutput", e);
