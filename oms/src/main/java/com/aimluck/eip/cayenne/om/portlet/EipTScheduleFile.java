@@ -22,7 +22,7 @@ import org.apache.cayenne.ObjectId;
 
 import com.aimluck.eip.cayenne.om.portlet.auto._EipTScheduleFile;
 
-public class EipTScheduleFile extends _EipTScheduleFile {
+public class EipTScheduleFile extends _EipTScheduleFile implements IEipTFile {
 
   public Integer getFileId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
