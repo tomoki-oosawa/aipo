@@ -96,7 +96,7 @@ ${record.FacilityName}
 #end
 
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()})
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
 #ALcell_dt($career $l10n.SCHEDULE_ALARM)
 #if($result.hasReminderItem())
 #set($count = 0)

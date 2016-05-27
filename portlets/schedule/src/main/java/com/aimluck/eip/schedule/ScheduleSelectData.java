@@ -19,6 +19,7 @@
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -619,6 +620,27 @@ public class ScheduleSelectData extends
           .getScheduleId()
           .intValue());
     }
+
+    // 過去のスケジュールに対してはアラームの設定状況を表示しない
+    if (!rd.isSpan()) {
+      if (rd.isRepeat()) {
+        Calendar today = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(record.getStartDate());
+        cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+        cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+        cal.set(Calendar.DATE, today.get(Calendar.DATE));
+        if (cal.getTime().before(today.getTime())) {
+          rd.setPast(true);
+        }
+      } else {
+        Calendar today = Calendar.getInstance();
+        if (record.getStartDate().before(today.getTime())) {
+          rd.setPast(true);
+        }
+      }
+    }
+
     return rd;
   }
 

@@ -141,7 +141,7 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()})
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 #if($result.hasReminderItem())
