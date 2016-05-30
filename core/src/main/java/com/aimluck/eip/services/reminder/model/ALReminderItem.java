@@ -49,6 +49,8 @@ public class ALReminderItem {
 
   private int notifyTiming; // 分（何分前に通知するか）
 
+  private Date expireDate; // 有効期限
+
   private final List<ReminderNotifyType> notifyType =
     new ArrayList<ReminderNotifyType>(); // 通知先（メール、メッセージ）
 
@@ -229,5 +231,20 @@ public class ALReminderItem {
       return bd1 + ALLocalizationUtils.getl10n("SCHEDULE_REMINDER_BEFORE_HOUR");
     }
     return "";
+  }
+
+  /**
+   * @return expireDate
+   */
+  public Date getExpireDate() {
+    return expireDate;
+  }
+
+  /**
+   * @param expireDate
+   *          セットする expireDate
+   */
+  public void setExpireDate(Date Date) {
+    this.expireDate = Date;
   }
 }
