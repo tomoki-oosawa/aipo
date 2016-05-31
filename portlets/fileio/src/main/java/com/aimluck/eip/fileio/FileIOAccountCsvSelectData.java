@@ -268,7 +268,7 @@ public class FileIOAccountCsvSelectData
                 b_err = true;
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
-                if (code != null && code.equals("")) {
+                if (code != null && !code.equals("")) {
                   existedCodeList.set(existedCodeList.indexOf(tmpuser2
                     .getCode()), code);
                 }
@@ -488,7 +488,7 @@ public class FileIOAccountCsvSelectData
                 iserror = true;
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
-                if (code != null && code.equals("")) {
+                if (code != null && !code.equals("")) {
                   existedCodeList.set(existedCodeList.indexOf(tmpuser2
                     .getCode()), code);
                 }
