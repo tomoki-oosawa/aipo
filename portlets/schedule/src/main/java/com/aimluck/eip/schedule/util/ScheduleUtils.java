@@ -1003,10 +1003,6 @@ public class ScheduleUtils {
       Expression userexp =
         ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, uidlist);
       userquery.setQualifier(userexp);
-      List<Ordering> orders = new ArrayList<Ordering>();
-      orders.add(new Ordering(TurbineUser.LAST_NAME_KANA_PROPERTY, true));
-      orders.add(new Ordering(TurbineUser.FIRST_NAME_KANA_PROPERTY, true));
-      userquery.getQuery().addOrderings(orders);
 
       List<TurbineUser> ulist = userquery.fetchList();
 
