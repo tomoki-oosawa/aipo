@@ -27,6 +27,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 共有フォルダのファイルのResultDataです。 <BR>
@@ -101,7 +102,8 @@ public class CabinetFileResultData implements ALData {
     update_user = new ALStringField();
     create_date = new ALStringField();
     update_date =
-      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_WEEK_TIME_FORMAT);
+      new ALDateTimeField(ALLocalizationUtils
+        .getl10n("COMMONS_DATE_WEEK_TIME_FORMAT"));
     folder_id = new ALNumberField();
     folder_name = new ALStringField();
   }

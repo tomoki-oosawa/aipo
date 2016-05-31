@@ -50,10 +50,6 @@ public class ALDateTimeField extends ALAbstractField {
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_FORMAT = "yyyy/MM/dd";
 
-  /** 曜日/時刻を含む日付の表示フォーマット */
-  public static final String DEFAULT_DATE_WEEK_TIME_FORMAT =
-    "yyyy年M月d日(E) H:mm";
-
   /** 日付 */
   protected Calendar calendar = null;
 

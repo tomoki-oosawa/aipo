@@ -26,6 +26,7 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ToDoのResultDataです。 <BR>
@@ -140,7 +141,8 @@ public class ToDoResultData implements ALData {
     state_string = new ALStringField();
     create_date = new ALStringField();
     update_date =
-      new ALDateTimeField(ALDateTimeField.DEFAULT_DATE_WEEK_TIME_FORMAT);
+      new ALDateTimeField(ALLocalizationUtils
+        .getl10n("COMMONS_DATE_WEEK_TIME_FORMAT"));
     login_user_id = new ALNumberField();
     limit_state = new ALNumberField();
     create_user_id = new ALNumberField();
