@@ -535,13 +535,6 @@ public class ToDoSelectData extends
         .intValue()));
       rd.setUpdateDate(record.getUpdateDate());
 
-      String time =
-        ALDateUtil
-          .format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) ")
-          .toString()
-          + rd.getUpdateDate().getTime();
-      rd.setUpdateTime(time);
-
       // 公開/非公開を設定する．
       rd.setPublicFlag("T".equals(record.getPublicFlag()));
       // 期限状態を設定する．
@@ -644,13 +637,6 @@ public class ToDoSelectData extends
       rd.setCreateDate(ALDateUtil
         .format(record.getCreateDate(), "yyyy年M月d日(E)"));
       rd.setUpdateDate(record.getUpdateDate());
-
-      String time =
-        ALDateUtil
-          .format(rd.getUpdateDate().getValue(), "yyy年M月d日(E) ")
-          .toString()
-          + rd.getUpdateDate().getTime();
-      rd.setUpdateTime(time);
 
       // 自身のToDoかを設定する
       rd.setIsSelfTodo(record.getUserId() == login_user_id);
