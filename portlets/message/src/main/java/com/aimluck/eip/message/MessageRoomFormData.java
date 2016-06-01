@@ -99,8 +99,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
-  private int myId;
-
   private boolean isGroup = true;
 
   /** 1ルームの最大人数 **/
@@ -116,9 +114,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
     folderName = rundata.getParameters().getString("folderName");
 
     login_user = ALEipUtils.getALEipUser(rundata);
-
-    myId =
-      new Integer(rundata.getUser().getPerm("USER_ID").toString()).intValue();
 
   }
 
@@ -180,7 +175,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
 
           for (ALEipUser member : memberList) {
-            if (member.getUserId().getValueWithInt() == myId) {
+            if (member.getUserId().getValueWithInt() == login_user
+              .getUserId()
+              .getValueWithInt()) {
               if (desktopNotification != null
                 && !"".equals(desktopNotification)) {
                 member.setDesktopNotification(desktopNotification);
@@ -357,7 +354,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
       for (EipTMessageRoomMember member : members) {
         memberNames.add(member.getLoginName());
 
-        if (member.getUserId().intValue() == myId) {
+        if (member.getUserId().intValue() == login_user
+          .getUserId()
+          .getValueWithInt()) {
           if (member.getDesktopNotification() != null
             && member.getMobileNotification() != null) {
             isDesktopNotification = member.getDesktopNotification().equals("A");
@@ -507,13 +506,15 @@ public class MessageRoomFormData extends ALAbstractFormData {
           model.getEipTMessageRoomMember();
 
         for (EipTMessageRoomMember member : memberLists) {
-          if (member.getUserId() == myId) {
+          if (member.getUserId() == login_user.getUserId().getValueWithInt()) {
             currentMember = member;
           }
         }
 
         for (ALEipUser user : memberList) {
-          if (user.getUserId().getValueWithInt() == myId) {
+          if (user.getUserId().getValueWithInt() == login_user
+            .getUserId()
+            .getValueWithInt()) {
             currentMember.setDesktopNotification(user
               .getDesktopNotification()
               .getValue());

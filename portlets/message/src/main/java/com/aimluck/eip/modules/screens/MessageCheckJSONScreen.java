@@ -75,12 +75,12 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         EipTMessageRoom room = message.getEipTMessageRoom();
         List<EipTMessageRoomMember> memberList =
           room.getEipTMessageRoomMember();
-        int myId =
-          new Integer(rundata.getUser().getPerm("USER_ID").toString())
-            .intValue();
+        ALEipUser login_user = ALEipUtils.getALEipUser(rundata);
         boolean isDesktopNotification = true;
         for (EipTMessageRoomMember member : memberList) {
-          if (member.getUserId().intValue() == myId) {
+          if (member.getUserId().intValue() == login_user
+            .getUserId()
+            .getValueWithInt()) {
             if (member.getDesktopNotification() != null
               && member.getDesktopNotification().equals("F")) {
               isDesktopNotification = false;
