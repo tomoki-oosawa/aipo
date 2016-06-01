@@ -104,7 +104,7 @@ $!{result.WorkTimeOutRestTimeOutText}
 #ALtdcaption($l10n.EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE)
 #ALtditemheader()
 <input name="overtime_type_flag" type="radio" value="L" id="overtime_type_l" #if ($!result.OvertimeTypeFlag.toString() == "L") checked="checked" #end />
-<input class="text" name="overtime_type_minute" value="$!result.OvertimeTypeMinute.toString()" type="text" size="2" maxlength="3">
+<input class="text" name="overtime_type_minute" value="$!result.OvertimeTypeMinute.toString()" type="text" size="3" maxlength="3">
 <label for="overtime_type_l">&nbsp;$l10n.EXTTIMECARD_OVERTIME_TYPE_L</label><br />
 <input name="overtime_type_flag" type="radio" value="O" id="overtime_type_o" #if ($!result.OvertimeTypeFlag.toString() == "O") checked="checked" #end />
 <label for="overtime_type_o">&nbsp;$l10n.EXTTIMECARD_OVERTIME_TYPE_O</label>
