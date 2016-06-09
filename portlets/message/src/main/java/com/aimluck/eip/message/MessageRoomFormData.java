@@ -160,10 +160,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
             member.setAuthority(authMap.get(member.getName().getValue()));
           }
         }
-        if (memberList.size() == 0) {
-          login_user.setAuthority("A");
-          memberList.add(login_user);
-        }
         roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
 
         List<FileuploadLiteBean> fileBeanList =
@@ -241,7 +237,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    if (memberList.size() < 2) {
+
+    if (memberList.size() < 1) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
     }
     boolean hasOwn = false;
