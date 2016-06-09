@@ -104,8 +104,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
   /** 1ルームの最大人数 **/
   private final int MAX_ROOM_MEMBER = 300;
 
-  private String roomType;
-
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -247,8 +245,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
             MessageUtils.hasAuthorityRoom(room, (int) login_user
               .getUserId()
               .getValue());
-          if (rundata.getParameters().getString("room_type") != null) {
-            roomType = rundata.getParameters().getString("room_type");
+          if ("O".equals(room.getRoomType())) {
+            login_user_room_auth = false;
+            isGroup = false;
           }
         }
 
@@ -284,7 +283,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       throws ALPageNotFoundException, ALDBErrorException {
 
     // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定以外の値の検証は不要
-    if (!login_user_room_auth || "O".equals(roomType)) {
+    if (!login_user_room_auth || !isGroup) {
       return true;
     }
 
@@ -499,18 +498,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
       }
 
       // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定のみ更新
-      if (!login_user_room_auth || "O".equals(roomType)) {
-        EipTMessageRoomMember currentMember = null;
-        @SuppressWarnings("unchecked")
-        List<EipTMessageRoomMember> memberLists =
-          model.getEipTMessageRoomMember();
-
-        for (EipTMessageRoomMember member : memberLists) {
-          if (member.getUserId() == login_user.getUserId().getValueWithInt()) {
-            currentMember = member;
-          }
-        }
-
+      if (!login_user_room_auth || !isGroup) {
+        EipTMessageRoomMember currentMember =
+          MessageUtils.getRoomMember(roomId, login_user
+            .getUserId()
+            .getValueWithInt());
         for (ALEipUser user : memberList) {
           if (user.getUserId().getValueWithInt() == login_user
             .getUserId()
@@ -521,67 +513,65 @@ public class MessageRoomFormData extends ALAbstractFormData {
             currentMember.setMobileNotification(user
               .getMobileNotification()
               .getValue());
-            Database.commit();
           }
         }
-
-        return true;
-      }
-
-      Date now = new Date();
-
-      Database.deleteAll(model.getEipTMessageRoomMember());
-
-      boolean isFirst = true;
-      StringBuilder autoName = new StringBuilder();
-      for (ALEipUser user : memberList) {
-        EipTMessageRoomMember map =
-          Database.create(EipTMessageRoomMember.class);
-        int userid = (int) user.getUserId().getValue();
-        map.setEipTMessageRoom(model);
-        map.setTargetUserId(1);
-        map.setUserId(Integer.valueOf(userid));
-        map.setLoginName(user.getName().getValue());
-        map.setAuthority(user.getAuthority().getValue());
-        map.setDesktopNotification(user.getDesktopNotification().getValue());
-        map.setMobileNotification(user.getMobileNotification().getValue());
-        if (!isFirst) {
-          autoName.append(",");
-        }
-        autoName.append(user.getAliasName().getValue());
-        isFirst = false;
-      }
-
-      if (StringUtils.isEmpty(name.getValue())) {
-        model.setAutoName("T");
-        model.setName(autoName.toString());
       } else {
-        model.setAutoName("F");
-        model.setName(name.getValue());
-      }
 
-      model.setRoomType("G");
-      model.setUpdateDate(now);
+        Date now = new Date();
 
-      if (filebean != null && filebean.getFileId() != 0) {
-        model.setPhotoSmartphone(facePhoto_smartphone);
-        model.setPhoto(facePhoto);
-        model.setPhotoModified(new Date());
-        model.setHasPhoto("N");
-      }
+        Database.deleteAll(model.getEipTMessageRoomMember());
 
-      if (filebean != null) {
-        if (filebean.getFileId() != 0) {
-          model.setPhoto(facePhoto);
+        boolean isFirst = true;
+        StringBuilder autoName = new StringBuilder();
+        for (ALEipUser user : memberList) {
+          EipTMessageRoomMember map =
+            Database.create(EipTMessageRoomMember.class);
+          int userid = (int) user.getUserId().getValue();
+          map.setEipTMessageRoom(model);
+          map.setTargetUserId(1);
+          map.setUserId(Integer.valueOf(userid));
+          map.setLoginName(user.getName().getValue());
+          map.setAuthority(user.getAuthority().getValue());
+          map.setDesktopNotification(user.getDesktopNotification().getValue());
+          map.setMobileNotification(user.getMobileNotification().getValue());
+          if (!isFirst) {
+            autoName.append(",");
+          }
+          autoName.append(user.getAliasName().getValue());
+          isFirst = false;
+        }
+
+        if (StringUtils.isEmpty(name.getValue())) {
+          model.setAutoName("T");
+          model.setName(autoName.toString());
+        } else {
+          model.setAutoName("F");
+          model.setName(name.getValue());
+        }
+
+        model.setRoomType("G");
+        model.setUpdateDate(now);
+
+        if (filebean != null && filebean.getFileId() != 0) {
           model.setPhotoSmartphone(facePhoto_smartphone);
+          model.setPhoto(facePhoto);
           model.setPhotoModified(new Date());
           model.setHasPhoto("N");
         }
-      } else {
-        model.setPhoto(null);
-        model.setPhotoSmartphone(null);
-        model.setPhotoModified(null);
-        model.setHasPhoto("F");
+
+        if (filebean != null) {
+          if (filebean.getFileId() != 0) {
+            model.setPhoto(facePhoto);
+            model.setPhotoSmartphone(facePhoto_smartphone);
+            model.setPhotoModified(new Date());
+            model.setHasPhoto("N");
+          }
+        } else {
+          model.setPhoto(null);
+          model.setPhotoSmartphone(null);
+          model.setPhotoModified(null);
+          model.setHasPhoto("F");
+        }
       }
 
       Database.commit();

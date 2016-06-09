@@ -19,9 +19,11 @@
 #macro(ALSupport)
 ##
 #end
+
 #macro(ALUnreadchecker)
 ##
 #end
+
 #macro(ALMessage)
 #set($messagePortletId = $!globalPortlets.get('Message').getId())
 #if("Message" == $!portlet.Name)
@@ -34,6 +36,15 @@
 </li>
 #end
 #end
+
 #macro(ALMaintenance)
 ##
+#end
+
+#macro(ALMessageNotification $result)
+    <h3 class="mt5">$l10n.MESSAGE_NOTIFICATION_DESKTOP</h3>
+    <input type="radio" name="desktop_notification" id="desktop_notificationA" value="A" #if($result.isDesktopNotification())checked="checked"#end/>
+    <label for="desktop_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
+    <input type="radio" name="desktop_notification" id="desktop_notificationF" value="F" #if(!$result.isDesktopNotification())checked="checked"#end/>
+    <label for="desktop_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
 #end

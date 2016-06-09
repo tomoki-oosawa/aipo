@@ -29,10 +29,10 @@
 #set ($modesrv = "update")
 #end
 #set ($indicator_id = "indicator-dlg-")
-#if($isMessageUser)
-#set ($form_actl = "active")
+#if($result.hasAuth())
+#set ($form_view = "")
 #else
-#set ($form_actl = "disable")
+#set ($form_view = "style='display:none'")
 #end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
@@ -42,27 +42,18 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#if($mode=="new_form" || !$result.isFileUploadable())
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#if($mode=="new_form" || !$result.isFileUploadable() || !$result.hasAuth())
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
 #else
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
 #end
 <input type="hidden" name="mode" value="$!modesrv" />
 #if($mode!="new_form")
 <input type="hidden" name="entityid" value="$!result.RoomId" />
 #end
-#if($result.isGroup())
-<input type="hidden" name="room_type" value="G" />
-#else
-<input type="hidden" name="room_type" value="O" />
-#end
 
 #ALtableheaderWide()
-#if($result.hasAuth())
-#ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
-#else
-#ALtdcaptionHidden($l10n.MESSAGE_ROOM_ENTRY_USER)
-#end
+#ALtdcaptionTrAtt($l10n.MESSAGE_ROOM_ENTRY_USER $form_view)
 #ALtditemheader()
 <div>
 	<table class="w100">
@@ -100,28 +91,21 @@
   </td></tr>
 </table>
 </div>
-#if($result.isGroup())
 #ALtditemfooter()
+#if($result.isGroup())
 #ALtdcaption($l10n.MESSAGE_ROOM_NAME)
 #ALtditemheader()
 #if($result.hasAuth())
-#ALtextfieldw100('name' $!result.Name 50 $form_actl)
+#ALtextfieldw100('name' $!result.Name 50 'active')
 #else
-#ALtextfieldw100readonly('name' $!result.Name 50 $form_actl)
-#if(!$result.isGroup())
-<input type="hidden" name="room_type" value="O" />
-#end
+$!result.Name
 #end
 #ALtditemfooter()
 #end
 
 #if($mode!="new_form")
 #if($result.isFileUploadable())
-#if($result.hasAuth())
-#ALtdcaption($l10n.MESSAGE_ROOM_ICON)
-#else
-#ALtdcaptionHidden($l10n.MESSAGE_ROOM_ICON)
-#end
+#ALtdcaptionTrAtt($l10n.MESSAGE_ROOM_ICON $form_view)
 #ALtditemheader()
 #IFFileUpload()
   <ul id="attachments_$!{portlet.ID}" class="attachments">
@@ -136,16 +120,10 @@
 #end
 #end
 #if($mode!="new_form")
-<tr>
   #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
   #ALtditemheader()
-    <h3 class="mt5">$l10n.MESSAGE_NOTIFICATION_DESKTOP</h3>
-    <input type="radio" name="desktop_notification" id="desktop_notificationA" value="A" #if($result.isDesktopNotification())checked="checked"#end/>
-    <label for="desktop_notificationA">$l10n.MESSAGE_NOTIFICATION_ON</label><br>
-    <input type="radio" name="desktop_notification" id="desktop_notificationF" value="F" #if(!$result.isDesktopNotification())checked="checked"#end/>
-    <label for="desktop_notificationF">$l10n.MESSAGE_NOTIFICATION_OFF</label>
+  #ALMessageNotification($result)
   #ALtditemfooter()
-</tr>
 #end
 #ALtablefooter()
 
