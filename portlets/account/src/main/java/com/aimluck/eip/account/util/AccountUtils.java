@@ -848,7 +848,6 @@ public class AccountUtils {
         name =
           new StringBuffer().append(user.getLastName()).append(" ").append(
             user.getFirstName()).toString();
-        ;
       } else {
         name = user.getEmail();
       }
