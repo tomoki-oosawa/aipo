@@ -148,12 +148,12 @@ ${record.FacilityNameHtml}<br/>
 $!result.ReminderItem.NotifyTimingText
 $l10n.SCHEDULE_REMINDER_NOTIFY_DETAIL_TEXT
 #set($count = 0)
-#if ($!{result.ReminderItem.hasNotifyTypeMail()}) #set ($dest_type_mail_dist = $l10n.SCHEDULE_REMINDER_MAIL) #set($count = $count+1) #end
 #if ($!{result.ReminderItem.hasNotifyTypeMessage()}) #set ($dest_type_message_dist = $l10n.SCHEDULE_REMINDER_MESSAGE) #set($count = $count+1) #end
+#if ($!{result.ReminderItem.hasNotifyTypeMail()}) #set ($dest_type_mail_dist = $l10n.SCHEDULE_REMINDER_MAIL) #set($count = $count+1) #end
 #if($count == 0)
 -----
 #else
- （ $!{dest_type_mail_dist} #if($count == 2) と #end $!{dest_type_message_dist} ）
+ （ $!{dest_type_message_dist} #if($count == 2) と #end $!{dest_type_mail_dist} ）
 #end
 #else
 #if ($!{result.Detail.isLoginuser()})

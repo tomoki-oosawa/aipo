@@ -141,8 +141,8 @@ $!result.getFieldName("public_flag")#ALcell_br($career)
 $!result.getFieldName('reminder_flag')#ALcell_br($career)
 <input name="reminder_flag" type="radio" value="F" #if ($!result.ReminderFlag.toString() == "F") checked="checked" #end>$l10n.SCHEDULE_REMINDER_OFF#ALcell_br($career)
 <input name="reminder_flag" type="radio" value="T" #if ($!result.ReminderFlag.toString() == "T") checked="checked" #end>$l10n.SCHEDULE_REMINDER_ON#ALcell_br($career)
-<input name="notify_type_mail" value="TRUE" type="checkbox" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL#ALcell_br($career)
 <input name="notify_type_message" value="TRUE" type="checkbox" #if ($!{result.NotifyTypeMessage.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MESSAGE#ALcell_br($career)
+<input name="notify_type_mail" value="TRUE" type="checkbox" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL#ALcell_br($career)
 <select id="notify_timing" name="notify_timing">
     <option value="0" #if ($!result.NotifyTiming.toString() == "0") selected="selected" #end>$l10n.SCHEDULE_REMINDER_ONTIME</option>
     <option value="5" #if ($!result.NotifyTiming.toString() == "5") selected="selected" #end>5$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>

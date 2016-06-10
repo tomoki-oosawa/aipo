@@ -76,7 +76,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
-import com.aimluck.eip.services.reminder.ALReminderManagement;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -1461,15 +1460,8 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALReminderService.getDefault(orgId, user
                 .getUserId()
                 .getValueAsString(), ReminderCategory.SCHEDULE);
-            if (defaultItem == null) {
-              // DefaultItemがない場合は標準設定を元にリマインドを登録
-              defaultItem =
-                ALReminderManagement.getRecommendDefault(
-                  Database.getDomainName(),
-                  user.getName().getValue(),
-                  ReminderCategory.SCHEDULE);
-            }
-            if (defaultItem.isEnabled()) {
+            // DefaultItemがない場合は通知しない
+            if (defaultItem != null && defaultItem.isEnabled()) {
               ScheduleUtils.setupReminderJob(
                 Database.getDomainName(),
                 user.getUserId().toString(),
@@ -2135,15 +2127,8 @@ public class ScheduleFormData extends ALAbstractFormData {
                 ALReminderService.getDefault(orgId, user
                   .getUserId()
                   .getValueAsString(), ReminderCategory.SCHEDULE);
-              if (defaultItem == null) {
-                // DefaultItemがない場合は標準設定を元にリマインドを登録
-                defaultItem =
-                  ALReminderManagement.getRecommendDefault(
-                    Database.getDomainName(),
-                    user.getName().getValue(),
-                    ReminderCategory.SCHEDULE);
-              }
-              if (defaultItem.isEnabled()) {
+              // DefaultItemがない場合は通知しない
+              if (defaultItem != null && defaultItem.isEnabled()) {
                 ScheduleUtils.setupReminderJob(
                   Database.getDomainName(),
                   user.getUserId().toString(),
