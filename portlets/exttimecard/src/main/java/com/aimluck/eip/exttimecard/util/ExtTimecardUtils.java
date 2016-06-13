@@ -18,6 +18,7 @@
  */
 package com.aimluck.eip.exttimecard.util;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,9 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
+import com.aimluck.eip.exttimecard.ExtTimecardResultData;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -350,4 +354,31 @@ public class ExtTimecardUtils {
     return logger;
   }
 
+  public static List<ExtTimecardListResultDataContainer> groupByWeek(
+      List<ExtTimecardResultData> flat, EipTExtTimecardSystem timecard_system) {
+    List<ExtTimecardListResultDataContainer> result =
+      new ArrayList<ExtTimecardListResultDataContainer>() {
+
+        private static final long serialVersionUID = 7614354348253756254L;
+
+        {
+          this.add(new ExtTimecardListResultDataContainer());
+          this.add(new ExtTimecardListResultDataContainer());
+          this.add(new ExtTimecardListResultDataContainer());
+          this.add(new ExtTimecardListResultDataContainer());
+          this.add(new ExtTimecardListResultDataContainer());
+          this.add(new ExtTimecardListResultDataContainer());
+        }
+      };
+    for (ExtTimecardResultData rd : flat) {
+      ExtTimecardListResultData lrd = new ExtTimecardListResultData();
+      lrd.initField();
+      lrd.setDate(rd.getPunchDate().getValue());
+      lrd.setRd(rd);
+      lrd.setTimecardSystem(timecard_system);
+
+      result.get(lrd.getWeekOfMonth() - 1).add(lrd);
+    }
+    return result;
+  }
 }

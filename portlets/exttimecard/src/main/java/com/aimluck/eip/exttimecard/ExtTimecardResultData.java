@@ -101,6 +101,8 @@ public class ExtTimecardResultData implements ALData {
 
   private boolean isTypeE;
 
+  private boolean isCurrentMonth;
+
   /**
    *
    *
@@ -623,6 +625,21 @@ public class ExtTimecardResultData implements ALData {
    */
   public void setTimecardSystem(EipTExtTimecardSystem system) {
     timecard_system = system;
+  }
+
+  /**
+   * @return isCurrentMonth
+   */
+  public boolean isCurrentMonth() {
+    return isCurrentMonth;
+  }
+
+  /**
+   * @param isCurrentMonth
+   *          セットする isCurrentMonth
+   */
+  public void setCurrentMonth(boolean isCurrentMonth) {
+    this.isCurrentMonth = isCurrentMonth;
   }
 
 }

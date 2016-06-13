@@ -31,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
@@ -70,6 +71,10 @@ public class ExtTimecardListResultData implements ALData {
 
   /** 特定の日付より前から後かを示す変数 */
   private int beforeafter;
+
+  private float _midnight_regular_work_hour = NO_DATA;
+
+  private float _midnight_overtime_work_hour = NO_DATA;
 
   /**
    *
@@ -551,7 +556,7 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * 残業時間を計算します。？
+   * 残業時間を計算します。
    *
    * @return float
    */
@@ -1022,6 +1027,15 @@ public class ExtTimecardListResultData implements ALData {
       .substring(0, 1));
   }
 
+  /**
+   * 新しい集計方式の場合
+   *
+   * @return
+   */
+  public boolean isNewRule() {
+    return !isOvertimeTypeO();
+  }
+
   public Date getClockInDate() {
     return rd.getClockInTime().getValue();
   }
@@ -1238,5 +1252,218 @@ public class ExtTimecardListResultData implements ALData {
 
   public int getBeforeAfter() {
     return beforeafter;
+  }
+
+  /**
+   * その日の遅刻時間。遅刻していない場合は0。
+   *
+   * @return boolean
+   */
+  public float getLateComingHour() {
+    if (!isLateComing()) {
+      return 0;
+    } else {
+      Date start_date = getStartDate();
+      float time = 0f;
+      time +=
+        (getRd().getClockInTime().getValue().getTime() - start_date.getTime())
+          / (1000.0 * 60.0 * 60.0);
+
+      return time;
+    }
+  }
+
+  /**
+   * その日の早退時間。早退していない場合は0。
+   *
+   * @return boolean
+   */
+  public float getEarlyLeavingHour() {
+    if (!isEarlyLeaving()) {
+      return 0;
+    } else {
+      Date end_date = getEndDate();
+      float time = 0f;
+      time +=
+        (end_date.getTime() - getRd().getClockInTime().getValue().getTime())
+          / (1000.0 * 60.0 * 60.0);
+
+      return time;
+    }
+  }
+
+  private Date dateOf(int hour, int minute) {
+    Calendar cal = Calendar.getInstance();
+
+    try {
+      cal.setTime(getDate().getValue().getDate());
+    } catch (Exception e) {
+    }
+
+    cal.set(Calendar.HOUR_OF_DAY, hour);
+    cal.set(Calendar.MINUTE, minute);
+    return cal.getTime();
+  }
+
+  public Date getRoundedInDate() {
+    Date actual = getRd().getClockInTime().getValue();
+    Date standard = getStartDate();
+    if (actual.after(standard)) {
+      return actual;
+    } else {
+      return standard;
+    }
+  }
+
+  public Date getRoundedOutDate() {
+    Date actual = getRd().getClockOutTime().getValue();
+    Date standard = getEndDate();
+    if (actual.before(standard)) {
+      return actual;
+    } else {
+      return standard;
+    }
+  }
+
+  public float getMidnightRegularWorkHour() {
+    if (_midnight_regular_work_hour != NO_DATA) {
+      return _midnight_regular_work_hour;
+    } else {
+      Date from = getRoundedInDate();
+      Date to = getRoundedOutDate();
+      Date midTimeEarly = dateOf(5, 0);
+      Date midTimeLate = dateOf(22, 0);
+
+      long early = 0;
+      if (from.before(midTimeEarly)) {
+        early = midTimeEarly.getTime() - from.getTime();
+      }
+      long late = 0;
+      if (to.after(midTimeLate)) {
+        late = to.getTime() - midTimeLate.getTime();
+      }
+      float time = 0f;
+      if (early + late > 0) {
+        time += (early + late) / (1000.0 * 60.0 * 60.0);
+
+        /** 外出時間を就業時間に含めない場合 */
+        if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
+          float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
+          if (outgoing_time != NO_DATA) {
+            time -= outgoing_time;
+          }
+        }
+
+        _midnight_regular_work_hour = time;
+      } else {
+        _midnight_regular_work_hour = 0f;
+      }
+      return _midnight_regular_work_hour;
+    }
+  }
+
+  public float getMidnightOvertimeWorkHour() {
+    if (_midnight_overtime_work_hour == NO_DATA) {
+      Date from = getRd().getClockInTime().getValue();
+      Date to = getRd().getClockOutTime().getValue();
+      Date midTimeEarly = dateOf(5, 0);
+      Date midTimeLate = dateOf(22, 0);
+
+      long early = 0;
+      if (from.before(midTimeEarly)) {
+        early = midTimeEarly.getTime() - from.getTime();
+      }
+      long late = 0;
+      if (to.after(midTimeLate)) {
+        late = to.getTime() - midTimeLate.getTime();
+      }
+      float time = 0f;
+      if (early + late > 0) {
+        time += (early + late) / (1000.0 * 60.0 * 60.0);
+
+        /** 外出時間を就業時間に含めない場合 */
+        if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
+          float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
+          if (outgoing_time != NO_DATA) {
+            time -= outgoing_time;
+          }
+        }
+
+        _midnight_overtime_work_hour = time;
+      } else {
+        _midnight_overtime_work_hour = 0f;
+      }
+    }
+    return _midnight_overtime_work_hour;
+  }
+
+  public float getWithinStatutoryOvertimeWorkHour() {
+    float overtime_within_statutory_working_hour = 0f;
+    float total = this.getWorkHourWithoutRestHour() + this.getOvertimeHour();
+    float statutory_overtime = total - 8;
+    if (statutory_overtime > 0) {
+      float t = this.getOvertimeHour() - statutory_overtime;
+      if (t > 0) {
+        overtime_within_statutory_working_hour += t;
+      }
+    }
+    return overtime_within_statutory_working_hour;
+  }
+
+  /**
+   * 月を返す
+   *
+   * @return
+   */
+  public int getMonthOfYear() {
+    Calendar cal = Calendar.getInstance();
+    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
+    // xxx)を利用して日付を調整する必要がある。
+    try {
+      cal.setTime(this.getDate().getValue().getDate());
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    } catch (ALIllegalDateException e) {
+      e.printStackTrace();
+    }
+    return cal.get(Calendar.MONTH) + 1;
+  }
+
+  /**
+   * 日を返す
+   *
+   * @return
+   */
+  public int getDayOfMonth() {
+    Calendar cal = Calendar.getInstance();
+    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
+    // xxx)を利用して日付を調整する必要がある。
+    try {
+      cal.setTime(this.getDate().getValue().getDate());
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    } catch (ALIllegalDateException e) {
+      e.printStackTrace();
+    }
+    return cal.get(Calendar.DAY_OF_MONTH);
+  }
+
+  public int getWeekOfMonth() {
+    Calendar cal = Calendar.getInstance();
+    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
+    // xxx)を利用して日付を調整する必要がある。
+    if (!rd.isCurrentMonth()) {
+      // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
+      // xxx)を利用して日付を調整する必要がある。
+      return 1;
+    }
+    try {
+      cal.setTime(this.getDate().getValue().getDate());
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    } catch (ALIllegalDateException e) {
+      e.printStackTrace();
+    }
+    return cal.get(Calendar.WEEK_OF_MONTH);
   }
 }

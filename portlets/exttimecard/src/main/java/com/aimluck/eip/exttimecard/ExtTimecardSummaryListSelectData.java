@@ -607,6 +607,17 @@ public class ExtTimecardSummaryListSelectData extends
 
       ExtTimecardResultData rd = new ExtTimecardResultData();
       rd.initField();
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(record.getPunchDate());
+      boolean isCurrentMonth =
+        Integer.parseInt(viewMonth.getMonth()) == cal.get(Calendar.MONTH) + 1;
+      if ((startDay == 1 && !isCurrentMonth)
+        || (startDay > 1 && cal.get(Calendar.DATE) < startDay)) {
+        rd.setCurrentMonth(false);
+      } else {
+        rd.setCurrentMonth(true);
+      }
+
       rd.setPunchDate(record.getPunchDate());
       rd.setRefixFlag(record.getCreateDate(), record.getUpdateDate());
       rd.setClockInTime(record.getClockInTime());
@@ -843,14 +854,21 @@ public class ExtTimecardSummaryListSelectData extends
     cal.set(Calendar.SECOND, 0);
     cal.set(Calendar.MILLISECOND, 0);
 
-    Date date = cal.getTime();
+    Calendar cal1 = Calendar.getInstance();
+    cal1.setTime(cal.getTime());
+    if (cal1.get(Calendar.DAY_OF_WEEK) > 1) {
+      cal1.add(Calendar.DATE, -(cal1.get(Calendar.DAY_OF_WEEK) - 1));
+    }
     Expression exp11 =
       ExpressionFactory.greaterOrEqualExp(
         EipTExtTimecard.PUNCH_DATE_PROPERTY,
-        date);
+        cal1.getTime());
 
     cal.add(Calendar.MONTH, +1);
     cal.add(Calendar.MILLISECOND, -1);
+
+    cal.get(Calendar.DAY_OF_WEEK);
+
     Expression exp12 =
       ExpressionFactory.lessOrEqualExp(EipTExtTimecard.PUNCH_DATE_PROPERTY, cal
         .getTime());
@@ -897,42 +915,44 @@ public class ExtTimecardSummaryListSelectData extends
 
       for (Object obj : userlist) {
         ExtTimecardResultData rd = (ExtTimecardResultData) obj;
-        ExtTimecardListResultData lrd = new ExtTimecardListResultData();
-        lrd.setRd(rd);
-        lrd.setTimecardSystem(timecard_system);
-        String type = rd.getType().getValue();
-        if (type.equals(EipTExtTimecard.TYPE_WORK)) {
-          /** 出勤 */
-          if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
-            work_day++;
-            work_hour += lrd.getWorkHourWithoutRestHour();
+        if (rd.isCurrentMonth()) {
+          ExtTimecardListResultData lrd = new ExtTimecardListResultData();
+          lrd.setRd(rd);
+          lrd.setTimecardSystem(timecard_system);
+          String type = rd.getType().getValue();
+          if (type.equals(EipTExtTimecard.TYPE_WORK)) {
+            /** 出勤 */
+            if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
+              work_day++;
+              work_hour += lrd.getWorkHourWithoutRestHour();
+            }
+            if (lrd.getOvertimeHour() != ExtTimecardListResultData.NO_DATA) {
+              overtime_day++;
+              overtime_hour += lrd.getOvertimeHourWithoutRestHour();
+            }
+            if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
+              off_day++;
+              off_hour += lrd.getOffHour();
+            }
+            if (lrd.isLateComing()) {
+              late_coming_day++;
+            }
+            if (lrd.isEarlyLeaving()) {
+              early_leaving_day++;
+            }
+          } else if (type.equals(EipTExtTimecard.TYPE_ABSENT)) {
+            /** 欠勤 */
+            absent_day++;
+          } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
+            /** 有休 */
+            paid_holiday++;
+          } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
+            /** 代休 */
+            compensatory_holiday++;
+          } else if (type.equals(EipTExtTimecard.TYPE_ETC)) {
+            /** その他 */
+            other_day++;
           }
-          if (lrd.getOvertimeHour() != ExtTimecardListResultData.NO_DATA) {
-            overtime_day++;
-            overtime_hour += lrd.getOvertimeHourWithoutRestHour();
-          }
-          if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
-            off_day++;
-            off_hour += lrd.getOffHour();
-          }
-          if (lrd.isLateComing()) {
-            late_coming_day++;
-          }
-          if (lrd.isEarlyLeaving()) {
-            early_leaving_day++;
-          }
-        } else if (type.equals(EipTExtTimecard.TYPE_ABSENT)) {
-          /** 欠勤 */
-          absent_day++;
-        } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
-          /** 有休 */
-          paid_holiday++;
-        } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
-          /** 代休 */
-          compensatory_holiday++;
-        } else if (type.equals(EipTExtTimecard.TYPE_ETC)) {
-          /** その他 */
-          other_day++;
         }
       }
 
@@ -995,48 +1015,50 @@ public class ExtTimecardSummaryListSelectData extends
        */
       if (userlist != null) {
         for (ExtTimecardResultData rd : userlist) {
-          ExtTimecardListResultData lrd = new ExtTimecardListResultData();
-          lrd.initField();
-          lrd.setDate(rd.getPunchDate().getValue());
-          lrd.setRd(rd);
-          lrd.setTimecardSystem(timecard_system);
-          String type = rd.getType().getValue();
-          if (type.equals(EipTExtTimecard.TYPE_WORK)) {
-            /** 出勤 */
-            if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
-              work_day++;
-              work_hour += lrd.getWorkHourWithoutRestHour();
+          if (rd.isCurrentMonth()) {
+            ExtTimecardListResultData lrd = new ExtTimecardListResultData();
+            lrd.initField();
+            lrd.setDate(rd.getPunchDate().getValue());
+            lrd.setRd(rd);
+            lrd.setTimecardSystem(timecard_system);
+            String type = rd.getType().getValue();
+            if (type.equals(EipTExtTimecard.TYPE_WORK)) {
+              /** 出勤 */
+              if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                work_day++;
+                work_hour += lrd.getWorkHourWithoutRestHour();
+              }
+              /** 残業 */
+              if (lrd.getOvertimeHour() > 0) {
+                overtime_day++;
+                overtime_hour += lrd.getOvertimeHourWithoutRestHour();
+              }
+              /** 休出 */
+              if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
+                off_day++;
+                off_hour += lrd.getOffHour();
+              }
+              /** 遅刻 */
+              if (lrd.isLateComing()) {
+                late_coming_day++;
+              }
+              /** 早退 */
+              if (lrd.isEarlyLeaving()) {
+                early_leaving_day++;
+              }
+            } else if (type.equals(EipTExtTimecard.TYPE_ABSENT)) {
+              /** 欠勤 */
+              absent_day++;
+            } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
+              /** 有休 */
+              paid_holiday++;
+            } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
+              /** 代休 */
+              compensatory_holiday++;
+            } else if (type.equals(EipTExtTimecard.TYPE_ETC)) {
+              /** その他 */
+              other_day++;
             }
-            /** 残業 */
-            if (lrd.getOvertimeHour() > 0) {
-              overtime_day++;
-              overtime_hour += lrd.getOvertimeHourWithoutRestHour();
-            }
-            /** 休出 */
-            if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
-              off_day++;
-              off_hour += lrd.getOffHour();
-            }
-            /** 遅刻 */
-            if (lrd.isLateComing()) {
-              late_coming_day++;
-            }
-            /** 早退 */
-            if (lrd.isEarlyLeaving()) {
-              early_leaving_day++;
-            }
-          } else if (type.equals(EipTExtTimecard.TYPE_ABSENT)) {
-            /** 欠勤 */
-            absent_day++;
-          } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
-            /** 有休 */
-            paid_holiday++;
-          } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
-            /** 代休 */
-            compensatory_holiday++;
-          } else if (type.equals(EipTExtTimecard.TYPE_ETC)) {
-            /** その他 */
-            other_day++;
           }
         }
       } else {
@@ -1360,4 +1382,5 @@ public class ExtTimecardSummaryListSelectData extends
   protected Map<Integer, List<ExtTimecardResultData>> getUserMap() {
     return this.usermap;
   }
+
 }
