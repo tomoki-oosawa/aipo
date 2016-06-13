@@ -22,6 +22,7 @@
 <registry>
     <portlet-entry name="Schedule" hidden="false" type="ref" parent="Velocity" application="false">
         <security-ref parent="user-view"/>
+
         <meta-info>
             <title>スケジュール</title>
             <description>メンバー全員のスケジュール共有が行えます。設備予約や継続スケジュールの登録など詳細な設定も可能です。表示形式はブロック・日別・週別・月別・一覧から選択できます。</description>
@@ -29,14 +30,16 @@
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="schedule" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
 	    <parameter name="pba-template" value="schedule-calendar" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
 	        <meta-info>
-                <title>初期表示</title>
+                <title>初期表示です160613</title>
             </meta-info>
     	</parameter>
     	<parameter name="pba-template.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="pba-template.style.items" value="schedule-calendar,schedule-oneday-group,schedule-weekly-group,schedule-monthly,schedule-search-list" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="pba-template.style.values" value="ブロック,日,週,月,一覧" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="p19-rows" value="detail" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
 	        <meta-info>
                 <title>表示形式（トップページ）</title>
@@ -123,6 +126,17 @@
         <parameter name="p7d-schk.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7d-schk.style.items" value="f,t" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p7d-schk.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+
+        <parameter name="p8d-schk" value="f" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
+            <meta-info>
+                <title>テスト</title>
+            </meta-info>
+        </parameter>
+        <parameter name="p8d-schk.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p8d-schk.style.items" value="f,t" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p8d-schk.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
 
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_mode1" value="ScheduleFormScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
