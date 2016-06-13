@@ -151,6 +151,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
         String mobileNotification =
           rundata.getParameters().getString("mobile_notification");
 
+        EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> roomMemberList =
+          room.getEipTMessageRoomMember();
         memberList.clear();
         if (memberNames != null
           && memberNames.length > 0
@@ -164,6 +168,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
           query.setQualifier(exp);
           memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
           Map<String, String> authMap = new HashMap<String, String>();
+          Map<String, String> desktopNotificationMap =
+            new HashMap<String, String>();
+          Map<String, String> mobileNotificationMap =
+            new HashMap<String, String>();
 
           for (int i = 0; i < memberNames.length; i++) {
             authMap.put(memberNames[i], memberAuthorities[i]);
@@ -172,6 +180,23 @@ public class MessageRoomFormData extends ALAbstractFormData {
             member.setAuthority(authMap.get(member.getName().getValue()));
           }
 
+          // ルームメンバーの通知設定をセット
+          for (EipTMessageRoomMember member : roomMemberList) {
+            desktopNotificationMap.put(member.getLoginName(), member
+              .getDesktopNotification());
+            mobileNotificationMap.put(member.getLoginName(), member
+              .getMobileNotification());
+          }
+          for (ALEipUser member : memberList) {
+            member.setDesktopNotification(desktopNotificationMap.get(member
+              .getName()
+              .getValue()));
+            member.setMobileNotification(mobileNotificationMap.get(member
+              .getName()
+              .getValue()));
+          }
+
+          // ログインユーザーの通知設定をセット
           for (ALEipUser member : memberList) {
             if (member.getUserId().getValueWithInt() == login_user
               .getUserId()
@@ -239,7 +264,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
         }
 
-        EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
         if (room != null) {
           login_user_room_auth =
             MessageUtils.hasAuthorityRoom(room, (int) login_user
