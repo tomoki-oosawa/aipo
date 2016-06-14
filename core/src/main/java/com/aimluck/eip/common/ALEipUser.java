@@ -45,6 +45,10 @@ public class ALEipUser implements ALData {
 
   private ALStringField authority;
 
+  private ALStringField desktopNotification;
+
+  private ALStringField mobileNotification;
+
   private Date created;
 
   /**
@@ -58,6 +62,10 @@ public class ALEipUser implements ALData {
     hasPhoto = false;
     authority = new ALStringField();
     authority.setValue("M");
+    desktopNotification = new ALStringField();
+    desktopNotification.setValue("A");
+    mobileNotification = new ALStringField();
+    mobileNotification.setValue("A");
     photoModified = 0L;
     created = null;
   }
@@ -157,6 +165,36 @@ public class ALEipUser implements ALData {
    */
   public void setAuthority(String string) {
     authority.setValue(string);
+  }
+
+  /**
+   * @return desktopNotification
+   */
+  public ALStringField getDesktopNotification() {
+    return desktopNotification;
+  }
+
+  /**
+   * @param desktopNotification
+   *          セットする desktopNotification
+   */
+  public void setDesktopNotification(String string) {
+    desktopNotification.setValue(string);
+  }
+
+  /**
+   * @return desktopNotification
+   */
+  public ALStringField getMobileNotification() {
+    return mobileNotification;
+  }
+
+  /**
+   * @param mobileNotification
+   *          セットする mobileNotification
+   */
+  public void setMobileNotification(String string) {
+    mobileNotification.setValue(string);
   }
 
   /**
