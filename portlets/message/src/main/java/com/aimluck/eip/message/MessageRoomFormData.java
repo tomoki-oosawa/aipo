@@ -152,9 +152,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
           rundata.getParameters().getString("mobile_notification");
 
         EipTMessageRoom room = MessageUtils.getRoom(rundata, context);
-        @SuppressWarnings("unchecked")
-        List<EipTMessageRoomMember> roomMemberList =
-          room.getEipTMessageRoomMember();
         memberList.clear();
         if (memberNames != null
           && memberNames.length > 0
@@ -180,20 +177,33 @@ public class MessageRoomFormData extends ALAbstractFormData {
             member.setAuthority(authMap.get(member.getName().getValue()));
           }
 
-          // ルームメンバーの通知設定をセット
-          for (EipTMessageRoomMember member : roomMemberList) {
-            desktopNotificationMap.put(member.getLoginName(), member
-              .getDesktopNotification());
-            mobileNotificationMap.put(member.getLoginName(), member
-              .getMobileNotification());
-          }
-          for (ALEipUser member : memberList) {
-            member.setDesktopNotification(desktopNotificationMap.get(member
-              .getName()
-              .getValue()));
-            member.setMobileNotification(mobileNotificationMap.get(member
-              .getName()
-              .getValue()));
+          if (room != null) {
+            @SuppressWarnings("unchecked")
+            List<EipTMessageRoomMember> roomMemberList =
+              room.getEipTMessageRoomMember();
+
+            // ルームメンバーの通知設定をセット
+            for (EipTMessageRoomMember member : roomMemberList) {
+              desktopNotificationMap.put(member.getLoginName(), member
+                .getDesktopNotification());
+              mobileNotificationMap.put(member.getLoginName(), member
+                .getMobileNotification());
+            }
+            for (ALEipUser member : memberList) {
+              if (desktopNotificationMap.containsKey(member
+                .getName()
+                .getValue())) {
+                member.setDesktopNotification(desktopNotificationMap.get(member
+                  .getName()
+                  .getValue()));
+              }
+              if (mobileNotificationMap
+                .containsKey(member.getName().getValue())) {
+                member.setMobileNotification(mobileNotificationMap.get(member
+                  .getName()
+                  .getValue()));
+              }
+            }
           }
 
           // ログインユーザーの通知設定をセット
