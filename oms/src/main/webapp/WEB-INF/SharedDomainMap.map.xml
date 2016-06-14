@@ -427,6 +427,7 @@
 	<db-entity name="eip_t_message_room_member">
 		<db-attribute name="AUTHORITY" type="VARCHAR" isMandatory="true" length="1"/>
 		<db-attribute name="DESKTOP_NOTIFICATION" type="VARCHAR" length="1"/>
+		<db-attribute name="HISTORY_LAST_MESSAGE_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="LOGIN_NAME" type="VARCHAR" isMandatory="true" length="32"/>
 		<db-attribute name="MOBILE_NOTIFICATION" type="VARCHAR" length="1"/>
@@ -1191,6 +1192,7 @@
 	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
 		<obj-attribute name="authority" type="java.lang.String" db-attribute-path="AUTHORITY"/>
 		<obj-attribute name="desktopNotification" type="java.lang.String" db-attribute-path="DESKTOP_NOTIFICATION"/>
+		<obj-attribute name="historyLastMessageId" type="java.lang.Integer" db-attribute-path="HISTORY_LAST_MESSAGE_ID"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
 		<obj-attribute name="mobileNotification" type="java.lang.String" db-attribute-path="MOBILE_NOTIFICATION"/>
 		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>

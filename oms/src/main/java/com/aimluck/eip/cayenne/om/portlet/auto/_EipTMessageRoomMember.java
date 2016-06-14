@@ -9,6 +9,7 @@ public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject
 
     public static final String AUTHORITY_PROPERTY = "authority";
     public static final String DESKTOP_NOTIFICATION_PROPERTY = "desktopNotification";
+    public static final String HISTORY_LAST_MESSAGE_ID_PROPERTY = "historyLastMessageId";
     public static final String LOGIN_NAME_PROPERTY = "loginName";
     public static final String MOBILE_NOTIFICATION_PROPERTY = "mobileNotification";
     public static final String TARGET_USER_ID_PROPERTY = "targetUserId";
@@ -30,6 +31,14 @@ public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject
     }
     public String getDesktopNotification() {
         return (String)readProperty("desktopNotification");
+    }
+    
+    
+    public void setHistoryLastMessageId(Integer historyLastMessageId) {
+        writeProperty("historyLastMessageId", historyLastMessageId);
+    }
+    public Integer getHistoryLastMessageId() {
+        return (Integer)readProperty("historyLastMessageId");
     }
     
     
