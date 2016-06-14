@@ -1190,9 +1190,9 @@
 	</obj-entity>
 	<obj-entity name="EipTMessageRoomMember" className="com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember" dbEntityName="eip_t_message_room_member">
 		<obj-attribute name="authority" type="java.lang.String" db-attribute-path="AUTHORITY"/>
-		<obj-attribute name="desktop_notification" type="java.lang.String" db-attribute-path="DESKTOP_NOTIFICATION"/>
+		<obj-attribute name="desktopNotification" type="java.lang.String" db-attribute-path="DESKTOP_NOTIFICATION"/>
 		<obj-attribute name="loginName" type="java.lang.String" db-attribute-path="LOGIN_NAME"/>
-		<obj-attribute name="mobile_notification" type="java.lang.String" db-attribute-path="MOBILE_NOTIFICATION"/>
+		<obj-attribute name="mobileNotification" type="java.lang.String" db-attribute-path="MOBILE_NOTIFICATION"/>
 		<obj-attribute name="targetUserId" type="java.lang.Integer" db-attribute-path="TARGET_USER_ID"/>
 		<obj-attribute name="userId" type="java.lang.Integer" db-attribute-path="USER_ID"/>
 	</obj-entity>
