@@ -220,6 +220,7 @@ public class MessageFormData extends ALAbstractFormData {
           map1.setAuthority("A");
           map1.setDesktopNotification("A");
           map1.setMobileNotification("A");
+          map1.setHistoryLastMessageId(0);
 
           EipTMessageRoomMember map2 =
             Database.create(EipTMessageRoomMember.class);
@@ -230,6 +231,7 @@ public class MessageFormData extends ALAbstractFormData {
           map2.setAuthority("A");
           map2.setDesktopNotification("A");
           map2.setMobileNotification("A");
+          map1.setHistoryLastMessageId(0);
 
           room.setAutoName("T");
           room.setRoomType("O");
