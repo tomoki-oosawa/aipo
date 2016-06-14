@@ -19,6 +19,7 @@
 package com.aimluck.eip.exttimecard;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.aimluck.eip.common.ALData;
@@ -29,6 +30,12 @@ import com.aimluck.eip.common.ALData;
 public class ExtTimecardListResultDataContainer implements ALData {
 
   private List<ExtTimecardListResultData> list;
+
+  private Date startDate;
+
+  public ExtTimecardListResultDataContainer(Date startDate) {
+    this.startDate = startDate;
+  }
 
   @Override
   public void initField() {
@@ -47,6 +54,21 @@ public class ExtTimecardListResultDataContainer implements ALData {
       initField();
     }
     return list;
+  }
+
+  /**
+   * @return startDate
+   */
+  public Date getStartDate() {
+    return startDate;
+  }
+
+  /**
+   * @param startDate
+   *          セットする startDate
+   */
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
   }
 
 }

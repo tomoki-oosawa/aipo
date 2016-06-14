@@ -355,19 +355,27 @@ public class ExtTimecardUtils {
   }
 
   public static List<ExtTimecardListResultDataContainer> groupByWeek(
-      List<ExtTimecardResultData> flat, EipTExtTimecardSystem timecard_system) {
+      Date startDate, List<ExtTimecardResultData> flat,
+      EipTExtTimecardSystem timecard_system) {
     List<ExtTimecardListResultDataContainer> result =
       new ArrayList<ExtTimecardListResultDataContainer>() {
 
         private static final long serialVersionUID = 7614354348253756254L;
 
         {
-          this.add(new ExtTimecardListResultDataContainer());
-          this.add(new ExtTimecardListResultDataContainer());
-          this.add(new ExtTimecardListResultDataContainer());
-          this.add(new ExtTimecardListResultDataContainer());
-          this.add(new ExtTimecardListResultDataContainer());
-          this.add(new ExtTimecardListResultDataContainer());
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(startDate);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
+          cal.add(Calendar.DATE, 7);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
+          cal.add(Calendar.DATE, 7);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
+          cal.add(Calendar.DATE, 7);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
+          cal.add(Calendar.DATE, 7);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
+          cal.add(Calendar.DATE, 7);
+          this.add(new ExtTimecardListResultDataContainer(startDate));
         }
       };
     for (ExtTimecardResultData rd : flat) {

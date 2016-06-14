@@ -235,22 +235,22 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         if (!rd.getIsNullClockInTime()) {
           clock_in_time = rd.getClockInTime("HH:mm");
           clock_out_time = rd.getClockOutTime("HH:mm");
-          if (tclistrd.getInworkHour() > 0.0) {
+          if (tclistrd.getWorkHour() > 0.0) {
             work_day = "1";
             work_hour = Float.toString(tclistrd.getWorkHourWithoutRestHour());
           } else {
             work_hour = "0";
           }
-          if (tclistrd.getOutworkHour() > 0.0) {
+          if (tclistrd.getOvertimeHour() > 0.0) {
             overtime_day = "1";
             overtime_hour =
               Float.toString(tclistrd.getOvertimeHourWithoutRestHour());
           } else {
             overtime_hour = "0";
           }
-          if (tclistrd.getOffWorkHour() > 0.0) {
+          if (tclistrd.getOffHour() > 0.0) {
             off_day = "1";
-            off_hour = Float.toString(tclistrd.getOffWorkHour());
+            off_hour = Float.toString(tclistrd.getOffHour());
           } else {
             off_hour = "0";
           }
