@@ -65,6 +65,12 @@ public class ExtTimecardSummaryResultData implements ALData {
   /** 休出日数 */
   private ALNumberField off_day = null;
 
+  /** 所定休日出勤日数 */
+  private ALNumberField official_off_day = null;
+
+  /** 法定休日出勤日数 */
+  private ALNumberField statutory_off_day = null;
+
   /** 休出時間 */
   private ALNumberField off_hour = null;
 
@@ -129,6 +135,21 @@ public class ExtTimecardSummaryResultData implements ALData {
   /** 所定休日深夜残業時間 */
   private ALNumberField off_day_midnight_work_hour = null;
 
+  /** 法定休日所定内出勤時間 */
+  private ALNumberField statutory_off_day_regular_work_hour = null;
+
+  /** 法定休日所定内深夜出勤時間 */
+  private ALNumberField statutory_off_day_regular_midnight_work_hour = null;
+
+  /** 法定休日法定内残業時間 */
+  private ALNumberField statutory_off_day_within_statutory_working_hour = null;
+
+  /** 法定休日残業時間 */
+  private ALNumberField statutory_off_day_overtime_hour = null;
+
+  /** 法定休日深夜残業時間 */
+  private ALNumberField statutory_off_day_midnight_work_hour = null;
+
   /**
    *
    *
@@ -143,6 +164,9 @@ public class ExtTimecardSummaryResultData implements ALData {
 
     off_day = new ALNumberField(0);
     off_hour = new ALNumberField(0);
+
+    official_off_day = new ALNumberField(0);
+    statutory_off_day = new ALNumberField(0);
 
     late_coming_day = new ALNumberField(0);
     early_leaving_day = new ALNumberField(0);
@@ -169,6 +193,11 @@ public class ExtTimecardSummaryResultData implements ALData {
     off_day_within_statutory_working_hour = new ALNumberField(0);
     off_day_overtime_hour = new ALNumberField(0);
     off_day_midnight_work_hour = new ALNumberField(0);
+    statutory_off_day_regular_work_hour = new ALNumberField(0);
+    statutory_off_day_regular_midnight_work_hour = new ALNumberField(0);
+    statutory_off_day_within_statutory_working_hour = new ALNumberField(0);
+    statutory_off_day_overtime_hour = new ALNumberField(0);
+    statutory_off_day_midnight_work_hour = new ALNumberField(0);
 
   }
 
@@ -203,6 +232,14 @@ public class ExtTimecardSummaryResultData implements ALData {
   public void setOffDayHour(int days, float hour) {
     off_day.setValue(days);
     off_hour.setValue(String.valueOf(hour));
+  }
+
+  public void setOfficailOffDay(int days) {
+    official_off_day.setValue(days);
+  }
+
+  public void setStatutoryOffDay(int days) {
+    statutory_off_day.setValue(days);
   }
 
   /**
@@ -320,6 +357,14 @@ public class ExtTimecardSummaryResultData implements ALData {
    */
   public ALNumberField getOffHour() {
     return off_hour;
+  }
+
+  public ALNumberField getOfficalOffDay() {
+    return official_off_day;
+  }
+
+  public ALNumberField getStatutoryOffDay() {
+    return statutory_off_day;
   }
 
   /**
@@ -693,5 +738,62 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   public void setOffDayMidnightOvertimeWorkHour(float hour) {
     this.off_day_midnight_work_hour.setValue(String.valueOf(hour));
+  }
+
+  /**
+   * @return statutory_off_day_regular_work_hour
+   */
+  public ALNumberField getStatutoryOffDayRegularWorkHour() {
+    return statutory_off_day_regular_work_hour;
+  }
+
+  public void setStatutoryOffDayRegularWorkHour(float hour) {
+    this.statutory_off_day_regular_work_hour.setValue(String.valueOf(hour));
+  }
+
+  /**
+   * @return statutory_off_day_regular_midnight_work_hour
+   */
+  public ALNumberField getStatutoryOffDayRegularMidnightWorkHour() {
+    return statutory_off_day_regular_midnight_work_hour;
+  }
+
+  public void setStatutoryOffDayRegularMidnightWorkHour(float hour) {
+    this.statutory_off_day_regular_midnight_work_hour.setValue(String
+      .valueOf(hour));
+  }
+
+  /**
+   * @return statutory_off_day_within_statutory_working_hour
+   */
+  public ALNumberField getStatutoryOffDayWithinStatutoryOvertimeWorkingHour() {
+    return statutory_off_day_within_statutory_working_hour;
+  }
+
+  public void setStatutoryOffDayWithinStatutoryOvertimeWorkingHour(float hour) {
+    this.statutory_off_day_within_statutory_working_hour.setValue(String
+      .valueOf(hour));
+  }
+
+  /**
+   * @return statutory_off_day_overtime_hour
+   */
+  public ALNumberField getStatutoryOffDayOvertimeHour() {
+    return statutory_off_day_overtime_hour;
+  }
+
+  public void setStatutoryOffDayOvertimeHour(float hour) {
+    this.statutory_off_day_overtime_hour.setValue(String.valueOf(hour));
+  }
+
+  /**
+   * @return statutory_off_day_midnight_work_hour
+   */
+  public ALNumberField getStatutoryOffDayMidnightOvertimeWorkHour() {
+    return statutory_off_day_midnight_work_hour;
+  }
+
+  public void setStatutoryOffDayMidnightOvertimeWorkHour(float hour) {
+    this.statutory_off_day_midnight_work_hour.setValue(String.valueOf(hour));
   }
 }

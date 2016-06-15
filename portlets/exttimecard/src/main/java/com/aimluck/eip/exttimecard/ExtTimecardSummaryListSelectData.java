@@ -155,6 +155,8 @@ public class ExtTimecardSummaryListSelectData extends
   /** 開始日 */
   private int startDay;
 
+  private Date queryStartDate;
+
   /**
    *
    */
@@ -875,6 +877,8 @@ public class ExtTimecardSummaryListSelectData extends
         .getTime());
     query.andQualifier(exp11.andExp(exp12));
 
+    queryStartDate = cal1.getTime();
+
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -995,7 +999,8 @@ public class ExtTimecardSummaryListSelectData extends
       List<ExtTimecardResultData> userlist = usermap.get(user_id);
       ExtTimecardSummaryResultData summary_rd =
         new ExtTimecardSummaryResultData();
-      int work_day = 0, overtime_day = 0, off_day = 0;
+      int work_day = 0, overtime_day = 0, off_day = 0, official_off_day = 0, statutory_off_day =
+        0;
       /** 就業、残業、休出日数 */
       float work_hour = 0, overtime_hour = 0, off_hour = 0;
       /** 就業、残業、休出時間 */
@@ -1017,8 +1022,10 @@ public class ExtTimecardSummaryListSelectData extends
         0f, off_day_within_statutory_overtime_hour = 0f, off_day_overtime_hour =
         0f, off_day_midnight_work_hour = 0f;
 
-      /** 法定休日所定内出勤時間、法定休日所定内深夜出勤時間、法定休日所定内残業時間、法定休日残業時間、法定休日深夜残業時間 */
-      // FIXME:
+      /** 法定休日所定内出勤時間、法定休日所定内深夜出勤時間、法定休日法定内残業時間、法定休日残業時間、法定休日深夜残業時間 */
+      float statutory_off_day_regular_work_hour = 0f, statutory_off_day_regular_midnight_work_hour =
+        0f, statutory_off_day_within_statutory_overtime_hour = 0f, statutory_off_day_overtime_hour =
+        0f, statutory_off_day_midnight_work_hour = 0f;
 
       /** その他、未入力 */
       summary_rd.initField();
@@ -1026,6 +1033,9 @@ public class ExtTimecardSummaryListSelectData extends
       /** タイムカード設定を取得 */
       EipTExtTimecardSystem timecard_system =
         ExtTimecardUtils.getEipTExtTimecardSystemByUserId(user_id);
+
+      ExtTimecardListResultDataContainer container =
+        ExtTimecardUtils.groupByWeek(queryStartDate, userlist, timecard_system);
 
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、
@@ -1064,17 +1074,33 @@ public class ExtTimecardSummaryListSelectData extends
               }
               /** 休出 */
               if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
-                // FIXME: 所定内休日、法定内休日に振り分け
                 off_day++;
                 off_hour += lrd.getOffHour();
-                off_day_regular_work_hour += lrd.getInworkHour();
-                off_day_overtime_hour += lrd.getOvertimeHour();
-                off_day_midnight_work_hour += lrd.getMidnightOvertimeWorkHour();
-                off_day_regular_midnight_work_hour +=
-                  lrd.getMidnightRegularWorkHour();
-                if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
-                  off_day_within_statutory_overtime_hour +=
-                    lrd.getWithinStatutoryOvertimeWorkHour();
+                // 所定内休日、法定内休日に振り分け
+                if (container.isStatutoryOffDay(lrd)) {
+                  statutory_off_day++;
+                  statutory_off_day_regular_work_hour += lrd.getInworkHour();
+                  statutory_off_day_overtime_hour += lrd.getOvertimeHour();
+                  statutory_off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  statutory_off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    statutory_off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
+                } else {
+                  official_off_day++;
+                  off_day_regular_work_hour += lrd.getInworkHour();
+                  off_day_overtime_hour += lrd.getOvertimeHour();
+                  off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
                 }
               }
               /** 遅刻 */
@@ -1126,6 +1152,8 @@ public class ExtTimecardSummaryListSelectData extends
       summary_rd.setWorkDayHour(work_day, work_hour);
       summary_rd.setOvertimeDayHour(overtime_day, overtime_hour);
       summary_rd.setOffDayHour(off_day, off_hour);
+      summary_rd.setOfficailOffDay(official_off_day);
+      summary_rd.setStatutoryOffDay(statutory_off_day);
       summary_rd.setLateComingDay(late_coming_day);
       summary_rd.setEarlyLeavingDay(early_leaving_day);
       summary_rd.setAbsentDay(absent_day);
@@ -1143,6 +1171,7 @@ public class ExtTimecardSummaryListSelectData extends
         .setOvertimeWithinStatutoryWorkingHour(overtime_within_statutory_working_hour);
       summary_rd.setMidnightOvertimeHour(midnight_overtime_hour);
       summary_rd.setRestHour(rest_hour);
+
       summary_rd.setOffDayRegularWorkHour(off_day_regular_work_hour);
       summary_rd
         .setOffDayRegularMidnightWorkHour(off_day_regular_midnight_work_hour);
@@ -1150,6 +1179,17 @@ public class ExtTimecardSummaryListSelectData extends
         .setOffDayWithinStatutoryOvertimeWorkingHour(off_day_within_statutory_overtime_hour);
       summary_rd.setOffDayMidnightOvertimeWorkHour(off_day_midnight_work_hour);
       summary_rd.setOffDayOvertimeHour(off_day_overtime_hour);
+
+      summary_rd
+        .setStatutoryOffDayRegularWorkHour(statutory_off_day_regular_work_hour);
+      summary_rd
+        .setStatutoryOffDayRegularMidnightWorkHour(statutory_off_day_regular_midnight_work_hour);
+      summary_rd
+        .setStatutoryOffDayWithinStatutoryOvertimeWorkingHour(statutory_off_day_within_statutory_overtime_hour);
+      summary_rd
+        .setStatutoryOffDayMidnightOvertimeWorkHour(statutory_off_day_midnight_work_hour);
+      summary_rd
+        .setStatutoryOffDayOvertimeHour(statutory_off_day_overtime_hour);
 
       list.add(summary_rd);
     }

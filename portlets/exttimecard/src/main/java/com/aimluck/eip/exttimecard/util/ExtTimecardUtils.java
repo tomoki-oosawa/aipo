@@ -354,38 +354,33 @@ public class ExtTimecardUtils {
     return logger;
   }
 
-  public static List<ExtTimecardListResultDataContainer> groupByWeek(
-      Date startDate, List<ExtTimecardResultData> flat,
+  /**
+   * 休日（所定休日、法定休日）の曜日一覧
+   *
+   * @return
+   */
+  public static List<Integer> getOffdayDayOfWeek(
       EipTExtTimecardSystem timecard_system) {
-    List<ExtTimecardListResultDataContainer> result =
-      new ArrayList<ExtTimecardListResultDataContainer>() {
+    List<Integer> list = new ArrayList<Integer>();
+    // 標準は日・土
+    list.add(Calendar.SUNDAY);
+    list.add(Calendar.SATURDAY);
+    // TODO: timecard_system に拡張
+    return list;
+  }
 
-        private static final long serialVersionUID = 7614354348253756254L;
-
-        {
-          Calendar cal = Calendar.getInstance();
-          cal.setTime(startDate);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-          cal.add(Calendar.DATE, 7);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-          cal.add(Calendar.DATE, 7);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-          cal.add(Calendar.DATE, 7);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-          cal.add(Calendar.DATE, 7);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-          cal.add(Calendar.DATE, 7);
-          this.add(new ExtTimecardListResultDataContainer(startDate));
-        }
-      };
+  public static ExtTimecardListResultDataContainer groupByWeek(
+      Date queryStartDate, List<ExtTimecardResultData> flat,
+      EipTExtTimecardSystem timecard_system) {
+    ExtTimecardListResultDataContainer result =
+      new ExtTimecardListResultDataContainer(queryStartDate);
     for (ExtTimecardResultData rd : flat) {
       ExtTimecardListResultData lrd = new ExtTimecardListResultData();
       lrd.initField();
       lrd.setDate(rd.getPunchDate().getValue());
       lrd.setRd(rd);
       lrd.setTimecardSystem(timecard_system);
-
-      result.get(lrd.getWeekOfMonth() - 1).add(lrd);
+      result.add(lrd);
     }
     return result;
   }

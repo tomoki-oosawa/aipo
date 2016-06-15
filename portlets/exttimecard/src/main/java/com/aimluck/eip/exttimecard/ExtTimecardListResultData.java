@@ -31,7 +31,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
@@ -1242,6 +1241,7 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getMidnightRegularWorkHour() {
+    // FIXME: 所定勤務時間内の深夜出勤時間を集計
     if (_midnight_regular_work_hour != NO_DATA) {
       return _midnight_regular_work_hour;
     } else {
@@ -1263,6 +1263,7 @@ public class ExtTimecardListResultData implements ALData {
         time += (early + late) / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
+        // FIXME: 外出時間が深夜にかかる時間帯のみ差し引く
         if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
           float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
           if (outgoing_time != NO_DATA) {
@@ -1303,6 +1304,7 @@ public class ExtTimecardListResultData implements ALData {
         time += (early + late) / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
+        // FIXME: 外出時間が深夜にかかる時間帯のみ差し引く
         if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
           float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
           if (outgoing_time != NO_DATA) {
@@ -1418,60 +1420,4 @@ public class ExtTimecardListResultData implements ALData {
     return time;
   }
 
-  /**
-   * 月を返す
-   *
-   * @return
-   */
-  public int getMonthOfYear() {
-    Calendar cal = Calendar.getInstance();
-    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
-    // xxx)を利用して日付を調整する必要がある。
-    try {
-      cal.setTime(this.getDate().getValue().getDate());
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-    } catch (ALIllegalDateException e) {
-      e.printStackTrace();
-    }
-    return cal.get(Calendar.MONTH) + 1;
-  }
-
-  /**
-   * 日を返す
-   *
-   * @return
-   */
-  public int getDayOfMonth() {
-    Calendar cal = Calendar.getInstance();
-    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
-    // xxx)を利用して日付を調整する必要がある。
-    try {
-      cal.setTime(this.getDate().getValue().getDate());
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-    } catch (ALIllegalDateException e) {
-      e.printStackTrace();
-    }
-    return cal.get(Calendar.DAY_OF_MONTH);
-  }
-
-  public int getWeekOfMonth() {
-    Calendar cal = Calendar.getInstance();
-    // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
-    // xxx)を利用して日付を調整する必要がある。
-    if (!rd.isCurrentMonth()) {
-      // FIXME: 本当は日付変更時間を考慮に入れないと行けないのでset(Calendar.DAY_OF_MONTH,
-      // xxx)を利用して日付を調整する必要がある。
-      return 1;
-    }
-    try {
-      cal.setTime(this.getDate().getValue().getDate());
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-    } catch (ALIllegalDateException e) {
-      e.printStackTrace();
-    }
-    return cal.get(Calendar.WEEK_OF_MONTH);
-  }
 }

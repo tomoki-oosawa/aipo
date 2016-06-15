@@ -19,48 +19,96 @@
 package com.aimluck.eip.exttimecard;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 
 /**
  *
  */
 public class ExtTimecardListResultDataContainer implements ALData {
 
-  private List<ExtTimecardListResultData> list;
+  private List<Map<Integer, ExtTimecardListResultData>> list;
 
-  private Date startDate;
+  // 起点となる週の初めの曜日
+  private Date queryStartDate;
 
   public ExtTimecardListResultDataContainer(Date startDate) {
-    this.startDate = startDate;
+    this.queryStartDate = startDate;
   }
 
   @Override
   public void initField() {
-    list = new ArrayList<ExtTimecardListResultData>();
+    list = new ArrayList<Map<Integer, ExtTimecardListResultData>>() {
+
+      private static final long serialVersionUID = 7614354348253756254L;
+
+      {
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+        this.add(new HashMap<Integer, ExtTimecardListResultData>());
+      }
+    };
   }
 
   public void add(ExtTimecardListResultData rd) {
     if (list == null) {
       initField();
     }
-    list.add(rd);
+    int weekOfMonth = getWeekOfMonth(rd.getRd().getPunchDate().getValue());
+    Map<Integer, ExtTimecardListResultData> map = list.get(weekOfMonth);
+    if (map != null) {
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(rd.getRd().getPunchDate().getValue());
+      map.put(cal.get(Calendar.DAY_OF_WEEK), rd);
+    }
   }
 
-  public List<ExtTimecardListResultData> getList() {
-    if (list == null) {
-      initField();
+  /**
+   * 法定休日扱いとするかどうか
+   *
+   * @param rd
+   * @return
+   */
+  public boolean isStatutoryOffDay(ExtTimecardListResultData rd) {
+    int weekOfMonth = getWeekOfMonth(rd.getRd().getPunchDate().getValue());
+    Map<Integer, ExtTimecardListResultData> map = list.get(weekOfMonth);
+    List<Integer> offdayDayOfWeek =
+      ExtTimecardUtils.getOffdayDayOfWeek(rd.getTimecardSystem());
+    boolean allWork = true;
+    int last = -1;
+    for (int dayOfWeek : offdayDayOfWeek) {
+      last = dayOfWeek;
+      ExtTimecardListResultData data = map.get(dayOfWeek);
+      if (data == null
+        || data.getOffHour() == ExtTimecardListResultData.NO_DATA) {
+        allWork = false;
+      }
     }
-    return list;
+    if (allWork) {
+      // 休日をすべて出勤した場合、後の曜日を法定休日とする。
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(rd.getRd().getPunchDate().getValue());
+      return last == cal.get(Calendar.DAY_OF_WEEK);
+    } else {
+      return false;
+    }
   }
 
   /**
    * @return startDate
    */
   public Date getStartDate() {
-    return startDate;
+    return queryStartDate;
   }
 
   /**
@@ -68,7 +116,24 @@ public class ExtTimecardListResultDataContainer implements ALData {
    *          セットする startDate
    */
   public void setStartDate(Date startDate) {
-    this.startDate = startDate;
+    this.queryStartDate = startDate;
+  }
+
+  protected int getWeekOfMonth(Date date) {
+    int differenceDays = differenceDays(queryStartDate, date);
+    if (differenceDays < 0) {
+      differenceDays = -differenceDays;
+    }
+    int result = differenceDays / 7;
+    return result;
+  }
+
+  protected int differenceDays(Date date1, Date date2) {
+    long datetime1 = date1.getTime();
+    long datetime2 = date2.getTime();
+    long one_date_time = 1000 * 60 * 60 * 24;
+    long diffDays = (datetime1 - datetime2) / one_date_time;
+    return (int) diffDays;
   }
 
 }
