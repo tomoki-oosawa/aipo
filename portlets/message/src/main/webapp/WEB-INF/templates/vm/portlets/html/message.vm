@@ -45,7 +45,7 @@
 <div id="messageRightPane" class="rightBlock" style="display:none">
 　　<div class="loader"><i class="indicator"></i></div>
 </div>
-<div id="messageMainBlock" class="mainBlock">
+<div id="messageMainBlock" class="mainBlock" #if(!$isMessageUser)style="display:none"#end>
 	<div class="contents clearfix">
 		<div class="timelineOuter">
 			<div class="roomHeader clearfix">
