@@ -117,17 +117,19 @@
 #end
 #if($!result.Users.size() <= 0 && $!result.FacilityList.size() <= 0)
 <div class="message">$l10n.SCHEDULE_ALERT_NOT_CREAT_USER_AND_FACILITY</div>
-#else
+#else1
 #if($!display_month == "detail")
 #ALtableheaderCalendarAtt("100%" "calendarDisplayWeek")
 #else
 #ALtableheaderCalendarAtt("100%" "calendarDisplayMonth")
 #end
+
 <tr>
 #foreach($test in ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
 <th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
 #end
 </tr>
+
 #set($entityids = "")
 #set($weekListSize = $result.Container.WeekList.size())
 #set($weekcount = 0)
@@ -170,6 +172,7 @@
 </td>
 #end
 </tr>
+
 ### 期間スケジュール（ここから） ###
 #set($col_span = 0)
 #if($termConListSize > 0)
@@ -183,6 +186,7 @@
 #if($!{record.TermResultData})
 #set($col_span=$!{record.TermResultData.Rowspan})
 #end
+
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
 #elseif($!{record.Date.Value.Day} == 0)
@@ -190,12 +194,15 @@
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
 #end
+
 #if($!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
 #end
+
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = " off")
 #end
+
 #if( ! $record.isTermNull() )
 #set($entityids = "$!{entityids}$!{record.TermResultData.ScheduleId},")
 ##if($record.TermResultData.isShowDetail())
@@ -237,6 +244,7 @@
 #if($!{record.ToDoResultData})
 #set($col_span=$!{record.ToDoResultData.Rowspan})
 #end
+
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
 #elseif($!{record.Date.Value.Day} == 0)
@@ -302,7 +310,9 @@ $!{record.ToDoResultData.TodoName}
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #end
 #if($record.ScheduleList.size() <= 0)
+
 <div class="calendarBody">
+
 <div class="calendarScheduleDiv"></div>
 </div>
 #else

@@ -111,6 +111,11 @@ public class AjaxScheduleAction extends ALBaseAction {
         portlet.getPortletConfig().getInitParameter("p3a-user");
       context.put("init_user", init_user);
 
+      // 週頭を習得する
+      String start_monday =
+        portlet.getPortletConfig().getInitParameter("z1a-rows");
+      context.put("start_monday", start_monday);
+
       // 初期選択メンバーリストを取得する
       List<UserFacilityLiteBean> memberList =
         new ArrayList<UserFacilityLiteBean>();

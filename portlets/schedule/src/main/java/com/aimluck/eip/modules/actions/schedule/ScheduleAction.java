@@ -145,9 +145,13 @@ public class ScheduleAction extends ALBaseAction {
       context.put("time_interval", time_interval);
 
       // 表示日数を取得する.
-      String weekly_days =
-        portlet.getPortletConfig().getInitParameter("p2a-days");
-      context.put("weekly_days", weekly_days);
+      String _days = portlet.getPortletConfig().getInitParameter("p2a-days");
+      context.put("weekly_days", _days);
+
+      // 週頭を取得する
+      String start_monday =
+        portlet.getPortletConfig().getInitParameter("z1a-rows");
+      context.put("start_monday", start_monday);
 
       // 初期共有メンバー表示フラグを取得する
       String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
@@ -400,6 +404,11 @@ public class ScheduleAction extends ALBaseAction {
     String weekly_days =
       portlet.getPortletConfig().getInitParameter("p2a-days");
     context.put("weekly_days", weekly_days);
+
+    // 週頭を取得する
+    String start_monday =
+      portlet.getPortletConfig().getInitParameter("z1a-rows");
+    context.put("start_monday", start_monday);
 
     // 初期共有メンバー表示フラグを取得する
     String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
@@ -660,6 +669,7 @@ public class ScheduleAction extends ALBaseAction {
         context.put("time_end", 24);
         context.put("top_form", "simple");
         context.put("dayList", 1);
+        context.put("start_monday", 0);
         ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       }
 
