@@ -101,6 +101,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private boolean isGroup = true;
 
+  private boolean isDeleteHistory = false;
+
   /** 1ルームの最大人数 **/
   private final int MAX_ROOM_MEMBER = 300;
 
@@ -688,6 +690,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
     return isMobileNotification;
   }
 
+  /**
+   * メッセージ：true <br />
+   * ダイレクトメッセージ：false
+   *
+   * @return
+   */
   public boolean isGroup() {
     return isGroup;
   }
@@ -699,6 +707,21 @@ public class MessageRoomFormData extends ALAbstractFormData {
     ArrayList<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;
+  }
+
+  /**
+   * @return isDeleteHistory
+   */
+  public boolean isDeleteHistory() {
+    return isDeleteHistory;
+  }
+
+  /**
+   * @param isDeleteHistory
+   *          セットする isDeleteHistory
+   */
+  public void setDeleteHistory(boolean isDeleteHistory) {
+    this.isDeleteHistory = isDeleteHistory;
   }
 
 }

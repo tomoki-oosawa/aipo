@@ -93,6 +93,18 @@ public class MessageRoomFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
+      } else if (ALEipConstants.MODE_MULTI_DELETE.equals(mode)) {
+        MessageRoomFormData formData = new MessageRoomFormData();
+        formData.initField();
+        formData.setDeleteHistory(true);
+
+        if (formData.doDelete(this, rundata, context)) {
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          result = json.toString();
+        }
       }
     } catch (Exception e) {
       logger.error("MessageRoomFormJSONScreen.getJSONString", e);

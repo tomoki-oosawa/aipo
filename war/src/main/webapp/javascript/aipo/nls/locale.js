@@ -50,6 +50,8 @@
 	MULTIDISABLESUBMIT_SEL:"\u9078\u629e\u3057\u305f",
 	MULTIDISABLESUBMIT_DISABLE:"\u7121\u52b9\u5316",
 	MULTIDISABLESUBMIT_STR:"${multiDisableSubmit_sel}${multiDisableSubmit_name}\u3092${multiDisableSubmit_disable}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
+	// 履歴をすべて削除してもよろしいですか？
+	DELETEHISTORY_STR:"\u5c65\u6b74\u3092\u3059\u3079\u3066\u524a\u9664\u3057\u3066\u3082\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
 	// "[エラー] 読み込みができませんでした。"
 	XHRERROR_STR:"[${xhrError_error}] ${xhrError_loading}\u304c${xhrError_failed}。",
 	XHRERROR_ERROR:"\u30a8\u30e9\u30fc",
