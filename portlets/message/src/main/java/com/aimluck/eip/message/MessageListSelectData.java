@@ -74,6 +74,8 @@ public class MessageListSelectData extends
 
   private boolean isSearch = false;
 
+  private int historyLastMessageId;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -360,5 +362,20 @@ public class MessageListSelectData extends
       return false;
     }
     return "O".equals(room.getRoomType());
+  }
+
+  /**
+   * @return historyLastMessageId
+   */
+  public int getHistoryLastMessageId() {
+    return historyLastMessageId;
+  }
+
+  /**
+   * @param historyLastMessageId
+   *          セットする historyLastMessageId
+   */
+  public void setHistoryLastMessageId(int historyLastMessageId) {
+    this.historyLastMessageId = historyLastMessageId;
   }
 }

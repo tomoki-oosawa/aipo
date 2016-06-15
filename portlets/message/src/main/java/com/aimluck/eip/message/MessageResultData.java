@@ -66,6 +66,8 @@ public class MessageResultData implements ALData, Serializable {
 
   private transient List<FileuploadBean> attachmentFileList;
 
+  private ALNumberField historyLastMessageId;
+
   /**
    *
    */
@@ -83,6 +85,7 @@ public class MessageResultData implements ALData, Serializable {
     createDate = new ALDateTimeField();
     attachmentFileList = new ArrayList<FileuploadBean>();
     keyword = new ALStringField();
+    historyLastMessageId = new ALNumberField();
   }
 
   /**
@@ -318,5 +321,20 @@ public class MessageResultData implements ALData, Serializable {
 
   public boolean isSystemUser() {
     return userId.getValue() < 4;
+  }
+
+  /**
+   * @return historyLastMessageId
+   */
+  public ALNumberField getHistoryLastMessageId() {
+    return historyLastMessageId;
+  }
+
+  /**
+   * @param historyLastMessageId
+   *          セットする historyLastMessageId
+   */
+  public void setHistoryLastMessageId(Integer historyLastMessageId) {
+    this.historyLastMessageId.setValue(historyLastMessageId);
   }
 }
