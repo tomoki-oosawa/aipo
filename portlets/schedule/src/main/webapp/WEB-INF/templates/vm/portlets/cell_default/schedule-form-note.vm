@@ -135,6 +135,24 @@ $!result.getFieldName("public_flag")#ALcell_br($career)
 <input name="public_flag" type="radio" value="O" #if ($!result.PublicFlag.toString() == "O") checked="checked" #end>$l10n.SCHEDULE_OPEN_PUBLIC_WORD#ALcell_br($career)
 <input name="public_flag" type="radio" value="C" #if ($!result.PublicFlag.toString() == "C") checked="checked" #end>$l10n.SCHEDULE_CLOSE_PUBLIC_WORD#ALcell_br($career)
 <input name="public_flag" type="radio" value="P" #if ($!result.PublicFlag.toString() == "P") checked="checked" #end>$l10n.SCHEDULE_HIDE_ALL
+#if($result.isReminderEnabled())
+#if(!$!{result.isSpan()})
+#ALcell_hr($career '1')
+$!result.getFieldName('reminder_flag')#ALcell_br($career)
+<input name="reminder_flag" type="radio" value="F" #if ($!result.ReminderFlag.toString() == "F") checked="checked" #end>$l10n.SCHEDULE_REMINDER_OFF#ALcell_br($career)
+<input name="reminder_flag" type="radio" value="T" #if ($!result.ReminderFlag.toString() == "T") checked="checked" #end>$l10n.SCHEDULE_REMINDER_ON#ALcell_br($career)
+<input name="notify_type_message" value="TRUE" type="checkbox" #if ($!{result.NotifyTypeMessage.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MESSAGE#ALcell_br($career)
+<input name="notify_type_mail" value="TRUE" type="checkbox" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL#ALcell_br($career)
+<select id="notify_timing" name="notify_timing">
+    <option value="0" #if ($!result.NotifyTiming.toString() == "0") selected="selected" #end>$l10n.SCHEDULE_REMINDER_ONTIME</option>
+    <option value="5" #if ($!result.NotifyTiming.toString() == "5") selected="selected" #end>5$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="15" #if ($!result.NotifyTiming.toString() == "15") selected="selected" #end>15$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="30" #if ($!result.NotifyTiming.toString() == "30") selected="selected" #end>30$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="60" #if ($!result.NotifyTiming.toString() == "60") selected="selected" #end>1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR</option>
+  </select>$l10n.SCHEDULE_REMINDER_NOTIFY_TEXT
+$l10n.SCHEDULE_REMINDER_MSG
+#end
+#end
 #ALcell_hr($career '1')
 #ALcell_submit($career $event_submit $action_str)
 ##cell_submit($career 'eventSubmit_doSchedule_menu' 'ｷｬﾝｾﾙする')

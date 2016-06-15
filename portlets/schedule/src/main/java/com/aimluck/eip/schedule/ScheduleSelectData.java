@@ -19,6 +19,7 @@
 package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,6 +55,9 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -121,6 +125,9 @@ public class ScheduleSelectData extends
   private boolean ignoreViewdate = false;
 
   private ScheduleDetailOnedaySelectData ondaySelectData = null;
+
+  /** <code>reminderItem</code> リマインダー */
+  private ALReminderItem reminderItem;
 
   /**
    *
@@ -605,6 +612,35 @@ public class ScheduleSelectData extends
 
       return null;
     }
+
+    if (ALReminderService.isEnabled()) {
+      reminderItem =
+        ALReminderService.getJob(Database.getDomainName(), String
+          .valueOf(loginuserid), ReminderCategory.SCHEDULE, record
+          .getScheduleId()
+          .intValue());
+    }
+
+    // 過去のスケジュールに対してはアラームの設定状況を表示しない
+    if (!rd.isSpan()) {
+      if (rd.isRepeat()) {
+        Calendar today = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(record.getStartDate());
+        cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+        cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+        cal.set(Calendar.DATE, today.get(Calendar.DATE));
+        if (cal.getTime().before(today.getTime())) {
+          rd.setPast(true);
+        }
+      } else {
+        Calendar today = Calendar.getInstance();
+        if (record.getStartDate().before(today.getTime())) {
+          rd.setPast(true);
+        }
+      }
+    }
+
     return rd;
   }
 
@@ -798,4 +834,15 @@ public class ScheduleSelectData extends
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
+
+  public ALReminderItem getReminderItem() {
+    return reminderItem;
+  }
+
+  public boolean hasReminderItem() {
+    return reminderItem != null ? true : false;
+  }
 }

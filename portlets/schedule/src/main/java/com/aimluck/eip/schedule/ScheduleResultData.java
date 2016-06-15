@@ -112,6 +112,9 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>common_category_name</code> 共有カテゴリ名 */
   private ALStringField common_category_name;
 
+  /** <code>is_past</code> 過去かどうか */
+  private boolean is_past;
+
   /*
    *
    */
@@ -138,6 +141,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_dummy = false;
     is_daystart = false;
     is_term = false;
+    is_past = false;
   }
 
   /**
@@ -664,6 +668,24 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   public boolean isTerm() {
     return is_term;
+  }
+
+  /**
+   * 過去かどうか
+   *
+   * @return
+   */
+  public boolean isPast() {
+    return is_past;
+  }
+
+  /**
+   * 過去かどうかを設定します。
+   *
+   * @param bool
+   */
+  public void setPast(boolean bool) {
+    is_past = bool;
   }
 
 }

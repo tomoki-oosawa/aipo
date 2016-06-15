@@ -140,6 +140,31 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
+#if($result.isReminderEnabled())
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
+#ALtdcaption($l10n.SCHEDULE_ALARM)
+#ALtditemheader()
+#if($result.hasReminderItem())
+$!result.ReminderItem.NotifyTimingText
+$l10n.SCHEDULE_REMINDER_NOTIFY_DETAIL_TEXT
+#set($count = 0)
+#if ($!{result.ReminderItem.hasNotifyTypeMessage()}) #set ($dest_type_message_dist = $l10n.SCHEDULE_REMINDER_MESSAGE) #set($count = $count+1) #end
+#if ($!{result.ReminderItem.hasNotifyTypeMail()}) #set ($dest_type_mail_dist = $l10n.SCHEDULE_REMINDER_MAIL) #set($count = $count+1) #end
+#if($count == 0)
+-----
+#else
+ （ $!{dest_type_message_dist} #if($count == 2) と #end $!{dest_type_mail_dist} ）
+#end
+#else
+#if ($!{result.Detail.isLoginuser()})
+$l10n.SCHEDULE_REMINDER_OFF
+#end
+#end
+#ALtditemfooter()
+#end
+#end
+
+
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditemheader()
 <a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
