@@ -1215,23 +1215,88 @@ public class ExtTimecardListResultData implements ALData {
     return cal.getTime();
   }
 
+  private Date nextDateOf(int hour, int minute) {
+    Calendar cal = Calendar.getInstance();
+
+    try {
+      cal.setTime(getDate().getValue().getDate());
+    } catch (Exception e) {
+    }
+
+    cal.set(Calendar.HOUR_OF_DAY, hour);
+    cal.set(Calendar.MINUTE, minute);
+    cal.set(Calendar.DATE, cal.get(Calendar.DATE) + 1);
+    return cal.getTime();
+  }
+
+  /**
+   * 通常業務を開始した時刻を返却します。 残業計算のタイプによって返す値が異なります。
+   * <dl>
+   * <dt>所定勤務時間外の労働をすべて時間外労働とする計算方式の場合</dt>
+   * <dd>所定勤務開始時間または実際の始業時間のいずれか遅い方の時間。</dd>
+   * <dt>所定労働時間を超えた労働時間を時間外とする計算方式の場合</dt>
+   * <dd>実際の始業時間。</dd>
+   * </dl>
+   *
+   * @return
+   */
   public Date getRoundedInDate() {
     Date actual = getRd().getClockInTime().getValue();
-    Date standard = getStartDate();
-    if (actual.after(standard)) {
-      return actual;
+    if (isOvertimeTypeO()) {
+      Date standard = getStartDate();
+      if (actual.after(standard)) {
+        return actual;
+      } else {
+        return standard;
+      }
     } else {
-      return standard;
+      return actual;
     }
   }
 
+  /**
+   * 通常業務が終了した時刻を返却します。 残業計算のタイプによって返す値が異なります。 TODO: 未実装なので早急に実装する
+   * <dl>
+   * <dt>所定勤務時間外の労働をすべて時間外労働とする計算方式の場合</dt>
+   * <dd>所定勤務終了時間、または実際の終業時間のいずれか早い方の時間。</dd>
+   * <dt>所定労働時間を超えた労働時間を時間外とする計算方式の場合</dt>
+   * <dd>実際の就業時間、または実際の始業時間から数えて労働時間が所定労働時間に達した時間のいずれか早い方の時間。</dd>
+   * </dl>
+   *
+   * @return
+   */
   public Date getRoundedOutDate() {
     Date actual = getRd().getClockOutTime().getValue();
-    Date standard = getEndDate();
-    if (actual.before(standard)) {
-      return actual;
+    if (isOvertimeTypeO()) {
+      Date standard = getEndDate();
+      if (actual.before(standard)) {
+        return actual;
+      } else {
+        return standard;
+      }
     } else {
-      return standard;
+      float time = 0f;
+      Date from = getRoundedInDate();
+      Date to = actual;
+      time += (to.getTime() - from.getTime()) / (60 * 60 * 1000);
+
+      /** 就業時間の中で決まった時間の休憩を取らせます。 */
+      /** 決まった時間ごとの休憩時間を取らせます。 */
+      float worktimein = (timecard_system.getWorktimeIn() / 60f);
+      if (worktimein != 0F) {
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        int resttimes = (int) (time / worktimein);
+        time -= resttimein * resttimes;
+      }
+
+      time -= getOutgoingTime(from, to);
+
+      if (time <= this.getAgreedHours()) {
+        return actual;
+      } else {
+        // FIXME: 実際の始業時間から数えて労働時間が所定労働時間に達した時間を求める
+        return actual;
+      }
     }
   }
 
@@ -1249,25 +1314,45 @@ public class ExtTimecardListResultData implements ALData {
       Date to = getRoundedOutDate();
       Date midTimeEarly = dateOf(5, 0);
       Date midTimeLate = dateOf(22, 0);
+      Date nextEarly = nextDateOf(5, 0);
 
       long early = 0;
       if (from.before(midTimeEarly)) {
+        // from ~ midTimeEarlyまでの時間は深夜業務時間に含まれる
         early = midTimeEarly.getTime() - from.getTime();
       }
       long late = 0;
       if (to.after(midTimeLate)) {
-        late = to.getTime() - midTimeLate.getTime();
+        // midTimeLate ~ toまでの時間は深夜業務時間に含まれる。
+        if (to.before(nextEarly)) {
+          late = to.getTime() - midTimeLate.getTime();
+        } else {
+          late = nextEarly.getTime() - midTimeLate.getTime();
+        }
       }
       float time = 0f;
       if (early + late > 0) {
         time += (early + late) / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
-        // FIXME: 外出時間が深夜にかかる時間帯のみ差し引く
         if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
-          float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
-          if (outgoing_time != NO_DATA) {
-            time -= outgoing_time;
+          // FIXME: 外出時間が深夜にかかる時間帯のみ差し引く
+          if (from.before(midTimeEarly)) {
+            float e = getOutgoingTime(getStartDate(), midTimeEarly);
+            if (e != NO_DATA) {
+              time -= e;
+            }
+          }
+          if (midTimeLate.before(to)) {
+            float l = NO_DATA;
+            if (to.before(nextEarly)) {
+              l = getOutgoingTime(midTimeLate, getEndDate());
+            } else {
+              l = getOutgoingTime(midTimeLate, nextEarly);
+            }
+            if (l != NO_DATA) {
+              time -= l;
+            }
           }
         }
 
@@ -1290,6 +1375,7 @@ public class ExtTimecardListResultData implements ALData {
       Date to = getRd().getClockOutTime().getValue();
       Date midTimeEarly = dateOf(5, 0);
       Date midTimeLate = dateOf(22, 0);
+      Date nextEarly = nextDateOf(5, 0);
 
       long early = 0;
       if (from.before(midTimeEarly)) {
@@ -1297,22 +1383,40 @@ public class ExtTimecardListResultData implements ALData {
       }
       long late = 0;
       if (to.after(midTimeLate)) {
-        late = to.getTime() - midTimeLate.getTime();
+        if (to.before(nextEarly)) {
+          late = to.getTime() - midTimeLate.getTime();
+        } else {
+          late = nextEarly.getTime() - midTimeLate.getTime();
+        }
       }
       float time = 0f;
       if (early + late > 0) {
         time += (early + late) / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
-        // FIXME: 外出時間が深夜にかかる時間帯のみ差し引く
         if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
-          float outgoing_time = getOutgoingTime(getStartDate(), getEndDate());
-          if (outgoing_time != NO_DATA) {
-            time -= outgoing_time;
+          // 外出時間が深夜にかかる時間帯のみ差し引く
+          if (from.before(midTimeEarly)) {
+            float e = getOutgoingTime(getStartDate(), midTimeEarly);
+            if (e != NO_DATA) {
+              time -= e;
+            }
+          }
+          if (midTimeLate.before(to)) {
+            float l = NO_DATA;
+            if (to.before(nextEarly)) {
+              l = getOutgoingTime(midTimeLate, getEndDate());
+            } else {
+              l = getOutgoingTime(midTimeLate, nextEarly);
+            }
+            if (l != NO_DATA) {
+              time -= l;
+            }
           }
         }
 
-        _midnight_overtime_work_hour = time;
+        // 深夜業務時間から所定内深夜出勤時間を除く
+        _midnight_overtime_work_hour = time - getMidnightRegularWorkHour();
       } else {
         _midnight_overtime_work_hour = 0f;
       }
