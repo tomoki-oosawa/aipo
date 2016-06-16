@@ -5404,4 +5404,86 @@ public class ScheduleUtils {
     }
 
   }
+
+  /**
+   * 繰り返し指定があるか
+   *
+   * @param schedule
+   * @return
+   */
+  public static boolean isRepeat(EipTSchedule schedule) {
+    String ptn = schedule.getRepeatPattern();
+    boolean is_repeat = true;
+    // 毎日
+    if (ptn.charAt(0) == 'D') {
+      // 毎週
+    } else if (ptn.charAt(0) == 'W') {
+      // 毎月
+    } else if (ptn.charAt(0) == 'M') {
+      // 毎年
+    } else if (ptn.charAt(0) == 'Y') {
+      // 期間
+    } else if (ptn.charAt(0) == 'S') {// 期間はS
+      is_repeat = false;
+    } else {
+      is_repeat = false;
+    }
+    return is_repeat;
+  }
+
+  /**
+   * 期間か
+   *
+   * @param schedule
+   * @return
+   */
+  public static boolean isSpan(EipTSchedule schedule) {
+    String ptn = schedule.getRepeatPattern();
+    boolean is_span = false;
+    if (ptn.charAt(0) == 'S') {// 期間はS
+      is_span = true;
+    }
+    return is_span;
+  }
+
+  /**
+   * 期間指定があるか
+   *
+   * @param schedule
+   * @return
+   */
+  public static boolean isLimit(EipTSchedule schedule) {
+
+    String ptn = schedule.getRepeatPattern();
+    int count = 0;
+    boolean is_limit = false;
+    boolean is_repeat = true;
+    // 毎日
+    if (ptn.charAt(0) == 'D') {
+      count = 1;
+      // 毎週
+    } else if (ptn.charAt(0) == 'W') {
+      count = 8;
+      // 毎月
+    } else if (ptn.charAt(0) == 'M') {
+      count = 3;
+      // 毎年
+    } else if (ptn.charAt(0) == 'Y') {
+      count = 5;
+      // 期間
+    } else if (ptn.charAt(0) == 'S') {// 期間はS
+      is_repeat = false;
+    } else {
+      is_repeat = false;
+    }
+
+    if (is_repeat) {
+      if (ptn.charAt(count) == 'N') {
+        // schedule.setLimit(false);
+      } else {
+        is_limit = true;
+      }
+    }
+    return is_limit;
+  }
 }

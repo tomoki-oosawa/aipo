@@ -152,8 +152,7 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
-#if($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
 #ALtdcaption($l10n.SCHEDULE_YOUR_ALARM_MSG)
 #ALtditemheader()
 #if($result.hasReminderItem())
@@ -173,7 +172,6 @@ $l10n.SCHEDULE_REMINDER_OFF
 #end
 #end
 #ALtditemfooter()
-#end
 #end
 #end
 
@@ -301,6 +299,12 @@ $l10n.SCHEDULE_REMINDER_OFF
 
     #if($!{result.hasAuthoritySelfInsert()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
     #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_COPY)
+    #end
+
+    #if($result.isReminderEnabled())
+    #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleReminderFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
+    #end
     #end
 
     #ALajaxbuttonClose()
