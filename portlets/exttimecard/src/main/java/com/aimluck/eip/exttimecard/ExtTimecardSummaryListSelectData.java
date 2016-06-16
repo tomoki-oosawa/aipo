@@ -1056,13 +1056,7 @@ public class ExtTimecardSummaryListSelectData extends
                 work_day++;
                 work_hour += lrd.getWorkHourWithoutRestHour();
               }
-              if (lrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
-                midnight_work_hour += lrd.getMidnightRegularWorkHour();
-              }
-              if (lrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
-                midnight_overtime_hour += lrd.getMidnightOvertimeWorkHour();
-              }
-              /** 残業 */
+              /** 残業（平日） */
               if (lrd.getOvertimeHour() > 0) {
                 overtime_day++;
                 overtime_hour += lrd.getOvertimeHourWithoutRestHour();
@@ -1101,6 +1095,14 @@ public class ExtTimecardSummaryListSelectData extends
                     off_day_within_statutory_overtime_hour +=
                       lrd.getWithinStatutoryOvertimeWorkHour();
                   }
+                }
+              } else {
+                /** 深夜勤務（平日） */
+                if (lrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_work_hour += lrd.getMidnightRegularWorkHour();
+                }
+                if (lrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_overtime_hour += lrd.getMidnightOvertimeWorkHour();
                 }
               }
               /** 遅刻 */

@@ -379,7 +379,9 @@ public class ExtTimecardUtils {
       lrd.initField();
       lrd.setDate(rd.getPunchDate().getValue());
       lrd.setRd(rd);
-      lrd.setTimecardSystem(timecard_system);
+      lrd.setTimecardSystem(timecard_system == null
+        ? rd.getTimecardSystem()
+        : timecard_system);
       result.add(lrd);
     }
     return result;
