@@ -5341,10 +5341,7 @@ public class ScheduleUtils {
           .getUserId()
           .getValueWithInt())) {
           // ダミースケジュールに登録されているユーザーを除外
-          if (arrayList == null
-            || (arrayList != null && !arrayList.contains(member
-              .getUserId()
-              .getValueWithInt()))) {
+          if (!arrayList.contains(member.getUserId().getValueWithInt())) {
             memberList.add(member);
           }
         }
