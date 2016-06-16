@@ -57,6 +57,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -134,6 +135,13 @@ public class AccountUtils {
   /** 添付ファイルを保管するディレクトリの指定 */
   public static final String FOLDER_FILEDIR_ACCOUNT = JetspeedResources
     .getString("aipo.filedir", "");
+
+  /** メッセージの添付ファイルを保管するディレクトリの指定 */
+  public static final String FOLDER_FILEDIR_MESSAGE = JetspeedResources
+    .getString("aipo.filedir", "");
+
+  public static final String CATEGORY_KEY_MESSAGE = JetspeedResources
+    .getString("aipo.message.categorykey", "");
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -783,6 +791,51 @@ public class AccountUtils {
         .query(EipTMessageRoomMember.class)
         .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
         .deleteAll();
+
+      // 削除対象ユーザー以外にメンバーのいないメッセージルームを削除
+      StringBuilder sql = new StringBuilder();
+      sql.append("select * from eip_t_message_room ");
+      sql.append("where room_id in ");
+      sql.append("( ");
+      sql.append("select room_id from eip_t_message_room_member ");
+      sql.append("where room_id in ");
+      sql.append("( ");
+      sql.append("select room_id from eip_t_message_room_member ");
+      sql.append("group by room_id ");
+      sql.append("having COUNT(*) = 1 ");
+      sql.append(") ");
+      sql.append("and user_id = ");
+      sql.append(userId);
+      sql.append(")");
+
+      List<EipTMessageRoom> deleteRoomList =
+        Database.sql(EipTMessageRoom.class, sql.toString()).fetchList();
+
+      List<Integer> deleteRoomIdList = new ArrayList<Integer>();
+      for (EipTMessageRoom room : deleteRoomList) {
+        deleteRoomIdList.add(room.getRoomId());
+      }
+
+      // 削除対象ユーザー以外にメンバーのいないメッセージルームの添付ファイルを削除
+      for (Integer roomId : deleteRoomIdList) {
+        List<EipTMessageFile> messageRoomfiles =
+          Database
+            .query(EipTMessageFile.class)
+            .where(Operations.eq(EipTMessageFile.ROOM_ID_PROPERTY, roomId))
+            .fetchList();
+
+        ALDeleteFileUtil.deleteFiles(
+          AccountUtils.FOLDER_FILEDIR_MESSAGE,
+          AccountUtils.CATEGORY_KEY_MESSAGE,
+          messageRoomfiles);
+      }
+
+      if (deleteRoomIdList.size() > 0) {
+        Database.query(EipTMessageRoom.class).andQualifier(
+          ExpressionFactory.inDbExp(
+            EipTMessageRoom.ROOM_ID_PK_COLUMN,
+            deleteRoomIdList)).deleteAll();
+      }
 
       Database.commit();
 
