@@ -57,13 +57,13 @@ public class ExtTimecardListResultData implements ALData {
   private EipTExtTimecardSystem timecard_system;
 
   /** 計算済み就業時間 */
-  private float calculated_work_hour = NO_DATA;
+  // private float calculated_work_hour = NO_DATA;
 
   /** 計算済み全込み就業時間 */
   private float calculated_total_work_hour = NO_DATA;
 
   /** 計算済み残業時間 */
-  private float calculated_overtime_hour = NO_DATA;
+  // private float calculated_overtime_hour = NO_DATA;
 
   /** 時間データがないことを示す数値 */
   public static final float NO_DATA = -1f;
@@ -76,6 +76,14 @@ public class ExtTimecardListResultData implements ALData {
   private float _midnight_overtime_work_hour = NO_DATA;
 
   private float calculated_agreed_hours = NO_DATA;
+
+  private float week_overtime = NO_DATA;
+
+  private float fix_within_statutory_overtime_work_hour = NO_DATA;
+
+  private float fix_inwork_hour = NO_DATA;
+
+  private float fix_overtime_hour = NO_DATA;
 
   /**
    *
@@ -443,8 +451,6 @@ public class ExtTimecardListResultData implements ALData {
   public float getWorkHour() {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
-    } else if (calculated_work_hour != NO_DATA) {
-      return calculated_work_hour;
     } else {
       float time = 0f;
       float in = getInworkHour(); // 所定内勤務時間
@@ -457,7 +463,6 @@ public class ExtTimecardListResultData implements ALData {
         // time += over;
         // }
       }
-      calculated_work_hour = time;
       return time;
     }
   }
@@ -499,6 +504,9 @@ public class ExtTimecardListResultData implements ALData {
    * @return float
    */
   public float getInworkHour() {
+    if (fix_inwork_hour != NO_DATA) {
+      return fix_inwork_hour;
+    }
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return -1f;
     } else {
@@ -583,22 +591,8 @@ public class ExtTimecardListResultData implements ALData {
     }
   }
 
-  /**
-   * 休憩時間を差し引いた就業時間を計算します。
-   *
-   * @return float
-   */
-  public float getWorkHourWithoutRestHour() {
-    return getWorkHourWithoutRestHour(false);
-  }
-
   public float getWorkHourWithoutRestHour(boolean round) {
-    float time = NO_DATA;
-    if (calculated_work_hour != NO_DATA) {
-      time = calculated_work_hour;
-    } else {
-      time = getWorkHour();
-    }
+    float time = getWorkHour();
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
     }
@@ -611,10 +605,11 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getOvertimeHour() {
+    if (fix_overtime_hour != NO_DATA) {
+      return fix_overtime_hour;
+    }
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
-    } else if (calculated_overtime_hour != NO_DATA) {
-      return calculated_overtime_hour;
     } else {
       float time = 0f;
       Date start_date = getStartDate(), end_date = getEndDate(), change_date =
@@ -659,8 +654,6 @@ public class ExtTimecardListResultData implements ALData {
           return time;
         }
         int resttimes = (int) (time / worktimeout);
-
-        calculated_overtime_hour = time - resttimes * resttimeout;
         return time - resttimes * resttimeout;
       } else {
         // 法定外残業
@@ -692,10 +685,8 @@ public class ExtTimecardListResultData implements ALData {
         float overTime =
           Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
         if (time >= overTime) {
-          calculated_overtime_hour = time - overTime;
           return time = time - overTime;
         } else {
-          calculated_overtime_hour = 0f;
           return 0f;
         }
       }
@@ -718,13 +709,7 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getOvertimeHourWithoutRestHour(boolean round) {
-    float time = NO_DATA;
-
-    if (calculated_overtime_hour > NO_DATA) {
-      time = calculated_overtime_hour;
-    } else {
-      time = getOvertimeHour();
-    }
+    float time = getOvertimeHour();
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
     }
@@ -1279,6 +1264,14 @@ public class ExtTimecardListResultData implements ALData {
       Date from = getRoundedInDate();
       int overTime =
         Integer.parseInt(timecard_system.getOvertimeType().substring(1));
+      int weekOvertimeMin = (int) (week_overtime * 60);
+      if (week_overtime != NO_DATA) {
+        if (overTime > weekOvertimeMin) {
+          overTime = overTime - weekOvertimeMin;
+        } else {
+          overTime = 0;
+        }
+      }
       Calendar cal = Calendar.getInstance();
       cal.setTime(from);
       cal.add(Calendar.MINUTE, overTime);
@@ -1465,6 +1458,9 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getWithinStatutoryOvertimeWorkHour() {
+    if (fix_within_statutory_overtime_work_hour != NO_DATA) {
+      return fix_within_statutory_overtime_work_hour;
+    }
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     }
@@ -1539,6 +1535,53 @@ public class ExtTimecardListResultData implements ALData {
       time = ExtTimecardUtils.roundHour(time);
     }
     return time;
+  }
+
+  /**
+   * @return week_overtime
+   */
+  public float getWeekOvertime() {
+    return week_overtime;
+  }
+
+  /**
+   * @param week_overtime
+   *          セットする week_overtime
+   */
+  public void setWeekOvertime(float week_overtime) {
+    this.week_overtime = week_overtime;
+  }
+
+  public void calculateWeekOvertime() {
+    if (week_overtime == NO_DATA) {
+      return;
+    }
+    if (isOvertimeTypeO()) {
+      return;
+    }
+    float inworkHour = getInworkHour();
+    float withinStatutoryOvertimeWorkHour =
+      getWithinStatutoryOvertimeWorkHour();
+    float overTimeHour = getOvertimeHour();
+    if (inworkHour == NO_DATA || withinStatutoryOvertimeWorkHour == NO_DATA) {
+      return;
+    }
+    float time = week_overtime;
+    if (week_overtime > withinStatutoryOvertimeWorkHour) {
+      time = week_overtime - withinStatutoryOvertimeWorkHour;
+      fix_within_statutory_overtime_work_hour = 0f;
+    } else {
+      fix_within_statutory_overtime_work_hour =
+        withinStatutoryOvertimeWorkHour
+          - fix_within_statutory_overtime_work_hour;
+      return;
+    }
+    if (inworkHour > time) {
+      fix_inwork_hour = inworkHour - time;
+    } else {
+      fix_inwork_hour = 0f;
+    }
+    fix_overtime_hour = week_overtime + overTimeHour;
   }
 
 }

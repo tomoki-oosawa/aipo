@@ -929,7 +929,7 @@ public class ExtTimecardSummaryListSelectData extends
             /** 出勤 */
             if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
               work_day++;
-              work_hour += lrd.getWorkHourWithoutRestHour();
+              work_hour += lrd.getWorkHour();
             }
             if (lrd.getOvertimeHour() != ExtTimecardListResultData.NO_DATA) {
               overtime_day++;
@@ -1036,7 +1036,7 @@ public class ExtTimecardSummaryListSelectData extends
 
       ExtTimecardListResultDataContainer container =
         ExtTimecardUtils.groupByWeek(queryStartDate, userlist, timecard_system);
-
+      container.calculateWeekOvertime();
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、
        * ListResultDataに代入して各日数・時間を計算させる。
@@ -1049,15 +1049,18 @@ public class ExtTimecardSummaryListSelectData extends
             lrd.setDate(rd.getPunchDate().getValue());
             lrd.setRd(rd);
             lrd.setTimecardSystem(timecard_system);
+            lrd.setWeekOvertime(container.getWeekOvertime(lrd));
+            lrd.calculateWeekOvertime();
+
             String type = rd.getType().getValue();
             if (type.equals(EipTExtTimecard.TYPE_WORK)) {
               /** 出勤 */
               if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
                 work_day++;
-                work_hour += lrd.getWorkHourWithoutRestHour();
+                work_hour += lrd.getWorkHour();
               }
               /** 残業（平日） */
-              if (lrd.getOvertimeHour() > 0) {
+              if (lrd.getOvertimeHourWithoutRestHour() > 0) {
                 overtime_day++;
                 overtime_hour += lrd.getOvertimeHourWithoutRestHour();
               }

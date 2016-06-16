@@ -136,4 +136,46 @@ public class ExtTimecardListResultDataContainer implements ALData {
     return (int) diffDays;
   }
 
+  public float getWeekOvertime(ExtTimecardListResultData rd) {
+    if (rd.getRd() == null) {
+      return -1f;
+    }
+    int weekOfMonth = getWeekOfMonth(rd.getRd().getPunchDate().getValue());
+    Map<Integer, ExtTimecardListResultData> map = list.get(weekOfMonth);
+
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(rd.getRd().getPunchDate().getValue());
+    ExtTimecardListResultData tmp = map.get(cal.get(Calendar.DAY_OF_WEEK));
+
+    if (tmp != null) {
+      return tmp.getWeekOvertime();
+    }
+    return -1f;
+  }
+
+  public void calculateWeekOvertime() {
+    for (Map<Integer, ExtTimecardListResultData> map : list) {
+      float weekLimit = 40f;
+      float total = 0f;
+      boolean isOver = false;
+      for (int i = 1; i <= 7; i++) {
+        ExtTimecardListResultData data = map.get(i);
+        if (data != null) {
+          float workHour = data.getInworkHour();
+          float statutoryOvertimeWorkHour =
+            data.getWithinStatutoryOvertimeWorkHour();
+          if (isOver) {
+            data.setWeekOvertime(workHour + statutoryOvertimeWorkHour);
+          } else {
+            total += workHour + statutoryOvertimeWorkHour;
+            if (total > weekLimit) {
+              float offset = total - weekLimit;
+              isOver = true;
+              data.setWeekOvertime(offset);
+            }
+          }
+        }
+      }
+    }
+  }
 }

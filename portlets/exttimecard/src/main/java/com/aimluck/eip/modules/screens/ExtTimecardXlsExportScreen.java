@@ -237,7 +237,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
           clock_out_time = rd.getClockOutTime("HH:mm");
           if (tclistrd.getWorkHour() > 0.0) {
             work_day = "1";
-            work_hour = Float.toString(tclistrd.getWorkHourWithoutRestHour());
+            work_hour = Float.toString(tclistrd.getWorkHour());
           } else {
             work_hour = "0";
           }

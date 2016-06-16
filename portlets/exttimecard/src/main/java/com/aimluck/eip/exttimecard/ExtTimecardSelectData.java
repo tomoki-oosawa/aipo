@@ -415,7 +415,7 @@ public class ExtTimecardSelectData extends
     cal1.add(Calendar.MONTH, +1);
     cal1.add(Calendar.MILLISECOND, -1);
 
-    queryStartDate = cal1.getTime();
+    queryStartDate = cal2.getTime();
 
     ALDateTimeField viewMonth_add_month = new ALDateTimeField("yyyy-MM-dd");
     viewMonth_add_month.setValue(cal1.getTime());

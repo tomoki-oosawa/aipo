@@ -124,9 +124,9 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         "法定休日出勤日数",
         "実労働時間",
         "所定内出勤時間",
+        "所定内深夜出勤時間",
         "法定内残業時間",
         "残業時間",
-        "所定内深夜出勤時間",
         "深夜残業時間",
         "所定休日所定内出勤時間",
         "所定休日所定内深夜出勤時間",
@@ -220,12 +220,15 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
     ExtTimecardListResultDataContainer container =
       ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
         .getAllList(), null);
+    container.calculateWeekOvertime();
 
     ExtTimecardListResultData tclistrd = null;
     List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
     int daykeysize = daykeys.size();
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
+      tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+      tclistrd.calculateWeekOvertime();
 
       String date = "";// 日付
       String day = ""; // 曜日
@@ -279,13 +282,13 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         if (!rd.getIsNullClockInTime()) {
           clock_in_time = rd.getClockInTime("HH:mm");
           clock_out_time = rd.getClockOutTime("HH:mm");
-          if (tclistrd.getWorkHour() > 0.0) {
+          if (tclistrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
             work_day = "1";
-            work_hour = Float.toString(tclistrd.getWorkHourWithoutRestHour());
+            work_hour = Float.toString(tclistrd.getWorkHour());
           } else {
             work_hour = "0";
           }
-          if (tclistrd.getOvertimeHour() > 0.0) {
+          if (tclistrd.getOvertimeHourWithoutRestHour() > 0.0) {
             overtime_day = "1";
             overtime_hour =
               Float.toString(tclistrd.getOvertimeHourWithoutRestHour());
@@ -382,20 +385,20 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
           statutory_off_day,
           total_work_hour,
           work_hour,
+          midnight_work_hour,
           overtime_within_statutory_working_hour,
           overtime_hour,
-          midnight_work_hour,
           midnight_overtime_hour,
           off_day_regular_work_hour,
           off_day_regular_midnight_work_hour,
-          off_day_midnight_work_hour,
           off_day_within_statutory_overtime_hour,
           off_day_overtime_hour,
+          off_day_midnight_work_hour,
           statutory_off_day_regular_work_hour,
           statutory_off_day_regular_midnight_work_hour,
-          statutory_off_day_midnight_work_hour,
           statutory_off_day_within_statutory_overtime_hour,
           statutory_off_day_overtime_hour,
+          statutory_off_day_midnight_work_hour,
           late_coming_day,
           early_leaving_day,
           absent_day,
