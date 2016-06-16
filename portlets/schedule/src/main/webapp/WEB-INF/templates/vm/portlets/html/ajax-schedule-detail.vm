@@ -140,9 +140,21 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
+#ALtdcaption($l10n.COMMON_CREATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
+ （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
+#ALtditemfooter()
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
+ （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
+#ALtditemfooter()
+
 #if($result.isReminderEnabled())
 #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
-#ALtdcaption($l10n.SCHEDULE_ALARM)
+#if($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+#ALtdcaption($l10n.SCHEDULE_YOUR_ALARM_MSG)
 #ALtditemheader()
 #if($result.hasReminderItem())
 $!result.ReminderItem.NotifyTimingText
@@ -163,18 +175,8 @@ $l10n.SCHEDULE_REMINDER_OFF
 #ALtditemfooter()
 #end
 #end
+#end
 
-
-#ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
- （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
-#ALtditemfooter()
-#ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
- （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
-#ALtditemfooter()
 #ALtablefooter()
 
 #ALbuttonheader()
