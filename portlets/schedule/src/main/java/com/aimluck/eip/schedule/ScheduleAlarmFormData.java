@@ -18,6 +18,7 @@
  */
 package com.aimluck.eip.schedule;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -25,6 +26,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
@@ -39,7 +41,6 @@ import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -62,18 +63,17 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
 
   private ALNumberField notify_timing;
 
-  private ALStringField date_detail;
-
-  /** <code>name</code> タイトル */
-  private ALStringField name;
-
   /** <code>login_user</code> ログインユーザー */
   private ALEipUser loginUser;
 
   private String orgId;
 
-  /** <code>public_flag</code> 公開/非公開フラグ */
-  private boolean public_flag;
+  private ScheduleDetailResultData rd;
+
+  /** <code>end_date</code> 終了日時 */
+  private ALDateTimeField view_date;
+
+  private ScheduleDetailOnedaySelectData ondaySelectData = null;
 
   /**
    *
@@ -86,14 +86,29 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    // スーパークラスのメソッドを呼び出す。
+    super.init(action, rundata, context);
 
     orgId = Database.getDomainName();
     loginUser = ALEipUtils.getALEipUser(rundata);
+    rd = new ScheduleDetailResultData();
 
-    /*
-     */
-    // スーパークラスのメソッドを呼び出す。
-    super.init(action, rundata, context);
+    view_date = new ALDateTimeField("yyyy-MM-dd");
+    if (ALEipUtils.isMatch(rundata, context)) {
+      if (rundata.getParameters().containsKey("view_date")) {
+        String tmpViewDate = rundata.getParameters().getString("view_date");
+        view_date.setValue(tmpViewDate);
+        if (!view_date.validate(new ArrayList<String>())) {
+          logger.debug("[ScheduleSelectData] Parameter cannot validate");
+          ALEipUtils.redirectPageNotFound(rundata);
+          return;
+        }
+      }
+    }
+    ondaySelectData = new ScheduleDetailOnedaySelectData();
+    ondaySelectData.initField();
+    ondaySelectData.doSelectList(action, rundata, context);
+
   }
 
   /*
@@ -110,12 +125,6 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
     notify_type_message = new ALStringField();
 
     notify_timing = new ALNumberField();
-
-    date_detail = new ALStringField();
-
-    name = new ALStringField();
-
-    public_flag = true;
   }
 
   /**
@@ -172,6 +181,7 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
       if (schedule == null) {
         return false;
       }
+      // 自分に関係のある予定なのかどうか判断する
       List<ALEipUser> memberList = ScheduleUtils.getEffectiveUsers(schedule);
       boolean isMember = false;
       for (ALEipUser member : memberList) {
@@ -183,11 +193,15 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
       if (!isMember) {
         return false;
       }
-      date_detail.setValue(ScheduleUtils.getMsgDate(schedule));
-      name.setValue(schedule.getName());
-      if (!"O".equals(schedule.getPublicFlag())) {
-        public_flag = false;
-      }
+      rd =
+        ScheduleUtils.getResultDataDetail(
+          schedule,
+          view_date,
+          loginUser.getUserId().getValueWithInt(),
+          loginUser.getUserId().getValueWithInt(),
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER,
+          false,
+          ondaySelectData);
       if (ALReminderService.isEnabled()) {
         ALReminderItem item =
           ALReminderService.getJob(orgId, loginUser
@@ -243,6 +257,7 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
       if (schedule == null) {
         return false;
       }
+      // 自分に関係のある予定なのかどうか判断する
       List<ALEipUser> memberList = ScheduleUtils.getEffectiveUsers(schedule);
       boolean isMember = false;
       for (ALEipUser member : memberList) {
@@ -254,10 +269,7 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
       if (!isMember) {
         return false;
       }
-      boolean isLimit = ScheduleUtils.isLimit(schedule);
-      boolean is_span = ScheduleUtils.isSpan(schedule);
-      boolean is_repeat = ScheduleUtils.isRepeat(schedule);
-      if (!is_span && "T".equals(reminder_flag.getValue())) {
+      if ("T".equals(reminder_flag.getValue())) {
         boolean isMail = false;
         boolean isMessage = false;
         if ("TRUE".equals(notify_type_mail.getValue())) {
@@ -272,10 +284,7 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
           schedule,
           notify_timing.getValueWithInt(),
           isMail,
-          isMessage,
-          is_repeat,
-          isLimit,
-          is_span);
+          isMessage);
       } else {
         ALReminderItem item = new ALReminderItem();
         item.setOrgId(Database.getDomainName());
@@ -345,18 +354,15 @@ public class ScheduleAlarmFormData extends ALAbstractFormData {
     return notify_timing;
   }
 
+  public ScheduleDetailResultData getDetail() {
+    return rd;
+  }
+
   /**
-   * @return date_detail
+   *
+   * @return
    */
-  public ALStringField getDateDetail() {
-    return date_detail;
-  }
-
-  public String getWbrName() {
-    return ALCommonUtils.replaceToAutoCR(name.toString());
-  }
-
-  public boolean isPublic() {
-    return public_flag;
+  public ALDateTimeField getViewDate() {
+    return view_date;
   }
 }

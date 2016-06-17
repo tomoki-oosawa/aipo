@@ -31,16 +31,29 @@
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="entityid" value="$entityid" />
 <input type="hidden" name="mode" value="update" />
+<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}" />
 #ALerrmsg($errmsgs)
 #ALtableheaderWide()
 
+
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
-$!{result.DateDetail}
-
+#if($!{result.Detail.isSpan()})
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} -
+$!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
+#elseif($!{result.Detail.isRepeat()})
+$!{result.Detail.Text}<br/>
+$!{result.Detail.Date}
+#else
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.Date}
+#end
+#AUIiconScheduleSets($!{result.Detail})
+#ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)
 #ALtditemheader()
-#if(! ${result.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.WbrName}
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.WbrName}
+#ALtditemfooter()
 
 #if($result.isReminderEnabled())
 #ALtdcaption($l10n.SCHEDULE_ALARM)

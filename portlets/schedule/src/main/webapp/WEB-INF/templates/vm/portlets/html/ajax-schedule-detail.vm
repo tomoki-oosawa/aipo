@@ -303,7 +303,7 @@ $l10n.SCHEDULE_REMINDER_OFF
 
     #if($result.isReminderEnabled())
     #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
-    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
+    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
     #end
     #end
 
