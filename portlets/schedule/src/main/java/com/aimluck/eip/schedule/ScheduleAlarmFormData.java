@@ -47,11 +47,11 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  * スケジュールのフォームデータを管理するクラスです。
  *
  */
-public class ScheduleReminderFormData extends ALAbstractFormData {
+public class ScheduleAlarmFormData extends ALAbstractFormData {
 
   /** <code>logger</code> logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleReminderFormData.class.getName());
+    .getLogger(ScheduleAlarmFormData.class.getName());
 
   /** <code>public_flag</code> 通知フラグ */
   private ALStringField reminder_flag;
@@ -216,7 +216,7 @@ public class ScheduleReminderFormData extends ALAbstractFormData {
       }
 
     } catch (Exception e) {
-      logger.error("[ScheduleReminderFormData]", e);
+      logger.error("[ScheduleAlarmFormData]", e);
       throw new ALDBErrorException();
 
     }

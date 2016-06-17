@@ -24,7 +24,7 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.schedule.ScheduleReminderFormData;
+import com.aimluck.eip.schedule.ScheduleAlarmFormData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -32,11 +32,11 @@ import com.aimluck.eip.util.ALEipUtils;
  * スケジュールフォームデータを管理するためのクラスです。 <br />
  *
  */
-public class ScheduleReminderFormScreen extends ALVelocityScreen {
+public class ScheduleAlarmFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleReminderFormScreen.class.getName());
+    .getLogger(ScheduleAlarmFormScreen.class.getName());
 
   /**
    *
@@ -52,13 +52,13 @@ public class ScheduleReminderFormScreen extends ALVelocityScreen {
       doSchedule_form(rundata, context);
 
     } catch (Exception ex) {
-      logger.error("[ScheduleReminderFormScreen] Exception.", ex);
+      logger.error("[ScheduleAlarmFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
 
   protected void doSchedule_form(RunData rundata, Context context) {
-    ScheduleReminderFormData formData = new ScheduleReminderFormData();
+    ScheduleAlarmFormData formData = new ScheduleAlarmFormData();
     formData.initField();
     formData.doViewForm(this, rundata, context);
 
@@ -66,7 +66,7 @@ public class ScheduleReminderFormScreen extends ALVelocityScreen {
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
     context.put(ALEipConstants.ENTITY_ID, entityid);
 
-    String layout_template = "portlets/html/ajax-schedule-reminder-form.vm";
+    String layout_template = "portlets/html/ajax-schedule-alarm-form.vm";
     setTemplate(rundata, context, layout_template);
   }
 

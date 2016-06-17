@@ -26,17 +26,17 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.schedule.ScheduleReminderFormData;
+import com.aimluck.eip.schedule.ScheduleAlarmFormData;
 
 /**
  * スケジュールをJSONデータとして出力するクラスです。 <br />
  *
  */
-public class ScheduleReminderFormJSONScreen extends ALJSONScreen {
+public class ScheduleAlarmFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleReminderFormJSONScreen.class.getName());
+    .getLogger(ScheduleAlarmFormJSONScreen.class.getName());
 
   @Override
   protected String getJSONString(RunData rundata, Context context)
@@ -47,7 +47,7 @@ public class ScheduleReminderFormJSONScreen extends ALJSONScreen {
 
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {
 
-        ScheduleReminderFormData formData = new ScheduleReminderFormData();
+        ScheduleAlarmFormData formData = new ScheduleAlarmFormData();
         formData.initField();
         if (formData.doUpdate(this, rundata, context)) {
         } else {
@@ -59,7 +59,7 @@ public class ScheduleReminderFormJSONScreen extends ALJSONScreen {
       }
 
     } catch (Exception e) {
-      logger.error("[ScheduleReminderFormJSONScreen]", e);
+      logger.error("[ScheduleAlarmFormJSONScreen]", e);
     }
 
     return result;
