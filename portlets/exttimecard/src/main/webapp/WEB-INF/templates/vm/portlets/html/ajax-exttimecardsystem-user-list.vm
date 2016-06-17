@@ -18,6 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
+#set($linkSetting = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemReportSettingFormScreen").addQueryData("entityid","1"))
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
@@ -33,12 +34,19 @@
 </select>&nbsp;
 </form>
 <div class="floatRight">
-<div class="auiSelectButton">
+<div class="auiSelectButton floatLeft">
 <ul>
 #set($tab = [$l10n.EXTTIMECARD_USER, "user","$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemMapListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = [$l10n.EXTTIMECARD_WORKING_ARRANGEMENTS, "system", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardSystemListScreen')"])
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+</div>
+<div class="floatRight" style="margin-left: 10px;margin-bottom:10px">
+<div><a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu('$!{portlet.ID}');"><i class="icon-cog mr5"></i>$l10n.WAR_SET_UP</a></div>
+<div class="menubar body-child" id="menubar_$!{portlet.ID}" style="width: 12em; right: 0px; display: none; ">
+<ul>
+#AUIconfigitem($l10n.EXTTIMECARD_REPORT_SETTING $linkSetting)
 </ul>
 </div>
 </div>
