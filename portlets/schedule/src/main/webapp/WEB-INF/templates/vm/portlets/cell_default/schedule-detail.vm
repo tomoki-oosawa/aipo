@@ -99,7 +99,7 @@ ${record.FacilityName}
 #ALcell_dt($career $l10n.COMMON_UPDATE_USER)#ALcell_dd($career "$!{result.Detail.UpdateUser.AliasName}")#ALcell_dd($career "($!{result.Detail.UpdateDate})")
 
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
 #ALcell_dt($career $l10n.SCHEDULE_ALARM)
 #if($result.hasReminderItem())
 #set($count = 0)

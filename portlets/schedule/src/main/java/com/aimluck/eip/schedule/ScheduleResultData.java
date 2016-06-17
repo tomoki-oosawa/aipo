@@ -112,8 +112,8 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>common_category_name</code> 共有カテゴリ名 */
   private ALStringField common_category_name;
 
-  /** <code>is_past</code> 過去かどうか */
-  private boolean is_past;
+  /** <code>is_last_started</code> 最終開始済かどうか */
+  private boolean is_last_started;
 
   /*
    *
@@ -141,7 +141,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_dummy = false;
     is_daystart = false;
     is_term = false;
-    is_past = false;
+    is_last_started = false;
   }
 
   /**
@@ -671,21 +671,22 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 過去かどうか
+   * スケジュールが開始されたか
+   *
+   * ・繰り返しで期間指定がある場合には最後のスケジュールが開始されたか判定する<br />
    *
    * @return
    */
-  public boolean isPast() {
-    return is_past;
+  public boolean isLastStarted() {
+    return is_last_started;
   }
 
   /**
-   * 過去かどうかを設定します。
    *
    * @param bool
    */
-  public void setPast(boolean bool) {
-    is_past = bool;
+  public void setLastStarted(boolean bool) {
+    is_last_started = bool;
   }
 
 }

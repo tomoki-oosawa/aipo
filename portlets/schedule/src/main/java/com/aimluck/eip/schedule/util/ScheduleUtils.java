@@ -5008,6 +5008,19 @@ public class ScheduleUtils {
 
   }
 
+  /**
+   * ＠ToDo ScheduleSelectDataのgetResultDataDetailとリファクタリング
+   *
+   * @param record
+   * @param view_date
+   * @param loginuserid
+   * @param userid
+   * @param type
+   * @param ignoreViewdate
+   * @param ondaySelectData
+   * @return
+   * @throws ALDBErrorException
+   */
   public static ScheduleDetailResultData getResultDataDetail(
       EipTSchedule record, ALDateTimeField view_date, int loginuserid,
       int userid, String type, boolean ignoreViewdate,
@@ -5331,26 +5344,45 @@ public class ScheduleUtils {
     }
 
     // 過去のスケジュールに対してはアラームの設定状況を表示しない
-    if (!rd.isSpan()) {
-      if (rd.isRepeat()) {
-        Calendar today = Calendar.getInstance();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(record.getStartDate());
-        cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
-        cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
-        cal.set(Calendar.DATE, today.get(Calendar.DATE));
-        if (cal.getTime().before(today.getTime())) {
-          rd.setPast(true);
-        }
-      } else {
-        Calendar today = Calendar.getInstance();
-        if (record.getStartDate().before(today.getTime())) {
-          rd.setPast(true);
-        }
-      }
-    }
+    rd.setLastStarted(isLastStarted(rd.getStartDate().getValue(), rd
+      .getEndDate()
+      .getValue(), rd.isSpan(), rd.isRepeat(), rd.isLimit()));
 
     return rd;
+  }
+
+  /**
+   * 開始済判定
+   *
+   * @param startDate
+   * @param endDate
+   * @param isSpan
+   * @param isRepeat
+   * @return
+   */
+  public static boolean isLastStarted(Date startDate, Date endDate,
+      boolean isSpan, boolean isRepeat, boolean isLimit) {
+    boolean isStarted = false;
+    Calendar today = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(startDate);
+    if (!isSpan && isRepeat && !isLimit) {
+      // 期間指定なしの繰り返しスケジュール
+      isStarted = false;
+    } else {
+      if (!isSpan && isRepeat && isLimit) {
+        // 期間指定の繰り返しスケジュール
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(endDate);
+        cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
+        cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
+        cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
+      }
+      if (cal.getTime().before(today.getTime())) {
+        isStarted = true;
+      }
+    }
+    return isStarted;
   }
 
   public static String getFacilityName(List<FacilityResultData> list, int id) {
