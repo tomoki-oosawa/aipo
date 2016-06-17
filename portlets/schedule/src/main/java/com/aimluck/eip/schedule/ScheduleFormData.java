@@ -773,7 +773,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     place.limitMaxLength(50);
     // 内容
     note.limitMaxLength(1000);
-
   }
 
   /**
@@ -1085,7 +1084,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         facilityList.addAll(FacilitiesUtils
           .getFacilitiesFromSelectQuery(fquery));
       }
-
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();

@@ -439,7 +439,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     form_data.getWeek4().setValue("");
     form_data.getWeek5().setValue("");
     form_data.getWeek6().setValue("");
-
   }
 
   /**
