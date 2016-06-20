@@ -18,11 +18,15 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -51,6 +55,20 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
       listData.initField();
       listData.setRowsNum(100);
       listData.doViewList(this, rundata, context);
+
+      ExtTimecardListResultDataContainer container =
+        ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+          .getAllList(), null);
+      container.calculateWeekOvertime();
+
+      ExtTimecardListResultData tclistrd = null;
+      List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
+      int daykeysize = daykeys.size();
+      for (int i = 0; i < daykeysize; i++) {
+        tclistrd = daykeys.get(i);
+        tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+        tclistrd.calculateWeekOvertime();
+      }
 
       String layout_template =
         ExtTimecardUtils.isNewRule()

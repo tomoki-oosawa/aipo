@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.modules.actions.exttimecard;
 
+import java.util.List;
+
 import org.apache.jetspeed.portal.portlets.VelocityPortlet;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
@@ -26,6 +28,8 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
 import com.aimluck.eip.exttimecard.ExtTimecardSummaryListSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
@@ -110,6 +114,21 @@ public class ExtTimecardAction extends ALBaseAction {
     listData.initField();
     listData.setRowsNum(100);
     listData.doViewList(this, rundata, context);
+
+    ExtTimecardListResultDataContainer container =
+      ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+        .getAllList(), null);
+    container.calculateWeekOvertime();
+
+    ExtTimecardListResultData tclistrd = null;
+    List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
+    int daykeysize = daykeys.size();
+    for (int i = 0; i < daykeysize; i++) {
+      tclistrd = daykeys.get(i);
+      tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+      tclistrd.calculateWeekOvertime();
+    }
+
     setTemplate(rundata, ExtTimecardUtils.isNewRule()
       ? "exttimecard-new-list"
       : "exttimecard-list");
