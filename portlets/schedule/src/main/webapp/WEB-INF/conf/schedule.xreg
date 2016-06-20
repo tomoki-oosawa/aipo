@@ -135,7 +135,7 @@
             </meta-info>
         </parameter>
         <parameter name="z1a-rows.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="z1a-rows.style.items" value="0,1,2,3,4,5,6" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="z1a-rows.style.items" value="1,2,3,4,5,6,7" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="z1a-rows.style.values" value="日曜日,月曜日,火曜日,水曜日,木曜日,金曜日,土曜日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="action" value="schedule.ScheduleAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>

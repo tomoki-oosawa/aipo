@@ -639,6 +639,7 @@ public class ScheduleAction extends ALBaseAction {
    * @param rundata
    * @param context
    */
+
   public void doSchedule_list(RunData rundata, Context context) {
     try {
       // ポートレット ID を取得する．
@@ -669,7 +670,7 @@ public class ScheduleAction extends ALBaseAction {
         context.put("time_end", 24);
         context.put("top_form", "simple");
         context.put("dayList", 1);
-        context.put("start_monday", 0);
+        context.put("start_monday", 1);
         ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       }
 
