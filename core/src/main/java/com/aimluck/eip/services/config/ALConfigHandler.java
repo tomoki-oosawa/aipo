@@ -104,6 +104,13 @@ public abstract class ALConfigHandler {
       }
     },
 
+    EXTTIMECARD_VERTION("extimecard.version") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("extimecard.version", "1");
+      }
+    },
+
     FIRST_ADMIN_LOGIN("first.admin.login") {
       @Override
       public String defaultValue() {

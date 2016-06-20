@@ -157,6 +157,8 @@ public class ExtTimecardSummaryListSelectData extends
 
   private Date queryStartDate;
 
+  private boolean isNewRule;
+
   /**
    *
    */
@@ -464,6 +466,8 @@ public class ExtTimecardSummaryListSelectData extends
       + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
       + "-00-00");
+
+    isNewRule = ExtTimecardUtils.isNewRule();
 
     setupLists(rundata, context);
   }
@@ -924,6 +928,7 @@ public class ExtTimecardSummaryListSelectData extends
           ExtTimecardListResultData lrd = new ExtTimecardListResultData();
           lrd.setRd(rd);
           lrd.setTimecardSystem(timecard_system);
+          lrd.setNewRule(isNewRule);
           String type = rd.getType().getValue();
           if (type.equals(EipTExtTimecard.TYPE_WORK)) {
             /** 出勤 */
@@ -1034,14 +1039,19 @@ public class ExtTimecardSummaryListSelectData extends
       EipTExtTimecardSystem timecard_system =
         ExtTimecardUtils.getEipTExtTimecardSystemByUserId(user_id);
 
-      ExtTimecardListResultDataContainer container =
-        ExtTimecardUtils.groupByWeek(queryStartDate, userlist, timecard_system);
-      container.calculateWeekOvertime();
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、
        * ListResultDataに代入して各日数・時間を計算させる。
        */
       if (userlist != null) {
+
+        ExtTimecardListResultDataContainer container =
+          ExtTimecardUtils.groupByWeek(
+            queryStartDate,
+            userlist,
+            timecard_system);
+        container.calculateWeekOvertime();
+
         for (ExtTimecardResultData rd : userlist) {
           if (rd.isCurrentMonth()) {
             ExtTimecardListResultData lrd = new ExtTimecardListResultData();
@@ -1049,6 +1059,7 @@ public class ExtTimecardSummaryListSelectData extends
             lrd.setDate(rd.getPunchDate().getValue());
             lrd.setRd(rd);
             lrd.setTimecardSystem(timecard_system);
+            lrd.setNewRule(isNewRule);
             lrd.setWeekOvertime(container.getWeekOvertime(lrd));
             lrd.calculateWeekOvertime();
 
@@ -1489,4 +1500,7 @@ public class ExtTimecardSummaryListSelectData extends
     return this.usermap;
   }
 
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
+  }
 }

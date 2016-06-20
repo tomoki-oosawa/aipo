@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 
@@ -38,8 +39,12 @@ public class ExtTimecardListResultDataContainer implements ALData {
   // 起点となる週の初めの曜日
   private Date queryStartDate;
 
-  public ExtTimecardListResultDataContainer(Date startDate) {
+  private final EipTExtTimecardSystem timecardSystem;
+
+  public ExtTimecardListResultDataContainer(Date startDate,
+      EipTExtTimecardSystem timecardSystem) {
     this.queryStartDate = startDate;
+    this.timecardSystem = timecardSystem;
   }
 
   @Override
@@ -155,7 +160,7 @@ public class ExtTimecardListResultDataContainer implements ALData {
 
   public void calculateWeekOvertime() {
     for (Map<Integer, ExtTimecardListResultData> map : list) {
-      float weekLimit = 40f;
+      float weekLimit = ExtTimecardUtils.getOvertimeHourByWeek(timecardSystem);
       float total = 0f;
       boolean isOver = false;
       for (int i = 1; i <= 7; i++) {

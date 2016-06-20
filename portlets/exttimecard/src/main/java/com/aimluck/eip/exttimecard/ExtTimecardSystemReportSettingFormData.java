@@ -29,8 +29,10 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -64,6 +66,10 @@ public class ExtTimecardSystemReportSettingFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
+      String version =
+        ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_VERTION);
+      type.setValue(version);
+
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
       return false;
@@ -75,11 +81,11 @@ public class ExtTimecardSystemReportSettingFormData extends ALAbstractFormData {
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-
-      Database.commit();
+      String version = type.getValue();
+      ALConfigService
+        .put(ALConfigHandler.Property.EXTTIMECARD_VERTION, version);
     } catch (Exception ex) {
-      Database.rollback();
-      logger.error("exttimecard", ex);
+      logger.error("ExtTimecardSystemReportSettingFormData", ex);
       return false;
     }
     return true;
@@ -127,6 +133,14 @@ public class ExtTimecardSystemReportSettingFormData extends ALAbstractFormData {
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
+  }
+
+  public ALStringField getType() {
+    return type;
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
   }
 
 }

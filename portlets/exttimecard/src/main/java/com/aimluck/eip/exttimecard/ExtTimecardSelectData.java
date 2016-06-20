@@ -151,6 +151,8 @@ public class ExtTimecardSelectData extends
 
   private List<ExtTimecardResultData> allList;
 
+  private boolean isNewRule = false;
+
   /**
    *
    * @param action
@@ -370,6 +372,8 @@ public class ExtTimecardSelectData extends
     cal2.add(Calendar.MONTH, -2);
     prevMonth.setValue(cal2.getTime());
 
+    isNewRule = ExtTimecardUtils.isNewRule();
+
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
       + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
@@ -474,6 +478,7 @@ public class ExtTimecardSelectData extends
         listrd.setDate(date);
         listrd.setTimecardSystem(timecard_system);
         listrd.setBeforeAfter();
+        listrd.setNewRule(isNewRule);
 
         ExtTimecardResultData rd = new ExtTimecardResultData();
         rd.initField();
@@ -960,6 +965,7 @@ public class ExtTimecardSelectData extends
           rd.setDate(date);
           rd.setTimecardSystem(timecard_system);
           rd.setBeforeAfter();
+          rd.setNewRule(isNewRule);
 
           list.add(rd);
         }
@@ -1122,5 +1128,9 @@ public class ExtTimecardSelectData extends
 
   public Date getQueryStartDate() {
     return queryStartDate;
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
   }
 }

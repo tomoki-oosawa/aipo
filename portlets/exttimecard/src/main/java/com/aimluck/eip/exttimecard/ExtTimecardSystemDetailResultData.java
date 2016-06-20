@@ -59,9 +59,9 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALStringField update_date;
 
-  private ALStringField overtime_type_flag;
+  private ALNumberField overtime_type_minute_by_day;
 
-  private ALNumberField overtime_type_minute;
+  private ALNumberField overtime_type_hour_by_week;
 
   /**
    *
@@ -84,8 +84,8 @@ public class ExtTimecardSystemDetailResultData extends
     outgoing_add_flag = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
-    overtime_type_flag = new ALStringField();
-    overtime_type_minute = new ALNumberField();
+    overtime_type_minute_by_day = new ALNumberField();
+    overtime_type_hour_by_week = new ALNumberField();
   }
 
   public String getUserId() {
@@ -163,12 +163,12 @@ public class ExtTimecardSystemDetailResultData extends
     return update_date;
   }
 
-  public String getOvertimeTypeFlag() {
-    return overtime_type_flag.getValue();
+  public ALNumberField getOvertimeTypeMinuteByDay() {
+    return overtime_type_minute_by_day;
   }
 
-  public String getOvertimeTypeMinute() {
-    return overtime_type_minute.getValueAsString();
+  public ALNumberField getOvertimeTypeHourByWeek() {
+    return overtime_type_hour_by_week;
   }
 
   public ALNumberField getStartDay() {
@@ -231,12 +231,12 @@ public class ExtTimecardSystemDetailResultData extends
     start_day.setValue(i);
   }
 
-  public void setOvertimeTypeFlag(String str) {
-    overtime_type_flag.setValue(str);
+  public void setOvertimeTypeMinuteByDay(int value) {
+    overtime_type_minute_by_day.setValue(value);
   }
 
-  public void setOvertimeTypeMinute(String str) {
-    overtime_type_minute.setValue(str);
+  public void setOvertimeTypeHourByWeek(int value) {
+    overtime_type_hour_by_week.setValue(value);
   }
 
 }

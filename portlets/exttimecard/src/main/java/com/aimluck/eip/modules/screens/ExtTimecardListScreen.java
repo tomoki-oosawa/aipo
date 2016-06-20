@@ -24,11 +24,12 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardListScreen extends ExtTimecardScreen {
 
@@ -37,7 +38,7 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
     .getLogger(ExtTimecardListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -51,7 +52,10 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
       listData.setRowsNum(100);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-exttimecard-list.vm";
+      String layout_template =
+        ExtTimecardUtils.isNewRule()
+          ? "portlets/html/ajax-exttimecard-new-list.vm"
+          : "portlets/html/ajax-exttimecard-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

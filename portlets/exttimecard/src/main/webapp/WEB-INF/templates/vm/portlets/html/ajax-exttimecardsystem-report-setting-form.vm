@@ -36,10 +36,20 @@
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($l10n.EXTTIMECARD_REPORT_TYPE)")
 #ALtditemheader()
-<input name="type" type="radio" value="2" id="type_2" #if ($!result.Type.toString() == "2") checked="checked" #end />
+<input name="type" type="radio" value="2" id="type_2" #if ($!result.Type.toString() == "2") checked="checked" #end onclick="aipo.exttimecardsystem.changeTypeNew();"/>
 <label for="type_2">$l10n.EXTTIMECARD_REPORT_NEW</label>
-<input name="type" type="radio" value="1" id="type_1" #if ($!result.Type.toString() == "1") checked="checked" #end />
+<input name="type" type="radio" value="1" id="type_1" #if ($!result.Type.toString() == "1") checked="checked" #end onclick="aipo.exttimecardsystem.changeTypeOld();"/>
 <label for="type_1">$l10n.EXTTIMECARD_REPORT_OLD</label>
+<div id="timecard-type-new" #if ($!result.Type.toString() == "1") style="display:none" #end>
+	<ul>
+		<li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE1</li>
+	</ul>
+</div>
+<div id="timecard-type-old" #if ($!result.Type.toString() == "2") style="display:none" #end>
+	<ul>
+		<li>$l10n.EXTTIMECARD_REPORT_OLD_MESSAGE1</li>
+	</ul>
+</div>
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()

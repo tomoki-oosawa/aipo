@@ -132,6 +132,12 @@ public class ExtTimecardSystemSelectData extends
       rd.setRestTimeOut(record.getResttimeOut());
       rd.setChangeHour(record.getChangeHour());
       rd.setOutgoingAddFlag(record.getOutgoingAddFlag());
+      if (isNewRule()) {
+        rd.setOvertimeTypeMinuteByDay(ExtTimecardUtils
+          .getOvertimeMinuteByDay(record.getOvertimeType()));
+        rd.setOvertimeTypeHourByWeek(ExtTimecardUtils
+          .getOvertimeHourByWeek(record.getOvertimeType()));
+      }
 
       return rd;
     } catch (Exception ex) {
@@ -167,8 +173,12 @@ public class ExtTimecardSystemSelectData extends
       rd.setOutgoingAddFlag(record.getOutgoingAddFlag());
       rd.setCreateDate(record.getCreateDate().toString());
       rd.setUpdateDate(record.getUpdateDate().toString());
-      rd.setOvertimeTypeFlag(record.getOvertimeType().substring(0, 1));
-      rd.setOvertimeTypeMinute(record.getOvertimeType().substring(1));
+      if (isNewRule()) {
+        rd.setOvertimeTypeMinuteByDay(ExtTimecardUtils
+          .getOvertimeMinuteByDay(record.getOvertimeType()));
+        rd.setOvertimeTypeHourByWeek(ExtTimecardUtils
+          .getOvertimeHourByWeek(record.getOvertimeType()));
+      }
 
       return rd;
     } catch (Exception ex) {
@@ -217,5 +227,9 @@ public class ExtTimecardSystemSelectData extends
    */
   public void setPortletName(String portletName) {
     this.portletName = portletName;
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
   }
 }

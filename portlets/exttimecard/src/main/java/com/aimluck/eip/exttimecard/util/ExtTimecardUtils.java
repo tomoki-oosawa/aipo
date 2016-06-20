@@ -44,6 +44,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -372,18 +374,77 @@ public class ExtTimecardUtils {
   public static ExtTimecardListResultDataContainer groupByWeek(
       Date queryStartDate, List<ExtTimecardResultData> flat,
       EipTExtTimecardSystem timecard_system) {
+    boolean isNewRule = ExtTimecardUtils.isNewRule();
+    EipTExtTimecardSystem tmpTimecardSyste = timecard_system;
+    if (tmpTimecardSyste == null) {
+      for (ExtTimecardResultData rd : flat) {
+        tmpTimecardSyste = rd.getTimecardSystem();
+        break;
+      }
+    }
     ExtTimecardListResultDataContainer result =
-      new ExtTimecardListResultDataContainer(queryStartDate);
+      new ExtTimecardListResultDataContainer(queryStartDate, tmpTimecardSyste);
     for (ExtTimecardResultData rd : flat) {
       ExtTimecardListResultData lrd = new ExtTimecardListResultData();
       lrd.initField();
       lrd.setDate(rd.getPunchDate().getValue());
       lrd.setRd(rd);
-      lrd.setTimecardSystem(timecard_system == null
-        ? rd.getTimecardSystem()
-        : timecard_system);
+      lrd.setTimecardSystem(tmpTimecardSyste);
+      lrd.setNewRule(isNewRule);
       result.add(lrd);
     }
     return result;
+  }
+
+  public static boolean isNewRule() {
+    String version =
+      ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_VERTION);
+    return "2".equals(version);
+  }
+
+  public static int getOvertimeMinuteByDay(EipTExtTimecardSystem model) {
+    String type = model.getOvertimeType();
+    return getOvertimeMinuteByDay(type);
+  }
+
+  public static int getOvertimeMinuteByDay(String type) {
+    int value = 480;
+    if (type != null) {
+      String substring = type.substring(1);
+      if (substring != null) {
+        String[] split = substring.split("-");
+        if (split.length == 2) {
+          try {
+            return Integer.valueOf(split[0]);
+          } catch (Throwable ignore) {
+
+          }
+        }
+      }
+    }
+    return value;
+  }
+
+  public static int getOvertimeHourByWeek(EipTExtTimecardSystem model) {
+    String type = model.getOvertimeType();
+    return getOvertimeHourByWeek(type);
+  }
+
+  public static int getOvertimeHourByWeek(String type) {
+    int value = 40;
+    if (type != null) {
+      String substring = type.substring(1);
+      if (substring != null) {
+        String[] split = substring.split("-");
+        if (split.length == 2) {
+          try {
+            return Integer.valueOf(split[1]);
+          } catch (Throwable ignore) {
+
+          }
+        }
+      }
+    }
+    return value;
   }
 }

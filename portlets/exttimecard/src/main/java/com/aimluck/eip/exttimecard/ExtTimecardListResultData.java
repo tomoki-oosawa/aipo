@@ -85,6 +85,8 @@ public class ExtTimecardListResultData implements ALData {
 
   private float fix_overtime_hour = NO_DATA;
 
+  private boolean isNewRule = false;
+
   /**
    *
    *
@@ -269,7 +271,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public boolean getIsClockOverTime() {
     if (getIsNotNullClockInTime()) {
-      if (isOvertimeTypeO()) {
+      if (!isNewRule()) {
         int end_hour = timecard_system.getEndHour(), end_minute =
           timecard_system.getEndMinute();
 
@@ -315,7 +317,7 @@ public class ExtTimecardListResultData implements ALData {
           time -= resttimes * resttimein;
         }
         float overTime =
-          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+          ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
         if (time >= overTime) {
           return true;
         } else {
@@ -487,7 +489,7 @@ public class ExtTimecardListResultData implements ALData {
       if (over != NO_DATA) {
         time += over;
       }
-      if (!isOvertimeTypeO()) {
+      if (!isNewRule()) {
         float etc = getWithinStatutoryOvertimeWorkHour(); // 法内残業時間
         if (etc != NO_DATA) {
           time += etc;
@@ -521,7 +523,7 @@ public class ExtTimecardListResultData implements ALData {
 
       // 就業時間だけなので、残業を引く
       float agreedHours = 0f;
-      if (isOvertimeTypeO()) {
+      if (!isNewRule()) {
         Date start_date = getStartDate(), end_date = getEndDate();
         long start_time = start_date.getTime(), end_time = end_date.getTime();
         /** 早出残業 */
@@ -614,7 +616,7 @@ public class ExtTimecardListResultData implements ALData {
       float time = 0f;
       Date start_date = getStartDate(), end_date = getEndDate(), change_date =
         getChangeDate(), nextchange_date = getNextChangeDate();
-      if (isOvertimeTypeO()) {
+      if (!isNewRule()) {
         long start_time = start_date.getTime(), end_time = end_date.getTime();
         /** 早出残業 */
         if (rd.getClockInTime().getValue().getTime() < start_time) {
@@ -683,7 +685,7 @@ public class ExtTimecardListResultData implements ALData {
           time -= resttimes * resttimein;
         }
         float overTime =
-          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+          ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
         if (time >= overTime) {
           return time = time - overTime;
         } else {
@@ -909,26 +911,6 @@ public class ExtTimecardListResultData implements ALData {
    */
   public void setTimecardSystem(EipTExtTimecardSystem system) {
     timecard_system = system;
-  }
-
-  /**
-   * 残業タイプが勤務時間外の残業のタイプか取得します。
-   *
-   * @return boolean
-   */
-  public boolean isOvertimeTypeO() {
-    return ExtTimecardUtils.OVERTIME_TYPE_O.equals(timecard_system
-      .getOvertimeType()
-      .substring(0, 1));
-  }
-
-  /**
-   * 新しい集計方式の場合
-   *
-   * @return
-   */
-  public boolean isNewRule() {
-    return !isOvertimeTypeO();
   }
 
   public Date getClockInDate() {
@@ -1227,7 +1209,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public Date getRoundedInDate() {
     Date actual = getRd().getClockInTime().getValue();
-    if (isOvertimeTypeO()) {
+    if (!isNewRule()) {
       Date standard = getStartDate();
       if (actual.after(standard)) {
         return actual;
@@ -1252,7 +1234,7 @@ public class ExtTimecardListResultData implements ALData {
    */
   public Date getRoundedOutDate() {
     Date actual = getRd().getClockOutTime().getValue();
-    if (isOvertimeTypeO()) {
+    if (!isNewRule()) {
       Date standard = getEndDate();
       if (actual.before(standard)) {
         return actual;
@@ -1262,8 +1244,7 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       Date from = getRoundedInDate();
-      int overTime =
-        Integer.parseInt(timecard_system.getOvertimeType().substring(1));
+      int overTime = ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system);
       int weekOvertimeMin = (int) (week_overtime * 60);
       if (week_overtime != NO_DATA) {
         if (overTime > weekOvertimeMin) {
@@ -1443,7 +1424,7 @@ public class ExtTimecardListResultData implements ALData {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     }
-    if (isOvertimeTypeO()) {
+    if (!isNewRule()) {
       return NO_DATA;
     }
     if (getIsSaturdayOrSundayOrHoliday() != 0) {
@@ -1464,7 +1445,7 @@ public class ExtTimecardListResultData implements ALData {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     }
-    if (isOvertimeTypeO()) {
+    if (!isNewRule()) {
       return NO_DATA;
     }
     float time = 0f;
@@ -1497,7 +1478,7 @@ public class ExtTimecardListResultData implements ALData {
       return 0f;
     }
     float overTime =
-      Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+      ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
     if (time < overTime) {
       return tmp1;
     } else {
@@ -1556,7 +1537,7 @@ public class ExtTimecardListResultData implements ALData {
     if (week_overtime == NO_DATA) {
       return;
     }
-    if (isOvertimeTypeO()) {
+    if (!isNewRule()) {
       return;
     }
     float inworkHour = getInworkHour();
@@ -1582,6 +1563,23 @@ public class ExtTimecardListResultData implements ALData {
       fix_inwork_hour = 0f;
     }
     fix_overtime_hour = week_overtime + overTimeHour;
+  }
+
+  /**
+   * 新しい集計方式の場合
+   *
+   * @return
+   */
+  public boolean isNewRule() {
+    return isNewRule;
+  }
+
+  /**
+   * @param isNewRule
+   *          セットする isNewRule
+   */
+  public void setNewRule(boolean isNewRule) {
+    this.isNewRule = isNewRule;
   }
 
 }
