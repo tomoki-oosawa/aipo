@@ -80,9 +80,11 @@
 	#ALtdheadAtt($l10n.EXTTIMECARD_PUNCH_OUT "class='thin center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_OUTGOING "class='thin center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_COMEBACK "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_TOTAL_WORK_HOUR "class='thin mb_hide center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='thin mb_hide center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='thin mb_hide center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_MIDNIGHT_WORK_HOUR "class='thin mb_hide center'")
 	#ALtdheadAtt($l10n.EXTTIMECARD_REASON_REMARKS "class='wide mb_hide center'")
 	</tr>
 
@@ -130,7 +132,7 @@
 		#if($beforeafter > 0)
 
   #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
-    <td class='center' nowrap='nowrap' colspan='7'>
+    <td class='center' nowrap='nowrap' colspan='9'>
     #if($!{rd.IsTypeA})
 $l10n.EXTTIMECARD_ABSENT_DAY
     #elseif($!{rd.IsTypeH})
@@ -168,7 +170,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 #else
 
 #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
-  <td class='center' nowrap='nowrap' colspan='7'>
+  <td class='center' nowrap='nowrap' colspan='9'>
   #if($!{rd.IsTypeA})
       $l10n.EXTTIMECARD_ABSENT_DAY
   #elseif($!{rd.IsTypeH})
@@ -306,9 +308,11 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
     #ALtdcellAtt($comebacks "class='center' nowrap='nowrap'")
   #end
 
+  #ALtdcellAtt("$!rdlist.TotalWorkHourValue" "class='center mb_hide' nowrap='nowrap'")
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
   #ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
+  #ALtdcellAtt("$!rdlist.MidnightWorkHourValue" "class='center mb_hide' nowrap='nowrap'")
 
 				<td class='mb_hide'>
 				#if($!{rd.ReasonFlg})

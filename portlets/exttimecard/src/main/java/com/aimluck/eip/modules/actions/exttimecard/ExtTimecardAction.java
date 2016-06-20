@@ -34,7 +34,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードのアクションクラスです。 <BR>
- * 
+ *
  */
 public class ExtTimecardAction extends ALBaseAction {
 
@@ -44,7 +44,7 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -69,7 +69,7 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * 最大化表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -95,7 +95,7 @@ public class ExtTimecardAction extends ALBaseAction {
 
   /**
    * タイムカードを一覧表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -110,12 +110,14 @@ public class ExtTimecardAction extends ALBaseAction {
     listData.initField();
     listData.setRowsNum(100);
     listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "exttimecard-list");
+    setTemplate(rundata, ExtTimecardUtils.isNewRule()
+      ? "exttimecard-new-list"
+      : "exttimecard-list");
   }
 
   /**
    * タイムカードを月毎に集計表示します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -127,7 +129,9 @@ public class ExtTimecardAction extends ALBaseAction {
     listData.initField();
     listData.setRowsNum(100);
     listData.doViewList(this, rundata, context);
-    setTemplate(rundata, "exttimecard-summary-list");
+    setTemplate(rundata, ExtTimecardUtils.isNewRule()
+      ? "exttimecard-summary-new-list"
+      : "exttimecard-summary-list");
   }
 
   @SuppressWarnings("unused")

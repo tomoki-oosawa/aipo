@@ -501,6 +501,19 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * 実労働時間（表示用）
+   *
+   * @return
+   */
+  public String getTotalWorkHourValue() {
+    float value = getTotalWorkHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
+  }
+
+  /**
    * 所定内勤務時間（平日、休日）
    *
    * @return float
@@ -1291,6 +1304,36 @@ public class ExtTimecardListResultData implements ALData {
         return actual;
       }
     }
+  }
+
+  /**
+   * 実深夜時間
+   *
+   * @return
+   */
+  public float getMidnightWorkHour() {
+    if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
+      return NO_DATA;
+    }
+    float value1 = getMidnightRegularWorkHour();
+    float value2 = getMidnightOvertimeWorkHour();
+    if (value1 == NO_DATA || value2 == NO_DATA) {
+      return NO_DATA;
+    }
+    return value1 + value2;
+  }
+
+  /**
+   * 実深夜時間（表示用）
+   *
+   * @return
+   */
+  public String getMidnightWorkHourValue() {
+    float value = getMidnightWorkHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
   }
 
   /**
