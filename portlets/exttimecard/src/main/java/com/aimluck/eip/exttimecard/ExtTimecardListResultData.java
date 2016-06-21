@@ -486,7 +486,7 @@ public class ExtTimecardListResultData implements ALData {
       if (over != NO_DATA) {
         time += over;
       }
-      if (!isNewRule()) {
+      if (isNewRule()) {
         float etc = getWithinStatutoryOvertimeWorkHour(); // 法内残業時間
         if (etc != NO_DATA) {
           time += etc;

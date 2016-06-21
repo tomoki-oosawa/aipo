@@ -183,6 +183,9 @@ public class ExtTimecardListResultDataContainer implements ALData {
       for (int i = 1; i <= 7; i++) {
         ExtTimecardListResultData data = map.get(i);
         if (data != null) {
+          if (isStatutoryOffDay(data)) {
+            continue;
+          }
           float workHour = data.getInworkHour();
           float statutoryOvertimeWorkHour =
             data.getWithinStatutoryOvertimeWorkHour();
