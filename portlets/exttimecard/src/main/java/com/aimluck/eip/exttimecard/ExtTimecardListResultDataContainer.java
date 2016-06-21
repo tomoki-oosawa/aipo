@@ -85,27 +85,34 @@ public class ExtTimecardListResultDataContainer implements ALData {
    * @return
    */
   public boolean isStatutoryOffDay(ExtTimecardListResultData rd) {
-    int weekOfMonth = getWeekOfMonth(rd.getRd().getPunchDate().getValue());
-    Map<Integer, ExtTimecardListResultData> map = list.get(weekOfMonth);
-    List<Integer> offdayDayOfWeek =
-      ExtTimecardUtils.getOffdayDayOfWeek(rd.getTimecardSystem());
-    boolean allWork = true;
-    int last = -1;
-    for (int dayOfWeek : offdayDayOfWeek) {
-      last = dayOfWeek;
-      ExtTimecardListResultData data = map.get(dayOfWeek);
-      if (data == null
-        || data.getOffHour() == ExtTimecardListResultData.NO_DATA) {
-        allWork = false;
-      }
-    }
-    if (allWork) {
-      // 休日をすべて出勤した場合、後の曜日を法定休日とする。
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(rd.getRd().getPunchDate().getValue());
-      return last == cal.get(Calendar.DAY_OF_WEEK);
-    } else {
+    if (rd == null || rd.getRd() == null || rd.getRd().getPunchDate() == null) {
       return false;
+    }
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(rd.getRd().getPunchDate().getValue());
+    int statutoryHoliday = ExtTimecardUtils.getStatutoryHoliday();
+    if (statutoryHoliday > 0) {
+      return statutoryHoliday == cal.get(Calendar.DAY_OF_WEEK);
+    } else {
+      int weekOfMonth = getWeekOfMonth(rd.getRd().getPunchDate().getValue());
+      Map<Integer, ExtTimecardListResultData> map = list.get(weekOfMonth);
+      List<Integer> offdayDayOfWeek = ExtTimecardUtils.getOffdayDayOfWeek();
+      boolean allWork = true;
+      int last = -1;
+      for (int dayOfWeek : offdayDayOfWeek) {
+        last = dayOfWeek;
+        ExtTimecardListResultData data = map.get(dayOfWeek);
+        if (data == null
+          || data.getOffHour() == ExtTimecardListResultData.NO_DATA) {
+          allWork = false;
+        }
+      }
+      if (allWork) {
+        // 休日をすべて出勤した場合、後の曜日を法定休日とする。
+        return last == cal.get(Calendar.DAY_OF_WEEK);
+      } else {
+        return false;
+      }
     }
   }
 
@@ -159,7 +166,17 @@ public class ExtTimecardListResultDataContainer implements ALData {
   }
 
   public void calculateWeekOvertime() {
+    if (list == null) {
+      initField();
+    }
     for (Map<Integer, ExtTimecardListResultData> map : list) {
+      if (timecardSystem == null) {
+        continue;
+      }
+      if (!ExtTimecardUtils.isOvertimeHourByWeek(timecardSystem
+        .getOvertimeType())) {
+        continue;
+      }
       float weekLimit = ExtTimecardUtils.getOvertimeHourByWeek(timecardSystem);
       float total = 0f;
       boolean isOver = false;

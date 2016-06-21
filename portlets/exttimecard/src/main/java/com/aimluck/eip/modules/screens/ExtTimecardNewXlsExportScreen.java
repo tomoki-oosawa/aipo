@@ -122,22 +122,13 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         "出勤日数",
         "所定休日出勤日数",
         "法定休日出勤日数",
-        "実労働時間",
-        "所定内出勤時間",
-        "所定内深夜出勤時間",
+        "総労働時間",
+        "所定内労働時間",
         "法定内残業時間",
         "残業時間",
-        "深夜残業時間",
-        "所定休日所定内出勤時間",
-        "所定休日所定内深夜出勤時間",
-        "所定休日法定内残業時間",
-        "所定休日残業時間",
-        "所定休日深夜残業時間",
-        "法定休日所定内出勤時間",
-        "法定休日所定内深夜出勤時間",
-        "法定休日法定内残業時間",
-        "法定休日残業時間",
-        "法定休日深夜残業時間",
+        "所定休日労働時間",
+        "法定休日労働時間",
+        "深夜労働時間",
         "遅刻日数",
         "早退日数",
         "欠勤日数",
@@ -165,15 +156,6 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
-        HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
@@ -228,6 +210,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
       tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+      tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
       tclistrd.calculateWeekOvertime();
 
       String date = "";// 日付
@@ -239,7 +222,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
       String work_hour = "0";// 就業時間
       String overtime_day = "0";// 残業日数
       String overtime_hour = "0";// 残業時間
-      String overtime_within_statutory_working_hour = "0";// 法内残業時間
+      String overtime_within_statutory_working_hour = "0";// 法定内残業時間
       String off_day = "0";// 休出日数
       String off_hour = "0";// 休出時間
       String late_coming_day = "0";// 遅刻日数
@@ -259,6 +242,9 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
       String off_day_regular_work_hour = "0", off_day_overtime_hour = "0", off_day_midnight_work_hour =
         "0", off_day_regular_midnight_work_hour = "0", off_day_within_statutory_overtime_hour =
         "0";
+      String total_off_day_work_hour = "0", total_statutory_off_day_work_hour =
+        "0";
+      String total_midnight_work_hour = "0";
       String[] out_going =
         new String[EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY];// 外出
       String[] come_back =
@@ -305,6 +291,8 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
             off_day = "1";
             // 所定内休日、法定内休日に振り分け
             if (container.isStatutoryOffDay(tclistrd)) {
+              total_statutory_off_day_work_hour =
+                Float.toString(tclistrd.getTotalWorkHour());
               statutory_off_day = "1";
               statutory_off_day_regular_work_hour =
                 Float.toString(tclistrd.getInworkHour());
@@ -319,6 +307,8 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
                   Float.toString(tclistrd.getWithinStatutoryOvertimeWorkHour());
               }
             } else {
+              total_off_day_work_hour =
+                Float.toString(tclistrd.getTotalWorkHour());
               official_off_day = "1";
               off_day_regular_work_hour =
                 Float.toString(tclistrd.getInworkHour());
@@ -346,6 +336,10 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
                 Float.toString(tclistrd.getMidnightOvertimeWorkHour());
             }
           }
+        }
+        if (tclistrd.getMidnightWorkHour() > 0.0) {
+          total_midnight_work_hour =
+            Float.toString(tclistrd.getMidnightWorkHour());
         }
         if (tclistrd.getTotalWorkHour() > 0.0) {
           total_work_hour = Float.toString(tclistrd.getTotalWorkHour());
@@ -385,20 +379,11 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
           statutory_off_day,
           total_work_hour,
           work_hour,
-          midnight_work_hour,
           overtime_within_statutory_working_hour,
           overtime_hour,
-          midnight_overtime_hour,
-          off_day_regular_work_hour,
-          off_day_regular_midnight_work_hour,
-          off_day_within_statutory_overtime_hour,
-          off_day_overtime_hour,
-          off_day_midnight_work_hour,
-          statutory_off_day_regular_work_hour,
-          statutory_off_day_regular_midnight_work_hour,
-          statutory_off_day_within_statutory_overtime_hour,
-          statutory_off_day_overtime_hour,
-          statutory_off_day_midnight_work_hour,
+          total_off_day_work_hour,
+          total_statutory_off_day_work_hour,
+          total_midnight_work_hour,
           late_coming_day,
           early_leaving_day,
           absent_day,

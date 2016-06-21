@@ -137,6 +137,8 @@ public class ExtTimecardSystemSelectData extends
           .getOvertimeMinuteByDay(record.getOvertimeType()));
         rd.setOvertimeTypeHourByWeek(ExtTimecardUtils
           .getOvertimeHourByWeek(record.getOvertimeType()));
+        rd.setOvertypeWeek(ExtTimecardUtils.isOvertimeHourByWeek(record
+          .getOvertimeType()));
       }
 
       return rd;
@@ -178,6 +180,8 @@ public class ExtTimecardSystemSelectData extends
           .getOvertimeMinuteByDay(record.getOvertimeType()));
         rd.setOvertimeTypeHourByWeek(ExtTimecardUtils
           .getOvertimeHourByWeek(record.getOvertimeType()));
+        rd.setOvertypeWeek(ExtTimecardUtils.isOvertimeHourByWeek(record
+          .getOvertimeType()));
       }
 
       return rd;

@@ -89,6 +89,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   private ALNumberField overtime_type_week_hour;
 
+  private ALStringField overtime_type_week;
+
   private int entity_id;
 
   private boolean isNewRule = false;
@@ -162,6 +164,10 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
     overtime_type_week_hour.limitMinValue(0);
 
+    overtime_type_week = new ALStringField();
+    overtime_type_week.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+
     isNewRule = isNewRule();
 
   }
@@ -199,6 +205,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           .getOvertimeMinuteByDay(record.getOvertimeType()));
         overtime_type_week_hour.setValue(ExtTimecardUtils
           .getOvertimeHourByWeek(record.getOvertimeType()));
+        overtime_type_week.setValue(ExtTimecardUtils
+          .isOvertimeHourByWeek(record.getOvertimeType()) ? "T" : "F");
       }
 
     } catch (Exception ex) {
@@ -243,9 +251,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       if (isNewRule) {
         String overtimeType =
-          ExtTimecardUtils.OVERTIME_TYPE_L
-            + overtime_type_minute.getValue()
+          overtime_type_minute.getValue()
             + "-"
+            + ("T".equals(overtime_type_week.getValue()) ? "T" : "F")
             + overtime_type_week_hour.getValue();
         record.setOvertimeType(overtimeType);
       }
@@ -329,9 +337,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       String overType;
       if (isNewRule) {
         overType =
-          ExtTimecardUtils.OVERTIME_TYPE_L
-            + overtime_type_minute.getValue()
+          +overtime_type_minute.getValue()
             + "-"
+            + ("T".equals(overtime_type_week.getValue()) ? "T" : "F")
             + overtime_type_week_hour.getValue();
       } else {
         overType = ExtTimecardUtils.OVERTIME_TYPE_O;
@@ -392,6 +400,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           outgoing_add_flag.setValue(record.getOutgoingAddFlag());
           overtime_type_minute
             .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_MINUTE);
+          overtime_type_week_hour
+            .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK);
+          overtime_type_week.setValue("F");
         } catch (Exception ex) {
           logger.error("[ExtTimecardSystemFormData]", ex);
         }
@@ -423,6 +434,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     resttime_in.limitValue(0, 480);
     resttime_out.limitValue(0, 480);
     overtime_type_minute.limitValue(0, 1440);
+    overtime_type_week_hour.limitValue(0, 168);
   }
 
   @Override
@@ -627,11 +639,15 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   public ALNumberField getOvertimeTypeMinute() {
-    return this.overtime_type_minute;
+    return overtime_type_minute;
   }
 
   public ALNumberField getOvertimeTypeWeekHour() {
-    return this.overtime_type_week_hour;
+    return overtime_type_week_hour;
+  }
+
+  public ALStringField getOvertimeTypeWeek() {
+    return overtime_type_week;
   }
 
   public boolean isNewRule() {

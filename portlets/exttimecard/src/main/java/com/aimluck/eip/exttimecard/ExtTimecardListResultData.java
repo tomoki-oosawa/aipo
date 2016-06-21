@@ -34,7 +34,6 @@ import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
-import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 
 /**
@@ -86,6 +85,8 @@ public class ExtTimecardListResultData implements ALData {
   private float fix_overtime_hour = NO_DATA;
 
   private boolean isNewRule = false;
+
+  private boolean isStatutoryHoliday = false;
 
   /**
    *
@@ -195,28 +196,15 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * 曜日が土曜日であるか、日曜日であるか、休日であるか取得
    *
-   * @return int 0 ... 平日 1 ... 土曜日 2 ... 日曜日 3 ... 休日
+   * @return
    */
-  public int getIsSaturdayOrSundayOrHoliday() {
+  public boolean isHoliday() {
     try {
       Date now = date.getValue().getDate();
-      ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
-      if (holidaysManager.isHoliday(now) != null) {
-        return 3;
-      }
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(now);
-      if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-        return 1;
-      }
-      if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-        return 2;
-      }
-      return 0;
-    } catch (Exception e) {
-      return -1;
+      return ExtTimecardUtils.isHoliday(now);
+    } catch (Throwable ignore) {
+      return false;
     }
   }
 
@@ -456,21 +444,30 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       float in = getInworkHour(); // 所定内勤務時間
-      if (getIsSaturdayOrSundayOrHoliday() == 0) {
+      if (!isHoliday()) {
         if (in != NO_DATA) {
           time += in;
         }
-        // 残業を就業に含める
-        // if (over != NO_DATA) {
-        // time += over;
-        // }
       }
       return time;
     }
   }
 
   /**
-   * 実労働時間（所定内勤務時間 + 残業時間 + 法内残業時間）
+   * 所定内勤務時間（平日） 就業時間（表示用）
+   *
+   * @return float
+   */
+  public String getWorkHourValue() {
+    float value = getWorkHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
+  }
+
+  /**
+   * 総労働時間（所定内勤務時間 + 残業時間 + 法内残業時間）
    *
    * @return float
    */
@@ -501,7 +498,7 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * 実労働時間（表示用）
+   * 総労働時間（表示用）
    *
    * @return
    */
@@ -729,12 +726,83 @@ public class ExtTimecardListResultData implements ALData {
       time = ExtTimecardUtils.roundHour(time);
     }
     // 休日を除外
-    if (getIsSaturdayOrSundayOrHoliday() != 0) {
+    if (isHoliday()) {
       if (time != NO_DATA) {
         time = 0f;
       }
     }
     return time;
+  }
+
+  /**
+   * 残業時間（平日）（表示用）
+   *
+   * @param round
+   * @return
+   */
+  public String getOvertimeHourValue() {
+    if (isHoliday()) {
+      return "";
+    }
+    float value = getOvertimeHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
+  }
+
+  /**
+   * 所定休日労働時間
+   *
+   * @return
+   */
+  public float getTotalOfficialWorkHour() {
+    if (isHoliday()) {
+      if (!isStatutoryHoliday()) {
+        return getTotalWorkHour();
+      }
+    }
+    return NO_DATA;
+  }
+
+  /**
+   * 所定休日労働時間（表示用）
+   *
+   * @return
+   */
+  public String getTotalOfficialWorkHourValue() {
+    float value = getTotalOfficialWorkHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
+  }
+
+  /**
+   * 法定休日労働時間
+   *
+   * @return
+   */
+  public float getTotalStatutoryWorkHour() {
+    if (isHoliday()) {
+      if (isStatutoryHoliday()) {
+        return getTotalWorkHour();
+      }
+    }
+    return NO_DATA;
+  }
+
+  /**
+   * 法定休日労働時間（表示用）
+   *
+   * @return
+   */
+  public String getTotalStatutoryWorkHourValue() {
+    float value = getTotalStatutoryWorkHour();
+    if (value != NO_DATA) {
+      return String.valueOf(ExtTimecardUtils.roundHour(value));
+    }
+    return "";
   }
 
   /**
@@ -753,7 +821,7 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getOffHour(boolean round) {
-    if (getIsSaturdayOrSundayOrHoliday() != 0) {
+    if (isHoliday()) {
       float time = NO_DATA;
       if (calculated_total_work_hour != NO_DATA) {
         time = calculated_total_work_hour;
@@ -1307,7 +1375,7 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * 実深夜時間
+   * 深夜労働時間
    *
    * @return
    */
@@ -1315,16 +1383,56 @@ public class ExtTimecardListResultData implements ALData {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     }
-    float value1 = getMidnightRegularWorkHour();
-    float value2 = getMidnightOvertimeWorkHour();
-    if (value1 == NO_DATA || value2 == NO_DATA) {
-      return NO_DATA;
+    Date from = getRd().getClockInTime().getValue();
+    Date to = getRd().getClockOutTime().getValue();
+    Date midTimeEarly = dateOf(5, 0);
+    Date midTimeLate = dateOf(22, 0);
+    Date nextEarly = nextDateOf(5, 0);
+
+    long early = 0;
+    if (from.before(midTimeEarly)) {
+      early = midTimeEarly.getTime() - from.getTime();
     }
-    return value1 + value2;
+    long late = 0;
+    if (to.after(midTimeLate)) {
+      if (to.before(nextEarly)) {
+        late = to.getTime() - midTimeLate.getTime();
+      } else {
+        late = nextEarly.getTime() - midTimeLate.getTime();
+      }
+    }
+    float time = 0f;
+    if (early + late > 0) {
+      time += (early + late) / (1000.0 * 60.0 * 60.0);
+
+      /** 外出時間を就業時間に含めない場合 */
+      if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
+        // 外出時間が深夜にかかる時間帯のみ差し引く
+        if (from.before(midTimeEarly)) {
+          float e = getOutgoingTime(from, midTimeEarly);
+          if (e != NO_DATA) {
+            time -= e;
+          }
+        }
+        if (midTimeLate.before(to)) {
+          float l = NO_DATA;
+          if (to.before(nextEarly)) {
+            l = getOutgoingTime(midTimeLate, to);
+          } else {
+            l = getOutgoingTime(midTimeLate, nextEarly);
+          }
+          if (l != NO_DATA) {
+            time -= l;
+          }
+        }
+      }
+      return time;
+    }
+    return 0f;
   }
 
   /**
-   * 実深夜時間（表示用）
+   * 深夜労働時間（表示用）
    *
    * @return
    */
@@ -1470,7 +1578,7 @@ public class ExtTimecardListResultData implements ALData {
     if (!isNewRule()) {
       return NO_DATA;
     }
-    if (getIsSaturdayOrSundayOrHoliday() != 0) {
+    if (isHoliday()) {
       return 0f;
     }
     return getWithinStatutoryOvertimeWorkHour();
@@ -1623,6 +1731,21 @@ public class ExtTimecardListResultData implements ALData {
    */
   public void setNewRule(boolean isNewRule) {
     this.isNewRule = isNewRule;
+  }
+
+  /**
+   * @return isStatutoryHoliday
+   */
+  public boolean isStatutoryHoliday() {
+    return isStatutoryHoliday;
+  }
+
+  /**
+   * @param isStatutoryHoliday
+   *          セットする isStatutoryHoliday
+   */
+  public void setStatutoryHoliday(boolean isStatutoryHoliday) {
+    this.isStatutoryHoliday = isStatutoryHoliday;
   }
 
 }

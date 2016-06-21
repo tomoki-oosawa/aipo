@@ -126,6 +126,7 @@ public class ExtTimecardAction extends ALBaseAction {
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
       tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+      tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
       tclistrd.calculateWeekOvertime();
     }
 

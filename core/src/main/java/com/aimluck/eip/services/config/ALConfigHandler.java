@@ -111,6 +111,16 @@ public abstract class ALConfigHandler {
       }
     },
 
+    HOLIDAY_OF_WEEK("holiday.of.week") {
+      @Override
+      public String defaultValue() {
+        // 7桁 週間の休日
+        // 1桁 法定休日の曜日
+        // 1桁 国民の祝日を休日にするかどうか
+        return JetspeedResources.getString("holiday.of.week", "100000111");
+      }
+    },
+
     FIRST_ADMIN_LOGIN("first.admin.login") {
       @Override
       public String defaultValue() {

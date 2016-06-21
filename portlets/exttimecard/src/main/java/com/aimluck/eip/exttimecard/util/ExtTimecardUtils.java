@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -36,9 +38,11 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
 import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardResultData;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -73,11 +77,11 @@ public class ExtTimecardUtils {
   /** 出退勤フラグ（ダミー） */
   public static final String WORK_FLG_DUMMY = "-1";
 
-  /** 分を超える労働を残業とする */
-  public static final String OVERTIME_TYPE_L = "L";
-
-  /** 分を超える労働を残業とする */
+  /** 日分を超える労働を残業とする */
   public static final Integer OVERTIME_TYPE_DEFAULT_MINUTE = 480;
+
+  /** 週時間を超える労働を残業とする */
+  public static final Integer OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK = 40;
 
   /** 勤務時間外の労働を残業とする */
   public static final String OVERTIME_TYPE_O = "O";
@@ -361,14 +365,47 @@ public class ExtTimecardUtils {
    *
    * @return
    */
-  public static List<Integer> getOffdayDayOfWeek(
-      EipTExtTimecardSystem timecard_system) {
+  public static List<Integer> getOffdayDayOfWeek() {
     List<Integer> list = new ArrayList<Integer>();
+    String week = getHolidayOfWeek();
     // 標準は日・土
-    list.add(Calendar.SUNDAY);
-    list.add(Calendar.SATURDAY);
-    // TODO: timecard_system に拡張
+    if (week.charAt(0) != 0) {
+      list.add(Calendar.SUNDAY);
+    }
+    if (week.charAt(1) != 0) {
+      list.add(Calendar.MONDAY);
+    }
+    if (week.charAt(2) != 0) {
+      list.add(Calendar.TUESDAY);
+    }
+    if (week.charAt(3) != 0) {
+      list.add(Calendar.WEDNESDAY);
+    }
+    if (week.charAt(4) != 0) {
+      list.add(Calendar.THURSDAY);
+    }
+    if (week.charAt(5) != 0) {
+      list.add(Calendar.FRIDAY);
+    }
+    if (week.charAt(6) != 0) {
+      list.add(Calendar.SATURDAY);
+    }
     return list;
+  }
+
+  /**
+   * 法定休日
+   *
+   * @return
+   */
+  public static int getStatutoryHoliday() {
+    String week = getHolidayOfWeek();
+    try {
+      return Character.getNumericValue(week.charAt(7));
+    } catch (Throwable ignore) {
+
+    }
+    return 0;
   }
 
   public static ExtTimecardListResultDataContainer groupByWeek(
@@ -396,10 +433,33 @@ public class ExtTimecardUtils {
     return result;
   }
 
+  /**
+   * 新しい集計ルールかどうか
+   *
+   * @return
+   */
   public static boolean isNewRule() {
-    String version =
-      ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_VERTION);
-    return "2".equals(version);
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String cacheVersion = null;
+    if (request != null) {
+      try {
+        cacheVersion =
+          (String) request
+            .getAttribute(ALConfigHandler.Property.EXTTIMECARD_VERTION
+              .toString());
+      } catch (Throwable ignore) {
+
+      }
+    }
+    if (cacheVersion == null) {
+      cacheVersion =
+        ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_VERTION);
+      if (request != null) {
+        request.setAttribute(ALConfigHandler.Property.EXTTIMECARD_VERTION
+          .toString(), cacheVersion);
+      }
+    }
+    return "2".equals(cacheVersion);
   }
 
   public static int getOvertimeMinuteByDay(EipTExtTimecardSystem model) {
@@ -408,17 +468,14 @@ public class ExtTimecardUtils {
   }
 
   public static int getOvertimeMinuteByDay(String type) {
-    int value = 480;
+    int value = OVERTIME_TYPE_DEFAULT_MINUTE;
     if (type != null) {
-      String substring = type.substring(1);
-      if (substring != null) {
-        String[] split = substring.split("-");
-        if (split.length == 2) {
-          try {
-            return Integer.valueOf(split[0]);
-          } catch (Throwable ignore) {
+      String[] split = type.split("-");
+      if (split.length == 2) {
+        try {
+          return Integer.valueOf(split[0]);
+        } catch (Throwable ignore) {
 
-          }
         }
       }
     }
@@ -431,20 +488,70 @@ public class ExtTimecardUtils {
   }
 
   public static int getOvertimeHourByWeek(String type) {
-    int value = 40;
+    int value = OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK;
     if (type != null) {
-      String substring = type.substring(1);
-      if (substring != null) {
-        String[] split = substring.split("-");
-        if (split.length == 2) {
-          try {
-            return Integer.valueOf(split[1]);
-          } catch (Throwable ignore) {
+      String[] split = type.split("-");
+      if (split.length == 2) {
+        try {
+          String substring = split[1].substring(1);
+          return Integer.valueOf(substring);
+        } catch (Throwable ignore) {
 
-          }
         }
       }
     }
     return value;
+  }
+
+  public static boolean isOvertimeHourByWeek(String type) {
+    if (type != null) {
+      String[] split = type.split("-");
+      if (split.length == 2) {
+        try {
+          String substring = split[1].substring(0, 1);
+          return "T".equals(substring);
+        } catch (Throwable ignore) {
+
+        }
+      }
+    }
+    return false;
+  }
+
+  public static String getHolidayOfWeek() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String cacheHoliday = null;
+    if (request != null) {
+      try {
+        cacheHoliday =
+          (String) request
+            .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
+      } catch (Throwable ignore) {
+
+      }
+    }
+    if (cacheHoliday == null) {
+      cacheHoliday =
+        ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
+      if (request != null) {
+        request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
+          .toString(), cacheHoliday);
+      }
+    }
+    return cacheHoliday;
+  }
+
+  public static boolean isHoliday(Date date) {
+    String cacheHoliday = getHolidayOfWeek();
+    boolean holiday = cacheHoliday.charAt(8) != '0';
+    if (holiday) {
+      ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
+      if (holidaysManager.isHoliday(date) != null) {
+        return true;
+      }
+    }
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    return cacheHoliday.charAt(cal.get(Calendar.DAY_OF_WEEK) - 1) != '0';
   }
 }

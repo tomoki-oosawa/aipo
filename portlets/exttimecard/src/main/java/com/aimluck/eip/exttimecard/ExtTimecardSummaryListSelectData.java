@@ -1061,6 +1061,7 @@ public class ExtTimecardSummaryListSelectData extends
             lrd.setTimecardSystem(timecard_system);
             lrd.setNewRule(isNewRule);
             lrd.setWeekOvertime(container.getWeekOvertime(lrd));
+            lrd.setStatutoryHoliday(container.isStatutoryOffDay(lrd));
             lrd.calculateWeekOvertime();
 
             String type = rd.getType().getValue();

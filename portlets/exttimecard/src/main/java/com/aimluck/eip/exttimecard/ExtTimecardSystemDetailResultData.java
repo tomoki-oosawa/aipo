@@ -63,6 +63,8 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALNumberField overtime_type_hour_by_week;
 
+  private boolean isOvertypeWeek;
+
   /**
    *
    *
@@ -237,6 +239,21 @@ public class ExtTimecardSystemDetailResultData extends
 
   public void setOvertimeTypeHourByWeek(int value) {
     overtime_type_hour_by_week.setValue(value);
+  }
+
+  /**
+   * @return isOvertypeWeek
+   */
+  public boolean isOvertypeWeek() {
+    return isOvertypeWeek;
+  }
+
+  /**
+   * @param isOvertypeWeek
+   *          セットする isOvertypeWeek
+   */
+  public void setOvertypeWeek(boolean isOvertypeWeek) {
+    this.isOvertypeWeek = isOvertypeWeek;
   }
 
 }
