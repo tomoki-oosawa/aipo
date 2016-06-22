@@ -459,6 +459,9 @@ public class ExtTimecardListResultData implements ALData {
    * @return float
    */
   public String getWorkHourValue() {
+    if (isHoliday()) {
+      return "";
+    }
     float value = getWorkHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
@@ -1450,6 +1453,9 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getMidnightRegularWorkHour() {
+    if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
+      return NO_DATA;
+    }
     if (_midnight_regular_work_hour != NO_DATA) {
       return _midnight_regular_work_hour;
     } else {
@@ -1512,6 +1518,9 @@ public class ExtTimecardListResultData implements ALData {
    * @return
    */
   public float getMidnightOvertimeWorkHour() {
+    if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
+      return NO_DATA;
+    }
     if (_midnight_overtime_work_hour == NO_DATA) {
       Date from = getRd().getClockInTime().getValue();
       Date to = getRd().getClockOutTime().getValue();

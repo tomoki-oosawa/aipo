@@ -104,10 +104,10 @@ public abstract class ALConfigHandler {
       }
     },
 
-    EXTTIMECARD_VERTION("extimecard.version") {
+    EXTTIMECARD_VERTION("exttimecard.version") {
       @Override
       public String defaultValue() {
-        return JetspeedResources.getString("extimecard.version", "1");
+        return JetspeedResources.getString("exttimecard.version", "1");
       }
     },
 

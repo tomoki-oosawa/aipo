@@ -158,16 +158,20 @@ $l10n.EXTTIMECARD_PUNCH_IN
     #end
     </td>
   #else
-    #ALtdcellAtt(" " "")
-    #ALtdcellAtt(" " "")
-    #ALtdcellAtt(" " "")
-    #ALtdcellAtt(" " "")
-    #ALtdcellAtt(" " " class='mb_hide'")
-    #ALtdcellAtt(" " " class='mb_hide'")
-    #ALtdcellAtt(" " " class='mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass'")
+    #ALtdcellAtt(" " " class='$holidayClass'")
+    #ALtdcellAtt(" " " class='$holidayClass'")
+    #ALtdcellAtt(" " " class='$holidayClass'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
+    #ALtdcellAtt(" " " class='$holidayClass mb_hide'")
   #end
 
-  <td class='mb_hide'>
+  <td class='$holidayClass mb_hide'>
   #if($!{rd.ReasonFlg})
 $l10n.EXTTIMECARD_REASON：$!{rd.Reason}
     #if($!{rd.RemarksFlg})
