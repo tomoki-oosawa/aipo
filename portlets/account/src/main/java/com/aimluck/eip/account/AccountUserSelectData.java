@@ -67,6 +67,9 @@ public class AccountUserSelectData extends
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(AccountUserSelectData.class.getName());
 
+  //
+  private static final int MAX_SIZE = 1000;
+
   /** 現在表示している部署 */
   protected String currentPost = "";
 
@@ -83,6 +86,8 @@ public class AccountUserSelectData extends
   private boolean adminFilter;
 
   protected ALStringField target_keyword;
+
+  protected ALStringField name;
 
   /** <code>userid</code> ユーザーID */
   private int userid;
@@ -556,5 +561,17 @@ public class AccountUserSelectData extends
 
   public ALStringField getTargetKeyword() {
     return target_keyword;
+  }
+
+  public ALStringField getName() {
+    return name;
+  }
+
+  public int getMaxSize() {
+    return MAX_SIZE;
+  }
+
+  public boolean isOverSize() {
+    return getCount() > MAX_SIZE;
   }
 }
