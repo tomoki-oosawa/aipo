@@ -50,6 +50,12 @@ public class ExtTimecardSummaryResultData implements ALData {
   /** オーナ ID */
   private ALNumberField owner_id;
 
+  /** 総労働日数 */
+  private ALNumberField total_work_day = null;
+
+  /** 総労働時間 */
+  private ALNumberField total_work_hour = null;
+
   /** 就業日数 */
   private ALNumberField work_day = null;
 
@@ -156,6 +162,9 @@ public class ExtTimecardSummaryResultData implements ALData {
    */
   @Override
   public void initField() {
+    total_work_day = new ALNumberField(0);
+    total_work_hour = new ALNumberField(0);
+
     work_day = new ALNumberField(0);
     work_hour = new ALNumberField(0);
 
@@ -795,5 +804,35 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   public void setStatutoryOffDayMidnightOvertimeWorkHour(float hour) {
     this.statutory_off_day_midnight_work_hour.setValue(String.valueOf(hour));
+  }
+
+  /**
+   * @return totalWorkDay
+   */
+  public ALNumberField getTotalWorkDay() {
+    return total_work_day;
+  }
+
+  /**
+   * @param totalWorkDay
+   *          セットする totalWorkDay
+   */
+  public void setTotalWorkDay(int totalWorkDay) {
+    this.total_work_day.setValue(totalWorkDay);
+  }
+
+  /**
+   * @return totalWorkHour
+   */
+  public ALNumberField getTotalWorkHour() {
+    return total_work_hour;
+  }
+
+  /**
+   * @param totalWorkHour
+   *          セットする totalWorkHour
+   */
+  public void setTotalWorkHour(float totalWorkHour) {
+    this.total_work_hour.setValue(String.valueOf(totalWorkHour));
   }
 }

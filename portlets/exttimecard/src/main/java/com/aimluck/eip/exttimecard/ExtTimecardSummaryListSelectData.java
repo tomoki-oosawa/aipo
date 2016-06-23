@@ -1004,10 +1004,10 @@ public class ExtTimecardSummaryListSelectData extends
       List<ExtTimecardResultData> userlist = usermap.get(user_id);
       ExtTimecardSummaryResultData summary_rd =
         new ExtTimecardSummaryResultData();
-      int work_day = 0, overtime_day = 0, off_day = 0, official_off_day = 0, statutory_off_day =
-        0;
+      int total_work_day = 0, work_day = 0, overtime_day = 0, off_day = 0, official_off_day =
+        0, statutory_off_day = 0;
       /** 就業、残業、休出日数 */
-      float work_hour = 0, overtime_hour = 0, off_hour = 0;
+      float total_work_hour = 0, work_hour = 0, overtime_hour = 0, off_hour = 0;
       /** 就業、残業、休出時間 */
       int late_coming_day = 0, early_leaving_day = 0, absent_day = 0;
       /** 遅刻、早退、欠勤 */
@@ -1066,6 +1066,10 @@ public class ExtTimecardSummaryListSelectData extends
 
             String type = rd.getType().getValue();
             if (type.equals(EipTExtTimecard.TYPE_WORK)) {
+              if (lrd.getTotalWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_work_day++;
+                total_work_hour += lrd.getTotalWorkHour();
+              }
               /** 出勤 */
               if (lrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
                 work_day++;
@@ -1160,12 +1164,15 @@ public class ExtTimecardSummaryListSelectData extends
       no_input = cal.getActualMaximum(Calendar.DAY_OF_MONTH) - userlist.size();
 
       /** ユーザーごとの合計をSummaryResultDataに代入する */
+      total_work_hour = ExtTimecardUtils.roundHour(total_work_hour);
       work_hour = ExtTimecardUtils.roundHour(work_hour);
       overtime_hour = ExtTimecardUtils.roundHour(overtime_hour);
       off_hour = ExtTimecardUtils.roundHour(off_hour);
 
       summary_rd.setUserName(eipUser.getAliasName().getValue());
       summary_rd.setSystemName(timecard_system.getSystemName());
+      summary_rd.setTotalWorkDay(total_work_day);
+      summary_rd.setTotalWorkHour(total_work_hour);
       summary_rd.setWorkDayHour(work_day, work_hour);
       summary_rd.setOvertimeDayHour(overtime_day, overtime_hour);
       summary_rd.setOffDayHour(off_day, off_hour);
