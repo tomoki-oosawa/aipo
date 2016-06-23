@@ -56,9 +56,9 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 #ALtditemheader()
 #if($!result.isNewRule())
 	$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY1$!{result.Detail.OvertimeTypeMinuteByDay}$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY2<br/>
-    #if($result.Detail.isOvertypeWeek())
-	$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1$!{result.Detail.OvertimeTypeHourByWeek}$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2<br/>
-    #end
+  ##   #if($result.Detail.isOvertypeWeek())
+	## $l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1$!{result.Detail.OvertimeTypeHourByWeek}$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2<br/>
+  ##   #end
 #else
 $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #end

@@ -42,7 +42,10 @@
 <label for="type_1">$l10n.EXTTIMECARD_REPORT_OLD</label>
 <div id="timecard-type-new" #if ($!result.Type.toString() == "1") style="display:none" #end>
 	<ul>
-		<li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE1</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE1</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE2</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE3</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE4</li>
 	</ul>
 </div>
 <div id="timecard-type-old" #if ($!result.Type.toString() == "2") style="display:none" #end>

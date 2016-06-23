@@ -107,11 +107,12 @@ $!{result.WorkTimeOutRestTimeOutText}
 <p>$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY1
 <input class="text" name="overtime_type_minute" value="$!result.OvertimeTypeMinute.toString()" type="text" size="3" maxlength="3">
 $l10n.EXTTIMECARD_OVERTIME_TYPE_DAY2</p>
-<p>
-<input type="checkbox" name="overtime_type_week" id="overtime_type_week" value="T" #if($result.OvertimeTypeWeek.toString() == 'T')checked="checked"#end>
-<label for="overtime_type_week">$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1
-<input class="text" name="overtime_type_week_hour" value="$!result.OvertimeTypeWeekHour.toString()" type="text" size="3" maxlength="3">
-$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2</label></p>
+## <p>
+## <input type="checkbox" name="overtime_type_week" id="overtime_type_week" value="T" #if($result.OvertimeTypeWeek.toString() == 'T')checked="checked"#end>
+## <label for="overtime_type_week">$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1
+## <input class="text" name="overtime_type_week_hour" value="$!result.OvertimeTypeWeekHour.toString()" type="text" size="3" maxlength="3">
+## $l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2</label>
+## </p>
 #else
 $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #end
