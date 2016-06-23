@@ -29,6 +29,11 @@
 #set ($modesrv = "update")
 #end
 #set ($indicator_id = "indicator-dlg-")
+#if($result.hasAuth())
+#set ($form_view = "")
+#else
+#set ($form_view = "style='display:none'")
+#end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
@@ -37,10 +42,10 @@
 
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
-#if($mode=="new_form" || !$result.isFileUploadable())
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#if($mode=="new_form" || !$result.isFileUploadable() || !$result.hasAuth())
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
 #else
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom);return false;")
+#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
 #end
 <input type="hidden" name="mode" value="$!modesrv" />
 #if($mode!="new_form")
@@ -48,8 +53,7 @@
 #end
 
 #ALtableheaderWide()
-
-#ALtdcaption($l10n.MESSAGE_ROOM_ENTRY_USER)
+#ALtdcaptionTrAtt($l10n.MESSAGE_ROOM_ENTRY_USER $form_view)
 #ALtditemheader()
 <div>
 	<table class="w100">
@@ -88,15 +92,20 @@
 </table>
 </div>
 #ALtditemfooter()
-
+#if($result.isGroup())
 #ALtdcaption($l10n.MESSAGE_ROOM_NAME)
 #ALtditemheader()
+#if($result.hasAuth())
 #ALtextfieldw100('name' $!result.Name 50 'active')
+#else
+$!result.Name
+#end
 #ALtditemfooter()
+#end
 
 #if($mode!="new_form")
 #if($result.isFileUploadable())
-#ALtdcaption($l10n.MESSAGE_ROOM_ICON)
+#ALtdcaptionTrAtt($l10n.MESSAGE_ROOM_ICON $form_view)
 #ALtditemheader()
 #IFFileUpload()
   <ul id="attachments_$!{portlet.ID}" class="attachments">
@@ -110,13 +119,20 @@
 #ALtditemfooter()
 #end
 #end
-
+#if($mode!="new_form")
+  #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
+  #ALtditemheader()
+  #ALMessageNotification($result)
+  #ALtditemfooter()
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
 #if($mode!="new_form")
+#if($result.hasAuth())
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
+#end
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()

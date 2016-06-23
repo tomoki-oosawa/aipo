@@ -262,6 +262,11 @@ $theLink
       <td class="caption" $option>$text</td>
 #end
 
+#macro(ALtdcaptionTrAtt $text $option)
+    <tr $option>
+      <td class="caption">$text</td>
+#end
+
 #macro(ALtditem $text)
       <td>$text</td>
     </tr>

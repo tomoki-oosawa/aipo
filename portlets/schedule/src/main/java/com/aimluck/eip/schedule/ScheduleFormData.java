@@ -74,6 +74,10 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -1325,6 +1329,35 @@ public class ScheduleFormData extends ALAbstractFormData {
       // スケジュールを登録
       Database.commit();
 
+      // アラーム
+      if (ALReminderService.isEnabled()) {
+        boolean isLimit = false;
+        if ("ON".equals(limit_flag.getValue())) {
+          isLimit = true;
+        }
+        // メンバーに対して それぞれのDefaultJob をもとにリマインドを作成
+        for (ALEipUser user : memberList) {
+          ALReminderDefaultItem defaultItem =
+            ALReminderService.getDefault(orgId, user
+              .getUserId()
+              .getValueAsString(), ReminderCategory.SCHEDULE);
+          // DefaultItemがない場合は通知しない
+          if (defaultItem != null && defaultItem.isEnabled()) {
+            ScheduleUtils.setupReminderJob(
+              Database.getDomainName(),
+              user.getUserId().toString(),
+              schedule,
+              defaultItem.getNotifyTiming(),
+              defaultItem.hasNotifyTypeMail(),
+              defaultItem.hasNotifyTypeMessage(),
+              is_repeat,
+              isLimit,
+              is_span);
+          }
+        }
+
+      }
+
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         schedule.getScheduleId(),
@@ -1430,7 +1463,9 @@ public class ScheduleFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ArrayList<ALEipUser> newmemberList = new ArrayList<ALEipUser>();
+    List<Integer> newmemberList = new ArrayList<Integer>();
+    List<ALEipUser> removememberList = new ArrayList<ALEipUser>();
+    List<Integer> memberIdsList = new ArrayList<Integer>();
     EipTSchedule schedule = null;
     EipTSchedule newSchedule = null;
     EipTSchedule tmpSchedule = null;
@@ -1517,7 +1552,14 @@ public class ScheduleFormData extends ALAbstractFormData {
       for (ALEipUser user : memberList) {
         int memberId = (int) user.getUserId().getValue();
         if (!isContains(oldmemberIdList, memberId)) {
-          newmemberList.add(ALEipUtils.getALEipUser(memberId));
+          newmemberList.add(memberId);
+        }
+        memberIdsList.add(memberId);
+      }
+
+      for (Integer memberId : oldmemberIdList) {
+        if (!isContains(memberIdsList, memberId)) {
+          removememberList.add(ALEipUtils.getALEipUser(memberId));
         }
       }
 
@@ -1895,6 +1937,85 @@ public class ScheduleFormData extends ALAbstractFormData {
 
       // スケジュールを登録
       Database.commit();
+
+      // アラーム
+      if (ALReminderService.isEnabled()) {
+        boolean isLimit = false;
+        if ("ON".equals(limit_flag.getValue())) {
+          isLimit = true;
+        }
+        EipTSchedule targetSchedule = null;
+        if (edit_repeat_flag.getValue() == FLAG_EDIT_REPEAT_ONE) {
+          targetSchedule = newSchedule;
+        } else {
+          targetSchedule = schedule;
+        }
+        // メンバーからはずれた人のJobを削除する
+        for (ALEipUser user : removememberList) {
+          if (schedule.getScheduleId().intValue() == targetSchedule
+            .getScheduleId()
+            .intValue()) {
+            ALReminderItem item = new ALReminderItem();
+            item.setOrgId(Database.getDomainName());
+            item.setUserId(user.getUserId().toString());
+            item.setItemId(schedule.getScheduleId().intValue());
+            item.setCategory(ReminderCategory.SCHEDULE);
+            ALReminderService.removeJob(item);
+          }
+        }
+        // メンバーに対しては それぞれのJob をもとにリマインドを作成
+        for (ALEipUser user : memberList) {
+          int memberId = (int) user.getUserId().getValue();
+          if (isContains(newmemberList, memberId)) {
+            // 追加されたメンバー
+            ALReminderDefaultItem defaultItem =
+              ALReminderService.getDefault(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE);
+            // DefaultItemがない場合は通知しない
+            if (defaultItem != null && defaultItem.isEnabled()) {
+              ScheduleUtils.setupReminderJob(
+                Database.getDomainName(),
+                user.getUserId().toString(),
+                targetSchedule,
+                defaultItem.getNotifyTiming(),
+                defaultItem.hasNotifyTypeMail(),
+                defaultItem.hasNotifyTypeMessage(),
+                is_repeat,
+                isLimit,
+                is_span);
+            }
+          } else {
+            // もともといたメンバー
+            ALReminderItem item =
+              ALReminderService.getJob(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                .getScheduleId()
+                .intValue());
+            if (item != null) {
+              if (!is_span) {
+                ScheduleUtils.setupReminderJob(
+                  Database.getDomainName(),
+                  user.getUserId().toString(),
+                  targetSchedule,
+                  item.getNotifyTiming(),
+                  item.hasNotifyTypeMail(),
+                  item.hasNotifyTypeMessage(),
+                  is_repeat,
+                  isLimit,
+                  is_span);
+              } else {
+                if (schedule.getScheduleId().intValue() == targetSchedule
+                  .getScheduleId()
+                  .intValue()) {
+                  ALReminderService.removeJob(item);
+                }
+              }
+            }
+          }
+        }
+      }
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -2336,6 +2457,71 @@ public class ScheduleFormData extends ALAbstractFormData {
         }
       }
       Database.commit();
+
+      // アラーム
+      if (ALReminderService.isEnabled()) {
+        if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
+          if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
+            // 完全に削除する（元のスケジュール、関連するダミースケジュール）
+            for (ALEipUser member : members) {
+              ALReminderItem item =
+                ALReminderService.getJob(Database.getDomainName(), member
+                  .getUserId()
+                  .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                  .getScheduleId()
+                  .intValue());
+              if (item != null) {
+                ALReminderService.removeJob(item);
+              }
+            }
+          }
+        } else {
+          if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
+            // 自分の全てのスケジュールを削除する、最後のメンバーの場合は完全に削除する
+
+            SelectQuery<EipTSchedule> query =
+              Database.query(EipTSchedule.class);
+
+            // スケジュールID
+            Expression exp1 =
+              ExpressionFactory.matchDbExp(
+                EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+                schedule.getScheduleId());
+            query.setQualifier(exp1);
+
+            List<EipTSchedule> schedules = query.fetchList();
+
+            // 指定したSchedule IDのレコードが見つからない場合
+            if (schedules == null || schedules.size() == 0) {
+              // 最後のメンバーの場合は完全に削除する
+              for (ALEipUser member : members) {
+                ALReminderItem item =
+                  ALReminderService.getJob(Database.getDomainName(), member
+                    .getUserId()
+                    .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                    .getScheduleId()
+                    .intValue());
+                if (item != null) {
+                  ALReminderService.removeJob(item);
+                }
+              }
+            }
+            if (schedules != null && schedules.size() > 0) {
+              // 削除対象ユーザーのみ削除
+              if (!is_facility) {
+                ALReminderItem item =
+                  ALReminderService.getJob(Database.getDomainName(), String
+                    .valueOf(userid), ReminderCategory.SCHEDULE, schedule
+                    .getScheduleId()
+                    .intValue());
+                if (item != null) {
+                  ALReminderService.removeJob(item);
+                }
+              }
+            }
+          }
+        }
+      }
 
       if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL
         && del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
@@ -3144,4 +3330,7 @@ public class ScheduleFormData extends ALAbstractFormData {
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
 }

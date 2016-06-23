@@ -47,3 +47,8 @@ CREATE TABLE `eip_t_schedule_file` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- 20151225
+
+-- 20160317
+ALTER TABLE `eip_t_message_room_member` ADD `desktop_notification` varchar(1) DEFAULT 'A';
+ALTER TABLE `eip_t_message_room_member` ADD `mobile_notification` varchar(1) DEFAULT 'A';
+-- 20150317
