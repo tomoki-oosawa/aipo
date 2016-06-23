@@ -329,8 +329,8 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
   #ALtdcellAtt("$!rdlist.TotalWorkHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
   #ALtdcellAtt("$!rdlist.WorkHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
   #ALtdcellAtt("$!rdlist.OvertimeHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
-  #ALtdcellAtt("$!rdlist.TotalOfficialWorkHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
-  #ALtdcellAtt("$!rdlist.TotalStatutoryWorkHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
+  #ALtdcellAtt("$!rdlist.TotalOfficialOffHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
+  #ALtdcellAtt("$!rdlist.TotalStatutoryOffHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
   #ALtdcellAtt("$!rdlist.MidnightWorkHourValue" "class='center mb_hide $holidayClass' nowrap='nowrap'")
 
 				<td class='mb_hide $holidayClass'>

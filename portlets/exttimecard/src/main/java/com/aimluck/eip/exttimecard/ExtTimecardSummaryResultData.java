@@ -123,8 +123,14 @@ public class ExtTimecardSummaryResultData implements ALData {
   /** 深夜残業時間 */
   private ALNumberField midnight_overtime_hour = null;
 
+  /** 深夜時間 */
+  private ALNumberField total_midnight_work_hour = null;
+
   /** 休憩時間 */
   private ALNumberField rest_hour = null;
+
+  /** 所定休日出勤時間 */
+  private ALNumberField total_official_off_hour = null;
 
   /** 所定休日所定内出勤時間 */
   private ALNumberField off_day_regular_work_hour = null;
@@ -140,6 +146,9 @@ public class ExtTimecardSummaryResultData implements ALData {
 
   /** 所定休日深夜残業時間 */
   private ALNumberField off_day_midnight_work_hour = null;
+
+  /** 法定休日出勤時間 */
+  private ALNumberField total_statutory_off_hour = null;
 
   /** 法定休日所定内出勤時間 */
   private ALNumberField statutory_off_day_regular_work_hour = null;
@@ -197,16 +206,20 @@ public class ExtTimecardSummaryResultData implements ALData {
     overtime_within_statutory_working_hour = new ALNumberField(0);
     midnight_overtime_hour = new ALNumberField(0);
     rest_hour = new ALNumberField(0);
+    total_official_off_hour = new ALNumberField(0);
     off_day_regular_work_hour = new ALNumberField(0);
     off_day_regular_midnight_work_hour = new ALNumberField(0);
     off_day_within_statutory_working_hour = new ALNumberField(0);
     off_day_overtime_hour = new ALNumberField(0);
     off_day_midnight_work_hour = new ALNumberField(0);
+    total_statutory_off_hour = new ALNumberField(0);
     statutory_off_day_regular_work_hour = new ALNumberField(0);
     statutory_off_day_regular_midnight_work_hour = new ALNumberField(0);
     statutory_off_day_within_statutory_working_hour = new ALNumberField(0);
     statutory_off_day_overtime_hour = new ALNumberField(0);
     statutory_off_day_midnight_work_hour = new ALNumberField(0);
+    statutory_off_day_midnight_work_hour = new ALNumberField(0);
+    total_midnight_work_hour = new ALNumberField(0);
 
   }
 
@@ -243,7 +256,7 @@ public class ExtTimecardSummaryResultData implements ALData {
     off_hour.setValue(String.valueOf(hour));
   }
 
-  public void setOfficailOffDay(int days) {
+  public void setOfficialOffDay(int days) {
     official_off_day.setValue(days);
   }
 
@@ -368,7 +381,7 @@ public class ExtTimecardSummaryResultData implements ALData {
     return off_hour;
   }
 
-  public ALNumberField getOfficalOffDay() {
+  public ALNumberField getOfficialOffDay() {
     return official_off_day;
   }
 
@@ -834,5 +847,53 @@ public class ExtTimecardSummaryResultData implements ALData {
    */
   public void setTotalWorkHour(float totalWorkHour) {
     this.total_work_hour.setValue(String.valueOf(totalWorkHour));
+  }
+
+  /**
+   * @return total_official_off_hour
+   */
+  public ALNumberField getTotalOfficialOffHour() {
+    return total_official_off_hour;
+  }
+
+  /**
+   * @param total_official_off_hour
+   *          セットする total_official_off_hour
+   */
+  public void setTotalOfficialOffHour(float total_official_off_hour) {
+    this.total_official_off_hour.setValue(String
+      .valueOf(total_official_off_hour));
+  }
+
+  /**
+   * @return total_statutory_off_hour
+   */
+  public ALNumberField getTotalStatutoryOffHour() {
+    return total_statutory_off_hour;
+  }
+
+  /**
+   * @param total_statutory_off_hour
+   *          セットする total_statutory_off_hour
+   */
+  public void setTotalStatutoryOffHour(float total_statutory_off_hour) {
+    this.total_statutory_off_hour.setValue(String
+      .valueOf(total_statutory_off_hour));
+  }
+
+  /**
+   * @return total_midnight_work_hour
+   */
+  public ALNumberField getTotalMidnightWorkHour() {
+    return total_midnight_work_hour;
+  }
+
+  /**
+   * @param total_midnight_work_hour
+   *          セットする total_midnight_work_hour
+   */
+  public void setTotalMidnightWorkHour(float total_midnight_work_hour) {
+    this.total_midnight_work_hour.setValue(String
+      .valueOf(total_midnight_work_hour));
   }
 }

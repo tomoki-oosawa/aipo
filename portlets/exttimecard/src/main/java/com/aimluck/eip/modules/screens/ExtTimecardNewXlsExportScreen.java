@@ -129,6 +129,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         "所定休日労働時間",
         "法定休日労働時間",
         "深夜労働時間",
+        "休憩時間",
         "遅刻日数",
         "早退日数",
         "欠勤日数",
@@ -156,6 +157,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
@@ -245,6 +247,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
       String total_off_day_work_hour = "0", total_statutory_off_day_work_hour =
         "0";
       String total_midnight_work_hour = "0";
+      String rest_hour = "0";
       String[] out_going =
         new String[EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY];// 外出
       String[] come_back =
@@ -350,6 +353,9 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         if (rd.getRemarksFlg()) {
           remark = rd.getRemarks().getValue();
         }
+        if (tclistrd.getRestHour() > 0.0) {
+          rest_hour = Float.toString(tclistrd.getRestHour());
+        }
         late_coming_day = tclistrd.isLateComing() ? "1" : "0";
         early_leaving_day = tclistrd.isEarlyLeaving() ? "1" : "0";
         absent_day = type.equals(EipTExtTimecard.TYPE_ABSENT) ? "1" : "0";
@@ -384,6 +390,7 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
           total_off_day_work_hour,
           total_statutory_off_day_work_hour,
           total_midnight_work_hour,
+          rest_hour,
           late_coming_day,
           early_leaving_day,
           absent_day,

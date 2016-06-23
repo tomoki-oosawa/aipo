@@ -759,7 +759,7 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getTotalOfficialWorkHour() {
+  public float getTotalOfficialOffHour() {
     if (isHoliday()) {
       if (!isStatutoryHoliday()) {
         return getTotalWorkHour();
@@ -773,8 +773,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public String getTotalOfficialWorkHourValue() {
-    float value = getTotalOfficialWorkHour();
+  public String getTotalOfficialOffHourValue() {
+    float value = getTotalOfficialOffHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
     }
@@ -786,7 +786,7 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getTotalStatutoryWorkHour() {
+  public float getTotalStatutoryOffHour() {
     if (isHoliday()) {
       if (isStatutoryHoliday()) {
         return getTotalWorkHour();
@@ -800,8 +800,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public String getTotalStatutoryWorkHourValue() {
-    float value = getTotalStatutoryWorkHour();
+  public String getTotalStatutoryOffHourValue() {
+    float value = getTotalStatutoryOffHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
     }
@@ -845,51 +845,30 @@ public class ExtTimecardListResultData implements ALData {
    * @return float
    */
   public float getRestHour() {
-    float time = 0f, work, overtime;
-    if (getWorkHour() != NO_DATA && getOvertimeHour() != NO_DATA) {
-      work = getWorkHour() - getOvertimeHour();
-      overtime = getOvertimeHour();
-      int rest_work_num = 0, rest_overtime_num = 0;
-      int rest_work_extra = 0, rest_overtime_extra = 0;
-      if (work > 0) {
-        rest_work_num =
-          (int) (work * 60 / (timecard_system.getWorktimeIn() + timecard_system
-            .getResttimeIn()));
-        rest_work_extra =
-          (int) (work
-            * 60
-            - rest_work_num
-            * (timecard_system.getWorktimeIn() + timecard_system
-              .getResttimeIn()) - timecard_system.getWorktimeIn());
-        if (rest_work_extra < 0) {
-          rest_work_extra = 0;
-        }
-      }
-      if (overtime > 0) {
-        rest_overtime_num =
-          (int) (overtime * 60 / (timecard_system.getWorktimeOut() + timecard_system
-            .getResttimeOut()));
-        rest_overtime_extra =
-          (int) (overtime
-            * 60
-            - rest_overtime_num
-            * (timecard_system.getWorktimeOut() + timecard_system
-              .getResttimeOut()) - timecard_system.getWorktimeOut());
-        if (rest_overtime_extra < 0) {
-          rest_overtime_extra = 0;
-        }
-      }
-      time =
-        rest_work_num
-          * timecard_system.getResttimeIn()
-          + rest_overtime_num
-          * timecard_system.getResttimeOut()
-          + rest_work_extra
-          + rest_overtime_extra;
-      time /= 60;
-      return time;
-    } else {
+    if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
+    } else {
+      float time = 0f;
+      time +=
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
+          / (1000.0 * 60.0 * 60.0);
+      /** 外出時間を就業時間に含めない場合 */
+      if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+        float outgoing_time =
+          getOutgoingTime(getChangeDate(), getNextChangeDate());
+        if (outgoing_time != NO_DATA) {
+          time -= outgoing_time;
+        }
+      }
+      float total = getTotalWorkHour();
+      if (time > total) {
+        return time - total;
+      } else {
+        return 0f;
+      }
     }
   }
 
