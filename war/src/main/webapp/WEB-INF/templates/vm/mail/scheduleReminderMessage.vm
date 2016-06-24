@@ -1,0 +1,23 @@
+#*
+ * This file is part of the com.aipo.saas package.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *#予定「${titleValue}」が始まります。
+
+[日時]
+${dateValue}
+#if(${placeValue})
+[場所]
+${placeValue}
+#end
+#if(${noteValue})
+[内容]
+${noteValue}
+#end
+#if(${menbersList})
+[参加者]
+${menbersList}
+#end

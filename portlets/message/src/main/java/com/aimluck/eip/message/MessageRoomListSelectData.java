@@ -32,6 +32,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -103,9 +104,13 @@ public class MessageRoomListSelectData extends
       rd.setUserId(userId.longValue());
     }
     boolean isDirect = "O".equals(model.getRoomType());
-    rd.setName(isDirect
-      ? model.getLastName() + " " + model.getFirstName()
-      : model.getName());
+    if (isDirect && model.getUserId().intValue() < 4) {
+      rd.setName(ALOrgUtilsService.getAlias());
+    } else {
+      rd.setName(isDirect
+        ? model.getLastName() + " " + model.getFirstName()
+        : model.getName());
+    }
     rd.setHasPhoto(isDirect
       ? ("T".equals(model.getUserHasPhoto()) || "N".equals(model
         .getUserHasPhoto()))

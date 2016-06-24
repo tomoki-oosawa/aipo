@@ -26,7 +26,9 @@
 <div id="messageDiv"></div>
 
 #ALtdcaption("$l10n.PROJECT_NAME")
-#ALtditem($!result.Detail.ProjectNameHtml)
+#ALtditemheader()
+<a href="javascript:void(0)" onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ProjectTaskListScreen").addQueryData("filter",$!result.Detail.ProjectId).addQueryData("filtertype","project_id").addQueryData('tab','list').addQueryData('reset_condition','true'))','$!portlet.ID');aipo.common.hideDialog();">$!result.Detail.ProjectNameHtml</a>
+#ALtditemfooter()
 
 #ALtdcaption("$l10n.PROJECT_EXPLANATION")
 #ALtditem($!result.Detail.Explanation)

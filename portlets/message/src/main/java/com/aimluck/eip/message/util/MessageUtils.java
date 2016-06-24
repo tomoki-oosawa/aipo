@@ -123,6 +123,19 @@ public class MessageUtils {
     }
   }
 
+  public static EipTMessageRoomMember getRoomMember(int roomId, int userId) {
+    EipTMessageRoomMember model =
+      Database
+        .query(EipTMessageRoomMember.class)
+        .where(Operations.eq(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
+        .where(
+          Operations.eq(
+            EipTMessageRoomMember.EIP_TMESSAGE_ROOM_PROPERTY,
+            roomId))
+        .fetchSingle();
+    return model;
+  }
+
   public static EipTMessageRoom getRoom(RunData rundata, Context context)
       throws ALPageNotFoundException {
     Integer roomId = null;
@@ -182,6 +195,22 @@ public class MessageUtils {
       if (member.getUserId().intValue() == userId) {
         return "A".equals(member.getAuthority());
       }
+    }
+    return false;
+  }
+
+  public static boolean isDesktopNotification(EipTMessageRoom room, int userId) {
+    EipTMessageRoomMember model = getRoomMember(room.getRoomId(), userId);
+    if (model != null) {
+      return "A".equals(model.getDesktopNotification());
+    }
+    return false;
+  }
+
+  public static boolean isMobileNotification(EipTMessageRoom room, int userId) {
+    EipTMessageRoomMember model = getRoomMember(room.getRoomId(), userId);
+    if (model != null) {
+      return "A".equals(model.getMobileNotification());
     }
     return false;
   }

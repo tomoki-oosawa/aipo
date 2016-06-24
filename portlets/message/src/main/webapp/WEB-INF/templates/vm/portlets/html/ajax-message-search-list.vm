@@ -31,6 +31,12 @@
 		<span class="avatar">
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "1")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "2")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "3")
+			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#else
 			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#end
@@ -49,7 +55,13 @@
 			#if($!record.getRoomType().getValue() == "O")
 			#if($!record.isHasPhoto())
 				<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.Name"  class="avatar_s"/>
-			#else
+			#elseif("${record.UserId.Value}" == "1")
+			    <img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
+		    #elseif("${record.UserId.Value}" == "2")
+		    	<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.Name" class="avatar_s"/>
+		    #elseif("${record.UserId.Value}" == "3")
+		    	<img src="themes/default/images/common/icon_message100.png" alt="$!record.Name" class="avatar_s"/>
+		    #else
 				<img src="themes/default/images/common/icon_user100.png" alt="$!record.Name" class="avatar_s"/>
 			#end
 			#else
@@ -79,13 +91,19 @@
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())
 			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "1")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "2")
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" class="avatar_s"/>
+		#elseif("${record.UserId.Value}" == "3")
+			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" class="avatar_s"/>
 		#else
 			<img src="themes/default/images/common/icon_user100.png" alt="$!record.LastName $!record.FirstName" class="avatar_s"/>
 		#end
 		</a>
 	</div>
 	<div class="messageContents">
-		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.LastName $!record.FirstName</a></div>
+		<div class="name"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">$!record.DisplayName</a></div>
 		<div class="body">$!record.MessageHtml
 		#if($!record.AttachmentFileList.size() != 0)
 				<div class="tlImageBlock clearfix">

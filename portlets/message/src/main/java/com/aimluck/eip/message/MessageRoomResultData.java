@@ -219,4 +219,26 @@ public class MessageRoomResultData implements ALData, Serializable {
     return MessageUtils.hasAuthorityRoom(room, userId) ? "A" : "M";
   }
 
+  /**
+   * @return desktopNotification
+   */
+  public String getDesktopNotification(int userId) {
+    EipTMessageRoom room = MessageUtils.getRoom(roomId.getValueWithInt());
+    if (room == null) {
+      return "F";
+    }
+    return MessageUtils.isDesktopNotification(room, userId) ? "A" : "F";
+  }
+
+  /**
+   * @return mobileNotification
+   */
+  public String getMobileNotification(int userId) {
+    EipTMessageRoom room = MessageUtils.getRoom(roomId.getValueWithInt());
+    if (room == null) {
+      return "M";
+    }
+    return MessageUtils.isMobileNotification(room, userId) ? "A" : "F";
+  }
+
 }
