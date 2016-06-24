@@ -83,8 +83,13 @@
 </form>
 </div>
 <div>
-#foreach ($key in $user_results)
+#if(${client}!="IPHONE")
 #AUImultiTableWide()
+#end
+#foreach ($key in $user_results)
+#if(${client}=="IPHONE")
+#AUImultiTableWide()
+#end
 #if($velocityCount == 1)
 <tr class="caption">
 #else
@@ -98,7 +103,8 @@
 #ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_HOUR "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_OFFICIAL_HOLIDAY "class='doubleHeight center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_STATUTORY_HOLIDAY "class='doubleHeight center'")
-#ALtdheadAtt($l10n.EXTTIMECARD_MIDNIGHT_WORK_HOUR "class='doubleHeight center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_MIDNIGHT_WORK_HOUR "class='center'")
+#ALtdheadAtt($l10n.EXTTIMECARD_REST_HOUR "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_LATE_COMING_DAY "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_EARLY_LEAVING_DAY "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_ABSENT_DAY "class='center'")
@@ -119,6 +125,7 @@
 #ALtdcellAtt("$!{key.OfficialOffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.TotalOfficialOffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.StatutoryOffDay}$l10n.EXTTIMECARD_DAY<br>（$!{key.TotalStatutoryOffHour}$l10n.EXTTIMECARD_HOURS）" "nowrap='nowrap' align='center' class='wTime doubleHeight'")
 #ALtdcellAtt("$!{key.TotalMidnightWorkHour}$l10n.EXTTIMECARD_HOURS" "nowrap='nowrap' align='center' class='wTime'")
+#ALtdcellAtt("$!{key.RestHour}$l10n.EXTTIMECARD_HOURS" "nowrap='nowrap' align='center' class='wTime'")
 #ALtdcellAtt("$!{key.LateComingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
 #ALtdcellAtt("$!{key.EarlyLeavingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
 #ALtdcellAtt("$!{key.AbsentDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
@@ -127,6 +134,11 @@
 #ALtdcellAtt("$!{key.OtherDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class='wDays'")
 #ALtdcellAtt("$!{key.NoInput}" "nowrap='nowrap' align='center' class='wDays'")
 </tr>
+#if(${client}=="IPHONE")
+#AUItablefooter()
+#end
+#end
+#if(${client}!="IPHONE")
 #AUItablefooter()
 #end
 </div>

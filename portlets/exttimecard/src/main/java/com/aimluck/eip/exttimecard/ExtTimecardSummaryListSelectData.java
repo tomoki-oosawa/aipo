@@ -891,6 +891,7 @@ public class ExtTimecardSummaryListSelectData extends
    *
    * @return
    */
+  @Deprecated
   public List<ExtTimecardSummaryResultData> getUserExtTimecards() {
     List<ExtTimecardSummaryResultData> list =
       new ArrayList<ExtTimecardSummaryResultData>();
@@ -992,7 +993,6 @@ public class ExtTimecardSummaryListSelectData extends
    *
    * @return
    */
-
   public List<ExtTimecardSummaryResultData> getGroupExtTimecards() {
     List<ExtTimecardSummaryResultData> list =
       new ArrayList<ExtTimecardSummaryResultData>();
@@ -1120,15 +1120,16 @@ public class ExtTimecardSummaryListSelectData extends
                 }
               } else {
                 /** 深夜勤務（平日） */
-                if (lrd.getMidnightWorkHour() != ExtTimecardListResultData.NO_DATA) {
-                  total_midnight_work_hour += lrd.getMidnightWorkHour();
-                }
                 if (lrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
                   midnight_work_hour += lrd.getMidnightRegularWorkHour();
                 }
                 if (lrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
                   midnight_overtime_hour += lrd.getMidnightOvertimeWorkHour();
                 }
+              }
+              /** 深夜時間 */
+              if (lrd.getMidnightWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_midnight_work_hour += lrd.getMidnightWorkHour();
               }
               /** 遅刻 */
               if (lrd.isLateComing()) {
