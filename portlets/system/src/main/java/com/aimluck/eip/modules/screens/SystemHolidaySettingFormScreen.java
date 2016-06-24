@@ -18,44 +18,56 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import net.sf.json.JSONArray;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.exttimecard.ExtTimecardSystemHolidaySettingFormData;
+import com.aimluck.eip.system.SystemHolidaySettingFormData;
+import com.aimluck.eip.system.util.SystemUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
  */
-public class ExtTimecardSystemHolidaySettingFormJSONScreen extends ALJSONScreen {
+public class SystemHolidaySettingFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemHolidaySettingFormJSONScreen.class.getName());
+    .getLogger(SystemHolidaySettingFormScreen.class.getName());
 
+  /**
+   *
+   * @param rundata
+   * @param context
+   * @throws Exception
+   */
   @Override
-  protected String getJSONString(RunData rundata, Context context)
-      throws Exception {
-    String result = new JSONArray().toString();
-
+  protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ExtTimecardSystemHolidaySettingFormData formData =
-        new ExtTimecardSystemHolidaySettingFormData();
-      formData.initField();
-      if (formData.doUpdate(this, rundata, context)) {
-      } else {
-        JSONArray json =
-          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-        result = json.toString();
-      }
-    } catch (Exception e) {
-      logger.error("[ExtTimecardSystemHolidaySettingFormJSONScreen]", e);
-    }
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
 
-    return result;
+      SystemHolidaySettingFormData formData =
+        new SystemHolidaySettingFormData();
+      formData.initField();
+      formData.doViewForm(this, rundata, context);
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ajax-system-holiday-setting-form.vm");
+
+    } catch (Exception ex) {
+      logger.error("[SystemHolidaySettingFormScreen] Exception.", ex);
+      ALEipUtils.redirectDBError(rundata);
+    }
+  }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return SystemUtils.SYSTEM_PORTLET_NAME;
   }
 }

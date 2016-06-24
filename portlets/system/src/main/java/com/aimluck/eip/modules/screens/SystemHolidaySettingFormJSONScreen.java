@@ -18,56 +18,44 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import net.sf.json.JSONArray;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.exttimecard.ExtTimecardSystemHolidaySettingFormData;
-import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.system.SystemHolidaySettingFormData;
 
 /**
  *
  */
-public class ExtTimecardSystemHolidaySettingFormScreen extends ALVelocityScreen {
+public class SystemHolidaySettingFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemHolidaySettingFormScreen.class.getName());
+    .getLogger(SystemHolidaySettingFormJSONScreen.class.getName());
 
-  /**
-   *
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
   @Override
-  protected void doOutput(RunData rundata, Context context) throws Exception {
+  protected String getJSONString(RunData rundata, Context context)
+      throws Exception {
+    String result = new JSONArray().toString();
+
     try {
-      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
-
-      ExtTimecardSystemHolidaySettingFormData formData =
-        new ExtTimecardSystemHolidaySettingFormData();
+      SystemHolidaySettingFormData formData =
+        new SystemHolidaySettingFormData();
       formData.initField();
-      formData.doViewForm(this, rundata, context);
-      setTemplate(
-        rundata,
-        context,
-        "portlets/html/ajax-exttimecardsystem-holiday-setting-form.vm");
-
-    } catch (Exception ex) {
-      logger.error("[ExtTimecardSystemReportSettingFormScreen] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
+      if (formData.doUpdate(this, rundata, context)) {
+      } else {
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+        result = json.toString();
+      }
+    } catch (Exception e) {
+      logger.error("[SystemHolidaySettingFormJSONScreen]", e);
     }
-  }
 
-  /**
-   * @return
-   */
-  @Override
-  protected String getPortletName() {
-    return ExtTimecardUtils.EXTTIMECARD_SYSTEM_PORTLET_NAME;
+    return result;
   }
 }

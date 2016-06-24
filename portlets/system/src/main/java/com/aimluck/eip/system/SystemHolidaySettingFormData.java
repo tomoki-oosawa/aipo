@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.aimluck.eip.exttimecard;
+package com.aimluck.eip.system;
 
 import java.util.List;
 
@@ -29,7 +29,6 @@ import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigService;
@@ -38,11 +37,11 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 /**
  *
  */
-public class ExtTimecardSystemHolidaySettingFormData extends ALAbstractFormData {
+public class SystemHolidaySettingFormData extends ALAbstractFormData {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemHolidaySettingFormData.class.getName());
+    .getLogger(SystemHolidaySettingFormData.class.getName());
 
   private ALStringField week1;
 
@@ -113,7 +112,7 @@ public class ExtTimecardSystemHolidaySettingFormData extends ALAbstractFormData 
       holiday.setValue(holidayOfWeek.charAt(8) != '0' ? "1" : null);
 
     } catch (Exception ex) {
-      logger.error("exttimecard", ex);
+      logger.error("SystemHolidaySettingFormData", ex);
       return false;
     }
     return true;
@@ -158,7 +157,7 @@ public class ExtTimecardSystemHolidaySettingFormData extends ALAbstractFormData 
       ALConfigService.put(ALConfigHandler.Property.HOLIDAY_OF_WEEK, b
         .toString());
     } catch (Exception ex) {
-      logger.error("ExtTimecardSystemHolidaySettingFormData", ex);
+      logger.error("SystemHolidaySettingFormData", ex);
       return false;
     }
     return true;
@@ -206,10 +205,6 @@ public class ExtTimecardSystemHolidaySettingFormData extends ALAbstractFormData 
   protected Object selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return null;
-  }
-
-  public boolean isNewRule() {
-    return ExtTimecardUtils.isNewRule();
   }
 
   public ALStringField getWeek1() {

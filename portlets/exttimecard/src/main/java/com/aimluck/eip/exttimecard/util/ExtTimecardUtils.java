@@ -369,25 +369,25 @@ public class ExtTimecardUtils {
     List<Integer> list = new ArrayList<Integer>();
     String week = getHolidayOfWeek();
     // 標準は日・土
-    if (week.charAt(0) != 0) {
+    if (week.charAt(0) != '0') {
       list.add(Calendar.SUNDAY);
     }
-    if (week.charAt(1) != 0) {
+    if (week.charAt(1) != '0') {
       list.add(Calendar.MONDAY);
     }
-    if (week.charAt(2) != 0) {
+    if (week.charAt(2) != '0') {
       list.add(Calendar.TUESDAY);
     }
-    if (week.charAt(3) != 0) {
+    if (week.charAt(3) != '0') {
       list.add(Calendar.WEDNESDAY);
     }
-    if (week.charAt(4) != 0) {
+    if (week.charAt(4) != '0') {
       list.add(Calendar.THURSDAY);
     }
-    if (week.charAt(5) != 0) {
+    if (week.charAt(5) != '0') {
       list.add(Calendar.FRIDAY);
     }
-    if (week.charAt(6) != 0) {
+    if (week.charAt(6) != '0') {
       list.add(Calendar.SATURDAY);
     }
     return list;

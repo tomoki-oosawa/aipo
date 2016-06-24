@@ -18,7 +18,6 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-list-")
-#set ($holidaySetting = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemHolidaySettingFormScreen").addQueryData("entityid","1"))
 #set ($linkSetting = $!jslink.getPortletById($!portlet.ID).addQueryData("template","ExtTimecardSystemReportSettingFormScreen").addQueryData("entityid","1"))
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
@@ -48,7 +47,6 @@
 <div class="menubar body-child" id="menubar_$!{portlet.ID}" style="width: 12em; right: 0px; display: none; ">
 <ul>
 #AUIconfigitem($l10n.EXTTIMECARD_REPORT_SETTING $linkSetting)
-#AUIconfigitem($l10n.HOLIDAY_SETTING $holidaySetting)
 </ul>
 </div>
 </div>

@@ -20,19 +20,19 @@
 #set($subtitle = $l10n.HOLIDAY_SETTING)
 #set ($indicator_id = "indicator-dlg-")
 #if  ($mode=="new_form")
-#set ($action_str = $l10n.EXTTIMECARD_ADD)
-#set ($event_submit = "eventSubmit_doExttimecard_system_report_setting_insert")
+#set ($action_str = $l10n.SYSTEM_ADD)
+#set ($event_submit = "eventSubmit_doSystem_report_setting_insert")
 #else
-#set ($action_str = $l10n.EXTTIMECARD_UPDATE)
-#set ($event_submit = "eventSubmit_doExttimecard_system_report_setting_update")
+#set ($action_str = $l10n.SYSTEM_UPDATE)
+#set ($event_submit = "eventSubmit_doSystem_report_setting_update")
 #end
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($subtitle "aipo.exttimecardsystem.hideDialog()")
+#ALdialogheaderCloseJS($subtitle "aipo.system.hideDialog()")
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("extTimecardSystemForm" $jslink $portlet "ExtTimecardSystemHolidaySettingFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.exttimecardsystem.onReceiveMessage)")
+#ALajaxscreenformheader("systemForm" $jslink $portlet "SystemHolidaySettingFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.system.onReceiveMessage)")
 #ALtableheaderWide()
 #ALtdcaption("#ALrequired($l10n.HOLIDAY_SETTING_WEEK_OF_DAY)")
 #ALtditemheader()
