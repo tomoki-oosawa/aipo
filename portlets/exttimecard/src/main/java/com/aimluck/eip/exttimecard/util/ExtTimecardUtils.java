@@ -350,9 +350,15 @@ public class ExtTimecardUtils {
    * @return
    */
   public static float roundHour(float time) {
-    time *= 10;
-    time = Math.round(time);
-    time /= 10;
+    if (isNewRule()) {
+      time *= 100;
+      time = Math.round(time);
+      time /= 100;
+    } else {
+      time *= 10;
+      time = Math.round(time);
+      time /= 10;
+    }
     return time;
   }
 
