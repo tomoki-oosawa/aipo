@@ -42,11 +42,11 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * タイムカードのファイル出力を取り扱うクラスです
  */
-public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
+public class ExtTimecardSummaryNewXlsExportScreen extends ALXlsScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSummaryXlsExportScreen.class.getName());
+    .getLogger(ExtTimecardSummaryNewXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard_monthly.xls";
 
@@ -63,7 +63,7 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -127,11 +127,16 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
         "月",
         "勤務形態",
         "出勤日数",
-        "就業時間",
-        "残業日数",
+        "所定休日出勤日数",
+        "法定休日出勤日数",
+        "総労働時間",
+        "所定内労働時間",
+        "法定内残業時間",
         "残業時間",
-        "休出日数",
-        "休出時間",
+        "所定休日労働時間",
+        "法定休日労働時間",
+        "深夜労働時間",
+        "休憩時間",
         "遅刻日数",
         "早退日数",
         "欠勤日数",
@@ -146,6 +151,11 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
@@ -179,21 +189,52 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
       String year = view_month.substring(0, 4); // 年
       String month = view_month.substring(5); // 月
       String service_form = tclistrd.getSystemName();// 勤務形態
-      String work_day = tclistrd.getWorkDay().getValueAsString(); // 出勤日数
-      String work_hour = tclistrd.getWorkHour().getValueAsString();// 就業時間
-      String overtime_day = tclistrd.getOvertimeDay().getValueAsString();// 残業日数
-      String overtime_hour = tclistrd.getOvertimeHour().getValueAsString();// 残業時間
-      String off_day = tclistrd.getOffDay().getValueAsString();// 休出日数
-      String off_hour = tclistrd.getOffHour().getValueAsString();// 休出時間
-      String late_coming_day = tclistrd.getLateComingDay().getValueAsString();// 遅刻日数
+      // 出勤日数
+      String total_work_day = tclistrd.getTotalWorkDay().getValueAsString();
+      // 所定休日出勤日数
+      String official_off_day = tclistrd.getOfficialOffDay().getValueAsString();
+      // 法定休日出勤日数
+      String statutory_off_day =
+        tclistrd.getStatutoryOffDay().getValueAsString();
+      // 総労働時間
+      String total_work_hour = tclistrd.getTotalWorkHour().getValueAsString();
+      // 所定内労働時間
+      String work_hour = tclistrd.getWorkHour().getValueAsString();
+      // 法定内残業時間
+      String overtime_statutory_work_hour =
+        tclistrd.getOvertimeWithinStatutoryWorkingHour().getValueAsString();
+      // 残業時間
+      // String overtime_day = tclistrd.getOvertimeDay().getValueAsString();
+      String overtime_hour = tclistrd.getOvertimeHour().getValueAsString();
+      // 所定休日労働時間
+      String total_official_off_hour =
+        tclistrd.getTotalOfficialOffHour().getValueAsString();
+      // 法定休日労働時間
+      String total_statutory_off_hour =
+        tclistrd.getTotalStatutoryOffHour().getValueAsString();
+      // 深夜労働時間
+      String midnight_work_hour =
+        tclistrd.getTotalMidnightWorkHour().getValueAsString();
+      // 休憩時間
+      String rest_hour = tclistrd.getRestHour().getValueAsString();
+      // String off_day = tclistrd.getOffDay().getValueAsString();// 休出日数
+      // String off_hour = tclistrd.getOffHour().getValueAsString();// 休出時間
+      // 遅刻日数
+      String late_coming_day = tclistrd.getLateComingDay().getValueAsString();
+      // 早退日数
       String early_leaving_day =
-        tclistrd.getEarlyLeavingDay().getValueAsString();// 早退日数
-      String absent_day = tclistrd.getAbsentDay().getValueAsString();// 欠勤日数
-      String paid_holiday = tclistrd.getPaidHoliday().getValueAsString();// 有休日数
+        tclistrd.getEarlyLeavingDay().getValueAsString();
+      // 欠勤日数
+      String absent_day = tclistrd.getAbsentDay().getValueAsString();
+      // 有休日数
+      String paid_holiday = tclistrd.getPaidHoliday().getValueAsString();
+      // 代休日数
       String compensatory_holiday =
-        tclistrd.getCompensatoryHoliday().getValueAsString();// 代休日数
-      String other_day = tclistrd.getOtherDay().getValueAsString();// その他日数
-      String noinput = tclistrd.getNoInput().getValueAsString();// 未入力
+        tclistrd.getCompensatoryHoliday().getValueAsString();
+      // その他日数
+      String other_day = tclistrd.getOtherDay().getValueAsString();
+      // 未入力
+      String noinput = tclistrd.getNoInput().getValueAsString();
 
       String[] rows =
         {
@@ -201,12 +242,17 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
           year,
           month,
           service_form,
-          work_day,
+          total_work_day,
+          official_off_day,
+          statutory_off_day,
+          total_work_hour,
           work_hour,
-          overtime_day,
+          overtime_statutory_work_hour,
           overtime_hour,
-          off_day,
-          off_hour,
+          total_official_off_hour,
+          total_statutory_off_hour,
+          midnight_work_hour,
+          rest_hour,
           late_coming_day,
           early_leaving_day,
           absent_day,
@@ -234,7 +280,7 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
