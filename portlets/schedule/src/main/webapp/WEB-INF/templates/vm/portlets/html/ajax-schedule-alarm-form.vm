@@ -59,6 +59,7 @@ $!{result.Detail.Date}
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 <div id="reminderField">
+<p>$l10n.SCHEDULE_YOUR_REMINDER_TEXT</p>
 <p>
   <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end onclick="aipo.schedule.reminderoff()" />
   <label for="reminder_off">$l10n.SCHEDULE_REMINDER_OFF</label>
