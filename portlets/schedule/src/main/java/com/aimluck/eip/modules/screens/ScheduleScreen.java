@@ -99,6 +99,11 @@ public class ScheduleScreen extends ALVelocityScreen {
       }
       context.put("display_month", display_month);
 
+      // 週始まりを取得する
+      String start_monday =
+        portlet.getPortletConfig().getInitParameter("z1a-rows");
+      context.put("start_monday", start_monday);
+
       // アクセスコントロール
       String has_acl_other = ScheduleUtils.hasAuthOther(rundata);
       context.put("hasAcl", has_acl_other);

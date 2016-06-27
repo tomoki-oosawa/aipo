@@ -125,11 +125,29 @@
 #end
 
 #*
-<div>
-$start_monday
-</div>
-*#
 
+#set ($theDayStr = ${portlet.getPortletConfig().getInitParameter("z1a-rows")})
+##set ($theDayStr = "7")
+#set ($theDay = 0)
+$theDay.parseInt($theDayStr)
+$theDay = $theDay - 1
+#set ($weekOrder = ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
+#set ($weekRevised = [])
+
+#foreach($dayOfWeek in $weekOrder)
+	$weekRevised.add($weekOrder.get($theDay))
+	$theDay = $theDay + 1
+	#if($weekOrder.size() <= $theDay)
+		$theDay = 0
+	#end
+#end
+
+<tr>
+	#foreach($test in $weekRevised)
+		<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+	#end
+</tr>
+*#
 
 
 <tr>
@@ -137,7 +155,6 @@ $start_monday
 		<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
 	#end
 </tr>
-
 
 
 #set($entityids = "")
