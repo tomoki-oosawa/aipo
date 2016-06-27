@@ -1,0 +1,37 @@
+version: '2'
+services:
+  db:
+    image: postgres:9.3
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./sql/postgres/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: aipo
+      POSTGRES_USER: postgres
+  web:
+    build: ./docker
+    volumes:
+      - .:/opt/app/aipo
+      - ../aipo-opensocial:/opt/app/aipo-opensocial
+      - ./logs:/opt/tomcat/logs
+      - data:/opt/tomcat/data
+    ports:
+      - "8080:8080"
+      - "8015:8015"
+    environment:
+      JPDA_ADDRESS: 8015
+      CATALINA_OPTS: "-server -Xmx512M -Xms64M -Xss256k -Djava.awt.headless=true -Dsun.nio.cs.map=x-windows-iso2022jp/ISO-2022-JP -Duser.timezone=Asia/Tokyo"
+    entrypoint:
+      - /opt/tomcat/bin/catalina.sh
+      - jpda
+      - run
+    links:
+      - db
+volumes:
+  db_data:
+    driver: local
+  data:
+    driver: local
+       
