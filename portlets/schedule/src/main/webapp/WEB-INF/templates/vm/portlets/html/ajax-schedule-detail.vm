@@ -152,7 +152,7 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 #if($result.hasReminderItem())
@@ -302,7 +302,7 @@ $l10n.SCHEDULE_REMINDER_OFF
     #end
 
     #if($result.isReminderEnabled())
-    #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && ($!{result.Detail.isOwner()} || ($!{result.Detail.isTmpreserve()} && $!{result.Detail.isLoginuser()}) || ($!{result.Detail.isConfirm()} && $!{result.Detail.isLoginuser()})))
+    #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
     #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
     #end
     #end
