@@ -241,7 +241,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
           } else {
             work_hour = "0";
           }
-          if (tclistrd.getOvertimeHour() > 0.0) {
+          if (tclistrd.getOvertimeHourWithoutRestHour() > 0.0) {
             overtime_day = "1";
             overtime_hour =
               Float.toString(tclistrd.getOvertimeHourWithoutRestHour());
