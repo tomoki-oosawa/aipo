@@ -64,11 +64,11 @@ public class AccountUserSelectData extends
     ALAbstractSelectData<TurbineUser, ALBaseUser> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AccountUserSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AccountUserSelectData.class.getName());
 
   //
-  private static final int MAX_SIZE = 1000;
+  private static final int MAX_SIZE = 50000;
 
   /** 現在表示している部署 */
   protected String currentPost = "";
@@ -80,8 +80,11 @@ public class AccountUserSelectData extends
 
   protected static final String LIST_FILTER_ROLE = "filter_role";
 
-  protected final String LIST_FILTER_ROLE_STR = new StringBuffer().append(
-    this.getClass().getName()).append(LIST_FILTER_ROLE).toString();
+  protected final String LIST_FILTER_ROLE_STR =
+    new StringBuffer()
+      .append(this.getClass().getName())
+      .append(LIST_FILTER_ROLE)
+      .toString();
 
   private boolean adminFilter;
 
@@ -105,9 +108,11 @@ public class AccountUserSelectData extends
     }
 
     if (rundata.getParameters().containsKey(LIST_FILTER_ROLE)) {
-      ALEipUtils.setTemp(rundata, context, LIST_FILTER_ROLE_STR, rundata
-        .getParameters()
-        .getString(LIST_FILTER_ROLE));
+      ALEipUtils.setTemp(
+        rundata,
+        context,
+        LIST_FILTER_ROLE_STR,
+        rundata.getParameters().getString(LIST_FILTER_ROLE));
     }
 
     target_keyword = new ALStringField();
@@ -126,7 +131,8 @@ public class AccountUserSelectData extends
    * @return
    */
   @Override
-  protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
+  protected ResultList<TurbineUser> selectList(RunData rundata,
+      Context context) {
     try {
       // 登録済みのユーザ数をデータベースから取得
       target_keyword.setValue(AccountUtils.getTargetKeyword(rundata, context));
@@ -176,32 +182,32 @@ public class AccountUserSelectData extends
 
     if (target_keyword != null && !target_keyword.getValue().equals("")) {
       String transWord =
-        ALStringUtil.convertHiragana2Katakana(ALStringUtil
-          .convertH2ZKana(target_keyword.getValue()));
+        ALStringUtil.convertHiragana2Katakana(
+          ALStringUtil.convertH2ZKana(target_keyword.getValue()));
       transWord = transWord.replace("　", "").replace(" ", ""); // 全角/半角スペースを削除
       String[] transWords = transWord.split(""); // 1文字ずつに分解
 
       for (int i = 0; i < transWords.length; i++) {
         Expression exp11 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.FIRST_NAME_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp12 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.LAST_NAME_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp13 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.FIRST_NAME_KANA_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp14 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.LAST_NAME_KANA_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp15 =
-          ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.EMAIL_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp16 =
           ExpressionFactory.likeExp(
             TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
@@ -211,37 +217,37 @@ public class AccountUserSelectData extends
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
             "%" + target_keyword.getValue() + "%");
         Expression exp17 =
-          ExpressionFactory.likeExp(TurbineUser.LOGIN_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.LOGIN_NAME_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp21 =
-          ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.OUT_TELEPHONE_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp22 =
-          ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.IN_TELEPHONE_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp23 =
-          ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.CELLULAR_PHONE_PROPERTY,
+            "%" + target_keyword.getValue() + "%");
         Expression exp31 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-            + transWords[i]
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.FIRST_NAME_PROPERTY,
+            "%" + transWords[i] + "%");
         Expression exp32 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-            + transWords[i]
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.LAST_NAME_PROPERTY,
+            "%" + transWords[i] + "%");
         Expression exp33 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-            + transWords[i]
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.FIRST_NAME_KANA_PROPERTY,
+            "%" + transWords[i] + "%");
         Expression exp34 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-            + transWords[i]
-            + "%");
+          ExpressionFactory.likeExp(
+            TurbineUser.LAST_NAME_KANA_PROPERTY,
+            "%" + transWords[i] + "%");
         Expression exp35 =
           ExpressionFactory.likeExp(
             TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
@@ -251,10 +257,22 @@ public class AccountUserSelectData extends
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
             "%" + transWords[i] + "%");
 
-        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35));
+        query.andQualifier(
+          exp11
+            .orExp(exp12)
+            .orExp(exp13)
+            .orExp(exp14)
+            .orExp(exp15)
+            .orExp(exp16)
+            .orExp(exp17)
+            .orExp(exp21)
+            .orExp(exp22)
+            .orExp(exp23)
+            .orExp(exp31)
+            .orExp(exp32)
+            .orExp(exp33)
+            .orExp(exp34)
+            .orExp(exp35));
       }
     }
 
@@ -284,9 +302,10 @@ public class AccountUserSelectData extends
           for (TurbineUserGroupRole tugr : admins) {
             admin_ids.add(tugr.getTurbineUser().getUserId());
           }
-          query.andQualifier(ExpressionFactory.inDbExp(
-            TurbineUser.USER_ID_PK_COLUMN,
-            admin_ids));
+          query.andQualifier(
+            ExpressionFactory.inDbExp(
+              TurbineUser.USER_ID_PK_COLUMN,
+              admin_ids));
 
         } catch (Exception ex) {
           logger.error("AccountUserSelectData.getSelectQuery", ex);
@@ -296,16 +315,14 @@ public class AccountUserSelectData extends
 
       // 有効ユーザーかどうか
       if (filter_role.equals(AccountUtils.ROLE_ACTIVE.toString())) {
-        query.andQualifier(ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY,
-          "F"));
+        query.andQualifier(
+          ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "F"));
       }
 
       // 有効ユーザーかどうか
       if (filter_role.equals(AccountUtils.ROLE_IN_ACTIVE.toString())) {
-        query.andQualifier(ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY,
-          "N"));
+        query.andQualifier(
+          ExpressionFactory.matchExp(TurbineUser.DISABLED_PROPERTY, "N"));
       }
     }
 
@@ -317,11 +334,14 @@ public class AccountUserSelectData extends
           .getGroupName()
           .getValue();
 
-      query.where(Operations.eq(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-        + "."
-        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-        + "."
-        + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
+      query.where(
+        Operations.eq(
+          TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+            + "."
+            + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+            + "."
+            + TurbineGroup.GROUP_NAME_PROPERTY,
+          groupName));
     }
 
     query.distinct();
@@ -380,10 +400,8 @@ public class AccountUserSelectData extends
    */
   @SuppressWarnings("unused")
   private String getPostName(int id) {
-    if (ALEipManager
-      .getInstance()
-      .getPostMap()
-      .containsKey(Integer.valueOf(id))) {
+    if (ALEipManager.getInstance().getPostMap().containsKey(
+      Integer.valueOf(id))) {
       return (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(id)))
         .getPostName()
         .getValue();
@@ -400,8 +418,8 @@ public class AccountUserSelectData extends
   private String getPositionName(int id) {
     if (ALEipManager.getInstance().getPositionMap().containsKey(
       Integer.valueOf(id))) {
-      return (ALEipManager.getInstance().getPositionMap().get(Integer
-        .valueOf(id))).getPositionName().getValue();
+      return (ALEipManager.getInstance().getPositionMap().get(
+        Integer.valueOf(id))).getPositionName().getValue();
     }
     return null;
   }
@@ -429,18 +447,18 @@ public class AccountUserSelectData extends
       rd.initField();
       rd.setUserId(record.getUserId().intValue());
       rd.setUserName(record.getLoginName());
-      rd.setName(new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString());
+      rd.setName(
+        new StringBuffer()
+          .append(record.getLastName())
+          .append(" ")
+          .append(record.getFirstName())
+          .toString());
       rd.setPostNameList(ALEipUtils.getPostNameList(record.getUserId()));
-      rd.setPositionName(ALEipUtils.getPositionName(record
-        .getPositionId()
-        .intValue()));
+      rd.setPositionName(
+        ALEipUtils.getPositionName(record.getPositionId().intValue()));
       rd.setDisabled(record.getDisabled());
-      rd.setHasPhoto("T".equals(record.getHasPhoto())
-        || "N".equals(record.getHasPhoto()));
+      rd.setHasPhoto(
+        "T".equals(record.getHasPhoto()) || "N".equals(record.getHasPhoto()));
       rd.setPhotoModified(record.getPhotoModified().getTime());
       rd.setEmail(record.getEmail());
 
@@ -463,16 +481,18 @@ public class AccountUserSelectData extends
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getUserName());
-      rd.setName(new StringBuffer()
-        .append(record.getLastName())
-        .append(" ")
-        .append(record.getFirstName())
-        .toString());
-      rd.setNameKana(new StringBuffer()
-        .append(record.getLastNameKana())
-        .append(" ")
-        .append(record.getFirstNameKana())
-        .toString());
+      rd.setName(
+        new StringBuffer()
+          .append(record.getLastName())
+          .append(" ")
+          .append(record.getFirstName())
+          .toString());
+      rd.setNameKana(
+        new StringBuffer()
+          .append(record.getLastNameKana())
+          .append(" ")
+          .append(record.getFirstNameKana())
+          .toString());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -504,9 +524,11 @@ public class AccountUserSelectData extends
     map.putValue("post", "POST_ID");
     map.putValue("login_name", TurbineUser.LOGIN_NAME_PROPERTY);
     map.putValue("name_kana", TurbineUser.LAST_NAME_KANA_PROPERTY);
-    map.putValue("userposition", TurbineUser.EIP_MUSER_POSITION_PROPERTY
-      + "."
-      + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
+    map.putValue(
+      "userposition",
+      TurbineUser.EIP_MUSER_POSITION_PROPERTY
+        + "."
+        + EipMUserPosition.POSITION_PROPERTY); // ユーザの順番
     return map;
   }
 

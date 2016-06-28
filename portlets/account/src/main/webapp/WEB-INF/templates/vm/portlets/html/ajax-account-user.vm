@@ -114,7 +114,7 @@
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserListCsvExportScreen')))
 #set($title = "$l10n.ACCOUNT_USER_LIST_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.userlist.downloadCvn(false,50000,'$dlLink');" >$title</a>
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.userlist.downloadCvn(${result.isOverSize()},${result.MaxSize},'$dlLink');" >$title</a>
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
