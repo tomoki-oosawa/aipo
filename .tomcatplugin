@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tomcatProjectProperties>
-    <rootDir>/war/target/aipo</rootDir>
+    <rootDir>/</rootDir>
+    <workDir>/work</workDir>
     <exportSource>false</exportSource>
-    <reloadable>false</reloadable>
+    <reloadable>true</reloadable>
     <redirectLogger>false</redirectLogger>
     <updateXml>true</updateXml>
     <warLocation></warLocation>

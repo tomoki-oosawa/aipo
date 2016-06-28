@@ -112,7 +112,9 @@
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
-#AUIajaxbutton($l10n.ACCOUNT_USER_LIST_DOWNLOAD )
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserListCsvExportScreen')))
+#set($title = "$l10n.ACCOUNT_USER_LIST_DOWNLOAD")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.userlist.downloadCvn(false,50000,'$dlLink');" >$title</a>
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
@@ -214,7 +216,7 @@ $!postname
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
-#AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
+#AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID"$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()
