@@ -363,35 +363,7 @@
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
-#if($result.isReminderEnabled())
-#ALtdcaption($l10n.SCHEDULE_ALARM)
-#ALtditemheader()
-<div id="reminderField" style="display:#if($!{result.Span})none#end">
-<p>
-  <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end onclick="aipo.schedule.reminderoff()" />
-  <label for="reminder_off">$l10n.SCHEDULE_REMINDER_OFF</label>
-</p>
-<p>
-  <input type="radio" id="reminder_on" value="T" name="reminder_flag" #if("$!{result.ReminderFlag}"=="T") checked="checked" #end onclick="aipo.schedule.reminderon()" />
-  <label for="reminder_on">$l10n.SCHEDULE_REMINDER_ON</label>
-  <span id="remindernotifytype" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
-  <label><input name="notify_type_message" value="TRUE" type="checkbox" class="" #if ($!{result.NotifyTypeMessage.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MESSAGE</label>
-  <label><input name="notify_type_mail" value="TRUE" type="checkbox" class="ml10" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL</label>
-  </span>
-</p>
-<div class="ml5" id="remindernotifytiming" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
-  <select class="mr5" name="notify_timing">
-    <option value="0" #if ($!result.NotifyTiming.toString() == "0") selected="selected" #end>$l10n.SCHEDULE_REMINDER_ONTIME</option>
-    <option value="5" #if ($!result.NotifyTiming.toString() == "5") selected="selected" #end>5$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
-    <option value="15" #if ($!result.NotifyTiming.toString() == "15") selected="selected" #end>15$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
-    <option value="30" #if ($!result.NotifyTiming.toString() == "30") selected="selected" #end>30$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
-    <option value="60" #if ($!result.NotifyTiming.toString() == "60") selected="selected" #end>1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR</option>
-  </select>$l10n.SCHEDULE_REMINDER_NOTIFY_TEXT
-</div>
-<div>$l10n.SCHEDULE_REMINDER_MSG</div>
-</div>
-#ALtditemfooter()
-#end
+
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()

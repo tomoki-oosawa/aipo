@@ -93,6 +93,8 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.facilities.FacilityResultData;
+import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -100,7 +102,11 @@ import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.schedule.AjaxScheduleResultData;
 import com.aimluck.eip.schedule.AjaxTermScheduleWeekContainer;
+import com.aimluck.eip.schedule.ScheduleDetailOnedaySelectData;
+import com.aimluck.eip.schedule.ScheduleDetailResultData;
 import com.aimluck.eip.schedule.ScheduleNotFounfException;
+import com.aimluck.eip.schedule.ScheduleOnedayContainer;
+import com.aimluck.eip.schedule.ScheduleOnedayResultData;
 import com.aimluck.eip.schedule.ScheduleResultData;
 import com.aimluck.eip.schedule.ScheduleTermWeekContainer;
 import com.aimluck.eip.schedule.ScheduleToDoResultData;
@@ -223,49 +229,6 @@ public class ScheduleUtils {
     return getEipTSchedule(rundata, context, isOwner, ALEipUtils
       .getUserId(rundata));
 
-  }
-
-  /**
-   * Scheudle オブジェクトモデルを取得します。
-   *
-   * @param rundata
-   * @param context
-   * @return
-   */
-  public static EipTSchedule getEipTScheduleDetailForReminder(int scheduleid) {
-
-    try {
-
-      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
-      query.getQuery().setRefreshingObjects(true);
-
-      // スケジュールID
-      Expression exp1 =
-        ExpressionFactory.matchDbExp(
-          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
-          scheduleid);
-      query.setQualifier(exp1);
-
-      // ユーザのスケジュール
-      Expression exp2 =
-        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
-          + "."
-          + EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
-      query.andQualifier(exp2);
-
-      List<EipTSchedule> schedules = query.fetchList();
-
-      // 指定したSchedule IDのレコードが見つからない場合
-      if (schedules == null || schedules.size() == 0) {
-        throw new ALPageNotFoundException();
-      }
-
-      EipTSchedule record = schedules.get(0);
-      return record;
-    } catch (Exception ex) {
-      logger.error("[ScheduleUtils]", ex);
-      return null;
-    }
   }
 
   /**
@@ -502,58 +465,6 @@ public class ScheduleUtils {
     } catch (Exception ex) {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
-    }
-  }
-
-  /**
-   * スケジュールへのアクセス権限があるかどうかを調べます。
-   *
-   * @param rundata
-   * @param context
-   * @return
-   */
-  public static boolean hasAuthorityForScheduleDetailForReminder(
-      EipTSchedule record, int userId) {
-    try {
-
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-      Expression mapexp1 =
-        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
-          .getScheduleId());
-      mapquery.setQualifier(mapexp1);
-      Expression mapexp21 =
-        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-          .toString(userId));
-      Expression mapexp22 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
-      mapquery.andQualifier(mapexp21.orExp(mapexp22));
-      // 設備は除外する
-      Expression exp3 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY,
-          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
-      mapquery.andQualifier(exp3);
-
-      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-      boolean is_member =
-        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
-
-      boolean is_owner = record.getOwnerId().intValue() == userId;
-      boolean is_createuser = record.getCreateUserId().intValue() == userId;
-      boolean is_public = "O".equals(record.getPublicFlag());
-
-      // アクセス権限がない場合
-      if (is_public) {
-      } else if (!is_member && (!(is_createuser || is_owner))) {
-        return false;
-      }
-      return true;
-    } catch (Exception ex) {
-      logger.error("[ScheduleUtils]", ex);
-      return false;
     }
   }
 
@@ -950,83 +861,6 @@ public class ScheduleUtils {
   }
 
   /**
-   * 共有メンバーを取得します。
-   *
-   * @param rundata
-   * @param context
-   * @param includeLoginUser
-   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
-   * @return
-   */
-  public static List<ALEipUser> getEffectiveUsers(EipTSchedule schedule)
-      throws ALPageNotFoundException, ALDBErrorException {
-    List<ALEipUser> list = new ArrayList<ALEipUser>();
-
-    if (schedule == null) {
-      logger.error("[ScheduleUtils] ENTITYID is empty.");
-      throw new ALPageNotFoundException();
-    }
-
-    try {
-      SelectQuery<EipTScheduleMap> mapquery =
-        Database.query(EipTScheduleMap.class);
-
-      // スケジュールID
-      Expression exp1 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          schedule.getScheduleId());
-      mapquery.setQualifier(exp1);
-      // 削除済は除外する
-      Expression exp2 =
-        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
-      mapquery.andQualifier(exp2);
-      // 設備は除外する
-      Expression exp3 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.TYPE_PROPERTY,
-          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
-      mapquery.andQualifier(exp3);
-      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
-
-      List<Integer> uidlist = new ArrayList<Integer>();
-      EipTScheduleMap map = null;
-      int mapsize = schedulemaps.size();
-      for (int i = 0; i < mapsize; i++) {
-        map = schedulemaps.get(i);
-        if (!uidlist.contains(map.getUserId())) {
-          uidlist.add(map.getUserId());
-        }
-      }
-
-      SelectQuery<TurbineUser> userquery = Database.query(TurbineUser.class);
-      Expression userexp =
-        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, uidlist);
-      userquery.setQualifier(userexp);
-
-      List<TurbineUser> ulist = userquery.fetchList();
-
-      TurbineUser tuser;
-      ALEipUser user;
-      for (int j = 0; j < ulist.size(); j++) {
-        tuser = ulist.get(j);
-        user = new ALEipUser();
-        user.initField();
-        user.setUserId(tuser.getUserId().intValue());
-        user.setName(tuser.getLoginName());
-        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
-        list.add(user);
-      }
-
-    } catch (Exception e) {
-      logger.error("[ScheduleUtils]", e);
-      throw new ALDBErrorException();
-
-    }
-    return list;
-  }
-
-  /**
    * 設備メンバーを取得します。
    *
    * @param rundata
@@ -1053,49 +887,6 @@ public class ScheduleUtils {
       ids[i] = (flist.get(i)).intValue();
     }
     return ids;
-  }
-
-  public static ALDateTimeField getNextDate(ALDateTimeField date, String ptn,
-      Date startDate, Date limitDate, boolean isLimit) {
-    if (isView(date, ptn, startDate, limitDate)) {
-      return date;
-    } else {
-      Calendar cal = Calendar.getInstance();
-      cal.setTime(date.getValue());
-      cal.add(Calendar.DATE, 1);
-      if (isLimit && cal.getTime().after(limitDate)) {
-        return null;
-      }
-      ALDateTimeField field = new ALDateTimeField();
-      field.setValue(cal.getTime());
-      return getNextDate(field, ptn, startDate, limitDate, isLimit);
-    }
-  }
-
-  public static ALDateTimeField getNextDateRepeat(EipTSchedule schedule,
-      int notifyTiming, boolean isLimit) {
-
-    // 次のアラーム日を算出
-    Calendar today = Calendar.getInstance();
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(schedule.getStartDate());
-    cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
-    cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
-    cal.set(Calendar.DATE, today.get(Calendar.DATE));
-    // 今日のアラーム送信時間が過ぎている場合は翌日にする
-    today.add(Calendar.MINUTE, notifyTiming);
-    if (cal.getTime().before(today.getTime())) {
-      cal.add(Calendar.DATE, 1);
-    }
-    ALDateTimeField next = new ALDateTimeField();
-    next.setValue(cal.getTime());
-    return ScheduleUtils.getNextDate(
-      next,
-      schedule.getRepeatPattern(),
-      schedule.getStartDate(),
-      schedule.getEndDate(),
-      isLimit);
-
   }
 
   /**
@@ -3380,241 +3171,6 @@ public class ScheduleUtils {
     return null;
   }
 
-  /**
-   * パソコンへ送信するメールの内容を作成する．
-   *
-   * @return
-   */
-  public static String createReminderMsgForPc(EipTSchedule schedule,
-      List<ALEipUser> memberList) {
-    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
-
-    String date_detail = "";
-
-    try {
-
-      date_detail = getMsgDate(schedule);
-    } catch (Exception e) {
-      return "";
-    }
-
-    StringWriter out = null;
-    try {
-      VelocityService service =
-        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
-          .getService(VelocityService.SERVICE_NAME);
-      Context context = service.getContext();
-
-      context.put("titleValue", schedule.getName().toString());
-      context.put("dateValue", date_detail);
-
-      if (schedule.getPlace().toString().length() > 0) {
-        context.put("placeValue", schedule.getPlace().toString());
-      }
-
-      if (schedule.getNote().toString().length() > 0) {
-        context.put("noteValue", schedule.getNote().toString());
-      }
-
-      if (memberList != null) {
-        int size = memberList.size();
-        int i;
-        StringBuffer body = new StringBuffer("");
-        for (i = 0; i < size; i++) {
-          if (i != 0) {
-            body.append(", ");
-          }
-          ALEipUser member = memberList.get(i);
-          body.append(member.getAliasName());
-        }
-        context.put("menbersList", body.toString());
-      }
-
-      context.put("Alias", ALOrgUtilsService.getAlias());
-
-      if (enableAsp) {
-        context.put("globalUrl1", ALMailUtils.getGlobalurl());
-      } else {
-        context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put("globalUrl3", ALMailUtils.getLocalurl());
-      }
-
-      out = new StringWriter();
-      service.handleRequest(context, "mail/scheduleReminder.vm", out);
-      out.flush();
-      return out.toString();
-    } catch (IllegalArgumentException e) {
-
-    } catch (Exception e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          // ignore
-        }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * 携帯電話へ送信するメールの内容を作成する．
-   *
-   * @return
-   */
-  public static String createReminderMsgForCellPhone(EipTSchedule schedule,
-      List<ALEipUser> memberList, int destUserID) {
-    String date_detail = "";
-    try {
-      date_detail = getMsgDate(schedule);
-    } catch (Exception e) {
-      return "";
-    }
-
-    StringWriter out = null;
-    try {
-      VelocityService service =
-        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
-          .getService(VelocityService.SERVICE_NAME);
-      Context context = service.getContext();
-
-      context.put("titleValue", schedule.getName().toString());
-      context.put("dateValue", date_detail);
-
-      if (memberList != null) {
-        int size = memberList.size();
-        int i;
-        StringBuffer body = new StringBuffer("");
-        for (i = 0; i < size; i++) {
-          if (i != 0) {
-            body.append(", ");
-          }
-          ALEipUser member = memberList.get(i);
-          body.append(member.getAliasName());
-        }
-        context.put("menbersList", body.toString());
-      }
-
-      ALEipUser destUser;
-      try {
-        destUser = ALEipUtils.getALEipUser(destUserID);
-      } catch (ALDBErrorException ex) {
-        logger.error("schedule", ex);
-        return "";
-      }
-
-      context.put("Alias", ALOrgUtilsService.getAlias());
-
-      context.put("globalUrl1", ALMailUtils.getGlobalurl()
-        + "?key="
-        + ALCellularUtils.getCellularKey(destUser));
-
-      out = new StringWriter();
-      service.handleRequest(context, "mail/scheduleReminder.vm", out);
-      out.flush();
-      return out.toString();
-    } catch (IllegalArgumentException e) {
-
-    } catch (RuntimeException e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } catch (Exception e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          // ignore
-        }
-      }
-    }
-    return null;
-  }
-
-  public static String createReminderMsgForMessage(EipTSchedule schedule,
-      List<ALEipUser> memberList) {
-    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
-
-    String date_detail = "";
-
-    try {
-
-      date_detail = getMsgDate(schedule);
-    } catch (Exception e) {
-      return "";
-    }
-
-    StringWriter out = null;
-    try {
-      VelocityService service =
-        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
-          .getService(VelocityService.SERVICE_NAME);
-      Context context = service.getContext();
-
-      context.put("titleValue", schedule.getName().toString());
-      context.put("dateValue", date_detail);
-
-      if (schedule.getPlace().toString().length() > 0) {
-        context.put("placeValue", schedule.getPlace().toString());
-      }
-
-      if (schedule.getNote().toString().length() > 0) {
-        context.put("noteValue", schedule.getNote().toString());
-      }
-
-      if (memberList != null) {
-        int size = memberList.size();
-        int i;
-        StringBuffer body = new StringBuffer("");
-        for (i = 0; i < size; i++) {
-          if (i != 0) {
-            body.append(", ");
-          }
-          ALEipUser member = memberList.get(i);
-          body.append(member.getAliasName());
-        }
-        context.put("menbersList", body.toString());
-      }
-
-      context.put("Alias", ALOrgUtilsService.getAlias());
-
-      if (enableAsp) {
-        context.put("globalUrl1", ALMailUtils.getGlobalurl());
-      } else {
-        context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put("globalUrl3", ALMailUtils.getLocalurl());
-      }
-
-      out = new StringWriter();
-      service.handleRequest(context, "mail/scheduleReminderMessage.vm", out);
-      out.flush();
-      return out.toString();
-    } catch (IllegalArgumentException e) {
-
-    } catch (Exception e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } finally {
-      if (out != null) {
-        try {
-          out.close();
-        } catch (IOException e) {
-          // ignore
-        }
-      }
-    }
-    return null;
-  }
-
   public static String getMsgDate(EipTSchedule schedule) {
     Calendar start_cal = Calendar.getInstance();
     start_cal.setTime(schedule.getStartDate());
@@ -5337,7 +4893,7 @@ public class ScheduleUtils {
 
       for (ALEipUser member : users) {
         // アクセス権限チェック
-        if (hasAuthorityForScheduleDetailForReminder(schedule, member
+        if (hasAuthorityForScheduleDetail(schedule, member
           .getUserId()
           .getValueWithInt())) {
           // ダミースケジュールに登録されているユーザーを除外
@@ -5350,6 +4906,53 @@ public class ScheduleUtils {
       return null;
     }
     return memberList;
+  }
+
+  public static void setupReminderJob(String orgId, String userId,
+      EipTSchedule schedule, int notifyTiming, boolean isMail, boolean isMessage) {
+    String ptn = schedule.getRepeatPattern();
+    int count = 0;
+    boolean isRepeat = true;
+    boolean isSpan = false;
+    boolean isLimit = false;
+    // 毎日
+    if (ptn.charAt(0) == 'D') {
+      count = 1;
+      // 毎週
+    } else if (ptn.charAt(0) == 'W') {
+      count = 8;
+      // 毎月
+    } else if (ptn.charAt(0) == 'M') {
+      count = 3;
+      // 毎年
+    } else if (ptn.charAt(0) == 'Y') {
+      count = 5;
+      // 期間
+    } else if (ptn.charAt(0) == 'S') {// 期間はS
+      isRepeat = false;
+      isSpan = true;
+    } else {
+      isRepeat = false;
+    }
+
+    if (isRepeat) {
+      if (ptn.charAt(count) == 'N') {
+        // schedule.setLimit(false);
+      } else {
+        isLimit = true;
+      }
+    }
+
+    setupReminderJob(
+      orgId,
+      userId,
+      schedule,
+      notifyTiming,
+      isMail,
+      isMessage,
+      isRepeat,
+      isLimit,
+      isSpan);
   }
 
   /**
@@ -5403,5 +5006,849 @@ public class ScheduleUtils {
       ALReminderService.updateJob(item);
     }
 
+  }
+
+  /**
+   * ＠ToDo ScheduleSelectDataのgetResultDataDetailとリファクタリング
+   *
+   * @param record
+   * @param view_date
+   * @param loginuserid
+   * @param userid
+   * @param type
+   * @param ignoreViewdate
+   * @param ondaySelectData
+   * @return
+   * @throws ALDBErrorException
+   */
+  public static ScheduleDetailResultData getResultDataDetail(
+      EipTSchedule record, ALDateTimeField view_date, int loginuserid,
+      int userid, String type, boolean ignoreViewdate,
+      ScheduleDetailOnedaySelectData ondaySelectData) throws ALDBErrorException {
+    ScheduleDetailResultData rd = new ScheduleDetailResultData();
+    rd.initField();
+
+    Map<Integer, String> statusList = new HashMap<Integer, String>();
+    List<FacilityResultData> facilities = new ArrayList<FacilityResultData>();
+    try {
+
+      // 選択した予定に対するダミースケジュールを検索
+      SelectQuery<EipTSchedule> schedulequery =
+        Database.query(EipTSchedule.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, record
+          .getScheduleId());
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTSchedule.START_DATE_PROPERTY, view_date
+          .getValue());
+      schedulequery.setQualifier(exp1);
+      schedulequery.andQualifier(exp2);
+      List<Integer> scheduleList = new ArrayList<Integer>();
+      List<EipTSchedule> dummyScheduleList = schedulequery.fetchList();
+
+      scheduleList.add(record.getScheduleId());
+      for (EipTSchedule dummy : dummyScheduleList) {
+        scheduleList.add(dummy.getScheduleId());
+      }
+
+      // 元のスケジュール及びダミースケジュールに登録されているマップを検索
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.inExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          scheduleList);
+      mapquery.setQualifier(mapexp1);
+      mapquery.orderAscending(EipTScheduleMap.SCHEDULE_ID_PROPERTY);
+
+      List<EipTScheduleMap> list = mapquery.fetchList();
+
+      List<Integer> users = new ArrayList<Integer>();
+      List<Integer> facilityIds = new ArrayList<Integer>();
+      // 表示するユーザーがスケジュールの参加者かどうか
+      boolean isMember = false;
+      int size = list.size();
+      for (int i = 0; i < size; i++) {
+        EipTScheduleMap map = list.get(i);
+        if (ScheduleUtils.SCHEDULEMAP_TYPE_USER.equals(map.getType())) {
+          statusList.put(map.getUserId(), map.getStatus());
+          // 表示するユーザーの場合
+          if (map.getUserId().intValue() == loginuserid) {
+            // 仮スケジュールかどうか
+            rd.setTmpreserve("T".equals(map.getStatus()));
+            // 確定スケジュールかどうか
+            rd.setConfirm("C".equals(map.getStatus()));
+            // スケジュールの参加者かどうか
+            isMember = !"R".equals(map.getStatus());
+          }
+          users.add(map.getUserId());
+
+          if (userid == map.getUserId().intValue()) {
+            EipTCommonCategory category = map.getEipTCommonCategory();
+            if (category == null) {
+              rd.setCommonCategoryName(null);
+            } else {
+              rd.setCommonCategoryName(category.getName());
+            }
+          }
+
+        } else {
+          facilityIds.add(map.getUserId());
+        }
+      }
+      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+      Expression exp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, users);
+      query.setQualifier(exp);
+      List<ALEipUser> members = ALEipUtils.getUsersFromSelectQuery(query);
+      // members = ALEipUtils.getUsersFromCriteria(rundata, new
+      // Criteria().addIn(
+      // TurbineUserConstants.USER_ID, users));
+
+      if (facilityIds.size() > 0) {
+        SelectQuery<EipMFacility> fquery = Database.query(EipMFacility.class);
+        Expression fexp =
+          ExpressionFactory.inDbExp(
+            EipMFacility.FACILITY_ID_PK_COLUMN,
+            facilityIds);
+        fquery.setQualifier(fexp);
+        facilities = FacilitiesUtils.getFacilitiesFromSelectQuery(fquery);
+      }
+      // facilities = FacilitiesUtils.getFacilitiesFromCriteria(org_id,
+      // new Criteria().addIn(EipMFacilityConstants.FACILITY_ID, facilityIds));
+
+      if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(type)) {
+        // 設備
+        ALEipUser facilityuser = new ALEipUser();
+        facilityuser.initField();
+        facilityuser.setUserId(userid);
+        facilityuser.setName("");
+        facilityuser.setAliasName("", getFacilityName(facilities, userid));
+        rd.setUser(facilityuser);
+      } else {
+        // ユーザー
+        rd.setUser(ALEipUtils.getALEipUser(userid));
+        // もし表示するユーザーが、ログインユーザーかつ参加していないユーザーの場合（タイムラインの更新情報から、ログインユーザーが作成者でログインユーザーが参加していない予定を開いた場合）には、
+        // 表示するユーザーを適当な参加ユーザーで置き換える
+        if (userid == loginuserid && !isMember) {
+          for (EipTScheduleMap map : list) {
+            if (!"R".equals(map.getStatus())) {
+              rd.setUser(ALEipUtils.getALEipUser(map.getUserId()));
+              break;
+            }
+          }
+        }
+      }
+      // タイプ
+      rd.setType(type);
+      // 開始日時
+      rd.setStartDate(record.getStartDate());
+      // オーナー
+      rd.setOwner(record.getOwnerId().intValue() == loginuserid);
+      // 終了日時
+      rd.setEndDate(record.getEndDate());
+      // タイトル
+      rd.setName(record.getName());
+      // ID
+      rd.setScheduleId(record.getScheduleId().intValue());
+      // 場所
+      rd.setPlace(record.getPlace());
+      // 内容
+      rd.setNote(record.getNote());
+      // 公開するかどうか
+      rd.setPublic("O".equals(record.getPublicFlag()));
+      // 非表示にするかどうか
+      rd.setHidden("P".equals(record.getPublicFlag()));
+      // 共有メンバーによる編集／削除フラグ
+      rd.setEditFlag("T".equals(record.getEditFlag()));
+
+      // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
+      // WnnnnnnnN W01111110 -> 毎週(月～金用)
+      // WnnnnnnnmN -> 第m週
+      // MnnN M25 -> 毎月25日
+      // S -> 期間での指定
+      String ptn = record.getRepeatPattern();
+      int count = 0;
+      boolean is_repeat = true;
+      rd.setRepeat(true);
+      // 毎日
+      if (ptn.charAt(0) == 'D') {
+        rd.addText(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY"));
+        count = 1;
+        // 毎週
+      } else if (ptn.charAt(0) == 'W') {
+        if (ptn.length() == 9) {
+          rd.addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .toString());
+          count = 8;
+        } else {
+          switch (ptn.charAt(8)) {
+            case '1':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+                .toString());
+              break;
+            case '2':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+                .toString());
+              break;
+            case '3':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+                .toString());
+              break;
+            case '4':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+                .toString());
+              break;
+            case '5':
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+                .toString());
+              break;
+            default:
+              break;
+          }
+          count = 9;
+        }
+        rd
+          .addText(new StringBuffer()
+            .append(
+              ptn.charAt(1) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SUNDAY") : "")
+            .append(
+              ptn.charAt(2) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_MONDAY") : "")
+            .append(
+              ptn.charAt(3) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_TUSEDAY") : "")
+            .append(
+              ptn.charAt(4) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_WEDNESDAY") : "")
+            .append(
+              ptn.charAt(5) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_THURSDAY") : "")
+            .append(
+              ptn.charAt(6) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_FRIDAY") : "")
+            .append(
+              ptn.charAt(7) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SATURDAY") : "")
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
+            .toString());
+        // 毎月
+      } else if (ptn.charAt(0) == 'M') {
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        count = 3;
+        // 毎年
+      } else if (ptn.charAt(0) == 'Y') {
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+          Integer.parseInt(ptn.substring(3, 5))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        count = 5;
+        // 期間
+      } else if (ptn.charAt(0) == 'S') {
+        rd.setSpan(true);
+        rd.setRepeat(false);
+        is_repeat = false;
+      } else {
+        rd.setRepeat(false);
+        is_repeat = false;
+
+      }
+      if (is_repeat) {
+        if (ptn.charAt(count) == 'N') {
+          rd.setLimit(false);
+        } else {
+          rd.setLimit(true);
+          // 期限
+          rd.addText(new StringBuffer().append(" （").append(
+            rd.getStartDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getStartDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getStartDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY")).append(
+            rd.getEndDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getEndDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getEndDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY")).toString());
+        }
+      }
+      // 登録者
+      rd.setCreateUser(ALEipUtils.getALEipUser(record
+        .getCreateUserId()
+        .intValue()));
+      // 更新者
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record
+        .getUpdateUserId()
+        .intValue()));
+      // 作成日
+      rd.setCreateDate(record.getCreateDate());
+      // 更新日時
+      rd.setUpdateDate(record.getUpdateDate());
+      // ログインユーザーID
+      if (ignoreViewdate
+        || ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(type)) {
+        rd.setLoginuser(false);
+        for (ALEipUser member : members) {
+          ALNumberField memberId = member.getUserId();
+          if (loginuserid == memberId.getValue()) {
+            rd.setLoginuser(true);
+            break;
+          }
+        }
+      } else {
+        rd.setLoginuser(loginuserid == userid);
+      }
+      // Calendar cal = Calendar.getInstance();
+      // cal.setTime(record.getStartDate());
+      // cal.set(Calendar.HOUR, 0);
+      // cal.set(Calendar.MINUTE, 0);
+      // view_date.setValue(cal.getTime());
+      // メールフラグ
+      rd.setMailFlag(record.getMailFlag());
+
+      ScheduleOnedayContainer con =
+        ondaySelectData.getScheduleOnedayContainer();
+      List<ScheduleOnedayResultData> selectList = con.getDuplicateSchedule();
+      selectList.addAll(con.getSchedule());
+      for (ScheduleOnedayResultData onedayrd : selectList) {
+        if (rd.getScheduleId().getValue() == onedayrd
+          .getScheduleId()
+          .getValue()) {
+          rd.setDuplicate(onedayrd.isDuplicate());
+          break;
+        }
+      }
+
+    } catch (RuntimeException e) {
+      logger.error("schedule", e);
+
+      return null;
+    } catch (Exception e) {
+      logger.error("schedule", e);
+
+      return null;
+    }
+
+    // 過去のスケジュールに対してはアラームの設定状況を表示しない
+    rd.setLastStarted(isLastStarted(rd.getStartDate().getValue(), rd
+      .getEndDate()
+      .getValue(), rd.isSpan(), rd.isRepeat(), rd.isLimit()));
+
+    return rd;
+  }
+
+  /**
+   * 開始済判定
+   *
+   * @param startDate
+   * @param endDate
+   * @param isSpan
+   * @param isRepeat
+   * @return
+   */
+  public static boolean isLastStarted(Date startDate, Date endDate,
+      boolean isSpan, boolean isRepeat, boolean isLimit) {
+    boolean isStarted = false;
+    Calendar today = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(startDate);
+    if (!isSpan && isRepeat && !isLimit) {
+      // 期間指定なしの繰り返しスケジュール
+      isStarted = false;
+    } else {
+      if (!isSpan && isRepeat && isLimit) {
+        // 期間指定の繰り返しスケジュール
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(endDate);
+        cal.set(Calendar.YEAR, cal2.get(Calendar.YEAR));
+        cal.set(Calendar.MONTH, cal2.get(Calendar.MONTH));
+        cal.set(Calendar.DATE, cal2.get(Calendar.DATE));
+      }
+      if (cal.getTime().before(today.getTime())) {
+        isStarted = true;
+      }
+    }
+    return isStarted;
+  }
+
+  public static String getFacilityName(List<FacilityResultData> list, int id) {
+    FacilityResultData rd = null;
+    int size = list.size();
+    for (int i = 0; i < size; i++) {
+      rd = list.get(i);
+      if (rd.getFacilityId().getValue() == id) {
+        return rd.getFacilityName().getValue();
+      }
+    }
+    return "";
+  }
+
+  /**
+   * Scheudle オブジェクトモデルを取得します。
+   *
+   * @ToDo getEipTScheduleDetailとリファクタリング
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTSchedule getEipTScheduleDetailForReminder(int scheduleid) {
+
+    try {
+
+      SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
+      query.getQuery().setRefreshingObjects(true);
+
+      // スケジュールID
+      Expression exp1 =
+        ExpressionFactory.matchDbExp(
+          EipTSchedule.SCHEDULE_ID_PK_COLUMN,
+          scheduleid);
+      query.setQualifier(exp1);
+
+      // ユーザのスケジュール
+      Expression exp2 =
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
+          + EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      query.andQualifier(exp2);
+
+      List<EipTSchedule> schedules = query.fetchList();
+
+      // 指定したSchedule IDのレコードが見つからない場合
+      if (schedules == null || schedules.size() == 0) {
+        throw new ALPageNotFoundException();
+      }
+
+      EipTSchedule record = schedules.get(0);
+      return record;
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      return null;
+    }
+  }
+
+  /**
+   * スケジュールへのアクセス権限があるかどうかを調べます。
+   *
+   * @ToDo hasAuthorityForScheduleDetailとリファクタリング
+   *
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALDBErrorException
+   */
+  public static boolean hasAuthorityForScheduleDetail(EipTSchedule record,
+      int userId) throws ALDBErrorException {
+    try {
+
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+      Expression mapexp1 =
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
+      mapquery.setQualifier(mapexp1);
+      Expression mapexp21 =
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .toString(userId));
+      Expression mapexp22 =
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
+      mapquery.andQualifier(mapexp21.orExp(mapexp22));
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
+
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
+      boolean is_member =
+        (schedulemaps != null && schedulemaps.size() > 0) ? true : false;
+
+      boolean is_owner = record.getOwnerId().intValue() == userId;
+      boolean is_createuser = record.getCreateUserId().intValue() == userId;
+      boolean is_public = "O".equals(record.getPublicFlag());
+
+      // アクセス権限がない場合
+      if (is_public) {
+      } else if (!is_member && (!(is_createuser || is_owner))) {
+        return false;
+      }
+      return true;
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
+   * 共有メンバーを取得します。
+   *
+   * @param rundata
+   * @param context
+   * @param includeLoginUser
+   *          ログインユーザーを共有メンバーとして取り扱う場合，true．
+   * @return
+   */
+  public static List<ALEipUser> getEffectiveUsers(EipTSchedule schedule)
+      throws ALPageNotFoundException, ALDBErrorException {
+    List<ALEipUser> list = new ArrayList<ALEipUser>();
+
+    if (schedule == null) {
+      logger.error("[ScheduleUtils] ENTITYID is empty.");
+      throw new ALPageNotFoundException();
+    }
+
+    try {
+      SelectQuery<EipTScheduleMap> mapquery =
+        Database.query(EipTScheduleMap.class);
+
+      // スケジュールID
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
+          schedule.getScheduleId());
+      mapquery.setQualifier(exp1);
+      // 削除済は除外する
+      Expression exp2 =
+        ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "R");
+      mapquery.andQualifier(exp2);
+      // 設備は除外する
+      Expression exp3 =
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.TYPE_PROPERTY,
+          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+      mapquery.andQualifier(exp3);
+      List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
+
+      List<Integer> uidlist = new ArrayList<Integer>();
+      EipTScheduleMap map = null;
+      int mapsize = schedulemaps.size();
+      for (int i = 0; i < mapsize; i++) {
+        map = schedulemaps.get(i);
+        if (!uidlist.contains(map.getUserId())) {
+          uidlist.add(map.getUserId());
+        }
+      }
+
+      SelectQuery<TurbineUser> userquery = Database.query(TurbineUser.class);
+      Expression userexp =
+        ExpressionFactory.inDbExp(TurbineUser.USER_ID_PK_COLUMN, uidlist);
+      userquery.setQualifier(userexp);
+
+      List<TurbineUser> ulist = userquery.fetchList();
+
+      TurbineUser tuser;
+      ALEipUser user;
+      for (int j = 0; j < ulist.size(); j++) {
+        tuser = ulist.get(j);
+        user = new ALEipUser();
+        user.initField();
+        user.setUserId(tuser.getUserId().intValue());
+        user.setName(tuser.getLoginName());
+        user.setAliasName(tuser.getFirstName(), tuser.getLastName());
+        list.add(user);
+      }
+
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+      throw new ALDBErrorException();
+
+    }
+    return list;
+  }
+
+  public static ALDateTimeField getNextDate(ALDateTimeField date, String ptn,
+      Date startDate, Date limitDate, boolean isLimit) {
+    if (isView(date, ptn, startDate, limitDate)) {
+      return date;
+    } else {
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(date.getValue());
+      cal.add(Calendar.DATE, 1);
+      if (isLimit && cal.getTime().after(limitDate)) {
+        return null;
+      }
+      ALDateTimeField field = new ALDateTimeField();
+      field.setValue(cal.getTime());
+      return getNextDate(field, ptn, startDate, limitDate, isLimit);
+    }
+  }
+
+  public static ALDateTimeField getNextDateRepeat(EipTSchedule schedule,
+      int notifyTiming, boolean isLimit) {
+
+    // 次のアラーム日を算出
+    Calendar today = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(schedule.getStartDate());
+    cal.set(Calendar.YEAR, today.get(Calendar.YEAR));
+    cal.set(Calendar.MONTH, today.get(Calendar.MONTH));
+    cal.set(Calendar.DATE, today.get(Calendar.DATE));
+    // 今日のアラーム送信時間が過ぎている場合は翌日にする
+    today.add(Calendar.MINUTE, notifyTiming);
+    if (cal.getTime().before(today.getTime())) {
+      cal.add(Calendar.DATE, 1);
+    }
+    ALDateTimeField next = new ALDateTimeField();
+    next.setValue(cal.getTime());
+    return ScheduleUtils.getNextDate(
+      next,
+      schedule.getRepeatPattern(),
+      schedule.getStartDate(),
+      schedule.getEndDate(),
+      isLimit);
+
+  }
+
+  /**
+   * パソコンへ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createReminderMsgForPc(EipTSchedule schedule,
+      List<ALEipUser> memberList) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+
+    String date_detail = "";
+
+    try {
+
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("titleValue", schedule.getName().toString());
+      context.put("dateValue", date_detail);
+
+      if (schedule.getPlace().toString().length() > 0) {
+        context.put("placeValue", schedule.getPlace().toString());
+      }
+
+      if (schedule.getNote().toString().length() > 0) {
+        context.put("noteValue", schedule.getNote().toString());
+      }
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      if (enableAsp) {
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      } else {
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
+      }
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/scheduleReminder.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * 携帯電話へ送信するメールの内容を作成する．
+   *
+   * @return
+   */
+  public static String createReminderMsgForCellPhone(EipTSchedule schedule,
+      List<ALEipUser> memberList, int destUserID) {
+    String date_detail = "";
+    try {
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("titleValue", schedule.getName().toString());
+      context.put("dateValue", date_detail);
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      ALEipUser destUser;
+      try {
+        destUser = ALEipUtils.getALEipUser(destUserID);
+      } catch (ALDBErrorException ex) {
+        logger.error("schedule", ex);
+        return "";
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/scheduleReminder.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (RuntimeException e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
+  }
+
+  public static String createReminderMsgForMessage(EipTSchedule schedule,
+      List<ALEipUser> memberList) {
+    boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
+
+    String date_detail = "";
+
+    try {
+
+      date_detail = getMsgDate(schedule);
+    } catch (Exception e) {
+      return "";
+    }
+
+    StringWriter out = null;
+    try {
+      VelocityService service =
+        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
+          .getService(VelocityService.SERVICE_NAME);
+      Context context = service.getContext();
+
+      context.put("titleValue", schedule.getName().toString());
+      context.put("dateValue", date_detail);
+
+      if (schedule.getPlace().toString().length() > 0) {
+        context.put("placeValue", schedule.getPlace().toString());
+      }
+
+      if (schedule.getNote().toString().length() > 0) {
+        context.put("noteValue", schedule.getNote().toString());
+      }
+
+      if (memberList != null) {
+        int size = memberList.size();
+        int i;
+        StringBuffer body = new StringBuffer("");
+        for (i = 0; i < size; i++) {
+          if (i != 0) {
+            body.append(", ");
+          }
+          ALEipUser member = memberList.get(i);
+          body.append(member.getAliasName());
+        }
+        context.put("menbersList", body.toString());
+      }
+
+      context.put("Alias", ALOrgUtilsService.getAlias());
+
+      if (enableAsp) {
+        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      } else {
+        context.put("globalurl2", ALMailUtils.getGlobalurl());
+        context.put("globalUrl3", ALMailUtils.getLocalurl());
+      }
+
+      out = new StringWriter();
+      service.handleRequest(context, "mail/scheduleReminderMessage.vm", out);
+      out.flush();
+      return out.toString();
+    } catch (IllegalArgumentException e) {
+
+    } catch (Exception e) {
+      String message = e.getMessage();
+      logger.warn(message, e);
+      e.printStackTrace();
+    } finally {
+      if (out != null) {
+        try {
+          out.close();
+        } catch (IOException e) {
+          // ignore
+        }
+      }
+    }
+    return null;
   }
 }

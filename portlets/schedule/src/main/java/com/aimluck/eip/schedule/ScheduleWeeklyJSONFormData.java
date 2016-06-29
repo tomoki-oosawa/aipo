@@ -932,7 +932,6 @@ public class ScheduleWeeklyJSONFormData {
         }
 
         Database.commit();
-
         res = true;
         updateReminder(newSchedule, schedule.getScheduleId().intValue());
         // イベントログに保存

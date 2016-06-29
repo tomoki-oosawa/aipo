@@ -36,7 +36,6 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALDateContainer;
-import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
@@ -65,7 +64,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
-import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -107,17 +105,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   private ALCellNumberField del_range_flag;
 
   private ALCellNumberField del_flag;
-
-  /** <code>public_flag</code> 通知フラグ */
-  private ALStringField reminder_flag;
-
-  private ALStringField notify_type_mail;
-
-  private ALStringField notify_type_message;
-
-  private ALNumberField notify_timing;
-
-  private ALReminderDefaultItem defaultItem;
 
   private String orgId;
 
@@ -334,12 +321,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     super.init(action, rundata, context);
 
     orgId = Database.getDomainName();
-    if (ALReminderService.isEnabled()) {
-      defaultItem =
-        ALReminderService.getDefault(orgId, getLoginUser()
-          .getUserId()
-          .getValueAsString(), ReminderCategory.SCHEDULE);
-    }
 
   }
 
@@ -385,17 +366,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     common_category_id.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_CATEGORY"));
     common_category_id.setValue(1);
-
-    reminder_flag = new ALStringField();
-    reminder_flag.setFieldName(ALLocalizationUtils.getl10n("SCHEDULE_ALARM"));
-    reminder_flag.setTrim(true);
-    reminder_flag.setValue("F");
-
-    notify_type_mail = new ALStringField();
-
-    notify_type_message = new ALStringField();
-
-    notify_timing = new ALNumberField();
 
     super.initField();
   }
@@ -469,33 +439,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     form_data.getWeek4().setValue("");
     form_data.getWeek5().setValue("");
     form_data.getWeek6().setValue("");
-
-    if (ALReminderService.isEnabled()) {
-      ALReminderItem item =
-        ALReminderService.getJob(orgId, getLoginUser()
-          .getUserId()
-          .getValueAsString(), ReminderCategory.SCHEDULE, record
-          .getScheduleId()
-          .intValue());
-      if (item != null) {
-        reminder_flag.setValue("T");
-        List<ReminderNotifyType> list = item.getNotifyType();
-        if (list != null && list.size() > 0) {
-          if (list.contains(ReminderNotifyType.MAIL)) {
-            notify_type_mail.setValue("TRUE");
-          }
-          if (list.contains(ReminderNotifyType.MESSAGE)) {
-            notify_type_message.setValue("TRUE");
-          }
-        }
-        notify_timing.setValue(Long.valueOf(item.getNotifyTiming()));
-      } else {
-        reminder_flag.setValue("F");
-        notify_type_mail.setValue("FALSE");
-        notify_type_message.setValue("FALSE");
-        notify_timing.setValue(0L);
-      }
-    }
   }
 
   /**
@@ -514,26 +457,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     boolean res =
       ScheduleUtils
         .setFormDataDelegate(rundata, context, this, fields, msgList);
-
-    if (ALReminderService.isEnabled()) {
-      if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
-        if (defaultItem != null) {
-          if (defaultItem.isEnabled()) {
-            reminder_flag.setValue("T");
-          }
-          List<ReminderNotifyType> list = defaultItem.getNotifyType();
-          if (list != null && list.size() > 0) {
-            if (list.contains(ReminderNotifyType.MAIL)) {
-              notify_type_mail.setValue("TRUE");
-            }
-            if (list.contains(ReminderNotifyType.MESSAGE)) {
-              notify_type_message.setValue("TRUE");
-            }
-          }
-          notify_timing.setValue(Long.valueOf(defaultItem.getNotifyTiming()));
-        }
-      }
-    }
 
     if (!res) {
       return res;
@@ -700,7 +623,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       EipTCommonCategory category1 =
         CommonCategoryUtils.getEipTCommonCategory(Long.valueOf(1));
 
-      boolean isJoin = false;
       // ScheduleMapに参加ユーザーを追加する
       for (ALEipUser user : form_data.getMemberList()) {
         int userid = (int) user.getUserId().getValue();
@@ -711,7 +633,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         // O: 自スケジュール T: 仮スケジュール C: 確定スケジュール
         if (userid == ALEipUtils.getUserId(rundata)) {
           map.setStatus("O");
-          isJoin = true;
         } else {
           map.setStatus("T");
         }
@@ -769,47 +690,24 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           isLimit = true;
         }
 
-        if ("T".equals(reminder_flag.getValue()) && isJoin) {
-          boolean isMail = false;
-          boolean isMessage = false;
-          if ("TRUE".equals(notify_type_mail.getValue())) {
-            isMail = true;
-          }
-          if ("TRUE".equals(notify_type_message.getValue())) {
-            isMessage = true;
-          }
-          ScheduleUtils.setupReminderJob(
-            Database.getDomainName(),
-            getLoginUser().getUserId().toString(),
-            schedule,
-            notify_timing.getValueWithInt(),
-            isMail,
-            isMessage,
-            isRepeat(),
-            isLimit,
-            isSpan());
-        }
-        // メンバーに対しては それぞれのDefaultJob をもとにリマインドを作成
+        // メンバーに対して それぞれのDefaultJob をもとにリマインドを作成
         for (ALEipUser user : form_data.getMemberList()) {
-          int memberId = (int) user.getUserId().getValue();
-          if (getLoginUser().getUserId().getValueWithInt() != memberId) {
-            ALReminderDefaultItem defaultItem =
-              ALReminderService.getDefault(orgId, user
-                .getUserId()
-                .getValueAsString(), ReminderCategory.SCHEDULE);
-            // DefaultItemがない場合は通知しない
-            if (defaultItem != null && defaultItem.isEnabled()) {
-              ScheduleUtils.setupReminderJob(
-                Database.getDomainName(),
-                user.getUserId().toString(),
-                schedule,
-                defaultItem.getNotifyTiming(),
-                defaultItem.hasNotifyTypeMail(),
-                defaultItem.hasNotifyTypeMessage(),
-                isRepeat(),
-                isLimit,
-                isSpan());
-            }
+          ALReminderDefaultItem defaultItem =
+            ALReminderService.getDefault(orgId, user
+              .getUserId()
+              .getValueAsString(), ReminderCategory.SCHEDULE);
+          // DefaultItemがない場合は通知しない
+          if (defaultItem != null && defaultItem.isEnabled()) {
+            ScheduleUtils.setupReminderJob(
+              Database.getDomainName(),
+              user.getUserId().toString(),
+              schedule,
+              defaultItem.getNotifyTiming(),
+              defaultItem.hasNotifyTypeMail(),
+              defaultItem.hasNotifyTypeMessage(),
+              isRepeat(),
+              isLimit,
+              isSpan());
           }
         }
 
@@ -934,7 +832,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     List<ALEipUser> removememberList = new ArrayList<ALEipUser>();
     List<Integer> memberIdsList = new ArrayList<Integer>();
     EipTSchedule newSchedule = null;
-    EipTSchedule tmpSchedule = null;
     try {
 
       // Validate のときに SELECT していることに注意する
@@ -1041,12 +938,8 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           oldmemberIdList.add(map.getUserId());
         }
       }
-      boolean isJoin = false;
       for (ALEipUser user : form_data.getMemberList()) {
         int memberId = (int) user.getUserId().getValue();
-        if (getLoginUser().getUserId().getValueWithInt() == memberId) {
-          isJoin = true;
-        }
         if (!isContains(oldmemberIdList, memberId)) {
           newmemberList.add(memberId);
         }
@@ -1382,98 +1275,66 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
         } else {
           targetSchedule = schedule;
         }
-        if (!isSpan() && "T".equals(reminder_flag.getValue()) && isJoin) {
-          boolean isMail = false;
-          boolean isMessage = false;
-          if ("TRUE".equals(notify_type_mail.getValue())) {
-            isMail = true;
-          }
-          if ("TRUE".equals(notify_type_message.getValue())) {
-            isMessage = true;
-          }
-          ScheduleUtils.setupReminderJob(
-            Database.getDomainName(),
-            getLoginUser().getUserId().toString(),
-            targetSchedule,
-            notify_timing.getValueWithInt(),
-            isMail,
-            isMessage,
-            isRepeat(),
-            isLimit,
-            isSpan());
-        } else {
-          ALReminderItem item = new ALReminderItem();
-          item.setOrgId(Database.getDomainName());
-          item.setUserId(getLoginUser().getUserId().toString());
-          item.setItemId(targetSchedule.getScheduleId().intValue());
-          item.setCategory(ReminderCategory.SCHEDULE);
-          ALReminderService.removeJob(item);
-        }
         // メンバーからはずれた人のJobを削除する
         for (ALEipUser user : removememberList) {
-          int memberId = (int) user.getUserId().getValue();
-          if (getLoginUser().getUserId().getValueWithInt() != memberId) {
-            if (schedule.getScheduleId().intValue() == targetSchedule
-              .getScheduleId()
-              .intValue()) {
-              ALReminderItem item = new ALReminderItem();
-              item.setOrgId(Database.getDomainName());
-              item.setUserId(user.getUserId().toString());
-              item.setItemId(schedule.getScheduleId().intValue());
-              item.setCategory(ReminderCategory.SCHEDULE);
-              ALReminderService.removeJob(item);
-            }
+          if (schedule.getScheduleId().intValue() == targetSchedule
+            .getScheduleId()
+            .intValue()) {
+            ALReminderItem item = new ALReminderItem();
+            item.setOrgId(Database.getDomainName());
+            item.setUserId(user.getUserId().toString());
+            item.setItemId(schedule.getScheduleId().intValue());
+            item.setCategory(ReminderCategory.SCHEDULE);
+            ALReminderService.removeJob(item);
           }
         }
         // メンバーに対しては それぞれのJob をもとにリマインドを作成
         for (ALEipUser user : form_data.getMemberList()) {
           int memberId = (int) user.getUserId().getValue();
-          if (getLoginUser().getUserId().getValueWithInt() != memberId) {
-            if (isContains(newmemberList, memberId)) {
-              // 追加されたメンバー
-              ALReminderDefaultItem defaultItem =
-                ALReminderService.getDefault(orgId, user
-                  .getUserId()
-                  .getValueAsString(), ReminderCategory.SCHEDULE);
-              // DefaultItemがない場合は通知しない
-              if (defaultItem != null && defaultItem.isEnabled()) {
+          if (isContains(newmemberList, memberId)) {
+            // 追加されたメンバー
+            ALReminderDefaultItem defaultItem =
+              ALReminderService.getDefault(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE);
+            // DefaultItemがない場合は通知しない
+            if (defaultItem != null && defaultItem.isEnabled()) {
+              ScheduleUtils.setupReminderJob(
+                Database.getDomainName(),
+                user.getUserId().toString(),
+                targetSchedule,
+                defaultItem.getNotifyTiming(),
+                defaultItem.hasNotifyTypeMail(),
+                defaultItem.hasNotifyTypeMessage(),
+                isRepeat(),
+                isLimit,
+                isSpan());
+            }
+          } else {
+            // もともといたメンバー
+            ALReminderItem item =
+              ALReminderService.getJob(orgId, user
+                .getUserId()
+                .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+                .getScheduleId()
+                .intValue());
+            if (item != null) {
+              if (!isSpan()) {
                 ScheduleUtils.setupReminderJob(
                   Database.getDomainName(),
                   user.getUserId().toString(),
                   targetSchedule,
-                  defaultItem.getNotifyTiming(),
-                  defaultItem.hasNotifyTypeMail(),
-                  defaultItem.hasNotifyTypeMessage(),
+                  item.getNotifyTiming(),
+                  item.hasNotifyTypeMail(),
+                  item.hasNotifyTypeMessage(),
                   isRepeat(),
                   isLimit,
                   isSpan());
-              }
-            } else {
-              // もともといたメンバー
-              ALReminderItem item =
-                ALReminderService.getJob(orgId, user
-                  .getUserId()
-                  .getValueAsString(), ReminderCategory.SCHEDULE, schedule
+              } else {
+                if (schedule.getScheduleId().intValue() == targetSchedule
                   .getScheduleId()
-                  .intValue());
-              if (item != null) {
-                if (!isSpan()) {
-                  ScheduleUtils.setupReminderJob(
-                    Database.getDomainName(),
-                    user.getUserId().toString(),
-                    targetSchedule,
-                    item.getNotifyTiming(),
-                    item.hasNotifyTypeMail(),
-                    item.hasNotifyTypeMessage(),
-                    isRepeat(),
-                    isLimit,
-                    isSpan());
-                } else {
-                  if (schedule.getScheduleId().intValue() == targetSchedule
-                    .getScheduleId()
-                    .intValue()) {
-                    ALReminderService.removeJob(item);
-                  }
+                  .intValue()) {
+                  ALReminderService.removeJob(item);
                 }
               }
             }
@@ -1949,22 +1810,6 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
   @Override
   public List<ALEipGroup> getGroupList() {
     return groups;
-  }
-
-  public ALStringField getReminderFlag() {
-    return reminder_flag;
-  }
-
-  public ALStringField getNotifyTypeMail() {
-    return notify_type_mail;
-  }
-
-  public ALStringField getNotifyTypeMessage() {
-    return notify_type_message;
-  }
-
-  public ALNumberField getNotifyTiming() {
-    return notify_timing;
   }
 
   public boolean isReminderEnabled() {
