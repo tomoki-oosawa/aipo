@@ -330,4 +330,5 @@ public class ALActivity implements ALData, Serializable {
     String sql = "delete from activity where id = " + this.getId();
     Database.sql(Activity.class, sql).execute();
   }
+
 }
