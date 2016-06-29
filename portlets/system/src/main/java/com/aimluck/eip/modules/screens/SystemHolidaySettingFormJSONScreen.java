@@ -18,48 +18,44 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import net.sf.json.JSONArray;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.exttimecard.ExtTimecardSummaryListSelectData;
-import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
-import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.system.SystemHolidaySettingFormData;
 
 /**
- * タイムカード集計の一覧を処理するクラスです。 <br />
  *
  */
-public class ExtTimecardSummaryListScreen extends ExtTimecardSystemScreen {
+public class SystemHolidaySettingFormJSONScreen extends ALJSONScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSummaryListScreen.class.getName());
+    .getLogger(SystemHolidaySettingFormJSONScreen.class.getName());
 
-  /**
-   *
-   * @param rundata
-   * @param context
-   * @throws Exception
-   */
   @Override
-  protected void doOutput(RunData rundata, Context context) throws Exception {
+  protected String getJSONString(RunData rundata, Context context)
+      throws Exception {
+    String result = new JSONArray().toString();
 
     try {
-      ExtTimecardSummaryListSelectData listData =
-        new ExtTimecardSummaryListSelectData();
-      listData.initField();
-      listData.setRowsNum(100);
-      listData.doViewList(this, rundata, context);
-
-      setTemplate(rundata, context, ExtTimecardUtils.isNewRule()
-        ? "portlets/html/ajax-exttimecard-summary-new-list.vm"
-        : "portlets/html/ajax-exttimecard-summary-list.vm");
-    } catch (Exception ex) {
-      logger.error("[ExtTimecardSummaryListScreen] Exception.", ex);
-      ALEipUtils.redirectDBError(rundata);
+      SystemHolidaySettingFormData formData =
+        new SystemHolidaySettingFormData();
+      formData.initField();
+      if (formData.doUpdate(this, rundata, context)) {
+      } else {
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+        result = json.toString();
+      }
+    } catch (Exception e) {
+      logger.error("[SystemHolidaySettingFormJSONScreen]", e);
     }
-  }
 
+    return result;
+  }
 }

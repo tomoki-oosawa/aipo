@@ -50,8 +50,8 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * FileIOのアクションクラスです <BR>
- * 
- * 
+ *
+ *
  */
 public class FileIOAction extends ALBaseAction {
 
@@ -61,7 +61,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
-   * 
+   *
    * @param portlet
    * @param context
    * @param rundata
@@ -77,7 +77,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳の一括入力 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -97,7 +97,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳の一括入力する際のファイルアップロード <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -138,7 +138,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -157,7 +157,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -181,7 +181,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -202,7 +202,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -278,7 +278,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳（会社情報）の一括入力 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -299,7 +299,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳(会社情報)の一括入力する際のファイルアップロード <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -331,7 +331,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -352,7 +352,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -377,7 +377,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -399,7 +399,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -473,7 +473,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * ユーザーの一括登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -488,7 +488,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -589,7 +589,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * ユーザー一括入力する際のファイルアップロード <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -618,6 +618,7 @@ public class FileIOAction extends ALBaseAction {
     sequency.add("10");
     sequency.add("11");
     sequency.add("12");
+    sequency.add("13");
     ALCSVUtils.setSequency(rundata, context, sequency);
 
     setTemplate(rundata, "fileio-account-read-csv");
@@ -626,7 +627,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -644,7 +645,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -667,7 +668,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -687,7 +688,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 部署の一括登録
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -714,7 +715,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * アドレス帳(会社情報)の一括入力する際のファイルアップロード <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -743,7 +744,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -763,7 +764,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -787,7 +788,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * データが多数に及んだ際における分割表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -808,7 +809,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -887,7 +888,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 単体スケジュールの一括入力 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -905,7 +906,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * スケジュールの一括入力する際のファイルアップロード
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -937,7 +938,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -956,7 +957,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容からエラーが発生した件のみリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -980,7 +981,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * 読み込んだ内容をリスト表示 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param folderIndex
@@ -1002,7 +1003,7 @@ public class FileIOAction extends ALBaseAction {
 
   /**
    * CSVファイルからデータベースへの登録 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception

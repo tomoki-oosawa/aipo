@@ -23,19 +23,19 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.exttimecard.ExtTimecardSummaryListSelectData;
-import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.system.SystemHolidaySettingFormData;
+import com.aimluck.eip.system.util.SystemUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * タイムカード集計の一覧を処理するクラスです。 <br />
  *
  */
-public class ExtTimecardSummaryListScreen extends ExtTimecardSystemScreen {
+public class SystemHolidaySettingFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSummaryListScreen.class.getName());
+    .getLogger(SystemHolidaySettingFormScreen.class.getName());
 
   /**
    *
@@ -45,21 +45,29 @@ public class ExtTimecardSummaryListScreen extends ExtTimecardSystemScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-
     try {
-      ExtTimecardSummaryListSelectData listData =
-        new ExtTimecardSummaryListSelectData();
-      listData.initField();
-      listData.setRowsNum(100);
-      listData.doViewList(this, rundata, context);
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, "1");
 
-      setTemplate(rundata, context, ExtTimecardUtils.isNewRule()
-        ? "portlets/html/ajax-exttimecard-summary-new-list.vm"
-        : "portlets/html/ajax-exttimecard-summary-list.vm");
+      SystemHolidaySettingFormData formData =
+        new SystemHolidaySettingFormData();
+      formData.initField();
+      formData.doViewForm(this, rundata, context);
+      setTemplate(
+        rundata,
+        context,
+        "portlets/html/ajax-system-holiday-setting-form.vm");
+
     } catch (Exception ex) {
-      logger.error("[ExtTimecardSummaryListScreen] Exception.", ex);
+      logger.error("[SystemHolidaySettingFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
 
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    return SystemUtils.SYSTEM_PORTLET_NAME;
+  }
 }
