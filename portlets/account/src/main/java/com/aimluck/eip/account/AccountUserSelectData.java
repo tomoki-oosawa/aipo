@@ -221,6 +221,10 @@ public class AccountUserSelectData extends
           ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
             + target_keyword.getValue()
             + "%");
+        Expression exp24 =
+          ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
+            + target_keyword.getValue()
+            + "%");
         Expression exp31 =
           ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
             + transWords[i]
@@ -245,15 +249,11 @@ public class AccountUserSelectData extends
               + "."
               + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
             "%" + transWords[i] + "%");
-        Expression exp36 =
-          ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
-            + transWords[i]
-            + "%");
 
         query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
           exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35).orExp(exp36));
+          exp23).orExp(exp24).orExp(exp31).orExp(exp32).orExp(exp33).orExp(
+          exp34).orExp(exp35));
       }
     }
 

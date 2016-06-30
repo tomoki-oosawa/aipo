@@ -226,6 +226,8 @@ public class AddressBookCorpWordSelectData extends
       ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
         + word
         + "%");
+    Expression exp24 =
+      ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%" + word + "%");
 
     Expression exp31 =
       ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
@@ -250,10 +252,6 @@ public class AddressBookCorpWordSelectData extends
         + "."
         + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
     exp35 = exp35.andExp(exp_exclude_my_group);
-    Expression exp36 =
-      ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
-        + transWord
-        + "%");
     if (word != null && !"".equals(word)) {
       query.andQualifier(exp11
         .orExp(exp12)
@@ -264,12 +262,12 @@ public class AddressBookCorpWordSelectData extends
         .orExp(exp21)
         .orExp(exp22)
         .orExp(exp23)
+        .orExp(exp24)
         .orExp(exp31)
         .orExp(exp32)
         .orExp(exp33)
         .orExp(exp34)
-        .orExp(exp35)
-        .orExp(exp36));
+        .orExp(exp35));
     }
     query.distinct();
     return query;
