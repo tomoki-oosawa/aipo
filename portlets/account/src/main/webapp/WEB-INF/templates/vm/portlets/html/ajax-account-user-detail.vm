@@ -67,6 +67,8 @@ $!record <br />
 #elseif("$disabled_flg" == "F")
 #ALtdcell($l10n.ACCOUNT_VALID)
 #end
+#ALtdcaption($l10n.ACCOUNT_USER_CODE)
+#ALtdcell($!result.Detail.Code)
 #ALtdcaption($l10n.ACCOUNT_ADMIN_AUTH)
 #if($!result.Detail.Admin)
 #ALtdcell($l10n.ACCOUNT_IS_ADMIN)

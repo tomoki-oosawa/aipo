@@ -91,6 +91,8 @@ $!result.LoginName
 #ALtditemfooter()
 #ALtdcaption($!result.PositionName.FieldName)
 #ALtditem($!result.PositionName)
+#ALtdcaption($!result.Code.FieldName)
+#ALtditem($!result.Code)
 #ALtablefooter()
 #ALbuttonheader()
 <input class="auiButtonAction" type="submit" id="al_submit_$!{portlet.ID}" value="$action_str" onclick="aimluck.io.setHiddenValue(this);">

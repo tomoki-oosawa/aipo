@@ -18,17 +18,22 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードの一覧を処理するクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardListScreen extends ExtTimecardScreen {
 
@@ -37,7 +42,7 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
     .getLogger(ExtTimecardListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -51,7 +56,25 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
       listData.setRowsNum(100);
       listData.doViewList(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-exttimecard-list.vm";
+      ExtTimecardListResultDataContainer container =
+        ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+          .getAllList(), null);
+      container.calculateWeekOvertime();
+
+      ExtTimecardListResultData tclistrd = null;
+      List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
+      int daykeysize = daykeys.size();
+      for (int i = 0; i < daykeysize; i++) {
+        tclistrd = daykeys.get(i);
+        tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+        tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
+        tclistrd.calculateWeekOvertime();
+      }
+
+      String layout_template =
+        ExtTimecardUtils.isNewRule()
+          ? "portlets/html/ajax-exttimecard-new-list.vm"
+          : "portlets/html/ajax-exttimecard-list.vm";
       setTemplate(rundata, context, layout_template);
 
     } catch (Exception ex) {

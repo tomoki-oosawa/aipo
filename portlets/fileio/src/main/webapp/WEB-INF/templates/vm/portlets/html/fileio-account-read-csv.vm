@@ -217,6 +217,8 @@ function hide_Attention(){
 #set($showErrmsg15 = false)
 #set($showErrmsg16 = false)
 #set($showErrmsg17 = false)
+#set($showErrmsg18 = false)
+#set($showErrmsg19 = false)
 #if($!result.overMaxUser())#set($showErrmsg16 = true)#else #set($showErrmsg16 = false)#end
 #foreach ($record in $result.List)
 #if(!$!record.User.LoginName)#set($showErrmsg1 = true)#end
@@ -235,13 +237,15 @@ function hide_Attention(){
 #if($!record.getPostNotFound())#set($showErrmsg14 = true)#end
 #if($!record.getPositionNotFound())#set($showErrmsg15 = true)#end
 #if($!record.getSameUser())#set($showErrmsg17 = true)#end
+#if(!$!record.User.Code.toString())#set($showErrmsg18 = true)#end
+#if($!record.getSameCode())#set($showErrmsg19 = true)#end
 #end
 
 <table class="listTable wide">
 <td>
 
 #if($result.isError())${result.getLineCount3()}<br>$l10n.FILEIO_ERROR_NOT_ADD_DATA #end
-#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg16 || $showErrmsg17)
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg16 || $showErrmsg17 || $showErrmsg18 || $showErrmsg19)
 #if($showErrmsg)
 <ul>
 #if($showErrmsg1)
@@ -297,6 +301,12 @@ function hide_Attention(){
 #if($showErrmsg17)
 <li><span class="caution">（※17）&nbsp;$l10n.FILEIO_INFORMATION_INPUT_LIMIT_SAME_USER_NAME</span></li>
 #end
+#if($showErrmsg18)
+<li><span class="caution">（※18）&nbsp;$l10n.FILEIO_INFORMATION_INPUT_LIMIT_CODE</span></li>
+#end
+#if($showErrmsg19)
+<li><span class="caution">（※19）&nbsp;$l10n.FILEIO_EXIST_SAME_NAME_CODE</span></li>
+#end
 </ul>
 #else
 <br>
@@ -331,6 +341,7 @@ function hide_Attention(){
 <th nowrap="nowrap" class="head">$l10n.FILEIO_MOBILE_PHONE_ADDRESS</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_UNIT</th>
 <th nowrap="nowrap" class="head">$l10n.FILEIO_POST</th>
+<th nowrap="nowrap" class="head">$l10n.FILEIO_CODE</th>
 </tr>
 #foreach ($record in $result.List)
 <tr>
@@ -387,6 +398,10 @@ $!rec
 <td nowrap="nowrap" class="item">
 #if($!record.PositionName)$!{record.PositionName}#else <span class="caution">※13</span> #end
 #if($!record.getPositionNotFound())<span class="caution">※15</span> #end
+</td>
+<td nowrap="nowrap" class="item">
+#if($!record.User.Code.toString())$!{record.User.Code}#else <span class="caution">※18</span> #end
+#if($!record.getSameCode())<span class="caution">※19</span> #end
 </td>
 </tr>
 #end

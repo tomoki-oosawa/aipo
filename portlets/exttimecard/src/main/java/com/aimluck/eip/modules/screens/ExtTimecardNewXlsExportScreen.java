@@ -34,6 +34,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardResultData;
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
@@ -45,11 +46,11 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  * タイムカードのファイル出力を取り扱うクラスです
  */
-public class ExtTimecardXlsExportScreen extends ALXlsScreen {
+public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardXlsExportScreen.class.getName());
+    .getLogger(ExtTimecardNewXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard.xls";
 
@@ -119,18 +120,24 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         "出勤時間",
         "退勤時間",
         "出勤日数",
-        "就業時間",
-        "残業日数",
+        "所定休日出勤日数",
+        "法定休日出勤日数",
+        "総労働時間",
+        "所定内労働時間",
+        "法定内残業時間",
         "残業時間",
-        "休出日数",
-        "休出時間",
+        "所定休日労働時間",
+        "法定休日労働時間",
+        "深夜労働時間",
+        "休憩時間",
         "遅刻日数",
         "早退日数",
         "欠勤日数",
         "有休日数",
         "代休日数",
         "その他日数",
-        "修正理由、備考",
+        "修正理由",
+        "備考",
         "外出１",
         "復帰１",
         "外出２",
@@ -162,6 +169,12 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
         HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
         HSSFCell.ENCODING_UTF_16,
@@ -188,11 +201,19 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
       ExtTimecardUtils.getEipTExtTimecardSystemByUserId(
         Integer.parseInt(listData.getTargetUserId())).getSystemName();
 
+    ExtTimecardListResultDataContainer container =
+      ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+        .getAllList(), null);
+    container.calculateWeekOvertime();
+
     ExtTimecardListResultData tclistrd = null;
     List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
     int daykeysize = daykeys.size();
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
+      tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+      tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
+      tclistrd.calculateWeekOvertime();
 
       String date = "";// 日付
       String day = ""; // 曜日
@@ -203,6 +224,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
       String work_hour = "0";// 就業時間
       String overtime_day = "0";// 残業日数
       String overtime_hour = "0";// 残業時間
+      String overtime_within_statutory_working_hour = "0";// 法定内残業時間
       String off_day = "0";// 休出日数
       String off_hour = "0";// 休出時間
       String late_coming_day = "0";// 遅刻日数
@@ -211,7 +233,21 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
       String paid_holiday = "0";// 有休日数
       String compensatory_holiday = "0";// 代休日数
       String other_day = "0";// その他日数
-      String remark = "";// 修正理由、備考
+      String remark = "";// 備考
+      String reason = "";// 修正理由
+      String official_off_day = "0", statutory_off_day = "0";
+      String total_work_hour = "0";
+      String midnight_work_hour = "0", midnight_overtime_hour = "0";
+      String statutory_off_day_regular_work_hour = "0", statutory_off_day_overtime_hour =
+        "0", statutory_off_day_midnight_work_hour = "0", statutory_off_day_regular_midnight_work_hour =
+        "0", statutory_off_day_within_statutory_overtime_hour = "0";
+      String off_day_regular_work_hour = "0", off_day_overtime_hour = "0", off_day_midnight_work_hour =
+        "0", off_day_regular_midnight_work_hour = "0", off_day_within_statutory_overtime_hour =
+        "0";
+      String total_off_day_work_hour = "0", total_statutory_off_day_work_hour =
+        "0";
+      String total_midnight_work_hour = "0";
+      String rest_hour = "0";
       String[] out_going =
         new String[EipTExtTimecard.OUTGOING_COMEBACK_PER_DAY];// 外出
       String[] come_back =
@@ -235,7 +271,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         if (!rd.getIsNullClockInTime()) {
           clock_in_time = rd.getClockInTime("HH:mm");
           clock_out_time = rd.getClockOutTime("HH:mm");
-          if (tclistrd.getWorkHour() > 0.0) {
+          if (tclistrd.getWorkHour() != ExtTimecardListResultData.NO_DATA) {
             work_day = "1";
             work_hour = Float.toString(tclistrd.getWorkHour());
           } else {
@@ -248,21 +284,77 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
           } else {
             overtime_hour = "0";
           }
+          /** 法定内残業 */
+          if (tclistrd.getWithinStatutoryOvertimeWorkHourWithoutOffday() > 0.0) {
+            overtime_within_statutory_working_hour =
+              Float.toString(tclistrd
+                .getWithinStatutoryOvertimeWorkHourWithoutOffday());
+          }
           if (tclistrd.getOffHour() > 0.0) {
             off_day = "1";
+            // 所定内休日、法定内休日に振り分け
+            if (container.isStatutoryOffDay(tclistrd)) {
+              total_statutory_off_day_work_hour =
+                Float.toString(tclistrd.getTotalWorkHour());
+              statutory_off_day = "1";
+              statutory_off_day_regular_work_hour =
+                Float.toString(tclistrd.getInworkHour());
+              statutory_off_day_overtime_hour =
+                Float.toString(tclistrd.getOvertimeHour());
+              statutory_off_day_midnight_work_hour =
+                Float.toString(tclistrd.getMidnightOvertimeWorkHour());
+              statutory_off_day_regular_midnight_work_hour =
+                Float.toString(tclistrd.getMidnightRegularWorkHour());
+              if (tclistrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                statutory_off_day_within_statutory_overtime_hour =
+                  Float.toString(tclistrd.getWithinStatutoryOvertimeWorkHour());
+              }
+            } else {
+              total_off_day_work_hour =
+                Float.toString(tclistrd.getTotalWorkHour());
+              official_off_day = "1";
+              off_day_regular_work_hour =
+                Float.toString(tclistrd.getInworkHour());
+              off_day_overtime_hour =
+                Float.toString(tclistrd.getOvertimeHour());
+              off_day_midnight_work_hour =
+                Float.toString(tclistrd.getMidnightOvertimeWorkHour());
+              off_day_regular_midnight_work_hour =
+                Float.toString(tclistrd.getMidnightRegularWorkHour());
+              if (tclistrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                off_day_within_statutory_overtime_hour =
+                  Float.toString(tclistrd.getWithinStatutoryOvertimeWorkHour());
+              }
+            }
             off_hour = Float.toString(tclistrd.getOffHour());
           } else {
             off_hour = "0";
+            /** 深夜勤務（平日） */
+            if (tclistrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
+              midnight_work_hour =
+                Float.toString(tclistrd.getMidnightRegularWorkHour());
+            }
+            if (tclistrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+              midnight_overtime_hour =
+                Float.toString(tclistrd.getMidnightOvertimeWorkHour());
+            }
           }
+        }
+        if (tclistrd.getMidnightWorkHour() > 0.0) {
+          total_midnight_work_hour =
+            Float.toString(tclistrd.getMidnightWorkHour());
+        }
+        if (tclistrd.getTotalWorkHour() > 0.0) {
+          total_work_hour = Float.toString(tclistrd.getTotalWorkHour());
         }
         if (rd.getRefixFlag().getValue() == "1") {
-          remark = rd.getReason().getValue();
-          if (rd.getReasonFlg() && rd.getRemarksFlg()) {
-            remark += "、";
-          }
+          reason = rd.getReason().getValue();
         }
         if (rd.getRemarksFlg()) {
-          remark += rd.getRemarks().getValue();
+          remark = rd.getRemarks().getValue();
+        }
+        if (tclistrd.getRestHour() > 0.0) {
+          rest_hour = Float.toString(tclistrd.getRestHour());
         }
         late_coming_day = tclistrd.isLateComing() ? "1" : "0";
         early_leaving_day = tclistrd.isEarlyLeaving() ? "1" : "0";
@@ -289,17 +381,23 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
           clock_in_time,
           clock_out_time,
           work_day,
+          official_off_day,
+          statutory_off_day,
+          total_work_hour,
           work_hour,
-          overtime_day,
+          overtime_within_statutory_working_hour,
           overtime_hour,
-          off_day,
-          off_hour,
+          total_off_day_work_hour,
+          total_statutory_off_day_work_hour,
+          total_midnight_work_hour,
+          rest_hour,
           late_coming_day,
           early_leaving_day,
           absent_day,
           paid_holiday,
           compensatory_holiday,
           other_day,
+          reason,
           remark,
           out_going[0],
           come_back[0],

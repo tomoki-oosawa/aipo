@@ -135,6 +135,8 @@
 <div class="mt5">
 <input name="position_input_button" type="button" class="button" value=" #if(!$!{result.NewPosition})${l10n.ACCOUNT_TYPE_NEW}#else${l10n.ACCOUNT_SELECT_FROM_LIST}#end " onclick="aipo.account_user.formSwitchPositionInput(this)" />
 </div>
+#ALtdcaption($!result.getFieldName("code"))
+#ALtditem("#ALtextfield('code' $!result.Code '70%' 100 'disabled')")
 #ALtditemfooter()
 #ALtdcaption($l10n.ACCOUNT_ADMIN_AUTH)
 #ALtditemheader()

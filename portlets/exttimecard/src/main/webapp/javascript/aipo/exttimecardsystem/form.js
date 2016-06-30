@@ -76,3 +76,13 @@ aipo.exttimecardsystem.onLoadExtTimecardSystemDialog = function(portlet_id){
      obj.focus();
   }
 }
+
+aipo.exttimecardsystem.changeTypeNew = function(){
+    dojo.byId("timecard-type-new").style.display = "";
+    dojo.byId("timecard-type-old").style.display = "none";
+}
+
+aipo.exttimecardsystem.changeTypeOld = function(){
+    dojo.byId("timecard-type-new").style.display = "none";
+    dojo.byId("timecard-type-old").style.display = "";
+}
