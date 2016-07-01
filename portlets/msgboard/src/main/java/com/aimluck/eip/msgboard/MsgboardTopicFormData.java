@@ -466,6 +466,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         MsgboardUtils.createTopicActivity(
           topic,
           user.getName().getValue(),
+          user.getUserId().getValueWithInt(),
           true);
 
       } else {
@@ -490,6 +491,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           MsgboardUtils.createTopicActivity(
             topic,
             user.getName().getValue(),
+            user.getUserId().getValueWithInt(),
             recipients,
             true);
         }
@@ -639,6 +641,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         MsgboardUtils.createTopicActivity(
           topic,
           user.getName().getValue(),
+          user.getUserId().getValueWithInt(),
           false);
 
       } else {
@@ -663,6 +666,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           MsgboardUtils.createTopicActivity(
             topic,
             user.getName().getValue(),
+            user.getUserId().getValueWithInt(),
             recipients,
             false);
         }
