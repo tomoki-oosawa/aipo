@@ -189,9 +189,7 @@ public class ExtTimecardResultData implements ALData {
    */
   public boolean getIsOverTime() {
     if (!getIsNullClockInTime()) {
-      if (ExtTimecardUtils.OVERTIME_TYPE_O.equals(timecard_system
-        .getOvertimeType()
-        .substring(0, 1))) {
+      if (!ExtTimecardUtils.isNewRule()) {
         int end_hour = timecard_system.getEndHour(), end_minute =
           timecard_system.getEndMinute();
 
