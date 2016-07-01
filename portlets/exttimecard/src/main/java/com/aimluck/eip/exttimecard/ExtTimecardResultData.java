@@ -242,7 +242,8 @@ public class ExtTimecardResultData implements ALData {
           time -= resttimes * resttimein;
         }
         float overTime =
-          Float.parseFloat(timecard_system.getOvertimeType().substring(1)) / 60f;
+          ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system
+            .getOvertimeType()) / 60f;
         if (time >= overTime) {
           return true;
         } else {

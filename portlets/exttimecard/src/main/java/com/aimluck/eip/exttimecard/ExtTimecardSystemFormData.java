@@ -249,14 +249,17 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       // 更新日
       record.setUpdateDate(Calendar.getInstance().getTime());
 
+      String overType;
       if (isNewRule) {
-        String overtimeType =
-          overtime_type_minute.getValue()
+        overType =
+          +overtime_type_minute.getValue()
             + "-"
             + ("T".equals(overtime_type_week.getValue()) ? "T" : "F")
             + overtime_type_week_hour.getValue();
-        record.setOvertimeType(overtimeType);
+      } else {
+        overType = ExtTimecardUtils.OVERTIME_TYPE_O;
       }
+      record.setOvertimeType(overType);
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
