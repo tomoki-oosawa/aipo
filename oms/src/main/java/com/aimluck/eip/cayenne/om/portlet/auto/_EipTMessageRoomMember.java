@@ -8,7 +8,9 @@ package com.aimluck.eip.cayenne.om.portlet.auto;
 public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject {
 
     public static final String AUTHORITY_PROPERTY = "authority";
+    public static final String DESKTOP_NOTIFICATION_PROPERTY = "desktopNotification";
     public static final String LOGIN_NAME_PROPERTY = "loginName";
+    public static final String MOBILE_NOTIFICATION_PROPERTY = "mobileNotification";
     public static final String TARGET_USER_ID_PROPERTY = "targetUserId";
     public static final String USER_ID_PROPERTY = "userId";
     public static final String EIP_TMESSAGE_ROOM_PROPERTY = "eipTMessageRoom";
@@ -23,11 +25,27 @@ public class _EipTMessageRoomMember extends org.apache.cayenne.CayenneDataObject
     }
     
     
+    public void setDesktopNotification(String desktopNotification) {
+        writeProperty("desktopNotification", desktopNotification);
+    }
+    public String getDesktopNotification() {
+        return (String)readProperty("desktopNotification");
+    }
+    
+    
     public void setLoginName(String loginName) {
         writeProperty("loginName", loginName);
     }
     public String getLoginName() {
         return (String)readProperty("loginName");
+    }
+    
+    
+    public void setMobileNotification(String mobileNotification) {
+        writeProperty("mobileNotification", mobileNotification);
+    }
+    public String getMobileNotification() {
+        return (String)readProperty("mobileNotification");
     }
     
     

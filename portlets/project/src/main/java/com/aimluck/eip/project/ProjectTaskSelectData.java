@@ -437,7 +437,13 @@ public class ProjectTaskSelectData extends
     List<String> whereList = new ArrayList<String>();
     // キーワード
     if (target_keyword != null && target_keyword.trim().length() > 0) {
-      whereList.add(" task.task_name LIKE #bind($target_keyword)");
+      if (0 == selectedProjectId) {
+        whereList
+          .add(" (task.task_name LIKE #bind($target_keyword) OR project.project_name LIKE #bind($target_keyword))");
+      } else {
+        whereList.add(" task.task_name LIKE #bind($target_keyword)");
+      }
+
     }
     // 担当者
     if (StringUtils.isNotEmpty(target_user_id) && !target_user_id.equals("all")) {

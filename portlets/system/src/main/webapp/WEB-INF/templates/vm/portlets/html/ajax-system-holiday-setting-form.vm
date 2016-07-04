@@ -1,0 +1,84 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($subtitle = $l10n.HOLIDAY_SETTING)
+#set ($indicator_id = "indicator-dlg-")
+#if  ($mode=="new_form")
+#set ($action_str = $l10n.SYSTEM_ADD)
+#set ($event_submit = "eventSubmit_doSystem_report_setting_insert")
+#else
+#set ($action_str = $l10n.SYSTEM_UPDATE)
+#set ($event_submit = "eventSubmit_doSystem_report_setting_update")
+#end
+## ---------------------------------------------------------------------------
+#ALdialogheaderCloseJS($subtitle "aipo.system.hideDialog()")
+#ALspacebothheader()
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
+#ALajaxscreenformheader("systemForm" $jslink $portlet "SystemHolidaySettingFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.system.onReceiveMessage)")
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($l10n.HOLIDAY_SETTING_WEEK_OF_DAY)")
+#ALtditemheader()
+<input name="week1" type="checkbox" value="1" id="week1" #if ($!result.Week1.toString() == "1") checked="checked" #end />
+<label for="week1">$l10n.HOLIDAY_SETTING_WEEK1</label>
+<input name="week2" type="checkbox" value="1" id="week2" #if ($!result.Week2.toString() == "1") checked="checked" #end />
+<label for="week2">$l10n.HOLIDAY_SETTING_WEEK2</label>
+<input name="week3" type="checkbox" value="1" id="week3" #if ($!result.Week3.toString() == "1") checked="checked" #end />
+<label for="week3">$l10n.HOLIDAY_SETTING_WEEK3</label>
+<input name="week4" type="checkbox" value="1" id="week4" #if ($!result.Week4.toString() == "1") checked="checked" #end />
+<label for="week4">$l10n.HOLIDAY_SETTING_WEEK4</label>
+<input name="week5" type="checkbox" value="1" id="week5" #if ($!result.Week5.toString() == "1") checked="checked" #end />
+<label for="week5">$l10n.HOLIDAY_SETTING_WEEK5</label>
+<input name="week6" type="checkbox" value="1" id="week6" #if ($!result.Week6.toString() == "1") checked="checked" #end />
+<label for="week6">$l10n.HOLIDAY_SETTING_WEEK6</label>
+<input name="week7" type="checkbox" value="1" id="week7" #if ($!result.Week7.toString() == "1") checked="checked" #end />
+<label for="week7">$l10n.HOLIDAY_SETTING_WEEK7</label>
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($l10n.HOLIDAY_SETTING_STATUTORY_HOLIDAY)")
+#ALtditemheader()
+<select name="statutoryHoliday">
+	<option value="0" #if ($!result.StatutoryHoliday.toString() == "0") selected="selected"#end>$l10n.HOLIDAY_SETTING_NOTHING</option>
+	<option value="1" #if ($!result.StatutoryHoliday.toString() == "1") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK1</option>
+	<option value="2" #if ($!result.StatutoryHoliday.toString() == "2") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK2</option>
+	<option value="3" #if ($!result.StatutoryHoliday.toString() == "3") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK3</option>
+	<option value="4" #if ($!result.StatutoryHoliday.toString() == "4") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK4</option>
+	<option value="5" #if ($!result.StatutoryHoliday.toString() == "5") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK5</option>
+	<option value="6" #if ($!result.StatutoryHoliday.toString() == "6") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK6</option>
+	<option value="7" #if ($!result.StatutoryHoliday.toString() == "7") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK7</option>
+</select>
+#ALtditemfooter()
+#ALtdcaption("#ALrequired($l10n.HOLIDAY_SETTING_HOLIDAY)")
+#ALtditemheader()
+<input name="holiday" type="checkbox" value="1" id="holiday" #if ($!result.Holiday.toString() == "1") checked="checked" #end />
+<label for="holiday">$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALdialogfooter()

@@ -218,6 +218,8 @@ public class MessageFormData extends ALAbstractFormData {
           map1.setTargetUserId((int) targetUser.getUserId().getValue());
           map1.setLoginName(login_user.getName().getValue());
           map1.setAuthority("A");
+          map1.setDesktopNotification("A");
+          map1.setMobileNotification("A");
 
           EipTMessageRoomMember map2 =
             Database.create(EipTMessageRoomMember.class);
@@ -226,6 +228,8 @@ public class MessageFormData extends ALAbstractFormData {
           map2.setUserId((int) targetUser.getUserId().getValue());
           map2.setLoginName(targetUser.getName().getValue());
           map2.setAuthority("A");
+          map2.setDesktopNotification("A");
+          map2.setMobileNotification("A");
 
           room.setAutoName("T");
           room.setRoomType("O");
@@ -335,8 +339,9 @@ public class MessageFormData extends ALAbstractFormData {
       if (!(messageOwner.equals(user))) {
         EipTMessageRoom messageRoom = message.getEipTMessageRoom();
         // 管理者権限を持っているか判定（ダイレクトメッセージ以外）
+        // 管理者権限が持っていれシステム投稿は削除可能
         if (!MessageUtils.hasAuthorityRoom(messageRoom, user)
-          || "O".equals(messageRoom.getRoomType())) {
+          || ("O".equals(messageRoom.getRoomType()) && messageOwner.intValue() > 3)) {
           return false;
         }
       }
