@@ -38,6 +38,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDeleteFileUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
@@ -54,6 +55,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -99,6 +101,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private int roomId;
 
+  private ALStringField roomType;
+
   private boolean isGroup = true;
 
   private boolean isDeleteHistory = false;
@@ -127,6 +131,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
     members = new ALStringField();
     members.setTrim(true);
     memberList = new ArrayList<ALEipUser>();
+    roomType = new ALStringField();
   }
 
   /**
@@ -383,6 +388,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
+
+      roomType.setValue(room.getRoomType());
+
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
       List<String> memberNames = new ArrayList<String>();
@@ -468,6 +476,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
         map.setUserId(Integer.valueOf(userid));
         map.setLoginName(user.getName().getValue());
         map.setAuthority(user.getAuthority().getValue());
+        map.setHistoryLastMessageId(0);
         map.setDesktopNotification(user.getDesktopNotification().getValue());
         map.setMobileNotification(user.getMobileNotification().getValue());
         if (!isFirst) {
@@ -568,6 +577,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           map.setUserId(Integer.valueOf(userid));
           map.setLoginName(user.getName().getValue());
           map.setAuthority(user.getAuthority().getValue());
+          map.setHistoryLastMessageId(0);
           map.setDesktopNotification(user.getDesktopNotification().getValue());
           map.setMobileNotification(user.getMobileNotification().getValue());
           if (!isFirst) {
@@ -638,22 +648,52 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if (model == null) {
         return false;
       }
-      if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
-        .getUserId()
-        .getValue())) {
-        msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_AUTHORITY_DENIED"));
-        return false;
+
+      if (isDeleteHistory) {
+        int roomId = model.getRoomId();
+        int userId = (int) login_user.getUserId().getValue();
+        int cursor = rundata.getParameters().getInt("c");
+        int limit = 1;
+        int param = rundata.getParameters().getInt("latest");
+        boolean latest = (param == 1);
+
+        int history_last_message_id =
+          MessageUtils
+            .getMessageList(roomId, cursor, limit, latest, userId)
+            .get(0)
+            .getMessageId();
+
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> members = model.getEipTMessageRoomMember();
+        members.removeIf(s -> s.getUserId() == userId);
+        int others_history_last_message_id =
+          members.get(0).getHistoryLastMessageId();
+        if (history_last_message_id > others_history_last_message_id) {
+          String sql =
+            "delete from eip_t_message where room_id = #bind($roomId);";
+          SQLTemplate<EipTMessage> query =
+            Database.sql(EipTMessage.class, sql).param("roomId", roomId);
+          query.execute();
+          Database.commit();
+        }
+      } else {
+        if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
+          .getUserId()
+          .getValue())) {
+          msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_AUTHORITY_DENIED"));
+          return false;
+        }
+        List<EipTMessageFile> files =
+          MessageUtils.getEipTMessageFilesByRoom(model.getRoomId());
+
+        ALDeleteFileUtil.deleteFiles(
+          MessageUtils.FOLDER_FILEDIR_MESSAGE,
+          MessageUtils.CATEGORY_KEY,
+          files);
+
+        Database.delete(model);
+        Database.commit();
       }
-      List<EipTMessageFile> files =
-        MessageUtils.getEipTMessageFilesByRoom(model.getRoomId());
-
-      ALDeleteFileUtil.deleteFiles(
-        MessageUtils.FOLDER_FILEDIR_MESSAGE,
-        MessageUtils.CATEGORY_KEY,
-        files);
-
-      Database.delete(model);
-      Database.commit();
     } catch (Throwable t) {
       Database.rollback();
       logger.error("MessageRoomFormData.deleteFormData", t);

@@ -53,6 +53,8 @@
 #end
 
 #ALtableheaderWide()
+
+#if($result.isGroup())
 #ALtdcaptionTrAtt($l10n.MESSAGE_ROOM_ENTRY_USER $form_view)
 #ALtditemheader()
 <div>
@@ -134,6 +136,9 @@ $!result.Name
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
 #ALajaxbuttonDeleteHistory("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
 #end
+#end
+#else
+#ALajaxbuttonDeleteHistory("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
