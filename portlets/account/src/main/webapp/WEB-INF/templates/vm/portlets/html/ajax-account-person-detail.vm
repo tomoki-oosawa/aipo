@@ -54,6 +54,8 @@
 #ALtditemfooter()
 #ALtdcaption($l10n.ACCOUNT_POSITION)
 #ALtditem($!result.Detail.WbrPositionName)
+#ALtdcaption($l10n.ACCOUNT_CODE)
+#ALtditem($!result.Detail.Code)
 #ALtablefooter()
 #ALformfooter()
 

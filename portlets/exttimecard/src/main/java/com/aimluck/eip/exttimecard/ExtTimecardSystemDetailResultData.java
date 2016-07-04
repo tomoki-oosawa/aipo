@@ -25,8 +25,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード管理の勤務形態の情報を保持する。
- * 
- * 
+ *
+ *
  */
 public class ExtTimecardSystemDetailResultData extends
     ExtTimecardSystemResultData {
@@ -59,6 +59,12 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALStringField update_date;
 
+  private ALNumberField overtime_type_minute_by_day;
+
+  private ALNumberField overtime_type_hour_by_week;
+
+  private boolean isOvertypeWeek;
+
   /**
    *
    *
@@ -80,6 +86,8 @@ public class ExtTimecardSystemDetailResultData extends
     outgoing_add_flag = new ALStringField();
     create_date = new ALStringField();
     update_date = new ALStringField();
+    overtime_type_minute_by_day = new ALNumberField();
+    overtime_type_hour_by_week = new ALNumberField();
   }
 
   public String getUserId() {
@@ -157,6 +165,14 @@ public class ExtTimecardSystemDetailResultData extends
     return update_date;
   }
 
+  public ALNumberField getOvertimeTypeMinuteByDay() {
+    return overtime_type_minute_by_day;
+  }
+
+  public ALNumberField getOvertimeTypeHourByWeek() {
+    return overtime_type_hour_by_week;
+  }
+
   public ALNumberField getStartDay() {
     return start_day;
   }
@@ -215,6 +231,29 @@ public class ExtTimecardSystemDetailResultData extends
 
   public void setStartDay(int i) {
     start_day.setValue(i);
+  }
+
+  public void setOvertimeTypeMinuteByDay(int value) {
+    overtime_type_minute_by_day.setValue(value);
+  }
+
+  public void setOvertimeTypeHourByWeek(int value) {
+    overtime_type_hour_by_week.setValue(value);
+  }
+
+  /**
+   * @return isOvertypeWeek
+   */
+  public boolean isOvertypeWeek() {
+    return isOvertypeWeek;
+  }
+
+  /**
+   * @param isOvertypeWeek
+   *          セットする isOvertypeWeek
+   */
+  public void setOvertypeWeek(boolean isOvertypeWeek) {
+    this.isOvertypeWeek = isOvertypeWeek;
   }
 
 }

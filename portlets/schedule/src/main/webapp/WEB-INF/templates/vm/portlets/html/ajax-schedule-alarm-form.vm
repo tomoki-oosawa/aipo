@@ -1,0 +1,93 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_str = $l10n.SCHEDULE_SEND_DATA)
+#set ($action_str = $l10n.SCHEDULE_UPDATE)
+#set ($event_submit = "eventSubmit_doSchedule_reminder")
+#set ($subtitle = $l10n.SCHEDULE_ALARM_SETTING)
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+<div id="messageDiv"></div>
+<form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormJSONScreen')" method="post" onsubmit="aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
+<input type="hidden" name="secid" value="$secid" />
+<input type="hidden" name="entityid" value="$entityid" />
+<input type="hidden" name="mode" value="update" />
+<input type="hidden" name="view_date" value="$!{result.ViewDate.toString()}" />
+#ALerrmsg($errmsgs)
+#ALtableheaderWide()
+
+
+#ALtdcaption($l10n.SCHEDULE_DATE)
+#ALtditemheader()
+#if($!{result.Detail.isSpan()})
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} -
+$!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
+#elseif($!{result.Detail.isRepeat()})
+$!{result.Detail.Text}<br/>
+$!{result.Detail.Date}
+#else
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.Date}
+#end
+#AUIiconScheduleSets($!{result.Detail})
+#ALtditemfooter()
+#ALtdcaption($l10n.SCHEDULE_TITLE)
+#ALtditemheader()
+#if(! ${result.Detail.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end$!{result.Detail.WbrName}
+#ALtditemfooter()
+
+#if($result.isReminderEnabled())
+#ALtdcaption($l10n.SCHEDULE_ALARM)
+#ALtditemheader()
+<div id="reminderField">
+<p>$l10n.SCHEDULE_YOUR_REMINDER_TEXT</p>
+<p>
+  <input type="radio" checked="checked" id="reminder_off" value="F" name="reminder_flag" #if("$!{result.ReminderFlag}"=="F") checked="checked" #end onclick="aipo.schedule.reminderoff()" />
+  <label for="reminder_off">$l10n.SCHEDULE_REMINDER_OFF</label>
+</p>
+<p>
+  <input type="radio" id="reminder_on" value="T" name="reminder_flag" #if("$!{result.ReminderFlag}"=="T") checked="checked" #end onclick="aipo.schedule.reminderon()" />
+  <label for="reminder_on">$l10n.SCHEDULE_REMINDER_ON</label>
+  <span id="remindernotifytype" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
+  <label><input name="notify_type_message" value="TRUE" type="checkbox" class="" #if ($!{result.NotifyTypeMessage.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MESSAGE</label>
+  <label><input name="notify_type_mail" value="TRUE" type="checkbox" class="ml10" #if ($!{result.NotifyTypeMail.toString()} == "TRUE") checked="checked" #end>$l10n.SCHEDULE_REMINDER_MAIL</label>
+  </span>
+</p>
+<div class="ml5" id="remindernotifytiming" style="display:#if ($!{result.ReminderFlag.toString()} != "T")none#end">
+  <select class="mr5" name="notify_timing">
+    <option value="0" #if ($!result.NotifyTiming.toString() == "0") selected="selected" #end>$l10n.SCHEDULE_REMINDER_ONTIME</option>
+    <option value="5" #if ($!result.NotifyTiming.toString() == "5") selected="selected" #end>5$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="15" #if ($!result.NotifyTiming.toString() == "15") selected="selected" #end>15$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="30" #if ($!result.NotifyTiming.toString() == "30") selected="selected" #end>30$l10n.SCHEDULE_REMINDER_BEFORE_MIN</option>
+    <option value="60" #if ($!result.NotifyTiming.toString() == "60") selected="selected" #end>1$l10n.SCHEDULE_REMINDER_BEFORE_HOUR</option>
+  </select>$l10n.SCHEDULE_REMINDER_NOTIFY_TEXT
+</div>
+</div>
+#ALtditemfooter()
+#end
+
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

@@ -843,3 +843,16 @@ aipo.schedule.setWrapperHeight = function() {
     	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
     }
 }
+
+aipo.schedule.reminderoff = function(){
+    dojo.byId('remindernotifytype').style.display = "none";
+    dojo.byId('remindernotifytiming').style.display = "none";
+
+    aipo.schedule.setWrapperHeight();
+}
+aipo.schedule.reminderon = function(){
+	dojo.byId('remindernotifytype').style.display = "";
+	dojo.byId('remindernotifytiming').style.display = "";
+
+    aipo.schedule.setWrapperHeight();
+}

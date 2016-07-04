@@ -87,6 +87,8 @@ public class ALBaseUser extends
 
   public static final String MIGRATE_VERSION = "MIGRATE_VERSION";
 
+  public static final String CODE = "CODE";
+
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ALBaseUser.class.getName());
 
@@ -523,5 +525,19 @@ public class ALBaseUser extends
    */
   public void setMigrateVersion(int id) {
     setPerm(MIGRATE_VERSION, Integer.valueOf(id));
+  }
+
+  /**
+   *
+   */
+  public String getCode() {
+    return (String) getPerm(CODE);
+  }
+
+  /**
+   *
+   */
+  public void setCode(String code) {
+    setPerm(CODE, code);
   }
 }

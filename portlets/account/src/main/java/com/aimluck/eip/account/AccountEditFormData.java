@@ -129,6 +129,9 @@ public class AccountEditFormData extends ALAbstractFormData {
   /** 役職 */
   private ALStringField position_name;
 
+  /** 社員コード */
+  private ALStringField code;
+
   /** 顔写真 */
   private ALStringField photo = null;
 
@@ -270,6 +273,11 @@ public class AccountEditFormData extends ALAbstractFormData {
     position_name.setFieldName(ALLocalizationUtils
       .getl10nFormat("ACCOUNT_POSITION"));
     position_name.setTrim(true);
+
+    // 社員コード
+    code = new ALStringField();
+    code.setFieldName(ALLocalizationUtils.getl10nFormat("ACCOUNT_CODE"));
+    code.setTrim(true);
 
     // 顔写真
     photo = new ALStringField();
@@ -566,6 +574,8 @@ public class AccountEditFormData extends ALAbstractFormData {
       setPostNameList(postNames);
 
       position_name.setValue(getPositionName(user.getPositionId()));
+
+      code.setValue(user.getCode());
 
       if (user.getPhoto() != null) {
         filebean = new FileuploadLiteBean();
@@ -966,6 +976,13 @@ public class AccountEditFormData extends ALAbstractFormData {
 
   public boolean isNewPhotoSpec() {
     return isNewPhotoSpec;
+  }
+
+  /**
+   * @return code
+   */
+  public ALStringField getCode() {
+    return code;
   }
 
 }

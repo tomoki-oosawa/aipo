@@ -1470,4 +1470,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return !"P".equals(type.getValue());
   }
 
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
+  }
+
 }
