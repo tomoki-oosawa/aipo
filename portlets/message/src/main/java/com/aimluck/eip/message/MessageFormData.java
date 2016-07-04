@@ -358,6 +358,21 @@ public class MessageFormData extends ALAbstractFormData {
         }
       }
 
+      @SuppressWarnings("unchecked")
+      List<EipTMessage> messages = room.getEipTMessages();
+      if (messages == null) {
+        return false;
+      }
+      Integer lastMessageId = 0;
+      for (EipTMessage tmpMessage : messages) {
+        if (lastMessageId < tmpMessage.getMessageId()) {
+          lastMessageId = tmpMessage.getMessageId();
+        }
+      }
+      if (lastMessageId == message.getMessageId()) {
+        // ルームのラストメッセージの更新
+      }
+
       // messageの添付ファイルを削除
       List<EipTMessageFile> files =
         MessageUtils.getEipTMessageFilesByMessage(messageId);
