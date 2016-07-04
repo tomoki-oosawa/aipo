@@ -57,7 +57,6 @@ import com.aimluck.eip.cayenne.om.portlet.EipTBlogFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTBlogFootmarkMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageFile;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -95,8 +94,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 public class AccountUtils {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(AccountUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(AccountUtils.class.getName());
 
   /** CSVファイル名 */
   public static final String FOLDER_TMP_FOR_USERINFO_CSV_FILENAME =
@@ -133,8 +132,8 @@ public class AccountUtils {
   public static final String TARGET_KEYWORD = "keyword";
 
   /** 添付ファイルを保管するディレクトリの指定 */
-  public static final String FOLDER_FILEDIR_ACCOUNT =
-    JetspeedResources.getString("aipo.filedir", "");
+  public static final String FOLDER_FILEDIR_ACCOUNT = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /**
    * セッション中のエンティティIDで示されるユーザ情報を取得する。 論理削除されたユーザを取得した場合はnullを返す。
@@ -181,8 +180,10 @@ public class AccountUtils {
    * @return
    */
   public static EipMCompany getEipMCompany(RunData rundata, Context context) {
-    return getEipMCompany(
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
+    return getEipMCompany(ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID));
   }
 
   public static EipMCompany getEipMCompany(String id) {
@@ -194,9 +195,8 @@ public class AccountUtils {
       }
 
       Expression exp =
-        ExpressionFactory.matchDbExp(
-          EipMCompany.COMPANY_ID_PK_COLUMN,
-          Integer.valueOf(id));
+        ExpressionFactory.matchDbExp(EipMCompany.COMPANY_ID_PK_COLUMN, Integer
+          .valueOf(id));
       List<EipMCompany> list =
         Database.query(EipMCompany.class, exp).fetchList();
       if (list == null || list.size() == 0) {
@@ -218,8 +218,10 @@ public class AccountUtils {
    * @return
    */
   public static EipMPost getEipMPost(RunData rundata, Context context) {
-    return getEipMPost(
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
+    return getEipMPost(ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID));
   }
 
   public static EipMPost getEipMPost(String id) {
@@ -231,14 +233,11 @@ public class AccountUtils {
       }
 
       Expression exp =
-        ExpressionFactory.matchDbExp(
-          EipMPost.POST_ID_PK_COLUMN,
-          Integer.valueOf(id));
+        ExpressionFactory.matchDbExp(EipMPost.POST_ID_PK_COLUMN, Integer
+          .valueOf(id));
       List<EipMPost> list =
-        Database
-          .query(EipMPost.class, exp)
-          .orderAscending(EipMPost.SORT_PROPERTY)
-          .fetchList();
+        Database.query(EipMPost.class, exp).orderAscending(
+          EipMPost.SORT_PROPERTY).fetchList();
       if (list == null || list.size() == 0) {
         logger.debug("Not found ID...");
         return result;
@@ -342,11 +341,9 @@ public class AccountUtils {
         TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
         Integer.valueOf(3));
     Expression exp3 =
-      ExpressionFactory.matchExp(
-        TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-          + "."
-          + TurbineGroup.OWNER_ID_PROPERTY,
-        Integer.valueOf(1));
+      ExpressionFactory.matchExp(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.OWNER_ID_PROPERTY, Integer.valueOf(1));
     query.setQualifier(exp1);
     query.andQualifier(exp2);
     query.andQualifier(exp3);
@@ -378,10 +375,8 @@ public class AccountUtils {
 
     try {
       List<EipMPosition> aList =
-        Database
-          .query(EipMPosition.class)
-          .orderAscending(EipMPosition.SORT_PROPERTY)
-          .fetchList();
+        Database.query(EipMPosition.class).orderAscending(
+          EipMPosition.SORT_PROPERTY).fetchList();
 
       for (EipMPosition record : aList) {
         AccountPositionResultData rd = new AccountPositionResultData();
@@ -431,9 +426,8 @@ public class AccountUtils {
     try {
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp =
-        ExpressionFactory.matchDbExp(
-          TurbineUser.USER_ID_PK_COLUMN,
-          Integer.valueOf(userId));
+        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
+          .valueOf(userId));
       query.setQualifier(exp);
       List<TurbineUser> destUserList = query.fetchList();
       if (destUserList == null || destUserList.size() <= 0) {
@@ -465,8 +459,8 @@ public class AccountUtils {
           userId);
       Expression workflow_exp2 =
         ExpressionFactory.matchExp(EipTWorkflowRequestMap.STATUS_PROPERTY, "C");
-      workflow_request_map_query.setQualifier(
-        workflow_exp.andExp(workflow_exp2));
+      workflow_request_map_query.setQualifier(workflow_exp
+        .andExp(workflow_exp2));
       List<EipTWorkflowRequestMap> workflow_request_map_list =
         workflow_request_map_query.fetchList();
       EipTWorkflowRequestMap workflow_request_map = null;
@@ -490,8 +484,8 @@ public class AccountUtils {
             ExpressionFactory.matchExp(
               EipTWorkflowRequestMap.ORDER_INDEX_PROPERTY,
               Integer.valueOf(request_number + 1));
-          workflow_request_map_query2.setQualifier(
-            workflow_exp3.andExp(workflow_exp4));
+          workflow_request_map_query2.setQualifier(workflow_exp3
+            .andExp(workflow_exp4));
           List<EipTWorkflowRequestMap> workflow_request_map_list2 =
             workflow_request_map_query2.fetchList();
 
@@ -501,8 +495,9 @@ public class AccountUtils {
             // 次の人が見つかった
             EipTWorkflowRequestMap workflow_request_map2 =
               workflow_request_map_list2.get(0);
-            if (getUserIsDisabledOrDeleted(
-              workflow_request_map2.getUserId().toString())) {
+            if (getUserIsDisabledOrDeleted(workflow_request_map2
+              .getUserId()
+              .toString())) {
               // 次の人が削除済み、もしくは無効化されていたら自動承認した上で次の人に回す
               workflow_request_map2.setStatus("T");
               request_number += 1;
@@ -545,8 +540,8 @@ public class AccountUtils {
       .getInstance()
       .getDataSyncHandler()
       .checkConnect()) {
-      msgList.add(
-        ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
+      msgList.add(ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ALERT_CONNECT_DB_FAILED"));
       return false;
     }
 
@@ -557,8 +552,8 @@ public class AccountUtils {
     int admin_count = 0;
     for (TurbineUser user : userlist) {
       if (user.getLoginName().equals(rundata.getUser().getUserName())) {
-        msgList.add(
-          ALLocalizationUtils.getl10nFormat("ACCOUNT_ALERT_DELETE_LOGINUSER"));
+        msgList.add(ALLocalizationUtils
+          .getl10nFormat("ACCOUNT_ALERT_DELETE_LOGINUSER"));
         return false;
       }
       if (ALEipUtils.isAdmin(user.getUserId())
@@ -568,11 +563,10 @@ public class AccountUtils {
     }
 
     if (!AccountUtils.isAdminDeletable(admin_count)) {
-      msgList.add(
-        ALLocalizationUtils.getl10nFormat(
-          "ACCOUNT_ALERT_NUMOFADMINS_LIMIT",
-          Integer.valueOf(
-            ALConfigService.get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "ACCOUNT_ALERT_NUMOFADMINS_LIMIT",
+        Integer.valueOf(ALConfigService
+          .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT))));
       return false;
     }
 
@@ -613,14 +607,10 @@ public class AccountUtils {
       }
 
       // TODOの削除
-      Database
-        .query(EipTTodo.class)
-        .where(Operations.in(EipTTodo.USER_ID_PROPERTY, userId))
-        .deleteAll();
-      Database
-        .query(EipTTodoCategory.class)
-        .where(Operations.in(EipTTodoCategory.USER_ID_PROPERTY, userId))
-        .deleteAll();
+      Database.query(EipTTodo.class).where(
+        Operations.in(EipTTodo.USER_ID_PROPERTY, userId)).deleteAll();
+      Database.query(EipTTodoCategory.class).where(
+        Operations.in(EipTTodoCategory.USER_ID_PROPERTY, userId)).deleteAll();
 
       String orgId = Database.getDomainName();
 
@@ -676,9 +666,8 @@ public class AccountUtils {
 
       // タイムライン削除
       Expression exp01 =
-        ExpressionFactory.matchDbExp(
-          EipTTimeline.OWNER_ID_COLUMN,
-          user.getUserId());
+        ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, user
+          .getUserId());
 
       Expression exp02 =
         ExpressionFactory.matchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
@@ -713,10 +702,9 @@ public class AccountUtils {
           }
           SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL =
             Database.query(EipTTimelineLike.class);
-          EipTTimelineLikeSQL.andQualifier(
-            ExpressionFactory.inDbExp(
-              EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
-              timelineAllIdList));
+          EipTTimelineLikeSQL.andQualifier(ExpressionFactory.inDbExp(
+            EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+            timelineAllIdList));
 
           for (EipTTimeline entry : timelineList) {
             List<String> fpaths = new ArrayList<String>();
@@ -744,9 +732,8 @@ public class AccountUtils {
       }
 
       Expression exp011 =
-        ExpressionFactory.matchDbExp(
-          EipTTimeline.OWNER_ID_COLUMN,
-          user.getUserId());
+        ExpressionFactory.matchDbExp(EipTTimeline.OWNER_ID_COLUMN, user
+          .getUserId());
 
       Expression exp021 =
         ExpressionFactory.noMatchDbExp(EipTTimeline.PARENT_ID_COLUMN, 0);
@@ -763,10 +750,9 @@ public class AccountUtils {
       if (!timelineList1.isEmpty()) {
         SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL2 =
           Database.query(EipTTimelineLike.class);
-        EipTTimelineLikeSQL2.andQualifier(
-          ExpressionFactory.inDbExp(
-            EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
-            timelineList1));
+        EipTTimelineLikeSQL2.andQualifier(ExpressionFactory.inDbExp(
+          EipTTimelineLike.EIP_TTIMELINE_PROPERTY,
+          timelineList1));
 
         EipTTimelineLikeSQL2.deleteAll();
         EipTTimelineSQL1.deleteAll();
@@ -775,10 +761,9 @@ public class AccountUtils {
 
       SelectQuery<EipTTimelineLike> EipTTimelineLikeSQL3 =
         Database.query(EipTTimelineLike.class);
-      EipTTimelineLikeSQL3.andQualifier(
-        ExpressionFactory.matchDbExp(
-          EipTTimelineLike.OWNER_ID_COLUMN,
-          user.getUserId()));
+      EipTTimelineLikeSQL3.andQualifier(ExpressionFactory.matchDbExp(
+        EipTTimelineLike.OWNER_ID_COLUMN,
+        user.getUserId()));
       EipTTimelineLikeSQL3.deleteAll();
 
       // メッセージ
@@ -789,14 +774,11 @@ public class AccountUtils {
             Operations.eq(EipTMessageFile.OWNER_ID_PROPERTY, user.getUserId()))
           .fetchList();
 
-      ALDeleteFileUtil.deleteFiles(
-        AccountUtils.getSaveDirPath(orgId, user.getUserId(), "message"),
-        messageFileList);
+      ALDeleteFileUtil.deleteFiles(AccountUtils.getSaveDirPath(orgId, user
+        .getUserId(), "message"), messageFileList);
 
-      Database
-        .query(EipTMessage.class)
-        .where(Operations.in(EipTMessage.USER_ID_PROPERTY, userId))
-        .deleteAll();
+      Database.query(EipTMessage.class).where(
+        Operations.in(EipTMessage.USER_ID_PROPERTY, userId)).deleteAll();
       Database
         .query(EipTMessageRoomMember.class)
         .where(Operations.in(EipTMessageRoomMember.USER_ID_PROPERTY, userId))
@@ -811,11 +793,8 @@ public class AccountUtils {
         && user.getFirstName() != null
         && !" ".equals(user.getFirstName())) {
         name =
-          new StringBuffer()
-            .append(user.getLastName())
-            .append(" ")
-            .append(user.getFirstName())
-            .toString();
+          new StringBuffer().append(user.getLastName()).append(" ").append(
+            user.getFirstName()).toString();
       } else {
         name = user.getEmail();
       }
@@ -884,28 +863,20 @@ public class AccountUtils {
   public static boolean isAdminDeletable(int admin_count) {
     try {
       int minimum_admin =
-        Integer.valueOf(
-          ALConfigService.get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT));
+        Integer.valueOf(ALConfigService
+          .get(Property.MINIMUM_ADMINISTRATOR_USER_COUNT));
       Group group = JetspeedSecurity.getGroup("LoginUser");
       Role adminrole = JetspeedSecurity.getRole("admin");
       int current_admin_count =
-        Database
-          .query(TurbineUserGroupRole.class)
-          .where(
-            Operations.eq(
-              TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
-              adminrole.getId()),
-            Operations.eq(
-              TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
-              group.getId()),
-            Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1),
-            Operations.eq(
-              TurbineUserGroupRole.TURBINE_USER_PROPERTY
-                + "."
-                + TurbineUser.DISABLED_PROPERTY,
-              "F"))
-          .distinct(true)
-          .getCount();
+        Database.query(TurbineUserGroupRole.class).where(
+          Operations.eq(TurbineUserGroupRole.TURBINE_ROLE_PROPERTY, adminrole
+            .getId()),
+          Operations.eq(TurbineUserGroupRole.TURBINE_GROUP_PROPERTY, group
+            .getId()),
+          Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1),
+          Operations.eq(TurbineUserGroupRole.TURBINE_USER_PROPERTY
+            + "."
+            + TurbineUser.DISABLED_PROPERTY, "F")).distinct(true).getCount();
       int admin_count_will = current_admin_count - admin_count;
       if (admin_count_will < 0) {
         admin_count_will = 0;
@@ -997,21 +968,13 @@ public class AccountUtils {
    */
   public static Map<Integer, FilterRole> getRoleMap() {
     if (roleMap.size() == 0) {
-      roleMap.put(
-        ROLE_ADMIN,
-        new FilterRole(
-          ROLE_ADMIN,
-          ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_ADMIN")));
-      roleMap.put(
-        ROLE_ACTIVE,
-        new FilterRole(
-          ROLE_ACTIVE,
-          ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_ACTIVE")));
-      roleMap.put(
+      roleMap.put(ROLE_ADMIN, new FilterRole(ROLE_ADMIN, ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ROLE_ADMIN")));
+      roleMap.put(ROLE_ACTIVE, new FilterRole(ROLE_ACTIVE, ALLocalizationUtils
+        .getl10nFormat("ACCOUNT_ROLE_ACTIVE")));
+      roleMap.put(ROLE_IN_ACTIVE, new FilterRole(
         ROLE_IN_ACTIVE,
-        new FilterRole(
-          ROLE_IN_ACTIVE,
-          ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_IN_ACTIVE")));
+        ALLocalizationUtils.getl10nFormat("ACCOUNT_ROLE_IN_ACTIVE")));
       // roleMap.put(ROLE_INVITE, new FilterRole(ROLE_INVITE,
       // ALLocalizationUtils
       // .getl10nFormat("ACCOUNT_ROLE_INVITE")));
@@ -1084,8 +1047,7 @@ public class AccountUtils {
     return target_keyword;
   }
 
-  public static String getSaveDirPath(String orgId, int uid,
-      String portletName) {
+  public static String getSaveDirPath(String orgId, int uid, String portletName) {
     return ALStorageService.getDocumentPath(
       FOLDER_FILEDIR_ACCOUNT,
       getCategoryKey(portletName) + ALStorageService.separator() + uid);
@@ -1145,8 +1107,8 @@ public class AccountUtils {
     try {
       String userId = Integer.toString(uid);
 
-      // user_idが自分で、管理者であるデータを取得する
-      SelectQuery<EipTMessageRoomMember> message_room_member_query =
+      // user_idが自分で、管理者であるデータを取得する(チェックする必要があるルームを取得)
+      SelectQuery<EipTMessageRoomMember> message_room_query =
         Database.query(EipTMessageRoomMember.class);
       Expression msgroom_exp =
         ExpressionFactory.matchExp(
@@ -1156,61 +1118,36 @@ public class AccountUtils {
         ExpressionFactory.matchExp(
           EipTMessageRoomMember.AUTHORITY_PROPERTY,
           "A");
-      message_room_member_query.setQualifier(msgroom_exp.andExp(msgroom_exp2));
-      List<EipTMessageRoomMember> message_room_member_list =
-        message_room_member_query.fetchList();
+      message_room_query.setQualifier(msgroom_exp.andExp(msgroom_exp2));
+      List<EipTMessageRoomMember> message_room_list =
+        message_room_query.fetchList();
 
-      // message_room_member_listの一つずつについて、room_id が一致しuser_idが自分でないデータを全て取り出す
-      for (EipTMessageRoomMember message_room_member1 : message_room_member_list) {
-        SelectQuery<EipTMessageRoomMember> message_room_member_query2 =
+      // ルーム一つずつについて、自分の他のメンバーを取り出す
+      for (EipTMessageRoomMember message_room : message_room_list) {
+        SelectQuery<EipTMessageRoomMember> message_room_query2 =
           Database.query(EipTMessageRoomMember.class);
         Expression msgroom_exp3 =
           ExpressionFactory.matchExp(
             EipTMessageRoomMember.EIP_TMESSAGE_ROOM_PROPERTY,
-            message_room_member1.getEipTMessageRoom().getRoomId());
+            message_room.getEipTMessageRoom().getRoomId());
         Expression msgroom_exp4 =
           ExpressionFactory.noMatchExp(
             EipTMessageRoomMember.USER_ID_PROPERTY,
-            message_room_member1.getUserId());
-        message_room_member_query2.setQualifier(
-          msgroom_exp3.andExp(msgroom_exp4));
-        List<EipTMessageRoomMember> message_room_member_list2 =
-          message_room_member_query2.fetchList();
+            message_room.getUserId());
+        message_room_query2.setQualifier(msgroom_exp3.andExp(msgroom_exp4));
+        List<EipTMessageRoomMember> message_room_member_list =
+          message_room_query2.fetchList();
 
-        // ルームに管理者が居る(authority が A のデータがある)か確認し、居なかったら、有効なメンバーを管理者に設定
-        EipTMessageRoomMember message_room_member_one_before =
-          message_room_member_list2.get(0); // 下の拡張for文の中で、一つ前のデータとして使用する変数
-        boolean flag = false;
-        EipTMessageRoomMember model =
-          Database.create(EipTMessageRoomMember.class);
-        model.setEipTMessageRoom(Database.create(EipTMessageRoom.class));
-        model.getEipTMessageRoom().setRoomId("0");
-        model.setAuthority("M");
-        message_room_member_list2.add(model); // 末尾のデータにも処理を行うためにダミーデータを追加しておく
-        for (EipTMessageRoomMember message_room_member2 : message_room_member_list2) {
-          // ひとつ前と同じルームだったら、管理者のチェック
-          if (message_room_member_one_before
-            .getEipTMessageRoom()
-            .getRoomId() == message_room_member2
-              .getEipTMessageRoom()
-              .getRoomId()) {
-            if (message_room_member2.getAuthority().equals("A")) {
-              // 管理者が居たらtrueにする
-              flag = true;
-            }
-          } else {
-            // ひとつ前と違うルームのデータで、flagがfalseだったら(管理者が居なかったら)、管理者権限をセットする
-            if (!flag) {
-              message_room_member_one_before.setAuthority("A");
-            }
-
-            flag = false;
-            if (message_room_member2.getAuthority().equals("A")) {
-              // 管理者が居たらtrueにする
-              flag = true;
-            }
+        // 管理者権限を持つメンバーがいたら抜ける。いないまま最後のメンバーまで来たらそのメンバーに管理者権限を与える
+        for (Iterator<EipTMessageRoomMember> iterator =
+          message_room_member_list.iterator(); iterator.hasNext();) {
+          EipTMessageRoomMember member = iterator.next();
+          if (member.getAuthority().equals("A")) {
+            break;
           }
-          message_room_member_one_before = message_room_member2;
+          if (!iterator.hasNext()) {
+            member.setAuthority("A");
+          }
         }
       }
       return true;
