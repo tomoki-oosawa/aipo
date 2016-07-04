@@ -858,7 +858,7 @@ public class BlogUtils {
   }
 
   public static void createNewBlogActivity(EipTBlogEntry blog,
-      String loginName, boolean isNew) {
+      String loginName, int loginId, boolean isNew) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Blog", blog.getEntryId(), 0f);
     boolean isDeletePrev =
@@ -875,7 +875,7 @@ public class BlogUtils {
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Blog")
       .withLoginName(loginName)
-      .withUserId(blog.getOwnerId())
+      .withUserId(loginId)
       .withPortletParams(portletParams)
       .withTitle(title)
       .withPriority(0f)
