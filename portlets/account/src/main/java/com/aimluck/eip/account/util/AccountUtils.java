@@ -1138,7 +1138,8 @@ public class AccountUtils {
         List<EipTMessageRoomMember> message_room_member_list =
           message_room_query2.fetchList();
 
-        // 管理者権限を持つメンバーがいたら抜ける。いないまま最後のメンバーまで来たらそのメンバーに管理者権限を与える
+        boolean flag = false;
+        // 管理者権限を持つメンバーがいたら抜ける。一人もいなかったらflagをtrueにする
         for (Iterator<EipTMessageRoomMember> iterator =
           message_room_member_list.iterator(); iterator.hasNext();) {
           EipTMessageRoomMember member = iterator.next();
@@ -1146,6 +1147,13 @@ public class AccountUtils {
             break;
           }
           if (!iterator.hasNext()) {
+            flag = true;
+          }
+        }
+
+        // flagがtrueなら全員を管理者に設定する
+        if (flag) {
+          for (EipTMessageRoomMember member : message_room_member_list) {
             member.setAuthority("A");
           }
         }
