@@ -14,6 +14,7 @@ public class _EipTExtTimecardSystem extends org.apache.cayenne.CayenneDataObject
     public static final String END_HOUR_PROPERTY = "endHour";
     public static final String END_MINUTE_PROPERTY = "endMinute";
     public static final String OUTGOING_ADD_FLAG_PROPERTY = "outgoingAddFlag";
+    public static final String OVERTIME_TYPE_PROPERTY = "overtimeType";
     public static final String RESTTIME_IN_PROPERTY = "resttimeIn";
     public static final String RESTTIME_OUT_PROPERTY = "resttimeOut";
     public static final String START_DAY_PROPERTY = "startDay";
@@ -65,6 +66,14 @@ public class _EipTExtTimecardSystem extends org.apache.cayenne.CayenneDataObject
     }
     public String getOutgoingAddFlag() {
         return (String)readProperty("outgoingAddFlag");
+    }
+    
+    
+    public void setOvertimeType(String overtimeType) {
+        writeProperty("overtimeType", overtimeType);
+    }
+    public String getOvertimeType() {
+        return (String)readProperty("overtimeType");
     }
     
     

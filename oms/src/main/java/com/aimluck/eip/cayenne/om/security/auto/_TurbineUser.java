@@ -12,6 +12,7 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     public static final String CELLULAR_MAIL_PROPERTY = "cellularMail";
     public static final String CELLULAR_PHONE_PROPERTY = "cellularPhone";
     public static final String CELLULAR_UID_PROPERTY = "cellularUid";
+    public static final String CODE_PROPERTY = "code";
     public static final String COMPANY_ID_PROPERTY = "companyId";
     public static final String CONFIRM_VALUE_PROPERTY = "confirmValue";
     public static final String CREATED_PROPERTY = "created";
@@ -82,6 +83,14 @@ public class _TurbineUser extends org.apache.cayenne.CayenneDataObject {
     }
     public String getCellularUid() {
         return (String)readProperty("cellularUid");
+    }
+    
+    
+    public void setCode(String code) {
+        writeProperty("code", code);
+    }
+    public String getCode() {
+        return (String)readProperty("code");
     }
     
     
