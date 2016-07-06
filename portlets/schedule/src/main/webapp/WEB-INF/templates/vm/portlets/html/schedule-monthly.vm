@@ -65,8 +65,8 @@
 <div class="count"><strong>$!{result.ViewMonthText}</strong></div>
 </div>
 </div>
-
 </div>
+
 ##<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 <div id="content-$!portlet.ID" style="visibility:visible">
@@ -129,7 +129,6 @@
 #set ($theD = ${portlet.getPortletConfig().getInitParameter("z1a-rows")})
 #set ( $intConv = 1 )
 #set ( $foo2 = $intConv.parseInt( $theD ) )
-#set ( $bar = $foo2 + 1 )
 #set ($theDay = $foo2 - 1)
 #set ($weekOrder = ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
 #set ($weekRevised = [])
@@ -141,26 +140,33 @@
 		#set($theDay = 0)
 	#end
 #end
+
+$theDay
+
+##number
+#set ($num = 7)
+#if ($theDay == 0)
+#set ($num = 0)
+#end
+
 ##ここまでで "z1a-rows" を参照して表示を切り替え
-
-
+##実際に並び替えられたリストを表示していく
 <tr>
 	#foreach($test in $weekRevised)
 		<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
 	#end
 </tr>
-
-#*
-<tr>
-	#foreach($test in ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
-		<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+##表示終了
+#foreach($record4 in $result.Container.WeekList)
+	#foreach($record in $record4.DayList)
+		$record.Date.Value
 	#end
-</tr>
-*#
+#end
 
 #set($entityids = "")
 #set($weekListSize = $result.Container.WeekList.size())
 #set($weekcount = 0)
+
 #foreach($record4 in $result.Container.WeekList)
 #if($!{result.TermContainer.getWeekList($weekcount)})
 	#set($termConListSize = ${result.TermContainer.getWeekList($weekcount).size()})
@@ -174,6 +180,8 @@
 #else #set($todoConListSize = 0)
 #end
 
+##日付の曜日
+
 <tr>
 #foreach($record in $record4.DayList)
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
@@ -183,9 +191,9 @@
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
+#elseif($!{record.Date.Value.Day} == ($num - $theDay))
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
+#elseif($!{record.Date.Value.Day} == (6 - $theDay))
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -218,9 +226,10 @@
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
+
+#elseif($!{record.Date.Value.Day} == ($num - $theDay))
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
+#elseif($!{record.Date.Value.Day} == (6 - $theDay))
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -258,10 +267,6 @@
 #end
 ### 期間スケジュール（ここまで） ###
 
-
-###上は消しても影響ない場合あり
-###以下は消えると全部なくなる
-
 #if($todoConListSize > 0)
 #foreach($todocontainer in ${result.ToDoContainer.getWeekList($weekcount)})
 <tr>
@@ -276,9 +281,10 @@
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
+
+#elseif($!{record.Date.Value.Day} == ($num - $theDay))
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
+#elseif($!{record.Date.Value.Day} == (6 - $theDay))
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -308,7 +314,7 @@ $!{record.ToDoResultData.TodoName}
 #end
 
 
-###u"以下はデータの中身。恐らくカレンダーの枠組みは別の場所にある。"
+##"以下はデータの中身。恐らくカレンダーの枠組みは別の場所にある。"
 
 <tr>
 #foreach($record in $record4.DayList)
@@ -318,9 +324,9 @@ $!{record.ToDoResultData.TodoName}
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
+#elseif($!{record.Date.Value.Day} == ($num - $theDay))
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
+#elseif($!{record.Date.Value.Day} == (6 - $theDay))
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -348,7 +354,6 @@ $!{record.ToDoResultData.TodoName}
 <div class="calendarBody">
 <div class="calendarScheduleDiv"></div>
 </div>
-
 #else
 <div class="calendarScheduleDiv"></div>
 #foreach($record2 in $record.ScheduleList)
@@ -368,7 +373,6 @@ $!{record.ToDoResultData.TodoName}
 #end
 </a>
 </div>
-
 #else
 <div class="calendarScheduleDiv">
 #if($!display_month == "detail")
@@ -388,6 +392,7 @@ $!{record.ToDoResultData.TodoName}
 </td>
 #end
 </tr>
+
 #set($weekcount = $weekcount + 1)
 #end
 #ALtablefooterCalendar()
