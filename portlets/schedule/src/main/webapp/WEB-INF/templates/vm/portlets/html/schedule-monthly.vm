@@ -124,27 +124,25 @@
 #ALtableheaderCalendarAtt("100%" "calendarDisplayMonth")
 #end
 
+
 ##ここから　数値を得る
 #set ($theD = ${portlet.getPortletConfig().getInitParameter("z1a-rows")})
-
-##この状態だと[1...7]で扱いづらいので[0...6]にする
-#set ($theDay = $intConv.parseInt($theD) - 1)
+#set ( $intConv = 1 )
+#set ( $foo2 = $intConv.parseInt( $theD ) )
+#set ( $bar = $foo2 + 1 )
+#set ($theDay = $foo2 - 1)
 #set ($weekOrder = ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
 #set ($weekRevised = [])
-
-$theD
-$weekOrder
-$weekRevised
-
-##メソッドの.add()の使い方がおかしいようです。
 #foreach($test in $weekOrder)
-	#set ($target = $weekOrder.get($intConv.parseInt($theDay)))
-	#set ($weekRevised = $weekRevised.add($target))
-	#set ($theDay = $intConv.parseInt($theDay) + 1)
-	#if( $weekOrder.size() <= $intConv.parseInt($theDay))
+	#set ($target = $weekOrder.get($theDay))
+	$!weekRevised.add($!target)
+	#set ($theDay = $theDay + 1)
+	#if( 7 <= $theDay)
 		#set($theDay = 0)
 	#end
 #end
+##ここまでで "z1a-rows" を参照して表示を切り替え
+
 
 <tr>
 	#foreach($test in $weekRevised)
