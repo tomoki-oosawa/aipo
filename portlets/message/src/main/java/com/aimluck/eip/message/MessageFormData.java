@@ -23,6 +23,7 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -326,6 +327,9 @@ public class MessageFormData extends ALAbstractFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
+
+      Date now = new Date();
+
       // messageIdの取得
       int messageId = rundata.getParameters().getInt(ALEipConstants.ENTITY_ID);
 
@@ -347,10 +351,11 @@ public class MessageFormData extends ALAbstractFormData {
       }
 
       List<String> recipients = new ArrayList<String>();
-      EipTMessageRoom room = message.getEipTMessageRoom();
-      if (room != null) {
+      EipTMessageRoom tmpRoom = message.getEipTMessageRoom();
+      if (tmpRoom != null) {
         @SuppressWarnings("unchecked")
-        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+        List<EipTMessageRoomMember> members =
+          tmpRoom.getEipTMessageRoomMember();
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
             recipients.add(member.getLoginName());
@@ -358,19 +363,34 @@ public class MessageFormData extends ALAbstractFormData {
         }
       }
 
+      // lastMessage削除された場合更新
       @SuppressWarnings("unchecked")
-      List<EipTMessage> messages = room.getEipTMessages();
+      List<EipTMessage> messages = tmpRoom.getEipTMessages();
       if (messages == null) {
         return false;
       }
-      Integer lastMessageId = 0;
-      for (EipTMessage tmpMessage : messages) {
-        if (lastMessageId < tmpMessage.getMessageId()) {
-          lastMessageId = tmpMessage.getMessageId();
+
+      Collections.sort(messages, (o1, o2) -> Integer.compare(
+        o2.getMessageId(),
+        o1.getMessageId()));
+      Integer lastMessageId = messages.get(0).getMessageId();
+      if (message.getMessageId().equals(lastMessageId)) {
+        // 削除するメッセージが最新のメッセージの時
+        EipTMessageRoom room = MessageUtils.getRoom(tmpRoom.getRoomId());
+        if (room == null) {
+          return false;
         }
-      }
-      if (lastMessageId == message.getMessageId()) {
-        // ルームのラストメッセージの更新
+        if (messages.size() > 1) {
+          EipTMessage secondLastMessage = messages.get(1);
+          room.setLastMessage(ALCommonUtils.compressString(secondLastMessage
+            .getMessage(), 100));
+          room.setLastUpdateDate(now);
+        } else {
+          // メッセージが一つの場合lastMessageにnull
+          room.setLastMessage(ALCommonUtils.compressString(null, 100));
+          room.setLastUpdateDate(now);
+        }
+        Database.commit();
       }
 
       // messageの添付ファイルを削除
