@@ -233,11 +233,17 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
       List<Integer> users = new ArrayList<Integer>();
       int size = list.size();
-      for (int i = 0; i < size; i++) {
-        EipTMsgboardCategoryMap map = list.get(i);
+      if (size == 1) {
+        EipTMsgboardCategoryMap map = list.get(0);
         users.add(map.getUserId());
-        if (uid == map.getUserId().intValue()) {
-          loginUserStatus = map.getStatus();
+        loginUserStatus = map.getStatus();
+      } else {
+        for (int i = 0; i < size; i++) {
+          EipTMsgboardCategoryMap map = list.get(i);
+          users.add(map.getUserId());
+          if (uid == map.getUserId().intValue()) {
+            loginUserStatus = map.getStatus();
+          }
         }
       }
 
@@ -518,7 +524,8 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
             break;
           }
         }
-        if (!containsLoginUser) {
+
+        if (!containsLoginUser && !("update".equals(mode))) {
           memberList.add(login_user);
         }
 
