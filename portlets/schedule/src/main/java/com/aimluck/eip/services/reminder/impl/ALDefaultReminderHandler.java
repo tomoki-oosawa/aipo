@@ -118,4 +118,12 @@ public class ALDefaultReminderHandler extends ALReminderHandler {
     return JetspeedResources.getBoolean("aipo.reminder.viewsetting", false);
   }
 
+  /**
+   * @return
+   */
+  @Override
+  public boolean isPastEnabled() {
+    return JetspeedResources.getBoolean("aipo.reminder.pastEnabled", false);
+  }
+
 }
