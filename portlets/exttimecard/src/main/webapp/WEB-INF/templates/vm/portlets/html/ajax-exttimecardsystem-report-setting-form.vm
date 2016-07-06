@@ -1,0 +1,69 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set($subtitle = $l10n.EXTTIMECARD_REPORT_SETTING)
+#set ($indicator_id = "indicator-dlg-")
+#if  ($mode=="new_form")
+#set ($action_str = $l10n.EXTTIMECARD_ADD)
+#set ($event_submit = "eventSubmit_doExttimecard_system_report_setting_insert")
+#else
+#set ($action_str = $l10n.EXTTIMECARD_UPDATE)
+#set ($event_submit = "eventSubmit_doExttimecard_system_report_setting_update")
+#end
+## ---------------------------------------------------------------------------
+#ALdialogheaderCloseJS($subtitle "aipo.exttimecardsystem.hideDialog()")
+#ALspacebothheader()
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
+#ALajaxscreenformheader("extTimecardSystemForm" $jslink $portlet "ExtTimecardSystemReportSettingFormJSONScreen" "aimluck.io.submit(this, '$!indicator_id', '$!portlet.ID',aipo.exttimecardsystem.onReceiveMessage)")
+#ALtableheaderWide()
+#ALtdcaption("#ALrequired($l10n.EXTTIMECARD_REPORT_TYPE)")
+#ALtditemheader()
+<input name="type" type="radio" value="2" id="type_2" #if ($!result.Type.toString() == "2") checked="checked" #end onclick="aipo.exttimecardsystem.changeTypeNew();"/>
+<label for="type_2">$l10n.EXTTIMECARD_REPORT_NEW</label>
+<input name="type" type="radio" value="1" id="type_1" #if ($!result.Type.toString() == "1") checked="checked" #end onclick="aipo.exttimecardsystem.changeTypeOld();"/>
+<label for="type_1">$l10n.EXTTIMECARD_REPORT_OLD</label>
+<div id="timecard-type-new" #if ($!result.Type.toString() == "1") style="display:none" #end>
+	<ul>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE1</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE2</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE3</li>
+    <li>$l10n.EXTTIMECARD_REPORT_NEW_MESSAGE4</li>
+	</ul>
+</div>
+<div id="timecard-type-old" #if ($!result.Type.toString() == "2") style="display:none" #end>
+	<ul>
+		<li>$l10n.EXTTIMECARD_REPORT_OLD_MESSAGE1</li>
+	</ul>
+</div>
+#ALtditemfooter()
+#ALtablefooter()
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)
+#ALajaxbuttonClose()
+#ALbuttonfooter()
+#if($mode=="new_form")
+<input type="hidden" name="mode" value="insert" />
+#else
+<input type="hidden" name="mode" value="update" />
+#end
+#ALformfooter()
+#ALspacebothfooter()
+#ALdialogfooter()

@@ -101,6 +101,22 @@ $!{result.WorkTimeOutRestTimeOutText}
 <input type="checkbox" name="outgoing_add_flag" value="T" id="outgoing_add_flag" #if($result.OutgoingAddFlag.toString() == 'T')checked="checked"#end/>
 <label for="outgoing_add_flag">$l10n.EXTTIMECARD_ADD_OUTGOINGTIME</label>
 #ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE)
+#ALtditemheader()
+#if($!result.isNewRule())
+<p>$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY1
+<input class="text" name="overtime_type_minute" value="$!result.OvertimeTypeMinute.toString()" type="text" size="3" maxlength="3">
+$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY2</p>
+## <p>
+## <input type="checkbox" name="overtime_type_week" id="overtime_type_week" value="T" #if($result.OvertimeTypeWeek.toString() == 'T')checked="checked"#end>
+## <label for="overtime_type_week">$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1
+## <input class="text" name="overtime_type_week_hour" value="$!result.OvertimeTypeWeekHour.toString()" type="text" size="3" maxlength="3">
+## $l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2</label>
+## </p>
+#else
+$l10n.EXTTIMECARD_OVERTIME_TYPE_O
+#end
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)

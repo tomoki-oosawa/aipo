@@ -335,6 +335,7 @@ public class ScheduleSelectData extends
       List<Integer> facilityIds = new ArrayList<Integer>();
       // 表示するユーザーがスケジュールの参加者かどうか
       boolean isMember = false;
+      boolean isDummy = false;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = list.get(i);
@@ -348,6 +349,7 @@ public class ScheduleSelectData extends
             rd.setConfirm("C".equals(map.getStatus()));
             // スケジュールの参加者かどうか
             isMember = !"R".equals(map.getStatus());
+            isDummy = "D".equals(map.getStatus());
           }
           users.add(map.getUserId());
 
@@ -429,6 +431,8 @@ public class ScheduleSelectData extends
       rd.setHidden("P".equals(record.getPublicFlag()));
       // 共有メンバーによる編集／削除フラグ
       rd.setEditFlag("T".equals(record.getEditFlag()));
+      // メンバーかどうか
+      rd.setMember(isMember && !isDummy);
 
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
@@ -823,6 +827,10 @@ public class ScheduleSelectData extends
 
   public boolean isReminderEnabled() {
     return ALReminderService.isEnabled();
+  }
+
+  public boolean isReminderViewSetting() {
+    return ALReminderService.isViewSetting();
   }
 
   public ALReminderItem getReminderItem() {

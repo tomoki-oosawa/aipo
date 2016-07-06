@@ -31,10 +31,11 @@ import com.aimluck.commons.utils.ALDateUtil;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 
 /**
  * タイムカードのResultDataです。 <BR>
- * 
+ *
  */
 public class ExtTimecardResultData implements ALData {
 
@@ -100,6 +101,8 @@ public class ExtTimecardResultData implements ALData {
 
   private boolean isTypeE;
 
+  private boolean isCurrentMonth;
+
   /**
    *
    *
@@ -141,7 +144,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 出勤時間がNULLかどうか調べます。
-   * 
+   *
    * @return boolean
    */
   public boolean getIsNullClockInTime() {
@@ -153,7 +156,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 退勤時間がNULLかどうか調べます。
-   * 
+   *
    * @return boolean
    */
   public boolean getIsNullClockOutTime() {
@@ -165,7 +168,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 現在外出中かどうか調べます。
-   * 
+   *
    * @return boolean
    */
   public boolean getIsOutgoing() {
@@ -181,29 +184,70 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 現在残業中かどうか調べます。
-   * 
+   *
    * @return boolean
    */
   public boolean getIsOverTime() {
     if (!getIsNullClockInTime()) {
-      int end_hour = timecard_system.getEndHour(), end_minute =
-        timecard_system.getEndMinute();
+      if (!ExtTimecardUtils.isNewRule()) {
+        int end_hour = timecard_system.getEndHour(), end_minute =
+          timecard_system.getEndMinute();
 
-      Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
 
-      int now_hour = cal.get(Calendar.HOUR_OF_DAY);
-      int now_minute = cal.get(Calendar.MINUTE);
+        int now_hour = cal.get(Calendar.HOUR_OF_DAY);
+        int now_minute = cal.get(Calendar.MINUTE);
 
-      if (now_hour < end_hour) {
-        return false;
-      } else if (now_hour == end_hour) {
-        if (now_minute < end_minute) {
+        if (now_hour < end_hour) {
           return false;
+        } else if (now_hour == end_hour) {
+          if (now_minute < end_minute) {
+            return false;
+          } else {
+            return true;
+          }
         } else {
           return true;
         }
       } else {
-        return true;
+        // 法定外残業
+        Calendar cal = Calendar.getInstance();
+        float time = 0f;
+        time +=
+          (cal.getTime().getTime() - clock_in_time.getValue().getTime())
+            / (1000.0 * 60.0 * 60.0);
+
+        /** 外出時間を就業時間に含めない場合 */
+        if ("F".equals(timecard_system.getOutgoingAddFlag())) {
+          int length = outgoing_time.size();
+          for (int i = 0; i < length; i++) {
+            if (!outgoing_time.get(i).isNullHour()
+              && !comeback_time.get(i).isNullHour()) {
+              time -=
+                (comeback_time.get(i).getValue().getTime() - outgoing_time.get(
+                  i).getValue().getTime())
+                  / (1000.0 * 60.0 * 60.0);
+            }
+          }
+        }
+
+        /** 就業時間の中で決まった時間の休憩を取らせます。 */
+        /** 決まった時間ごとの休憩時間を取らせます。 */
+        float worktimein = (timecard_system.getWorktimeIn() / 60f);
+        float resttimein = (timecard_system.getResttimeIn() / 60f);
+        if (worktimein != 0F) {
+          int resttimes = (int) (time / worktimein);
+          time -= resttimes * resttimein;
+        }
+        float overTime =
+          ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system
+            .getOvertimeType()) / 60f;
+        if (time >= overTime) {
+          return true;
+        } else {
+          return false;
+        }
+
       }
     }
     return false;
@@ -279,7 +323,7 @@ public class ExtTimecardResultData implements ALData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public void addSumWorkDate() {
@@ -338,7 +382,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 当日中最新の外出時間を得ます。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getOutgoingTime() {
@@ -355,7 +399,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 当日中最近の復帰時間を得ます。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getComebackTime() {
@@ -372,7 +416,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 当日全ての外出時間を得ます。
-   * 
+   *
    * @return
    */
   public List<ALDateTimeField> getAllOutgoingTime() {
@@ -381,7 +425,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 当日全ての復帰時間を得ます。
-   * 
+   *
    * @return
    */
   public List<ALDateTimeField> getAllComebackTime() {
@@ -432,7 +476,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -566,7 +610,7 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * タイムカードの設定を取得します。
-   * 
+   *
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
@@ -575,11 +619,26 @@ public class ExtTimecardResultData implements ALData {
 
   /**
    * タイムカードの設定を読み込みます。
-   * 
+   *
    * @return
    */
   public void setTimecardSystem(EipTExtTimecardSystem system) {
     timecard_system = system;
+  }
+
+  /**
+   * @return isCurrentMonth
+   */
+  public boolean isCurrentMonth() {
+    return isCurrentMonth;
+  }
+
+  /**
+   * @param isCurrentMonth
+   *          セットする isCurrentMonth
+   */
+  public void setCurrentMonth(boolean isCurrentMonth) {
+    this.isCurrentMonth = isCurrentMonth;
   }
 
 }

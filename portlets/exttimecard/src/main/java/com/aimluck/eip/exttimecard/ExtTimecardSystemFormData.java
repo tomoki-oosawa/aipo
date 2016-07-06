@@ -46,7 +46,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード集計のフォームデータを管理するためのクラスです。 <br />
- * 
+ *
  */
 
 public class ExtTimecardSystemFormData extends ALAbstractFormData {
@@ -85,7 +85,15 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   private ALStringField outgoing_add_flag;
 
+  private ALNumberField overtime_type_minute;
+
+  private ALNumberField overtime_type_week_hour;
+
+  private ALStringField overtime_type_week;
+
   private int entity_id;
+
+  private boolean isNewRule = false;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -147,6 +155,21 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
     outgoing_add_flag = new ALStringField();
 
+    overtime_type_minute = new ALNumberField();
+    overtime_type_minute.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+    overtime_type_minute.limitMinValue(0);
+    overtime_type_week_hour = new ALNumberField();
+    overtime_type_week_hour.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+    overtime_type_week_hour.limitMinValue(0);
+
+    overtime_type_week = new ALStringField();
+    overtime_type_week.setFieldName(ALLocalizationUtils
+      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+
+    isNewRule = isNewRule();
+
   }
 
   @Override
@@ -177,6 +200,14 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       change_hour.setValue(String.valueOf(record.getChangeHour()));
       outgoing_add_flag.setValue(record.getOutgoingAddFlag());
+      if (isNewRule) {
+        overtime_type_minute.setValue(ExtTimecardUtils
+          .getOvertimeMinuteByDay(record.getOvertimeType()));
+        overtime_type_week_hour.setValue(ExtTimecardUtils
+          .getOvertimeHourByWeek(record.getOvertimeType()));
+        overtime_type_week.setValue(ExtTimecardUtils
+          .isOvertimeHourByWeek(record.getOvertimeType()) ? "T" : "F");
+      }
 
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
@@ -217,6 +248,15 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       // 更新日
       record.setUpdateDate(Calendar.getInstance().getTime());
+
+      if (isNewRule) {
+        String overType =
+          +overtime_type_minute.getValue()
+            + "-"
+            + ("T".equals(overtime_type_week.getValue()) ? "T" : "F")
+            + overtime_type_week_hour.getValue();
+        record.setOvertimeType(overType);
+      }
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
@@ -293,6 +333,18 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         tmp = "F";
       }
       record.setOutgoingAddFlag(tmp);
+
+      String overType;
+      if (isNewRule) {
+        overType =
+          +overtime_type_minute.getValue()
+            + "-"
+            + ("T".equals(overtime_type_week.getValue()) ? "T" : "F")
+            + overtime_type_week_hour.getValue();
+      } else {
+        overType = ExtTimecardUtils.OVERTIME_TYPE_O;
+      }
+      record.setOvertimeType(overType);
       record.setCreateDate(Calendar.getInstance().getTime());
       record.setUpdateDate(Calendar.getInstance().getTime());
       Database.commit();
@@ -346,6 +398,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
           change_hour.setValue(String.valueOf(record.getChangeHour()));
           outgoing_add_flag.setValue(record.getOutgoingAddFlag());
+          overtime_type_minute
+            .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_MINUTE);
+          overtime_type_week_hour
+            .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK);
+          overtime_type_week.setValue("F");
         } catch (Exception ex) {
           logger.error("[ExtTimecardSystemFormData]", ex);
         }
@@ -376,6 +433,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     worktime_out.limitValue(0, 480);
     resttime_in.limitValue(0, 480);
     resttime_out.limitValue(0, 480);
+    overtime_type_minute.limitValue(0, 1440);
+    overtime_type_week_hour.limitValue(0, 168);
   }
 
   @Override
@@ -411,6 +470,10 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         msgList.add(ALLocalizationUtils
           .getl10n("EXTTIMECARD_ALERT_SELECT_CHANGE_HOUR"));
       }
+      if (isNewRule) {
+        overtime_type_minute.validate(msgList);
+        overtime_type_week_hour.validate(msgList);
+      }
     } catch (Exception ex) {
       logger.error("exttimecard", ex);
       return false;
@@ -427,7 +490,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /**
    * 勤務時間と日付切替時刻の関係の妥当性を検証します。
-   * 
+   *
    * @param start_time
    * @param end_time
    * @param change_time
@@ -452,7 +515,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /**
    * 詳細データを取得する抽象メソッドです。
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -463,7 +526,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getStartTimeHour() {
@@ -471,7 +534,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getStartTimeMinute() {
@@ -479,7 +542,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getEndTimeHour() {
@@ -487,7 +550,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getEndTimeMinute() {
@@ -495,7 +558,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getWorktimeIn() {
@@ -503,7 +566,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getWorktimeOut() {
@@ -511,7 +574,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getResttimeIn() {
@@ -519,7 +582,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getResttimeOut() {
@@ -541,7 +604,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALNumberField getChangeHour() {
@@ -549,7 +612,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getSystemName() {
@@ -557,7 +620,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getOutgoingAddFlag() {
@@ -575,4 +638,19 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     return this.system_id;
   }
 
+  public ALNumberField getOvertimeTypeMinute() {
+    return overtime_type_minute;
+  }
+
+  public ALNumberField getOvertimeTypeWeekHour() {
+    return overtime_type_week_hour;
+  }
+
+  public ALStringField getOvertimeTypeWeek() {
+    return overtime_type_week;
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
+  }
 }

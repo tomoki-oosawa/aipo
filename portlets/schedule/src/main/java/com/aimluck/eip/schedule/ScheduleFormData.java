@@ -1939,7 +1939,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       Database.commit();
 
       // アラーム
-      if (ALReminderService.isEnabled()) {
+      if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
         boolean isLimit = false;
         if ("ON".equals(limit_flag.getValue())) {
           isLimit = true;
@@ -2459,7 +2459,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       Database.commit();
 
       // アラーム
-      if (ALReminderService.isEnabled()) {
+      if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
         if (del_member_flag.getValue() == FLAG_DEL_MEMBER_ALL) {
           if (del_range_flag.getValue() == FLAG_DEL_RANGE_ALL) {
             // 完全に削除する（元のスケジュール、関連するダミースケジュール）

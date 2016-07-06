@@ -279,6 +279,7 @@ public class UserUtils {
       statement.append(" OR B.LAST_NAME_KANA LIKE #bind($keyword4) ");
       statement.append(" OR B.EMAIL LIKE #bind($keyword5) ");
       statement.append(" OR B.LOGIN_NAME LIKE #bind($keyword6) ");
+      statement.append(" OR B.CODE LIKE #bind($keyword7) ");
       statement.append(" ) ");
     }
     statement.append("ORDER BY D.POSITION");
@@ -297,6 +298,7 @@ public class UserUtils {
       param.param("keyword4", "%" + keyword + "%");
       param.param("keyword5", "%" + keyword + "%");
       param.param("keyword6", "%" + keyword + "%");
+      param.param("keyword7", "%" + keyword + "%");
     }
 
     List<TurbineUser> list2 = param.fetchList();
