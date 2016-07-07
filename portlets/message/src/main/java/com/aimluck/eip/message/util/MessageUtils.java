@@ -514,10 +514,10 @@ public class MessageUtils {
     if (isSearch) {
       if (isMySQL) {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT(t4.last_name,t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT( (case when t4.login_name='admin' then 'Aipo.com' else t4.last_name end) ,t4.first_name) like #bind($keyword))) ");
       } else {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and (t4.last_name || t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and ( (case when t4.login_name='admin' then 'Aipo.com' else t4.last_name end) || t4.first_name) like #bind($keyword))) ");
       }
     }
 
