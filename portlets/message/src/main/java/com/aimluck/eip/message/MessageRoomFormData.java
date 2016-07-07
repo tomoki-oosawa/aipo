@@ -665,17 +665,33 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
         @SuppressWarnings("unchecked")
         List<EipTMessageRoomMember> members = model.getEipTMessageRoomMember();
-        members.removeIf(s -> s.getUserId() == userId);
-        int others_history_last_message_id =
-          members.get(0).getHistoryLastMessageId();
-        if (history_last_message_id > others_history_last_message_id) {
-          String sql =
-            "delete from eip_t_message where room_id = #bind($roomId);";
-          SQLTemplate<EipTMessage> query =
-            Database.sql(EipTMessage.class, sql).param("roomId", roomId);
-          query.execute();
-          Database.commit();
+
+        // ログインユーザーのhistory_last_message_idを更新
+        for (EipTMessageRoomMember member : members) {
+          if (member.getUserId() == userId) {
+            member.setHistoryLastMessageId(history_last_message_id);
+            break;
+          }
         }
+
+        // メッセージを削除
+        members.removeIf(s -> s.getUserId() == userId);
+        int others_min_last_message_id = history_last_message_id;
+        for (EipTMessageRoomMember member : members) {
+          if (member.getHistoryLastMessageId() < others_min_last_message_id) {
+            others_min_last_message_id = member.getHistoryLastMessageId();
+          }
+        }
+        String sql =
+          "delete from eip_t_message where room_id = #bind($roomId) and message_id <= #bind($others_min_last_message_id);";
+        SQLTemplate<EipTMessage> query =
+          Database.sql(EipTMessage.class, sql).param("roomId", roomId).param(
+            "others_min_last_message_id",
+            others_min_last_message_id);
+        query.execute();
+
+        Database.commit();
+
       } else {
         if (!MessageUtils.hasAuthorityRoom(model, (int) login_user
           .getUserId()
