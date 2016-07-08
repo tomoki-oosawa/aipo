@@ -22,6 +22,7 @@
 #set($linkWebmailAccount = $!jslink.getPortletById($!portlet.ID).addQueryData('eventSubmit_doWebmail_mailaccount_form','1').addQueryData('template','SystemWebMailAdminFormScreen'))
 #set($linkSampleDelete = $!jslink.getPortletById($!portlet.ID).addQueryData('template','SystemDeleteSampleFormScreen').addQueryData('portlet_id',$!{portlet.ID}))
 #set($linkAdminpassword = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemAdminFormScreen").addQueryData("entityid","new"))
+#set($holidaySetting = $!jslink.getPortletById($!portlet.ID).addQueryData("template","SystemHolidaySettingFormScreen").addQueryData("entityid","1"))
 ## ---------------------------------------------------------------------------
 
 #if(${client}=="IPHONE")
@@ -32,6 +33,7 @@
 #AUISummaryDiv()
 #AUIconfigheader($!{portlet.ID} "16em")
 #AUIconfigitem($l10n.SYSTEM_CHANGE_COMPANYINFO $linkCompany)
+#AUIconfigitem($l10n.HOLIDAY_SETTING $holidaySetting)
 #AUIconfigitem($l10n.SYSTEM_SET_MAIL_INFORM $linkWebmailOption)
 #AUIconfigitem($l10n.SYSTEM_SET_MAILACCOUNT $linkWebmailAccount)
 #if($!{result.Detail.Sample} == "exist")

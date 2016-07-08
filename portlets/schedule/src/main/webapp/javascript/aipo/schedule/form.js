@@ -370,7 +370,6 @@ aipo.schedule.formSpanOn = function(form) {
     dojo.byId('normalField').style.display = "";
     dojo.byId('spanField').style.display = "";
     dojo.byId('allDayField').style.display = "none";
-    dojo.byId('reminderField').style.display = "none";
 
     dojo.byId('facilityField').style.display = "none";
     dojo.byId('facilityFieldButton').style.display = "block";
@@ -388,7 +387,6 @@ aipo.schedule.formSpanOff = function(form) {
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
     dojo.byId('allDayField').style.display = "";
-    dojo.byId('reminderField').style.display = "";
 
     if (aipo.schedule.isShowFacility(form)) {
         dojo.byId('facilityFieldButton').style.display = "block";
@@ -479,7 +477,6 @@ aipo.schedule.formAllDayOn = function(checkbox) {
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "none";
     dojo.byId('spanButtonField').style.display = "none";
-    dojo.byId('reminderField').style.display = "none";
 
     dojo.byId('facilityFieldButton').style.display = "block";
     aipo.schedule.shrinkFacility();
@@ -499,7 +496,6 @@ aipo.schedule.formAllDayOff = function(checkbox) {
     dojo.byId('normalField').style.display = "";
     dojo.byId('timeField').style.display = "";
     dojo.byId('spanButtonField').style.display = "";
-    dojo.byId('reminderField').style.display = "";
 
     if (aipo.schedule.isShowFacility(checkbox.form)) {
         dojo.byId('facilityFieldButton').style.display = "block";

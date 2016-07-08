@@ -29,6 +29,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTMessage;
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.util.MessageUtils;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -82,7 +83,13 @@ public class MessageCheckJSONScreen extends ALJSONScreen {
         json.put("messageId", messageId);
         json.put("userId", userId);
         if (isDesktopNotification) {
-          json.put("displayName", user.getAliasName().getValue());
+          String displayName = "";
+          if (userId < 4) {
+            displayName = ALOrgUtilsService.getAlias();
+          } else {
+            displayName = user.getAliasName().getValue();
+          }
+          json.put("displayName", displayName);
           json.put("text", ALCommonUtils.compressString(
             message.getMessage(),
             100));

@@ -766,7 +766,7 @@ public class ScheduleWeeklyJSONFormData {
    * @param oldItemId
    */
   private void updateReminder(EipTSchedule schedule2, int oldItemId) {
-    if (ALReminderService.isEnabled()) {
+    if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
 
       String ptn = schedule2.getRepeatPattern();
       int count = 0;
@@ -932,7 +932,6 @@ public class ScheduleWeeklyJSONFormData {
         }
 
         Database.commit();
-
         res = true;
         updateReminder(newSchedule, schedule.getScheduleId().intValue());
         // イベントログに保存

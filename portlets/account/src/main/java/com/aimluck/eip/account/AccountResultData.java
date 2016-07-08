@@ -95,6 +95,9 @@ public class AccountResultData implements ALData {
   /** FAX 番号 */
   private ALStringField company_fax_number;
 
+  /** 社員コード */
+  private ALStringField code;
+
   /** 作成日 */
   private ALStringField create_date;
 
@@ -133,6 +136,7 @@ public class AccountResultData implements ALData {
     post_id_list = new ArrayList<Integer>();
     position_name = new ALStringField();
     disabled = new ALStringField();
+    code = new ALStringField();
 
     has_photo = false;
     is_admin = false;
@@ -630,6 +634,25 @@ public class AccountResultData implements ALData {
 
   public boolean isNewPhotoSpec() {
     return this.is_new_photo_spec;
+  }
+
+  /**
+   * @return code
+   */
+  public ALStringField getCode() {
+    return code;
+  }
+
+  public String getWbrCode() {
+    return ALCommonUtils.replaceToAutoCR(getCode().toString());
+  }
+
+  /**
+   * @param code
+   *          セットする code
+   */
+  public void setCode(String code) {
+    this.code.setValue(code);
   }
 
 }

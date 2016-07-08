@@ -140,8 +140,19 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
+#ALtdcaption($l10n.COMMON_CREATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
+ （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
+#ALtditemfooter()
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
+ （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
+#ALtditemfooter()
+
 #if($result.isReminderEnabled())
-#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isPast()})
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
 #ALtdcaption($l10n.SCHEDULE_ALARM)
 #ALtditemheader()
 #if($result.hasReminderItem())
@@ -164,17 +175,6 @@ $l10n.SCHEDULE_REMINDER_OFF
 #end
 #end
 
-
-#ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
- （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
-#ALtditemfooter()
-#ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
- （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
-#ALtditemfooter()
 #ALtablefooter()
 
 #ALbuttonheader()
@@ -299,6 +299,12 @@ $l10n.SCHEDULE_REMINDER_OFF
 
     #if($!{result.hasAuthoritySelfInsert()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
     #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_COPY)
+    #end
+
+    #if($result.isReminderEnabled() || $result.isReminderViewSetting())
+    #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
+    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
+    #end
     #end
 
     #ALajaxbuttonClose()

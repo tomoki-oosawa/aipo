@@ -54,7 +54,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカード集計の検索データを管理するためのクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardSystemMapSelectData extends
     ALAbstractSelectData<EipTExtTimecardSystemMap, EipTExtTimecardSystem> {
@@ -100,7 +100,7 @@ public class ExtTimecardSystemMapSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -223,7 +223,7 @@ public class ExtTimecardSystemMapSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -260,7 +260,7 @@ public class ExtTimecardSystemMapSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    */
@@ -271,7 +271,7 @@ public class ExtTimecardSystemMapSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -289,7 +289,7 @@ public class ExtTimecardSystemMapSelectData extends
 
   /**
    * 表示タイプを取得します。
-   * 
+   *
    * @return
    */
   public String getViewtype() {
@@ -297,7 +297,7 @@ public class ExtTimecardSystemMapSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -306,5 +306,9 @@ public class ExtTimecardSystemMapSelectData extends
 
   public List<EipTExtTimecardSystem> getSystemList() {
     return ExtTimecardUtils.getAllEipTExtTimecardSystem();
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
   }
 }
