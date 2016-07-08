@@ -766,6 +766,9 @@ public class AccountUtils {
         user.getUserId()));
       EipTTimelineLikeSQL3.deleteAll();
 
+      // メッセージルームの管理者権限移行
+      AccountUtils.shiftMessageroomAdmin(user.getUserId());
+
       // メッセージ
       List<EipTMessageFile> messageFileList =
         Database
