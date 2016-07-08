@@ -1264,7 +1264,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       Database.commit();
 
       // アラーム
-      if (ALReminderService.isEnabled()) {
+      if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
         boolean isLimit = false;
         if ("ON".equals(form_data.getLimitFlag().getValue())) {
           isLimit = true;
@@ -1630,7 +1630,7 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
       Database.commit();
 
       // アラーム
-      if (ALReminderService.isEnabled()) {
+      if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
         if (del_member_flag.getValue() == CellScheduleUtils.FLAG_DEL_MEMBER_ALL) {
           if (del_range_flag.getValue() == CellScheduleUtils.FLAG_DEL_RANGE_ALL) {
             // 完全に削除する（元のスケジュール、関連するダミースケジュール）
