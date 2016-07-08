@@ -51,6 +51,7 @@ public class MessageRoomFormScreen extends ALVelocityScreen {
       MessageRoomFormData formData = new MessageRoomFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
+      // @todo MessageRoomFormData内に移植したほうがベター
       if (formData.getMemberList().size() < 1) {
         ALEipUser loginUser = ALEipUtils.getALEipUser(rundata);
         loginUser.setAuthority("A");

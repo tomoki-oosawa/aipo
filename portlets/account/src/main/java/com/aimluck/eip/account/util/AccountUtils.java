@@ -804,12 +804,13 @@ public class AccountUtils {
       sql.append("group by room_id ");
       sql.append("having COUNT(*) = 1 ");
       sql.append(") ");
-      sql.append("and user_id = ");
-      sql.append(userId);
+      sql.append("and user_id = #bind($userId) ");
       sql.append(")");
 
       List<EipTMessageRoom> deleteRoomList =
-        Database.sql(EipTMessageRoom.class, sql.toString()).fetchList();
+        Database.sql(EipTMessageRoom.class, sql.toString()).param(
+          "userId",
+          Integer.parseInt(userId)).fetchList();
 
       List<Integer> deleteRoomIdList = new ArrayList<Integer>();
       for (EipTMessageRoom room : deleteRoomList) {
