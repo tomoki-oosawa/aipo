@@ -170,6 +170,29 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 #end
 #* 添付ファイル（ここまで）  *#
+#if($result.isReminderEnabled())
+#if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
+#ALtdcaption($l10n.SCHEDULE_ALARM)
+#ALtditemheader()
+#if($result.hasReminderItem())
+$!result.ReminderItem.NotifyTimingText
+$l10n.SCHEDULE_REMINDER_NOTIFY_DETAIL_TEXT
+#set($count = 0)
+#if ($!{result.ReminderItem.hasNotifyTypeMessage()}) #set ($dest_type_message_dist = $l10n.SCHEDULE_REMINDER_MESSAGE) #set($count = $count+1) #end
+#if ($!{result.ReminderItem.hasNotifyTypeMail()}) #set ($dest_type_mail_dist = $l10n.SCHEDULE_REMINDER_MAIL) #set($count = $count+1) #end
+#if($count == 0)
+-----
+#else
+ （ $!{dest_type_message_dist} #if($count == 2) と #end $!{dest_type_mail_dist} ）
+#end
+#else
+#if ($!{result.Detail.isLoginuser()})
+$l10n.SCHEDULE_REMINDER_OFF
+#end
+#end
+#ALtditemfooter()
+#end
+#end
 
 #ALtablefooter()
 
@@ -295,6 +318,12 @@ ${record.FacilityNameHtml}<br/>
 
     #if($!{result.hasAuthoritySelfInsert()} && (($viewDateEnable == "true") || ($!ignore_viewdate == "true")))
     #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()}).addQueryData('is_copy','true')" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_COPY)
+    #end
+
+    #if($result.isReminderEnabled() || $result.isReminderViewSetting())
+    #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
+    #ALajaxbuttonNameEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAlarmFormScreen').addQueryData('entityid',$entityid).addQueryData('view_date',$!{result.getViewDate().toString()})" "$!portlet.ID" "aipo.schedule.onLoadScheduleDialog" $l10n.SCHEDULE_ALARM_MESSAGE)
+    #end
     #end
 
     #ALajaxbuttonClose()

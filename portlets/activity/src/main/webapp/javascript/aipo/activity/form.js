@@ -199,3 +199,25 @@ aipo.activity.setPostFilter = function(baseuri,filter,filtertype,portlet_id) {
 			[ "filtertype", types.join(",") ], [ "keyword", q ? q.value : "" ] ];
 	aipo.viewPage(baseuri, portlet_id, qs);
 }
+
+
+aipo.activity.reminderoff = function(){
+    dojo.byId('remindernotifytype').style.display = "none";
+    dojo.byId('remindernotifytiming').style.display = "none";
+
+    aipo.activity.setWrapperHeight();
+}
+aipo.activity.reminderon = function(){
+	dojo.byId('remindernotifytype').style.display = "";
+	dojo.byId('remindernotifytiming').style.display = "";
+
+    aipo.activity.setWrapperHeight();
+}
+
+aipo.activity.setWrapperHeight = function() {
+	var modalDialog = document.getElementById('modalDialog');
+    if(modalDialog) {
+    	var wrapper = document.getElementById('wrapper');
+    	wrapper.style.minHeight = modalDialog.clientHeight + 'px';
+    }
+}

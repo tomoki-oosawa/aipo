@@ -60,7 +60,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * タイムカード検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ExtTimecardSelectData extends
     ALAbstractSelectData<EipTExtTimecard, EipTExtTimecard> implements ALData {
@@ -147,8 +147,14 @@ public class ExtTimecardSelectData extends
   /** 開始日 */
   private int startDay;
 
+  private Date queryStartDate;
+
+  private List<ExtTimecardResultData> allList;
+
+  private boolean isNewRule = false;
+
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -177,6 +183,8 @@ public class ExtTimecardSelectData extends
     viewEndCrt = new ALDateTimeField("yyyy-MM-dd");
     // 今日
     today = new ALDateTimeField("yyyy-MM-dd");
+
+    allList = new ArrayList<ExtTimecardResultData>();
 
     startDay = 1;
 
@@ -364,6 +372,8 @@ public class ExtTimecardSelectData extends
     cal2.add(Calendar.MONTH, -2);
     prevMonth.setValue(cal2.getTime());
 
+    isNewRule = ExtTimecardUtils.isNewRule();
+
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
       + "-00-00");
     ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
@@ -374,7 +384,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -396,14 +406,20 @@ public class ExtTimecardSelectData extends
         .valueOf(target_user_id));
     query.setQualifier(exp1);
 
-    // Calendar cal2 = Calendar.getInstance();
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(cal1.getTime());
+    if (cal2.get(Calendar.DAY_OF_WEEK) > 1) {
+      cal2.add(Calendar.DATE, -(cal2.get(Calendar.DAY_OF_WEEK) - 1));
+    }
     Expression exp11 =
       ExpressionFactory.greaterOrEqualExp(
         EipTExtTimecard.PUNCH_DATE_PROPERTY,
-        viewMonth_month.getValue());
+        cal2.getTime());
 
     cal1.add(Calendar.MONTH, +1);
     cal1.add(Calendar.MILLISECOND, -1);
+
+    queryStartDate = cal2.getTime();
 
     ALDateTimeField viewMonth_add_month = new ALDateTimeField("yyyy-MM-dd");
     viewMonth_add_month.setValue(cal1.getTime());
@@ -419,7 +435,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -446,7 +462,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -462,6 +478,7 @@ public class ExtTimecardSelectData extends
         listrd.setDate(date);
         listrd.setTimecardSystem(timecard_system);
         listrd.setBeforeAfter();
+        listrd.setNewRule(isNewRule);
 
         ExtTimecardResultData rd = new ExtTimecardResultData();
         rd.initField();
@@ -470,6 +487,18 @@ public class ExtTimecardSelectData extends
         rd.setTimecardId(record.getExtTimecardId().longValue());
         rd.setReason(record.getReason());
         rd.setRemarks(record.getRemarks());
+        rd.setTimecardSystem(timecard_system);
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(record.getPunchDate());
+        boolean isCurrentMonth =
+          Integer.parseInt(viewMonth.getMonth()) == cal.get(Calendar.MONTH) + 1;
+        if ((startDay == 1 && !isCurrentMonth)
+          || (startDay > 1 && cal.get(Calendar.DATE) < startDay)) {
+          rd.setCurrentMonth(false);
+        } else {
+          rd.setCurrentMonth(true);
+        }
 
         String reason = record.getReason();
         String remarks = record.getRemarks();
@@ -508,6 +537,8 @@ public class ExtTimecardSelectData extends
         listrd.setRd(rd);
 
         datemap.put(checkdate, listrd);
+
+        allList.add(rd);
       }
       /*
        * ExtTimecardListResultData listrd = (ExtTimecardListResultData) datemap
@@ -524,7 +555,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定した2つの日付を比較する．
-   * 
+   *
    * @param date1
    * @param date2
    * @param checkTime
@@ -555,7 +586,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 検索条件を設定した Criteria を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -590,7 +621,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -619,7 +650,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -662,7 +693,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定グループや指定ユーザをセッションに設定する．
-   * 
+   *
    * @param rundata
    * @param context
    * @throws ALDBErrorException
@@ -685,7 +716,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -721,7 +752,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -797,7 +828,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替え時に指定するグループ名
-   * 
+   *
    * @return
    */
   public String getTargetGroupName() {
@@ -806,7 +837,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示切り替え時に指定するユーザ ID
-   * 
+   *
    * @return
    */
   public String getTargetUserId() {
@@ -815,7 +846,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 指定グループに属するユーザの一覧を取得する．
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -835,7 +866,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 部署の一覧を取得する．
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -848,7 +879,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * My グループの一覧を取得する．
-   * 
+   *
    * @return
    */
   public List<ALEipGroup> getMyGroupList() {
@@ -861,7 +892,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * ログインユーザの ID を取得する．
-   * 
+   *
    * @return
    */
   public String getUserId() {
@@ -870,7 +901,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -879,7 +910,7 @@ public class ExtTimecardSelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -900,7 +931,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * タイムカード一覧画面で、表示すべきデータをリストにして返します。
-   * 
+   *
    * @return
    */
   public List<ExtTimecardListResultData> getDateListKeys() {
@@ -934,6 +965,7 @@ public class ExtTimecardSelectData extends
           rd.setDate(date);
           rd.setTimecardSystem(timecard_system);
           rd.setBeforeAfter();
+          rd.setNewRule(isNewRule);
 
           list.add(rd);
         }
@@ -954,7 +986,7 @@ public class ExtTimecardSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -976,7 +1008,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示開始日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewStart() {
@@ -985,7 +1017,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示終了日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEnd() {
@@ -994,7 +1026,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 表示終了日時 (Criteria) を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewEndCrt() {
@@ -1003,7 +1035,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 前の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getPrevMonth() {
@@ -1012,7 +1044,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 次の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getNextMonth() {
@@ -1021,7 +1053,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 今月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getCurrentMonth() {
@@ -1030,7 +1062,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewMonth() {
@@ -1046,7 +1078,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 今日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getToday() {
@@ -1055,7 +1087,7 @@ public class ExtTimecardSelectData extends
 
   /**
    * 勤務形態を返します。
-   * 
+   *
    * @return
    */
   public EipTExtTimecardSystem getTimecardSystem() {
@@ -1083,11 +1115,22 @@ public class ExtTimecardSelectData extends
 
   /**
    * スクリーンの名前を返します。
-   * 
+   *
    * @return
    */
   public String getScreenName() {
     return "ExtTimecardSelectData";
   }
 
+  public List<ExtTimecardResultData> getAllList() {
+    return allList;
+  }
+
+  public Date getQueryStartDate() {
+    return queryStartDate;
+  }
+
+  public boolean isNewRule() {
+    return ExtTimecardUtils.isNewRule();
+  }
 }

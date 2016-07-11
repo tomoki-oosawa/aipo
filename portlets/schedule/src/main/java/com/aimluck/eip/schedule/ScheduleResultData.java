@@ -118,6 +118,9 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** <code>common_category_name</code> 共有カテゴリ名 */
   private ALStringField common_category_name;
 
+  /** <code>is_last_started</code> 最終開始済かどうか */
+  private boolean is_last_started;
+
   /*
    *
    */
@@ -145,6 +148,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     is_dummy = false;
     is_daystart = false;
     is_term = false;
+    is_last_started = false;
   }
 
   /**
@@ -689,6 +693,25 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   public boolean isTerm() {
     return is_term;
+  }
+
+  /**
+   * スケジュールが開始されたか
+   *
+   * ・繰り返しで期間指定がある場合には最後のスケジュールが開始されたか判定する<br />
+   *
+   * @return
+   */
+  public boolean isLastStarted() {
+    return is_last_started;
+  }
+
+  /**
+   *
+   * @param bool
+   */
+  public void setLastStarted(boolean bool) {
+    is_last_started = bool;
   }
 
 }

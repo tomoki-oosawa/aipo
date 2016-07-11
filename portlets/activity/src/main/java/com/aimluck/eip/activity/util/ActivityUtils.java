@@ -18,7 +18,9 @@
  */
 package com.aimluck.eip.activity.util;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.jetspeed.om.profile.Entry;
 import org.apache.jetspeed.om.profile.Portlets;
@@ -43,9 +45,16 @@ public class ActivityUtils {
   /** パラメータリセットの識別子 */
   private static final String RESET_FLAG = "reset_params";
 
+  public static final List<Integer> notifyTimingList = Arrays.asList(
+    0,
+    5,
+    15,
+    30,
+    60);
+
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -67,7 +76,7 @@ public class ActivityUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -79,7 +88,7 @@ public class ActivityUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -109,10 +118,10 @@ public class ActivityUtils {
   }
 
   /**
-   * 
+   *
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
-   * 
-   * 
+   *
+   *
    * @param rundata
    * @param context
    * @param config
