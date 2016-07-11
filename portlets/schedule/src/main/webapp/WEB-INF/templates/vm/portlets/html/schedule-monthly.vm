@@ -133,7 +133,7 @@
 #set ($weekOrder = ["$l10n.SCHEDULE_SUNDAY","$l10n.SCHEDULE_MONDAY","$l10n.SCHEDULE_TUSEDAY","$l10n.SCHEDULE_WEDNESDAY","$l10n.SCHEDULE_THURSDAY","$l10n.SCHEDULE_FRIDAY","$l10n.SCHEDULE_SATURDAY"])
 #set ($weekRevised = [])
 #foreach($test in $weekOrder)
-	#set ($target = $weekOrder.get($theDay))
+	#set ($target = $!weekOrder.get($theDay))
 	$!weekRevised.add($!target)
 	#set ($theDay = $theDay + 1)
 	#if( 7 <= $theDay)
@@ -151,17 +151,12 @@ $theDay
 
 ##ここまでで "z1a-rows" を参照して表示を切り替え
 ##実際に並び替えられたリストを表示していく
+##色を曜日に合わせて
 <tr>
 	#foreach($test in $weekRevised)
-		<th #if($velocityCount==1) class='sunday' #elseif($velocityCount==7) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+		<th #if($velocityCount==($num - $theDay +1)) class='sunday' #elseif($velocityCount==(6 - $theDay +1)) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
 	#end
 </tr>
-##表示終了
-#foreach($record4 in $result.Container.WeekList)
-	#foreach($record in $record4.DayList)
-		$record.Date.Value
-	#end
-#end
 
 #set($entityids = "")
 #set($weekListSize = $result.Container.WeekList.size())
@@ -191,9 +186,9 @@ $theDay
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == ($num - $theDay))
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == (6 - $theDay))
+#elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -227,9 +222,9 @@ $theDay
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
 
-#elseif($!{record.Date.Value.Day} == ($num - $theDay))
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == (6 - $theDay))
+#elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -281,10 +276,9 @@ $theDay
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-
-#elseif($!{record.Date.Value.Day} == ($num - $theDay))
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == (6 - $theDay))
+#elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -324,9 +318,9 @@ $!{record.ToDoResultData.TodoName}
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == ($num - $theDay))
+#elseif($!{record.Date.Value.Day} == 0)
 #set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == (6 - $theDay))
+#elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = " saturday")
 #end
 #if($!{record.isHoliday()})
@@ -349,6 +343,7 @@ $!{record.ToDoResultData.TodoName}
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #end
 
+##チェック
 
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">

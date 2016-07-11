@@ -245,14 +245,26 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     }
     // MonthlyCalendarに表示する月を登録
     this.setMonthlyCalendarViewMonth(viewMonth.getYear(), viewMonth.getMonth());
+    /*
+     * Portlet portlet = ((JetspeedRunData) rundata).getCustomized(); String a =
+     * portlet.getPortletConfig().getInitParameter("z1a-rows"); int theDay =
+     * Integer.parseInt(a);
+     */
+
+    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+    String a = portlet.getPortletConfig().getInitParameter("z1a-rows");
+    int theDay = Integer.parseInt(a);
 
     // 表示開始日時
     Calendar cal = Calendar.getInstance();
+    // cal.add(field, amount);
     Calendar tmpCal = Calendar.getInstance();
     cal.setTime(viewMonth.getValue());
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    cal.add(Calendar.DATE, -dayofweek + 1);
+    // ここの　+ の後ろの値を反映させて終わり
+
+    cal.add(Calendar.DATE, -dayofweek + theDay);
     viewStart.setValue(cal.getTime());
 
     Calendar cal4 = Calendar.getInstance();
@@ -266,6 +278,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     tmpCal5.setTime(tmpCal.getTime());
 
     // 月間スケジュールコンテナの初期化
+
     try {
       termMonthCon = new ScheduleTermMonthContainer();
       termMonthCon.initField();
@@ -319,7 +332,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       String groupFilter =
         ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
       if (groupFilter == null || groupFilter.equals("")) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
         if (groupFilter != null) {
           ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
@@ -330,7 +343,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールを表示するユーザ ID をセッションに設定する．
       String userFilter = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
       if (userFilter == null || userFilter.equals("")) {
-        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         userFilter = portlet.getPortletConfig().getInitParameter("p3a-user");
       }
 
