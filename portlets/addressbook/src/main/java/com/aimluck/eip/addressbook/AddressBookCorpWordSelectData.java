@@ -46,7 +46,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * アドレス帳での検索BOX用データです。(社内アドレス検索用)
- * 
+ *
  */
 public class AddressBookCorpWordSelectData extends
     AbstractAddressBookWordSelectData<TurbineUser, TurbineUser> {
@@ -62,7 +62,7 @@ public class AddressBookCorpWordSelectData extends
     .getLogger(AddressBookWordSelectData.class.getName());
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -77,7 +77,7 @@ public class AddressBookCorpWordSelectData extends
 
   /**
    * 自分がオーナーのアドレスを取得
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -98,7 +98,7 @@ public class AddressBookCorpWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -109,7 +109,7 @@ public class AddressBookCorpWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -124,7 +124,7 @@ public class AddressBookCorpWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -134,7 +134,7 @@ public class AddressBookCorpWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -152,7 +152,7 @@ public class AddressBookCorpWordSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -250,6 +250,10 @@ public class AddressBookCorpWordSelectData extends
         + "."
         + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY, "%" + transWord + "%");
     exp35 = exp35.andExp(exp_exclude_my_group);
+    Expression exp36 =
+      ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
+        + transWord
+        + "%");
     if (word != null && !"".equals(word)) {
       query.andQualifier(exp11
         .orExp(exp12)
@@ -264,14 +268,15 @@ public class AddressBookCorpWordSelectData extends
         .orExp(exp32)
         .orExp(exp33)
         .orExp(exp34)
-        .orExp(exp35));
+        .orExp(exp35)
+        .orExp(exp36));
     }
     query.distinct();
     return query;
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -294,7 +299,7 @@ public class AddressBookCorpWordSelectData extends
 
   /**
    * グループリストを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -304,7 +309,7 @@ public class AddressBookCorpWordSelectData extends
 
   /**
    * マイグループリストを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -314,7 +319,7 @@ public class AddressBookCorpWordSelectData extends
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

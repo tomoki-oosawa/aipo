@@ -18,6 +18,7 @@
  */
 package com.aimluck.eip.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jetspeed.om.profile.Profile;
@@ -31,13 +32,21 @@ import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -49,10 +58,33 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
 
   private ALStringField desktopNotification;
 
+  /** <code>public_flag</code> 通知フラグ */
+  private ALStringField reminder_flag;
+
+  private ALStringField notify_type_mail;
+
+  private ALStringField notify_type_message;
+
+  private ALNumberField notify_timing;
+
+  private String orgId;
+
+  private ALEipUser loginUser;
+
+  private ALReminderDefaultItem defaultItem;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+    orgId = Database.getDomainName();
+    loginUser = ALEipUtils.getALEipUser(rundata);
+    if (ALReminderService.isEnabled()) {
+      defaultItem =
+        ALReminderService.getDefault(orgId, loginUser
+          .getUserId()
+          .getValueAsString(), ReminderCategory.SCHEDULE);
+    }
   }
 
   /**
@@ -61,6 +93,17 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
   @Override
   public void initField() {
     desktopNotification = new ALStringField();
+
+    reminder_flag = new ALStringField();
+    reminder_flag.setTrim(true);
+    reminder_flag.setValue("F");
+
+    notify_type_mail = new ALStringField();
+
+    notify_type_message = new ALStringField();
+
+    notify_timing = new ALNumberField();
+    notify_timing.setValue(0);
   }
 
   /**
@@ -81,7 +124,25 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    return true;
+
+    if (ALReminderService.isEnabled()) {
+      if (reminder_flag.getValue().equals("T")
+        && ((notify_type_mail.getValue() == null || !notify_type_mail
+          .getValue()
+          .equals("TRUE")) && (notify_type_message.getValue() == null || !notify_type_message
+          .getValue()
+          .equals("TRUE")))) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_REMINDER_ON"));
+      }
+      if (reminder_flag.getValue().equals("T")
+        && !ActivityUtils.notifyTimingList.contains(notify_timing
+          .getValueWithInt())) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("SCHEDULE_MESSAGE_SELECT_REMINDER_ONTIME"));
+      }
+    }
+    return (msgList.size() == 0);
   }
 
   /**
@@ -106,6 +167,24 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
     } else {
       desktopNotification.setValue("T");
     }
+    if (ALReminderService.isEnabled()) {
+      if (defaultItem != null) {
+        if (defaultItem.isEnabled()) {
+          reminder_flag.setValue("T");
+        }
+        List<ReminderNotifyType> list = defaultItem.getNotifyType();
+        if (list != null && list.size() > 0) {
+          if (list.contains(ReminderNotifyType.MAIL)) {
+            notify_type_mail.setValue("TRUE");
+          }
+          if (list.contains(ReminderNotifyType.MESSAGE)) {
+            notify_type_message.setValue("TRUE");
+          }
+        }
+        notify_timing.setValue(Long.valueOf(defaultItem.getNotifyTiming()));
+      }
+    }
+
     return true;
   }
 
@@ -164,6 +243,42 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
         }
       }
     }
+
+    if (ALReminderService.isEnabled()) {
+      try {
+        if (reminder_flag.getValue() != null) {
+          if (defaultItem == null) {
+            defaultItem = new ALReminderDefaultItem();
+          }
+          defaultItem.setOrgId(orgId);
+          defaultItem.setUserId(loginUser.getUserId().getValueAsString());
+          defaultItem.setCategory(ReminderCategory.SCHEDULE);
+          if (reminder_flag.getValue().equals("T")) {
+            defaultItem.setEnabled(true);
+            ArrayList<ReminderNotifyType> list =
+              new ArrayList<ReminderNotifyType>();
+            if (notify_type_mail.getValue() != null
+              && notify_type_mail.getValue().equals("TRUE")) {
+              list.add(ReminderNotifyType.MAIL);
+            }
+            if (notify_type_message.getValue() != null
+              && notify_type_message.getValue().equals("TRUE")) {
+              list.add(ReminderNotifyType.MESSAGE);
+            }
+            defaultItem.setNotifyType(list);
+            defaultItem.setNotifyTiming(notify_timing.getValueWithInt());
+            ALReminderService.updateDefault(defaultItem);
+          } else {
+            defaultItem.setEnabled(false);
+            ALReminderService.updateDefault(defaultItem);
+          }
+        }
+      } catch (Exception e) {
+        logger.error("Unable to save ReminderService ", e);
+        return false;
+      }
+    }
+
     return true;
   }
 
@@ -196,4 +311,23 @@ public class ActivityNotificationFormData extends ALAbstractFormData {
     this.desktopNotification.setValue(desktopNotification);
   }
 
+  public ALStringField getReminderFlag() {
+    return reminder_flag;
+  }
+
+  public ALStringField getNotifyTypeMail() {
+    return notify_type_mail;
+  }
+
+  public ALStringField getNotifyTypeMessage() {
+    return notify_type_message;
+  }
+
+  public ALNumberField getNotifyTiming() {
+    return notify_timing;
+  }
+
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
 }

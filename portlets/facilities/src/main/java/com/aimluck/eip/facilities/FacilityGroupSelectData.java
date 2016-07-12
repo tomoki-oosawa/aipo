@@ -112,12 +112,11 @@ public class FacilityGroupSelectData extends
 
   public static List<FacilityGroupResultData> getFacilityGroupList(
       String groupname) {
-    List<FacilityGroupResultData> list =
-      new ArrayList<FacilityGroupResultData>();
     SelectQuery<EipMFacilityGroup> query =
       Database.query(EipMFacilityGroup.class);
     query.orderAscending(EipMFacilityGroup.SORT_PROPERTY);
-    list = FacilitiesUtils.getFacilityGroupResultList(query.fetchList());
+    List<FacilityGroupResultData> list =
+      FacilitiesUtils.getFacilityGroupResultList(query.fetchList());
     return list;
   }
 

@@ -55,6 +55,9 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.quota.ALQuotaService;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -517,6 +520,9 @@ public class ScheduleWeeklyJSONFormData {
 
         Database.commit();
         res = true;
+        // アラーム
+        updateReminder(schedule, schedule.getScheduleId().intValue());
+
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
@@ -687,6 +693,8 @@ public class ScheduleWeeklyJSONFormData {
 
         Database.commit();
         res = true;
+        // アラーム
+        updateReminder(newSchedule, schedule.getScheduleId().intValue());
 
         // イベントログに保存
         sendEventLog(rundata, context);
@@ -750,6 +758,78 @@ public class ScheduleWeeklyJSONFormData {
       res = false;
     }
     return res;
+  }
+
+  /**
+   *
+   * @param schedule2
+   * @param oldItemId
+   */
+  private void updateReminder(EipTSchedule schedule2, int oldItemId) {
+    if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
+
+      String ptn = schedule2.getRepeatPattern();
+      int count = 0;
+      boolean isRepeat = false;
+      boolean isSpan = false;
+      boolean isLimit = false;
+      if (ptn.charAt(0) == 'D') {
+        count = 1;
+        isRepeat = true;
+        isSpan = false;
+      } else if (ptn.charAt(0) == 'W') {
+        if (ptn.length() == 9) {
+          count = 8;
+        } else {
+          count = 9;
+        }
+        isRepeat = true;
+        isSpan = false;
+      } else if (ptn.charAt(0) == 'M') {
+        count = 3;
+        isRepeat = true;
+        isSpan = false;
+      } else if (ptn.charAt(0) == 'Y') {
+        count = 5;
+        isRepeat = true;
+        isSpan = false;
+      } else if (ptn.charAt(0) == 'S') {
+        isRepeat = false;
+        isSpan = true;
+      } else {
+        isRepeat = false;
+        isSpan = false;
+      }
+
+      if (isRepeat) {
+        if (ptn.charAt(count) == 'N') {
+          isLimit = false;
+        } else {
+          isLimit = true;
+        }
+      }
+
+      for (ALEipUser user : memberList) {
+        ALReminderItem item =
+          ALReminderService.getJob(
+            orgId,
+            user.getUserId().getValueAsString(),
+            ReminderCategory.SCHEDULE,
+            oldItemId);
+        if (item != null) {
+          ScheduleUtils.setupReminderJob(
+            Database.getDomainName(),
+            user.getUserId().toString(),
+            schedule2,
+            item.getNotifyTiming(),
+            item.hasNotifyTypeMail(),
+            item.hasNotifyTypeMessage(),
+            isRepeat,
+            isLimit,
+            isSpan);
+        }
+      }
+    }
   }
 
   /**
@@ -853,6 +933,7 @@ public class ScheduleWeeklyJSONFormData {
 
         Database.commit();
         res = true;
+        updateReminder(newSchedule, schedule.getScheduleId().intValue());
         // イベントログに保存
         sendEventLog(rundata, context);
         /* メンバー全員に新着ポートレット登録 */
@@ -1014,6 +1095,7 @@ public class ScheduleWeeklyJSONFormData {
 
         Database.commit();
         res = true;
+        updateReminder(newSchedule, schedule.getScheduleId().intValue());
 
         // イベントログに保存
         sendEventLog(rundata, context);

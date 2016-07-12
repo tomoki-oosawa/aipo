@@ -54,6 +54,9 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
+import com.aimluck.eip.services.reminder.ALReminderService;
+import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -121,6 +124,9 @@ public class ScheduleSelectData extends
   private boolean ignoreViewdate = false;
 
   private ScheduleDetailOnedaySelectData ondaySelectData = null;
+
+  /** <code>reminderItem</code> リマインダー */
+  private ALReminderItem reminderItem;
 
   /**
    *
@@ -329,6 +335,7 @@ public class ScheduleSelectData extends
       List<Integer> facilityIds = new ArrayList<Integer>();
       // 表示するユーザーがスケジュールの参加者かどうか
       boolean isMember = false;
+      boolean isDummy = false;
       int size = list.size();
       for (int i = 0; i < size; i++) {
         EipTScheduleMap map = list.get(i);
@@ -342,6 +349,7 @@ public class ScheduleSelectData extends
             rd.setConfirm("C".equals(map.getStatus()));
             // スケジュールの参加者かどうか
             isMember = !"R".equals(map.getStatus());
+            isDummy = "D".equals(map.getStatus());
           }
           users.add(map.getUserId());
 
@@ -423,6 +431,8 @@ public class ScheduleSelectData extends
       rd.setHidden("P".equals(record.getPublicFlag()));
       // 共有メンバーによる編集／削除フラグ
       rd.setEditFlag("T".equals(record.getEditFlag()));
+      // メンバーかどうか
+      rd.setMember(isMember && !isDummy);
 
       // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
@@ -612,6 +622,23 @@ public class ScheduleSelectData extends
 
       return null;
     }
+
+    if (ALReminderService.isEnabled()) {
+      reminderItem =
+        ALReminderService.getJob(Database.getDomainName(), String
+          .valueOf(loginuserid), ReminderCategory.SCHEDULE, record
+          .getScheduleId()
+          .intValue());
+    }
+
+    // 過去のスケジュールに対してはアラームの設定状況を表示しない
+    rd.setLastStarted(ScheduleUtils.isLastStarted(
+      rd.getStartDate().getValue(),
+      rd.getEndDate().getValue(),
+      rd.isSpan(),
+      rd.isRepeat(),
+      rd.isLimit()));
+
     return rd;
   }
 
@@ -805,4 +832,19 @@ public class ScheduleSelectData extends
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public boolean isReminderEnabled() {
+    return ALReminderService.isEnabled();
+  }
+
+  public boolean isReminderViewSetting() {
+    return ALReminderService.isViewSetting();
+  }
+
+  public ALReminderItem getReminderItem() {
+    return reminderItem;
+  }
+
+  public boolean hasReminderItem() {
+    return reminderItem != null ? true : false;
+  }
 }

@@ -50,7 +50,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
   public static final String DEFAULT_VIEW_PASSWORD = "*";
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -69,22 +69,22 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
       StringBuffer sb = new StringBuffer();
       sb.append("ユーザー名,パスワード,名前（姓）,名前（名）");
       sb.append(",名前（姓・フリガナ）,名前（名・フリガナ）,メールアドレス");
-      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職").append(
+      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職,社員コード").append(
         LINE_SEPARATOR);
 
       sb.append("yamada,a,山田,太郎");
       sb.append(",ヤマダ,タロウ,a@a.com");
-      sb.append(",99-99-91,1001,111-1111-1111,a@a.ne.jp,営業部/人事部").append(
+      sb.append(",99-99-91,1001,111-1111-1111,a@a.ne.jp,営業部/人事部,,").append(
         LINE_SEPARATOR);
 
       sb.append("suzuki0,b,鈴木,花子");
       sb.append(",スズキ,ハナコ,b@b.com");
-      sb.append(",99-99-92,2002,222-2222-2222,b@b.ne.jp,業務部,業務部長").append(
+      sb.append(",99-99-92,2002,222-2222-2222,b@b.ne.jp,業務部,業務部長,").append(
         LINE_SEPARATOR);
 
       sb.append("suzuki1,c,鈴木,太郎");
       sb.append(",スズキ,タロウ,c@c.com");
-      sb.append(",99-99-93,,,c@c.ne.jp,,").append(LINE_SEPARATOR);
+      sb.append(",99-99-93,,,c@c.ne.jp,,,").append(LINE_SEPARATOR);
 
       return sb.toString();
     } catch (Exception e) {
@@ -94,7 +94,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -105,7 +105,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
       StringBuffer sb = new StringBuffer();
       sb.append("ユーザー名,パスワード,名前（姓）,名前（名）");
       sb.append(",名前（姓・フリガナ）,名前（名・フリガナ）,メールアドレス");
-      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職").append(
+      sb.append(",電話番号（外線）,電話番号（内線）,電話番号（携帯）,携帯メールアドレス,部署名,役職,社員コード").append(
         LINE_SEPARATOR);
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       Expression exp1 =
@@ -163,6 +163,8 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
           .append(record.getCellularPhone())
           .append(",")
           .append(record.getCellularMail())
+          .append(",")
+          .append(record.getCode())
           .append(",");
 
         for (int j = 0; j < postNames.size(); j++) {
@@ -187,7 +189,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
 
   /**
    * データベースから指定された番号のオブジェクトモデルを取得 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -207,7 +209,7 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
 
   /**
    * データベースから指定された番号のオブジェクトモデルを取得 <BR>
-   * 
+   *
    * @param i
    * @return
    */

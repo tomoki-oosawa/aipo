@@ -43,7 +43,7 @@
 <td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.CreateUserId.value},arguments[0])">$!{result.Detail.CreateUser}</a>（$!{result.Detail.CreateDate}）</td>
     </tr>
 #ALtdcaption("$l10n.COMMON_UPDATE_USER")
-<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId.value},arguments[0])">$!{result.Detail.UpdateUser}</a>（$!{result.Detail.UpdateDate}）</td>
+<td><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${result.Detail.UpdateUserId.value},arguments[0])">$!{result.Detail.UpdateUser}</a>（$!{result.Detail.UpdateDateDetail}）</td>
     </tr>
 #ALtablefooter()
 #ALbuttonheader()
