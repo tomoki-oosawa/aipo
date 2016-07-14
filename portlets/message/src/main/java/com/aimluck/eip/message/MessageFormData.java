@@ -23,7 +23,6 @@ import static com.aimluck.eip.util.ALLocalizationUtils.*;
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -351,11 +350,10 @@ public class MessageFormData extends ALAbstractFormData {
       }
 
       List<String> recipients = new ArrayList<String>();
-      EipTMessageRoom tmpRoom = message.getEipTMessageRoom();
-      if (tmpRoom != null) {
+      EipTMessageRoom room = message.getEipTMessageRoom();
+      if (room != null) {
         @SuppressWarnings("unchecked")
-        List<EipTMessageRoomMember> members =
-          tmpRoom.getEipTMessageRoomMember();
+        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
             recipients.add(member.getLoginName());
@@ -363,35 +361,11 @@ public class MessageFormData extends ALAbstractFormData {
         }
       }
 
-      // lastMessage削除された場合更新
-      @SuppressWarnings("unchecked")
-      List<EipTMessage> messages = tmpRoom.getEipTMessages();
-      if (messages == null) {
-        return false;
-      }
-
-      Collections.sort(messages, (o1, o2) -> Integer.compare(
-        o2.getMessageId(),
-        o1.getMessageId()));
-      Integer lastMessageId = messages.get(0).getMessageId();
-      if (message.getMessageId().equals(lastMessageId)) {
-        // 削除するメッセージが最新のメッセージの時
-        EipTMessageRoom room = MessageUtils.getRoom(tmpRoom.getRoomId());
-        if (room == null) {
-          return false;
-        }
-        if (messages.size() > 1) {
-          EipTMessage secondLastMessage = messages.get(1);
-          room.setLastMessage(ALCommonUtils.compressString(secondLastMessage
-            .getMessage(), 100));
-          room.setLastUpdateDate(now);
-        } else {
-          // メッセージが一つの場合lastMessageにnull
-          room.setLastMessage(ALCommonUtils.compressString(null, 100));
-          room.setLastUpdateDate(now);
-        }
-        Database.commit();
-      }
+      // lastMessageが削除される場合、lastMessageの更新フラグを立てる
+      Integer lastMessageId =
+        MessageUtils.getLastMessage(room.getRoomId()).getMessageId();
+      boolean islastMessageDeleted =
+        message.getMessageId().equals(lastMessageId);
 
       // messageの添付ファイルを削除
       List<EipTMessageFile> files =
@@ -405,6 +379,19 @@ public class MessageFormData extends ALAbstractFormData {
       // messageを削除
       Database.delete(message);
       Database.commit();
+
+      // lastMessageが削除された場合、新しいlastMessageに更新する
+      if (islastMessageDeleted) {
+        EipTMessage lastMessage = MessageUtils.getLastMessage(room.getRoomId());
+        if (lastMessage == null) {
+          room.setLastMessage(ALCommonUtils.compressString(null, 100));
+        } else {
+          room.setLastMessage(ALCommonUtils.compressString(lastMessage
+            .getMessage(), 100));
+        }
+        room.setLastUpdateDate(now);
+        Database.commit();
+      }
 
       if (room != null && room.getRoomId() != null) {
         Map<String, String> params = new HashMap<String, String>();
