@@ -829,6 +829,10 @@ public class ScheduleSelectData extends
     return ALReminderService.isEnabled();
   }
 
+  public boolean isReminderViewSetting() {
+    return ALReminderService.isViewSetting();
+  }
+
   public ALReminderItem getReminderItem() {
     return reminderItem;
   }

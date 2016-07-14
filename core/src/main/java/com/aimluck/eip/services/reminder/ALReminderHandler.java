@@ -80,4 +80,8 @@ public abstract class ALReminderHandler {
 
   public abstract boolean isEnabled();
 
+  public abstract boolean isViewSetting();
+
+  public abstract boolean isPastEnabled();
+
 }

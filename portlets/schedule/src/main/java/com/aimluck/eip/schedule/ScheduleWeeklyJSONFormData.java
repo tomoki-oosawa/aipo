@@ -766,7 +766,7 @@ public class ScheduleWeeklyJSONFormData {
    * @param oldItemId
    */
   private void updateReminder(EipTSchedule schedule2, int oldItemId) {
-    if (ALReminderService.isEnabled()) {
+    if (ALReminderService.isEnabled() || ALReminderService.isPastEnabled()) {
 
       String ptn = schedule2.getRepeatPattern();
       int count = 0;
