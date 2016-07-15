@@ -1025,7 +1025,12 @@ public class ScheduleUtils {
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      int mday = Integer.parseInt(ptn.substring(1, 3));
+      int mday;
+      if (ptn.substring(1, 3).equals("XX")) {
+        mday = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        mday = Integer.parseInt(ptn.substring(1, 3));
+      }
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
     } else if (ptn.charAt(0) == 'Y') {
@@ -2438,9 +2443,18 @@ public class ScheduleUtils {
             }
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            repeat_pattern =
-              new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString();
+            if (32 == month_day.getValue()) {
+              repeat_pattern =
+                new StringBuffer()
+                  .append('M')
+                  .append("XX")
+                  .append(lim)
+                  .toString();
+            } else {
+              repeat_pattern =
+                new StringBuffer().append('M').append(
+                  format.format(month_day.getValue())).append(lim).toString();
+            }
             date_count = 1;
           } else {
             DecimalFormat format = new DecimalFormat("00");
@@ -3286,11 +3300,19 @@ public class ScheduleUtils {
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      result
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-        .append(Integer.parseInt(ptn.substring(1, 3)))
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-        .toString();
+      if (ptn.substring(1, 3).equals("XX")) {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      } else {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(Integer.parseInt(ptn.substring(1, 3)))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      }
       count = 3;
       // 毎年
     } else if (ptn.charAt(0) == 'Y') {
@@ -3350,7 +3372,6 @@ public class ScheduleUtils {
     return result.toString();
   }
 
-  @SuppressWarnings("deprecation")
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
       List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
@@ -4386,7 +4407,13 @@ public class ScheduleUtils {
       return false;
     }
     if (repeat_ptn.startsWith("M")) {
-      int month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      int month_day;
+      // 月末処理
+      if (repeat_ptn.substring(1, 3).equals("XX")) {
+        month_day = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      }
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
       return (month_day == ptn_day);
     }
@@ -5643,10 +5670,17 @@ public class ScheduleUtils {
             .toString());
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
-        rd.addText(new StringBuffer().append(
-          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
-          Integer.parseInt(ptn.substring(1, 3))).append(
-          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        if (ptn.substring(1, 3).equals("XX")) {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        } else {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        }
         count = 3;
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
