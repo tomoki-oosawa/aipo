@@ -700,7 +700,7 @@ public class ExtTimecardListResultData implements ALData {
         float overTime =
           ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
         if (time >= overTime) {
-          return time = time - overTime;
+          return time - overTime;
         } else {
           return 0f;
         }
@@ -1325,7 +1325,7 @@ public class ExtTimecardListResultData implements ALData {
       float worktimein = (timecard_system.getWorktimeIn() / 60f);
       while (true) {
         add = 0f;
-        time = (to.getTime() - from.getTime()) / (60 * 60 * 1000);
+        time = (to.getTime() - from.getTime()) / (float) (60 * 60 * 1000);
         if (worktimein != 0F) {
           float resttimein = (timecard_system.getResttimeIn() / 60f);
           int resttimes = (int) (time / worktimein);
