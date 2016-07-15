@@ -81,7 +81,7 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * 掲示板のユーティリティクラス <BR>
- * 
+ *
  */
 public class MsgboardUtils {
 
@@ -143,7 +143,7 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -224,7 +224,7 @@ public class MsgboardUtils {
 
   /**
    * 返信記事オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -273,7 +273,7 @@ public class MsgboardUtils {
 
   /**
    * ファイルオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -313,7 +313,7 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -384,7 +384,7 @@ public class MsgboardUtils {
 
   /**
    * トピックオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isSuperUser
@@ -458,7 +458,7 @@ public class MsgboardUtils {
 
   /**
    * カテゴリオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -566,7 +566,7 @@ public class MsgboardUtils {
 
   /**
    * <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -749,7 +749,7 @@ public class MsgboardUtils {
 
   /**
    * 添付ファイルを取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -991,7 +991,7 @@ public class MsgboardUtils {
 
   /**
    * ユーザ毎のルート保存先（絶対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -1003,7 +1003,7 @@ public class MsgboardUtils {
 
   /**
    * ユーザ毎の保存先（相対パス）を取得します。
-   * 
+   *
    * @param uid
    * @return
    */
@@ -1081,7 +1081,7 @@ public class MsgboardUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1103,7 +1103,7 @@ public class MsgboardUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -1115,7 +1115,7 @@ public class MsgboardUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -1127,7 +1127,7 @@ public class MsgboardUtils {
 
   /**
    * アクセス権限をチェックします。
-   * 
+   *
    * @return
    */
   public static boolean checkPermission(RunData rundata, Context context,
@@ -1156,7 +1156,7 @@ public class MsgboardUtils {
 
   /**
    * トピックに対する返信数を返します
-   * 
+   *
    * @param topic_id
    * @return
    */
@@ -1197,7 +1197,7 @@ public class MsgboardUtils {
     if (recipients != null && recipients.size() > 0) {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
-        .withUserId(topic.getOwnerId())
+        .withUserId(topic.getUpdateUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
@@ -1208,7 +1208,7 @@ public class MsgboardUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
         .withLoginName(loginName)
-        .withUserId(topic.getOwnerId())
+        .withUserId(topic.getUpdateUserId())
         .withPortletParams(portletParams)
         .withTitle(title)
         .withPriority(0f)
@@ -1221,7 +1221,7 @@ public class MsgboardUtils {
 
   /**
    * アクティビティを通知先・社内参加者の「あなた宛のお知らせ」に表示させる（返信用）
-   * 
+   *
    * @param topic
    * @param loginName
    * @param recipients
@@ -1315,7 +1315,7 @@ public class MsgboardUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する（返信用）．
-   * 
+   *
    * @return
    */
   public static String createReplyMsgForPc(RunData rundata,
@@ -1383,7 +1383,7 @@ public class MsgboardUtils {
 
   /**
    * 携帯電話へ送信するメールの内容を作成する（返信用）．
-   * 
+   *
    * @return
    */
   public static String createReplyMsgForCellPhone(RunData rundata,
@@ -1451,7 +1451,7 @@ public class MsgboardUtils {
 
   /**
    * トピックに添付されたすべての添付ファイルを物理削除します。
-   * 
+   *
    * @param topic
    */
   @SuppressWarnings("unchecked")
@@ -1467,7 +1467,7 @@ public class MsgboardUtils {
 
   /**
    * 指定されたユーザが指定カテゴリのトピックに対して返信できるかどうか調べます。
-   * 
+   *
    * @param user_id
    * @param category
    * @return
@@ -1501,7 +1501,7 @@ public class MsgboardUtils {
 
   /**
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
-   * 
+   *
    * @deprecated {@link ALEipUtils#passPSML(RunData,Context,String)}
    * @param rundata
    * @param context
