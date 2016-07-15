@@ -440,6 +440,29 @@ public class MessageUtils {
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
   }
 
+  public static EipTMessage getLastMessage(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 1, true, false, true);
+
+    if (lastMessage.size() == 0) {
+      return null;
+    }
+    return lastMessage.get(0);
+
+  }
+
+  public static ResultList<EipTMessage> getLast2Messages(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 2, true, false, true);
+
+    return lastMessage;
+
+  }
+
   public static List<Integer> getRoomIds(int userId) {
     StringBuilder select = new StringBuilder();
 
