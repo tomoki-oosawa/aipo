@@ -50,6 +50,7 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
+#ALajaxscreenformheader("scheduleForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
 #if($result.SelectData.Max)
 #if($!result.SelectData.isDuplicate())
 #set($colspanmax = $!{result.SelectData.Max} + 2)
@@ -148,6 +149,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <option value="32" #if ($!{result.MonthDay.toString()} == "32") selected #end>$l10n.SCHEDULE_END_OF_MONTH</option>
       </select>
 	</p>
       </p>
@@ -363,6 +365,25 @@
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
+
+##ファイル添付欄の追加
+<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+<td class="caption" >$l10n.SCHEDULE_FILE_ATTACH</td>
+<td>
+  <div class="clearfix">
+  <div>
+  #IFFileUpload()
+  </div>
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+    #foreach($record in $!result.AttachmentFileNameList )
+        <li class="isEditFile" data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.SCHEDULE_DELETE_DO</span></li>
+    #end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
+
 
 #ALtablefooter()
 #ALbuttonheader()
