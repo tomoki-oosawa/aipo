@@ -140,17 +140,6 @@ ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
- （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
-#ALtditemfooter()
-#ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditemheader()
-<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
- （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
-#ALtditemfooter()
-
 #* 添付ファイル（ここから）  *#
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption($l10n.SCHEDULE_FILE_ATTACH)
@@ -170,6 +159,18 @@ ${record.FacilityNameHtml}<br/>
 #ALtditemfooter()
 #end
 #* 添付ファイル（ここまで）  *#
+
+#ALtdcaption($l10n.COMMON_CREATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.CreateUser.UserId.Value},arguments[0])">$!{result.Detail.CreateUser.AliasName}</a>
+ （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）
+#ALtditemfooter()
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
+#ALtditemheader()
+<a href="javascript: void(0)" onclick="aipo.message.popupProfile($!{result.Detail.UpdateUser.UserId.Value},arguments[0])">$!{result.Detail.UpdateUser.AliasName}</a>
+ （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_MINUTE)}）
+#ALtditemfooter()
+
 #if($result.isReminderEnabled())
 #if(!$!{result.Detail.isSpan()} && !$!{result.Detail.isLastStarted()} && $!{result.Detail.isMember()})
 #ALtdcaption($l10n.SCHEDULE_ALARM)
