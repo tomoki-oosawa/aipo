@@ -360,20 +360,23 @@ public class MessageFormData extends ALAbstractFormData {
       }
 
       // lastMessageが削除される場合、lastMessageの更新フラグを立てる
-      ResultList<EipTMessage> last2Messages =
-        MessageUtils.getLast2Messages(room.getRoomId());
-      if (last2Messages != null && last2Messages.size() > 0) {
-        Integer lastMessageId = last2Messages.get(0).getMessageId();
-        // lastMessageが削除された場合、新しいlastMessageに更新する
-        if (message.getMessageId().equals(lastMessageId)) {
-          if (last2Messages.size() == 2) {
-            room.setLastMessage(ALCommonUtils.compressString(last2Messages.get(
-              1).getMessage(), 100));
-          } else {
-            room.setLastMessage(ALCommonUtils.compressString(null, 100));
+      if (room != null && room.getRoomId() != null) {
+        ResultList<EipTMessage> last2Messages =
+          MessageUtils.getLast2Messages(room.getRoomId());
+        if (last2Messages != null && last2Messages.size() > 0) {
+          Integer lastMessageId = last2Messages.get(0).getMessageId();
+          // lastMessageが削除された場合、新しいlastMessageに更新する
+          if (message.getMessageId().equals(lastMessageId)) {
+            if (last2Messages.size() == 2) {
+              room.setLastMessage(ALCommonUtils.compressString(last2Messages
+                .get(1)
+                .getMessage(), 100));
+            } else {
+              room.setLastMessage(ALCommonUtils.compressString(null, 100));
+            }
+            Date now = new Date();
+            room.setLastUpdateDate(now);
           }
-          Date now = new Date();
-          room.setLastUpdateDate(now);
         }
       }
 
