@@ -156,11 +156,6 @@ ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
-#ALtdcaption($l10n.COMMON_CREATE_USER)
-#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
-#ALtdcaption($l10n.COMMON_UPDATE_USER)
-#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_PERIOD)}）")
-
 #* 添付ファイル（ここから）  *#
 #if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
 #ALtdcaption($l10n.SCHEDULE_FILE_ATTACH)
@@ -179,6 +174,11 @@ ${record.FacilityName}<br/>
 #ALtditemfooter()
 #end
 #* 添付ファイル（ここまで）  *#
+
+#ALtdcaption($l10n.COMMON_CREATE_USER)
+#ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
+#ALtdcaption($l10n.COMMON_UPDATE_USER)
+#ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_PERIOD)}）")
 
 </tbody></table>
 </div>
