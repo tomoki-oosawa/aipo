@@ -93,9 +93,6 @@ public class CellScheduleFormBean implements ALData {
   /** <code>month_day</code> 繰り返す日 */
   private ALCellNumberField month_day;
 
-  /** <code>end_of_month</code> 繰り返し月末 */
-  private ALCellNumberField end_of_month;
-
   /** <code>month_day</code> 毎年繰り返す月 */
   private ALCellNumberField year_month;
 
