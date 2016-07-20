@@ -1218,8 +1218,6 @@ public class ScheduleFormData extends ALAbstractFormData {
       schedule.setUpdateDate(now);
       schedule.setUpdateUserId(Integer.valueOf(ownerid));
 
-      Database.commit();
-
       if (is_span) {
         // 期間スケジュール設定の場合
         schedule.setEndDate(end_date.getValue());
@@ -1594,8 +1592,6 @@ public class ScheduleFormData extends ALAbstractFormData {
           check = false;
         }
       }
-
-      Database.commit();
 
       // スケジュールのアップデート権限を検証する．
       /*
