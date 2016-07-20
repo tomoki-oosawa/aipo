@@ -525,8 +525,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
           }
         }
 
-        if (!containsLoginUser && !("update".equals(mode))) {
-          memberList.add(login_user);
+        if (!containsLoginUser) {
         }
 
         SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);

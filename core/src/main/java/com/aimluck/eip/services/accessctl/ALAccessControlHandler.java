@@ -29,7 +29,7 @@ import com.aimluck.eip.common.ALEipUser;
 
 /**
  * アクセス権限を管理する抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALAccessControlHandler {
 
@@ -39,6 +39,9 @@ public abstract class ALAccessControlHandler {
 
   public abstract boolean hasAuthority(int userId, String featerName,
       int aclType);
+
+  public abstract List<Integer> getAuthorityList(int userId,
+      int feature_id_series);
 
   public abstract List<Integer> getAcceptUserIdsExceptLoginUser(int uid,
       String feat, int acl_type);
