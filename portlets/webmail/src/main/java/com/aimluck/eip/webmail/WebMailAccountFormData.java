@@ -25,6 +25,8 @@ import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.rundata.JetspeedRunData;
+import org.apache.turbine.om.security.User;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -42,6 +44,7 @@ import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
+import com.aimluck.eip.mail.ALPop3MailReceiveThread;
 import com.aimluck.eip.mail.ALPop3MailReceiver;
 import com.aimluck.eip.mail.ALSmtpMailSender;
 import com.aimluck.eip.mail.util.ALMailUtils;
@@ -657,6 +660,12 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     try {
       int uid = ALEipUtils.getUserId(rundata);
       int accountId = rundata.getParameters().getInt(WebMailUtils.ACCOUNT_ID);
+      User user = ((JetspeedRunData) rundata).getUser();
+
+      if (ALPop3MailReceiveThread.isReceiving(user, accountId)) {
+        msgList.add("指定したメールアカウントはメールの同期中です。同期終了後に再度削除を実行してください。");
+        return false;
+      }
 
       SelectQuery<EipMMailAccount> query =
         Database.query(EipMMailAccount.class);
