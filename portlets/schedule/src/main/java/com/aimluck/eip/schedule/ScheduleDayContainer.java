@@ -22,16 +22,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALHoliday;
-import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.services.config.ALConfigHandler;
-import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * スケジュールコンテナです。
@@ -148,10 +143,9 @@ public class ScheduleDayContainer implements ALData {
       if (rd.isRepeat()
         && rd2.isDummy()
         && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
-        && ScheduleUtils.equalsToDate(
-          rd.getStartDate().getValue(),
-          rd2.getStartDate().getValue(),
-          false)) {
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         canAdd = false;
         break;
@@ -159,10 +153,9 @@ public class ScheduleDayContainer implements ALData {
       if (rd2.isRepeat()
         && rd.isDummy()
         && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
-        && ScheduleUtils.equalsToDate(
-          rd.getStartDate().getValue(),
-          rd2.getStartDate().getValue(),
-          false)) {
+        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
+          .getStartDate()
+          .getValue(), false)) {
         // [繰り返しスケジュール] 親の ID を検索
         scheduleList.remove(rd2);
         canAdd = true;
@@ -177,19 +170,33 @@ public class ScheduleDayContainer implements ALData {
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(
-            rd2.getStartDate().getValue())
-            && rd2.getStartDate().getValue().before(rd.getEndDate().getValue()))
+            rd2.getStartDate().getValue()) && rd2
+            .getStartDate()
+            .getValue()
+            .before(rd.getEndDate().getValue()))
             || (rd2.getStartDate().getValue().before(
-              rd.getStartDate().getValue())
-              && rd.getStartDate().getValue().before(
-                rd2.getEndDate().getValue()))
-            || (rd.getStartDate().getValue().before(rd2.getEndDate().getValue())
-              && rd2.getEndDate().getValue().before(rd.getEndDate().getValue()))
-            || (rd2.getStartDate().getValue().before(rd.getEndDate().getValue())
-              && rd.getEndDate().getValue().before(rd2.getEndDate().getValue()))
-            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue())
-              && rd.getStartDate().getValue().equals(
-                rd2.getStartDate().getValue()))) {
+              rd.getStartDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd
+              .getStartDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()) && rd2
+              .getEndDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()))
+            || (rd2
+              .getStartDate()
+              .getValue()
+              .before(rd.getEndDate().getValue()) && rd
+              .getEndDate()
+              .getValue()
+              .before(rd2.getEndDate().getValue()))
+            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue()) && rd
+              .getStartDate()
+              .getValue()
+              .equals(rd2.getStartDate().getValue()))) {
             rd2.setDuplicate(true);
             rd.setDuplicate(true);
           }
@@ -219,30 +226,6 @@ public class ScheduleDayContainer implements ALData {
     return spanRd;
   }
 
-  public static String getHolidayOfWeek() {
-    HttpServletRequest request = HttpServletRequestLocator.get();
-    String cacheHoliday = null;
-    if (request != null) {
-      try {
-        cacheHoliday =
-          (String) request.getAttribute(
-            ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
-      } catch (Throwable ignore) {
-
-      }
-    }
-    if (cacheHoliday == null) {
-      cacheHoliday =
-        ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
-      if (request != null) {
-        request.setAttribute(
-          ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString(),
-          cacheHoliday);
-      }
-    }
-    return cacheHoliday;
-  }
-
   /**
    * 祝日かどうかを検証する． 祝日の場合，true．
    *
@@ -258,8 +241,7 @@ public class ScheduleDayContainer implements ALData {
    * 祝日を休日にするかどうかを検証する. 休日にする場合 ture
    */
   public boolean isDayOffHoliday() {
-    String cacheHoliday = getHolidayOfWeek();
-    return (cacheHoliday.charAt(8) == '0') ? false : true;
+    return ScheduleUtils.isDayOffHoliday();
   }
 
   /**
@@ -275,17 +257,7 @@ public class ScheduleDayContainer implements ALData {
    * 休日かどうかを判定する 休日の場合 ture
    */
   public boolean isSetHoliday(int DayOfWeek) {
-    // TODO
-    String cacheHoliday = getHolidayOfWeek();
-    /*
-     * boolean holiday = cacheHoliday.charAt(8) != '0'; if (holiday) {
-     * ALEipHolidaysManager holidaysManager =
-     * ALEipHolidaysManager.getInstance(); if (holidaysManager.isHoliday(date)
-     * != null) { return true; } }
-     */
-
-    return cacheHoliday.charAt(DayOfWeek) != '0';
-
+    return ScheduleUtils.isSetHoliday(DayOfWeek);
   }
 
 }
