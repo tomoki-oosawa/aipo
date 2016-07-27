@@ -23,11 +23,7 @@
 //<![CDATA[
 
     ptConfig['$!portlet.ID'] = { group:"psml", initUrl:'$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","PsmlScreen"))', reloadFunction:aipo.reloadPage };
-    aipo.psml.menuSelected = 0;  
+    aipo.psml.menuSelected = 0;
 //]]>
 </script>
-<<<<<<< HEAD
 #parse("/portlets/html/ajax-psml.vm")
-=======
-#parse("/portlets/html/ajax-psml.vm")
->>>>>>> refs/remotes/origin/features/refactor-template-ja

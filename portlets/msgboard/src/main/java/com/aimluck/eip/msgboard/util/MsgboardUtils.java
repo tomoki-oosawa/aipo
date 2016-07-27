@@ -1206,7 +1206,7 @@ public class MsgboardUtils {
     if (recipients != null && recipients.size() > 0) {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
-        .withUserId(topic.getOwnerId())
+        .withUserId(topic.getUpdateUserId())
         .withLoginName(loginName)
         .withPortletParams(portletParams)
         .withRecipients(recipients)
@@ -1217,7 +1217,7 @@ public class MsgboardUtils {
       ALActivityService.create(new ALActivityPutRequest()
         .withAppId("Msgboard")
         .withLoginName(loginName)
-        .withUserId(topic.getOwnerId())
+        .withUserId(topic.getUpdateUserId())
         .withPortletParams(portletParams)
         .withTitle(title)
         .withPriority(0f)
