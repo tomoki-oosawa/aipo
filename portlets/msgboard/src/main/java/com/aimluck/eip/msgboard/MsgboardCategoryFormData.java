@@ -411,7 +411,11 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
         map.setEipTMsgboardCategory(category);
-        map.setUserId(Integer.valueOf(userid));
+        if (category.getCategoryName().equals("自分のみ")) {
+          map.setUserId(category.getTurbineUser().getUserId());
+        } else {
+          map.setUserId(Integer.valueOf(userid));
+        }
         // O: 自カテゴリ S: 共有カテゴリ（Share）
         if (userid == ALEipUtils.getUserId(rundata)) {
           if (accessFlag == MsgboardUtils.ACCESS_PUBLIC_ALL
@@ -513,19 +517,6 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         String str[] = rundata.getParameters().getStrings("member_to");
         if (str == null || str.length == 0) {
           return res;
-        }
-
-        boolean containsLoginUser = false;
-        String str_loginuserid = login_user.getName().getValue();
-        int strsize = str.length;
-        for (int i = 0; i < strsize; i++) {
-          if (str_loginuserid.equals(str[i])) {
-            containsLoginUser = true;
-            break;
-          }
-        }
-
-        if (!containsLoginUser) {
         }
 
         SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);

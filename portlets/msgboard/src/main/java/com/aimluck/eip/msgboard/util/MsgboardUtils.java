@@ -48,7 +48,6 @@ import org.apache.velocity.app.Velocity;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.utils.ALDeleteFileUtil;
-import com.aimluck.eip.accessctl.action.ALActionAccessControlHandler;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardFile;
@@ -207,14 +206,6 @@ public class MsgboardUtils {
             break;
           }
         }
-      }
-      ALAccessControlHandler ctrl_handler = new ALActionAccessControlHandler();
-      boolean isCtrl =
-        ctrl_handler
-          .getAuthorityList(ALEipUtils.getUserId(rundata), 130)
-          .contains(27);
-      if (isCtrl) {
-        accessible = true;
       }
       if (!accessible) {
         ALEipUtils.redirectPermissionError(rundata);
@@ -554,8 +545,8 @@ public class MsgboardUtils {
         query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
           .andExp(exp12)));
       } else {
-        query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-          .andExp(exp02.orExp(exp03))));
+        // query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+        // .andExp(exp02.orExp(exp03))));
       }
       query.distinct(true);
 

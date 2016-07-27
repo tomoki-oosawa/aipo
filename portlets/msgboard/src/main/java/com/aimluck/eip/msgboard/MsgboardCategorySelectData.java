@@ -229,8 +229,8 @@ public class MsgboardCategorySelectData extends
       query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
         .andExp(exp12)));
     } else {
-      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-        .andExp(exp02.orExp(exp03))));
+      // query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+      // .andExp(exp02.orExp(exp03))));
     }
     query.distinct(true);
 

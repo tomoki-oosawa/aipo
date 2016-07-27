@@ -25,7 +25,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
-import com.aimluck.eip.cayenne.om.account.EipTAclRole;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.orm.Database;
@@ -54,31 +53,6 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
       return (!updatable && !deletable);
     }
     return true;
-  }
-
-  @Override
-  public List<Integer> getAuthorityList(int userId, int feature_id_series) {
-    StringBuffer statement = new StringBuffer();
-
-    statement.append("SELECT * FROM "
-      + "eip_t_acl_user_role_map AS t1, eip_t_acl_role AS t2 "
-      + "WHERE t1.role_id = t2.role_id "
-      + "AND t1.user_id = #bind($user_id) "
-      + "AND feature_id > #bind($fmin) "
-      + "AND feature_id < #bind($fmax)");
-
-    SQLTemplate<EipTAclRole> template =
-      Database.sql(EipTAclRole.class, statement.toString());
-    template.param("user_id", Integer.valueOf(userId));
-    template.param("fmin", feature_id_series);
-    template.param("max", feature_id_series + 10);
-
-    List<Integer> list = new ArrayList<Integer>();
-    for (EipTAclRole role : template.fetchList()) {
-      list.add(role.getAclType());
-    }
-
-    return list;
   }
 
   @Override
