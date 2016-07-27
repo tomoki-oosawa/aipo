@@ -60,7 +60,7 @@
 		</div>
 		<div class="time">
 			$!record.CreateDate&nbsp;
-			#if($!record.isOwner())<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageReadUserListScreen").addQueryData("m",$!record.MessageId)','$!portlet.ID',aipo.message.onLoadMessageReadUserList);" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end</a>#end
+			#if($!record.isOwner() && !$!record.isOneMember())<a href="javascript:void(0)" onclick="aipo.common.showDialog('$!jslink.getPortletById($!portlet.ID).addQueryData("template","MessageReadUserListScreen").addQueryData("m",$!record.MessageId)','$!portlet.ID',aipo.message.onLoadMessageReadUserList);" id="messageReadCount$!record.MessageId">#if($!record.isAllRead())$l10n.MESSAGE_ALL_READ#else$!{record.ReadCount}${l10n.MESSAGE_READ_COUNT}#end</a>#end
 			#if($!record.isOwner() || ((!$!result.isDirect() || $!record.isSystemUser()) && $!result.isAdmin()))
 					<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 					<input type="hidden" name="_name" value="$l10n.MESSAGE_MESSAGE" />
