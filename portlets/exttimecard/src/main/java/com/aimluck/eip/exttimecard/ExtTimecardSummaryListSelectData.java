@@ -619,7 +619,7 @@ public class ExtTimecardSummaryListSelectData extends
       boolean isCurrentMonth =
         Integer.parseInt(viewMonth.getMonth()) == cal.get(Calendar.MONTH) + 1;
       if ((startDay == 1 && !isCurrentMonth)
-        || (startDay > 1 && cal.get(Calendar.DATE) < startDay)) {
+        || (startDay > 1 && cal.get(Calendar.DATE) < startDay && isCurrentMonth)) {
         rd.setCurrentMonth(false);
       } else {
         rd.setCurrentMonth(true);

@@ -47,7 +47,7 @@ $l10n.SYSTEM_SETTING_MAILACCOUNT_MSG3
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('account_name'))" "style='width:210px;'")
 #ALtditem("#ALtextfield('account_name' $!result.AccountName '60%' 50 'active')")
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('smtpserver_name'))" "style='width:210px;'")
-#ALtditem("#ALtextfield('smtpserver_name' $!result.SmtpserverName '60%' 50 'disabled')#ALcaution($l10n.SYSTEM_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('smtpserver_name' $!result.SmtpserverName '60%' 60 'disabled')#ALcaution($l10n.SYSTEM_HALFWIDTH_ALPHANUM)")
 
 
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('mail_user_name'))" "style='width:210px;'")
@@ -89,7 +89,7 @@ $l10n.SYSTEM_SETTING_MAILACCOUNT_MSG3
 <h4 class="spaceTop">$l10n.SYSTEM_POP_BEFORE_SMTPINFO</h4>
 #ALtableheaderWide()
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3server_name'))" "style='width:210px;'")
-#ALtditem("#ALtextfield('pop3server_name' $!result.Pop3serverName '60%' 50 'disabled')#ALcaution($l10n.SYSTEM_HALFWIDTH_ALPHANUM)")
+#ALtditem("#ALtextfield('pop3server_name' $!result.Pop3serverName '60%' 60 'disabled')#ALcaution($l10n.SYSTEM_HALFWIDTH_ALPHANUM)")
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3user_name'))" "style='width:210px;'")
 #ALtditem("#ALtextfield('pop3user_name' $!result.Pop3userName '60%' 50 'disabled')#ALcaution($l10n.SYSTEM_HALFWIDTH_ALPHANUM)")
 #ALtdcaptionAtt("#ALrequired($!result.getFieldName('pop3_password'))" "style='width:210px;'")

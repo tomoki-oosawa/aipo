@@ -65,4 +65,12 @@ public class ALReminderService {
   public static boolean isEnabled() {
     return getService().isEnabled();
   }
+
+  public static boolean isViewSetting() {
+    return getService().isViewSetting();
+  }
+
+  public static boolean isPastEnabled() {
+    return getService().isPastEnabled();
+  }
 }

@@ -159,9 +159,6 @@ public class FileIOAccountCsvSelectData
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
-    if (existedCodeList == null) {
-      existedCodeList = new ArrayList<String>();
-    }
     int ErrCount = 0;
 
     // 同一ユーザ, 社員コードの存在を確認するために，ユーザ名と社員コードのリストを保持する．
@@ -262,7 +259,7 @@ public class FileIOAccountCsvSelectData
           // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
             user.setLoginName(username);
-            if (!(tmpuser2.getCode() == code)) {
+            if (!(tmpuser2.getCode().equals(code))) {
               if (existedCodeList.contains(code)) {
                 same_code = true;
                 b_err = true;
@@ -404,9 +401,6 @@ public class FileIOAccountCsvSelectData
     }
 
     List<String> existedCodeList = getAllUsersCodeFromDB();
-    if (existedCodeList == null) {
-      existedCodeList = new ArrayList<String>();
-    }
 
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
@@ -482,7 +476,7 @@ public class FileIOAccountCsvSelectData
           // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
             user.setLoginName(username);
-            if (!(tmpuser2.getCode() == code)) {
+            if (!(tmpuser2.getCode().equals(code))) {
               if (existedCodeList.contains(code)) {
                 same_code = true;
                 iserror = true;
