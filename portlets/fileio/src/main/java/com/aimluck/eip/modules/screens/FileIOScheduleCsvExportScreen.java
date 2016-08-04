@@ -19,6 +19,7 @@
 package com.aimluck.eip.modules.screens;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -68,6 +69,13 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private List<FacilityResultData> facilityAllList;
 
+  private String fileNamePrefix;
+
+  private String fileNameSuffix;
+
+  /** 日付の表示フォーマット */
+  public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
+
   /**
    *
    * @param rundata
@@ -86,6 +94,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
    */
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
+    fileNamePrefix = "";
+    fileNameSuffix = "";
     if (ALEipUtils.isAdmin(rundata)) {
       userid = ALEipUtils.getUserId(rundata);
       ALAccessControlFactoryService aclservice =
@@ -110,6 +120,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
           rundata.getParameters().get("end_day"));
       int userid = ALEipUtils.getUserId(rundata);
+
+      fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
 
       // 有効なユーザーを全て取得する
       users = ALEipUtils.getUsers("LoginUser");
@@ -303,6 +315,27 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   }
 
   /**
+   * @param viewStart
+   * @param viewEnd
+   * @return
+   */
+  private String getFileNameSurffix(Date viewStart, Date viewEnd) {
+
+    String viewStartFormat =
+      new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT)
+        .format(viewStart.getTime());
+
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(viewEnd);
+    cal.add(Calendar.DATE, -1);
+
+    String viewEndFormat =
+      new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(cal.getTime());
+
+    return viewStartFormat + "-" + viewEndFormat;
+  }
+
+  /**
    * @param facilityAllList
    * @param users
    * @param previous
@@ -395,6 +428,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   @Override
   protected String getFileName() {
-    return ALOrgUtilsService.getAlias() + "_schedules.csv";
+    return ALOrgUtilsService.getAlias()
+      + fileNamePrefix
+      + "_schedules_"
+      + fileNameSuffix
+      + ".csv";
   }
 }
