@@ -202,8 +202,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     try {
-      String loginUserStatus = null;
-      int uid = (int) login_user.getUserId().getValue();
+      boolean hasStatusAll = false;
 
       // オブジェクトモデルを取得
       EipTMsgboardCategory category =
@@ -233,17 +232,11 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
 
       List<Integer> users = new ArrayList<Integer>();
       int size = list.size();
-      if (size == 1) {
-        EipTMsgboardCategoryMap map = list.get(0);
+      for (int i = 0; i < size; i++) {
+        EipTMsgboardCategoryMap map = list.get(i);
         users.add(map.getUserId());
-        loginUserStatus = map.getStatus();
-      } else {
-        for (int i = 0; i < size; i++) {
-          EipTMsgboardCategoryMap map = list.get(i);
-          users.add(map.getUserId());
-          if (uid == map.getUserId().intValue()) {
-            loginUserStatus = map.getStatus();
-          }
+        if (!hasStatusAll) {
+          hasStatusAll = (MsgboardUtils.STAT_VALUE_ALL).equals(map.getStatus());
         }
       }
 
@@ -256,7 +249,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
       memberList.addAll(ALEipUtils.getUsersFromSelectQuery(query));
 
       if (public_flag) {
-        if ((MsgboardUtils.STAT_VALUE_ALL).equals(loginUserStatus)) {
+        if (hasStatusAll) {
           access_flag.setValue(MsgboardUtils.ACCESS_PUBLIC_ALL);
           is_member = false;
         } else {
@@ -264,7 +257,7 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
           is_member = true;
         }
       } else {
-        if ((MsgboardUtils.STAT_VALUE_ALL).equals(loginUserStatus)) {
+        if (hasStatusAll) {
           access_flag.setValue(MsgboardUtils.ACCESS_SEACRET_SELF);
           is_member = false;
         } else {
@@ -411,16 +404,12 @@ public class MsgboardCategoryFormData extends ALAbstractFormData {
         ALEipUser user = memberList.get(i);
         int userid = (int) user.getUserId().getValue();
         map.setEipTMsgboardCategory(category);
-        if (category.getCategoryName().equals("自分のみ")) {
-          map.setUserId(category.getTurbineUser().getUserId());
-        } else {
-          map.setUserId(Integer.valueOf(userid));
-        }
+        map.setUserId(Integer.valueOf(userid));
         // O: 自カテゴリ S: 共有カテゴリ（Share）
-        if (userid == ALEipUtils.getUserId(rundata)) {
-          if (accessFlag == MsgboardUtils.ACCESS_PUBLIC_ALL
-            || accessFlag == MsgboardUtils.ACCESS_SEACRET_SELF) {
-            // 所属メンバーがログインユーザのみの場合
+        if (accessFlag == MsgboardUtils.ACCESS_SEACRET_SELF) {
+          map.setStatus(MsgboardUtils.STAT_VALUE_ALL);
+        } else if (userid == ALEipUtils.getUserId(rundata)) {
+          if (accessFlag == MsgboardUtils.ACCESS_PUBLIC_ALL) {
             map.setStatus(MsgboardUtils.STAT_VALUE_ALL);
           } else {
             map.setStatus(MsgboardUtils.STAT_VALUE_OWNER);
