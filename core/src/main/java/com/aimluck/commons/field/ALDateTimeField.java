@@ -163,20 +163,18 @@ public class ALDateTimeField extends ALAbstractField {
     if (!isNotNullValue()) {
       if (isNotNull()) {
         // 必須入力属性で値が設定されていない場合
-        msgList.add(
-          ALLocalizationUtils.getl10nFormat(
-            "COMMONS_FIELD_INPUT_NAME_SPAN",
-            fieldName));
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_INPUT_NAME_SPAN",
+          fieldName));
         return false;
       }
     } else {
       // 日付として正しいかを調べる
       String dateStr = translateDate(calendar.getTime(), format);
       if ("Unknown".equals(dateStr) || "".equals(dateStr)) {
-        msgList.add(
-          ALLocalizationUtils.getl10nFormat(
-            "COMMONS_FIELD_DATE_TYPE_CAUTION_SPAN",
-            fieldName));
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "COMMONS_FIELD_DATE_TYPE_CAUTION_SPAN",
+          fieldName));
         return false;
       }
     }
@@ -284,8 +282,8 @@ public class ALDateTimeField extends ALAbstractField {
     String date_time;
     try {
       date_time =
-        new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(
-          calendar.getTime());
+        new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(calendar
+          .getTime());
     } catch (Exception ex) {
       date_time = null;
     }
@@ -379,7 +377,10 @@ public class ALDateTimeField extends ALAbstractField {
    *
    * @return
    */
-  public int getDayOfWeekNum() {
+  public Integer getDayOfWeekNum() {
+    if (calendar == null || isNullYear() || isNullMonth() || isNullDay()) {
+      return null;
+    }
     return calendar.get(Calendar.DAY_OF_WEEK);
   }
 

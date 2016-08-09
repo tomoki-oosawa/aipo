@@ -23,6 +23,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import net.sf.json.JSONObject;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
@@ -59,13 +61,10 @@ import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
-import net.sf.json.JSONObject;
-
 public class ScheduleWeeklyJSONFormData {
 
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ScheduleWeeklyJSONFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleWeeklyJSONFormData.class.getName());
 
   // update
 
@@ -214,8 +213,8 @@ public class ScheduleWeeklyJSONFormData {
             bean.initField();
             bean.setResultData(rd);
             if (!rd.isPublic() && !rd.isMember()) {
-              bean.setName(
-                ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
+              bean.setName(ALLocalizationUtils
+                .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
             }
             bean.setColspanReal(col);
             bean.setIndex(k);
@@ -241,7 +240,7 @@ public class ScheduleWeeklyJSONFormData {
 
         if (container.isHoliday()) {
           holidayList.add(container.getHoliday().getName().getValue());
-        } else if (container.isSetHoliday()) {
+        } else if (container.isUserHoliday()) {
           holidayList.add("set");
         } else {
           holidayList.add("");
@@ -263,8 +262,8 @@ public class ScheduleWeeklyJSONFormData {
           bean.initField();
           bean.setResultData(rd);
           if (!rd.isPublic() && !rd.isMember()) {
-            bean.setName(
-              ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
+            bean.setName(ALLocalizationUtils
+              .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
           }
           bean.setIndex(i);
           if (rundata.getParameters().getString("m_empty") != null) {
@@ -315,14 +314,14 @@ public class ScheduleWeeklyJSONFormData {
         ALAccessControlConstants.VALUE_ACL_UPDATE);
       boolean res = false;
       if (isOverQuota()) {
-        msgList.add(
-          ALLocalizationUtils.getl10n(
-            "COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
       } else {
         res =
-          (setFormData(rundata, context, msgList)
-            && validate(msgList)
-            && updateFormData(rundata, context, msgList));
+          (setFormData(rundata, context, msgList) && validate(msgList) && updateFormData(
+            rundata,
+            context,
+            msgList));
       }
       return res;
 
@@ -352,14 +351,14 @@ public class ScheduleWeeklyJSONFormData {
         ALAccessControlConstants.VALUE_ACL_INSERT);
       boolean res = false;
       if (isOverQuota()) {
-        msgList.add(
-          ALLocalizationUtils.getl10n(
-            "COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
+        msgList.add(ALLocalizationUtils
+          .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
       } else {
         res =
-          (setFormData(rundata, context, msgList)
-            && validate(msgList)
-            && insertFormData(rundata, context, msgList));
+          (setFormData(rundata, context, msgList) && validate(msgList) && insertFormData(
+            rundata,
+            context,
+            msgList));
       }
       return res;
 
@@ -546,10 +545,8 @@ public class ScheduleWeeklyJSONFormData {
             if (msgType > 0) {
               // パソコンへメールを送信
               List<ALEipUserAddr> destMemberList =
-                ALMailUtils.getALEipUserAddrs(
-                  memberList,
-                  ALEipUtils.getUserId(rundata),
-                  false);
+                ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                  .getUserId(rundata), false);
               String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
               List<ALAdminMailMessage> messageList =
@@ -558,34 +555,30 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(
-                  ScheduleUtils.createMsgForPc(
-                    rundata,
-                    schedule,
-                    memberList,
-                    "edit"));
-                message.setCellularBody(
-                  ScheduleUtils.createMsgForCellPhone(
-                    rundata,
-                    schedule,
-                    memberList,
-                    destMember.getUserId(),
-                    "edit"));
+                message.setPcBody(ScheduleUtils.createMsgForPc(
+                  rundata,
+                  schedule,
+                  memberList,
+                  "edit"));
+                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                  rundata,
+                  schedule,
+                  memberList,
+                  destMember.getUserId(),
+                  "edit"));
                 messageList.add(message);
               }
 
-              ALMailService.sendAdminMailAsync(
-                new ALAdminMailContext(
-                  orgId,
-                  ALEipUtils.getUserId(rundata),
-                  messageList,
-                  ALMailUtils.getSendDestType(
-                    ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+                orgId,
+                ALEipUtils.getUserId(rundata),
+                messageList,
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
 
             }
           } catch (Exception ex) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
             logger.error("schedule", ex);
             return false;
           }
@@ -600,14 +593,14 @@ public class ScheduleWeeklyJSONFormData {
         saved_startdate.setTime(schedule.getStartDate());
         Calendar saved_enddate = Calendar.getInstance();
         saved_enddate.setTime(schedule.getEndDate());
-        if (Integer.valueOf(startDate.getHour()) == saved_startdate.get(
-          Calendar.HOUR_OF_DAY)
-          && Integer.valueOf(startDate.getMinute()) == saved_startdate.get(
-            Calendar.MINUTE)
-          && Integer.valueOf(endDate.getHour()) == saved_enddate.get(
-            Calendar.HOUR_OF_DAY)
-          && Integer.valueOf(endDate.getMinute()) == saved_enddate.get(
-            Calendar.MINUTE)
+        if (Integer.valueOf(startDate.getHour()) == saved_startdate
+          .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(startDate.getMinute()) == saved_startdate
+            .get(Calendar.MINUTE)
+          && Integer.valueOf(endDate.getHour()) == saved_enddate
+            .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(endDate.getMinute()) == saved_enddate
+            .get(Calendar.MINUTE)
           && viewDate.getMonth().equals(startDate.getMonth())
           && viewDate.getDay().equals(startDate.getDay())
           && viewDate.getYear().equals(startDate.getYear())) {
@@ -702,13 +695,8 @@ public class ScheduleWeeklyJSONFormData {
         }
 
         if (viewDate != null) {
-          ScheduleUtils.insertDummySchedule(
-            schedule,
-            userId,
-            viewDate.getValue(),
-            viewDate.getValue(),
-            memberIdList,
-            facilityIdList);
+          ScheduleUtils.insertDummySchedule(schedule, userId, viewDate
+            .getValue(), viewDate.getValue(), memberIdList, facilityIdList);
         }
 
         Database.commit();
@@ -731,10 +719,8 @@ public class ScheduleWeeklyJSONFormData {
             if (msgType > 0) {
               // パソコンへメールを送信
               List<ALEipUserAddr> destMemberList =
-                ALMailUtils.getALEipUserAddrs(
-                  memberList,
-                  ALEipUtils.getUserId(rundata),
-                  false);
+                ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                  .getUserId(rundata), false);
               String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
               List<ALAdminMailMessage> messageList =
@@ -743,35 +729,31 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(
-                  ScheduleUtils.createMsgForPc(
-                    rundata,
-                    newSchedule,
-                    memberList,
-                    "edit"));
-                message.setCellularBody(
-                  ScheduleUtils.createMsgForCellPhone(
-                    rundata,
-                    newSchedule,
-                    memberList,
-                    destMember.getUserId(),
-                    "edit"));
+                message.setPcBody(ScheduleUtils.createMsgForPc(
+                  rundata,
+                  newSchedule,
+                  memberList,
+                  "edit"));
+                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                  rundata,
+                  newSchedule,
+                  memberList,
+                  destMember.getUserId(),
+                  "edit"));
                 messageList.add(message);
               }
 
-              ALMailService.sendAdminMailAsync(
-                new ALAdminMailContext(
-                  orgId,
-                  ALEipUtils.getUserId(rundata),
-                  messageList,
-                  ALMailUtils.getSendDestType(
-                    ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+                orgId,
+                ALEipUtils.getUserId(rundata),
+                messageList,
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
 
             }
 
           } catch (Exception ex) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_DONOT_SEND_MAIL"));
             logger.error("schedule", ex);
             return false;
           }
@@ -922,8 +904,8 @@ public class ScheduleWeeklyJSONFormData {
             Database.create(EipTScheduleMap.class);
           newScheduleMap.setEipTSchedule(newSchedule);
 
-          newScheduleMap.setEipTCommonCategory(
-            scheduleMap.getEipTCommonCategory());
+          newScheduleMap.setEipTCommonCategory(scheduleMap
+            .getEipTCommonCategory());
 
           newScheduleMap.setStatus(scheduleMap.getStatus());
 
@@ -937,8 +919,8 @@ public class ScheduleWeeklyJSONFormData {
         /* 設備重複判定 */
         List<Integer> facilityIdList = new ArrayList<Integer>();
         for (EipTScheduleMap newScheduleMap : newScheduleMaps) {
-          if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(
-            newScheduleMap.getType())) {
+          if (ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY.equals(newScheduleMap
+            .getType())) {
             facilityIdList.add(newScheduleMap.getUserId());
           }
         }
@@ -972,10 +954,8 @@ public class ScheduleWeeklyJSONFormData {
           if (msgType > 0) {
             // パソコンへメールを送信
             List<ALEipUserAddr> destMemberList =
-              ALMailUtils.getALEipUserAddrs(
-                memberList,
-                ALEipUtils.getUserId(rundata),
-                false);
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
             String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
@@ -984,28 +964,25 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(
-                ScheduleUtils.createMsgForPc(
-                  rundata,
-                  schedule,
-                  memberList,
-                  "new"));
-              message.setCellularBody(
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  schedule,
-                  memberList,
-                  destMember.getUserId(),
-                  "new"));
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                schedule,
+                memberList,
+                "new"));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                schedule,
+                memberList,
+                destMember.getUserId(),
+                "new"));
               messageList.add(message);
             }
 
-            ALMailService.sendAdminMailAsync(
-              new ALAdminMailContext(
-                orgId,
-                ALEipUtils.getUserId(rundata),
-                messageList,
-                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+            ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+              orgId,
+              ALEipUtils.getUserId(rundata),
+              messageList,
+              ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
 
           }
         } catch (Exception ex) {
@@ -1024,14 +1001,14 @@ public class ScheduleWeeklyJSONFormData {
         saved_startdate.setTime(schedule.getStartDate());
         Calendar saved_enddate = Calendar.getInstance();
         saved_enddate.setTime(schedule.getEndDate());
-        if (Integer.valueOf(startDate.getHour()) == saved_startdate.get(
-          Calendar.HOUR_OF_DAY)
-          && Integer.valueOf(startDate.getMinute()) == saved_startdate.get(
-            Calendar.MINUTE)
-          && Integer.valueOf(endDate.getHour()) == saved_enddate.get(
-            Calendar.HOUR_OF_DAY)
-          && Integer.valueOf(endDate.getMinute()) == saved_enddate.get(
-            Calendar.MINUTE)
+        if (Integer.valueOf(startDate.getHour()) == saved_startdate
+          .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(startDate.getMinute()) == saved_startdate
+            .get(Calendar.MINUTE)
+          && Integer.valueOf(endDate.getHour()) == saved_enddate
+            .get(Calendar.HOUR_OF_DAY)
+          && Integer.valueOf(endDate.getMinute()) == saved_enddate
+            .get(Calendar.MINUTE)
           && viewDate.getMonth().equals(startDate.getMonth())
           && viewDate.getDay().equals(startDate.getDay())
           && viewDate.getYear().equals(startDate.getYear())) {
@@ -1140,10 +1117,8 @@ public class ScheduleWeeklyJSONFormData {
           if (msgType > 0) {
             // パソコンへメールを送信
             List<ALEipUserAddr> destMemberList =
-              ALMailUtils.getALEipUserAddrs(
-                memberList,
-                ALEipUtils.getUserId(rundata),
-                false);
+              ALMailUtils.getALEipUserAddrs(memberList, ALEipUtils
+                .getUserId(rundata), false);
             String subject = "[" + ALOrgUtilsService.getAlias() + "]スケジュール";
 
             List<ALAdminMailMessage> messageList =
@@ -1152,19 +1127,17 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(
-                ScheduleUtils.createMsgForPc(
-                  rundata,
-                  newSchedule,
-                  memberList,
-                  "new"));
-              message.setCellularBody(
-                ScheduleUtils.createMsgForCellPhone(
-                  rundata,
-                  newSchedule,
-                  memberList,
-                  destMember.getUserId(),
-                  "new"));
+              message.setPcBody(ScheduleUtils.createMsgForPc(
+                rundata,
+                newSchedule,
+                memberList,
+                "new"));
+              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                rundata,
+                newSchedule,
+                memberList,
+                destMember.getUserId(),
+                "new"));
               messageList.add(message);
             }
 
@@ -1172,13 +1145,11 @@ public class ScheduleWeeklyJSONFormData {
               List<ALEipUserAddr> destMembers = new ArrayList<ALEipUserAddr>();
               destMembers.add(destMember);
 
-              ALMailService.sendAdminMailAsync(
-                new ALAdminMailContext(
-                  orgId,
-                  ALEipUtils.getUserId(rundata),
-                  messageList,
-                  ALMailUtils.getSendDestType(
-                    ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
+              ALMailService.sendAdminMailAsync(new ALAdminMailContext(
+                orgId,
+                ALEipUtils.getUserId(rundata),
+                messageList,
+                ALMailUtils.getSendDestType(ALMailUtils.KEY_MSGTYPE_SCHEDULE)));
 
             }
 
@@ -1191,8 +1162,8 @@ public class ScheduleWeeklyJSONFormData {
         }
       }
     } else {
-      msgList.add(
-        ALLocalizationUtils.getl10n("SCHEDULE_YOU_DONOT_EDIT_THE_SCHEDULE"));
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_YOU_DONOT_EDIT_THE_SCHEDULE"));
       res = false;
     }
     return res;

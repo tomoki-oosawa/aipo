@@ -256,8 +256,8 @@ public class ScheduleDayContainer implements ALData {
   /**
    * 休日かどうかを判定する 休日の場合 ture
    */
-  public boolean isSetHoliday(int DayOfWeek) {
-    return ScheduleUtils.isSetHoliday(DayOfWeek);
+  public boolean isUserHoliday(int DayOfWeek) {
+    return ScheduleUtils.isUserHoliday(DayOfWeek);
   }
 
 }

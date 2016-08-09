@@ -5887,7 +5887,7 @@ public class ScheduleUtils {
     return (cacheHoliday.charAt(8) == '0') ? false : true;
   }
 
-  public static boolean isSetHoliday(int DayOfWeek) {
+  public static boolean isUserHoliday(int DayOfWeek) {
     String cacheHoliday = getHolidayOfWeek();
     return cacheHoliday.charAt(DayOfWeek) != '0';
 

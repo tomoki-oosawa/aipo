@@ -1334,7 +1334,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public boolean isHoliday(int DayOfWeek) {
-    return ScheduleUtils.isSetHoliday(DayOfWeek);
+    return ScheduleUtils.isUserHoliday(DayOfWeek);
   }
 
 }
