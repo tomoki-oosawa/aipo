@@ -123,9 +123,6 @@
 #else
 #ALtableheaderCalendarAtt("100%" "calendarDisplayMonth")
 #end
-
-
-##ここから　数値を得る
 #set ($theD = ${portlet.getPortletConfig().getInitParameter("z1a-rows")})
 #set ( $intConv = 1 )
 #set ( $foo2 = $intConv.parseInt( $theD ) )
@@ -141,17 +138,12 @@
 	#end
 #end
 
-$theDay
-
 ##number
 #set ($num = 7)
 #if ($theDay == 0)
 #set ($num = 0)
 #end
 
-##ここまでで "z1a-rows" を参照して表示を切り替え
-##実際に並び替えられたリストを表示していく
-##色を曜日に合わせて
 <tr>
 	#foreach($test in $weekRevised)
 		<th #if($velocityCount==($num - $theDay +1)) class='sunday' #elseif($velocityCount==(6 - $theDay +1)) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>

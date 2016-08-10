@@ -72,8 +72,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   private final String TARGET_USER_ID = "target_user_id";
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleMonthlySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ScheduleMonthlySelectData.class.getName());
 
   /** <code>viewMonth</code> 現在の月 */
   private ALDateTimeField viewMonth;
@@ -210,10 +211,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_month")) {
         String tmpViewMonth = rundata.getParameters().getString("view_month");
-        if (!tmpViewMonth.equals(ALEipUtils.getTemp(
-          rundata,
-          context,
-          "view_month"))) {
+        if (!tmpViewMonth.equals(
+          ALEipUtils.getTemp(rundata, context, "view_month"))) {
           // ALEipUtils.setTemp(rundata, context, "view_start", tmpViewMonth
           // + "-01");
         }
@@ -222,8 +221,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         String tmpViewStart =
           ALEipUtils.getTemp(rundata, context, "view_start");
         if (tmpViewStart != null && tmpViewStart.length() >= 7) {
-          ALEipUtils.setTemp(rundata, context, "view_month", tmpViewStart
-            .substring(0, 7));
+          ALEipUtils.setTemp(
+            rundata,
+            context,
+            "view_month",
+            tmpViewStart.substring(0, 7));
         }
       }
     }
@@ -245,15 +247,13 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     }
     // MonthlyCalendarに表示する月を登録
     this.setMonthlyCalendarViewMonth(viewMonth.getYear(), viewMonth.getMonth());
-    /*
-     * Portlet portlet = ((JetspeedRunData) rundata).getCustomized(); String a =
-     * portlet.getPortletConfig().getInitParameter("z1a-rows"); int theDay =
-     * Integer.parseInt(a);
-     */
 
-    VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
-    String a = portlet.getPortletConfig().getInitParameter("z1a-rows");
-    int theDay = Integer.parseInt(a);
+    int theDay =
+      Integer.parseInt(
+        ALEipUtils
+          .getPortlet(rundata, context)
+          .getPortletConfig()
+          .getInitParameter("z1a-rows"));
 
     // 表示開始日時
     Calendar cal = Calendar.getInstance();
@@ -262,7 +262,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     cal.setTime(viewMonth.getValue());
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    // ここの　+ の後ろの値を反映させて終わり
 
     cal.add(Calendar.DATE, -dayofweek + theDay);
     viewStart.setValue(cal.getTime());
@@ -311,10 +310,16 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     cal2.add(Calendar.YEAR, -2);
     prevYear.setValue(cal2.getTime());
 
-    ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-      + "-00-00");
-    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-      + "-00-00");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      "tmpStart",
+      viewStart.toString() + "-00-00");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      "tmpEnd",
+      viewStart.toString() + "-00-00");
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
@@ -332,7 +337,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       String groupFilter =
         ALEipUtils.getTemp(rundata, context, TARGET_GROUP_NAME);
       if (groupFilter == null || groupFilter.equals("")) {
-        // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         groupFilter = portlet.getPortletConfig().getInitParameter("p3a-group");
         if (groupFilter != null) {
           ALEipUtils.setTemp(rundata, context, TARGET_GROUP_NAME, groupFilter);
@@ -343,7 +348,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールを表示するユーザ ID をセッションに設定する．
       String userFilter = ALEipUtils.getTemp(rundata, context, TARGET_USER_ID);
       if (userFilter == null || userFilter.equals("")) {
-        // VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
+        VelocityPortlet portlet = ALEipUtils.getPortlet(rundata, context);
         userFilter = portlet.getPortletConfig().getInitParameter("p3a-user");
       }
 
@@ -366,8 +371,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
                 Database.sql(TurbineUser.class, query).fetchList();
               if (list != null && list.size() != 0) {
                 // 指定したユーザが存在する場合，セッションに保存する．
-                ALEipUtils
-                  .setTemp(rundata, context, TARGET_USER_ID, userFilter);
+                ALEipUtils.setTemp(
+                  rundata,
+                  context,
+                  TARGET_USER_ID,
+                  userFilter);
               } else {
                 ALEipUtils.removeTemp(rundata, context, TARGET_USER_ID);
               }
@@ -384,10 +392,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     viewTodo =
       !ALPortalApplicationService.isActive(ToDoUtils.TODO_PORTLET_NAME)
         ? 0
-        : Integer.parseInt(ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p5a-view"));
+        : Integer.parseInt(
+          ALEipUtils
+            .getPortlet(rundata, context)
+            .getPortletConfig()
+            .getInitParameter("p5a-view"));
 
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
@@ -446,8 +455,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // 時刻でソート
       ScheduleUtils.sortByTime(list);
 
-      return new ResultList<VEipTScheduleList>(ScheduleUtils
-        .sortByDummySchedule(list));
+      return new ResultList<VEipTScheduleList>(
+        ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleMonthlySelectData]", e);
       throw new ALDBErrorException();
@@ -483,9 +492,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       return new ArrayList<VEipTScheduleList>();
     }
 
-    return ScheduleUtils.getScheduleList(Integer.valueOf(userid), viewStart
-      .getValue(), viewEndCrt.getValue(), isFacility ? null : Arrays
-      .asList(targetId), isFacility ? Arrays.asList(targetId) : null);
+    return ScheduleUtils.getScheduleList(
+      Integer.valueOf(userid),
+      viewStart.getValue(),
+      viewEndCrt.getValue(),
+      isFacility ? null : Arrays.asList(targetId),
+      isFacility ? Arrays.asList(targetId) : null);
   }
 
   /**
@@ -524,9 +536,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         return rd;
       }
       if ("C".equals(record.getPublicFlag())
-        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid_int != record
-          .getUserId()
-          .intValue()))
+        && ("F".equals(record.getType())
+          || ("U".equals(record.getType())
+            && userid_int != record.getUserId().intValue()))
         && (userid_int != record.getOwnerId().intValue())
         && !is_member) {
         // 名前
@@ -567,15 +579,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
         int stime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getStartDate()
-            .getValue()
-            .getTime()) / 86400000);
+          -(int) ((viewStart.getValue().getTime()
+            - rd.getStartDate().getValue().getTime()) / 86400000);
         int etime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getEndDate()
-            .getValue()
-            .getTime()) / 86400000);
+          -(int) ((viewStart.getValue().getTime()
+            - rd.getEndDate().getValue().getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -682,22 +690,19 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
           rd.setPublicFlag("T".equals(record.getPublicFlag()));
 
           int stime;
-          if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-            .getStartDate()
-            .getValue(), false)) {
+          if (ScheduleUtils.equalsToDate(
+            ToDoUtils.getEmptyDate(),
+            rd.getStartDate().getValue(),
+            false)) {
             stime = 0;
           } else {
             stime =
-              -(int) ((viewStart.getValue().getTime() - rd
-                .getStartDate()
-                .getValue()
-                .getTime()) / 86400000);
+              -(int) ((viewStart.getValue().getTime()
+                - rd.getStartDate().getValue().getTime()) / 86400000);
           }
           int etime =
-            -(int) ((viewStart.getValue().getTime() - rd
-              .getEndDate()
-              .getValue()
-              .getTime()) / 86400000);
+            -(int) ((viewStart.getValue().getTime()
+              - rd.getEndDate().getValue().getTime()) / 86400000);
           if (stime < 0) {
             stime = 0;
           }
@@ -732,8 +737,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       Context context) {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
     Expression exp1 =
-      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
-        .valueOf((short) 100));
+      ExpressionFactory.noMatchExp(
+        EipTTodo.STATE_PROPERTY,
+        Short.valueOf((short) 100));
     query.setQualifier(exp1);
     Expression exp2 =
       ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
@@ -742,8 +748,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     if ((target_user_id != null) && (!target_user_id.equals(""))) {
       // 指定ユーザをセットする．
       Expression exp3 =
-        ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, Integer
-          .valueOf(target_user_id));
+        ExpressionFactory.matchDbExp(
+          TurbineUser.USER_ID_PK_COLUMN,
+          Integer.valueOf(target_user_id));
       query.andQualifier(exp3);
     } else {
       // 表示できるユーザがいない場合の処理
@@ -773,8 +780,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         EipTTodo.START_DATE_PROPERTY,
         getViewEnd().getValue());
     Expression exp22 =
-      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
-        .getEmptyDate());
+      ExpressionFactory.matchExp(
+        EipTTodo.END_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
     Expression exp31 =
@@ -782,11 +790,13 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         EipTTodo.END_DATE_PROPERTY,
         getViewStart().getValue());
     Expression exp32 =
-      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
-        .getEmptyDate());
+      ExpressionFactory.matchExp(
+        EipTTodo.START_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
 
-    query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-      exp31.andExp(exp32)));
+    query.andQualifier(
+      (exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
+        exp31.andExp(exp32)));
 
     query.orderAscending(EipTTodo.START_DATE_PROPERTY);
     return query;
@@ -938,8 +948,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       userList = ALEipUtils.getUsers(target_group_name);
       if (fgroup_flag) {
         facilityList =
-          FacilitiesUtils
-            .getFacilityGroupList(Integer.valueOf(target_group_id));
+          FacilitiesUtils.getFacilityGroupList(
+            Integer.valueOf(target_group_id));
       } else {
         facilityList = FacilitiesUtils.getFacilityList(target_group_name);
       }
