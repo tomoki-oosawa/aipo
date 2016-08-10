@@ -123,6 +123,7 @@
 #else
 #ALtableheaderCalendarAtt("100%" "calendarDisplayMonth")
 #end
+
 #set ($theD = ${portlet.getPortletConfig().getInitParameter("z1a-rows")})
 #set ( $intConv = 1 )
 #set ( $foo2 = $intConv.parseInt( $theD ) )
@@ -166,8 +167,6 @@
 #if($!todoConList) #set($todoConListSize = $!{todoConList.size()}) #else #set($todoConListSize = 0) #end
 #else #set($todoConListSize = 0)
 #end
-
-##日付の曜日
 
 <tr>
 #foreach($record in $record4.DayList)
@@ -299,9 +298,6 @@ $!{record.ToDoResultData.TodoName}
 #end
 #end
 
-
-##"以下はデータの中身。恐らくカレンダーの枠組みは別の場所にある。"
-
 <tr>
 #foreach($record in $record4.DayList)
 #set ($color_style = "")
@@ -334,8 +330,6 @@ $!{record.ToDoResultData.TodoName}
 #else
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #end
-
-##チェック
 
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">

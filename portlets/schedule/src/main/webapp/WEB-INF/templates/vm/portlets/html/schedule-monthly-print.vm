@@ -215,7 +215,6 @@ $l10n.SCHEDULE_SATURDAY<br />
 </th>
 #end
 </tr>
-
 ### 期間スケジュール（ここから） ###
 #if($termConListSize > 0)
 #foreach($termcontainer in ${result.TermContainer.getWeekList($weekcount)})
@@ -232,7 +231,6 @@ $l10n.SCHEDULE_SATURDAY<br />
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($color_style = "saturday")
 #end
-
 #if($!{record.isHoliday()})
 #set ($color_style_holiday = "holiday")
 #end
@@ -301,7 +299,6 @@ $!{record.TermResultData.Name}
 
 <td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
 #if($record.ScheduleList.size() <= 0)
-	
 <div class="calendarBody">
 <div class="calendarScheduleDiv">
 #if($!{result.hasAuthoritySelfInsert()} && (!$result.TargetUserId.startsWith('f') || $!{result.hasAuthorityFacilityInsert()}))
@@ -316,7 +313,6 @@ $!{record.TermResultData.Name}
 #end
 </div>
 </div>
-
 #else
 #foreach($record2 in $record.ScheduleList)
 #if(! ${record2.isDummy()})
