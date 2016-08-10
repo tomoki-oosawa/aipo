@@ -263,7 +263,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
 
-    cal.add(Calendar.DATE, -dayofweek + theDay);
+    if ((-dayofweek) + theDay > 0) {
+      cal.add(Calendar.DATE, (-dayofweek + theDay) - 7);
+    } else {
+      cal.add(Calendar.DATE, (-dayofweek + theDay));
+    }
+
     viewStart.setValue(cal.getTime());
 
     Calendar cal4 = Calendar.getInstance();

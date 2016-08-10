@@ -132,7 +132,7 @@
 #set ($weekRevised = [])
 #foreach($test in $weekOrder)
 	#set ($target = $!weekOrder.get($theDay))
-	$!weekRevised.add($!target)
+	#set($dummy = $!{weekRevised.add($target)})
 	#set ($theDay = $theDay + 1)
 	#if( 7 <= $theDay)
 		#set($theDay = 0)
