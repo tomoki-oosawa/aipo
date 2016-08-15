@@ -412,10 +412,6 @@ $!{record.ToDoResultData.TodoName}
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-##elseif($!{record.Date.Value.Day} == 0)
-##set ($color_style = " sunday")
-##elseif($!{record.Date.Value.Day} == 6)
-##set ($color_style = " saturday")
 
 ##ユーザーが設定した休日
 #elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
