@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ToDoのユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class ToDoUtils {
 
@@ -102,7 +102,7 @@ public class ToDoUtils {
 
   /**
    * Todo オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -136,6 +136,9 @@ public class ToDoUtils {
         throw new ALPageNotFoundException();
       }
 
+      EipTTodo aa = Database.get(EipTTodo.class, 963);
+      aa.getPublicFlag();
+
       // アクセス権の判定
       EipTTodo todo = todoList.get(0);
       if ((uid != todo.getUserId().intValue())
@@ -153,9 +156,15 @@ public class ToDoUtils {
     }
   }
 
+  public static Object getPublicity() {
+    EipTTodo aa = Database.get(EipTTodo.class, 963);
+    aa.getPublicFlag();
+    return aa;
+  }
+
   /**
    * 公開 Todo オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param isJoin
@@ -194,7 +203,7 @@ public class ToDoUtils {
 
   /**
    * Todoカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -234,7 +243,7 @@ public class ToDoUtils {
 
   /**
    * Todoカテゴリ オブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -249,7 +258,7 @@ public class ToDoUtils {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public static Date getEmptyDate() {
@@ -259,7 +268,7 @@ public class ToDoUtils {
   }
 
   /**
-   * 
+   *
    * @param date
    * @return
    */
@@ -279,7 +288,7 @@ public class ToDoUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -306,7 +315,7 @@ public class ToDoUtils {
    * 3 : 普通 : priority_middle.gif <BR>
    * 4 : やや低い : priority_middle_low.gif <BR>
    * 5 : 低い : priority_low.gif <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -328,7 +337,7 @@ public class ToDoUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -362,7 +371,7 @@ public class ToDoUtils {
    * : :<BR>
    * 90 : 90% <BR>
    * 100 : 完了 <BR>
-   * 
+   *
    * @param i
    * @return
    */
@@ -378,7 +387,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えで指定したグループ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -399,7 +408,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えで指定したユーザ ID を取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -421,7 +430,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えで指定した検索キーワードを取得する．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -466,7 +475,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -478,7 +487,7 @@ public class ToDoUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -490,7 +499,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -502,7 +511,7 @@ public class ToDoUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -515,7 +524,7 @@ public class ToDoUtils {
 
   /**
    * 表示切り替えのリセットフラグがあるかを返す．
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -527,7 +536,7 @@ public class ToDoUtils {
 
   /**
    * フィルターを初期化する．
-   * 
+   *
    * @param rundata
    * @param context
    * @param className
@@ -546,7 +555,7 @@ public class ToDoUtils {
 
   /**
    * 現在日時と指定した日時とを比較する．
-   * 
+   *
    * @param endDate
    * @return 現在日時 < 指定日時 ：LIMIT_STATE_BEFORE <br>
    *         現在日時 == 指定日時 ：LIMIT_STATE_TODAY <br>
@@ -586,7 +595,7 @@ public class ToDoUtils {
 
   /**
    * プルダウン用のカテゴリーリストを返します
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -639,7 +648,7 @@ public class ToDoUtils {
 
   /**
    * ToDo を作成・更新した通知を送信します。
-   * 
+   *
    * @param schedule
    * @param loginName
    * @param recipients
@@ -692,7 +701,7 @@ public class ToDoUtils {
 
   /**
    * パソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    * @throws ALDBErrorException
    */
@@ -779,7 +788,7 @@ public class ToDoUtils {
 
   /**
    * todo-notification-mail.vmからパソコンへ送信するメールの内容を作成する．
-   * 
+   *
    * @return
    * @throws ALDBErrorException
    */
@@ -850,10 +859,10 @@ public class ToDoUtils {
   }
 
   /**
-   * 
+   *
    * PSMLに設定されているデータと比較して valueが正しい値ならその値を新しくPSMLに保存。
-   * 
-   * 
+   *
+   *
    * @param rundata
    * @param context
    * @param config

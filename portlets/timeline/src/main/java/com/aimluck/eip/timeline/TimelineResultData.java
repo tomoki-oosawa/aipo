@@ -626,6 +626,24 @@ public class TimelineResultData implements ALData {
     }
   }
 
+  // URLの先を行き、公開ならtrue, 非公開ならfalseを返す。雛形はgetPopupUrl()。
+  public String getPopupUrl2() {
+    String portletParams = this.getParams().getValue();
+
+    if (portletParams != null && portletParams.length() > 0) {
+      // ここで公開、非公開を得る
+      StringBuilder b = new StringBuilder(portletParams);
+      // if (portletParams.indexOf("?") > -1) {
+      // b.append("&activityId=").append(id);
+      // } else {
+      // b.append("?activityId=").append(id);
+      // }
+      return b.toString();
+    } else {
+      return "";
+    }
+  }
+
   public int getLikeCount() {
     return likeCount;
   }

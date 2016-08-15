@@ -36,6 +36,7 @@
 </div>
 <div class="name">
 #ALtditem($record2.UserName)
+$testing1detail
 </div>
 </div>
 </li>

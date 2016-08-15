@@ -116,7 +116,7 @@
 </div>
 <div class="menubar multi" id="menubar_tlDisplayChanger_$!{portlet.ID}" style="width:260px;display:none; ">
 	<div>
-	<p class="caption">$l10n.COMMON_GROUP</p>
+	<p class="caption">$l10n.COMMON_GROUP $testing1Ajax</p>
 	<ul class="filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 		<li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetGroupName}" == "all")selected#end" id="PostName_$!{portlet.ID}_$!{record.GroupName}" onclick="aipo.timeline.displayIndicator('${actionAllUrl}', '$!{portlet.ID}', '$indicator_id3', '$!{record.GroupName}');">$l10n.TIMELINE_ALL_GROUP</a></li>
 		#foreach( $record in $result.MyGroupList)
