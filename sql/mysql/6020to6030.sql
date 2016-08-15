@@ -145,8 +145,8 @@ UPDATE `eip_t_acl_role` SET `role_id` = `role_id` + 10000
 
 INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_self','報告書（自分の報告書）操作', 31);
 INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（自分の報告書）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_self' LIMIT 1),31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません', NULL, NULL);
-INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_other','報告書（他ユーザーの報告書）操作',3);
-INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（他ユーザーの報告書）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_other' LIMIT 1),3,'＊詳細表示は一覧表示の権限を持っていないと使用できません', NULL, NULL);
+INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_other','報告書（他ユーザーの報告書）操作',27);
+INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（他ユーザーの報告書）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_other' LIMIT 1),27,'＊詳細表示は一覧表示の権限を持っていないと使用できません', NULL, NULL);
 INSERT INTO `eip_t_acl_portlet_feature` (`feature_name`, `feature_alias_name`, `acl_type`) VALUES ('report_reply','報告書（返信）操作',3);
 INSERT INTO `eip_t_acl_role` (`role_name`, `feature_id`, `acl_type`, `note`, `create_date`, `update_date`) VALUES ('報告書（返信）管理者', (SELECT `feature_id` FROM `eip_t_acl_portlet_feature` WHERE `feature_name` = 'report_reply' LIMIT 1),3 ,NULL, NULL, NULL);
 ALTER TABLE `eip_t_acl_role` AUTO_INCREMENT = 10000;
