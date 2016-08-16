@@ -537,6 +537,18 @@ public class TimelineSelectData extends
       }
     }
 
+    // 掲示板の権限チェック。権限がないものをremove。
+    for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
+      EipTTimeline tmpEipTTimeline = iter.next();
+      // appIDが"Msgboard"
+      if (tmpEipTTimeline.getAppId().equals("Msgboard")) {
+        // publicFlagがたっていない
+        // 自分がメンバーでない
+        // 他人のやつを見ていい権限がない
+        // 以上がTならremove
+      }
+    }
+
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
     for (EipTTimeline model : list) {
