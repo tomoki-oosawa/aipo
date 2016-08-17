@@ -85,8 +85,8 @@ public class TimelineSelectData extends
   private final String TARGET_DISPLAY_NAME = "target_display_name";
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimelineSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(TimelineSelectData.class.getName());
 
   /** トピックの総数 */
   private int topicSum;
@@ -148,6 +148,9 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
 
+  /** アクセス権限の機能名（共有フォルダ（ファイル）操作）の一覧表示権限を持っているか **/
+  private boolean hasCabinetFileAclList;
+
   /**
    *
    * @param action
@@ -207,16 +210,24 @@ public class TimelineSelectData extends
         }
       }
 
-      /** hasScheduleOtherAclListの権限チェック **/
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance()).getService(
+            ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      /** hasScheduleOtherAclListの権限チェック **/
       hasScheduleOtherAclList =
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasCabinetFileAclListの権限チェック **/
+      hasCabinetFileAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_CABINET_FILE,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -254,8 +265,8 @@ public class TimelineSelectData extends
         TimelineUtils.resetKeyword(rundata, context);
         target_keyword.setValue("");
       } else {
-        target_keyword.setValue(TimelineUtils
-          .getTargetKeyword(rundata, context));
+        target_keyword.setValue(
+          TimelineUtils.getTargetKeyword(rundata, context));
       }
 
       ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
@@ -281,14 +292,13 @@ public class TimelineSelectData extends
     }
   }
 
-  public ResultList<EipTTimeline> selectListNew(RunData rundata, Context context) {
+  public ResultList<EipTTimeline> selectListNew(RunData rundata,
+      Context context) {
     try {
 
       int minId =
-        Integer.valueOf(ALEipUtils.getParameter(
-          rundata,
-          context,
-          "lastTimelineId"));
+        Integer.valueOf(
+          ALEipUtils.getParameter(rundata, context, "lastTimelineId"));
 
       // 表示するカラムのみデータベースから取得する．
       ResultList<EipTTimeline> list =
@@ -322,8 +332,8 @@ public class TimelineSelectData extends
       Context context) {
 
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    query.where(Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer
-      .valueOf(0)));
+    query.where(
+      Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer.valueOf(0)));
 
     return query;
   }
@@ -479,6 +489,15 @@ public class TimelineSelectData extends
         target_keyword.toString(),
         "");
 
+    /* 共有フォルダ（ファイル）操作の権限を持っていない場合、listからファイルの情報を削除 */
+    if (!hasCabinetFileAclList) {
+      for (int i = list.size() - 1; i >= 0; i--) {
+        if (list.get(i).getAppId().equals("Cabinet")) {
+          list.remove(i);
+        }
+      }
+    }
+
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
@@ -523,16 +542,16 @@ public class TimelineSelectData extends
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
                   if (relatedScheduleIdList == null
-                    || (relatedScheduleIdList.size() == 0 || !relatedScheduleIdList
-                      .contains(scheduleId))) {
+                    || (relatedScheduleIdList.size() == 0
+                      || !relatedScheduleIdList.contains(scheduleId))) {
                     // relatedScheduleIdListが空 or
                     // relatedScheduleIdListに含まれない時は削除
                     iter.remove();
                   }
                 }
-              }// スケジュール以外のTimeline
+              } // スケジュール以外のTimeline
             }
-          }// 自分がオーナーのTimeline
+          } // 自分がオーナーのTimeline
         }
       }
     }
@@ -597,14 +616,15 @@ public class TimelineSelectData extends
     return result;
   }
 
-  protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
+  protected Map<Integer, List<FileuploadBean>> getFiles(
+      List<Integer> parentIds) {
     if (parentIds == null || parentIds.size() == 0) {
       return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =
       Database.query(EipTTimelineFile.class);
-    query
-      .where(Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
+    query.where(
+      Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
 
     query.orderAscending(EipTTimelineFile.UPDATE_DATE_PROPERTY);
     query.orderAscending(EipTTimelineFile.FILE_PATH_PROPERTY);
@@ -703,8 +723,9 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(commentsMap.get(Integer
-            .valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(
+            commentsMap.get(
+              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -723,14 +744,15 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString())
+            || userlist.contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0
+          && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
@@ -754,7 +776,8 @@ public class TimelineSelectData extends
 
   }
 
-  public boolean doViewListNew(ALAction action, RunData rundata, Context context) {
+  public boolean doViewListNew(ALAction action, RunData rundata,
+      Context context) {
     try {
       init(action, rundata, context);
       doCheckAclPermission(
@@ -820,8 +843,9 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(commentsMap.get(Integer
-            .valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(
+            commentsMap.get(
+              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -840,14 +864,15 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString())
+            || userlist.contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0
+          && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
