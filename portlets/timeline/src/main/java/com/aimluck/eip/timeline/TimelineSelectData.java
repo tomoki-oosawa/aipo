@@ -537,15 +537,54 @@ public class TimelineSelectData extends
       }
     }
 
-    // 掲示板の権限チェック。権限がないものをremove。
-    for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
-      EipTTimeline tmpEipTTimeline = iter.next();
-      // appIDが"Msgboard"
-      if (tmpEipTTimeline.getAppId().equals("Msgboard")) {
-        // publicFlagがたっていない
-        // 自分がメンバーでない
-        // 他人のやつを見ていい権限がない
-        // 以上がTならremove
+    /* listから自分が関係しないmsgboardの情報を削除 */
+
+    // eip_t_msgboard_categoryとeip_t_mesgboard_topicからpublicFlugがF かつ
+    // user_idが自分のでない かつ
+    // 自分が参加しているグループのものでないtopic_idをとってきてNGtopicIdListに
+    ArrayList<Integer> NGtopicIdList = new ArrayList<Integer>();
+    // todo
+    // 他人のトピックをみる権限がない場合
+    if (true) {
+      // listのなかからpublic_flagのたっていないmsgboardIDを取得してmsgboardIDに
+      ArrayList<Integer> msgboardIdList = new ArrayList<Integer>();
+      for (EipTTimeline model : list) {
+        if (model.getParams() != null
+          && !"".equals(model.getParams())
+          && model.getAppId() != null
+          && !"".equals(model.getAppId())) {
+          if (model.getAppId().equals("Msgboard")) {
+            Matcher m =
+              Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
+            if (m.find()) {
+              Integer msgboardId = Integer.parseInt(m.group(1));
+              if (NGtopicIdList.contains(msgboardId)) {
+                msgboardIdList.add(msgboardId);
+              }
+            }
+          }
+        }
+      }
+
+      // 掲示板の権限チェック。権限がないものをremove。
+      for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
+        EipTTimeline tmpEipTTimeline = iter.next();
+        // appIDが"Msgboard"
+        if (tmpEipTTimeline.getAppId().equals("Msgboard")) {
+          Matcher m =
+            Pattern.compile("entityid=([0-9]+)").matcher(
+              tmpEipTTimeline.getParams());
+          if (m.find()) {
+            Integer msgboardId = Integer.parseInt(m.group(1));
+            if (NGtopicIdList == null
+              || (NGtopicIdList.size() == 0 || !NGtopicIdList
+                .contains(msgboardId))) {
+              // relatedScheduleIdListが空 or
+              // relatedScheduleIdListに含まれない時は削除
+              iter.remove();
+            }
+          }
+        }
       }
     }
 
