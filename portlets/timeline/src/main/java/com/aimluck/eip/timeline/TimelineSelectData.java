@@ -145,9 +145,6 @@ public class TimelineSelectData extends
   /** AppNameからportletIdを取得するハッシュ */
   private HashMap<String, String> portletIdFromAppId;
 
-  /** アクセス権限の機能名（ブログ（他ユーザの記事））の一覧権限を持っているか **/
-  private boolean hasBlogOtherAclList;
-
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
 
@@ -210,20 +207,12 @@ public class TimelineSelectData extends
         }
       }
 
+      /** hasScheduleOtherAclListの権限チェック **/
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-
-      /** hasBlogOtherAclListの権限チェック **/
-      hasBlogOtherAclList =
-        aclhandler.hasAuthority(
-          uid,
-          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
-          ALAccessControlConstants.VALUE_ACL_LIST);
-
-      /** hasScheduleOtherAclListの権限チェック **/
       hasScheduleOtherAclList =
         aclhandler.hasAuthority(
           uid,
@@ -489,16 +478,6 @@ public class TimelineSelectData extends
         useridList,
         target_keyword.toString(),
         "");
-
-    /* ブログ（他ユーザの記事）の権限を持っていない場合、listからブログの情報を削除 */
-    if (!hasBlogOtherAclList) {
-      for (int i = list.size() - 1; i >= 0; i--) {
-        if (list.get(i).getAppId().equals("Blog")
-          && !list.get(i).getOwnerId().equals(uid)) {
-          list.remove(i);
-        }
-      }
-    }
 
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
