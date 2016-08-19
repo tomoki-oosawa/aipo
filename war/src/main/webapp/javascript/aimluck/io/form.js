@@ -803,17 +803,12 @@ aimluck.io.addOption = function (select, value, text, is_selected) {
   }
 }
 
-// iphone9.2系において先頭のoptionタグが勝手に選択されてしまう問題対策
+// iphone9系において先頭のoptionタグが勝手に選択されてしまう問題対策
 aimluck.io.addDisableOption = function (select) {
-	if (document.all) {
+	if (navigator.userAgent.indexOf("iPhone OS 9") > -1){
+		// iOS 9の場合のみダミー選択肢を追加する
 	    var option = document.createElement("OPTION");
-	    option.value = 'a';
-	    option.disabled = 'true';
-	    option.style.display = 'none';
-	    select.add(option, select.options.length);
-	} else {
-	    var option = document.createElement("OPTION");
-	    option.value = 'a';
+	    option.value = 'dummy';
 	    option.disabled = 'true';
 	    option.style.display = 'none';
 	    select.insertBefore(option, select.options[select.options.length]);
