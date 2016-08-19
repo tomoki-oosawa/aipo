@@ -807,11 +807,10 @@ aimluck.io.addOption = function (select, value, text, is_selected) {
 aimluck.io.addDisableOption = function (select) {
 	if (navigator.userAgent.indexOf("iPhone OS 9") > -1){
 		// iOS 9の場合のみダミー選択肢を追加する
-	    var option = document.createElement("OPTION");
-	    option.value = 'dummy';
-	    option.disabled = 'true';
-	    option.style.display = 'none';
-	    select.insertBefore(option, select.options[select.options.length]);
+	    var dummy = document.createElement("optgroup");
+	    dummy.disabled = 'true';
+	    dummy.style.display = 'none';
+	    select.insertBefore(dummy, select.options[select.options.length]);
 	}
 }
 
