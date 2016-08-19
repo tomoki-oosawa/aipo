@@ -85,8 +85,8 @@ public class TimelineSelectData extends
   private final String TARGET_DISPLAY_NAME = "target_display_name";
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(TimelineSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(TimelineSelectData.class.getName());
 
   /** トピックの総数 */
   private int topicSum;
@@ -212,8 +212,8 @@ public class TimelineSelectData extends
 
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(
-            ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       /** hasScheduleOtherAclListの権限チェック **/
@@ -265,8 +265,8 @@ public class TimelineSelectData extends
         TimelineUtils.resetKeyword(rundata, context);
         target_keyword.setValue("");
       } else {
-        target_keyword.setValue(
-          TimelineUtils.getTargetKeyword(rundata, context));
+        target_keyword.setValue(TimelineUtils
+          .getTargetKeyword(rundata, context));
       }
 
       ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
@@ -292,13 +292,14 @@ public class TimelineSelectData extends
     }
   }
 
-  public ResultList<EipTTimeline> selectListNew(RunData rundata,
-      Context context) {
+  public ResultList<EipTTimeline> selectListNew(RunData rundata, Context context) {
     try {
 
       int minId =
-        Integer.valueOf(
-          ALEipUtils.getParameter(rundata, context, "lastTimelineId"));
+        Integer.valueOf(ALEipUtils.getParameter(
+          rundata,
+          context,
+          "lastTimelineId"));
 
       // 表示するカラムのみデータベースから取得する．
       ResultList<EipTTimeline> list =
@@ -332,8 +333,8 @@ public class TimelineSelectData extends
       Context context) {
 
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    query.where(
-      Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer.valueOf(0)));
+    query.where(Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer
+      .valueOf(0)));
 
     return query;
   }
@@ -498,6 +499,8 @@ public class TimelineSelectData extends
       }
     }
 
+    removePrivateCabinet(list);
+
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
@@ -542,8 +545,8 @@ public class TimelineSelectData extends
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
                   if (relatedScheduleIdList == null
-                    || (relatedScheduleIdList.size() == 0
-                      || !relatedScheduleIdList.contains(scheduleId))) {
+                    || (relatedScheduleIdList.size() == 0 || !relatedScheduleIdList
+                      .contains(scheduleId))) {
                     // relatedScheduleIdListが空 or
                     // relatedScheduleIdListに含まれない時は削除
                     iter.remove();
@@ -616,15 +619,14 @@ public class TimelineSelectData extends
     return result;
   }
 
-  protected Map<Integer, List<FileuploadBean>> getFiles(
-      List<Integer> parentIds) {
+  protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
     if (parentIds == null || parentIds.size() == 0) {
       return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =
       Database.query(EipTTimelineFile.class);
-    query.where(
-      Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
+    query
+      .where(Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
 
     query.orderAscending(EipTTimelineFile.UPDATE_DATE_PROPERTY);
     query.orderAscending(EipTTimelineFile.FILE_PATH_PROPERTY);
@@ -723,9 +725,8 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(
-            commentsMap.get(
-              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(commentsMap.get(Integer
+            .valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -744,15 +745,14 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString())
-            || userlist.contains("-1"))) {
+            || userlist.contains(user.getName().toString()) || userlist
+              .contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0
-          && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
@@ -776,8 +776,7 @@ public class TimelineSelectData extends
 
   }
 
-  public boolean doViewListNew(ALAction action, RunData rundata,
-      Context context) {
+  public boolean doViewListNew(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
       doCheckAclPermission(
@@ -843,9 +842,8 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(
-            commentsMap.get(
-              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(commentsMap.get(Integer
+            .valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -864,15 +862,14 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString())
-            || userlist.contains("-1"))) {
+            || userlist.contains(user.getName().toString()) || userlist
+              .contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0
-          && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
@@ -894,6 +891,39 @@ public class TimelineSelectData extends
       return false;
     }
 
+  }
+
+  private void removePrivateCabinet(List<EipTTimeline> list) {
+    /* 自身がメンバーでない、非公開ファイルの情報を削除 */
+    StringBuilder query = new StringBuilder();
+    if (Database.isJdbcPostgreSQL()) {
+      query
+        .append("SELECT * FROM ((eip_t_timeline LEFT JOIN eip_t_cabinet_file"
+          + " ON CAST(eip_t_timeline.external_id AS integer) = eip_t_cabinet_file.file_id)"
+          + " LEFT JOIN eip_t_cabinet_folder ON eip_t_cabinet_file.folder_id = eip_t_cabinet_folder.folder_id)"
+          + " LEFT JOIN eip_t_cabinet_folder_map ON eip_t_cabinet_file.folder_id = eip_t_cabinet_folder_map.folder_id"
+          + " WHERE eip_t_cabinet_folder.public_flag = '2' OR eip_t_cabinet_folder.public_flag = '3';");
+    } else if (Database.isJdbcMySQL()) {
+      query
+        .append("SELECT * FROM ((eip_t_timeline LEFT JOIN eip_t_cabinet_file"
+          + " ON CAST(eip_t_timeline.external_id AS unsigned) = eip_t_cabinet_file.file_id)"
+          + " LEFT JOIN eip_t_cabinet_folder ON eip_t_cabinet_file.folder_id = eip_t_cabinet_folder.folder_id)"
+          + " LEFT JOIN eip_t_cabinet_folder_map ON eip_t_cabinet_file.folder_id = eip_t_cabinet_folder_map.folder_id"
+          + " WHERE eip_t_cabinet_folder.public_flag = '2' OR eip_t_cabinet_folder.public_flag = '3';");
+    }
+
+    List<EipTTimeline> targetList =
+      Database.sql(EipTTimeline.class, query.toString()).fetchList();
+
+    List<Integer> targetIdList = new ArrayList<Integer>();
+    for (EipTTimeline obj : targetList) {
+      if (obj.getOwnerId() != uid) {
+        targetIdList.add(obj.getTimelineId());
+      }
+    }
+
+    list.removeIf(obj -> (obj.getAppId().equals("Cabinet") && targetIdList
+      .contains(obj.getTimelineId())));
   }
 
   /**
