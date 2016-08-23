@@ -43,6 +43,7 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -537,56 +538,7 @@ public class TimelineSelectData extends
       }
     }
 
-    /* listから自分が関係しないmsgboardの情報を削除 */
-
-    // eip_t_msgboard_categoryとeip_t_mesgboard_topicからpublicFlugがF かつ
-    // user_idが自分のでない かつ
-    // 自分が参加しているグループのものでないtopic_idをとってきてNGtopicIdListに
-    ArrayList<Integer> NGtopicIdList = new ArrayList<Integer>();
-    // todo
-    // 他人のトピックをみる権限がない場合
-    if (true) {
-      // listのなかからpublic_flagのたっていないmsgboardIDを取得してmsgboardIDに
-      ArrayList<Integer> msgboardIdList = new ArrayList<Integer>();
-      for (EipTTimeline model : list) {
-        if (model.getParams() != null
-          && !"".equals(model.getParams())
-          && model.getAppId() != null
-          && !"".equals(model.getAppId())) {
-          if (model.getAppId().equals("Msgboard")) {
-            Matcher m =
-              Pattern.compile("entityid=([0-9]+)").matcher(model.getParams());
-            if (m.find()) {
-              Integer msgboardId = Integer.parseInt(m.group(1));
-              if (NGtopicIdList.contains(msgboardId)) {
-                msgboardIdList.add(msgboardId);
-              }
-            }
-          }
-        }
-      }
-
-      // 掲示板の権限チェック。権限がないものをremove。
-      for (Iterator<EipTTimeline> iter = list.iterator(); iter.hasNext();) {
-        EipTTimeline tmpEipTTimeline = iter.next();
-        // appIDが"Msgboard"
-        if (tmpEipTTimeline.getAppId().equals("Msgboard")) {
-          Matcher m =
-            Pattern.compile("entityid=([0-9]+)").matcher(
-              tmpEipTTimeline.getParams());
-          if (m.find()) {
-            Integer msgboardId = Integer.parseInt(m.group(1));
-            if (NGtopicIdList == null
-              || (NGtopicIdList.size() == 0 || !NGtopicIdList
-                .contains(msgboardId))) {
-              // relatedScheduleIdListが空 or
-              // relatedScheduleIdListに含まれない時は削除
-              iter.remove();
-            }
-          }
-        }
-      }
-    }
+    removePrivateMsgboardTopic(list);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -919,6 +871,38 @@ public class TimelineSelectData extends
       ALEipUtils.redirectDBError(rundata);
       return false;
     }
+
+  }
+
+  private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
+    /* listから自分が関係しないmsgboardの情報を削除 */
+
+    // 見る権限が無いトピックをデータベースからとってくる
+    // sql文を実行して、NGtopicListに入れる
+    StringBuffer statement = new StringBuffer();
+    statement.append("SELECT DISTINCT T.*");
+    statement.append("FROM eip_t_msgboard_topic as T,");
+    statement.append(" eip_t_msgboard_category as C,");
+    statement.append(" eip_t_msgboard_category_map as M");
+    statement.append(" WHERE C.category_id = T.category_id");
+    statement.append(" AND C.public_flag = 'F'");
+    statement.append(" AND C.category_id not in (");
+    statement
+      .append("select distinct category_id from eip_t_msgboard_category_map as M "
+        + "where M.user_id = ");
+    statement.append(uid + ")");
+
+    List<EipTMsgboardTopic> NGtopicList =
+      Database.sql(EipTMsgboardTopic.class, statement.toString()).fetchList();
+
+    // NGtopicListからidをぬきだす
+    List<Integer> NGtopicIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic obj : NGtopicList) {
+      NGtopicIdList.add(obj.getTopicId());
+    }
+    // listのなかでIDがNGtopicIdListに入ってるやつを削除
+    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && NGtopicIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
 
   }
 
