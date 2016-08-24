@@ -160,6 +160,22 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** <code>target_user_id</code> 表示対象のユーザ ID */
   protected String target_user_id;
 
+  /** <code>startDayOfWeek</code> 週初めの曜日 */
+  protected int startDayOfWeek;
+
+  /** <code>weekRevised</code> 週初めの曜日から始まる曜日の文字列のリスト */
+  private List<String> weekRevised;
+
+  private final String[] weekday_str = {
+    "",
+    ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_MONDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY") };
+
   /**
    *
    * @param action
@@ -248,7 +264,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     // MonthlyCalendarに表示する月を登録
     this.setMonthlyCalendarViewMonth(viewMonth.getYear(), viewMonth.getMonth());
 
-    int theDay =
+    startDayOfWeek =
       Integer.parseInt(
         ALEipUtils
           .getPortlet(rundata, context)
@@ -262,12 +278,21 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     cal.setTime(viewMonth.getValue());
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-
-    if ((-dayofweek) + theDay > 0) {
-      cal.add(Calendar.DATE, (-dayofweek + theDay) - 7);
+    if ((-dayofweek) + startDayOfWeek > 0) {
+      cal.add(Calendar.DATE, (-dayofweek + startDayOfWeek) - 7);
     } else {
-      cal.add(Calendar.DATE, (-dayofweek + theDay));
+      cal.add(Calendar.DATE, (-dayofweek + startDayOfWeek));
     }
+
+    // 週初めの曜日に合わせて文字列リスト作成
+    weekRevised = new ArrayList<String>();
+    // weekRevised = new ArrayList<String>();
+    int tmpStartDayOfWeek = startDayOfWeek;
+    do {
+      weekRevised.add(weekday_str[tmpStartDayOfWeek]);
+      tmpStartDayOfWeek = tmpStartDayOfWeek % 7;
+      tmpStartDayOfWeek++;
+    } while (tmpStartDayOfWeek != startDayOfWeek);
 
     viewStart.setValue(cal.getTime());
 
@@ -1359,6 +1384,24 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    */
   public void setUser(ALEipUser user) {
     this.user = user;
+  }
+
+  /**
+   * 週初めの曜日を取得します
+   *
+   * @return
+   */
+  public int getStartDayOfWeek() {
+    return startDayOfWeek;
+  }
+
+  /**
+   * 週初めの曜日から始まる曜日の文字列のリストを取得します
+   *
+   * @return
+   */
+  public List<String> getWeekRevised() {
+    return weekRevised;
   }
 
 }

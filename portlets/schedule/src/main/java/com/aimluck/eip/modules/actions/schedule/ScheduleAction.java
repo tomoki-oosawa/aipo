@@ -60,26 +60,34 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleAction extends ALBaseAction {
 
   // 週表示のデフォルトフィルター
-  static final String LIST_FILTER_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
-    ALEipConstants.LIST_FILTER).toString();
+  static final String LIST_FILTER_STR_W =
+    new StringBuffer()
+      .append(ScheduleWeeklyGroupSelectData.class.getSimpleName())
+      .append(ALEipConstants.LIST_FILTER)
+      .toString();
 
-  static final String LIST_FILTER_TYPE_STR_W = new StringBuffer().append(
-    ScheduleWeeklyGroupSelectData.class.getSimpleName()).append(
-    ALEipConstants.LIST_FILTER_TYPE).toString();
+  static final String LIST_FILTER_TYPE_STR_W =
+    new StringBuffer()
+      .append(ScheduleWeeklyGroupSelectData.class.getSimpleName())
+      .append(ALEipConstants.LIST_FILTER_TYPE)
+      .toString();
 
   // 日表示のデフォルトフィルター
-  static final String LIST_FILTER_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
-    ALEipConstants.LIST_FILTER).toString();
+  static final String LIST_FILTER_STR_D =
+    new StringBuffer()
+      .append(ScheduleOnedayGroupSelectData.class.getSimpleName())
+      .append(ALEipConstants.LIST_FILTER)
+      .toString();
 
-  static final String LIST_FILTER_TYPE_STR_D = new StringBuffer().append(
-    ScheduleOnedayGroupSelectData.class.getSimpleName()).append(
-    ALEipConstants.LIST_FILTER_TYPE).toString();
+  static final String LIST_FILTER_TYPE_STR_D =
+    new StringBuffer()
+      .append(ScheduleOnedayGroupSelectData.class.getSimpleName())
+      .append(ALEipConstants.LIST_FILTER_TYPE)
+      .toString();
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleAction.class.getName());
 
   /** ノーマル画面からのスケジュール入力 */
   private static final String AFTER_BEHAVIOR = "afterbehavior";
@@ -149,9 +157,9 @@ public class ScheduleAction extends ALBaseAction {
       context.put("weekly_days", _days);
 
       // 週頭を取得する
-      String start_monday =
+      String startDayOfWeek =
         portlet.getPortletConfig().getInitParameter("z1a-rows");
-      context.put("start_monday", start_monday);
+      context.put("startDayOfWeek", startDayOfWeek);
 
       // 初期共有メンバー表示フラグを取得する
       String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
@@ -285,8 +293,8 @@ public class ScheduleAction extends ALBaseAction {
           List<UserFacilityLiteBean> ulist;
           if ("F".equals(has_acl_other)) {
             ulist = ScheduleUtils.getALEipFacility(selected_users, rundata);
-            if (selected_user.contains(String.valueOf(ALEipUtils
-              .getUserId(rundata)))) {
+            if (selected_user.contains(
+              String.valueOf(ALEipUtils.getUserId(rundata)))) {
               UserFacilityLiteBean login_user =
                 UserFacilityUtils.getUserFacilityLiteBean(rundata);
               ulist.add(login_user);
@@ -371,8 +379,8 @@ public class ScheduleAction extends ALBaseAction {
    * @param rundata
    */
   @Override
-  protected void buildMaximizedContext(VelocityPortlet portlet,
-      Context context, RunData rundata) {
+  protected void buildMaximizedContext(VelocityPortlet portlet, Context context,
+      RunData rundata) {
 
     // MODEを取得
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
@@ -406,9 +414,9 @@ public class ScheduleAction extends ALBaseAction {
     context.put("weekly_days", weekly_days);
 
     // 週頭を取得する
-    String start_monday =
+    String startDayOfWeek =
       portlet.getPortletConfig().getInitParameter("z1a-rows");
-    context.put("start_monday", start_monday);
+    context.put("startDayOfWeek", startDayOfWeek);
 
     // 初期共有メンバー表示フラグを取得する
     String showAll = portlet.getPortletConfig().getInitParameter("p7d-schk");
@@ -521,10 +529,11 @@ public class ScheduleAction extends ALBaseAction {
       if (formData.doInsert(this, rundata, context)) {
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          rundata.setRedirectURI(jsLink.getPortletById(
-            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-            "action",
-            "controls.Restore").toString());
+          rundata.setRedirectURI(
+            jsLink
+              .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
+              .addQueryData("action", "controls.Restore")
+              .toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -567,10 +576,11 @@ public class ScheduleAction extends ALBaseAction {
       if (formData.doUpdate(this, rundata, context)) {
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          rundata.setRedirectURI(jsLink.getPortletById(
-            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-            "action",
-            "controls.Restore").toString());
+          rundata.setRedirectURI(
+            jsLink
+              .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
+              .addQueryData("action", "controls.Restore")
+              .toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -608,10 +618,11 @@ public class ScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-form");
         if ("1".equals(afterBehavior)) {
           JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-          rundata.setRedirectURI(jsLink.getPortletById(
-            ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-            "action",
-            "controls.Restore").toString());
+          rundata.setRedirectURI(
+            jsLink
+              .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
+              .addQueryData("action", "controls.Restore")
+              .toString());
           rundata.getResponse().sendRedirect(rundata.getRedirectURI());
           jsLink = null;
         } else {
@@ -657,9 +668,8 @@ public class ScheduleAction extends ALBaseAction {
 
       if ("search".equals(currentTab) || "search-list".equals(currentTab)) {
         currentTab =
-          ScheduleUtils.getTabNameFromLayout(portlet
-            .getPortletConfig()
-            .getInitParameter("pba-template"));
+          ScheduleUtils.getTabNameFromLayout(
+            portlet.getPortletConfig().getInitParameter("pba-template"));
       }
 
       String useragent = rundata.getUserAgent();
@@ -670,7 +680,7 @@ public class ScheduleAction extends ALBaseAction {
         context.put("time_end", 24);
         context.put("top_form", "simple");
         context.put("dayList", 1);
-        context.put("start_monday", 1);
+        context.put("startDayOfWeek", 1);
         ALEipUtils.setTemp(rundata, context, "tab", currentTab);
       }
 
@@ -790,8 +800,8 @@ public class ScheduleAction extends ALBaseAction {
         setTemplate(rundata, "schedule-detail");
 
         if (viewDate == null || viewDate.equals("")) {
-          logger
-            .error("[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
+          logger.error(
+            "[ScheduleAction] ALPageNotFoundException: View Date is wrong.");
           throw new ALPageNotFoundException();
         }
 
@@ -822,10 +832,11 @@ public class ScheduleAction extends ALBaseAction {
       String afterBehavior = rundata.getRequest().getParameter(AFTER_BEHAVIOR);
       if (afterBehavior != null && "1".equals(afterBehavior)) {
         JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
-        rundata.setRedirectURI(jsLink.getPortletById(
-          ALEipUtils.getPortlet(rundata, context).getID()).addQueryData(
-          "action",
-          "controls.Restore").toString());
+        rundata.setRedirectURI(
+          jsLink
+            .getPortletById(ALEipUtils.getPortlet(rundata, context).getID())
+            .addQueryData("action", "controls.Restore")
+            .toString());
         rundata.getResponse().sendRedirect(rundata.getRedirectURI());
         jsLink = null;
       } else {

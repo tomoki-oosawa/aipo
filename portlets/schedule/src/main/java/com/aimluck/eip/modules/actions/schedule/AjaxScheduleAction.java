@@ -47,8 +47,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class AjaxScheduleAction extends ALBaseAction {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(AjaxScheduleAction.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(AjaxScheduleAction.class.getName());
 
   private boolean isMax = false;
 
@@ -110,11 +110,6 @@ public class AjaxScheduleAction extends ALBaseAction {
       String init_user =
         portlet.getPortletConfig().getInitParameter("p3a-user");
       context.put("init_user", init_user);
-
-      // 週頭を習得する
-      String start_monday =
-        portlet.getPortletConfig().getInitParameter("z1a-rows");
-      context.put("start_monday", start_monday);
 
       // 初期選択メンバーリストを取得する
       List<UserFacilityLiteBean> memberList =
@@ -191,8 +186,9 @@ public class AjaxScheduleAction extends ALBaseAction {
       ALEipUtils.setTemp(rundata, context, "tab", tab);
 
       // For security
-      context.put(ALEipConstants.SECURE_ID, URLEncoder
-        .encode(
+      context.put(
+        ALEipConstants.SECURE_ID,
+        URLEncoder.encode(
           (String) rundata.getUser().getTemp(ALEipConstants.SECURE_ID),
           ALEipConstants.DEF_CONTENT_ENCODING));
 
@@ -216,8 +212,8 @@ public class AjaxScheduleAction extends ALBaseAction {
    * @param rundata
    */
   @Override
-  protected void buildMaximizedContext(VelocityPortlet portlet,
-      Context context, RunData rundata) {
+  protected void buildMaximizedContext(VelocityPortlet portlet, Context context,
+      RunData rundata) {
     isMax = true;
     buildNormalContext(portlet, context, rundata);
   }
