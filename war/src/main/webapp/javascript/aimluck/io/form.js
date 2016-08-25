@@ -646,7 +646,6 @@ aimluck.io.createOptions = function (selectId, params) {
     load: function (response, ioArgs) {
       var select = dojo.byId(selectId);
       select.options.length = 0;
-      aimluck.io.addDisableOption(select);
       if (typeof pre == "undefined") {
       } else {
         aimluck.io.addOption(select, pre["key"], pre["value"], false);
@@ -801,17 +800,6 @@ aimluck.io.addOption = function (select, value, text, is_selected) {
     // select.options[select.options.length]);
     // select.options[length].selected = is_selected;
   }
-}
-
-// iphone9系において先頭のoptionタグが勝手に選択されてしまう問題対策
-aimluck.io.addDisableOption = function (select) {
-	if (navigator.userAgent.indexOf("iPhone OS 9") > -1){
-		// iOS 9の場合のみダミー選択肢を追加する
-	    var dummy = document.createElement("optgroup");
-	    dummy.disabled = 'true';
-	    dummy.style.display = 'none';
-	    select.insertBefore(dummy, select.options[select.options.length]);
-	}
 }
 
 aimluck.io.removeOptions = function (select) {
