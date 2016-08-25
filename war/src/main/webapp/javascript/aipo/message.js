@@ -161,8 +161,13 @@ aipo.message.reloadMessageList = function() {
         screen += "&c=" + aipo.message.jumpCursor;
         screen += "&jump=1";
     }
+    //メッセージを開いているか否かをscreenにつたえる。
+    //dojo.hasclass("dd_message", "open")で確認できる。
+
+
     aipo.message.moreMessageLock = false;
     aipo.message.messagePane.viewPage(screen);
+
 }
 
 aipo.message.roomMemberPane = null;
