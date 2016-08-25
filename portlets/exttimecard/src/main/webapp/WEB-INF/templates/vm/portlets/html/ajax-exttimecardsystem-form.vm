@@ -120,10 +120,12 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #ALtditemfooter()
 #ALtablefooter()
 
-<input name="check01" type="checkbox" value="1" id="check01" #if ($!result.check01.toString() == "1") checked="checked" #end />
-<label for="check01">会社全体の休日設定を利用する</label>
-<input name="check02" type="checkbox" value="1" id="check02" #if ($!result.check02.toString() == "1") checked="checked" #end />
-<Label for="check02">個別の休日設定を利用する</Label>
+<input name="check0" type="radio" value="1" id="check1" #if ($!result.check01.toString() == "1")
+checked="checked" #end onclick="aipo.extimecardsystem.changeTypePopulation();" />
+<label for="check0">会社全体の休日設定を利用する</label>
+<input name="check0" type="radio" value="２" id="check２" #if ($!result.check2.toString() == "２")
+checked="checked" #end　onclick="aipo.exttimecardsystem.changeTypeIndividual();" />
+<Label for="check0">個別の休日設定を利用する</Label>
 #ALerrmsg($errmsgs)
 <div id="messageDiv"></div>
 #ALajaxIndicator("$!indicator_id" "$!portlet.ID" "")
@@ -162,7 +164,8 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #ALtdcaption("#ALrequired($l10n.HOLIDAY_SETTING_HOLIDAY)")
 #ALtditemheader()
 <input name="holiday" type="checkbox" value="1" id="holiday" #if ($!result.Holiday.toString() == "1") checked="checked" #end />
-<label for="holiday">$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
+<label for="holiday"
+>$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)
