@@ -52,7 +52,3 @@ CREATE TABLE `eip_t_schedule_file` (
 ALTER TABLE `eip_t_message_room_member` ADD `desktop_notification` varchar(1) DEFAULT 'A';
 ALTER TABLE `eip_t_message_room_member` ADD `mobile_notification` varchar(1) DEFAULT 'A';
 -- 20150317
-
--- 20160815
-UPDATE 'eip_t_acl_portlet_feature' SET 'acl_type' = 27 WHERE 'feature_name' = 'report_other' AND 'feature_alias_name' = '報告書（他ユーザーの報告書）操作';
-UPDATE 'eip_t_acl_role' SET 'acl_type' = 27 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'report_other') AND 'role_name' = '報告書（他ユーザーの報告書）管理者';
