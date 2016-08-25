@@ -113,6 +113,9 @@ public class TimelineSelectData extends
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
+  /** アクセス権限の機能名「掲示板（トピック）管理者」の一覧表示権限 */
+  private boolean hasAclTopicList;
+
   /** 他ユーザーの作成したトピックの編集権限 */
   private boolean hasAclUpdateTopicOthers;
 
@@ -210,7 +213,7 @@ public class TimelineSelectData extends
         }
       }
 
-      /** hasScheduleOtherAclListの権限チェック **/
+      /** 更新情報についての一覧表示権限のチェック **/
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
@@ -220,6 +223,11 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      hasAclTopicList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -877,6 +885,12 @@ public class TimelineSelectData extends
   }
 
   private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
+
+    if (!hasAclTopicList) {
+      list.removeIf(obj -> (obj.getAppId().equals("Msgboard")));
+      return;
+    }
+
     /* listから自分が関係しないmsgboardの情報を削除 */
 
     List<Integer> ids = new ArrayList<Integer>();
@@ -884,6 +898,9 @@ public class TimelineSelectData extends
       if ("Msgboard".equals(obj.getAppId())) {
         ids.add(Integer.parseInt(obj.getExternalId()));
       }
+    }
+    if (ids.size() == 0) {
+      return;
     }
 
     // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
