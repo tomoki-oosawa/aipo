@@ -43,6 +43,8 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
@@ -877,31 +879,84 @@ public class TimelineSelectData extends
   private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
     /* listから自分が関係しないmsgboardの情報を削除 */
 
-    // 見る権限が無いトピックをデータベースからとってくる
-    // sql文を実行して、NGtopicListに入れる
-    StringBuffer statement = new StringBuffer();
-    statement.append("SELECT DISTINCT T.*");
-    statement.append("FROM eip_t_msgboard_topic as T,");
-    statement.append(" eip_t_msgboard_category as C,");
-    statement.append(" eip_t_msgboard_category_map as M");
-    statement.append(" WHERE C.category_id = T.category_id");
-    statement.append(" AND C.public_flag = 'F'");
-    statement.append(" AND C.category_id not in (");
-    statement
-      .append("select distinct category_id from eip_t_msgboard_category_map as M "
-        + "where M.user_id = ");
-    statement.append(uid + ")");
-
-    List<EipTMsgboardTopic> NGtopicList =
-      Database.sql(EipTMsgboardTopic.class, statement.toString()).fetchList();
-
-    // NGtopicListからidをぬきだす
-    List<Integer> NGtopicIdList = new ArrayList<Integer>();
-    for (EipTMsgboardTopic obj : NGtopicList) {
-      NGtopicIdList.add(obj.getTopicId());
+    List<Integer> ids = new ArrayList<Integer>();
+    for (EipTTimeline obj : list) {
+      if ("Msgboard".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
     }
-    // listのなかでIDがNGtopicIdListに入ってるやつを削除
-    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && NGtopicIdList
+
+    // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTMsgboardTopic> topicList = null;
+    {
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(0));
+      query.setQualifier(exp1);
+
+      // アクセス制御
+      Expression exp01 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "O");
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "A");
+
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(uid));
+
+      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+        .andExp(exp12)));
+
+      Expression exp001 =
+        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
+      query.andQualifier(exp001);
+
+      query.distinct(true);
+
+      topicList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> topicIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic obj : topicList) {
+      topicIdList.add(obj.getTopicId());
+    }
+    // listのなかでIDがtopicIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
       .contains(Integer.parseInt(obj.getExternalId()))));
 
   }
