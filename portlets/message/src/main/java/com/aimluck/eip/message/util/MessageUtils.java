@@ -737,6 +737,9 @@ public class MessageUtils {
     return new ResultList<TurbineUser>(list, -1, -1, list.size());
   }
 
+  /**
+   * 未読のものがあったら既読にする
+   */
   public static void read(EipTMessageRoom room, int userId, int lastMessageId) {
     SQLTemplate<EipTMessageRead> countQuery =
       Database
