@@ -47,9 +47,6 @@
 			#end
 		</div>
 		<div class="body">
-
-			$line51
-
 			#if($record.TimelineType=="A")
 				<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!{record.PopupUrl})&amp;js_peid=$!{portlet.ID}&activityId=true', '$!{portlet.ID}', aipo.container.onPopupGadgets );aipo.container.gadgetService.requestCheckActivity($!{record.TimelineId})">$!{record.PreviewNote}</a>
 			#else
@@ -218,19 +215,6 @@
 #set($existcomment=0)
 
 #foreach ($record2 in $record.CoActivityList)
-
-#*
-	$record2
-	$line225
-	$record2.isPublic()
-	$record2.PopupUrl
-	$record2.getEipTTodo()
-	$record2.getPublicity()
-	$record.getPublicity()
-	$result.getPublicity()
-	$portlet.getPublicity()
-	getPublicity()
-*#
 
 <div class="messageContents text_exposed_show #if($velocityCount>=2&&$record2.LikeCount==0&&$record2.CoTopicList.size()==0) ellipsis#end">
 	#if(($record2.LikeCount!=0||$record2.CoTopicList.size()!=0)||$velocityCount==1)

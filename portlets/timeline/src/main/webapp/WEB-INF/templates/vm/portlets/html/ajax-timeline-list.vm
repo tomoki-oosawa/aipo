@@ -94,7 +94,6 @@
 				#else
 				<a href="javascript:void(0)" onclick="aipo.timeline.changeDisplay('$!{portlet.ID}');" class="customizeMenuIcon filterTip menubarOpenButton" >
 					<span id="tlDisplayGroup_$!{portlet.ID}">
-						$testing1list
 						#if("$!{result.TargetDisplayName}" == "posting")
 						$l10n.TIMELINE_ONLY_POSTING
 						#end
