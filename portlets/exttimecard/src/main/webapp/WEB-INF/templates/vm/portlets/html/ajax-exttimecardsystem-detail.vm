@@ -63,6 +63,12 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #end
 #ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_HOLIDAY)
+#ALtditemheader()
+#if($!result.DefaultHolidayFlag == "A") $l10n.HOLIDAY_SETTING_DEFAULT_HOLIDAY
+#else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
+#end
+#ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
 #if($!{result.PortletName} == "ExtTimecardSystem")

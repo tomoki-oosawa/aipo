@@ -96,7 +96,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
   private boolean isNewRule = false;
 
   /** 休日設定 */
-  private boolean isDefaultHoliday;
+  private ALStringField default_holiday_flag;
 
   private ALStringField week1;
 
@@ -191,7 +191,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
     isNewRule = isNewRule();
 
-    isDefaultHoliday = true;
+    default_holiday_flag = new ALStringField();
+    default_holiday_flag.setValue("A");
     week1 = new ALStringField();
     week1.setFieldName(ALLocalizationUtils.getl10n("HOLIDAY_SETTING_WEEK1"));
     week2 = new ALStringField();
@@ -252,7 +253,12 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           .isOvertimeHourByWeek(record.getOvertimeType()) ? "T" : "F");
       }
 
-      if (!(isDefaultHoliday = record.getHolidayOfWeek().charAt(0) == 'A')) {
+      default_holiday_flag.setValue(String.valueOf(record
+        .getHolidayOfWeek()
+        .charAt(0)));
+      if (default_holiday_flag.getValue().toString() == "A") {
+        // 会社の設定を読み込む
+      } else {
         week1.setValue(record.getHolidayOfWeek().charAt(1) != '0' ? "1" : null);
         week2.setValue(record.getHolidayOfWeek().charAt(2) != '0' ? "1" : null);
         week3.setValue(record.getHolidayOfWeek().charAt(3) != '0' ? "1" : null);
@@ -318,7 +324,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       }
 
       StringBuilder b = new StringBuilder();
-      if (isDefaultHoliday) {
+      if (default_holiday_flag.getValue().toString() == "A") {
         b.append("A");
       } else {
         String value = statutoryHoliday.getValue();
@@ -446,7 +452,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setCreateDate(Calendar.getInstance().getTime());
       record.setUpdateDate(Calendar.getInstance().getTime());
       StringBuilder b = new StringBuilder();
-      if (isDefaultHoliday) {
+      if (default_holiday_flag.getValue().toString() == "A") {
         b.append("A");
       } else {
         String value = statutoryHoliday.getValue();
@@ -540,7 +546,12 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
             .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK);
           overtime_type_week.setValue("F");
 
-          if (!(isDefaultHoliday = record.getHolidayOfWeek().charAt(0) == 'A')) {
+          default_holiday_flag.setValue(String.valueOf(record
+            .getHolidayOfWeek()
+            .charAt(0)));
+          if (default_holiday_flag.getValue().toString() == "A") {
+            // 会社の設定を読み込む
+          } else {
             week1.setValue(record.getHolidayOfWeek().charAt(1) != '0'
               ? "1"
               : null);
@@ -831,8 +842,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     return ExtTimecardUtils.isNewRule();
   }
 
-  public boolean getIsDefaultHoliday() {
-    return isDefaultHoliday;
+  public ALStringField getDefaultHolidayFlag() {
+    return default_holiday_flag;
   }
 
   public ALStringField getWeek1() {
