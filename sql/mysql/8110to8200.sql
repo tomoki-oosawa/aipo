@@ -27,4 +27,6 @@ ALTER TABLE `eip_t_message_room_member` ADD `history_last_message_id` int(11) NO
 
 ALTER TABLE `eip_t_ext_timecard_system` ADD `overtime_type` varchar(8) DEFAULT 'O' AFTER `outgoing_add_flag`;
 UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
+
+ALTER TABLE `eip_t_ext_timecard_system` ADD `holiday_of_week` varchar(32) DEFAULT 'A' AFTER `overtime_type`;
 -- 20160328

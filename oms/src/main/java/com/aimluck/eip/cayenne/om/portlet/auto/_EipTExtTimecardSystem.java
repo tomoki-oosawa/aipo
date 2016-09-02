@@ -19,6 +19,8 @@ public class _EipTExtTimecardSystem extends
 
   public static final String END_MINUTE_PROPERTY = "endMinute";
 
+  public static final String HOLIDAY_OF_WEEK_PROPERTY = "holidayOfWeek";
+
   public static final String OUTGOING_ADD_FLAG_PROPERTY = "outgoingAddFlag";
 
   public static final String OVERTIME_TYPE_PROPERTY = "overtimeType";
@@ -78,6 +80,14 @@ public class _EipTExtTimecardSystem extends
 
   public Integer getEndMinute() {
     return (Integer) readProperty("endMinute");
+  }
+
+  public void setHolidayOfWeek(String holidayOfWeek) {
+    writeProperty("holidayOfWeek", holidayOfWeek);
+  }
+
+  public String getHolidayOfWeek() {
+    return (String) readProperty("holidayOfWeek");
   }
 
   public void setOutgoingAddFlag(String outgoingAddFlag) {
@@ -174,14 +184,6 @@ public class _EipTExtTimecardSystem extends
 
   public Integer getWorktimeOut() {
     return (Integer) readProperty("worktimeOut");
-  }
-
-  public void setHolidayOfWeek(String holidayofweek) {
-    writeProperty("holidayofweek", holidayofweek);
-  }
-
-  public String getHolidayOfWeek() {
-    return (String) readProperty("holidayofweek");
   }
 
   public void addToEipTExtTimecardSystemMaps(

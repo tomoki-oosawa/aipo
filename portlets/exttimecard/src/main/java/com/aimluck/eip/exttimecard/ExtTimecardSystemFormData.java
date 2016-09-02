@@ -39,6 +39,8 @@ import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -256,8 +258,19 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       default_holiday_flag.setValue(String.valueOf(record
         .getHolidayOfWeek()
         .charAt(0)));
-      if (default_holiday_flag.getValue().toString() == "A") {
+      if (default_holiday_flag.getValue().toString().equals("A")) {
         // 会社の設定を読み込む
+        String holidayOfWeek =
+          ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
+        week1.setValue(holidayOfWeek.charAt(0) != '0' ? "1" : null);
+        week2.setValue(holidayOfWeek.charAt(1) != '0' ? "1" : null);
+        week3.setValue(holidayOfWeek.charAt(2) != '0' ? "1" : null);
+        week4.setValue(holidayOfWeek.charAt(3) != '0' ? "1" : null);
+        week5.setValue(holidayOfWeek.charAt(4) != '0' ? "1" : null);
+        week6.setValue(holidayOfWeek.charAt(5) != '0' ? "1" : null);
+        week7.setValue(holidayOfWeek.charAt(6) != '0' ? "1" : null);
+        statutoryHoliday.setValue(String.valueOf(holidayOfWeek.charAt(7)));
+        holiday.setValue(holidayOfWeek.charAt(8) != '0' ? "1" : null);
       } else {
         week1.setValue(record.getHolidayOfWeek().charAt(1) != '0' ? "1" : null);
         week2.setValue(record.getHolidayOfWeek().charAt(2) != '0' ? "1" : null);
@@ -324,7 +337,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       }
 
       StringBuilder b = new StringBuilder();
-      if (default_holiday_flag.getValue().toString() == "A") {
+      if (default_holiday_flag.getValue().toString().equals("A")) {
         b.append("A");
       } else {
         String value = statutoryHoliday.getValue();
@@ -452,7 +465,7 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setCreateDate(Calendar.getInstance().getTime());
       record.setUpdateDate(Calendar.getInstance().getTime());
       StringBuilder b = new StringBuilder();
-      if (default_holiday_flag.getValue().toString() == "A") {
+      if (default_holiday_flag.getValue().toString().equals("A")) {
         b.append("A");
       } else {
         String value = statutoryHoliday.getValue();
@@ -549,8 +562,19 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           default_holiday_flag.setValue(String.valueOf(record
             .getHolidayOfWeek()
             .charAt(0)));
-          if (default_holiday_flag.getValue().toString() == "A") {
+          if (default_holiday_flag.getValue().toString().equals("A")) {
             // 会社の設定を読み込む
+            String holidayOfWeek =
+              ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
+            week1.setValue(holidayOfWeek.charAt(0) != '0' ? "1" : null);
+            week2.setValue(holidayOfWeek.charAt(1) != '0' ? "1" : null);
+            week3.setValue(holidayOfWeek.charAt(2) != '0' ? "1" : null);
+            week4.setValue(holidayOfWeek.charAt(3) != '0' ? "1" : null);
+            week5.setValue(holidayOfWeek.charAt(4) != '0' ? "1" : null);
+            week6.setValue(holidayOfWeek.charAt(5) != '0' ? "1" : null);
+            week7.setValue(holidayOfWeek.charAt(6) != '0' ? "1" : null);
+            statutoryHoliday.setValue(String.valueOf(holidayOfWeek.charAt(7)));
+            holiday.setValue(holidayOfWeek.charAt(8) != '0' ? "1" : null);
           } else {
             week1.setValue(record.getHolidayOfWeek().charAt(1) != '0'
               ? "1"
