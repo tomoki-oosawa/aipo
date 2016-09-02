@@ -144,7 +144,10 @@ aipo.message.reloadMessageList = function() {
         		}
                 aipo.message.jumpCursor = null;
         	} else {
-                aipo.message.read(aipo.message.currentRoomId);
+        		//もしバックグラウンドでなく実際に開いていたら
+        		if(dojo.hasClass("dd_message", "open") == true){
+        			aipo.message.read(aipo.message.currentRoomId);
+        		}
         	}
             aipo.message.fixDateLine();
         }
@@ -161,8 +164,7 @@ aipo.message.reloadMessageList = function() {
         screen += "&c=" + aipo.message.jumpCursor;
         screen += "&jump=1";
     }
-    //メッセージを開いているか否かをscreenにつたえる。
-    //dojo.hasclass("dd_message", "open")で確認できる。
+    //メッセージをバックグラウンドでなく実際に開いているか否かをscreenにつたえる。
    if (dojo.hasClass("dd_message", "open") == false){
     	screen += "&o=1";
     }
@@ -1116,6 +1118,10 @@ aipo.message.onFocus = function(input) {
 	}
 }
 
+/**
+ * 指定されたルームの未読を消します。
+ * ただし、データベースにはアクセスしていないので、これとは別にデータベースも書き換える必要があります。
+ */
 aipo.message.read = function(room_id) {
     var messageRoomUnreadCount = dojo.byId("messageRoomUnreadCount" + room_id);
     if (messageRoomUnreadCount) {

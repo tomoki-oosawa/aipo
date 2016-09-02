@@ -52,7 +52,6 @@ public class MessageListScreen extends ALVelocityScreen {
       boolean isNewRoom = false;
       EipTMessageRoom room = null;
       ALEipUser targetUser = null;
-      boolean Open = true;
       Integer backGroundOpen = -1;
 
       // MessageListScreenを直接開いているか裏で開いているかのチェック
