@@ -90,6 +90,14 @@ public class _EipTExtTimecardSystem extends
     return (String) readProperty("holidayOfWeek");
   }
 
+  public boolean isDefaultHoliday() {
+    return getHolidayOfWeek().charAt(0) == 'A';
+  }
+
+  public String getOriginalHolidayOfWeek() {
+    return getHolidayOfWeek().substring(1, 10);
+  }
+
   public void setOutgoingAddFlag(String outgoingAddFlag) {
     writeProperty("outgoingAddFlag", outgoingAddFlag);
   }
