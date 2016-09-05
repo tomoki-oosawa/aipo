@@ -45,9 +45,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardSummaryXlsExportScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardSummaryXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard_monthly.xls";
 
@@ -64,7 +63,7 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
 
   /**
    * 初期化処理を行います。
-   *
+   * 
    * @param action
    * @param rundata
    * @param context
@@ -121,43 +120,45 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
 
     String sheet_name = "タイムカード";
     // ヘッダ部作成
-    String[] headers = {
-      "氏名",
-      "年",
-      "月",
-      "勤務形態",
-      "出勤日数",
-      "就業時間",
-      "残業日数",
-      "残業時間",
-      "休出日数",
-      "休出時間",
-      "遅刻日数",
-      "早退日数",
-      "欠勤日数",
-      "有休日数",
-      "代休日数",
-      "その他日数",
-      "未入力" };
+    String[] headers =
+      {
+        "氏名",
+        "年",
+        "月",
+        "勤務形態",
+        "出勤日数",
+        "就業時間",
+        "残業日数",
+        "残業時間",
+        "休出日数",
+        "休出時間",
+        "遅刻日数",
+        "早退日数",
+        "欠勤日数",
+        "有休日数",
+        "代休日数",
+        "その他日数",
+        "未入力" };
     // 0：日本語，1：英数字
-    short[] cell_enc_types = {
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC };
+    short[] cell_enc_types =
+      {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC };
     HSSFSheet sheet = createHSSFSheet(wb, sheet_name, headers, cell_enc_types);
 
     int rowcount = 0;
@@ -169,7 +170,7 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
 
     ExtTimecardSummaryResultData tclistrd = null;
     List<ExtTimecardSummaryResultData> daykeys =
-      listData.getGroupExtTimecards(rundata, context);
+      listData.getGroupExtTimecards();
     int daykeysize = daykeys.size();
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
@@ -194,24 +195,25 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
       String other_day = tclistrd.getOtherDay().getValueAsString();// その他日数
       String noinput = tclistrd.getNoInput().getValueAsString();// 未入力
 
-      String[] rows = {
-        user_name,
-        year,
-        month,
-        service_form,
-        work_day,
-        work_hour,
-        overtime_day,
-        overtime_hour,
-        off_day,
-        off_hour,
-        late_coming_day,
-        early_leaving_day,
-        absent_day,
-        paid_holiday,
-        compensatory_holiday,
-        other_day,
-        noinput };
+      String[] rows =
+        {
+          user_name,
+          year,
+          month,
+          service_form,
+          work_day,
+          work_hour,
+          overtime_day,
+          overtime_hour,
+          off_day,
+          off_hour,
+          late_coming_day,
+          early_leaving_day,
+          absent_day,
+          paid_holiday,
+          compensatory_holiday,
+          other_day,
+          noinput };
       rowcount = rowcount + 1;
       addRow(sheet.createRow(rowcount), cell_enc_types, rows);
     }
@@ -232,7 +234,7 @@ public class ExtTimecardSummaryXlsExportScreen extends ALXlsScreen {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   *
+   * 
    * @return
    */
   @Override

@@ -43,8 +43,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。 <BR>
@@ -79,8 +79,8 @@ public class ExtTimecardAction extends ALBaseAction {
    * @param rundata
    */
   @Override
-  protected void buildMaximizedContext(VelocityPortlet portlet, Context context,
-      RunData rundata) {
+  protected void buildMaximizedContext(VelocityPortlet portlet,
+      Context context, RunData rundata) {
 
     /** MODEを取得 */
     String mode = rundata.getParameters().getString(ALEipConstants.MODE);
@@ -106,8 +106,8 @@ public class ExtTimecardAction extends ALBaseAction {
    */
   public void doExtTimecard_list(RunData rundata, Context context)
       throws Exception {
-    if ("only".equals(
-      ALEipUtils.getTemp(rundata, context, "target_group_name"))) {
+    if ("only"
+      .equals(ALEipUtils.getTemp(rundata, context, "target_group_name"))) {
       ALEipUtils.setTemp(rundata, context, "target_group_name", "all");
     }
     ExtTimecardSelectData listData = new ExtTimecardSelectData();
@@ -116,11 +116,9 @@ public class ExtTimecardAction extends ALBaseAction {
     listData.doViewList(this, rundata, context);
 
     ExtTimecardListResultDataContainer container =
-      ExtTimecardUtils.groupByWeek(
-        listData.getQueryStartDate(),
-        listData.getAllList(),
-        null);
-    container.calculateWeekOvertime(rundata, context);
+      ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+        .getAllList(), null);
+    container.calculateWeekOvertime();
 
     ExtTimecardListResultData tclistrd = null;
     List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
@@ -128,16 +126,13 @@ public class ExtTimecardAction extends ALBaseAction {
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
       tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
-      tclistrd.setStatutoryHoliday(
-        container.isStatutoryOffDay(rundata, context, tclistrd));
+      tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
       tclistrd.calculateWeekOvertime();
     }
 
-    setTemplate(
-      rundata,
-      ExtTimecardUtils.isNewRule()
-        ? "exttimecard-new-list"
-        : "exttimecard-list");
+    setTemplate(rundata, ExtTimecardUtils.isNewRule()
+      ? "exttimecard-new-list"
+      : "exttimecard-list");
   }
 
   /**
@@ -154,16 +149,13 @@ public class ExtTimecardAction extends ALBaseAction {
     listData.initField();
     listData.setRowsNum(100);
     listData.doViewList(this, rundata, context);
-    setTemplate(
-      rundata,
-      ExtTimecardUtils.isNewRule()
-        ? "exttimecard-summary-new-list"
-        : "exttimecard-summary-list");
+    setTemplate(rundata, ExtTimecardUtils.isNewRule()
+      ? "exttimecard-summary-new-list"
+      : "exttimecard-summary-list");
   }
 
   @SuppressWarnings("unused")
-  private void doViewPage(RunData rundata, Context context,
-      String vm_template) {
+  private void doViewPage(RunData rundata, Context context, String vm_template) {
     String def_searchengine =
       ALEipUtils
         .getPortlet(rundata, context)

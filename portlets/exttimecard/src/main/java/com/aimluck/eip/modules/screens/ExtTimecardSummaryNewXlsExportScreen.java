@@ -45,9 +45,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardSummaryNewXlsExportScreen extends ALXlsScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardSummaryNewXlsExportScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardSummaryNewXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard_monthly.xls";
 
@@ -121,53 +120,55 @@ public class ExtTimecardSummaryNewXlsExportScreen extends ALXlsScreen {
 
     String sheet_name = "タイムカード";
     // ヘッダ部作成
-    String[] headers = {
-      "氏名",
-      "年",
-      "月",
-      "勤務形態",
-      "出勤日数",
-      "所定休日出勤日数",
-      "法定休日出勤日数",
-      "総労働時間",
-      "所定内労働時間",
-      "法定内残業時間",
-      "残業時間",
-      "所定休日労働時間",
-      "法定休日労働時間",
-      "深夜労働時間",
-      "休憩時間",
-      "遅刻日数",
-      "早退日数",
-      "欠勤日数",
-      "有休日数",
-      "代休日数",
-      "その他日数",
-      "未入力" };
+    String[] headers =
+      {
+        "氏名",
+        "年",
+        "月",
+        "勤務形態",
+        "出勤日数",
+        "所定休日出勤日数",
+        "法定休日出勤日数",
+        "総労働時間",
+        "所定内労働時間",
+        "法定内残業時間",
+        "残業時間",
+        "所定休日労働時間",
+        "法定休日労働時間",
+        "深夜労働時間",
+        "休憩時間",
+        "遅刻日数",
+        "早退日数",
+        "欠勤日数",
+        "有休日数",
+        "代休日数",
+        "その他日数",
+        "未入力" };
     // 0：日本語，1：英数字
-    short[] cell_enc_types = {
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC };
+    short[] cell_enc_types =
+      {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC };
     HSSFSheet sheet = createHSSFSheet(wb, sheet_name, headers, cell_enc_types);
 
     int rowcount = 0;
@@ -179,7 +180,7 @@ public class ExtTimecardSummaryNewXlsExportScreen extends ALXlsScreen {
 
     ExtTimecardSummaryResultData tclistrd = null;
     List<ExtTimecardSummaryResultData> daykeys =
-      listData.getGroupExtTimecards(rundata, context);
+      listData.getGroupExtTimecards();
     int daykeysize = daykeys.size();
     for (int i = 0; i < daykeysize; i++) {
       tclistrd = daykeys.get(i);
@@ -235,29 +236,30 @@ public class ExtTimecardSummaryNewXlsExportScreen extends ALXlsScreen {
       // 未入力
       String noinput = tclistrd.getNoInput().getValueAsString();
 
-      String[] rows = {
-        user_name,
-        year,
-        month,
-        service_form,
-        total_work_day,
-        official_off_day,
-        statutory_off_day,
-        total_work_hour,
-        work_hour,
-        overtime_statutory_work_hour,
-        overtime_hour,
-        total_official_off_hour,
-        total_statutory_off_hour,
-        midnight_work_hour,
-        rest_hour,
-        late_coming_day,
-        early_leaving_day,
-        absent_day,
-        paid_holiday,
-        compensatory_holiday,
-        other_day,
-        noinput };
+      String[] rows =
+        {
+          user_name,
+          year,
+          month,
+          service_form,
+          total_work_day,
+          official_off_day,
+          statutory_off_day,
+          total_work_hour,
+          work_hour,
+          overtime_statutory_work_hour,
+          overtime_hour,
+          total_official_off_hour,
+          total_statutory_off_hour,
+          midnight_work_hour,
+          rest_hour,
+          late_coming_day,
+          early_leaving_day,
+          absent_day,
+          paid_holiday,
+          compensatory_holiday,
+          other_day,
+          noinput };
       rowcount = rowcount + 1;
       addRow(sheet.createRow(rowcount), cell_enc_types, rows);
     }

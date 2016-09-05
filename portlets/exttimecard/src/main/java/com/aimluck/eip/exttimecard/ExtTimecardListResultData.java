@@ -28,8 +28,6 @@ import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
@@ -45,9 +43,8 @@ import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 public class ExtTimecardListResultData implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardListResultData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardListResultData.class.getName());
 
   private ALDateField date = null;
 
@@ -202,10 +199,10 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public boolean isHoliday(RunData rundata, Context context) {
+  public boolean isHoliday() {
     try {
       Date now = date.getValue().getDate();
-      return ExtTimecardUtils.isHoliday(rundata, context, now);
+      return ExtTimecardUtils.isHoliday(now);
     } catch (Throwable ignore) {
       return false;
     }
@@ -250,9 +247,9 @@ public class ExtTimecardListResultData implements ALData {
     if (rd == null) {
       return 1;
     }
-    return Math.max(
-      Math.max(rd.getAllOutgoingTime().size(), rd.getAllComebackTime().size()),
-      1);
+    return Math.max(Math.max(rd.getAllOutgoingTime().size(), rd
+      .getAllComebackTime()
+      .size()), 1);
   }
 
   /**
@@ -441,13 +438,13 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return float
    */
-  public float getWorkHour(RunData rundata, Context context) {
+  public float getWorkHour() {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     } else {
       float time = 0f;
       float in = getInworkHour(); // 所定内勤務時間
-      if (!isHoliday(rundata, context)) {
+      if (!isHoliday()) {
         if (in != NO_DATA) {
           time += in;
         }
@@ -461,11 +458,11 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return float
    */
-  public String getWorkHourValue(RunData rundata, Context context) {
-    if (isHoliday(rundata, context)) {
+  public String getWorkHourValue() {
+    if (isHoliday()) {
       return "";
     }
-    float value = getWorkHour(rundata, context);
+    float value = getWorkHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
     }
@@ -531,8 +528,11 @@ public class ExtTimecardListResultData implements ALData {
 
       float time = 0f;
       time +=
-        (rd.getClockOutTime().getValue().getTime()
-          - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
+          / (1000.0 * 60.0 * 60.0);
 
       // 就業時間だけなので、残業を引く
       float agreedHours = 0f;
@@ -577,7 +577,7 @@ public class ExtTimecardListResultData implements ALData {
         int resttimes = (int) (time / worktimein);
         return time - resttimes * resttimein;
       } else {
-        // 法定外残業の場合 就業時間の合計が決められた残業時間以上の場合 残業時間を返す
+        // 法定外残業の場合　就業時間の合計が決められた残業時間以上の場合　残業時間を返す　
         /** 外出時間を就業時間に含めない場合 */
         if ("F".equals(timecard_system.getOutgoingAddFlag())) {
           float outgoing_time =
@@ -606,9 +606,8 @@ public class ExtTimecardListResultData implements ALData {
     }
   }
 
-  public float getWorkHourWithoutRestHour(RunData rundata, Context context,
-      boolean round) {
-    float time = getWorkHour(rundata, context);
+  public float getWorkHourWithoutRestHour(boolean round) {
+    float time = getWorkHour();
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
     }
@@ -674,8 +673,10 @@ public class ExtTimecardListResultData implements ALData {
       } else {
         // 法定外残業
         time +=
-          (rd.getClockOutTime().getValue().getTime()
-            - rd.getClockInTime().getValue().getTime())
+          (rd.getClockOutTime().getValue().getTime() - rd
+            .getClockInTime()
+            .getValue()
+            .getTime())
             / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
@@ -712,9 +713,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return float
    */
-  public float getOvertimeHourWithoutRestHour(RunData rundata,
-      Context context) {
-    return getOvertimeHourWithoutRestHour(rundata, context, false);
+  public float getOvertimeHourWithoutRestHour() {
+    return getOvertimeHourWithoutRestHour(false);
   }
 
   /**
@@ -723,14 +723,13 @@ public class ExtTimecardListResultData implements ALData {
    * @param round
    * @return
    */
-  public float getOvertimeHourWithoutRestHour(RunData rundata, Context context,
-      boolean round) {
+  public float getOvertimeHourWithoutRestHour(boolean round) {
     float time = getOvertimeHour();
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
     }
     // 休日を除外
-    if (isHoliday(rundata, context)) {
+    if (isHoliday()) {
       if (time != NO_DATA) {
         time = 0f;
       }
@@ -744,8 +743,8 @@ public class ExtTimecardListResultData implements ALData {
    * @param round
    * @return
    */
-  public String getOvertimeHourValue(RunData rundata, Context context) {
-    if (isHoliday(rundata, context)) {
+  public String getOvertimeHourValue() {
+    if (isHoliday()) {
       return "";
     }
     float value = getOvertimeHour();
@@ -760,8 +759,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getTotalOfficialOffHour(RunData rundata, Context context) {
-    if (isHoliday(rundata, context)) {
+  public float getTotalOfficialOffHour() {
+    if (isHoliday()) {
       if (!isStatutoryHoliday()) {
         return getTotalWorkHour();
       }
@@ -774,8 +773,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public String getTotalOfficialOffHourValue(RunData rundata, Context context) {
-    float value = getTotalOfficialOffHour(rundata, context);
+  public String getTotalOfficialOffHourValue() {
+    float value = getTotalOfficialOffHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
     }
@@ -787,8 +786,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getTotalStatutoryOffHour(RunData rundata, Context context) {
-    if (isHoliday(rundata, context)) {
+  public float getTotalStatutoryOffHour() {
+    if (isHoliday()) {
       if (isStatutoryHoliday()) {
         return getTotalWorkHour();
       }
@@ -801,9 +800,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public String getTotalStatutoryOffHourValue(RunData rundata,
-      Context context) {
-    float value = getTotalStatutoryOffHour(rundata, context);
+  public String getTotalStatutoryOffHourValue() {
+    float value = getTotalStatutoryOffHour();
     if (value != NO_DATA) {
       return String.valueOf(ExtTimecardUtils.roundHour(value));
     }
@@ -815,8 +813,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getOffHour(RunData rundata, Context context) {
-    return getOffHour(rundata, context, false);
+  public float getOffHour() {
+    return getOffHour(false);
   }
 
   /**
@@ -825,8 +823,8 @@ public class ExtTimecardListResultData implements ALData {
    * @param round
    * @return
    */
-  public float getOffHour(RunData rundata, Context context, boolean round) {
-    if (isHoliday(rundata, context)) {
+  public float getOffHour(boolean round) {
+    if (isHoliday()) {
       float time = NO_DATA;
       if (calculated_total_work_hour != NO_DATA) {
         time = calculated_total_work_hour;
@@ -852,8 +850,11 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       time +=
-        (rd.getClockOutTime().getValue().getTime()
-          - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
+          / (1000.0 * 60.0 * 60.0);
       /** 外出時間を就業時間に含めない場合 */
       if ("F".equals(timecard_system.getOutgoingAddFlag())) {
         float outgoing_time =
@@ -1558,15 +1559,14 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getWithinStatutoryOvertimeWorkHourWithoutOffday(RunData rundata,
-      Context context) {
+  public float getWithinStatutoryOvertimeWorkHourWithoutOffday() {
     if (!getIsNotNullClockInTime() || !getIsNotNullClockOutTime()) {
       return NO_DATA;
     }
     if (!isNewRule()) {
       return NO_DATA;
     }
-    if (isHoliday(rundata, context)) {
+    if (isHoliday()) {
       return 0f;
     }
     return getWithinStatutoryOvertimeWorkHour();
@@ -1589,8 +1589,11 @@ public class ExtTimecardListResultData implements ALData {
     }
     float time = 0f;
     time +=
-      (rd.getClockOutTime().getValue().getTime()
-        - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+      (rd.getClockOutTime().getValue().getTime() - rd
+        .getClockInTime()
+        .getValue()
+        .getTime())
+        / (1000.0 * 60.0 * 60.0);
 
     /** 外出時間を就業時間に含めない場合 */
     if ("F".equals(timecard_system.getOutgoingAddFlag())) {
@@ -1633,10 +1636,8 @@ public class ExtTimecardListResultData implements ALData {
    * @param round
    * @return
    */
-  public float getWithinStatutoryOvertimeWorkHourWithoutOffday(RunData rundata,
-      Context context, boolean round) {
-    float time =
-      getWithinStatutoryOvertimeWorkHourWithoutOffday(rundata, context);
+  public float getWithinStatutoryOvertimeWorkHourWithoutOffday(boolean round) {
+    float time = getWithinStatutoryOvertimeWorkHourWithoutOffday();
     if (round) {
       time = ExtTimecardUtils.roundHour(time);
     }

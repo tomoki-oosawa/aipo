@@ -38,8 +38,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardListScreen extends ExtTimecardScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ExtTimecardListScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardListScreen.class.getName());
 
   /**
    *
@@ -57,11 +57,9 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
       listData.doViewList(this, rundata, context);
 
       ExtTimecardListResultDataContainer container =
-        ExtTimecardUtils.groupByWeek(
-          listData.getQueryStartDate(),
-          listData.getAllList(),
-          null);
-      container.calculateWeekOvertime(rundata, context);
+        ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+          .getAllList(), null);
+      container.calculateWeekOvertime();
 
       ExtTimecardListResultData tclistrd = null;
       List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
@@ -69,8 +67,7 @@ public class ExtTimecardListScreen extends ExtTimecardScreen {
       for (int i = 0; i < daykeysize; i++) {
         tclistrd = daykeys.get(i);
         tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
-        tclistrd.setStatutoryHoliday(
-          container.isStatutoryOffDay(rundata, context, tclistrd));
+        tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
         tclistrd.calculateWeekOvertime();
       }
 

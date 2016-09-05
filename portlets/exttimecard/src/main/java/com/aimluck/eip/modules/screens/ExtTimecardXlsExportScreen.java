@@ -48,9 +48,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardXlsExportScreen extends ALXlsScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardXlsExportScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardXlsExportScreen.class.getName());
 
   public static final String FILE_NAME = "timecard.xls";
 
@@ -111,67 +110,69 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
 
     String sheet_name = "タイムカード";
     // ヘッダ部作成
-    String[] headers = {
-      "氏名",
-      "日付",
-      "曜日",
-      "勤務形態",
-      "出勤時間",
-      "退勤時間",
-      "出勤日数",
-      "就業時間",
-      "残業日数",
-      "残業時間",
-      "休出日数",
-      "休出時間",
-      "遅刻日数",
-      "早退日数",
-      "欠勤日数",
-      "有休日数",
-      "代休日数",
-      "その他日数",
-      "修正理由、備考",
-      "外出１",
-      "復帰１",
-      "外出２",
-      "復帰２",
-      "外出３",
-      "復帰３",
-      "外出４",
-      "復帰４",
-      "外出５",
-      "復帰５" };
+    String[] headers =
+      {
+        "氏名",
+        "日付",
+        "曜日",
+        "勤務形態",
+        "出勤時間",
+        "退勤時間",
+        "出勤日数",
+        "就業時間",
+        "残業日数",
+        "残業時間",
+        "休出日数",
+        "休出時間",
+        "遅刻日数",
+        "早退日数",
+        "欠勤日数",
+        "有休日数",
+        "代休日数",
+        "その他日数",
+        "修正理由、備考",
+        "外出１",
+        "復帰１",
+        "外出２",
+        "復帰２",
+        "外出３",
+        "復帰３",
+        "外出４",
+        "復帰４",
+        "外出５",
+        "復帰５" };
     // 0：日本語，1：英数字
-    short[] cell_enc_types = {
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.CELL_TYPE_NUMERIC,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16,
-      HSSFCell.ENCODING_UTF_16 };
+    short[] cell_enc_types =
+      {
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.CELL_TYPE_NUMERIC,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16,
+        HSSFCell.ENCODING_UTF_16 };
     HSSFSheet sheet = createHSSFSheet(wb, sheet_name, headers, cell_enc_types);
 
     int rowcount = 0;
@@ -184,10 +185,8 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
     String user_name =
       ALEipUtils.getUserFullName(Integer.parseInt(listData.getTargetUserId()));// 氏名
     String system_name =
-      ExtTimecardUtils
-        .getEipTExtTimecardSystemByUserId(
-          Integer.parseInt(listData.getTargetUserId()))
-        .getSystemName();
+      ExtTimecardUtils.getEipTExtTimecardSystemByUserId(
+        Integer.parseInt(listData.getTargetUserId())).getSystemName();
 
     ExtTimecardListResultData tclistrd = null;
     List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
@@ -236,23 +235,22 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         if (!rd.getIsNullClockInTime()) {
           clock_in_time = rd.getClockInTime("HH:mm");
           clock_out_time = rd.getClockOutTime("HH:mm");
-          if (tclistrd.getWorkHour(rundata, context) > 0.0) {
+          if (tclistrd.getWorkHour() > 0.0) {
             work_day = "1";
-            work_hour = Float.toString(tclistrd.getWorkHour(rundata, context));
+            work_hour = Float.toString(tclistrd.getWorkHour());
           } else {
             work_hour = "0";
           }
-          if (tclistrd.getOvertimeHourWithoutRestHour(rundata, context) > 0.0) {
+          if (tclistrd.getOvertimeHourWithoutRestHour() > 0.0) {
             overtime_day = "1";
             overtime_hour =
-              Float.toString(
-                tclistrd.getOvertimeHourWithoutRestHour(rundata, context));
+              Float.toString(tclistrd.getOvertimeHourWithoutRestHour());
           } else {
             overtime_hour = "0";
           }
-          if (tclistrd.getOffHour(rundata, context) > 0.0) {
+          if (tclistrd.getOffHour() > 0.0) {
             off_day = "1";
-            off_hour = Float.toString(tclistrd.getOffHour(rundata, context));
+            off_hour = Float.toString(tclistrd.getOffHour());
           } else {
             off_hour = "0";
           }
@@ -282,36 +280,37 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
         }
       }
 
-      String[] rows = {
-        user_name,
-        date,
-        day,
-        service_form,
-        clock_in_time,
-        clock_out_time,
-        work_day,
-        work_hour,
-        overtime_day,
-        overtime_hour,
-        off_day,
-        off_hour,
-        late_coming_day,
-        early_leaving_day,
-        absent_day,
-        paid_holiday,
-        compensatory_holiday,
-        other_day,
-        remark,
-        out_going[0],
-        come_back[0],
-        out_going[1],
-        come_back[1],
-        out_going[2],
-        come_back[2],
-        out_going[3],
-        come_back[3],
-        out_going[4],
-        come_back[4] };
+      String[] rows =
+        {
+          user_name,
+          date,
+          day,
+          service_form,
+          clock_in_time,
+          clock_out_time,
+          work_day,
+          work_hour,
+          overtime_day,
+          overtime_hour,
+          off_day,
+          off_hour,
+          late_coming_day,
+          early_leaving_day,
+          absent_day,
+          paid_holiday,
+          compensatory_holiday,
+          other_day,
+          remark,
+          out_going[0],
+          come_back[0],
+          out_going[1],
+          come_back[1],
+          out_going[2],
+          come_back[2],
+          out_going[3],
+          come_back[3],
+          out_going[4],
+          come_back[4] };
       rowcount = rowcount + 1;
       addRow(sheet.createRow(rowcount), cell_enc_types, rows);
     }
@@ -330,7 +329,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
      * work_hour, overtime_day, overtime_hour, off_day, off_hour,
      * late_coming_day, early_leaving_day, absent_day, paid_holiday,
      * compensatory_holiday, other_day, };
-     *
+     * 
      * addFooter(sheet.createRow(rowcount), cell_enc_types, rows);
      */
 
