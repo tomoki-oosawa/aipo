@@ -54,8 +54,9 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardSystemFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ExtTimecardSystemFormData.class.getName());
 
   private ALNumberField system_id;
 
@@ -136,8 +137,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     user_id.setNotNull(true);
 
     system_name = new ALStringField();
-    system_name.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKING_ARRANGEMENTS"));
+    system_name.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "EXTTIMECARD_SETFIELDNAME_WORKING_ARRANGEMENTS"));
     system_name.setNotNull(true);
 
     start_hour = new ALNumberField();
@@ -146,30 +148,34 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     end_minute = new ALNumberField();
 
     start_day = new ALNumberField();
-    start_day.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_START_DAY"));
+    start_day.setFieldName(
+      ALLocalizationUtils.getl10n("EXTTIMECARD_SETFIELDNAME_START_DAY"));
 
     worktime_in = new ALNumberField();
-    worktime_in.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_WORKTIME"));
+    worktime_in.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_WORKTIME"));
     worktime_in.setNotNull(true);
     worktime_in.limitMinValue(0);
 
     resttime_in = new ALNumberField();
-    resttime_in.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_RESTTIME"));
+    resttime_in.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "EXTTIMECARD_SETFIELDNAME_WORKTIME_IN_RESTTIME"));
     resttime_in.setNotNull(true);
     resttime_in.limitValue(0, 360);
 
     worktime_out = new ALNumberField();
-    worktime_out.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_WORKTIME"));
+    worktime_out.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_WORKTIME"));
     worktime_out.setNotNull(true);
     worktime_out.limitMinValue(0);
 
     resttime_out = new ALNumberField();
-    resttime_out.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_RESTTIME"));
+    resttime_out.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "EXTTIMECARD_SETFIELDNAME_WORKTIME_OUT_RESTTIME"));
     resttime_out.setNotNull(true);
     resttime_out.limitValue(0, 360);
 
@@ -179,17 +185,17 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     outgoing_add_flag = new ALStringField();
 
     overtime_type_minute = new ALNumberField();
-    overtime_type_minute.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+    overtime_type_minute.setFieldName(
+      ALLocalizationUtils.getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
     overtime_type_minute.limitMinValue(0);
     overtime_type_week_hour = new ALNumberField();
-    overtime_type_week_hour.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+    overtime_type_week_hour.setFieldName(
+      ALLocalizationUtils.getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
     overtime_type_week_hour.limitMinValue(0);
 
     overtime_type_week = new ALStringField();
-    overtime_type_week.setFieldName(ALLocalizationUtils
-      .getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
+    overtime_type_week.setFieldName(
+      ALLocalizationUtils.getl10n("EXTTIMECARD_SETFIELDNAME_OVERTIME_TYPE"));
 
     isNewRule = isNewRule();
 
@@ -210,11 +216,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     week7 = new ALStringField();
     week7.setFieldName(ALLocalizationUtils.getl10n("HOLIDAY_SETTING_WEEK7"));
     statutoryHoliday = new ALStringField();
-    statutoryHoliday.setFieldName(ALLocalizationUtils
-      .getl10n("HOLIDAY_SETTING_STATUTORY_HOLIDAY"));
+    statutoryHoliday.setFieldName(
+      ALLocalizationUtils.getl10n("HOLIDAY_SETTING_STATUTORY_HOLIDAY"));
     holiday = new ALStringField();
-    holiday
-      .setFieldName(ALLocalizationUtils.getl10n("HOLIDAY_SETTING_HOLIDAY"));
+    holiday.setFieldName(
+      ALLocalizationUtils.getl10n("HOLIDAY_SETTING_HOLIDAY"));
 
   }
 
@@ -247,17 +253,18 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       change_hour.setValue(String.valueOf(record.getChangeHour()));
       outgoing_add_flag.setValue(record.getOutgoingAddFlag());
       if (isNewRule) {
-        overtime_type_minute.setValue(ExtTimecardUtils
-          .getOvertimeMinuteByDay(record.getOvertimeType()));
-        overtime_type_week_hour.setValue(ExtTimecardUtils
-          .getOvertimeHourByWeek(record.getOvertimeType()));
-        overtime_type_week.setValue(ExtTimecardUtils
-          .isOvertimeHourByWeek(record.getOvertimeType()) ? "T" : "F");
+        overtime_type_minute.setValue(
+          ExtTimecardUtils.getOvertimeMinuteByDay(record.getOvertimeType()));
+        overtime_type_week_hour.setValue(
+          ExtTimecardUtils.getOvertimeHourByWeek(record.getOvertimeType()));
+        overtime_type_week.setValue(
+          ExtTimecardUtils.isOvertimeHourByWeek(record.getOvertimeType())
+            ? "T"
+            : "F");
       }
 
-      default_holiday_flag.setValue(String.valueOf(record
-        .getHolidayOfWeek()
-        .charAt(0)));
+      default_holiday_flag.setValue(
+        String.valueOf(record.getHolidayOfWeek().charAt(0)));
       if (default_holiday_flag.getValue().toString().equals("A")) {
         // 会社の設定を読み込む
         String holidayOfWeek =
@@ -279,12 +286,10 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         week5.setValue(record.getHolidayOfWeek().charAt(5) != '0' ? "1" : null);
         week6.setValue(record.getHolidayOfWeek().charAt(6) != '0' ? "1" : null);
         week7.setValue(record.getHolidayOfWeek().charAt(7) != '0' ? "1" : null);
-        statutoryHoliday.setValue(String.valueOf(record
-          .getHolidayOfWeek()
-          .charAt(8)));
-        holiday.setValue(record.getHolidayOfWeek().charAt(9) != '0'
-          ? "1"
-          : null);
+        statutoryHoliday.setValue(
+          String.valueOf(record.getHolidayOfWeek().charAt(8)));
+        holiday.setValue(
+          record.getHolidayOfWeek().charAt(9) != '0' ? "1" : null);
       }
 
     } catch (Exception ex) {
@@ -403,8 +408,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
       if (record.getSystemId().intValue() == 1) {
         // 勤務形態「通常」は削除不可
-        msgList.add(ALLocalizationUtils
-          .getl10n("EXTTIMECARD_ALERT_DELETE_WORKING_ARRANGEMENTS"));
+        msgList.add(
+          ALLocalizationUtils.getl10n(
+            "EXTTIMECARD_ALERT_DELETE_WORKING_ARRANGEMENTS"));
         return false;
       }
 
@@ -553,15 +559,14 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
           change_hour.setValue(String.valueOf(record.getChangeHour()));
           outgoing_add_flag.setValue(record.getOutgoingAddFlag());
-          overtime_type_minute
-            .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_MINUTE);
-          overtime_type_week_hour
-            .setValue(ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK);
+          overtime_type_minute.setValue(
+            ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_MINUTE);
+          overtime_type_week_hour.setValue(
+            ExtTimecardUtils.OVERTIME_TYPE_DEFAULT_HOUR_BY_WEEK);
           overtime_type_week.setValue("F");
 
-          default_holiday_flag.setValue(String.valueOf(record
-            .getHolidayOfWeek()
-            .charAt(0)));
+          default_holiday_flag.setValue(
+            String.valueOf(record.getHolidayOfWeek().charAt(0)));
           if (default_holiday_flag.getValue().toString().equals("A")) {
             // 会社の設定を読み込む
             String holidayOfWeek =
@@ -576,33 +581,24 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
             statutoryHoliday.setValue(String.valueOf(holidayOfWeek.charAt(7)));
             holiday.setValue(holidayOfWeek.charAt(8) != '0' ? "1" : null);
           } else {
-            week1.setValue(record.getHolidayOfWeek().charAt(1) != '0'
-              ? "1"
-              : null);
-            week2.setValue(record.getHolidayOfWeek().charAt(2) != '0'
-              ? "1"
-              : null);
-            week3.setValue(record.getHolidayOfWeek().charAt(3) != '0'
-              ? "1"
-              : null);
-            week4.setValue(record.getHolidayOfWeek().charAt(4) != '0'
-              ? "1"
-              : null);
-            week5.setValue(record.getHolidayOfWeek().charAt(5) != '0'
-              ? "1"
-              : null);
-            week6.setValue(record.getHolidayOfWeek().charAt(6) != '0'
-              ? "1"
-              : null);
-            week7.setValue(record.getHolidayOfWeek().charAt(7) != '0'
-              ? "1"
-              : null);
-            statutoryHoliday.setValue(String.valueOf(record
-              .getHolidayOfWeek()
-              .charAt(8)));
-            holiday.setValue(record.getHolidayOfWeek().charAt(9) != '0'
-              ? "1"
-              : null);
+            week1.setValue(
+              record.getHolidayOfWeek().charAt(1) != '0' ? "1" : null);
+            week2.setValue(
+              record.getHolidayOfWeek().charAt(2) != '0' ? "1" : null);
+            week3.setValue(
+              record.getHolidayOfWeek().charAt(3) != '0' ? "1" : null);
+            week4.setValue(
+              record.getHolidayOfWeek().charAt(4) != '0' ? "1" : null);
+            week5.setValue(
+              record.getHolidayOfWeek().charAt(5) != '0' ? "1" : null);
+            week6.setValue(
+              record.getHolidayOfWeek().charAt(6) != '0' ? "1" : null);
+            week7.setValue(
+              record.getHolidayOfWeek().charAt(7) != '0' ? "1" : null);
+            statutoryHoliday.setValue(
+              String.valueOf(record.getHolidayOfWeek().charAt(8)));
+            holiday.setValue(
+              record.getHolidayOfWeek().charAt(9) != '0' ? "1" : null);
           }
         } catch (Exception ex) {
           logger.error("[ExtTimecardSystemFormData]", ex);
@@ -611,10 +607,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         if (!(this.entity_id > 0)) {
           entity_id =
-            Integer.parseInt(ALEipUtils.getTemp(
-              rundata,
-              context,
-              ALEipConstants.ENTITY_ID));
+            Integer.parseInt(
+              ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
           system_id.setValue(entity_id);
         }
       }
@@ -636,17 +630,6 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
     resttime_out.limitValue(0, 480);
     overtime_type_minute.limitValue(0, 1440);
     overtime_type_week_hour.limitValue(0, 168);
-    /*
-     * week1.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week2.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week3.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week4.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week5.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week6.setCharacterType(ALStringField.TYPE_NUMBER);
-     * week7.setCharacterType(ALStringField.TYPE_NUMBER);
-     * statutoryHoliday.setCharacterType(ALStringField.TYPE_NUMBER);
-     * holiday.setCharacterType(ALStringField.TYPE_NUMBER);
-     */
   }
 
   @Override
@@ -670,17 +653,18 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
         query.andQualifier(exp2);
       }
       if (query.fetchList().size() != 0) {
-        msgList.add(ALLocalizationUtils.getl10nFormat(
-          "EXTTIMECARD_ALERT_ALREADY_ADDED_WORKING_ARRANGEMENTS",
-          system_name.toString()));
+        msgList.add(
+          ALLocalizationUtils.getl10nFormat(
+            "EXTTIMECARD_ALERT_ALREADY_ADDED_WORKING_ARRANGEMENTS",
+            system_name.toString()));
       }
 
       long start_time = start_hour.getValue() * 60 + start_minute.getValue();
       long end_time = end_hour.getValue() * 60 + end_minute.getValue();
       long change_time = change_hour.getValue() * 60;
       if (!isValidChangeTime(start_time, end_time, change_time)) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("EXTTIMECARD_ALERT_SELECT_CHANGE_HOUR"));
+        msgList.add(
+          ALLocalizationUtils.getl10n("EXTTIMECARD_ALERT_SELECT_CHANGE_HOUR"));
       }
       if (isNewRule) {
         overtime_type_minute.validate(msgList);
