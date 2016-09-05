@@ -66,6 +66,8 @@ public class MessageListSelectData extends
 
   private int lastMessageId;
 
+  private boolean isReminderRoom;
+
   private boolean jump = false;
 
   private EipTMessageRoom room;
@@ -185,6 +187,7 @@ public class MessageListSelectData extends
     if (model.getMessageId().intValue() > lastMessageId) {
       lastMessageId = model.getMessageId().intValue();
     }
+    isReminderRoom = room.getIsReminderRoom();
     return rd;
   }
 
@@ -291,6 +294,13 @@ public class MessageListSelectData extends
    */
   public int getLastMessageId() {
     return lastMessageId;
+  }
+
+  /**
+   * @return isReminderRoom
+   */
+  public boolean getIsReminderRoom() {
+    return isReminderRoom;
   }
 
   /**

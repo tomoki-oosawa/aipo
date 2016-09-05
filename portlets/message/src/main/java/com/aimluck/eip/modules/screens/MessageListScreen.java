@@ -93,6 +93,7 @@ public class MessageListScreen extends ALVelocityScreen {
       if (isNewRoom) {
         listData.setTargetUserId((int) targetUser.getUserId().getValue());
       } else {
+        room.setIsReminderRoom(room.getCreateUserId() == 1);
         listData.setRoom(room);
       }
       listData.initField();

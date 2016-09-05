@@ -36,6 +36,8 @@ public class EipTMessageRoom extends _EipTMessageRoom {
 
   private Long photoModified = null;
 
+  private boolean isReminderRoom = false;
+
   public Integer getRoomId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(ROOM_ID_PK_COLUMN);
@@ -139,6 +141,21 @@ public class EipTMessageRoom extends _EipTMessageRoom {
    */
   public Integer getUserId() {
     return userId;
+  }
+
+  /**
+   * @param isReminderRoom
+   *          セットする isReminderRoom
+   */
+  public void setIsReminderRoom(boolean isReminderRoom) {
+    this.isReminderRoom = isReminderRoom;
+  }
+
+  /**
+   * @return isReminderRoom
+   */
+  public boolean getIsReminderRoom() {
+    return this.isReminderRoom;
   }
 
 }
