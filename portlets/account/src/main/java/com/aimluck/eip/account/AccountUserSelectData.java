@@ -433,6 +433,8 @@ public class AccountUserSelectData extends
         .append(" ")
         .append(record.getFirstName())
         .toString());
+      rd.setFirstName(record.getFirstName());
+      rd.setLastName(record.getLastName());
       rd.setPostNameList(ALEipUtils.getPostNameList(record.getUserId()));
       rd.setPositionName(ALEipUtils.getPositionName(record
         .getPositionId()
@@ -467,11 +469,15 @@ public class AccountUserSelectData extends
         .append(" ")
         .append(record.getFirstName())
         .toString());
+      rd.setFirstName(record.getFirstName());
+      rd.setLastName(record.getLastName());
       rd.setNameKana(new StringBuffer()
         .append(record.getLastNameKana())
         .append(" ")
         .append(record.getFirstNameKana())
         .toString());
+      rd.setFirstName(record.getFirstNameKana());
+      rd.setLastName(record.getLastNameKana());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
