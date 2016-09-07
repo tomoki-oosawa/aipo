@@ -80,6 +80,7 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getLoginName());
+      rd.setPassword("*");
       rd.setName(new StringBuffer()
         .append(record.getLastName())
         .append(" ")
@@ -92,8 +93,8 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
         .append(" ")
         .append(record.getFirstNameKana())
         .toString());
-      rd.setFirstName(record.getFirstNameKana());
-      rd.setLastName(record.getLastNameKana());
+      rd.setFirstNameKana(record.getFirstNameKana());
+      rd.setLastNameKana(record.getLastNameKana());
       rd.setEmail(record.getEmail());
       rd.setOutTelephone(record.getOutTelephone());
       rd.setInTelephone(record.getInTelephone());
@@ -310,29 +311,19 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         AccountResultData data;
-        int maxPostSize = 0;
-        for (ListIterator<TurbineUser> iterator =
-          list.listIterator(list.size()); iterator.hasPrevious();) {
-          data = getResultData(iterator.previous());
-          if (data.getPostNameList().size() > maxPostSize) {
-            maxPostSize = data.getPostNameList().size();
-          }
-        }
         StringBuffer sb =
-          new StringBuffer("\"ユーザー名\",\"名前（姓）\",\"名前（名）\",\"名前（姓・フリガナ）\","
-            + "\"名前（名・フリガナ）\",\"メールアドレス\",\"電話番号（外線）\","
-            + "\"電話番号（内線）\",\"電話番号（携帯）\",\"携帯メールアドレス\","
-            + "\"部署名\",\"");
-        for (int i = 0; i < maxPostSize - 1; ++i) {
-          sb.append("\",\"");
-        }
-        sb.append("役職\"");
+          new StringBuffer("\"ユーザー名\",\"パスワード\",\"名前（姓）\",\"名前（名）\","
+            + "\"名前（姓・フリガナ）\",\"名前（名・フリガナ）\",\"メールアドレス\","
+            + "\"電話番号（外線）\",\"電話番号（内線）\",\"電話番号（携帯）\","
+            + "\"携帯メールアドレス\",\"部署名\",\"役職\"");
         for (ListIterator<TurbineUser> iterator =
           list.listIterator(list.size()); iterator.hasPrevious();) {
           sb.append(LINE_SEPARATOR);
           data = getResultData(iterator.previous());
           sb.append("\"");
           sb.append(data.getUserName());
+          sb.append("\",\"");
+          sb.append(data.getPassword());
           sb.append("\",\"");
           sb.append(data.getLastName());
           sb.append("\",\"");
@@ -353,15 +344,15 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
           sb.append(data.getCellularMail());
           sb.append("\",\"");
           int i = 0, size = data.getPostNameList().size();
-          while (i < size) {
+          while (i < size - 1) {
             sb.append(data.getPostNameList().get(i));
-            sb.append("\",\"");
+            sb.append("/");
             ++i;
           }
-          while (i < maxPostSize) {
-            sb.append("\",\"");
-            ++i;
+          if (i == size - 1) {
+            sb.append(data.getPostNameList().get(i));
           }
+          sb.append("\",\"");
           sb.append(data.getPositionName());
           sb.append("\"");
         }
