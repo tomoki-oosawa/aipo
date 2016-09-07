@@ -29,7 +29,7 @@
 
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
-#set ($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserCsvExportScreen')))
+#set ($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserCsvExportScreen').addQueryData('target_keyword',$!{result.TargetKeyword.toString()}).addQueryData('current_post',$!{result.CurrentPost}).addQueryData('current_role',$!{result.CurrentRole})))
 
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
 #set($currentRole = "")
