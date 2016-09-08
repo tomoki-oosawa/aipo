@@ -314,7 +314,7 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
           new StringBuffer("\"ユーザー名\",\"パスワード\",\"名前（姓）\",\"名前（名）\","
             + "\"名前（姓・フリガナ）\",\"名前（名・フリガナ）\",\"メールアドレス\","
             + "\"電話番号（外線）\",\"電話番号（内線）\",\"電話番号（携帯）\","
-            + "\"携帯メールアドレス\",\"部署名\",\"役職\"");
+            + "\"携帯メールアドレス\",\"部署名\",\"役職\",\"社員コード\"");
         for (ListIterator<TurbineUser> iterator =
           list.listIterator(list.size()); iterator.hasPrevious();) {
           sb.append(LINE_SEPARATOR);
@@ -353,6 +353,8 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
           }
           sb.append("\",\"");
           sb.append(data.getPositionName());
+          sb.append("\",\"");
+          sb.append(data.getCode());
           sb.append("\"");
         }
         return sb.toString();
