@@ -65,12 +65,12 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_HOLIDAY)
 #ALtditemheader()
-<h3>
+##<h3>
 #if($!result.Detail.DefaultHolidayFlag.toString() == "A") $l10n.HOLIDAY_SETTING_DEFAULT_HOLIDAY
-#else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
+##else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
 #end
-</h3>
-<div id="holidayField" style="display:">
+##</h3>
+<div id="holidayField" style="display:#if ($!result.Detail.DefaultHolidayFlag.toString() == "A") none #end">
   <h3>$l10n.HOLIDAY_SETTING_WEEK_OF_DAY</h3>
   <p>
     <input name="week1" type="checkbox" value="1" id="week1" #if ($!result.Detail.Week1.toString() == "1") checked="checked" #end disabled='disabled' />
@@ -103,8 +103,11 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
   </p>
   <h3>$l10n.HOLIDAY_SETTING_HOLIDAY</h3>
   <p>
-    <input name="holiday" type="checkbox" value="1" id="holiday" #if ($!result.Detail.Holiday.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="holiday">$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
+    ##<input name="holiday" type="checkbox" value="1" id="holiday" #if ($!result.Detail.Holiday.toString() == "1") checked="checked" #end disabled='disabled' />
+    ##<label for="holiday">$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
+    #if($!result.Detail.Holiday.toString() == "1") $l10n.HOLIDAY_SETTING_DEFAULT_HOLIDAY
+    else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
+    #end
   </p>
 </div>
 #ALtditemfooter()
