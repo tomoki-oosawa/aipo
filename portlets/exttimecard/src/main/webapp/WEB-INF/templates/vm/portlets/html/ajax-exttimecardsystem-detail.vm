@@ -57,7 +57,7 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 #if($!result.isNewRule())
 	$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY1$!{result.Detail.OvertimeTypeMinuteByDay}$l10n.EXTTIMECARD_OVERTIME_TYPE_DAY2<br/>
   ##   #if($result.Detail.isOvertypeWeek())
-	## $l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1$!{result.Detail.OvertimeTypeHourByWeek}$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2<br/>
+  ## $l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK1$!{result.Detail.OvertimeTypeHourByWeek}$l10n.EXTTIMECARD_OVERTIME_TYPE_WEEK2<br/>
   ##   #end
 #else
 $l10n.EXTTIMECARD_OVERTIME_TYPE_O
@@ -65,48 +65,35 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_HOLIDAY)
 #ALtditemheader()
-##<h3>
-#if($!result.Detail.DefaultHolidayFlag.toString() == "A") $l10n.HOLIDAY_SETTING_DEFAULT_HOLIDAY
-##else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
+#if($!result.Detail.DefaultHolidayFlag.toString() == "A") $l10n.EXTTIMECARD_HOLIDAY_SETTING_DEFAULT_HOLIDAY
 #end
-##</h3>
 <div id="holidayField" style="display:#if ($!result.Detail.DefaultHolidayFlag.toString() == "A") none #end">
-  <h3>$l10n.HOLIDAY_SETTING_WEEK_OF_DAY</h3>
+  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK_OF_DAY</h3>
   <p>
-    <input name="week1" type="checkbox" value="1" id="week1" #if ($!result.Detail.Week1.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week1">$l10n.HOLIDAY_SETTING_WEEK1</label>
-    <input name="week2" type="checkbox" value="1" id="week2" #if ($!result.Detail.Week2.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week2">$l10n.HOLIDAY_SETTING_WEEK2</label>
-    <input name="week3" type="checkbox" value="1" id="week3" #if ($!result.Detail.Week3.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week3">$l10n.HOLIDAY_SETTING_WEEK3</label>
-    <input name="week4" type="checkbox" value="1" id="week4" #if ($!result.Detail.Week4.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week4">$l10n.HOLIDAY_SETTING_WEEK4</label>
-    <input name="week5" type="checkbox" value="1" id="week5" #if ($!result.Detail.Week5.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week5">$l10n.HOLIDAY_SETTING_WEEK5</label>
-    <input name="week6" type="checkbox" value="1" id="week6" #if ($!result.Detail.Week6.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week6">$l10n.HOLIDAY_SETTING_WEEK6</label>
-    <input name="week7" type="checkbox" value="1" id="week7" #if ($!result.Detail.Week7.toString() == "1") checked="checked" #end disabled='disabled' />
-    <label for="week7">$l10n.HOLIDAY_SETTING_WEEK7</label>
+    #if($!result.Detail.Week1.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK1 #end
+    #if($!result.Detail.Week2.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK2 #end
+    #if($!result.Detail.Week3.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK3 #end
+    #if($!result.Detail.Week4.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK4 #end
+    #if($!result.Detail.Week5.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK5 #end
+    #if($!result.Detail.Week6.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK6 #end
+    #if($!result.Detail.Week7.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK7 #end
   </p>
-  <h3>$l10n.HOLIDAY_SETTING_STATUTORY_HOLIDAY</h3>
+  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_STATUTORY_HOLIDAY</h3>
   <p>
-    <select name="statutoryHoliday" disabled='disabled'>
-      <option value="0" #if ($!result.Detail.StatutoryHoliday.toString() == "0") selected="selected"#end>$l10n.HOLIDAY_SETTING_NOTHING</option>
-      <option value="1" #if ($!result.Detail.StatutoryHoliday.toString() == "1") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK1</option>
-      <option value="2" #if ($!result.Detail.StatutoryHoliday.toString() == "2") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK2</option>
-      <option value="3" #if ($!result.Detail.StatutoryHoliday.toString() == "3") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK3</option>
-      <option value="4" #if ($!result.Detail.StatutoryHoliday.toString() == "4") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK4</option>
-      <option value="5" #if ($!result.Detail.StatutoryHoliday.toString() == "5") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK5</option>
-      <option value="6" #if ($!result.Detail.StatutoryHoliday.toString() == "6") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK6</option>
-      <option value="7" #if ($!result.Detail.StatutoryHoliday.toString() == "7") selected="selected"#end>$l10n.HOLIDAY_SETTING_WEEK7</option>
-    </select>
+    #if($!result.Detail.StatutoryHoliday.toString() == "0") $l10n.EXTTIMECARD_HOLIDAY_SETTING_NOTHING
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "1")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK1
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "2")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK2
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "3")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK3
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "4")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK4
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "5")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK5
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "6")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK6
+    #elseif($!result.Detail.StatutoryHoliday.toString() == "7")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK7
+    #end
   </p>
-  <h3>$l10n.HOLIDAY_SETTING_HOLIDAY</h3>
+  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_HOLIDAY</h3>
   <p>
-    ##<input name="holiday" type="checkbox" value="1" id="holiday" #if ($!result.Detail.Holiday.toString() == "1") checked="checked" #end disabled='disabled' />
-    ##<label for="holiday">$l10n.HOLIDAY_SETTING_HOLIDAY_MESSAGE</label>
-    #if($!result.Detail.Holiday.toString() == "1") $l10n.HOLIDAY_SETTING_DEFAULT_HOLIDAY
-    else $l10n.HOLIDAY_SETTING_ORIGINAL_HOLIDAY
+    #if($!result.Detail.Holiday.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_NATIONAL_HOLIDAY_ON
+    #else $l10n.EXTTIMECARD_HOLIDAY_NATIONAL_HOLIDAY_OFF
     #end
   </p>
 </div>
