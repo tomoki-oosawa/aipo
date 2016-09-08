@@ -80,7 +80,6 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
       rd.initField();
       rd.setUserId(Integer.valueOf(record.getUserId()).intValue());
       rd.setUserName(record.getLoginName());
-      rd.setPassword("*");
       rd.setName(new StringBuffer()
         .append(record.getLastName())
         .append(" ")
@@ -270,7 +269,7 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
               admin_ids));
 
           } catch (Exception ex) {
-            logger.error("AccountUserSelectData.getSelectQuery", ex);
+            logger.error("AccountUserCsvExportScreen.getSelectQuery", ex);
           }
 
         }
@@ -323,7 +322,7 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
           sb.append("\"");
           sb.append(data.getUserName());
           sb.append("\",\"");
-          sb.append(data.getPassword());
+          sb.append("*");// Password
           sb.append("\",\"");
           sb.append(data.getLastName());
           sb.append("\",\"");

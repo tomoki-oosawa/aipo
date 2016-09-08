@@ -41,9 +41,6 @@ public class AccountResultData implements ALData {
   /** ユーザー名 */
   private ALStringField user_name;
 
-  /** パスワード */
-  private ALStringField password;
-
   /** 名前 */
   private ALStringField name;
 
@@ -136,7 +133,6 @@ public class AccountResultData implements ALData {
   public void initField() {
     user_id = new ALNumberField();
     user_name = new ALStringField();
-    password = new ALStringField();
     first_name = new ALStringField();
     last_name = new ALStringField();
     first_name_kana = new ALStringField();
@@ -191,19 +187,11 @@ public class AccountResultData implements ALData {
     return first_name;
   }
 
-  public String getWbrFirstName() {
-    return ALCommonUtils.replaceToAutoCR(getFirstName().toString());
-  }
-
   /**
    * @return
    */
   public ALStringField getLastName() {
     return last_name;
-  }
-
-  public String getWbrLastName() {
-    return ALCommonUtils.replaceToAutoCR(getLastName().toString());
   }
 
   /**
@@ -215,13 +203,6 @@ public class AccountResultData implements ALData {
 
   public String getWbrUserName() {
     return ALCommonUtils.replaceToAutoCR(getUserName().toString());
-  }
-
-  /**
-   * @return
-   */
-  public ALStringField getPassword() {
-    return password;
   }
 
   /**
@@ -264,13 +245,6 @@ public class AccountResultData implements ALData {
    */
   public void setUserName(String string) {
     user_name.setValue(string);
-  }
-
-  /**
-   * @param string
-   */
-  public void setPassword(String string) {
-    password.setValue(string);
   }
 
   /**
