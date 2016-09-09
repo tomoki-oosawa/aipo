@@ -152,7 +152,7 @@ public class MsgboardTopicSelectData extends
         sortStr = "update_date";
       }
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
-      if ("update_date".equals(sortStr)) {
+      if ("create_date".equals(sortStr) || "update_date".equals(sortStr)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
     }
@@ -546,6 +546,7 @@ public class MsgboardTopicSelectData extends
       rd.setUpdateUser(ALEipUtils.getUserFullName(record
         .getUpdateUserId()
         .intValue()));
+      rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 
       // 新着を設定する（期限は最終更新日からの 1 日間）．
