@@ -68,7 +68,7 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
 #if($!result.Detail.DefaultHolidayFlag.toString() == "A") $l10n.EXTTIMECARD_HOLIDAY_SETTING_DEFAULT_HOLIDAY
 #end
 <div id="holidayField" style="display:#if ($!result.Detail.DefaultHolidayFlag.toString() == "A") none #end">
-  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK_OF_DAY</h3>
+  <h3 class="mb5">$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK_OF_DAY</h3>
   <p>
     #if($!result.Detail.Week1.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK1 #end
     #if($!result.Detail.Week2.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK2 #end
@@ -78,7 +78,7 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
     #if($!result.Detail.Week6.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK6 #end
     #if($!result.Detail.Week7.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK7 #end
   </p>
-  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_STATUTORY_HOLIDAY</h3>
+  <h3 class="mb5">$l10n.EXTTIMECARD_HOLIDAY_SETTING_STATUTORY_HOLIDAY</h3>
   <p>
     #if($!result.Detail.StatutoryHoliday.toString() == "0") $l10n.EXTTIMECARD_HOLIDAY_SETTING_NOTHING
     #elseif($!result.Detail.StatutoryHoliday.toString() == "1")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK1
@@ -90,7 +90,7 @@ $l10n.EXTTIMECARD_OVERTIME_TYPE_O
     #elseif($!result.Detail.StatutoryHoliday.toString() == "7")$l10n.EXTTIMECARD_HOLIDAY_SETTING_WEEK7
     #end
   </p>
-  <h3>$l10n.EXTTIMECARD_HOLIDAY_SETTING_HOLIDAY</h3>
+  <h3 class="mb5">$l10n.EXTTIMECARD_HOLIDAY_SETTING_HOLIDAY</h3>
   <p>
     #if($!result.Detail.Holiday.toString() == "1") $l10n.EXTTIMECARD_HOLIDAY_NATIONAL_HOLIDAY_ON
     #else $l10n.EXTTIMECARD_HOLIDAY_NATIONAL_HOLIDAY_OFF
