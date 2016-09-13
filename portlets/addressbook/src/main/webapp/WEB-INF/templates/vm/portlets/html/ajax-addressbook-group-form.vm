@@ -66,7 +66,9 @@
         memberGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserGroupLiteJSONScreen')"
         changeGroupUrl="$!jslink.getPortletById($!portlet.ID).addQueryData('template','AddressBookUserLiteJSONScreen').addQueryData('mode','group')">
 </div>
-<select size="10" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist">#foreach($record in $!result.Addresses)<option value="$!record.AddressId">$!record.Name</option>#end</select>
+<select size="10" multiple="multiple" style="display:none;" name="init_memberlist" id="init_memberlist"></select>
+#ALSelectGroupDummy()
+#foreach($record in $!result.Addresses)<option value="$!record.AddressId">$!record.Name</option>#end</select>
 #ALtditemfooter()
 #ALtablefooter()
 #ALbuttonheader()
