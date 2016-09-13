@@ -85,6 +85,8 @@ public class ExtTimecardSystemDetailResultData extends
 
   private ALStringField holiday;
 
+  private boolean hasHoliday;
+
   /**
    *
    *
@@ -364,6 +366,21 @@ public class ExtTimecardSystemDetailResultData extends
    */
   public void setOvertypeWeek(boolean isOvertypeWeek) {
     this.isOvertypeWeek = isOvertypeWeek;
+  }
+
+  /**
+   * @return hasHoliday
+   */
+  public boolean getHasHoliday() {
+    return hasHoliday;
+  }
+
+  /**
+   * @param hasHoliday
+   *          セットする hasHoliday
+   */
+  public void setHasHoliday(boolean hasHoliday) {
+    this.hasHoliday = hasHoliday;
   }
 
 }
