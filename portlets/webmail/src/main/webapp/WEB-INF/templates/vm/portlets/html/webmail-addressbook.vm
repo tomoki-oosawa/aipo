@@ -56,7 +56,10 @@
 #end
 </select>
 </div>
+
+## この下のdivタグの中に出現するselectタグの中に#ALSelectGroupDummy()を入れたい、、、。
 <div id="userDiv" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end></div>
+
 <div id="Block_External_Group" class="mb5" #if($DefTypeCompany == "1") style="display:none;" #end>
 <select name="currentExternalGroupName" id="currentExternalGroupName" style="width: 99%" onchange="aipo.webmail.changeExternalGroup('$externalScreenlink', this.options[this.selectedIndex].value)">
 <option value="">$l10n.WEBMAIL_ALL_GROUP</option>
@@ -74,6 +77,7 @@
 <td class="caption">$l10n.WEBMAIL_TO</td>
 #ALtditemheader()
 <select name="detail_to_recipients" id="detail_to_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.ToRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
@@ -83,6 +87,7 @@
 <td  class="caption">CC</td>
 #ALtditemheader()
 <select name="detail_cc_recipients" id="detail_cc_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.CcRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
@@ -92,6 +97,7 @@
 <td  class="caption">BCC</td>
 #ALtditemheader()
 <select name="detail_bcc_recipients" id="detail_bcc_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.BccRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
