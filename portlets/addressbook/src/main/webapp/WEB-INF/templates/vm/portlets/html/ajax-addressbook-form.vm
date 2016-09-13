@@ -145,7 +145,7 @@
     memberFromOptionKey="groupId"
     memberFromOptionValue="name">
 </div>
-<select size="5" multiple="multiple" style="display:none;" name="init_grouplist" id="init_grouplist"></select>
+<select size="5" multiple="multiple" style="display:none;" name="init_grouplist" id="init_grouplist">
 #ALSelectGroupDummy()
 #foreach($record in $result.Groups)<option value="$!record.GroupId">$!record.GroupName</option>#end</select>
 #ALtditemfooter()
