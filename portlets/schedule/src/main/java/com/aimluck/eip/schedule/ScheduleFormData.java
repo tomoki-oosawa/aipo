@@ -162,6 +162,18 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
+  /** */
+  private ALStringField shifting;
+
+  /** <code>shifting_after</code> 後日にずらす */
+  private ALNumberField shifting_after;
+
+  /** <code>shifting_before</code> 後日にずらす */
+  private ALNumberField shifting_before;
+
+  /** <code>shifting_no</code> 後日にずらす */
+  private ALNumberField shifting_nothing;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
 
@@ -594,6 +606,24 @@ public class ScheduleFormData extends ALAbstractFormData {
     year_month = new ALNumberField();
     year_month.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_YEAR_MONTH"));
+
+    shifting = new ALStringField();
+    shifting.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_AFTER"));
+
+    // 後日にずらす
+    shifting_after = new ALNumberField();
+    shifting_after.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_AFTER"));
+    // 前日にずらす
+    shifting_before = new ALNumberField();
+    shifting_before.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_BEFORE"));
+    // ずらさない
+    shifting_nothing = new ALNumberField();
+    shifting_nothing.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_NOTHING"));
+
     // 繰り返しフラグ
     limit_flag = new ALStringField();
     limit_flag.setFieldName(ALLocalizationUtils
@@ -827,6 +857,11 @@ public class ScheduleFormData extends ALAbstractFormData {
         getMonthDay(),
         getYearMonth(),
         getYearDay(),
+        // ずらす機能-------------------------------------------------------------------
+        // getShifting_After(),
+        // getShifting_Before(),
+        // getShifting_Nothing(),
+        // ---------------------------------------------------------------------------
         loginUser,
         null,
         msgList,
@@ -937,6 +972,9 @@ public class ScheduleFormData extends ALAbstractFormData {
       // MXXL -> 毎月月末
       // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
+      // WnnnnnnnmNX -> 休日に予定をずらすか (X = A -> 後日にずらす X=B -> 前日にずらす X = N ->
+      // ずらさない)
+      // 予定をずらす機能をつけると、ptnの桁数が１増える
       String ptn = record.getRepeatPattern();
       int count = 0;
       is_repeat = true;
@@ -1003,6 +1041,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
         year_day.setValue(Integer.parseInt(ptn.substring(3, 5)));
         count = 5;
+
         // 期間
       } else if (ptn.charAt(0) == 'S') {
         is_span = true;
@@ -1010,6 +1049,18 @@ public class ScheduleFormData extends ALAbstractFormData {
       } else {
         is_repeat = false;
       }
+
+      // 予定を後日にずらす
+      if (ptn.charAt(count + 1) == 'A') {
+        repeat_type.setValue("A");
+        // 予定を前日にずらす
+      } else if (ptn.charAt(count + 1) == 'B') {
+        repeat_type.setValue("B");
+        // 予定をずらさない
+      } else {
+        repeat_type.setValue("N");
+      }
+
       if (is_repeat) {
         // 開始日時
         Calendar tmpViewCal = Calendar.getInstance();
@@ -1294,6 +1345,16 @@ public class ScheduleFormData extends ALAbstractFormData {
             format.format(year_month.getValue())).append(
             format.format(year_day.getValue())).append(lim).toString());
         }
+        /*
+         * // 休日に予定をずらすかどうかの結果をDBに保存する // DecimalFormat format = new
+         * DecimalFormat("00"); if (shifting.getValue() == "A") {
+         * schedule.setRepeatPattern(new StringBuffer() .append("XX")
+         * .append(lim) .append('A') .toString()); } else if
+         * (shifting.getValue() == "B") { schedule.setRepeatPattern(new
+         * StringBuffer() .append("XX") .append(lim) .append('B') .toString());
+         * } else { schedule.setRepeatPattern(new StringBuffer() .append("XX")
+         * .append(lim) .append('N') .toString()); }
+         */
       }
 
       EipTCommonCategory category1 =
@@ -3315,6 +3376,33 @@ public class ScheduleFormData extends ALAbstractFormData {
    */
   public ALStringField getRepeatWeek() {
     return repeat_week;
+  }
+
+  /**
+   * 「休日に予定をずらす情報」を取得します
+   *
+   * @return
+   */
+  public ALStringField getShifting() {
+    return shifting;
+  }
+
+  /**
+   * 「前日にずらす」を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getShifting_Before() {
+    return shifting_before;
+  }
+
+  /**
+   * 「ずらさない」を取得します。
+   *
+   * @return
+   */
+  public ALNumberField getShifting_Nothing() {
+    return shifting_nothing;
   }
 
   /**

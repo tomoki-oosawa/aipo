@@ -165,6 +165,28 @@
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+      ##休日だったらずらすチェックボックス--------------------------------------------------------------
+      <p>
+      <input id="repeat_typeHS" type="checkbox" value="B" #if ($!{result.Shifting.toString()} == "B") checked="checked" #end name="repeat_type"/>
+      <label for="repeat_typeHS">休日は予定を</label>
+      <select>
+      ##<option value="$num" #if ($!{result.Shifting_Nothing.toString()} == "$num") selected #end>$l10n.SCHEDULE_SHIFTING_BEFORE</option>
+      ##<option value="$num" #if ($!{result.Shifting_Nothing.toString()} == "$num") selected #end>$l10n.SCHEDULE_SHIFTING_AFTER</option>
+      ##<option value="$num" #if ($!{result.Shifting_Nothing.toString()} == "$num") selected #end>$l10n.SCHEDULE_SHIFTING_NOTHING</option>
+      ##<option value="$l10n.SCHEDULE_SHIFTING_NOTHING_HOLIDAY" #if($!{result.Shifting.toString()}=="$num") selected #end>$num$l10n.SCHEDULE_SHIFTING_NOTHING_HOLIDAY</option>
+      ##<option value="$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY" #if($!{result.Shifting.toString()}=="$num") selected #end>$num$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
+      ##<option value="$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY" #if($!{result.Shifting.toString()}=="$num") selected #end>$num$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
+      <option value="N" #if ($!{result.RepeatType.toString()} == "N") selected #end>$l10n.SCHEDULE_SHIFTING_NOTHING_HOLIDAY</option>
+      <option value="B" #if ($!{result.RepeatType.toString()} == "B") selected #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
+      <option value="A" #if ($!{result.RepeatType.toString()} == "A") selected #end>$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
+
+      </select>
+      </p>
+      ##----------------------------------------------------------------------------------------
+
+      <p>
+      <input>
+      </p>
       </p>
    </div>
     <div class="p auiSetDate mt15">
