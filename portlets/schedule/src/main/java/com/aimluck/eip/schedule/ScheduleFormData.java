@@ -162,17 +162,11 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>repeat_week</code> 繰り返し週 */
   private ALStringField repeat_week;
 
-  /** */
+  /** <code>shifting</code> 休日に予定をずらす */
   private ALStringField shifting;
 
-  /** <code>shifting_after</code> 後日にずらす */
-  private ALNumberField shifting_after;
-
-  /** <code>shifting_before</code> 後日にずらす */
-  private ALNumberField shifting_before;
-
-  /** <code>shifting_no</code> 後日にずらす */
-  private ALNumberField shifting_nothing;
+  /** <code>shifting</code> 休日に予定をずらす */
+  private ALStringField shift_check;
 
   /** <code>limit_flag</code> 期限ありなし */
   private ALStringField limit_flag;
@@ -609,20 +603,11 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     shifting = new ALStringField();
     shifting.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SHIFTING_AFTER"));
+      .getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
 
-    // 後日にずらす
-    shifting_after = new ALNumberField();
-    shifting_after.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SHIFTING_AFTER"));
-    // 前日にずらす
-    shifting_before = new ALNumberField();
-    shifting_before.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SHIFTING_BEFORE"));
-    // ずらさない
-    shifting_nothing = new ALNumberField();
-    shifting_nothing.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SHIFTING_NOTHING"));
+    shift_check = new ALStringField();
+    shift_check.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
 
     // 繰り返しフラグ
     limit_flag = new ALStringField();
@@ -857,11 +842,6 @@ public class ScheduleFormData extends ALAbstractFormData {
         getMonthDay(),
         getYearMonth(),
         getYearDay(),
-        // ずらす機能-------------------------------------------------------------------
-        // getShifting_After(),
-        // getShifting_Before(),
-        // getShifting_Nothing(),
-        // ---------------------------------------------------------------------------
         loginUser,
         null,
         msgList,
@@ -984,7 +964,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         repeat_type.setValue("D");
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) { // 9
         repeat_type.setValue("W");
         week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
         week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -993,9 +973,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
         week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
         week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-        count = 8;
+        count = 9; // 8
         // 第何週
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) { // 10
         repeat_type.setValue("W");
         week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
         week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -1024,7 +1004,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           default:
             break;
         }
-        count = 9;
+        count = 10; // 9
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
@@ -1033,14 +1013,14 @@ public class ScheduleFormData extends ALAbstractFormData {
         } else {
           month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
         }
-        count = 3;
+        count = 4; // 3
 
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
         year_month.setValue(Integer.parseInt(ptn.substring(1, 3)));
         year_day.setValue(Integer.parseInt(ptn.substring(3, 5)));
-        count = 5;
+        count = 6; // 5
 
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -1051,12 +1031,15 @@ public class ScheduleFormData extends ALAbstractFormData {
       }
 
       // 予定を後日にずらす
-      if (ptn.charAt(count + 1) == 'A') {
+      if (ptn.charAt(count) == 'A') {
         repeat_type.setValue("A");
         // 予定を前日にずらす
-      } else if (ptn.charAt(count + 1) == 'B') {
+      } else if (ptn.charAt(count) == 'B') {
         repeat_type.setValue("B");
-        // 予定をずらさない
+        // 繰り返さない
+      } else if (ptn.charAt(count) == 'D') {
+        repeat_type.setValue("D");
+        // ずらさない
       } else {
         repeat_type.setValue("N");
       }
@@ -1079,7 +1062,7 @@ public class ScheduleFormData extends ALAbstractFormData {
         tmpViewCal.set(Calendar.MINUTE, tmpStopCal.get(Calendar.MINUTE));
         end_date.setValue(tmpViewCal.getTime());
 
-        if (ptn.charAt(count) == 'N') {
+        if (ptn.charAt(count - 1) == 'N') { // count-1
           limit_start_date.setValue(view_date.getValue());
           limit_end_date.setValue(view_date.getValue());
           limit_flag.setValue("OFF");
@@ -1282,6 +1265,7 @@ public class ScheduleFormData extends ALAbstractFormData {
 
         schedule.setStartDate(start_date.getValue());
       } else {
+
         // 繰り返しスケジュール設定の場合
         char lim = 'N';
         Calendar cal = Calendar.getInstance();
@@ -1303,6 +1287,17 @@ public class ScheduleFormData extends ALAbstractFormData {
           schedule.setStartDate(start_date.getValue());
         }
 
+        // 予定をずらすかどうかの変数
+        char sft = 'N';
+        if ("T".equals(shift_check.getValue())) {
+          sft = 'D';
+          if ("A".equals(shifting.getValue())) {
+            sft = 'A';
+          } else if ("B".equals(shifting.getValue())) {
+            sft = 'B';
+          }
+        }
+
         schedule.setEndDate(cal.getTime());
         if ("D".equals(repeat_type.getValue())) {
           schedule.setRepeatPattern(new StringBuffer()
@@ -1311,50 +1306,57 @@ public class ScheduleFormData extends ALAbstractFormData {
             .toString());
         } else if ("W".equals(repeat_type.getValue())) {
           if ("0".equals(repeat_week.getValue())) {
-            schedule.setRepeatPattern(new StringBuffer().append('W').append(
-              week_0.getValue() != null ? 1 : 0).append(
-              week_1.getValue() != null ? 1 : 0).append(
-              week_2.getValue() != null ? 1 : 0).append(
-              week_3.getValue() != null ? 1 : 0).append(
-              week_4.getValue() != null ? 1 : 0).append(
-              week_5.getValue() != null ? 1 : 0).append(
-              week_6.getValue() != null ? 1 : 0).append(lim).toString());
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('W')
+              .append(week_0.getValue() != null ? 1 : 0)
+              .append(week_1.getValue() != null ? 1 : 0)
+              .append(week_2.getValue() != null ? 1 : 0)
+              .append(week_3.getValue() != null ? 1 : 0)
+              .append(week_4.getValue() != null ? 1 : 0)
+              .append(week_5.getValue() != null ? 1 : 0)
+              .append(week_6.getValue() != null ? 1 : 0)
+              .append(lim)
+              .append(sft)
+              .toString());
           } else {
-            schedule.setRepeatPattern(new StringBuffer().append('W').append(
-              week_0.getValue() != null ? 1 : 0).append(
-              week_1.getValue() != null ? 1 : 0).append(
-              week_2.getValue() != null ? 1 : 0).append(
-              week_3.getValue() != null ? 1 : 0).append(
-              week_4.getValue() != null ? 1 : 0).append(
-              week_5.getValue() != null ? 1 : 0).append(
-              week_6.getValue() != null ? 1 : 0).append(
-              repeat_week.getValue().charAt(0)).append(lim).toString());
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('W')
+              .append(week_0.getValue() != null ? 1 : 0)
+              .append(week_1.getValue() != null ? 1 : 0)
+              .append(week_2.getValue() != null ? 1 : 0)
+              .append(week_3.getValue() != null ? 1 : 0)
+              .append(week_4.getValue() != null ? 1 : 0)
+              .append(week_5.getValue() != null ? 1 : 0)
+              .append(week_6.getValue() != null ? 1 : 0)
+              .append(repeat_week.getValue().charAt(0))
+              .append(lim)
+              .append(sft)
+              .toString());
           }
         } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
           if (32 == month_day.getValue()) {
             schedule.setRepeatPattern(new StringBuffer().append('M').append(
-              "XX").append(lim).toString());
+              "XX").append(lim).append(sft).toString());
           } else {
-            schedule.setRepeatPattern(new StringBuffer().append('M').append(
-              format.format(month_day.getValue())).append(lim).toString());
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('M')
+              .append(format.format(month_day.getValue()))
+              .append(lim)
+              .append(sft)
+              .toString());
           }
         } else {
           DecimalFormat format = new DecimalFormat("00");
-          schedule.setRepeatPattern(new StringBuffer().append('Y').append(
-            format.format(year_month.getValue())).append(
-            format.format(year_day.getValue())).append(lim).toString());
+          schedule.setRepeatPattern(new StringBuffer()
+            .append('Y')
+            .append(format.format(year_month.getValue()))
+            .append(format.format(year_day.getValue()))
+            .append(lim)
+            .append(sft)
+            .toString());
         }
-        /*
-         * // 休日に予定をずらすかどうかの結果をDBに保存する // DecimalFormat format = new
-         * DecimalFormat("00"); if (shifting.getValue() == "A") {
-         * schedule.setRepeatPattern(new StringBuffer() .append("XX")
-         * .append(lim) .append('A') .toString()); } else if
-         * (shifting.getValue() == "B") { schedule.setRepeatPattern(new
-         * StringBuffer() .append("XX") .append(lim) .append('B') .toString());
-         * } else { schedule.setRepeatPattern(new StringBuffer() .append("XX")
-         * .append(lim) .append('N') .toString()); }
-         */
+
       }
 
       EipTCommonCategory category1 =
@@ -3387,22 +3389,8 @@ public class ScheduleFormData extends ALAbstractFormData {
     return shifting;
   }
 
-  /**
-   * 「前日にずらす」を取得します。
-   *
-   * @return
-   */
-  public ALNumberField getShifting_Before() {
-    return shifting_before;
-  }
-
-  /**
-   * 「ずらさない」を取得します。
-   *
-   * @return
-   */
-  public ALNumberField getShifting_Nothing() {
-    return shifting_nothing;
+  public ALStringField getShiftCheck() {
+    return shift_check;
   }
 
   /**
