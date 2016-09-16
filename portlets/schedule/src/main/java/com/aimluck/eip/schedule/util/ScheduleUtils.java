@@ -978,6 +978,7 @@ public class ScheduleUtils {
     boolean result = false;
     Calendar cal = Calendar.getInstance();
     cal.setTime(date.getValue());
+<<<<<<< HEAD
     int shift = 5;
     if (ptn.charAt(ptn.length() - 1) != 'N') {
       if (ptn.charAt(ptn.length() - 1) == 'A') {
@@ -1025,6 +1026,26 @@ public class ScheduleUtils {
         }
       }
     }
+=======
+
+    /*
+     * 休日情報を取得 if(isUserHoliday(1~7)) if(isUserHoliday(x)==TRUE && ptn(x)==1){
+     * switch(ptn(ptn.length())){ case ''A": 次の日にずらす; break; case "B": 前の日にずらす;
+     * break; case "D": 繰り返さない; break; case "N": ずらさない; break; default: break; }
+     * }
+     * 
+     * 毎週●曜日の場合 A:ptn(x+1)=1,ptn(x)=0 ->(x+1)が曜日の枠を超えたら->x=sunday B:ptn(x-1)=1,
+     * ptn(x)=0 ->(x-1)が曜日の枠を超えたら->x=saturday D:ptn(x)=0
+     * 
+     * 毎週第●曜日の場合
+     * 
+     * 
+     * 毎月の場合
+     * 
+     * 
+     * 毎年の場合
+     */
+>>>>>>> 9d1a65b86e8d52e849be9b90ddd59023c210b860
 
     // 毎日
     if (ptn.charAt(0) == 'D') {
@@ -6344,6 +6365,7 @@ public class ScheduleUtils {
 
   }
 
+<<<<<<< HEAD
   public static String getHolidayOfWeek() {
     HttpServletRequest request = HttpServletRequestLocator.get();
     String cacheHoliday = null;
@@ -6381,4 +6403,9 @@ public class ScheduleUtils {
 
   }
 
+=======
+  /*
+   * 休日の設定を行う所
+   */
+>>>>>>> 9d1a65b86e8d52e849be9b90ddd59023c210b860
 }
