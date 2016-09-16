@@ -152,7 +152,7 @@ public class MsgboardTopicSelectData extends
         sortStr = "update_date";
       }
       ALEipUtils.setTemp(rundata, context, LIST_SORT_STR, sortStr);
-      if ("update_date".equals(sortStr)) {
+      if ("create_date".equals(sortStr) || "update_date".equals(sortStr)) {
         ALEipUtils.setTemp(rundata, context, LIST_SORT_TYPE_STR, "desc");
       }
     }
@@ -546,6 +546,7 @@ public class MsgboardTopicSelectData extends
       rd.setUpdateUser(ALEipUtils.getUserFullName(record
         .getUpdateUserId()
         .intValue()));
+      rd.setCreateDate(record.getCreateDate());
       rd.setUpdateDate(record.getUpdateDate());
 
       // 新着を設定する（期限は最終更新日からの 1 日間）．
@@ -820,6 +821,7 @@ public class MsgboardTopicSelectData extends
   protected Attributes getColumnMap() {
     Attributes map = new Attributes();
     map.putValue("topic_name", EipTMsgboardTopic.TOPIC_NAME_PROPERTY);
+    map.putValue("create_date", EipTMsgboardTopic.CREATE_DATE_PROPERTY);
     map.putValue("update_date", EipTMsgboardTopic.UPDATE_DATE_PROPERTY);
     map.putValue("category", EipTMsgboardCategory.CATEGORY_ID_PK_COLUMN);
     map.putValue(

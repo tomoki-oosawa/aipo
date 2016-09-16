@@ -2261,6 +2261,17 @@ public class ALEipUtils {
       && (isMatchUserAgent("Edge", rundata));
   }
 
+  /***
+   * アクセスしてきたユーザが利用するブラウザ名が Mozilla の Firefox であるかを判定する．
+   * 
+   * @param rundata
+   * @return
+   */
+  public static boolean isFirefoxBrowser(RunData rundata) {
+    return isMatchUserAgent("Firefox", rundata)
+      && isMatchUserAgent("Mozilla", rundata);
+  }
+
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Android．
    *
