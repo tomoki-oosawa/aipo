@@ -42,6 +42,7 @@ import java.util.TimeZone;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cayenne.DataRow;
@@ -103,10 +104,14 @@ import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+//<<<<<<< HEAD
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
+//=======
+import com.aimluck.eip.http.HttpServletRequestLocator;
+//>>>>>>> refs/remotes/origin/features/schedule-add-holiday
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -126,6 +131,8 @@ import com.aimluck.eip.schedule.ScheduleToDoWeekContainer;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
@@ -971,6 +978,54 @@ public class ScheduleUtils {
     boolean result = false;
     Calendar cal = Calendar.getInstance();
     cal.setTime(date.getValue());
+    int shift = 5;
+    if (ptn.charAt(ptn.length() - 1) != 'N') {
+      if (ptn.charAt(ptn.length() - 1) == 'A') {
+        shift = 1;
+      } else if (ptn.charAt(ptn.length() - 1) == 'B') {
+        shift = -1;
+      } else if (ptn.charAt(ptn.length() - 1) == 'D') {
+        shift = 0;
+      }
+    }
+
+    if (ptn.charAt(0) == 'W') {
+      for (int i = 1; i <= 7; i++) {
+
+        if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
+          String pre_ptn_1, pre_ptn_2, pre_ptn_3;
+          if (i == 1 && shift == -1) {
+            pre_ptn_1 = ptn.substring(0, 1);
+            pre_ptn_2 = ptn.substring(2, 7);
+            pre_ptn_3 = ptn.substring(8, ptn.length());
+            ptn = pre_ptn_1 + '0' + pre_ptn_2 + '1' + pre_ptn_3;
+          }
+          if (i == 7 && shift == 1) {
+            pre_ptn_1 = ptn.substring(0, 1);
+            pre_ptn_2 = ptn.substring(2, 7);
+            pre_ptn_3 = ptn.substring(8, ptn.length());
+            ptn = pre_ptn_1 + '1' + pre_ptn_2 + '0' + pre_ptn_3;
+          }
+          if (shift == 1 && i != 7) {
+            pre_ptn_1 = ptn.substring(0, i);
+            pre_ptn_2 = ptn.substring(i + 2, ptn.length());
+            pre_ptn_3 = "01";
+            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
+          } else if (shift == -1 && i != 1) {
+            pre_ptn_1 = ptn.substring(0, i - 1);
+            pre_ptn_2 = ptn.substring(i + 1, ptn.length());
+            pre_ptn_3 = "10";
+            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
+          } else if (shift == 0) {
+            pre_ptn_1 = ptn.substring(0, i);
+            pre_ptn_2 = ptn.substring(i + 1, ptn.length());
+            pre_ptn_3 = "0";
+            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
+          }
+        }
+      }
+    }
+
     // 毎日
     if (ptn.charAt(0) == 'D') {
       result = true;
@@ -3262,7 +3317,7 @@ public class ScheduleUtils {
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
     // MnnN M25 -> 毎月25日
-    // YnnmmN Y0825N ->　毎年8月25日
+    // YnnmmN Y0825N -> 毎年8月25日
     // S -> 期間での指定
     String ptn = schedule.getRepeatPattern();
     int count = 0;
@@ -6288,4 +6343,42 @@ public class ScheduleUtils {
     return null;
 
   }
+
+  public static String getHolidayOfWeek() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String cacheHoliday = null;
+    if (request != null) {
+      try {
+        cacheHoliday =
+          (String) request
+            .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
+      } catch (Throwable ignore) {
+
+      }
+    }
+    if (cacheHoliday == null) {
+      cacheHoliday =
+        ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
+      if (request != null) {
+        request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
+          .toString(), cacheHoliday);
+      }
+    }
+    return cacheHoliday;
+  }
+
+  /**
+   * 祝日を休日にするかどうかを検証する. 休日にする場合 true
+   */
+  public static boolean isDayOffHoliday() {
+    String cacheHoliday = getHolidayOfWeek();
+    return (cacheHoliday.charAt(8) == '0') ? false : true;
+  }
+
+  public static boolean isUserHoliday(int DayOfWeek) {
+    String cacheHoliday = getHolidayOfWeek();
+    return cacheHoliday.charAt(DayOfWeek) != '0';
+
+  }
+
 }
