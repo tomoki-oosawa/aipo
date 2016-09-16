@@ -30,6 +30,6 @@ UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
 -- 20160328
 
 -- 20160815
-UPDATE 'eip_t_acl_portlet_feature' SET 'acl_type' = 27 WHERE 'feature_name' = 'report_other' AND 'feature_alias_name' = '報告書（他ユーザーの報告書）操作';
-UPDATE 'eip_t_acl_role' SET 'acl_type' = 27 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'report_other') AND 'role_name' = '報告書（他ユーザーの報告書）管理者';
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 27 WHERE `feature_name` = 'report_other' AND `feature_alias_name` = '報告書（他ユーザーの報告書）操作';
+UPDATE `eip_t_acl_role` SET `acl_type` = 27 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'report_other') AND `role_name` = '報告書（他ユーザーの報告書）管理者';
 -- 20160815
