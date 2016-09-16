@@ -1123,11 +1123,19 @@ public class BlogUtils {
    * @return
    */
   public static SelectQuery<EipTBlogEntry> buildSelectQueryForBlogFilter(
-      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context) {
+      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context,
+      boolean hasBlogOtherAclList) {
 
     // 所有者
     String ownerId = BlogUtils.getOwnerId(rundata, context);
-    if (!ownerId.equals("all")) {
+
+    if (!hasBlogOtherAclList) {
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.OWNER_ID_COLUMN, ALEipUtils
+          .getUserId(rundata));
+      query.andQualifier(exp);
+
+    } else if (!ownerId.equals("all")) {
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogEntry.OWNER_ID_COLUMN, ownerId);
       query.andQualifier(exp);

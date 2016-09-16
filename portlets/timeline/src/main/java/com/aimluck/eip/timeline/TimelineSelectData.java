@@ -43,6 +43,9 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
@@ -110,6 +113,9 @@ public class TimelineSelectData extends
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
+  /** アクセス権限の機能名「掲示板（トピック）管理者」の一覧表示権限 */
+  private boolean hasAclTopicList;
+
   /** 他ユーザーの作成したトピックの編集権限 */
   private boolean hasAclUpdateTopicOthers;
 
@@ -144,6 +150,9 @@ public class TimelineSelectData extends
 
   /** AppNameからportletIdを取得するハッシュ */
   private HashMap<String, String> portletIdFromAppId;
+
+  /** アクセス権限の機能名（ブログ（他ユーザの記事））の一覧権限を持っているか **/
+  private boolean hasBlogOtherAclList;
 
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
@@ -207,7 +216,7 @@ public class TimelineSelectData extends
         }
       }
 
-      /** hasScheduleOtherAclListの権限チェック **/
+      /** 更新情報についての一覧表示権限のチェック **/
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
@@ -217,6 +226,18 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      hasAclTopicList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasBlogOtherAclListの権限チェック **/
+      hasBlogOtherAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -479,6 +500,16 @@ public class TimelineSelectData extends
         target_keyword.toString(),
         "");
 
+    /* ブログ（他ユーザの記事）の権限を持っていない場合、listからブログの情報を削除 */
+    if (!hasBlogOtherAclList) {
+      for (int i = list.size() - 1; i >= 0; i--) {
+        if (list.get(i).getAppId().equals("Blog")
+          && !list.get(i).getOwnerId().equals(uid)) {
+          list.remove(i);
+        }
+      }
+    }
+
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
@@ -536,6 +567,8 @@ public class TimelineSelectData extends
         }
       }
     }
+
+    removePrivateMsgboardTopic(list);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -868,6 +901,100 @@ public class TimelineSelectData extends
       ALEipUtils.redirectDBError(rundata);
       return false;
     }
+
+  }
+
+  private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
+
+    if (!hasAclTopicList) {
+      list.removeIf(obj -> (obj.getAppId().equals("Msgboard")));
+      return;
+    }
+
+    /* listから自分が関係しないmsgboardの情報を削除 */
+
+    List<Integer> ids = new ArrayList<Integer>();
+    for (EipTTimeline obj : list) {
+      if ("Msgboard".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
+    }
+    if (ids.size() == 0) {
+      return;
+    }
+
+    // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTMsgboardTopic> topicList = null;
+    {
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(0));
+      query.setQualifier(exp1);
+
+      // アクセス制御
+      Expression exp01 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "O");
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "A");
+
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(uid));
+
+      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+        .andExp(exp12)));
+
+      Expression exp001 =
+        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
+      query.andQualifier(exp001);
+
+      query.distinct(true);
+
+      topicList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> topicIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic obj : topicList) {
+      topicIdList.add(obj.getTopicId());
+    }
+    // listのなかでIDがtopicIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
 
   }
 
