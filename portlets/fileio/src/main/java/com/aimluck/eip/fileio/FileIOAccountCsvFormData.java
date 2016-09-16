@@ -1189,6 +1189,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         break;
       case 13:
         setCode(token);
+        break;
       default:
         break;
     }

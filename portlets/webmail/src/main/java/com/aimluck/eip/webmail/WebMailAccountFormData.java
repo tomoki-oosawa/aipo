@@ -80,7 +80,7 @@ public class WebMailAccountFormData extends ALAbstractFormData {
   /** The value for the accountType field */
   private ALStringField account_type;
 
-  /** The value for the pop3serverName field */
+  /** The value for the smtpServerName field */
   private ALStringField smtpserver_name;
 
   /** The value for the pop3serverName field */
@@ -289,12 +289,12 @@ public class WebMailAccountFormData extends ALAbstractFormData {
     // SMTPサーバ名
     smtpserver_name.setNotNull(true);
     smtpserver_name.setCharacterType(ALStringField.TYPE_ASCII);
-    smtpserver_name.limitMaxLength(50);
+    smtpserver_name.limitMaxLength(60);
 
     // POP3サーバ名
     pop3server_name.setNotNull(true);
     pop3server_name.setCharacterType(ALStringField.TYPE_ASCII);
-    pop3server_name.limitMaxLength(50);
+    pop3server_name.limitMaxLength(60);
 
     // POP3用ユーザID
     pop3user_name.setNotNull(true);

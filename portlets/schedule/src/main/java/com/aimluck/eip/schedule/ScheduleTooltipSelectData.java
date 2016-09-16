@@ -57,7 +57,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * スケジュール詳細表示の検索結果を管理するクラスです。
- * 
+ *
  */
 public class ScheduleTooltipSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
@@ -103,7 +103,7 @@ public class ScheduleTooltipSelectData extends
   private String aclPortletFeature;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -198,7 +198,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -210,7 +210,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -225,7 +225,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /**
-   * 
+   *
    * @param obj
    * @return
    */
@@ -236,7 +236,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /**
-   * 
+   *
    * @param record
    * @return
    * @throws ALPageNotFoundException
@@ -416,10 +416,17 @@ public class ScheduleTooltipSelectData extends
         count = 8;
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
-        rd.addText(new StringBuffer().append(
-          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
-          Integer.parseInt(ptn.substring(1, 3))).append(
-          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        if (ptn.substring(1, 3).equals("XX")) {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        } else {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        }
         count = 3;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -506,7 +513,7 @@ public class ScheduleTooltipSelectData extends
 
   /**
    * 共有メンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -515,7 +522,7 @@ public class ScheduleTooltipSelectData extends
 
   /**
    * 状態を取得します。
-   * 
+   *
    * @param id
    * @return
    */
@@ -524,7 +531,7 @@ public class ScheduleTooltipSelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALDateTimeField getViewDate() {
@@ -538,7 +545,7 @@ public class ScheduleTooltipSelectData extends
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -549,7 +556,7 @@ public class ScheduleTooltipSelectData extends
   /**
    * アクセス権限用メソッド。<br />
    * アクセス権限の有無を返します。
-   * 
+   *
    * @return
    */
   public boolean hasAuthorityOtherEdit() {
