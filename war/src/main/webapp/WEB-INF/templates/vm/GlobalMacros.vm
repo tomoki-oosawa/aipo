@@ -2124,7 +2124,7 @@ $!{record.Date.Day}
 #end
 
 #macro(ALSelectGroupDummy)
-  #if(${client.equals("IPHONE")} && ${clientVer.equals("9")})
+  #if(${client.equals("IPHONE")} && (${clientVer.equals("9")} || ${clientVer.equals("10")}))
   <optgroup disabled class="dummy" style="display: none;"></optgroup>
   #end
 #end
