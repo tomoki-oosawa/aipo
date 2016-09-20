@@ -56,10 +56,7 @@
 #end
 </select>
 </div>
-
-## この下のdivタグの中に出現するselectタグの中に#ALSelectGroupDummy()を入れたい、、、。
 <div id="userDiv" class="mb5" #if($DefTypeCompany == "0") style="display:none;" #end></div>
-
 <div id="Block_External_Group" class="mb5" #if($DefTypeCompany == "1") style="display:none;" #end>
 <select name="currentExternalGroupName" id="currentExternalGroupName" style="width: 99%" onchange="aipo.webmail.changeExternalGroup('$externalScreenlink', this.options[this.selectedIndex].value)">
 <option value="">$l10n.WEBMAIL_ALL_GROUP</option>
