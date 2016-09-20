@@ -44,8 +44,8 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     postCreate: function(){
         this.id = this.widgetId;
 
-        // iphone9系において先頭のoptionタグが勝手に選択されてしまう問題対策
-        if (navigator.userAgent.indexOf("iPhone OS 9") > -1){
+        // iphone9系,10系において先頭のoptionタグが勝手に選択されてしまう問題対策
+        if (aipo.userAgent.isIphone9or10()){
         	this.addDummyOptGroup();
         }
 

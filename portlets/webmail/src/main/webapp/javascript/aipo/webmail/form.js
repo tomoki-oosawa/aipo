@@ -363,7 +363,7 @@ aipo.webmail.createSelect = function(selectid, divid, url, keyname, keymail, sel
             } else {
                 html += pre;
             }
-            if (navigator.userAgent.indexOf("iPhone OS 9") > -1){
+            if (aipo.userAgent.isIphone9or10()){
             	html += '<optgroup disabled class="dummy" style="display: none;"></optgroup>';
             }
             dojo.forEach(respodatanse, function(p) {
