@@ -101,8 +101,10 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALFileNotRemovedException;
+import com.aimluck.eip.common.ALHoliday;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
@@ -214,6 +216,13 @@ public class ScheduleUtils {
     "com.aimluck.eip.schedule.filtertype";
 
   private static Map<String, String> tabToLayOut;
+
+  /** <code>holiday</code> 祝日情報 */
+  private static ALHoliday holiday;
+
+  public static boolean isHoliday() {
+    return (holiday == null) ? false : true;
+  }
 
   static {
     tabToLayOut = new HashMap<String, String>();
@@ -346,6 +355,12 @@ public class ScheduleUtils {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
     }
+  }
+
+  public static void setDate(Date date) {
+    // 祝日かどうかを検証する．
+    ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
+    holiday = holidaysManager.isHoliday(date);
   }
 
   /**
@@ -982,13 +997,8 @@ public class ScheduleUtils {
     Calendar cal = Calendar.getInstance();
     cal.setTime(date.getValue());
 
-    int dummy_day = cal.get(Calendar.DATE);
-    int dummy_month = cal.get(Calendar.MONTH);
-    int dummy_year = cal.get(Calendar.YEAR);
-
-    int holi_day = 1;
-    int holi_month = 1;
-    int holi_year = 1;
+    Calendar cal_dummy = Calendar.getInstance();
+    cal_dummy.setTime(date.getValue());
 
     int shift = 5;
     if (ptn.charAt(ptn.length() - 1) != 'N') {
@@ -1002,116 +1012,59 @@ public class ScheduleUtils {
     }
 
     String pre_ptn_1, pre_ptn_2, pre_ptn_3;
-    if (ptn.charAt(0) == 'W') {
-      if (shift == 1) {
-        int i;
-        for (i = 1; i < 7; i++) {
-          if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
-            pre_ptn_1 = ptn.substring(0, i);
-            pre_ptn_2 = ptn.substring(i + 2, ptn.length());
-            pre_ptn_3 = "01";
-            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-          }
-        }
-        if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
-          pre_ptn_1 = ptn.substring(0, 1);
-          pre_ptn_2 = ptn.substring(2, 7);
-          pre_ptn_3 = ptn.substring(8, ptn.length());
-          ptn = pre_ptn_1 + '1' + pre_ptn_2 + '0' + pre_ptn_3;
-        }
-      } else if (shift == -1) {
-        int i;
-        for (i = 7; i > 1; i--) {
-          if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
-            pre_ptn_1 = ptn.substring(0, i - 1);
-            pre_ptn_2 = ptn.substring(i + 1, ptn.length());
-            pre_ptn_3 = "10";
-            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-          }
-        }
-        if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
-          pre_ptn_1 = ptn.substring(0, 1);
-          pre_ptn_2 = ptn.substring(2, 7);
-          pre_ptn_3 = ptn.substring(8, ptn.length());
-          ptn = pre_ptn_1 + '0' + pre_ptn_2 + '1' + pre_ptn_3;
-        }
-      } else if (shift == 0) {
-        int i;
-        for (i = 1; i <= 7; i++) {
-          if (ptn.charAt(i) == '1' && isUserHoliday(i - 1)) {
-            pre_ptn_1 = ptn.substring(0, i);
-            pre_ptn_2 = ptn.substring(i + 1, ptn.length());
-            pre_ptn_3 = "0";
-            ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-          }
-        }
-      }
+
+    // 今日が祝日か判定
+    setDate(date.getValue());
+    // setDate(cal.getTime());
+
+    int day_count = cal.get(Calendar.DAY_OF_WEEK);
+    int day_count_dummy = day_count;
+
+    // 休日または祝日ならば予定を表示しない
+    if (isHoliday() || isUserHoliday(day_count_dummy - 1)) {
+      result = false;
+      return result;
     }
 
-    /*
-     * if ((ptn.length() == 11 && Integer.parseInt("" + ptn.charAt(ptn.length()
-     * - 2)) == cal.get(Calendar.DAY_OF_WEEK_IN_MONTH)) || ptn.length() == 10) {
-     * // if(ptn.charAt(0)=='W'){ switch (cal.get(Calendar.DAY_OF_WEEK)) { case
-     * Calendar.SUNDAY: if (ptn.charAt(1) == '1' && isUserHoliday(0)) { switch
-     * (shift) { case -1: pre_ptn_1 = ptn.substring(0, 1); pre_ptn_2 =
-     * ptn.substring(2, 7); pre_ptn_3 = ptn.substring(8, ptn.length()); ptn =
-     * pre_ptn_1 + '0' + pre_ptn_2 + '1' + pre_ptn_3; break; case 1: pre_ptn_1 =
-     * ptn.substring(0, 1); pre_ptn_2 = ptn.substring(3, ptn.length());
-     * pre_ptn_3 = "01"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; case 0:
-     * pre_ptn_1 = ptn.substring(0, 1); pre_ptn_2 = ptn.substring(2,
-     * ptn.length()); pre_ptn_3 = "0"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-     * break; } } break; case Calendar.MONDAY: if (ptn.charAt(2) == '1' &&
-     * isUserHoliday(1)) { switch (shift) { case -1: pre_ptn_1 =
-     * ptn.substring(0, 1); pre_ptn_2 = ptn.substring(3, ptn.length());
-     * pre_ptn_3 = "10"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; case 1:
-     * pre_ptn_1 = ptn.substring(0, 2); pre_ptn_2 = ptn.substring(4,
-     * ptn.length()); pre_ptn_3 = "01"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-     * break; case 0: pre_ptn_1 = ptn.substring(0, 2); pre_ptn_2 =
-     * ptn.substring(3, ptn.length()); pre_ptn_3 = "0"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; } } break; case Calendar.TUESDAY: if
-     * (ptn.charAt(3) == '1' && isUserHoliday(2)) { switch (shift) { case -1:
-     * pre_ptn_1 = ptn.substring(0, 2); pre_ptn_2 = ptn.substring(4,
-     * ptn.length()); pre_ptn_3 = "10"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-     * break; case 1: pre_ptn_1 = ptn.substring(0, 3); pre_ptn_2 =
-     * ptn.substring(5, ptn.length()); pre_ptn_3 = "01"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; case 0: pre_ptn_1 = ptn.substring(0, 3);
-     * pre_ptn_2 = ptn.substring(4, ptn.length()); pre_ptn_3 = "0"; ptn =
-     * pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; } } break; case
-     * Calendar.WEDNESDAY: if (ptn.charAt(4) == '1' && isUserHoliday(3)) {
-     * switch (shift) { case -1: pre_ptn_1 = ptn.substring(0, 3); pre_ptn_2 =
-     * ptn.substring(5, ptn.length()); pre_ptn_3 = "10"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; case 1: pre_ptn_1 = ptn.substring(0, 4);
-     * pre_ptn_2 = ptn.substring(6, ptn.length()); pre_ptn_3 = "01"; ptn =
-     * pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; case 0: pre_ptn_1 =
-     * ptn.substring(0, 4); pre_ptn_2 = ptn.substring(5, ptn.length());
-     * pre_ptn_3 = "0"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; } }
-     * break; case Calendar.THURSDAY: if (ptn.charAt(5) == '1' &&
-     * isUserHoliday(4)) { switch (shift) { case -1: pre_ptn_1 =
-     * ptn.substring(0, 4); pre_ptn_2 = ptn.substring(6, ptn.length());
-     * pre_ptn_3 = "10"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; case 1:
-     * pre_ptn_1 = ptn.substring(0, 5); pre_ptn_2 = ptn.substring(7,
-     * ptn.length()); pre_ptn_3 = "01"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-     * break; case 0: pre_ptn_1 = ptn.substring(0, 5); pre_ptn_2 =
-     * ptn.substring(6, ptn.length()); pre_ptn_3 = "0"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; } } break; case Calendar.FRIDAY: if
-     * (ptn.charAt(6) == '1' && isUserHoliday(5)) { switch (shift) { case -1:
-     * pre_ptn_1 = ptn.substring(0, 5); pre_ptn_2 = ptn.substring(7,
-     * ptn.length()); pre_ptn_3 = "10"; ptn = pre_ptn_1 + pre_ptn_3 + pre_ptn_2;
-     * break; case 1: pre_ptn_1 = ptn.substring(0, 6); pre_ptn_2 =
-     * ptn.substring(8, ptn.length()); pre_ptn_3 = "01"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; case 0: pre_ptn_1 = ptn.substring(0, 6);
-     * pre_ptn_2 = ptn.substring(7, ptn.length()); pre_ptn_3 = "0"; ptn =
-     * pre_ptn_1 + pre_ptn_3 + pre_ptn_2; break; } } break; case
-     * Calendar.SATURDAY: if (ptn.charAt(7) == '1' && isUserHoliday(6)) { switch
-     * (shift) { case -1: pre_ptn_1 = ptn.substring(0, 6); pre_ptn_2 =
-     * ptn.substring(8, ptn.length()); pre_ptn_3 = "10"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; case 1: pre_ptn_1 = ptn.substring(0, 1);
-     * pre_ptn_2 = ptn.substring(2, 7); pre_ptn_3 = ptn.substring(8,
-     * ptn.length()); ptn = pre_ptn_1 + '1' + pre_ptn_2 + '0' + pre_ptn_3;
-     * break; case 0: pre_ptn_1 = ptn.substring(0, 7); pre_ptn_2 =
-     * ptn.substring(8, ptn.length()); pre_ptn_3 = "0"; ptn = pre_ptn_1 +
-     * pre_ptn_3 + pre_ptn_2; break; } } break; } }
-     */
+    switch (shift) {
+      case -1:
+        cal_dummy.add(cal_dummy.DATE, 1);
+        setDate(cal_dummy.getTime());
+        day_count_dummy++;// 日を1日進める
+        while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+          if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 進んだ先に予定がある
+            // 今日の予定に組み込む(予定ありとしてtrueを返す)
+            result = true;
+            return result;
+          }
+          // 日を1日進める
+          cal_dummy.add(cal_dummy.DATE, 1);
+          setDate(cal_dummy.getTime());
+          day_count_dummy++;
+        }
+        break;
+      case 1:
+        // 日を1日戻す
+        cal_dummy.add(cal_dummy.DATE, -1);
+        setDate(cal_dummy.getTime());
+        day_count_dummy += 6;
+        while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+          if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 戻った先に予定がある
+            // 今日の予定に組み込む(予定ありとしてtrueを返す)
+            result = true;
+            return result;
+          }
+          // 日を1日戻す
+          cal_dummy.add(cal_dummy.DATE, -1);
+          setDate(cal_dummy.getTime());
+          day_count_dummy += 6;
+        }
+        break;
+      default:
+        break;
+    }
+
+    setDate(cal.getTime());
 
     // 毎日
     if (ptn.charAt(0) == 'D') {
@@ -1123,36 +1076,44 @@ public class ScheduleUtils {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+
       if (ptn.charAt(8) == 'N'
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
         // 日
           case Calendar.SUNDAY:
+            // case 1:
             result = ptn.charAt(1) != '0';
             break;
           // 月
           case Calendar.MONDAY:
+            // case 2:
             result = ptn.charAt(2) != '0';
             break;
           // 火
           case Calendar.TUESDAY:
+            // case 3:
             result = ptn.charAt(3) != '0';
             break;
           // 水
           case Calendar.WEDNESDAY:
+            // case 4:
             result = ptn.charAt(4) != '0';
             break;
           // 木
           case Calendar.THURSDAY:
+            // case 5:
             result = ptn.charAt(5) != '0';
             break;
           // 金
           case Calendar.FRIDAY:
+            // case 6:
             result = ptn.charAt(6) != '0';
             break;
           // 土
           case Calendar.SATURDAY:
+            // case 7:
             result = ptn.charAt(7) != '0';
             break;
           default:
