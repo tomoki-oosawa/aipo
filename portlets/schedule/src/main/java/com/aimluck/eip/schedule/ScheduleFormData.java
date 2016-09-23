@@ -1920,6 +1920,17 @@ public class ScheduleFormData extends ALAbstractFormData {
             schedule.setStartDate(start_date.getValue());
           }
 
+          // 予定をずらすかどうかの変数
+          char sft = 'N';
+          if ("T".equals(shift_check.getValue())) {
+            sft = 'D';
+            if ("A".equals(shifting.getValue())) {
+              sft = 'A';
+            } else if ("B".equals(shifting.getValue())) {
+              sft = 'B';
+            }
+          }
+
           schedule.setEndDate(cal.getTime());
           if ("D".equals(repeat_type.getValue())) {
             String tmpPattern =
@@ -1928,43 +1939,59 @@ public class ScheduleFormData extends ALAbstractFormData {
           } else if ("W".equals(repeat_type.getValue())) {
             if ("0".equals(repeat_week.getValue())) {
               String tmpPattern =
-                new StringBuffer().append('W').append(
-                  week_0.getValue() != null ? 1 : 0).append(
-                  week_1.getValue() != null ? 1 : 0).append(
-                  week_2.getValue() != null ? 1 : 0).append(
-                  week_3.getValue() != null ? 1 : 0).append(
-                  week_4.getValue() != null ? 1 : 0).append(
-                  week_5.getValue() != null ? 1 : 0).append(
-                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
+                new StringBuffer()
+                  .append('W')
+                  .append(week_0.getValue() != null ? 1 : 0)
+                  .append(week_1.getValue() != null ? 1 : 0)
+                  .append(week_2.getValue() != null ? 1 : 0)
+                  .append(week_3.getValue() != null ? 1 : 0)
+                  .append(week_4.getValue() != null ? 1 : 0)
+                  .append(week_5.getValue() != null ? 1 : 0)
+                  .append(week_6.getValue() != null ? 1 : 0)
+                  .append(lim)
+                  .append(sft)
+                  .toString();
 
               schedule.setRepeatPattern(tmpPattern);
             } else {
               String tmpPattern =
-                new StringBuffer().append('W').append(
-                  week_0.getValue() != null ? 1 : 0).append(
-                  week_1.getValue() != null ? 1 : 0).append(
-                  week_2.getValue() != null ? 1 : 0).append(
-                  week_3.getValue() != null ? 1 : 0).append(
-                  week_4.getValue() != null ? 1 : 0).append(
-                  week_5.getValue() != null ? 1 : 0).append(
-                  week_6.getValue() != null ? 1 : 0).append(
-                  repeat_week.getValue().charAt(0)).append(lim).toString();
+                new StringBuffer()
+                  .append('W')
+                  .append(week_0.getValue() != null ? 1 : 0)
+                  .append(week_1.getValue() != null ? 1 : 0)
+                  .append(week_2.getValue() != null ? 1 : 0)
+                  .append(week_3.getValue() != null ? 1 : 0)
+                  .append(week_4.getValue() != null ? 1 : 0)
+                  .append(week_5.getValue() != null ? 1 : 0)
+                  .append(week_6.getValue() != null ? 1 : 0)
+                  .append(repeat_week.getValue().charAt(0))
+                  .append(lim)
+                  .append(sft)
+                  .toString();
               schedule.setRepeatPattern(tmpPattern);
             }
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
             if (32 == month_day.getValue()) {
               schedule.setRepeatPattern(new StringBuffer().append('M').append(
-                "XX").append(lim).toString());
+                "XX").append(lim).append(sft).toString());
             } else {
-              schedule.setRepeatPattern(new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString());
+              schedule.setRepeatPattern(new StringBuffer()
+                .append('M')
+                .append(format.format(month_day.getValue()))
+                .append(lim)
+                .append(sft)
+                .toString());
             }
           } else {
             DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer().append('Y').append(
-              format.format(year_month.getValue())).append(
-              format.format(year_day.getValue())).append(lim).toString());
+            schedule.setRepeatPattern(new StringBuffer()
+              .append('Y')
+              .append(format.format(year_month.getValue()))
+              .append(format.format(year_day.getValue()))
+              .append(lim)
+              .append(sft)
+              .toString());
           }
         }
 

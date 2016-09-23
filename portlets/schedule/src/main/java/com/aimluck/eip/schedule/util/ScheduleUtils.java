@@ -1000,8 +1000,26 @@ public class ScheduleUtils {
     Calendar cal_dummy = Calendar.getInstance();
     cal_dummy.setTime(date.getValue());
 
+    int mday_dummy = Integer.parseInt(date.getDay());
+    int yday_dummy = Integer.parseInt(date.getDay());
+    int ymonth_dummy = cal.get(Calendar.MONTH) + 1;
+
+    // 今日が祝日か判定
+    setDate(date.getValue());
+    // setDate(cal.getTime());
+
+    int day_count = cal.get(Calendar.DAY_OF_WEEK);
+    // ずらした先の曜日
+    int day_count_dummy = day_count;
+
+    // 休日または祝日ならば予定を表示しない
+    if ((isHoliday() || isUserHoliday(day_count - 1)) && ptn.length() > 2) {
+      result = false;
+      return result;
+    }
+
     int shift = 5;
-    if (ptn.charAt(ptn.length() - 1) != 'N') {
+    if (ptn.charAt(ptn.length() - 1) != 'N' && ptn.length() > 2) {
       if (ptn.charAt(ptn.length() - 1) == 'A') {
         shift = 1;
       } else if (ptn.charAt(ptn.length() - 1) == 'B') {
@@ -1011,68 +1029,12 @@ public class ScheduleUtils {
       }
     }
 
-    String pre_ptn_1, pre_ptn_2, pre_ptn_3;
-
-    // 今日が祝日か判定
-    setDate(date.getValue());
-    // setDate(cal.getTime());
-
-    int day_count = cal.get(Calendar.DAY_OF_WEEK);
-    int day_count_dummy = day_count;
-
-    // 休日または祝日ならば予定を表示しない
-    if (isHoliday() || isUserHoliday(day_count_dummy - 1)) {
-      result = false;
-      return result;
-    }
-
-    switch (shift) {
-      case -1:
-        cal_dummy.add(cal_dummy.DATE, 1);
-        setDate(cal_dummy.getTime());
-        day_count_dummy++;// 日を1日進める
-        while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
-          if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 進んだ先に予定がある
-            // 今日の予定に組み込む(予定ありとしてtrueを返す)
-            result = true;
-            return result;
-          }
-          // 日を1日進める
-          cal_dummy.add(cal_dummy.DATE, 1);
-          setDate(cal_dummy.getTime());
-          day_count_dummy++;
-        }
-        break;
-      case 1:
-        // 日を1日戻す
-        cal_dummy.add(cal_dummy.DATE, -1);
-        setDate(cal_dummy.getTime());
-        day_count_dummy += 6;
-        while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
-          if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 戻った先に予定がある
-            // 今日の予定に組み込む(予定ありとしてtrueを返す)
-            result = true;
-            return result;
-          }
-          // 日を1日戻す
-          cal_dummy.add(cal_dummy.DATE, -1);
-          setDate(cal_dummy.getTime());
-          day_count_dummy += 6;
-        }
-        break;
-      default:
-        break;
-    }
-
-    setDate(cal.getTime());
-
     // 毎日
     if (ptn.charAt(0) == 'D') {
       result = true;
       count = 1;
       // 毎週, 第何週
     } else if (ptn.charAt(0) == 'W') {
-
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
@@ -1120,11 +1082,65 @@ public class ScheduleUtils {
             result = false;
             break;
         }
-        if (ptn.length() == 9) {
-          count = 8;
-        } else {
-          count = 9;
+
+        // 今日が第何週目か
+        int week_count_today = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+        // 予定は第何週目か(毎週の予定ならば予定と同じ値にする)
+        int week_count_schedule = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+        if (ptn.length() == 11) {
+          week_count_schedule = Character.getNumericValue(ptn.charAt(8));
         }
+
+        switch (shift) {
+          case -1:
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            day_count_dummy++;// 日を1日進める
+            while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+              if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 進んだ先に予定がある
+                if (week_count_today == week_count_schedule) { // 今日の予定と予定の週が同じ
+                  // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                  result = true;
+                  // return result;
+                }
+              }
+              // 日を1日進める
+              cal_dummy.add(Calendar.DATE, 1);
+              setDate(cal_dummy.getTime());
+              day_count_dummy++;
+            }
+            break;
+          case 1:
+            // 日を1日戻す
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            day_count_dummy += 6;
+            while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+              if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 戻った先に予定がある
+                // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                if (week_count_today == week_count_schedule) {
+                  result = true;
+                  // return result;
+                }
+              }
+              // 日を1日戻す
+              cal_dummy.add(Calendar.DATE, -1);
+              setDate(cal_dummy.getTime());
+              day_count_dummy += 6;
+            }
+            break;
+          default:
+            break;
+        }
+
+        setDate(cal.getTime()); // setDateを戻す(念のため)
+
+        if (ptn.length() == 10) { // 9 毎週の予定ならば
+          count = 8; // 8
+        } else { // 第◯週目の予定ならば
+          count = 9; // 9
+        }
+
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
@@ -1135,8 +1151,46 @@ public class ScheduleUtils {
         mday = Integer.parseInt(ptn.substring(1, 3));
       }
       result = Integer.parseInt(date.getDay()) == mday;
+      // 予定をずらす
+      switch (shift) {
+        case -1:
+          // 日を１日進める
+          cal_dummy.add(Calendar.DATE, 1);
+          setDate(cal_dummy.getTime());
+          mday_dummy = cal_dummy.get(Calendar.DATE);
+          day_count_dummy++;
+          while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if (mday == mday_dummy) { // 進んだ先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            mday_dummy = cal_dummy.get(Calendar.DATE);
+            day_count_dummy++;
+          }
+          break;
+        case 1:
+          // 日を１日遡る
+          cal_dummy.add(Calendar.DATE, -1);
+          setDate(cal_dummy.getTime());
+          mday_dummy = cal_dummy.get(Calendar.DATE);
+          day_count_dummy += 6;
+          while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if (mday == mday_dummy) { // 遡った先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            mday_dummy = cal_dummy.get(Calendar.DATE);
+            day_count_dummy += 6;
+          }
+          break;
+        default:
+          break;
+      }
       count = 3;
-    } else if (ptn.charAt(0) == 'Y') {
+      setDate(cal.getTime());
+    } else if (ptn.charAt(0) == 'Y') { // 毎年
       int ymonth = Integer.parseInt(ptn.substring(1, 3));
       int yday = Integer.parseInt(ptn.substring(3, 5));
       int month = Integer.parseInt(date.getMonth());
@@ -1147,6 +1201,48 @@ public class ScheduleUtils {
       } else {
         result = false;
       }
+      // 予定をずらす
+      switch (shift) {
+        case -1:
+          // 日を１日進める
+          cal_dummy.add(Calendar.DATE, 1);
+          setDate(cal_dummy.getTime());
+          yday_dummy = cal_dummy.get(Calendar.DATE);
+          ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+          day_count_dummy++;
+          while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if ((yday == yday_dummy) && (ymonth == ymonth_dummy)) { // 進んだ先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            yday_dummy = cal_dummy.get(Calendar.DATE);
+            ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+            day_count_dummy++;
+          }
+          break;
+        case 1:
+          // 日を１日遡る
+          cal_dummy.add(Calendar.DATE, -1);
+          setDate(cal_dummy.getTime());
+          yday_dummy = cal_dummy.get(Calendar.DATE);
+          ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+          day_count_dummy += 6;
+          while (isHoliday() || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if ((yday == yday_dummy) && (ymonth == ymonth_dummy)) { // 遡った先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            yday_dummy = cal_dummy.get(Calendar.DATE);
+            ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+            day_count_dummy += 6;
+          }
+          break;
+        default:
+          break;
+      }
+      setDate(cal.getTime());
     } else {
       return true;
     }
