@@ -2270,7 +2270,7 @@ public class ScheduleUtils {
     if ((endyear < YEAR_FIRST) && isCellPhone) {
       // 携帯画面用条件
       msgList.add(ALLocalizationUtils.getl10nFormat(
-        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_END_DATE",
         YEAR_FIRST));
     }
     if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
