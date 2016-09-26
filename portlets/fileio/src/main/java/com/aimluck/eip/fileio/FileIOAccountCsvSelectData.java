@@ -256,10 +256,10 @@ public class FileIOAccountCsvSelectData
 
         if (existedUserMap.containsKey(username)) {
           TurbineUser tmpuser2 = existedUserMap.get(username);
-          // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
             user.setLoginName(username);
-            if (!(tmpuser2.getCode().equals(code))) {
+            if (tmpuser2.getCode() != null
+              && !(tmpuser2.getCode().equals(code))) {
               if (existedCodeList.contains(code)) {
                 same_code = true;
                 b_err = true;
