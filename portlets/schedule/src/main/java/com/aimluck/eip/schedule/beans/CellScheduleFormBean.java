@@ -81,6 +81,11 @@ public class CellScheduleFormBean implements ALData {
   /** <code>week_6</code> 繰り返し週 */
   private ALCellStringField repeat_week;
 
+  /** <code>shifting</code> 予定をずらす */
+  private ALCellStringField shifting;
+
+  private ALCellStringField shift_check;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALCellStringField limit_flag;
 
@@ -143,8 +148,8 @@ public class CellScheduleFormBean implements ALData {
     } else {
       start_date.setValue(tmpStart);
     }
-    start_date.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_START_DATE"));
+    start_date.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_START_DATE"));
 
     // 終了日時
     end_date = new ALCellDateTimeField("yyyy-MM-dd-HH-mm");
@@ -157,8 +162,8 @@ public class CellScheduleFormBean implements ALData {
     } else {
       end_date.setValue(tmpEnd);
     }
-    end_date.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
+    end_date.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_END_DATE"));
 
     // 指定日時
     view_date = new ALCellDateTimeField("yyyy-MM-dd");
@@ -167,97 +172,106 @@ public class CellScheduleFormBean implements ALData {
     } else {
       view_date.setValue(tmpView);
     }
-    view_date.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_SELECT_DATE"));
+    view_date.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_SELECT_DATE"));
 
     // 繰り返しタイプ
     repeat_type = new ALCellStringField();
-    repeat_type.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_TYPE"));
+    repeat_type.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT_TYPE"));
     repeat_type.setValue("D");
     repeat_type.setTrim(true);
 
     // 日
     week_0 = new ALCellStringField();
-    week_0.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_SUNDAY"));
+    week_0.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_SUNDAY"));
     week_0.setTrim(true);
 
     // 月
     week_1 = new ALCellStringField();
-    week_1.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_MANDAY"));
+    week_1.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_MANDAY"));
     week_1.setTrim(true);
 
     // 火
     week_2 = new ALCellStringField();
-    week_2.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_TUSEDAY"));
+    week_2.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_TUSEDAY"));
     week_2.setTrim(true);
 
     // 水
     week_3 = new ALCellStringField();
-    week_3.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_WEDNESDAY"));
+    week_3.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_WEDNESDAY"));
     week_3.setTrim(true);
 
     // 木
     week_4 = new ALCellStringField();
-    week_4.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_THURSDAY"));
+    week_4.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_THURSDAY"));
     week_4.setTrim(true);
 
     // 金
     week_5 = new ALCellStringField();
-    week_5.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_FRIDAY"));
+    week_5.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_FRIDAY"));
     week_5.setTrim(true);
 
     // 土
     week_6 = new ALCellStringField();
-    week_6.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
+    week_6.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_SATURDAY"));
     week_6.setTrim(true);
 
     // 繰り返し週
     repeat_week = new ALCellStringField();
-    repeat_week.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
+    repeat_week.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
     repeat_week.setTrim(true);
+
+    // 予定をずらす
+    shifting = new ALCellStringField();
+    shifting.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
+
+    shift_check = new ALCellStringField();
+    shift_check.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
 
     // 繰り返し日（選択されたときのみ Validate する）
     month_day = new ALCellNumberField();
-    month_day.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
+    month_day.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
     month_day.limitValue(1, 32);
 
     // 毎年繰り返し月（選択されたときのみ Validate する）
     year_month = new ALCellNumberField();
-    year_month.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_MONTH"));
+    year_month.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_MONTH"));
     year_month.limitValue(1, 12);
 
     // 毎年繰り返し日（選択されたときのみ Validate する）
     year_day = new ALCellNumberField();
-    year_day.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
+    year_day.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
     year_day.limitValue(1, 32);
 
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
-    limit_flag.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT"));
+    limit_flag.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT"));
     limit_flag.setValue("OFF");
     limit_flag.setTrim(true);
 
     // 繰り返し期限
     limit_start_date = new ALCellDateField();
-    limit_start_date.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
+    limit_start_date.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     limit_start_date.setValue(start_date.getValue());
     limit_end_date = new ALCellDateField();
-    limit_end_date.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
+    limit_end_date.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT_LIMIT"));
     ALCellDateTimeField tmp_date = new ALCellDateTimeField("yyyy-MM-dd-HH-mm");
     if (tmpEnd == null || tmpEnd.equals("")) {
       if (tmpStart == null || tmpStart.equals("")) {
@@ -274,10 +288,10 @@ public class CellScheduleFormBean implements ALData {
 
     // 繰り返しスケジュールの編集フラグ
     edit_repeat_flag = new ALCellNumberField();
-    edit_repeat_flag.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_EDIT_AREA"));
-    edit_repeat_flag
-      .setValue(AbstractCellScheduleFormData.FLAG_EDIT_REPEAT_DEF);
+    edit_repeat_flag.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_REPEAT_EDIT_AREA"));
+    edit_repeat_flag.setValue(
+      AbstractCellScheduleFormData.FLAG_EDIT_REPEAT_DEF);
 
     // メンバーリスト
     memberList = new ArrayList<ALEipUser>();
@@ -287,15 +301,16 @@ public class CellScheduleFormBean implements ALData {
 
     // 共有メンバーによる編集／削除権限フラグ
     edit_flag = new ALCellStringField();
-    edit_flag.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_EDIT_DELETE_PERMISSION"));
+    edit_flag.setFieldName(
+      ALLocalizationUtils.getl10n(
+        "SCHEDULE_SETFIELDNAME_EDIT_DELETE_PERMISSION"));
     edit_flag.setTrim(true);
     edit_flag.setValue("T");
 
     // 仮スケジュールに戻すかどうか
     change_tmpreserve_flag = new ALCellStringField();
-    change_tmpreserve_flag.setFieldName(ALLocalizationUtils
-      .getl10n("SCHEDULE_SETFIELDNAME_TEMP_SCHEDULE"));
+    change_tmpreserve_flag.setFieldName(
+      ALLocalizationUtils.getl10n("SCHEDULE_SETFIELDNAME_TEMP_SCHEDULE"));
     change_tmpreserve_flag.setTrim(true);
     change_tmpreserve_flag.setValue("F");
 
@@ -311,6 +326,24 @@ public class CellScheduleFormBean implements ALData {
     // S -> 期間での指定
     String ptn = record.getRepeatPattern();
     int count = 0;
+
+    // 予定を後日にずらす
+    if (ptn.charAt(count) == 'A') {
+      shifting.setValue("A");
+      shift_check.setValue("T");
+      // 予定を前日にずらす
+    } else if (ptn.charAt(count) == 'B') {
+      shifting.setValue("B");
+      shift_check.setValue("T");
+      // 繰り返さない
+    } else if (ptn.charAt(count) == 'D') {
+      shifting.setValue("D");
+      shift_check.setValue("T");
+      // ずらさない
+    } else {
+      shifting.setValue("N");
+      shift_check.setValue("F");
+    }
 
     // 毎日
     boolean is_repeat = true;
@@ -387,15 +420,17 @@ public class CellScheduleFormBean implements ALData {
       tmpViewCal.setTime(view_date.getValue());
       Calendar tmpStartCal = Calendar.getInstance();
       tmpStartCal.setTime(record.getStartDate());
-      tmpViewCal.set(Calendar.HOUR_OF_DAY, tmpStartCal
-        .get(Calendar.HOUR_OF_DAY));
+      tmpViewCal.set(
+        Calendar.HOUR_OF_DAY,
+        tmpStartCal.get(Calendar.HOUR_OF_DAY));
       tmpViewCal.set(Calendar.MINUTE, tmpStartCal.get(Calendar.MINUTE));
       start_date.setValue(tmpViewCal.getTime());
       // 終了日時
       Calendar tmpStopCal = Calendar.getInstance();
       tmpStopCal.setTime(record.getEndDate());
-      tmpViewCal
-        .set(Calendar.HOUR_OF_DAY, tmpStopCal.get(Calendar.HOUR_OF_DAY));
+      tmpViewCal.set(
+        Calendar.HOUR_OF_DAY,
+        tmpStopCal.get(Calendar.HOUR_OF_DAY));
       tmpViewCal.set(Calendar.MINUTE, tmpStopCal.get(Calendar.MINUTE));
       end_date.setValue(tmpViewCal.getTime());
 
@@ -410,8 +445,8 @@ public class CellScheduleFormBean implements ALData {
       }
 
       // 繰り返しスケジュールの編集フラグ
-      edit_repeat_flag
-        .setValue(AbstractCellScheduleFormData.FLAG_EDIT_REPEAT_ALL);
+      edit_repeat_flag.setValue(
+        AbstractCellScheduleFormData.FLAG_EDIT_REPEAT_ALL);
     }
 
     // 開始日時
@@ -647,6 +682,19 @@ public class CellScheduleFormBean implements ALData {
    */
   public ALCellStringField getRepeatWeek() {
     return repeat_week;
+  }
+
+  /**
+   * 「休日に予定をずらす情報」を取得します
+   *
+   * @return
+   */
+  public ALCellStringField getShifting() {
+    return shifting;
+  }
+
+  public ALCellStringField getShiftCheck() {
+    return shift_check;
   }
 
   /**
