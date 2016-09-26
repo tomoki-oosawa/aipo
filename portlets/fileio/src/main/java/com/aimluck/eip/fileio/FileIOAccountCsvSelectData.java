@@ -218,8 +218,7 @@ public class FileIOAccountCsvSelectData
 
       if (formData.getUserName().toString().equals(
         ALLocalizationUtils.getl10n("FILEIO_USER_NAME"))) {
-        setLineCount(getLineCount() - 1);
-
+        line -= 1;
         ErrorCode += e_line.toString();
         ErrorCode += "," + Integer.toString(line) + ",false";
         ErrorCode += "\n";
