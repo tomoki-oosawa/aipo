@@ -284,7 +284,7 @@ aipo.userAgent={
 	},
 	isIphone9or10:function(){
 		var version = this.iphoneVersion();
-		return !!verion && (version[1]==9 || version[1]==10);
+		return !!version && (version[1]==9 || version[1]==10);
 	},
 	isIphone:function(){
 		return this.__userAgent.indexOf("iphone") > -1;
