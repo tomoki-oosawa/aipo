@@ -160,8 +160,8 @@ import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 public class ScheduleUtils {
 
   /** <code>logger</code> loger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleUtils.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleUtils.class.getName());
 
   /** <code>SCHEDULEMAP_TYPE_USER</code> ユーザ */
   public static final String SCHEDULEMAP_TYPE_USER = "U";
@@ -170,16 +170,18 @@ public class ScheduleUtils {
   public static final String SCHEDULEMAP_TYPE_FACILITY = "F";
 
   /** スケジュールの添付ファイルを保管するディレクトリの指定 */
-  public static final String FOLDER_FILEDIR_SCHEDULE =
-    JetspeedResources.getString("aipo.filedir", "");
+  public static final String FOLDER_FILEDIR_SCHEDULE = JetspeedResources
+    .getString("aipo.filedir", "");
 
   /** スケジュールの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
-  public static final String CATEGORY_KEY =
-    JetspeedResources.getString("aipo.schedule.categorykey", "");
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.schedule.categorykey",
+    "");
 
   /** デフォルトエンコーディングを表わすシステムプロパティのキー */
-  public static final String FILE_ENCODING =
-    JetspeedResources.getString("content.defaultencoding", "UTF-8");
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
@@ -254,8 +256,12 @@ public class ScheduleUtils {
     return LayOutTotab.get(Layout);
   }
 
-  public static final List<Integer> notifyTimingList =
-    Arrays.asList(0, 5, 15, 30, 60);
+  public static final List<Integer> notifyTimingList = Arrays.asList(
+    0,
+    5,
+    15,
+    30,
+    60);
 
   /**
    * Scheudle オブジェクトモデルを取得します。
@@ -266,11 +272,8 @@ public class ScheduleUtils {
    */
   public static EipTSchedule getEipTSchedule(RunData rundata, Context context,
       boolean isOwner) throws ALPageNotFoundException, ALDBErrorException {
-    return getEipTSchedule(
-      rundata,
-      context,
-      isOwner,
-      ALEipUtils.getUserId(rundata));
+    return getEipTSchedule(rundata, context, isOwner, ALEipUtils
+      .getUserId(rundata));
 
   }
 
@@ -298,9 +301,8 @@ public class ScheduleUtils {
       if (isOwner) {
         // ユーザーID
         Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTSchedule.OWNER_ID_PROPERTY,
-            Integer.valueOf(ALEipUtils.getUserId(rundata)));
+          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
@@ -318,19 +320,16 @@ public class ScheduleUtils {
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
       Expression mapexp2 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          Integer.valueOf(userid));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp2);
       Expression mapexp3 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          Integer.valueOf(userid));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(userid));
       mapquery.andQualifier(mapexp3);
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
@@ -406,9 +405,8 @@ public class ScheduleUtils {
       if (isOwner) {
         // ユーザーID
         Expression exp2 =
-          ExpressionFactory.matchExp(
-            EipTSchedule.OWNER_ID_PROPERTY,
-            Integer.valueOf(ALEipUtils.getUserId(rundata)));
+          ExpressionFactory.matchExp(EipTSchedule.OWNER_ID_PROPERTY, Integer
+            .valueOf(ALEipUtils.getUserId(rundata)));
         query.andQualifier(exp2);
       }
 
@@ -427,20 +425,17 @@ public class ScheduleUtils {
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
       Expression mapexp21 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          ALEipUtils.getUserId(rundata));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, ALEipUtils
+          .getUserId(rundata));
       Expression mapexp22 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-            + "."
-            + EipTSchedule.CREATE_USER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(ALEipUtils
+          .getUserId(rundata)));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
 
       List<EipTScheduleMap> schedulemaps = mapquery.fetchList();
@@ -487,20 +482,16 @@ public class ScheduleUtils {
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
       Expression mapexp21 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          Integer.toString(userId));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .toString(userId));
       Expression mapexp22 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-            + "."
-            + EipTSchedule.CREATE_USER_ID_PROPERTY,
-          Integer.valueOf(userId));
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
       // 設備は除外する
       Expression exp3 =
@@ -558,11 +549,9 @@ public class ScheduleUtils {
       query.setQualifier(exp1);
 
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
-            + "."
-            + EipTScheduleMap.TYPE_PROPERTY,
-          type);
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
+          + EipTScheduleMap.TYPE_PROPERTY, type);
       query.andQualifier(exp2);
 
       List<EipTSchedule> schedules = query.fetchList();
@@ -625,11 +614,9 @@ public class ScheduleUtils {
 
       // ユーザのスケジュール
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
-            + "."
-            + EipTScheduleMap.TYPE_PROPERTY,
-          type);
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
+          + EipTScheduleMap.TYPE_PROPERTY, type);
       query.andQualifier(exp2);
 
       List<EipTSchedule> schedules = query.fetchList();
@@ -686,8 +673,9 @@ public class ScheduleUtils {
           HttpServletResponse response = rundata.getResponse();
           out = response.getOutputStream();
           BufferedWriter writer =
-            new BufferedWriter(
-              new OutputStreamWriter(out, ALEipConstants.DEF_CONTENT_ENCODING));
+            new BufferedWriter(new OutputStreamWriter(
+              out,
+              ALEipConstants.DEF_CONTENT_ENCODING));
           context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
           Template templete =
             Velocity.getTemplate("portlets/html/ajax-schedule-not-found.vm");
@@ -764,9 +752,8 @@ public class ScheduleUtils {
       query.setQualifier(exp1);
       // ユーザーID
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          Integer.valueOf(ALEipUtils.getUserId(rundata)));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .valueOf(ALEipUtils.getUserId(rundata)));
       query.andQualifier(exp2);
 
       // typeが"U"のとき抽出
@@ -1003,8 +990,8 @@ public class ScheduleUtils {
    * @return
    */
 
-  public static boolean isView(ALDateTimeField date, String ptn, Date startDate,
-      Date limitDate) {
+  public static boolean isView(ALDateTimeField date, String ptn,
+      Date startDate, Date limitDate) {
     int count = 0;
     boolean result = false;
     Calendar cal = Calendar.getInstance();
@@ -1056,7 +1043,7 @@ public class ScheduleUtils {
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
-          // 日
+        // 日
           case Calendar.SUNDAY:
             // case 1:
             result = ptn.charAt(1) != '0';
@@ -1184,6 +1171,14 @@ public class ScheduleUtils {
           break;
         case 1:
           // 日を１日遡る
+          // 月末処理用
+          if (ptn.substring(1, 3).equals("XX")) {
+            Calendar cal_dummy_2 = Calendar.getInstance();
+            cal_dummy_2.setTime(date.getValue());
+            cal_dummy_2.add(Calendar.MONTH, -1);
+            mday = cal_dummy_2.getActualMaximum(Calendar.DATE);
+          }
+
           cal_dummy.add(Calendar.DATE, -1);
           setDate(cal_dummy.getTime());
           mday_dummy = cal_dummy.get(Calendar.DATE);
@@ -1501,8 +1496,7 @@ public class ScheduleUtils {
    *          時間まで比較する場合，true．
    * @return 等しい場合，true．
    */
-  public static boolean equalsToDate(Date date1, Date date2,
-      boolean checkTime) {
+  public static boolean equalsToDate(Date date1, Date date2, boolean checkTime) {
     Calendar cal = Calendar.getInstance();
     cal.setTime(date1);
     int date1Year = cal.get(Calendar.YEAR);
@@ -1915,8 +1909,7 @@ public class ScheduleUtils {
       || "monthly".equals(tab_name)
       || "oneday-group".equals(tab_name)
       || "weekly-group".equals(tab_name)
-      || "list".equals(tab_name)
-      || "search".equals(tab_name));
+      || "list".equals(tab_name) || "search".equals(tab_name));
   }
 
   /**
@@ -1978,8 +1971,7 @@ public class ScheduleUtils {
    *          期間終了曜日
    * @return 選択範囲に入っている場合，true．
    */
-  public static boolean includeWeek(int selectedWeek, int startWeek,
-      int endWeek) {
+  public static boolean includeWeek(int selectedWeek, int startWeek, int endWeek) {
     if (startWeek <= endWeek) {
       if (startWeek <= selectedWeek && selectedWeek <= endWeek) {
         return true;
@@ -2116,15 +2108,15 @@ public class ScheduleUtils {
 
           if (dateStr.length() != FORMAT_DATE_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
           if (timeStr.length() != FORMAT_TIME_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
             continue;
           }
 
@@ -2135,8 +2127,8 @@ public class ScheduleUtils {
           sf.setValue(dateStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -2146,8 +2138,8 @@ public class ScheduleUtils {
           sf.setValue(timeStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
             continue;
           }
 
@@ -2160,8 +2152,8 @@ public class ScheduleUtils {
             try {
               date = sdf.parse(dateStr);
             } catch (Exception e) {
-              msgList.add(
-                ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+              msgList.add(ALLocalizationUtils
+                .getl10n("SCHEDULE_MESSAGE_NON_DAY"));
               continue;
             }
           } else {
@@ -2175,8 +2167,8 @@ public class ScheduleUtils {
             try {
               time = sdf2.parse(timeStr);
             } catch (Exception e) {
-              msgList.add(
-                ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_TIME"));
+              msgList.add(ALLocalizationUtils
+                .getl10n("SCHEDULE_MESSAGE_NON_TIME"));
               continue;
             }
           } else {
@@ -2210,8 +2202,8 @@ public class ScheduleUtils {
 
           if (dateStr.length() != FORMAT_DATE_LEN) {
             // 文字列の長さが正しくない場合
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -2222,8 +2214,8 @@ public class ScheduleUtils {
           sf.setValue(dateStr);
           sf.validate(tmpList);
           if (tmpList.size() != 0) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -2234,8 +2226,8 @@ public class ScheduleUtils {
           try {
             date = sdf.parse(dateStr);
           } catch (Exception e) {
-            msgList.add(
-              ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
+            msgList
+              .add(ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_NON_DAY"));
             continue;
           }
 
@@ -2423,8 +2415,8 @@ public class ScheduleUtils {
     }
 
     if (end_date == null) {
-      msgList.add(
-        ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_TYPE_RIGHT_END_DATE"));
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_TYPE_RIGHT_END_DATE"));
       end_date = start_date;
     }
 
@@ -2441,9 +2433,8 @@ public class ScheduleUtils {
         Calendar.MONTH,
         Integer.valueOf(start_date.getMonth()) - 1);
       tmp_end_date.set(Calendar.DATE, Integer.valueOf(start_date.getDay()));
-      tmp_end_date.set(
-        Calendar.HOUR_OF_DAY,
-        Integer.valueOf(end_date.getHour()));
+      tmp_end_date.set(Calendar.HOUR_OF_DAY, Integer
+        .valueOf(end_date.getHour()));
       tmp_end_date.set(Calendar.MINUTE, Integer.valueOf(end_date.getMinute()));
       tmp_end_date.set(Calendar.SECOND, 0);
       end_date.setValue(tmp_end_date.getTime());
@@ -2471,17 +2462,15 @@ public class ScheduleUtils {
     int startyear = startDate.get(Calendar.YEAR);
     if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
       // 携帯画面用条件
-      msgList.add(
-        ALLocalizationUtils.getl10nFormat(
-          "SCHEDULE_MESSAGE_SELECT_RIGHT_START_DATE",
-          YEAR_FIRST,
-          YEAR_END));
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_DATE",
+        YEAR_FIRST,
+        YEAR_END));
     }
     if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
-      msgList.add(
-        ALLocalizationUtils.getl10n(
-          "SCHEDULE_MESSAGE_SELECT_START_TIME_PER15"));
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_START_TIME_PER15"));
     }
 
     // 終了日時
@@ -2489,23 +2478,21 @@ public class ScheduleUtils {
     int endyear = endDate.get(Calendar.YEAR);
     if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
       // 携帯画面用条件
-      msgList.add(
-        ALLocalizationUtils.getl10nFormat(
-          "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
-          YEAR_FIRST,
-          YEAR_END));
+      msgList.add(ALLocalizationUtils.getl10nFormat(
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
+        YEAR_FIRST,
+        YEAR_END));
     }
     if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
-      msgList.add(
-        ALLocalizationUtils.getl10n("SCHEDULE_MESSAGE_SELECT_END_TIME_PER15"));
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_END_TIME_PER15"));
     }
 
     // 開始日時＆終了日時
     if (end_date.getValue().before(start_date.getValue())) {
-      msgList.add(
-        ALLocalizationUtils.getl10n(
-          "SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
+      msgList.add(ALLocalizationUtils
+        .getl10n("SCHEDULE_MESSAGE_SELECT_END_DATE_TO_START_DATE"));
     }
 
     if (is_repeat) {
@@ -2521,34 +2508,28 @@ public class ScheduleUtils {
             && week_6.getValue() == null) {
             switch (repeat_week.getValue()) {
               case "0":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_WEEKLY"));
                 break;
               case "1":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_1ST_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_1ST_WEEKLY"));
                 break;
               case "2":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_2ND_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_2ND_WEEKLY"));
                 break;
               case "3":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_3RD_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_3RD_WEEKLY"));
                 break;
               case "4":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_4TH_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_4TH_WEEKLY"));
                 break;
               case "5":
-                msgList.add(
-                  ALLocalizationUtils.getl10n(
-                    "SCHEDULE_MESSAGE_SELECT_5TH_WEEKLY"));
+                msgList.add(ALLocalizationUtils
+                  .getl10n("SCHEDULE_MESSAGE_SELECT_5TH_WEEKLY"));
                 break;
               default:
                 break;
@@ -2558,9 +2539,8 @@ public class ScheduleUtils {
           // 毎月の繰り返し
           if (month_day.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_EVERY_MONTHLY"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_MONTHLY"));
           } else {
             month_day.validate(msgList);
           }
@@ -2568,18 +2548,15 @@ public class ScheduleUtils {
           // 毎年の繰り返し
           if (year_month.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件（月が未入力）
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_MONTH"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_MONTH"));
           } else if (year_day.getValue() == 0 && isCellPhone) {
             // 携帯画面用条件（日が未入力）
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY"));
           } else if (!dayexist) {
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY_EXIST"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_EVERY_YEARLY_DAY_EXIST"));
           } else {
             year_month.validate(msgList);
             year_day.validate(msgList);
@@ -2593,9 +2570,8 @@ public class ScheduleUtils {
             false)
             && limit_start_date.getValue().getDate().after(
               limit_end_date.getValue().getDate())) {
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_REPEAT_END_DAY_TO_START_DAY"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_END_DAY_TO_START_DAY"));
           }
 
           if (isCellPhone) {
@@ -2604,21 +2580,19 @@ public class ScheduleUtils {
             limitStartDate.setTime(limit_start_date.getValue().getDate());
             int limitstartyear = limitStartDate.get(Calendar.YEAR);
             if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)) {
-              msgList.add(
-                ALLocalizationUtils.getl10nFormat(
-                  "SCHEDULE_MESSAGE_SELECT_START_DATE_IN_THIS_TERM",
-                  YEAR_FIRST,
-                  YEAR_END));
+              msgList.add(ALLocalizationUtils.getl10nFormat(
+                "SCHEDULE_MESSAGE_SELECT_START_DATE_IN_THIS_TERM",
+                YEAR_FIRST,
+                YEAR_END));
             }
             Calendar limitEndDate = Calendar.getInstance();
             limitEndDate.setTime(limit_end_date.getValue().getDate());
             int limitendyear = limitEndDate.get(Calendar.YEAR);
             if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)) {
-              msgList.add(
-                ALLocalizationUtils.getl10nFormat(
-                  "SCHEDULE_MESSAGE_SELECT_END_DATE_IN_THIS_TERM",
-                  YEAR_FIRST,
-                  YEAR_END));
+              msgList.add(ALLocalizationUtils.getl10nFormat(
+                "SCHEDULE_MESSAGE_SELECT_END_DATE_IN_THIS_TERM",
+                YEAR_FIRST,
+                YEAR_END));
             }
           }
 
@@ -2638,17 +2612,14 @@ public class ScheduleUtils {
           } else if ("W".equals(repeat_type.getValue())) {
             if ("0".equals(repeat_week.getValue())) {
               repeat_pattern =
-                new StringBuffer()
-                  .append('W')
-                  .append(week_0.getValue() != null ? 1 : 0)
-                  .append(week_1.getValue() != null ? 1 : 0)
-                  .append(week_2.getValue() != null ? 1 : 0)
-                  .append(week_3.getValue() != null ? 1 : 0)
-                  .append(week_4.getValue() != null ? 1 : 0)
-                  .append(week_5.getValue() != null ? 1 : 0)
-                  .append(week_6.getValue() != null ? 1 : 0)
-                  .append(lim)
-                  .toString();
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
               date_count =
                 (week_0.getValue() != null ? 1 : 0)
                   + (week_1.getValue() != null ? 1 : 0)
@@ -2659,18 +2630,15 @@ public class ScheduleUtils {
                   + (week_6.getValue() != null ? 1 : 0);
             } else {
               repeat_pattern =
-                new StringBuffer()
-                  .append('W')
-                  .append(week_0.getValue() != null ? 1 : 0)
-                  .append(week_1.getValue() != null ? 1 : 0)
-                  .append(week_2.getValue() != null ? 1 : 0)
-                  .append(week_3.getValue() != null ? 1 : 0)
-                  .append(week_4.getValue() != null ? 1 : 0)
-                  .append(week_5.getValue() != null ? 1 : 0)
-                  .append(week_6.getValue() != null ? 1 : 0)
-                  .append(repeat_week.getValue().charAt(0))
-                  .append(lim)
-                  .toString();
+                new StringBuffer().append('W').append(
+                  week_0.getValue() != null ? 1 : 0).append(
+                  week_1.getValue() != null ? 1 : 0).append(
+                  week_2.getValue() != null ? 1 : 0).append(
+                  week_3.getValue() != null ? 1 : 0).append(
+                  week_4.getValue() != null ? 1 : 0).append(
+                  week_5.getValue() != null ? 1 : 0).append(
+                  week_6.getValue() != null ? 1 : 0).append(
+                  repeat_week.getValue().charAt(0)).append(lim).toString();
               date_count =
                 (week_0.getValue() != null ? 1 : 0)
                   + (week_1.getValue() != null ? 1 : 0)
@@ -2691,45 +2659,35 @@ public class ScheduleUtils {
                   .toString();
             } else {
               repeat_pattern =
-                new StringBuffer()
-                  .append('M')
-                  .append(format.format(month_day.getValue()))
-                  .append(lim)
-                  .toString();
+                new StringBuffer().append('M').append(
+                  format.format(month_day.getValue())).append(lim).toString();
             }
             date_count = 1;
           } else {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
-              new StringBuffer()
-                .append('Y')
-                .append(format.format(year_month.getValue()))
-                .append(format.format(year_day.getValue()))
-                .append(lim)
-                .toString();
+              new StringBuffer().append('Y').append(
+                format.format(year_month.getValue())).append(
+                format.format(year_day.getValue())).append(lim).toString();
             date_count = 1;
           }
           // 開始時刻(期間初日)
           Calendar sDate = new GregorianCalendar();
           sDate.set(Calendar.YEAR, Integer.valueOf(limit_start_date.getYear()));
-          sDate.set(
-            Calendar.MONTH,
-            Integer.valueOf(limit_start_date.getMonth()) - 1);
+          sDate.set(Calendar.MONTH, Integer
+            .valueOf(limit_start_date.getMonth()) - 1);
           sDate.set(Calendar.DATE, Integer.valueOf(limit_start_date.getDay()));
           sDate.set(Calendar.HOUR_OF_DAY, 0);
           sDate.set(Calendar.MINUTE, 0);
           sDate.set(Calendar.SECOND, 0);
           // 繰り返し最終日の終了時刻
           Calendar finalDate = new GregorianCalendar();
-          finalDate.set(
-            Calendar.YEAR,
-            Integer.valueOf(limit_end_date.getYear()));
-          finalDate.set(
-            Calendar.MONTH,
-            Integer.valueOf(limit_end_date.getMonth()) - 1);
-          finalDate.set(
-            Calendar.DATE,
-            Integer.valueOf(limit_end_date.getDay()));
+          finalDate.set(Calendar.YEAR, Integer
+            .valueOf(limit_end_date.getYear()));
+          finalDate.set(Calendar.MONTH, Integer.valueOf(limit_end_date
+            .getMonth()) - 1);
+          finalDate
+            .set(Calendar.DATE, Integer.valueOf(limit_end_date.getDay()));
           finalDate.set(Calendar.HOUR_OF_DAY, 23);
           finalDate.set(Calendar.MINUTE, 59);
           finalDate.set(Calendar.SECOND, 59);
@@ -2744,19 +2702,18 @@ public class ScheduleUtils {
             sDate.add(Calendar.DATE, 1);
           }
           if (countAvailableDate < date_count) {
-            msgList.add(
-              ALLocalizationUtils.getl10n(
-                "SCHEDULE_MESSAGE_SELECT_REPEAT_SPAN_IN_THIS_TERM"));
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_SPAN_IN_THIS_TERM"));
           }
         }
 
       } catch (NumberFormatException nfe) {
-        logger.error(
-          "[ScheduleFormData] NumberFormatException: Limit Date is wrong.");
+        logger
+          .error("[ScheduleFormData] NumberFormatException: Limit Date is wrong.");
         throw new ALPageNotFoundException();
       } catch (ALIllegalDateException ad) {
-        logger.error(
-          "[ScheduleFormData] ALIllegalDateException: Limit Date is wrong.");
+        logger
+          .error("[ScheduleFormData] ALIllegalDateException: Limit Date is wrong.");
         throw new ALPageNotFoundException();
       }
     }
@@ -2828,9 +2785,8 @@ public class ScheduleUtils {
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     Expression exp1 =
-      ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY,
-        Integer.valueOf(user_id));
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(user_id));
     query.setQualifier(exp1);
     Expression exp2 =
       ExpressionFactory.greaterOrEqualExp(
@@ -2840,18 +2796,14 @@ public class ScheduleUtils {
         start_date);
     query.andQualifier(exp2);
     Expression exp3 =
-      ExpressionFactory.lessOrEqualExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.START_DATE_PROPERTY,
-        end_date);
+      ExpressionFactory.lessOrEqualExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.START_DATE_PROPERTY, end_date);
     query.andQualifier(exp3);
     Expression exp4 =
-      ExpressionFactory.matchExp(
-        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-        "S");
+      ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+        + "."
+        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
     query.andQualifier(exp4);
 
     if (update_id != null) {
@@ -2946,8 +2898,8 @@ public class ScheduleUtils {
       // SQLの作成
       StringBuffer statement = new StringBuffer();
       statement.append("SELECT DISTINCT ");
-      statement.append(
-        "  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
+      statement
+        .append("  B.USER_ID, B.LOGIN_NAME, B.FIRST_NAME, B.LAST_NAME, D.POSITION ");
       statement.append("FROM turbine_user_group_role as A ");
       statement.append("LEFT JOIN turbine_user as B ");
       statement.append("  on A.USER_ID = B.USER_ID ");
@@ -3052,9 +3004,9 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   *
+   * 
    * @param weekSpanConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日
-   *
+   * 
    * @param index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
   public static void addTerm(List<AjaxTermScheduleWeekContainer> weekConList,
@@ -3093,7 +3045,7 @@ public class ScheduleUtils {
 
   /*
    * 同一期間内に複数の 期間スケジュール を追加する. 第一引数の List を排他制御しないで処理するので注意.
-   *
+   * 
    * @param weekConList 複数の期間スケジュールを保持するリスト @param viewStartDate 表示開始の年月日 @param
    * index 期間スケジュールの追加位置 @param rd 期間スケジュール
    */
@@ -3145,8 +3097,8 @@ public class ScheduleUtils {
     try {
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(
-            ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
       if (aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
@@ -3164,8 +3116,8 @@ public class ScheduleUtils {
     try {
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(
-            ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
       if (aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
@@ -3183,8 +3135,8 @@ public class ScheduleUtils {
     try {
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(
-            ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
       if (aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
@@ -3202,8 +3154,8 @@ public class ScheduleUtils {
     try {
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(
-            ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
       if (aclhandler.hasAuthority(
         ALEipUtils.getUserId(rundata),
@@ -3224,9 +3176,8 @@ public class ScheduleUtils {
       return ALEipUtils.getUserId(rundata);
     }
     Expression exp =
-      ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN,
-        Integer.valueOf(scheduleId));
+      ExpressionFactory.matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer
+        .valueOf(scheduleId));
     List<EipTSchedule> list =
       Database.query(EipTSchedule.class, exp).fetchList();
     if (list.size() == 0) {
@@ -3252,9 +3203,8 @@ public class ScheduleUtils {
         EipTScheduleMap.SCHEDULE_ID_PROPERTY,
         scheduleId);
     Expression exp12 =
-      ExpressionFactory.matchExp(
-        EipTScheduleMap.USER_ID_PROPERTY,
-        Integer.valueOf(userId));
+      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+        .valueOf(userId));
     Expression exp3 =
       ExpressionFactory.matchExp(
         EipTScheduleMap.TYPE_PROPERTY,
@@ -3306,8 +3256,9 @@ public class ScheduleUtils {
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
       user =
-        (ALBaseUser) JetspeedSecurity.getUser(
-          new UserIdPrincipal(loginUser.getUserId().toString()));
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
       date_detail = getMsgDate(schedule);
     } catch (Exception e) {
       return "";
@@ -3323,17 +3274,14 @@ public class ScheduleUtils {
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
       if ("new".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
       } else if ("edit".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
       } else if ("delete".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       } else {
         throw new IllegalArgumentException();
       }
@@ -3356,9 +3304,8 @@ public class ScheduleUtils {
         int size = memberList.size();
         int i;
         StringBuffer body = new StringBuffer("");
-        context.put(
-          "menbers",
-          ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS"));
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
         for (i = 0; i < size; i++) {
           if (i != 0) {
             body.append(", ");
@@ -3370,20 +3317,17 @@ public class ScheduleUtils {
       }
 
       context.put("Alias", ALOrgUtilsService.getAlias());
-      context.put(
-        "accessTo",
-        ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
       if (enableAsp) {
         context.put("globalUrl1", ALMailUtils.getGlobalurl());
       } else {
-        context.put(
-          "outsideOffice",
-          ALLocalizationUtils.getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+        context.put("outsideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
         context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put(
-          "insideOffice",
-          ALLocalizationUtils.getl10n("SCHEDULE_INSIDE_OFFICE"));
+        context.put("insideOffice", ALLocalizationUtils
+          .getl10n("SCHEDULE_INSIDE_OFFICE"));
         context.put("globalUrl3", ALMailUtils.getLocalurl());
       }
 
@@ -3423,8 +3367,9 @@ public class ScheduleUtils {
     try {
       loginUser = ALEipUtils.getALEipUser(rundata);
       user =
-        (ALBaseUser) JetspeedSecurity.getUser(
-          new UserIdPrincipal(loginUser.getUserId().toString()));
+        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
+          .getUserId()
+          .toString()));
       date_detail = getMsgDate(schedule);
     } catch (Exception e) {
       return "";
@@ -3440,17 +3385,14 @@ public class ScheduleUtils {
       context.put("userName", loginUser.getAliasName().toString());
       context.put("mailAddress", user.getEmail());
       if ("new".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
       } else if ("edit".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
       } else if ("delete".equals(mode)) {
-        context.put(
-          "addScheduleMSG",
-          ALLocalizationUtils.getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+        context.put("addScheduleMSG", ALLocalizationUtils
+          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
       } else {
         throw new IllegalArgumentException();
       }
@@ -3463,9 +3405,8 @@ public class ScheduleUtils {
         int size = memberList.size();
         int i;
         StringBuffer body = new StringBuffer("");
-        context.put(
-          "menbers",
-          ALLocalizationUtils.getl10n("SCHEDULE_SUB_MENBERS"));
+        context.put("menbers", ALLocalizationUtils
+          .getl10n("SCHEDULE_SUB_MENBERS"));
         for (i = 0; i < size; i++) {
           if (i != 0) {
             body.append(", ");
@@ -3485,15 +3426,12 @@ public class ScheduleUtils {
       }
 
       context.put("Alias", ALOrgUtilsService.getAlias());
-      context.put(
-        "accessTo",
-        ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
+      context
+        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
-      context.put(
-        "globalUrl1",
-        ALMailUtils.getGlobalurl()
-          + "?key="
-          + ALCellularUtils.getCellularKey(destUser));
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
 
       out = new StringWriter();
       service.handleRequest(context, "mail/createSchedule.vm", out);
@@ -3543,39 +3481,29 @@ public class ScheduleUtils {
       count = 1;
       // 毎週
     } else if (ptn.charAt(0) == 'W') {
-      result.append(
-        new StringBuffer()
-          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK"))
-          .append(
-            ptn.charAt(1) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
-              : "")
-          .append(
-            ptn.charAt(2) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
-              : "")
-          .append(
-            ptn.charAt(3) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
-              : "")
-          .append(
-            ptn.charAt(4) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY")
-              : "")
-          .append(
-            ptn.charAt(5) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
-              : "")
-          .append(
-            ptn.charAt(6) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
-              : "")
-          .append(
-            ptn.charAt(7) != '0'
-              ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
-              : "")
-          .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
-          .toString());
+      result.append(new StringBuffer().append(
+        ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK")).append(
+        ptn.charAt(1) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
+          : "").append(
+        ptn.charAt(2) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
+          : "").append(
+        ptn.charAt(3) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
+          : "").append(
+        ptn.charAt(4) != '0' ? ALLocalizationUtils
+          .getl10n("SCHEDULE_WEDNESDAY") : "").append(
+        ptn.charAt(5) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
+          : "").append(
+        ptn.charAt(6) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
+          : "").append(
+        ptn.charAt(7) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
+          : "").append(
+        ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK")).toString());
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
@@ -3652,8 +3580,7 @@ public class ScheduleUtils {
   }
 
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
-      List<Integer> facilityIdList, Integer _old_scheduleid,
-      Date _old_viewDate) {
+      List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
     GregorianCalendar cald = new GregorianCalendar();
 
@@ -3823,11 +3750,9 @@ public class ScheduleUtils {
 
         { // １日スケジュールの検索
           Expression exp100 =
-            ExpressionFactory.matchExp(
-              EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                + "."
-                + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-              "N");
+            ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
+              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
 
           try {
             if (!unlimited_repeat) {
@@ -3856,11 +3781,9 @@ public class ScheduleUtils {
 
         { // 期間スケジュールの検索
           Expression exp200 =
-            ExpressionFactory.matchExp(
-              EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                + "."
-                + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-              "S");
+            ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+              + "."
+              + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
 
           try {
             if (!unlimited_repeat) {
@@ -3904,11 +3827,9 @@ public class ScheduleUtils {
 
           { // "D".equals(repeat_type.getValue())
             Expression dexp01 =
-              ExpressionFactory.likeExp(
-                EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-                  + "."
-                  + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-                "D_");
+              ExpressionFactory.likeExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+                + "."
+                + EipTSchedule.REPEAT_PATTERN_PROPERTY, "D_");
             rdexp = dexp01;
           }
 
@@ -4062,7 +3983,8 @@ public class ScheduleUtils {
                   "W______1__");
               wexps2.add(wexp2);
             }
-            if (repeat_week != null && repeat_week.equals("1")
+            if (repeat_week != null
+              && repeat_week.equals("1")
               || day_of_week_in_month_1) {
               wnexp =
                 ExpressionFactory.likeExp(
@@ -4072,7 +3994,8 @@ public class ScheduleUtils {
                   "W_______1_");
               wnexp2.add(wnexp);
             }
-            if (repeat_week != null && repeat_week.equals("2")
+            if (repeat_week != null
+              && repeat_week.equals("2")
               || day_of_week_in_month_2) {
               wnexp =
                 ExpressionFactory.likeExp(
@@ -4082,7 +4005,8 @@ public class ScheduleUtils {
                   "W_______2_");
               wnexp2.add(wnexp);
             }
-            if (repeat_week != null && repeat_week.equals("3")
+            if (repeat_week != null
+              && repeat_week.equals("3")
               || day_of_week_in_month_3) {
               wnexp =
                 ExpressionFactory.likeExp(
@@ -4092,7 +4016,8 @@ public class ScheduleUtils {
                   "W_______3_");
               wnexp2.add(wnexp);
             }
-            if (repeat_week != null && repeat_week.equals("4")
+            if (repeat_week != null
+              && repeat_week.equals("4")
               || day_of_week_in_month_4) {
               wnexp =
                 ExpressionFactory.likeExp(
@@ -4102,7 +4027,8 @@ public class ScheduleUtils {
                   "W_______4_");
               wnexp2.add(wnexp);
             }
-            if (repeat_week != null && repeat_week.equals("5")
+            if (repeat_week != null
+              && repeat_week.equals("5")
               || day_of_week_in_month_5) {
               wnexp =
                 ExpressionFactory.likeExp(
@@ -4251,8 +4177,9 @@ public class ScheduleUtils {
                 cal.add(Calendar.MINUTE, -1);
                 dbEndDate = cal.getTime();
 
-                if ((end_date.after(dbStartDate)
-                  && start_date.before(dbEndDate)) || unlimited_repeat) {
+                if ((end_date.after(dbStartDate) && start_date
+                  .before(dbEndDate))
+                  || unlimited_repeat) {
                   containtsRs = true;
                 }
               } catch (Exception e) {
@@ -4262,24 +4189,27 @@ public class ScheduleUtils {
               if ("D".equals(repeat_type) || "N".equals(repeat_type)) { // 毎日 or
                 // 単体
                 try {
-                  if ((dbStartDate.before(end_date)
-                    && dbEndDate.after(start_date)) || unlimited_repeat) {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
                     containtsRs = true;
                   }
                 } catch (Exception e) {
                   containtsRs = false;
                 }
               } else {
-                if ((dbStartDate.before(end_date)
-                  && dbEndDate.after(start_date)) || unlimited_repeat) {
+                if ((dbStartDate.before(end_date) && dbEndDate
+                  .after(start_date))
+                  || unlimited_repeat) {
                   containtsRs = true;
                 }
               }
             } else if (ptn.charAt(0) == 'D') {// 毎日
               if (ptn.charAt(1) == 'L') {
                 try {
-                  if ((dbStartDate.before(end_date)
-                    && dbEndDate.after(start_date)) || unlimited_repeat) {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
                     containtsRs = true;
                   }
                 } catch (Exception e) {
@@ -4292,8 +4222,9 @@ public class ScheduleUtils {
               if (ptn.length() == 9) {
                 if (ptn.charAt(8) == 'L') {
                   try {
-                    if ((dbStartDate.before(end_date)
-                      && dbEndDate.after(start_date)) || unlimited_repeat) {
+                    if ((dbStartDate.before(end_date) && dbEndDate
+                      .after(start_date))
+                      || unlimited_repeat) {
                       containtsRs = true;
                     }
                   } catch (Exception e) {
@@ -4305,8 +4236,9 @@ public class ScheduleUtils {
               } else if (ptn.length() == 10) {
                 if (ptn.charAt(9) == 'L') {
                   try {
-                    if ((dbStartDate.before(end_date)
-                      && dbEndDate.after(start_date)) || unlimited_repeat) {
+                    if ((dbStartDate.before(end_date) && dbEndDate
+                      .after(start_date))
+                      || unlimited_repeat) {
                       containtsRs = true;
                     }
                   } catch (Exception e) {
@@ -4319,8 +4251,9 @@ public class ScheduleUtils {
             } else if (ptn.charAt(0) == 'M') {
               if (ptn.charAt(3) == 'L') {
                 try {
-                  if ((dbStartDate.before(end_date)
-                    && dbEndDate.after(start_date)) || unlimited_repeat) {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
                     containtsRs = true;
                   }
                 } catch (Exception e) {
@@ -4332,8 +4265,9 @@ public class ScheduleUtils {
             } else if (ptn.charAt(0) == 'Y') {
               if (ptn.charAt(5) == 'L') {
                 try {
-                  if ((dbStartDate.before(end_date)
-                    && dbEndDate.after(start_date)) || unlimited_repeat) {
+                  if ((dbStartDate.before(end_date) && dbEndDate
+                    .after(start_date))
+                    || unlimited_repeat) {
                     containtsRs = true;
                   }
                 } catch (Exception e) {
@@ -4433,11 +4367,9 @@ public class ScheduleUtils {
                           EipTSchedule.START_DATE_PROPERTY,
                           ddate);
                       temp =
-                        Database
-                          .query(
-                            EipTSchedule.class,
-                            dexp1.andExp(dexp2).andExp(dexp3))
-                          .fetchList();
+                        Database.query(
+                          EipTSchedule.class,
+                          dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                       if (temp == null || temp.size() <= 0) {
                         existFacility = true;
                         break;
@@ -4456,11 +4388,9 @@ public class ScheduleUtils {
                               EipTSchedule.START_DATE_PROPERTY,
                               ddate);
                           temp =
-                            Database
-                              .query(
-                                EipTSchedule.class,
-                                dexp1.andExp(dexp2).andExp(dexp3))
-                              .fetchList();
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -4482,11 +4412,9 @@ public class ScheduleUtils {
                             EipTSchedule.START_DATE_PROPERTY,
                             ddate);
                         temp =
-                          Database
-                            .query(
-                              EipTSchedule.class,
-                              dexp1.andExp(dexp2).andExp(dexp3))
-                            .fetchList();
+                          Database.query(
+                            EipTSchedule.class,
+                            dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                         if (temp == null || temp.size() <= 0) {
                           existFacility = true;
                           break;
@@ -4520,11 +4448,9 @@ public class ScheduleUtils {
                               EipTSchedule.START_DATE_PROPERTY,
                               ddate);
                           temp =
-                            Database
-                              .query(
-                                EipTSchedule.class,
-                                dexp1.andExp(dexp2).andExp(dexp3))
-                              .fetchList();// SQL発行
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();// SQL発行
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;// trueなら引っかかる
                             break;
@@ -4555,8 +4481,8 @@ public class ScheduleUtils {
                     while (tmp_date.before(ddate)) {
                       cald.add(Calendar.MONTH, 1);
                       /* 月によって日にちがないときのための処理 */
-                      while (month_day > cald.getActualMaximum(
-                        Calendar.DAY_OF_MONTH)) {
+                      while (month_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
                         cald.add(Calendar.MONTH, 1);
                         cald.set(Calendar.DAY_OF_MONTH, month_day);
                         if (tmp_date.before(tmp_date)) {
@@ -4575,11 +4501,9 @@ public class ScheduleUtils {
                               EipTSchedule.START_DATE_PROPERTY,
                               ddate);
                           temp =
-                            Database
-                              .query(
-                                EipTSchedule.class,
-                                dexp1.andExp(dexp2).andExp(dexp3))
-                              .fetchList();
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -4593,8 +4517,8 @@ public class ScheduleUtils {
                       }
                       cald.add(Calendar.MONTH, 1);
                       /* 月によって日にちがないときのための処理 */
-                      while (month_day > cald.getActualMaximum(
-                        Calendar.DAY_OF_MONTH)) {
+                      while (month_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
                         cald.add(Calendar.MONTH, 1);
                         cald.set(Calendar.DAY_OF_MONTH, month_day);
                         if (!ddate.after(_end_date)) {
@@ -4621,8 +4545,8 @@ public class ScheduleUtils {
                     while (tmp_date.before(ddate)) {
                       cald.add(Calendar.MONTH, 1);
                       /* 月によって日にちがないときのための処理 */
-                      while (year_day > cald.getActualMaximum(
-                        Calendar.DAY_OF_MONTH)) {
+                      while (year_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
                         cald.add(Calendar.MONTH, 1);
                         cald.set(Calendar.DAY_OF_MONTH, year_day);
                         if (tmp_date.before(tmp_date)) {
@@ -4641,11 +4565,9 @@ public class ScheduleUtils {
                               EipTSchedule.START_DATE_PROPERTY,
                               ddate);
                           temp =
-                            Database
-                              .query(
-                                EipTSchedule.class,
-                                dexp1.andExp(dexp2).andExp(dexp3))
-                              .fetchList();
+                            Database.query(
+                              EipTSchedule.class,
+                              dexp1.andExp(dexp2).andExp(dexp3)).fetchList();
                           if (temp == null || temp.size() <= 0) {
                             existFacility = true;
                             break;
@@ -4658,8 +4580,8 @@ public class ScheduleUtils {
                       }
                       cald.add(Calendar.MONTH, 1);
                       /* 月によって日にちがないときのための処理 */
-                      while (year_day > cald.getActualMaximum(
-                        Calendar.DAY_OF_MONTH)) {
+                      while (year_day > cald
+                        .getActualMaximum(Calendar.DAY_OF_MONTH)) {
                         cald.add(Calendar.MONTH, 1);
                         cald.set(Calendar.DAY_OF_MONTH, year_day);
                         if (!ddate.after(_end_date)) {
@@ -4748,8 +4670,7 @@ public class ScheduleUtils {
    * @param context
    * @return
    */
-  public static boolean hasAuthorityForOtherSchedule(RunData rundata,
-      int type) {
+  public static boolean hasAuthorityForOtherSchedule(RunData rundata, int type) {
     boolean acl_delete_other = false;
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -4848,12 +4769,12 @@ public class ScheduleUtils {
     if (isDetail) {
       select.append(" t4.note,");
     }
-    select.append(
-      " (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id)) AND (t0.type = 'U')) AS is_member,");
-    select.append(
-      " (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
-    select.append(
-      " (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = t4.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
+    select
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t0 WHERE (t0.schedule_id = t4.schedule_id) AND (t0.user_id = #bind($user_id)) AND (t0.type = 'U')) AS is_member,");
+    select
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t1 WHERE (t1.schedule_id = t4.schedule_id) AND (t1.status <> 'R') AND (t1.type = 'F')) AS f_count,");
+    select
+      .append(" (SELECT COUNT(*) FROM eip_t_schedule_map t2 WHERE (t2.schedule_id = t4.schedule_id) AND (t2.status <> 'R') AND (t2.type <> 'F')) AS u_count");
 
     StringBuilder count = new StringBuilder();
     count.append("select count(t4.schedule_id) AS c ");
@@ -4864,8 +4785,8 @@ public class ScheduleUtils {
       body.append(" FROM eip_t_schedule t4 ");
       body.append(" WHERE ");
       body.append(" EXISTS ( ");
-      body.append(
-        " SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
+      body
+        .append(" SELECT NULL FROM eip_t_schedule_map t3 WHERE t3.schedule_id = t4.schedule_id AND t3.status NOT IN('D', 'R') ");
       if (!auth) {
         body.append(" AND t3.user_id = #bind($user_id) AND t3.type = 'U' ");
       }
@@ -4900,13 +4821,13 @@ public class ScheduleUtils {
       if (keyword != null && keyword.length() > 0) {
         hasKeyword = true;
         body.append(" AND (");
-        body.append(
-          " t4.name LIKE #bind($keyword) OR t4.note LIKE #bind($keyword) OR t4.place LIKE #bind($keyword) ");
+        body
+          .append(" t4.name LIKE #bind($keyword) OR t4.note LIKE #bind($keyword) OR t4.place LIKE #bind($keyword) ");
         body.append(" ) ");
 
       }
-      body.append(
-        " AND ( t4.public_flag = 'O' OR  ( t3.type = 'U' AND t3.user_id = #bind($user_id) ) OR  (t4.owner_id = #bind($user_id)) ) ");
+      body
+        .append(" AND ( t4.public_flag = 'O' OR  ( t3.type = 'U' AND t3.user_id = #bind($user_id) ) OR  (t4.owner_id = #bind($user_id)) ) ");
       body.append(" ) ");
     } else {
       body.append(" FROM eip_t_schedule_map t3 ");
@@ -4948,12 +4869,12 @@ public class ScheduleUtils {
         body.append(" AND ( ");
         body.append(" ( ");
         body.append(" t4.start_date <= '");
-        body.append(
-          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
+        body
+          .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
         body.append("' ");
         body.append(" AND t4.end_date >= '");
-        body.append(
-          new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewStart));
+        body.append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+          .format(viewStart));
         body.append("' ");
         body.append(" ) ");
         body.append(" OR  t4.repeat_pattern NOT IN ('N', 'S') ");
@@ -4963,8 +4884,8 @@ public class ScheduleUtils {
 
     StringBuilder last = new StringBuilder();
 
-    last.append(
-      " ORDER BY t4.start_date DESC, t4.end_date DESC, t4.update_date DESC ");
+    last
+      .append(" ORDER BY t4.start_date DESC, t4.end_date DESC, t4.update_date DESC ");
     if (!isSearch) {
       last.append(" , t3.type DESC, t3.user_id ");
     }
@@ -5003,11 +4924,11 @@ public class ScheduleUtils {
     }
 
     SQLTemplate<VEipTScheduleList> query =
-      Database
-        .sql(
-          VEipTScheduleList.class,
-          select.toString() + body.toString() + last.toString())
-        .param("user_id", Integer.valueOf(userId));
+      Database.sql(
+        VEipTScheduleList.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "user_id",
+        Integer.valueOf(userId));
     if (hasKeyword) {
       query.param("keyword", "%" + keyword + "%");
     }
@@ -5041,10 +4962,8 @@ public class ScheduleUtils {
     try {
       if (recipients != null && recipients.size() > 0) {
         ALActivity RecentActivity =
-          ALActivity.getRecentActivity(
-            "Schedule",
-            schedule.getScheduleId(),
-            1f);
+          ALActivity
+            .getRecentActivity("Schedule", schedule.getScheduleId(), 1f);
         boolean isDeletePrev =
           RecentActivity != null && RecentActivity.isReplace(loginName);
         String message = "";
@@ -5059,11 +4978,11 @@ public class ScheduleUtils {
         }
 
         String title =
-          new StringBuilder(
-            ALLocalizationUtils.getl10n("SCHEDULE_SCHEDULE_BRACKET"))
-              .append(schedule.getName())
-              .append(message)
-              .toString();
+          new StringBuilder(ALLocalizationUtils
+            .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+            .append(schedule.getName())
+            .append(message)
+            .toString();
         String portletParams =
           new StringBuilder("?template=ScheduleDetailScreen")
             .append("&entityid=")
@@ -5072,16 +4991,15 @@ public class ScheduleUtils {
             .append(
               ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
             .toString();
-        ALActivityService.create(
-          new ALActivityPutRequest()
-            .withAppId("Schedule")
-            .withUserId(userid)
-            .withLoginName(loginName)
-            .withPortletParams(portletParams)
-            .withRecipients(recipients)
-            .withTitle(title)
-            .withPriority(1f)
-            .withExternalId(String.valueOf(schedule.getScheduleId())));
+        ALActivityService.create(new ALActivityPutRequest()
+          .withAppId("Schedule")
+          .withUserId(userid)
+          .withLoginName(loginName)
+          .withPortletParams(portletParams)
+          .withRecipients(recipients)
+          .withTitle(title)
+          .withPriority(1f)
+          .withExternalId(String.valueOf(schedule.getScheduleId())));
 
         if (isDeletePrev) {
           RecentActivity.delete();
@@ -5111,11 +5029,11 @@ public class ScheduleUtils {
         throw new IllegalArgumentException();
       }
       String title =
-        new StringBuilder(
-          ALLocalizationUtils.getl10n("SCHEDULE_SCHEDULE_BRACKET"))
-            .append(schedule.getName())
-            .append(message)
-            .toString();
+        new StringBuilder(ALLocalizationUtils
+          .getl10n("SCHEDULE_SCHEDULE_BRACKET"))
+          .append(schedule.getName())
+          .append(message)
+          .toString();
       String portletParams =
         new StringBuilder("?template=ScheduleDetailScreen")
           .append("&entityid=")
@@ -5124,15 +5042,14 @@ public class ScheduleUtils {
           .append(
             ALDateUtil.format(schedule.getStartDate(), "yyyy-MM-dd-00-00"))
           .toString();
-      ALActivityService.create(
-        new ALActivityPutRequest()
-          .withAppId("Schedule")
-          .withUserId(userid)
-          .withLoginName(loginName)
-          .withPortletParams(portletParams)
-          .withTitle(title)
-          .withPriority(0f)
-          .withExternalId(String.valueOf(schedule.getScheduleId())));
+      ALActivityService.create(new ALActivityPutRequest()
+        .withAppId("Schedule")
+        .withUserId(userid)
+        .withLoginName(loginName)
+        .withPortletParams(portletParams)
+        .withTitle(title)
+        .withPriority(0f)
+        .withExternalId(String.valueOf(schedule.getScheduleId())));
 
       if (isDeletePrev) {
         RecentActivity.delete();
@@ -5187,10 +5104,8 @@ public class ScheduleUtils {
     }
 
     List<EipMFacility> aList =
-      Database
-        .query(EipMFacility.class)
-        .orderAscending(EipMFacility.SORT_PROPERTY)
-        .fetchList();
+      Database.query(EipMFacility.class).orderAscending(
+        EipMFacility.SORT_PROPERTY).fetchList();
     for (EipMFacility record : aList) {
       user = new UserFacilityLiteBean();
       user.initField();
@@ -5224,11 +5139,11 @@ public class ScheduleUtils {
    * @param uid
    * @return
    */
-  public static ArrayList<FileuploadLiteBean> getFileuploadList(
-      RunData rundata) {
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
     String[] fileids =
-      rundata.getParameters().getStrings(
-        FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
     if (fileids == null) {
       return null;
     }
@@ -5278,15 +5193,13 @@ public class ScheduleUtils {
           BufferedReader reader = null;
           try {
             reader =
-              new BufferedReader(
-                new InputStreamReader(
-                  ALStorageService.getFile(
-                    FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
-                    ALEipUtils.getUserId(rundata)
-                      + ALStorageService.separator()
-                      + folderName,
-                    fileid + FileuploadUtils.EXT_FILENAME),
-                  FILE_ENCODING));
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getFile(
+                  FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+                  ALEipUtils.getUserId(rundata)
+                    + ALStorageService.separator()
+                    + folderName,
+                  fileid + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
             String line = reader.readLine();
             if (line == null || line.length() <= 0) {
               continue;
@@ -5348,9 +5261,10 @@ public class ScheduleUtils {
     return fileNameList;
   }
 
-  public static boolean insertFileDataDelegate(RunData rundata, Context context,
-      EipTSchedule schedule, List<FileuploadLiteBean> fileuploadList,
-      String folderName, List<String> msgList) {
+  public static boolean insertFileDataDelegate(RunData rundata,
+      Context context, EipTSchedule schedule,
+      List<FileuploadLiteBean> fileuploadList, String folderName,
+      List<String> msgList) {
     if (fileuploadList == null || fileuploadList.size() <= 0) {
       fileuploadList = new ArrayList<FileuploadLiteBean>();
     }
@@ -5367,10 +5281,9 @@ public class ScheduleUtils {
 
     SelectQuery<EipTScheduleFile> dbquery =
       Database.query(EipTScheduleFile.class);
-    dbquery.andQualifier(
-      ExpressionFactory.matchDbExp(
-        EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
-        schedule.getScheduleId()));
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
     List<EipTScheduleFile> existsFiles = dbquery.fetchList();
     List<EipTScheduleFile> delFiles = new ArrayList<EipTScheduleFile>();
     for (EipTScheduleFile file : existsFiles) {
@@ -5437,26 +5350,22 @@ public class ScheduleUtils {
 
         if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
           // ファイルの作成
-          ALStorageService.createNewFile(
-            new ByteArrayInputStream(shrinkImageSet.getFixImage()),
-            FOLDER_FILEDIR_SCHEDULE
-              + ALStorageService.separator()
-              + Database.getDomainName()
-              + ALStorageService.separator()
-              + CATEGORY_KEY
-              + ALStorageService.separator()
-              + uid
-              + ALStorageService.separator()
-              + filename);
+          ALStorageService.createNewFile(new ByteArrayInputStream(
+            shrinkImageSet.getFixImage()), FOLDER_FILEDIR_SCHEDULE
+            + ALStorageService.separator()
+            + Database.getDomainName()
+            + ALStorageService.separator()
+            + CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid
+            + ALStorageService.separator()
+            + filename);
         } else {
           // ファイルの移動
-          ALStorageService.copyTmpFile(
-            uid,
-            folderName,
-            String.valueOf(filebean.getFileId()),
-            FOLDER_FILEDIR_SCHEDULE,
-            CATEGORY_KEY + ALStorageService.separator() + uid,
-            filename);
+          ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+            .getFileId()), FOLDER_FILEDIR_SCHEDULE, CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid, filename);
         }
       }
 
@@ -5508,16 +5417,14 @@ public class ScheduleUtils {
 
     query = Database.query(EipTSchedule.class);
     exp =
-      ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN,
-        entityid);
+      ExpressionFactory
+        .matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, entityid);
     query.setQualifier(exp);
 
     List<EipTSchedule> schedule = query.fetchList();
     if (schedule != null
       && (((_EipTSchedule) (schedule.get(0)).getEipTScheduleMaps())
-        .getPublicFlag()
-        .equals("T"))) {
+        .getPublicFlag().equals("T"))) {
       isPublic = true;
     }
 
@@ -5561,11 +5468,11 @@ public class ScheduleUtils {
 
   /*
    * リマインダー送信が有効な共有メンバーを取得します。
-   *
+   * 
    * @param schedule
-   *
+   * 
    * @param viewDate
-   *
+   * 
    * @return
    */
   public static List<ALEipUser> getUsersForReminder(EipTSchedule schedule,
@@ -5574,11 +5481,8 @@ public class ScheduleUtils {
     ArrayList<Integer> arrayList = new ArrayList<Integer>();
     try {
 
-      if (!isView(
-        viewDate,
-        schedule.getRepeatPattern(),
-        schedule.getStartDate(),
-        schedule.getEndDate())) {
+      if (!isView(viewDate, schedule.getRepeatPattern(), schedule
+        .getStartDate(), schedule.getEndDate())) {
         return null;
       }
       // 該当するユーザーが送信除外対象になっていないかチェック
@@ -5591,13 +5495,11 @@ public class ScheduleUtils {
       SelectQuery<EipTSchedule> schedulequery =
         Database.query(EipTSchedule.class);
       Expression exp1 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.PARENT_ID_PROPERTY,
-          schedule.getScheduleId());
+        ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, schedule
+          .getScheduleId());
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.START_DATE_PROPERTY,
-          viewDate.getValue());
+        ExpressionFactory.matchExp(EipTSchedule.START_DATE_PROPERTY, viewDate
+          .getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
       List<EipTSchedule> dummyScheduleList = schedulequery.fetchList();
@@ -5627,9 +5529,9 @@ public class ScheduleUtils {
 
       for (ALEipUser member : users) {
         // アクセス権限チェック
-        if (hasAuthorityForScheduleDetail(
-          schedule,
-          member.getUserId().getValueWithInt())) {
+        if (hasAuthorityForScheduleDetail(schedule, member
+          .getUserId()
+          .getValueWithInt())) {
           // ダミースケジュールに登録されているユーザーを除外
           if (!arrayList.contains(member.getUserId().getValueWithInt())) {
             memberList.add(member);
@@ -5643,8 +5545,7 @@ public class ScheduleUtils {
   }
 
   public static void setupReminderJob(String orgId, String userId,
-      EipTSchedule schedule, int notifyTiming, boolean isMail,
-      boolean isMessage) {
+      EipTSchedule schedule, int notifyTiming, boolean isMail, boolean isMessage) {
     String ptn = schedule.getRepeatPattern();
     int count = 0;
     boolean isRepeat = true;
@@ -5759,8 +5660,7 @@ public class ScheduleUtils {
   public static ScheduleDetailResultData getResultDataDetail(
       EipTSchedule record, ALDateTimeField view_date, int loginuserid,
       int userid, String type, boolean ignoreViewdate,
-      ScheduleDetailOnedaySelectData ondaySelectData)
-      throws ALDBErrorException {
+      ScheduleDetailOnedaySelectData ondaySelectData) throws ALDBErrorException {
     ScheduleDetailResultData rd = new ScheduleDetailResultData();
     rd.initField();
 
@@ -5772,13 +5672,11 @@ public class ScheduleUtils {
       SelectQuery<EipTSchedule> schedulequery =
         Database.query(EipTSchedule.class);
       Expression exp1 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.PARENT_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, record
+          .getScheduleId());
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.START_DATE_PROPERTY,
-          view_date.getValue());
+        ExpressionFactory.matchExp(EipTSchedule.START_DATE_PROPERTY, view_date
+          .getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
       List<Integer> scheduleList = new ArrayList<Integer>();
@@ -5916,113 +5814,89 @@ public class ScheduleUtils {
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
         if (ptn.length() == 9) {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
-              .toString());
+          rd.addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .toString());
           count = 8;
         } else {
           switch (ptn.charAt(8)) {
             case '1':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+                .toString());
               break;
             case '2':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+                .toString());
               break;
             case '3':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+                .toString());
               break;
             case '4':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+                .toString());
               break;
             case '5':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+                .toString());
               break;
             default:
               break;
           }
           count = 9;
         }
-        rd.addText(
-          new StringBuffer()
+        rd
+          .addText(new StringBuffer()
             .append(
-              ptn.charAt(1) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
-                : "")
+              ptn.charAt(1) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SUNDAY") : "")
             .append(
-              ptn.charAt(2) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
-                : "")
+              ptn.charAt(2) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_MONDAY") : "")
             .append(
-              ptn.charAt(3) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
-                : "")
+              ptn.charAt(3) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_TUSEDAY") : "")
             .append(
-              ptn.charAt(4) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY")
-                : "")
+              ptn.charAt(4) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_WEDNESDAY") : "")
             .append(
-              ptn.charAt(5) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
-                : "")
+              ptn.charAt(5) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_THURSDAY") : "")
             .append(
-              ptn.charAt(6) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
-                : "")
+              ptn.charAt(6) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_FRIDAY") : "")
             .append(
-              ptn.charAt(7) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
-                : "")
+              ptn.charAt(7) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SATURDAY") : "")
             .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
             .toString());
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         if (ptn.substring(1, 3).equals("XX")) {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         } else {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-              .append(Integer.parseInt(ptn.substring(1, 3)))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         }
         count = 3;
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
-        rd.addText(
-          new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE"))
-            .append(Integer.parseInt(ptn.substring(1, 3)))
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-            .append(Integer.parseInt(ptn.substring(3, 5)))
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-            .toString());
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+          Integer.parseInt(ptn.substring(3, 5))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -6040,30 +5914,29 @@ public class ScheduleUtils {
         } else {
           rd.setLimit(true);
           // 期限
-          rd.addText(
-            new StringBuffer()
-              .append(" （")
-              .append(rd.getStartDate().getYear())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_YEAR"))
-              .append(rd.getStartDate().getMonth())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-              .append(rd.getStartDate().getDay())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY"))
-              .append(rd.getEndDate().getYear())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_YEAR"))
-              .append(rd.getEndDate().getMonth())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-              .append(rd.getEndDate().getDay())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(" （").append(
+            rd.getStartDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getStartDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getStartDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY")).append(
+            rd.getEndDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getEndDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getEndDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY")).toString());
         }
       }
       // 登録者
-      rd.setCreateUser(
-        ALEipUtils.getALEipUser(record.getCreateUserId().intValue()));
+      rd.setCreateUser(ALEipUtils.getALEipUser(record
+        .getCreateUserId()
+        .intValue()));
       // 更新者
-      rd.setUpdateUser(
-        ALEipUtils.getALEipUser(record.getUpdateUserId().intValue()));
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record
+        .getUpdateUserId()
+        .intValue()));
       // 作成日
       rd.setCreateDate(record.getCreateDate());
       // 更新日時
@@ -6114,13 +5987,9 @@ public class ScheduleUtils {
     }
 
     // 過去のスケジュールに対してはアラームの設定状況を表示しない
-    rd.setLastStarted(
-      isLastStarted(
-        rd.getStartDate().getValue(),
-        rd.getEndDate().getValue(),
-        rd.isSpan(),
-        rd.isRepeat(),
-        rd.isLimit()));
+    rd.setLastStarted(isLastStarted(rd.getStartDate().getValue(), rd
+      .getEndDate()
+      .getValue(), rd.isSpan(), rd.isRepeat(), rd.isLimit()));
 
     return rd;
   }
@@ -6196,11 +6065,9 @@ public class ScheduleUtils {
 
       // ユーザのスケジュール
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
-            + "."
-            + EipTScheduleMap.TYPE_PROPERTY,
-          ScheduleUtils.SCHEDULEMAP_TYPE_USER);
+        ExpressionFactory.matchExp(EipTSchedule.EIP_TSCHEDULE_MAPS_PROPERTY
+          + "."
+          + EipTScheduleMap.TYPE_PROPERTY, ScheduleUtils.SCHEDULEMAP_TYPE_USER);
       query.andQualifier(exp2);
 
       List<EipTSchedule> schedules = query.fetchList();
@@ -6235,20 +6102,16 @@ public class ScheduleUtils {
       SelectQuery<EipTScheduleMap> mapquery =
         Database.query(EipTScheduleMap.class);
       Expression mapexp1 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.SCHEDULE_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTScheduleMap.SCHEDULE_ID_PROPERTY, record
+          .getScheduleId());
       mapquery.setQualifier(mapexp1);
       Expression mapexp21 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.USER_ID_PROPERTY,
-          Integer.toString(userId));
+        ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
+          .toString(userId));
       Expression mapexp22 =
-        ExpressionFactory.matchExp(
-          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-            + "."
-            + EipTSchedule.CREATE_USER_ID_PROPERTY,
-          Integer.valueOf(userId));
+        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.CREATE_USER_ID_PROPERTY, Integer.valueOf(userId));
       mapquery.andQualifier(mapexp21.orExp(mapexp22));
       // 設備は除外する
       Expression exp3 =
@@ -6526,11 +6389,9 @@ public class ScheduleUtils {
 
       context.put("Alias", ALOrgUtilsService.getAlias());
 
-      context.put(
-        "globalUrl1",
-        ALMailUtils.getGlobalurl()
-          + "?key="
-          + ALCellularUtils.getCellularKey(destUser));
+      context.put("globalUrl1", ALMailUtils.getGlobalurl()
+        + "?key="
+        + ALCellularUtils.getCellularKey(destUser));
 
       out = new StringWriter();
       service.handleRequest(context, "mail/scheduleReminder.vm", out);
@@ -6641,8 +6502,8 @@ public class ScheduleUtils {
     if (request != null) {
       try {
         cacheHoliday =
-          (String) request.getAttribute(
-            ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
+          (String) request
+            .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
       } catch (Throwable ignore) {
 
       }
@@ -6651,9 +6512,8 @@ public class ScheduleUtils {
       cacheHoliday =
         ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
       if (request != null) {
-        request.setAttribute(
-          ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString(),
-          cacheHoliday);
+        request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
+          .toString(), cacheHoliday);
       }
     }
     return cacheHoliday;
