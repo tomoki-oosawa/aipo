@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.om.security.Group;
@@ -71,6 +72,7 @@ import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.mail.ALMailFactoryService;
 import com.aimluck.eip.mail.ALMailHandler;
@@ -1221,6 +1223,201 @@ public class AccountUtils {
       logger.error(e.getMessage(), e);
       return false;
     }
+  }
+
+  public static SelectQuery<TurbineUser> getSelectQuery(String target_keyword,
+      String filter_post, String filter_role) {
+    ObjectId oid =
+      new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
+
+    Expression exp_base =
+      ExpressionFactory.matchAllDbExp(
+        oid.getIdSnapshot(),
+        Expression.GREATER_THAN);
+
+    SelectQuery<TurbineUser> query =
+      Database.query(TurbineUser.class, exp_base).where(
+        Operations.eq(TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1)),
+        Operations.ne(TurbineUser.DISABLED_PROPERTY, "T"));
+
+    SelectQuery<TurbineUser> query_keyword =
+      AccountUtils.setKeywordFilter(query, target_keyword);
+    SelectQuery<TurbineUser> query_keyword_role =
+      AccountUtils.setRoleFilter(query_keyword, filter_role);
+    SelectQuery<TurbineUser> query_all =
+      AccountUtils.setPostFilter(query_keyword_role, filter_post);
+
+    return query_all;
+  }
+
+  private static SelectQuery<TurbineUser> setKeywordFilter(
+      SelectQuery<TurbineUser> query, String target_keyword) {
+    if (target_keyword != null && !target_keyword.equals("")) {
+      String transWord =
+        ALStringUtil.convertHiragana2Katakana(ALStringUtil
+          .convertH2ZKana(target_keyword));
+      transWord = transWord.replace("　", "").replace(" ", ""); // 全角/半角スペースを削除
+      String[] transWords = transWord.split(""); // 1文字ずつに分解
+
+      for (int i = 0; i < transWords.length; i++) {
+        Expression exp11 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp12 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp13 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp14 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp15 =
+          ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp16 =
+          ExpressionFactory.likeExp(
+            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+              + "."
+              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+              + "."
+              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            "%" + target_keyword + "%");
+        Expression exp17 =
+          ExpressionFactory.likeExp(TurbineUser.LOGIN_NAME_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp21 =
+          ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp22 =
+          ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp23 =
+          ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
+            + target_keyword
+            + "%");
+        Expression exp31 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp32 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp33 =
+          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp34 =
+          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+        Expression exp35 =
+          ExpressionFactory.likeExp(
+            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+              + "."
+              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+              + "."
+              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
+            "%" + transWords[i] + "%");
+        Expression exp36 =
+          ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
+            + transWords[i]
+            + "%");
+
+        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
+          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
+          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
+          exp35).orExp(exp36));
+      }
+    }
+    return query;
+  }
+
+  private static SelectQuery<TurbineUser> setRoleFilter(
+      SelectQuery<TurbineUser> query, String filter_role) {
+    // ユーザーの状態によるフィルターが指定されている場合。
+    if (filter_role != null && !filter_role.equals("")) {
+
+      // 管理者かどうか
+      if (filter_role.equals(AccountUtils.ROLE_ADMIN.toString())) {
+        try {
+          Group group = JetspeedSecurity.getGroup("LoginUser");
+          Role adminrole = JetspeedSecurity.getRole("admin");
+          List<TurbineUserGroupRole> admins =
+            Database
+              .query(TurbineUserGroupRole.class)
+              .where(
+                Operations.eq(
+                  TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
+                  adminrole.getId()),
+                Operations.eq(
+                  TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
+                  group.getId()),
+                Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1))
+              .distinct(true)
+              .fetchList();
+          List<Integer> admin_ids = new ArrayList<Integer>();
+          admin_ids.add(Integer.valueOf(1));
+          for (TurbineUserGroupRole tugr : admins) {
+            admin_ids.add(tugr.getTurbineUser().getUserId());
+          }
+          query.andQualifier(ExpressionFactory.inDbExp(
+            TurbineUser.USER_ID_PK_COLUMN,
+            admin_ids));
+
+        } catch (Exception ex) {
+          logger.error("AccountUserCsvExportScreen.getSelectQuery", ex);
+        }
+
+      }
+
+      // 有効ユーザーかどうか
+      if (filter_role.equals(AccountUtils.ROLE_ACTIVE.toString())) {
+        query.andQualifier(ExpressionFactory.matchExp(
+          TurbineUser.DISABLED_PROPERTY,
+          "F"));
+      }
+
+      // 有効ユーザーかどうか
+      if (filter_role.equals(AccountUtils.ROLE_IN_ACTIVE.toString())) {
+        query.andQualifier(ExpressionFactory.matchExp(
+          TurbineUser.DISABLED_PROPERTY,
+          "N"));
+      }
+    }
+    return query;
+
+  }
+
+  private static SelectQuery<TurbineUser> setPostFilter(
+      SelectQuery<TurbineUser> query, String filter_post) {
+    // 部署によるフィルターが指定されている場合。
+    if (filter_post != null && !filter_post.equals("")) {
+
+      String groupName =
+        (ALEipManager.getInstance().getPostMap().get(Integer
+          .valueOf(filter_post))).getGroupName().getValue();
+
+      query.where(Operations.eq(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
+        + "."
+        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
+        + "."
+        + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
+    }
+
+    query.distinct();
+
+    return query;
+
   }
 
 }

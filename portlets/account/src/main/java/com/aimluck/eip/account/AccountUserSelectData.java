@@ -19,30 +19,21 @@
 package com.aimluck.eip.account;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.jar.Attributes;
 
-import org.apache.cayenne.ObjectId;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
-import org.apache.jetspeed.om.security.Group;
-import org.apache.jetspeed.om.security.Role;
-import org.apache.jetspeed.services.JetspeedSecurity;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
-import com.aimluck.commons.utils.ALStringUtil;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.account.util.AccountUtils.FilterRole;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
-import com.aimluck.eip.cayenne.om.security.TurbineGroup;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
-import com.aimluck.eip.cayenne.om.security.TurbineUserGroupRole;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -50,8 +41,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -124,7 +113,6 @@ public class AccountUserSelectData extends
   protected ResultList<TurbineUser> selectList(RunData rundata, Context context) {
     try {
       // 登録済みのユーザ数をデータベースから取得
-      target_keyword.setValue(AccountUtils.getTargetKeyword(rundata, context));
 
       SelectQuery<TurbineUser> query = getSelectQuery(rundata, context);
       buildSelectQueryForListView(query);
@@ -150,181 +138,15 @@ public class AccountUserSelectData extends
   protected SelectQuery<TurbineUser> getSelectQuery(RunData rundata,
       Context context) {
 
-    ObjectId oid =
-      new ObjectId("TurbineUser", TurbineUser.USER_ID_PK_COLUMN, 3);
-
-    Expression exp_base =
-      ExpressionFactory.matchAllDbExp(
-        oid.getIdSnapshot(),
-        Expression.GREATER_THAN);
+    target_keyword.setValue(AccountUtils.getTargetKeyword(rundata, context));
+    currentPost = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
+    currentRole = ALEipUtils.getTemp(rundata, context, LIST_FILTER_ROLE_STR);
 
     SelectQuery<TurbineUser> query =
-      Database.query(TurbineUser.class, exp_base).where(
-        Operations.eq(TurbineUser.COMPANY_ID_PROPERTY, Integer.valueOf(1)),
-        Operations.ne(TurbineUser.DISABLED_PROPERTY, "T"));
-
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
-    String filter_role =
-      ALEipUtils.getTemp(rundata, context, LIST_FILTER_ROLE_STR);
-    currentPost = filter;
-    currentRole = filter_role;
-
-    if (target_keyword != null && !target_keyword.getValue().equals("")) {
-      String transWord =
-        ALStringUtil.convertHiragana2Katakana(ALStringUtil
-          .convertH2ZKana(target_keyword.getValue()));
-      transWord = transWord.replace("　", "").replace(" ", ""); // 全角/半角スペースを削除
-      String[] transWords = transWord.split(""); // 1文字ずつに分解
-
-      for (int i = 0; i < transWords.length; i++) {
-        Expression exp11 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp12 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp13 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp14 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp15 =
-          ExpressionFactory.likeExp(TurbineUser.EMAIL_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp16 =
-          ExpressionFactory.likeExp(
-            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-              + "."
-              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-              + "."
-              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
-            "%" + target_keyword.getValue() + "%");
-        Expression exp17 =
-          ExpressionFactory.likeExp(TurbineUser.LOGIN_NAME_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp21 =
-          ExpressionFactory.likeExp(TurbineUser.OUT_TELEPHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp22 =
-          ExpressionFactory.likeExp(TurbineUser.IN_TELEPHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp23 =
-          ExpressionFactory.likeExp(TurbineUser.CELLULAR_PHONE_PROPERTY, "%"
-            + target_keyword.getValue()
-            + "%");
-        Expression exp31 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_PROPERTY, "%"
-            + transWords[i]
-            + "%");
-        Expression exp32 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_PROPERTY, "%"
-            + transWords[i]
-            + "%");
-        Expression exp33 =
-          ExpressionFactory.likeExp(TurbineUser.FIRST_NAME_KANA_PROPERTY, "%"
-            + transWords[i]
-            + "%");
-        Expression exp34 =
-          ExpressionFactory.likeExp(TurbineUser.LAST_NAME_KANA_PROPERTY, "%"
-            + transWords[i]
-            + "%");
-        Expression exp35 =
-          ExpressionFactory.likeExp(
-            TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-              + "."
-              + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-              + "."
-              + TurbineGroup.GROUP_ALIAS_NAME_PROPERTY,
-            "%" + transWords[i] + "%");
-        Expression exp36 =
-          ExpressionFactory.likeExp(TurbineUser.CODE_PROPERTY, "%"
-            + transWords[i]
-            + "%");
-
-        query.andQualifier(exp11.orExp(exp12).orExp(exp13).orExp(exp14).orExp(
-          exp15).orExp(exp16).orExp(exp17).orExp(exp21).orExp(exp22).orExp(
-          exp23).orExp(exp31).orExp(exp32).orExp(exp33).orExp(exp34).orExp(
-          exp35).orExp(exp36));
-      }
-    }
-
-    // ユーザーの状態によるフィルターが指定されている場合。
-    if (filter_role != null && !filter_role.equals("")) {
-
-      // 管理者かどうか
-      if (filter_role.equals(AccountUtils.ROLE_ADMIN.toString())) {
-        try {
-          Group group = JetspeedSecurity.getGroup("LoginUser");
-          Role adminrole = JetspeedSecurity.getRole("admin");
-          List<TurbineUserGroupRole> admins =
-            Database
-              .query(TurbineUserGroupRole.class)
-              .where(
-                Operations.eq(
-                  TurbineUserGroupRole.TURBINE_ROLE_PROPERTY,
-                  adminrole.getId()),
-                Operations.eq(
-                  TurbineUserGroupRole.TURBINE_GROUP_PROPERTY,
-                  group.getId()),
-                Operations.ne(TurbineUserGroupRole.TURBINE_USER_PROPERTY, 1))
-              .distinct(true)
-              .fetchList();
-          List<Integer> admin_ids = new ArrayList<Integer>();
-          admin_ids.add(Integer.valueOf(1));
-          for (TurbineUserGroupRole tugr : admins) {
-            admin_ids.add(tugr.getTurbineUser().getUserId());
-          }
-          query.andQualifier(ExpressionFactory.inDbExp(
-            TurbineUser.USER_ID_PK_COLUMN,
-            admin_ids));
-
-        } catch (Exception ex) {
-          logger.error("AccountUserSelectData.getSelectQuery", ex);
-        }
-
-      }
-
-      // 有効ユーザーかどうか
-      if (filter_role.equals(AccountUtils.ROLE_ACTIVE.toString())) {
-        query.andQualifier(ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY,
-          "F"));
-      }
-
-      // 有効ユーザーかどうか
-      if (filter_role.equals(AccountUtils.ROLE_IN_ACTIVE.toString())) {
-        query.andQualifier(ExpressionFactory.matchExp(
-          TurbineUser.DISABLED_PROPERTY,
-          "N"));
-      }
-    }
-
-    // 部署によるフィルターが指定されている場合。
-    if (filter != null && !filter.equals("")) {
-
-      String groupName =
-        (ALEipManager.getInstance().getPostMap().get(Integer.valueOf(filter)))
-          .getGroupName()
-          .getValue();
-
-      query.where(Operations.eq(TurbineUser.TURBINE_USER_GROUP_ROLE_PROPERTY
-        + "."
-        + TurbineUserGroupRole.TURBINE_GROUP_PROPERTY
-        + "."
-        + TurbineGroup.GROUP_NAME_PROPERTY, groupName));
-    }
-
-    query.distinct();
-
+      AccountUtils.getSelectQuery(
+        target_keyword.getValue(),
+        currentPost,
+        currentRole);
     return query;
   }
 
