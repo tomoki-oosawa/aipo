@@ -51,20 +51,13 @@
     	</tr>
     	<tr class="week">
     		#foreach($test in  $!{result.WeekRevised})
-    			<td #if($velocityCount==((8-$!{result.StartDayOfWeek})%7)+1) class='sunday'
-    			#elseif($velocityCount==((7-$!{result.StartDayOfWeek})%7)+1) class='saturday'
-    			#end >$test</td>
+    			<td>$test</td>
     		#end
     	</tr>
     	#set($entityids = "")
     	#set($weekListSize = $result.MonthlyCalendarContainer.WeekList.size())
     	#set($weekcount = 0)
-    	#foreach($record4 in $result.Container.WeekList)
-    		#if($!{result.TermContainer.getWeekList($weekcount)})
-    				#set($termConListSize = ${result.TermContainer.getWeekList($weekcount).size()})
-    		#else
-    			#set($termConListSize = 0)
-    		#end
+    	#foreach($record4 in $result.MonthlyCalendarContainer.WeekList)
     	<tr class="monthlyCalendarAutoTr">
     	#foreach($record in $record4.DayList)
     	#set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))

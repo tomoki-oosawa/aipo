@@ -20,6 +20,7 @@ package com.aimluck.eip.schedule;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.turbine.util.RunData;
@@ -33,10 +34,11 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.ALEipUtils;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * Widgetsで表示するカレンダーのクラスです。
- * 
+ *
  */
 public class AjaxScheduleMonthlySelectData extends
     ALAbstractSelectData<VEipTScheduleList, VEipTScheduleList> {
@@ -59,9 +61,25 @@ public class AjaxScheduleMonthlySelectData extends
   /** <code>nextMonth</code> 表示されている日 */
   private ALDateTimeField viewStart;
 
+  /** <code>startDayOfWeek</code> 週初めの曜日 */
+  protected int start_day_of_week;
+
+  /** <code>weekRevised</code> 週初めの曜日から始まる曜日の文字列のリスト */
+  private List<String> weekRevised;
+
+  private final String[] weekday_str = {
+    "",
+    ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_MONDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY"),
+    ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY") };
+
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getMonthlyCalendarToday() {
@@ -70,7 +88,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getMonthlyCalendarViewMonth() {
@@ -79,7 +97,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * 月間スケジュールコンテナを取得します。
-   * 
+   *
    * @return
    */
   public ScheduleMonthContainer getMonthlyCalendarContainer() {
@@ -88,7 +106,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * 前の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getMonthlyCalendarPrevMonth() {
@@ -97,7 +115,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * 次の月を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getMonthlyCalendarNextMonth() {
@@ -106,7 +124,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * 現在の月を取得します。
-   * 
+   *
    * @return
    */
   public void setMonthlyCalendarViewMonth(String year, String month) {
@@ -118,7 +136,7 @@ public class AjaxScheduleMonthlySelectData extends
 
   /**
    * Widgetsで表示する用のカレンダーデータをセットします。
-   * 
+   *
    * @param rundata
    * @param context
    * @throws ALPageNotFoundException
@@ -163,12 +181,32 @@ public class AjaxScheduleMonthlySelectData extends
     Calendar cal = Calendar.getInstance();
     today.setValue(cal.getTime());
 
+    start_day_of_week =
+      Integer.parseInt(ALEipUtils
+        .getPortlet(rundata, context)
+        .getPortletConfig()
+        .getInitParameter("z1a-rows"));
+
     // 表示開始日時
     Calendar tmpCal = Calendar.getInstance();
     cal.setTime(viewMonth.getValue());
     tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    cal.add(Calendar.DATE, -dayofweek + 1);
+    if ((-dayofweek) + start_day_of_week > 0) {
+      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
+    } else {
+      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week));
+    }
+
+    // 週初めの曜日に合わせて文字列リスト作成
+    weekRevised = new ArrayList<String>();
+    // weekRevised = new ArrayList<String>();
+    int tmpStartDayOfWeek = start_day_of_week;
+    do {
+      weekRevised.add(weekday_str[tmpStartDayOfWeek]);
+      tmpStartDayOfWeek = tmpStartDayOfWeek % 7;
+      tmpStartDayOfWeek++;
+    } while (tmpStartDayOfWeek != start_day_of_week);
 
     // 月間スケジュールコンテナの初期化
     try {
@@ -296,6 +334,10 @@ public class AjaxScheduleMonthlySelectData extends
    */
   public ALDateTimeField getViewDate() {
     return viewStart;
+  }
+
+  public List<String> getWeekRevised() {
+    return weekRevised;
   }
 
 }
