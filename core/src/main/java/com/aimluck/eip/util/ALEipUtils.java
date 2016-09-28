@@ -2261,6 +2261,17 @@ public class ALEipUtils {
       && (isMatchUserAgent("Edge", rundata));
   }
 
+  /***
+   * アクセスしてきたユーザが利用するブラウザ名が Mozilla の Firefox であるかを判定する．
+   *
+   * @param rundata
+   * @return
+   */
+  public static boolean isFirefoxBrowser(RunData rundata) {
+    return isMatchUserAgent("Firefox", rundata)
+      && isMatchUserAgent("Mozilla", rundata);
+  }
+
   /**
    * アクセスしてきたユーザが利用するブラウザ名が Android．
    *
@@ -2452,9 +2463,14 @@ public class ALEipUtils {
     if (isMatchUserAgent("iPhone", rundata)) {
       String iOSver = getIOSVersion(rundata.getUserAgent().trim());
       if (iOSver.length() > 1) {
-        Integer num = Integer.parseInt(iOSver.substring(0, 1));
-        if (num.intValue() < 6) {
-          return false;
+        // Integer num = Integer.parseInt(iOSver.substring(0, 1));
+        Pattern p = Pattern.compile("^(\\d*)");
+        Matcher m = p.matcher(iOSver);
+        if (m.find()) {
+          Integer num = Integer.parseInt(m.group(0));
+          if (num.intValue() < 6) {
+            return false;
+          }
         }
       }
     }
