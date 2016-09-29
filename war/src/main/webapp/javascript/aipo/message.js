@@ -144,8 +144,8 @@ aipo.message.reloadMessageList = function() {
         		}
                 aipo.message.jumpCursor = null;
         	} else {
-        		//もしバックグラウンドでなく実際に開いていたら
-        		if(dojo.hasClass("dd_message", "open") == true){
+        		//メッセージのタブを開いている場合と、スマホ表示のメッセージ画面の場合
+        		if(!dojo.byId("dd_message") || dojo.hasClass("dd_message", "open")){
         			aipo.message.read(aipo.message.currentRoomId);
         		}
         	}
@@ -164,9 +164,11 @@ aipo.message.reloadMessageList = function() {
         screen += "&c=" + aipo.message.jumpCursor;
         screen += "&jump=1";
     }
-    //メッセージをバックグラウンドでなく実際に開いているか否かをscreenにつたえる。
-   if (dojo.hasClass("dd_message", "open") == false){
-    	screen += "&o=1";
+    //メッセージのタブを開いている場合と、スマホ表示のメッセージ画面の場合はデータを既読に更新する
+   if (!dojo.byId("dd_message") || dojo.hasClass("dd_message", "open") ){
+    	screen += "&is_read=T";
+    }else{
+    	screen += "&is_read=F";
     }
 
 

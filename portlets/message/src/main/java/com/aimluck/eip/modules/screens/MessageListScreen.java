@@ -52,11 +52,11 @@ public class MessageListScreen extends ALVelocityScreen {
       boolean isNewRoom = false;
       EipTMessageRoom room = null;
       ALEipUser targetUser = null;
-      Integer backGroundOpen = -1;
+      String isRead = "";
 
-      // MessageListScreenを直接開いているか裏で開いているかのチェック
+      // メッセージのタブを開いているときには既読にする(非表示のときは既読にしない)
       try {
-        backGroundOpen = rundata.getParameters().getInteger("o");
+        isRead = rundata.getParameters().getString("is_read");
       } catch (Throwable ignore) {
         // ignore
       }
@@ -108,7 +108,7 @@ public class MessageListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       if (listData.getList().size() > 0) {
-        if (!backGroundOpen.equals(1)) {
+        if ("T".equals(isRead)) {
           MessageUtils.read(room, listData.getUserId(), listData
             .getLastMessageId());
         }
