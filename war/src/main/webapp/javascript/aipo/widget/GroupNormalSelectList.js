@@ -72,7 +72,7 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
           if (document.all) {
             select.add(dummy, 0);
           } else {
-            select.insertBefore(dummy, select.options[0])
+            select.insertBefore(dummy, select.options[0]);
           }
         }
       };
