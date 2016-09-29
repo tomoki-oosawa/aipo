@@ -108,7 +108,7 @@ public class MessageListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       if (listData.getList().size() > 0) {
-        if ("T".equals(isRead)) {
+        if (!"F".equals(isRead)) {
           MessageUtils.read(room, listData.getUserId(), listData
             .getLastMessageId());
         }
