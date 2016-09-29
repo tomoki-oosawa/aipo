@@ -32,7 +32,7 @@
 <span class="auiButtonIconDummy"><span><i class="icon-angle-up"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-angle-down"></i></span></span>
 <span class="auiButtonIconDummy"><span><i class="icon-double-angle-down"></i></span></span>
-$l10n.FACILITIES_MSG_OPERATION_ORDER1<br>
+$l10n.FACILITIES_GROUP_MSG_OPERATION_ORDER1<br>
  $l10n.FACILITIES_MSG_OPETATION_ORDER2</div>
 #ALajaxscreenformheader("FacilityGroupChangeTurnForm" $jslink $portlet "FacilityGroupChangeTurnFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.facility.onReceiveMessage)")
 <input type="hidden" name="mode" value="update">
