@@ -44,8 +44,16 @@ public class AccountResultData implements ALData {
   /** 名前 */
   private ALStringField name;
 
+  private ALStringField first_name;
+
+  private ALStringField last_name;
+
   /** フリガナ（名前） */
   private ALStringField name_kana;
+
+  private ALStringField first_name_kana;
+
+  private ALStringField last_name_kana;
 
   /** メールアドレス */
   private ALStringField email;
@@ -125,6 +133,10 @@ public class AccountResultData implements ALData {
   public void initField() {
     user_id = new ALNumberField();
     user_name = new ALStringField();
+    first_name = new ALStringField();
+    last_name = new ALStringField();
+    first_name_kana = new ALStringField();
+    last_name_kana = new ALStringField();
     name = new ALStringField();
     name_kana = new ALStringField();
     email = new ALStringField();
@@ -171,6 +183,20 @@ public class AccountResultData implements ALData {
   /**
    * @return
    */
+  public ALStringField getFirstName() {
+    return first_name;
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getLastName() {
+    return last_name;
+  }
+
+  /**
+   * @return
+   */
   public ALStringField getUserName() {
     return user_name;
   }
@@ -198,6 +224,20 @@ public class AccountResultData implements ALData {
    */
   public void setName(String string) {
     name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setFirstName(String string) {
+    first_name.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setLastName(String string) {
+    last_name.setValue(string);
   }
 
   /**
@@ -365,10 +405,46 @@ public class AccountResultData implements ALData {
   }
 
   /**
+   * @return
+   */
+  public ALStringField getFirstNameKana() {
+    return first_name_kana;
+  }
+
+  public String getWbrFirstNameKana() {
+    return ALCommonUtils.replaceToAutoCR(getFirstNameKana().toString());
+  }
+
+  /**
+   * @return
+   */
+  public ALStringField getLastNameKana() {
+    return last_name_kana;
+  }
+
+  public String getWbrLastNameKana() {
+    return ALCommonUtils.replaceToAutoCR(getLastNameKana().toString());
+  }
+
+  /**
    * @param string
    */
   public void setNameKana(String string) {
     name_kana.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setFirstNameKana(String string) {
+    first_name_kana.setValue(string);
+  }
+
+  /**
+   * @param string
+   */
+  public void setLastNameKana(String string) {
+    last_name_kana.setValue(string);
   }
 
   public boolean hasPhoto() {
