@@ -156,7 +156,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         recur = new Recur(Recur.DAILY, null);
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) { // 9
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
         recur = new Recur(Recur.WEEKLY, null);
         if (ptn.charAt(1) != '0') {
           recur.getDayList().add(WeekDay.SU);
@@ -180,7 +180,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           recur.getDayList().add(WeekDay.SA);
         }
         count = 8;
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) { // 10
+      } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) {
         recur = new Recur(Recur.MONTHLY, null);
         int offset = Character.getNumericValue(ptn.charAt(8));
         if (ptn.charAt(1) != '0') {

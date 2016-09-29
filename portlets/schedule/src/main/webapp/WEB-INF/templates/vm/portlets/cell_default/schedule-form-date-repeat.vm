@@ -56,7 +56,6 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br($career)
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
 <input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
-##<input id="shift_check" name="shift_check" type="checkbox" value="T" checked="checked" />
       <label for="shift_check">休日は予定を</label>
       <select id="shifting" name="shifting"/>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
@@ -100,7 +99,6 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br(career)
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
 <input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
-##<input id="shift_check" name="shift_check" type="checkbox" value="T" checked="checked" />
       <label for="shift_check">休日は予定を</label>
       <select id="shifting" name="shifting"/>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>

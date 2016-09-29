@@ -18,8 +18,6 @@
  */
 package com.aimluck.eip.schedule.util;
 
-//祝日情報の取り出し？
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -108,14 +106,11 @@ import com.aimluck.eip.common.ALHoliday;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
-//<<<<<<< HEAD
 import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
-//=======
 import com.aimluck.eip.http.HttpServletRequestLocator;
-//>>>>>>> refs/remotes/origin/features/schedule-add-holiday
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -989,7 +984,6 @@ public class ScheduleUtils {
    * @param limitDate
    * @return
    */
-
   public static boolean isView(ALDateTimeField date, String ptn,
       Date startDate, Date limitDate) {
     int count = 0;
@@ -1038,44 +1032,36 @@ public class ScheduleUtils {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-
       if (ptn.charAt(8) == 'N'
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
         // 日
           case Calendar.SUNDAY:
-            // case 1:
             result = ptn.charAt(1) != '0';
             break;
           // 月
           case Calendar.MONDAY:
-            // case 2:
             result = ptn.charAt(2) != '0';
             break;
           // 火
           case Calendar.TUESDAY:
-            // case 3:
             result = ptn.charAt(3) != '0';
             break;
           // 水
           case Calendar.WEDNESDAY:
-            // case 4:
             result = ptn.charAt(4) != '0';
             break;
           // 木
           case Calendar.THURSDAY:
-            // case 5:
             result = ptn.charAt(5) != '0';
             break;
           // 金
           case Calendar.FRIDAY:
-            // case 6:
             result = ptn.charAt(6) != '0';
             break;
           // 土
           case Calendar.SATURDAY:
-            // case 7:
             result = ptn.charAt(7) != '0';
             break;
           default:
@@ -1198,7 +1184,7 @@ public class ScheduleUtils {
       }
       count = 3;
       setDate(cal.getTime());
-    } else if (ptn.charAt(0) == 'Y') { // 毎年
+    } else if (ptn.charAt(0) == 'Y') {
       int ymonth = Integer.parseInt(ptn.substring(1, 3));
       int yday = Integer.parseInt(ptn.substring(3, 5));
       int month = Integer.parseInt(date.getMonth());
@@ -3469,7 +3455,7 @@ public class ScheduleUtils {
     // DN -> 毎日 (A = N -> 期限なし A = L -> 期限あり)
     // WnnnnnnnN W01111110 -> 毎週(月～金用)
     // MnnN M25 -> 毎月25日
-    // YnnmmN Y0825N -> 毎年8月25日
+    // YnnmmN Y0825N ->　毎年8月25日
     // S -> 期間での指定
     String ptn = schedule.getRepeatPattern();
     int count = 0;

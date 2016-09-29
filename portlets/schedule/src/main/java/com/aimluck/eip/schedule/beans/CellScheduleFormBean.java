@@ -352,7 +352,7 @@ public class CellScheduleFormBean implements ALData {
     if (ptn.charAt(0) == 'D') {
       repeat_type.setValue("D");
       count = 1;
-    } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) { // 9
+    } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
       repeat_type.setValue("W");
       week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
       week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -363,7 +363,7 @@ public class CellScheduleFormBean implements ALData {
       week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
       count = 8;
       // 第何週
-    } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) { // 10
+    } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) {
       repeat_type.setValue("W");
       week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
       week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);

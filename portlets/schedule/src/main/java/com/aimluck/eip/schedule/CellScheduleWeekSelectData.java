@@ -264,7 +264,7 @@ public class CellScheduleWeekSelectData extends
         if (pattern.substring(1, 3).equals("XX")) {
           day = cal_event.getActualMaximum(Calendar.DATE);
         } else {
-          day = Integer.parseInt(pattern.substring(1, pattern.length() - 2)); // -1
+          day = Integer.parseInt(pattern.substring(1, pattern.length() - 2));
         }
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(startDate.getValue());
