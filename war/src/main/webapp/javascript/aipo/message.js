@@ -626,6 +626,7 @@ aipo.message.swapView = function() {
                     && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
                 aipo.message.latestMessageList();
             }
+             aipo.message.selectRoom(aipo.message.currentRoomId);
         } else {
             dojo.byId("portletsBody").style.display = "";
             var copyright = dojo.byId("copyright");
