@@ -31,10 +31,20 @@
 <div class="floatLeft">
 #AUIbuttonAction($l10n.GADGETS_DO_ADD_APP "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
+
 #AUIconfigheader($!{portlet.ID} "14em")
 #AUIconfigitem($l10n.GADGETS_DO_SET_APPSETTING $linkPsml)
 #AUIconfigitem($l10n.GADGETS_DO_SET_CONTAINER $linkContainer)
 #AUIconfigfooter()
+
+<div class="floatRight clearfix relative">
+	<div class="auiSelectButton">
+        <ul>
+        <li class = "active"><a class="first" style="width:4em;"><span>aaaa</span></a></li>
+        <li><a class="last" style="width:4em;">vvv</a></li>
+        </ul>
+</div>
+
 #AUISummaryDivfooter()
 
 #if(!$!{result.isAdminUser()})
