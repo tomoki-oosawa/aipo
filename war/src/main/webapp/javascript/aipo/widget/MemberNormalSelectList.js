@@ -50,7 +50,7 @@ dojo.declare("aipo.widget.MemberNormalSelectList", [dijit._Widget, dijit._Templa
         this.id = this.widgetId;
         // iphone9系,10系において先頭のoptionタグが勝手に選択されてしまう問題対策
         if (aipo.userAgent.isIphone9or10()){
-          this.addDummyOptGroup();
+        	this.addDummyOptGroup();
         }
         params = {
           url: this.memberFromUrl,
