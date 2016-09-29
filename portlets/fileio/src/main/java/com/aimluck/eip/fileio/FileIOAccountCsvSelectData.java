@@ -49,13 +49,13 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
  *
  */
-public class FileIOAccountCsvSelectData
-    extends
+public class FileIOAccountCsvSelectData extends
     ALCsvAbstractSelectData<FileIOAccountCsvResultData, FileIOAccountCsvResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAccountCsvSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      FileIOAccountCsvSelectData.class.getName());
 
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
@@ -90,9 +90,11 @@ public class FileIOAccountCsvSelectData
             + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
         return new ResultList<FileIOAccountCsvResultData>(
-          readAccountInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters()
-            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+          readAccountInfoFromCsvPage(
+            rundata,
+            filepath,
+            (rundata.getParameters().getInteger("csvpage") - 1),
+            ALCsvTokenizer.CSV_SHOW_SIZE));
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -265,8 +267,9 @@ public class FileIOAccountCsvSelectData
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
                 if (code != null && !code.equals("")) {
-                  existedCodeList.set(existedCodeList.indexOf(tmpuser2
-                    .getCode()), code);
+                  existedCodeList.set(
+                    existedCodeList.indexOf(tmpuser2.getCode()),
+                    code);
                 }
               }
             }
@@ -366,6 +369,7 @@ public class FileIOAccountCsvSelectData
       overMaxUser = true;
     }
 
+    setLineCount(line);
     setErrorCount(ErrCount);
     if (ErrCount > 0) {
       outputErrorData(rundata, ErrorCode, filepath_err);
@@ -482,8 +486,9 @@ public class FileIOAccountCsvSelectData
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
                 if (code != null && !code.equals("")) {
-                  existedCodeList.set(existedCodeList.indexOf(tmpuser2
-                    .getCode()), code);
+                  existedCodeList.set(
+                    existedCodeList.indexOf(tmpuser2.getCode()),
+                    code);
                 }
               }
             }
