@@ -59,8 +59,8 @@
             </meta-info>
         </parameter>
         <parameter name="p2a-sort.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.items" value="topic_name,category_name,owner_name,update_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p2a-sort.style.values" value="トピック名,カテゴリ,作成者,更新日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.items" value="topic_name,category_name,owner_name,create_date,update_date" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p2a-sort.style.values" value="トピック名,カテゴリ,作成者,作成日,更新日" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2b-sort" value="response_old" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>返信ソート方法</title>
