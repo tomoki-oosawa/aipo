@@ -38,11 +38,13 @@
 #AUIconfigfooter()
 
 <div class="floatRight clearfix relative">
-	<div class="auiSelectButton">
-        <ul>
-        <li class = "active"><a class="first" style="width:4em;"><span>aaaa</span></a></li>
-        <li><a class="last" style="width:4em;">vvv</a></li>
-        </ul>
+<div class="auiSelectButton">
+<ul>
+#set($tab = ["aaa", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == "standard") class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["bbb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == "social") class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
 </div>
 
 #AUISummaryDivfooter()
