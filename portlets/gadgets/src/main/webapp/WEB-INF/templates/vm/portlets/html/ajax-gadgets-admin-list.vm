@@ -46,8 +46,9 @@
 <li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID', [['viewtype', '$!tab.get(1)']]);"><span>$!result.Viewtype</span></a></li>
 </ul>
 </div>
-
+</div>
 #AUISummaryDivfooter()
+
 
 #if(!$!{result.isAdminUser()})
 #if($!{result.getAttachStatus().equals("success")}||$!{result.getDefaultStatus().equals("success")}||$!{result.getAllUserStatus().equals("success")})
