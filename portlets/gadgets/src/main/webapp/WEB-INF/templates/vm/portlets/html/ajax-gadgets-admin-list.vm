@@ -40,10 +40,10 @@
 <div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["aaa", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == "standard") class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
-#set($tab = ["bbb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == "social") class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = ["a", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID', [['viewtype', '$!tab.get(1)']]);"><span>$!result.Viewtype</span></a></li>
+#set($tab = ["bb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID', [['viewtype', '$!tab.get(1)']]);"><span>$!result.Viewtype</span></a></li>
 </ul>
 </div>
 
@@ -81,6 +81,7 @@
 #if($result.List.size() == 0)
 #AUIEmptyMessage("icon-th" "$l10n.GADGETS_EMPTY_APP_MESSAGE")
 #else
+
 #AUISummaryDiv()
 <div class="floatLeft">
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
@@ -89,6 +90,7 @@
 </div>
 #AUIajaxpageview('GadgetsAdminListScreen' $result)
 #AUISummaryDivfooter()
+
 <table class="auiRowTable wide">
 <colgroup style="width:20px;">
 </colgroup><colgroup style="width:3em;">

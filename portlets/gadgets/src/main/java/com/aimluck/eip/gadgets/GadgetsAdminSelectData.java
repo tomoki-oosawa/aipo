@@ -52,16 +52,35 @@ public class GadgetsAdminSelectData extends
   /** 一覧データ */
   private List<Object> list;
 
+  /** 表示タイプ */
+  private String viewtype;
+
+  /** 表示タイプ 通常アプリ */
+  public static final String STANDARD = "standard";
+
+  /** 表示タイプ ソーシャルアプリ */
+  public static final String SOCIAL = "social";
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
+    try {
+      viewtype = rundata.getParameters().getString("viewtype");
+    } catch (Throwable ignore) {
+      // ignore
+    }
+
+    if (!STANDARD.equals(viewtype) && !SOCIAL.equals(viewtype)) {
+      viewtype = STANDARD;
+    }
+
   }
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -109,7 +128,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -230,7 +249,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -244,6 +263,15 @@ public class GadgetsAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * 表示タイプを取得します
+   *
+   * @return String
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
 }
