@@ -34,7 +34,7 @@ import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 
 /**
  * アクセス権限を管理するクラスです。 <br />
- * 
+ *
  */
 public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
 

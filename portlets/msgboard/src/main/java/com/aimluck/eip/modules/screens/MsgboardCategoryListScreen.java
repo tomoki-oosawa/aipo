@@ -29,17 +29,16 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 掲示板カテゴリの一覧を処理するクラスです。
- * 
+ *
  */
 public class MsgboardCategoryListScreen extends ALVelocityScreen {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(MsgboardCategoryListScreen.class
-      .getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(MsgboardCategoryListScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
@@ -55,8 +54,7 @@ public class MsgboardCategoryListScreen extends ALVelocityScreen {
       listData.loadCategoryList(rundata);
       listData.doViewList(this, rundata, context);
 
-      String layout_template =
-        "portlets/html/ajax-msgboard-category-list.vm";
+      String layout_template = "portlets/html/ajax-msgboard-category-list.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
       logger.error("[MsgboardCategoryListScreen] Exception.", ex);
