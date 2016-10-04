@@ -21,6 +21,8 @@
 #set ($addApp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")))
 #set ($linkContainer = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsContainerAdminFormScreen').addQueryData('entityid','edit'))
 #set ($linkPsml = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsPsmlFormScreen'))
+#set ($screen = 'GadgetsAdminListScreen')
+#set ($currentScreen = $link.setURI($!screen).addQueryData('viewtype',"$!{result.viewtype}"))
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
@@ -31,7 +33,7 @@
 <div class="floatLeft">
 #AUIbuttonAction($l10n.GADGETS_DO_ADD_APP "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
 </div>
-
+$!currentScreen
 #AUIconfigheader($!{portlet.ID} "14em")
 #AUIconfigitem($l10n.GADGETS_DO_SET_APPSETTING $linkPsml)
 #AUIconfigitem($l10n.GADGETS_DO_SET_CONTAINER $linkContainer)
@@ -40,10 +42,10 @@
 <div class="floatRight clearfix relative">
 <div class="auiSelectButton">
 <ul>
-#set($tab = ["a", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID', [['viewtype', '$!tab.get(1)']]);"><span>$!result.Viewtype</span></a></li>
-#set($tab = ["bb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID', [['viewtype', '$!tab.get(1)']]);"><span>$!result.Viewtype</span></a></li>
+#set($tab = ["a", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen').addQueryData('viewtype', 'standard')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$!result.Viewtype</span></a></li>
+#set($tab = ["bb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen').addQueryData('viewtype', 'social')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$!result.Viewtype</span></a></li>
 </ul>
 </div>
 </div>
@@ -89,7 +91,7 @@
 #AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
 </div>
-#AUIajaxpageview('GadgetsAdminListScreen' $result)
+#AUIajaxpageview($currentScreen $result)
 #AUISummaryDivfooter()
 
 <table class="auiRowTable wide">
