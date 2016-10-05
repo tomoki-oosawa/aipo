@@ -793,16 +793,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
           message.setPcSubject(subject);
           message.setCellularSubject(subject);
-          message.setPcBody(ScheduleUtils.createMsgForPc(
+          message.setPcBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
             "new"));
-          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+          message.setCellularBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
-            destMember.getUserId(),
             "new"));
           messageList.add(message);
         }
@@ -1426,16 +1425,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
           message.setPcSubject(subject);
           message.setCellularSubject(subject);
-          message.setPcBody(ScheduleUtils.createMsgForPc(
+          message.setPcBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
             "edit"));
-          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+          message.setCellularBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
-            destMember.getUserId(),
             "edit"));
           messageList.add(message);
         }

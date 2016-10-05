@@ -1479,16 +1479,15 @@ public class ScheduleFormData extends ALAbstractFormData {
             ALAdminMailMessage message = new ALAdminMailMessage(destMember);
             message.setPcSubject(subject);
             message.setCellularSubject(subject);
-            message.setPcBody(ScheduleUtils.createMsgForPc(
+            message.setPcBody(ScheduleUtils.createMsg(
               rundata,
               schedule,
               memberList,
               "new"));
-            message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+            message.setCellularBody(ScheduleUtils.createMsg(
               rundata,
               schedule,
               memberList,
-              destMember.getUserId(),
               "new"));
             messageList.add(message);
           }
@@ -2154,16 +2153,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
                 "edit"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
-                destMember.getUserId(),
                 "edit"));
             }
 
@@ -2181,16 +2179,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
                 "edit"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
-                destMember.getUserId(),
                 "edit"));
               messageList.add(message);
             }
@@ -2675,16 +2672,15 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
                 "delete"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
-                destMember.getUserId(),
                 "delete"));
               messageList.add(message);
             }
