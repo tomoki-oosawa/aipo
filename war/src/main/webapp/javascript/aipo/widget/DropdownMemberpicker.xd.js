@@ -18,15 +18,13 @@
  */
 dojo._xdResourceLoaded({
 depends: [["provide", "aipo.widget.DropdownMemberpicker"],
-["require", "aimluck.widget.Dropdown"],
-["require", "aipo.widget.MemberSelectList"]],
+["require", "aimluck.widget.Dropdown"]],
 defineResource: function(dojo){if(!dojo._hasResource["aipo.widget.DropdownMemberpicker"]){ //_hasResource checks added by build. Do not use _hasResource directly in your code.
 dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
 
 dojo.provide("aipo.widget.DropdownMemberpicker");
 
 dojo.require("aimluck.widget.Dropdown");
-dojo.require("aipo.widget.MemberSelectList");
 
 /**
  * ex)
@@ -100,8 +98,6 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
         this.removeAllOptions(select);
         select = dojo.byId(listWidget.memberToId);
         this.removeAllOptions(select);
-      }else{
-        this.dropDown = new aipo.widget.MemberSelectList(userparams, this.listWidgetId);
       }
 
       this.inherited(arguments);
