@@ -499,6 +499,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     if (!code.validate(msgList)) {
       code.setValue(null);
+    } else {
+      if ((!code.equals("")) && (isDupplicateCode())) {
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_EXIST_SAME_NAME_CODE"));
+      }
     }
 
     return (msgList.size() == 0);
@@ -1217,6 +1221,37 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       // throw new ALDBErrorException();
     }
     return map;
+  }
+
+  /**
+   * 社員コードが重複しているかどうか
+   *
+   * @return
+   */
+  private boolean isDupplicateCode() {
+    if (code.getValue() == null || code.getValue().equals("")) {
+      // 設定する社員コードがない場合は重複していない
+      return false;
+    }
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
+    query.setQualifier(exp);
+    List<TurbineUser> list = query.fetchList();
+    if (list == null || list.size() == 0) {
+      // 社員コードがなければ重複していない
+      return false;
+    }
+
+    TurbineUser user = list.get(0);
+    if (user.getLoginName().equals(username.getValue())) {
+      // 同じユーザーの社員コードだけがある場合は重複していない
+      return false;
+    } else {
+      // 別のユーザーの社員コードがある場合は重複している
+      return true;
+    }
+
   }
 
   public boolean isSkipUsernameValidation() {
