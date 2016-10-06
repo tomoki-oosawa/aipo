@@ -500,7 +500,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     if (!code.validate(msgList)) {
       code.setValue(null);
     } else {
-      if ((!code.equals("")) && (isDupplicateCode())) {
+      if ((!code.equals("")) && (isDuplicateCode())) {
         msgList.add(ALLocalizationUtils.getl10n("FILEIO_EXIST_SAME_NAME_CODE"));
       }
     }
@@ -1228,7 +1228,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
    *
    * @return
    */
-  private boolean isDupplicateCode() {
+  private boolean isDuplicateCode() {
     if (code.getValue() == null || code.getValue().equals("")) {
       // 設定する社員コードがない場合は重複していない
       return false;
