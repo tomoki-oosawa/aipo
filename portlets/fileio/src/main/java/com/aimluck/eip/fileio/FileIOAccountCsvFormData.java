@@ -1244,6 +1244,11 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     }
 
     TurbineUser user = list.get(0);
+
+    if (username.getValue() == null) {
+      return false;
+    }
+
     if (user.getLoginName().equals(username.getValue())) {
       // 同じユーザーの社員コードだけがある場合は重複していない
       return false;
