@@ -20,6 +20,7 @@ package com.aimluck.eip.modules.actions;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.Cookie;
 
@@ -223,6 +224,10 @@ public class ALJLoginUser extends ActionEvent {
       }
 
       user = JetspeedSecurity.login(username, password);
+      rundata.getSession().setAttribute(
+        ALEipConstants.LAST_PASSWORD_LOGIN,
+        new Date());
+
       JetspeedSecurity.saveUser(user);
 
       // 運営からのお知らせ用のクッキ−削除

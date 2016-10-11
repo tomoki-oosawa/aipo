@@ -547,6 +547,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     boolean res = true;
     try {
+      Date now = new Date();
       boolean isNewUser = false;
       ALBaseUser user = null;
       try {
@@ -567,22 +568,20 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         // JetspeedSecurity.forcePassword(user, password.getValue());
         user.setPassword(password.getValue());
         isNewUser = true;
+        user.setCreated(now);
+        user.setLastLogin(now);
       }
 
-      Date now = new Date();
       // 作成日
       // 以下のメソッドは動作しないため、ALBaseUserにてオーバーライド
       // user.setCreateDate(now);
       // JetspeedSecurity.forcePassword(user, password.getValue());
-      user.setCreated(now);
       user.setModified(now);
-      user.setLastLogin(now);
       user.setCreatedUserId(ALEipUtils.getUserId(rundata));
       user.setUpdatedUserId(ALEipUtils.getUserId(rundata));
       user.setConfirmed(JetspeedResources.CONFIRM_VALUE);
       user.setDisabled("F");
       // user.setPassword(password.getValue());
-      user.setPasswordChanged(now);
       user.setInTelephone(in_telephone.getValue());
       user.setOutTelephone(out_telephone.getValue());
       user.setCellularPhone(cellular_phone.getValue());
