@@ -46,14 +46,20 @@ import com.aimluck.eip.util.CustomizeUtils;
 /**
  *
  */
-public class GadgetsAdminSelectData extends
+public class GadgetsAdminSocialSelectData extends
     ALAbstractSelectData<ALApplication, ALApplication> {
 
   /** 一覧データ */
   private List<Object> list;
 
   /** 表示タイプ */
-  private final String viewtype = "standard";
+  private final String viewtype = "social";
+
+  /** 表示タイプ 通常アプリ */
+  public static final String STANDARD = "standard";
+
+  /** 表示タイプ ソーシャルアプリ */
+  public static final String SOCIAL = "social";
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)

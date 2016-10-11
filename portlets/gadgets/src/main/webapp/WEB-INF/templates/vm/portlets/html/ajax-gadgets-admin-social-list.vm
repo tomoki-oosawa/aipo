@@ -21,7 +21,7 @@
 #set ($addApp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")))
 #set ($linkContainer = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsContainerAdminFormScreen').addQueryData('entityid','edit'))
 #set ($linkPsml = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsPsmlFormScreen'))
-#set ($screen = "GadgetsAdminListScreen")
+#set ($screen = "GadgetsAdminSocialListScreen")
 ## ---------------------------------------------------------------------------
 #if(${client}=="IPHONE")
 #AUIcontentsAreaHeader()
