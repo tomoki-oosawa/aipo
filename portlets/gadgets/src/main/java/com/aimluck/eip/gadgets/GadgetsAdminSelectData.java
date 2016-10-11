@@ -178,7 +178,8 @@ public class GadgetsAdminSelectData extends
         allPortlets,
         status);
     // ふりわけ
-    // String parent = portlets.get(0).getParent();
+    // socialアプリをはずす
+    portlets.removeIf(portlet -> portlet.getParent().equals("GadgetsTemplate"));
 
     return new ResultList<PortletEntry>(
       buildPaginatedListPortletEntry(portlets),
