@@ -34,19 +34,22 @@
 </div>
 
 
+
+
+<div class="floatRight clearfix relative">
+<div class="floatLeft auiSelectButton">
+<ul>
+#set($tab = [$l10n.GADGETS_VIEWTYPE_STANDARD, "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = [$l10n.GADGETS_VIEWTYPE_SOCIAL, "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminSocialListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+</div>
+<div class="floatRight" style="margin-left: 10px;margin-bottom:10px">
 #AUIconfigheader($!{portlet.ID} "14em")
 #AUIconfigitem($l10n.GADGETS_DO_SET_APPSETTING $linkPsml)
 #AUIconfigitem($l10n.GADGETS_DO_SET_CONTAINER $linkContainer)
 #AUIconfigfooter()
-
-<div class="floatRight clearfix relative">
-<div class="auiSelectButton">
-<ul>
-#set($tab = ["a", "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$!result.Viewtype</span></a></li>
-#set($tab = ["bb", "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminSocialListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$!result.Viewtype</span></a></li>
-</ul>
 </div>
 </div>
 #AUISummaryDivfooter()
@@ -72,9 +75,9 @@
 #AUISummaryDiv()
 <form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
 <select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","all").addQueryData("filtertype","status"))">$l10n.GADGETS_ALL_APP</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>$l10n.GADGETS_ENABLE_APP</option>
-<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminListScreen").addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>$l10n.GADGETS_DISABLE_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","all").addQueryData("filtertype","status"))">$l10n.GADGETS_ALL_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>$l10n.GADGETS_ENABLE_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>$l10n.GADGETS_DISABLE_APP</option>
 </select>
 #ALformfooter()
 <div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
@@ -137,7 +140,7 @@
 #AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
 </div>
-#AUIajaxpageview('GadgetsAdminListScreen' $result)
+#AUIajaxpageview($screen $result)
 #AUISummaryDivfooter()
 #ALformfooter()
 #end
