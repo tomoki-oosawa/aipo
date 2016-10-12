@@ -142,7 +142,8 @@ public class MessageListSelectData extends
         keyword.getValue(),
         cursor,
         MESSAGE_LIMIT,
-        latest);
+        latest,
+        historyLastMessageId);
     }
   }
 

@@ -55,6 +55,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.util.ALEipUtils;
@@ -653,11 +654,12 @@ public class MessageRoomFormData extends ALAbstractFormData {
         int param = rundata.getParameters().getInt("latest");
         boolean latest = (param == 1);
 
-        int history_last_message_id =
-          MessageUtils
-            .getMessageList(roomId, cursor, limit, latest, userId)
-            .get(0)
-            .getMessageId();
+        ResultList<EipTMessage> messageList =
+          MessageUtils.getMessageList(roomId, cursor, limit, latest, userId);
+        if (messageList.size() == 0) {
+          return true;
+        }
+        int history_last_message_id = messageList.get(0).getMessageId();
 
         @SuppressWarnings("unchecked")
         List<EipTMessageRoomMember> members = model.getEipTMessageRoomMember();

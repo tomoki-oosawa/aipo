@@ -98,7 +98,9 @@ public class MessageListScreen extends ALVelocityScreen {
         EipTMessageRoomMember member =
           MessageUtils.getRoomMember(room.getRoomId(), userId);
         Integer historyLastMessageId = member.getHistoryLastMessageId();
-        listData.setHistoryLastMessageId(historyLastMessageId);
+        if (historyLastMessageId != null) {
+          listData.setHistoryLastMessageId(historyLastMessageId);
+        }
       }
       listData.initField();
       listData.doViewList(this, rundata, context);

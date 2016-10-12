@@ -307,7 +307,8 @@ public class MessageUtils {
         MessageListSelectData.MESSAGE_LIMIT / 2,
         true,
         true,
-        true);
+        true,
+        0);
     ResultList<EipTMessage> resultListBottom =
       getMessageList(
         roomList,
@@ -316,14 +317,16 @@ public class MessageUtils {
         MessageListSelectData.MESSAGE_LIMIT / 2,
         false,
         false,
-        false);
+        false,
+        0);
     resultListTop.addAll(resultListBottom);
     return new ResultList<EipTMessage>(resultListTop, -1, -1, resultListTop
       .size());
   }
 
   public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
-      String keyword, int cursor, int limit, boolean isLatest) {
+      String keyword, int cursor, int limit, boolean isLatest,
+      int history_last_message_id) {
     return getMessageList(
       roomList,
       keyword,
@@ -331,12 +334,13 @@ public class MessageUtils {
       limit,
       isLatest,
       false,
-      false);
+      false,
+      history_last_message_id);
   }
 
   public static ResultList<EipTMessage> getMessageList(List<Integer> roomList,
       String keyword, int cursor, int limit, boolean isLatest,
-      boolean isReverse, boolean isEquals) {
+      boolean isReverse, boolean isEquals, int historyLastMessageId) {
     StringBuilder select = new StringBuilder();
 
     boolean isSearch = (keyword != null && keyword.length() > 0);
@@ -371,6 +375,9 @@ public class MessageUtils {
       body.append(roomId);
     }
     body.append(") ");
+    if (historyLastMessageId > 0) {
+      body.append(" and t1.message_id > #bind($historyLastMessageId) ");
+    }
     if (cursor > 0) {
       if (isLatest) {
         if (isEquals) {
@@ -407,6 +414,9 @@ public class MessageUtils {
       Database.sql(EipTMessage.class, select.toString()
         + body.toString()
         + last.toString());
+    if (historyLastMessageId > 0) {
+      query.param("historyLastMessageId", historyLastMessageId);
+    }
     if (cursor > 0) {
       query.param("cursor", cursor);
     }
@@ -448,7 +458,15 @@ public class MessageUtils {
     List<Integer> tmpRoomIdList = new ArrayList<Integer>();
     tmpRoomIdList.add(roomId);
     ResultList<EipTMessage> lastMessage =
-      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 1, true, false, true);
+      MessageUtils.getMessageList(
+        tmpRoomIdList,
+        null,
+        0,
+        1,
+        true,
+        false,
+        true,
+        0);
 
     if (lastMessage.size() == 0) {
       return null;
@@ -461,7 +479,15 @@ public class MessageUtils {
     List<Integer> tmpRoomIdList = new ArrayList<Integer>();
     tmpRoomIdList.add(roomId);
     ResultList<EipTMessage> lastMessage =
-      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 2, true, false, true);
+      MessageUtils.getMessageList(
+        tmpRoomIdList,
+        null,
+        0,
+        2,
+        true,
+        false,
+        true,
+        0);
 
     return lastMessage;
 
