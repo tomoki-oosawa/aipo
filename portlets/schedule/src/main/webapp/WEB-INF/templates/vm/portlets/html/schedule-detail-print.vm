@@ -156,11 +156,29 @@ ${record.FacilityName}<br/>
 #end
 #ALtditemfooter()
 
+#* 添付ファイル（ここから）  *#
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.SCHEDULE_FILE_ATTACH)
+#ALtditemheader()
+<ul>
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+<li>$attachmentFile.FileName</li>
+#if($attachmentFile.isImage())
+<div id='popc' style='position:absolute'></div>
+<div class="thumbBlock">
+	<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ScheduleFileThumbnailScreen").addQueryData("ownerid",  $attachmentFile.UserId).addQueryData("entityid", $entityid).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+</div>
+#end
+#end
+</ul>
+#ALtditemfooter()
+#end
+#* 添付ファイル（ここまで）  *#
+
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditem("$!{result.Detail.CreateUser.AliasName} （$!{result.Detail.CreateDate.toString($l10n.SCHEDULE_SIMPLE_DATE_FORMAT_DAY)}）")
 #ALtdcaption($l10n.COMMON_UPDATE_USER)
 #ALtditem("$!{result.Detail.UpdateUser.AliasName} （$!{result.Detail.UpdateDate.toString($l10n.SCHEDULE_PERIOD)}）")
-
 
 </tbody></table>
 </div>

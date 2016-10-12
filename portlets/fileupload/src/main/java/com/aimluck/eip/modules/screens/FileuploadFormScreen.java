@@ -96,6 +96,8 @@ public class FileuploadFormScreen extends ALVelocityScreen {
     } else {
       layout_template = "layouts/html/fileupload-mini.vm";
       context.put("contentTemplate", getContentTemplateMini());
+      boolean isFirefox = ALEipUtils.isFirefoxBrowser(rundata);
+      context.put("isFirefox", Boolean.valueOf(isFirefox));
     }
     setTemplate(rundata, context, layout_template);
   }

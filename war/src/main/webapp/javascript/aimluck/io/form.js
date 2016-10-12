@@ -658,7 +658,6 @@ aimluck.io.createOptions = function (selectId, params) {
     load: function (response, ioArgs) {
       var select = dojo.byId(selectId);
       select.options.length = 0;
-
       if (typeof pre == "undefined") {
       } else {
         aimluck.io.addOption(select, pre["key"], pre["value"], false);

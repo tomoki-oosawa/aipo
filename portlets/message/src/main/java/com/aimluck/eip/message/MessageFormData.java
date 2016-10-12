@@ -54,6 +54,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -356,6 +357,27 @@ public class MessageFormData extends ALAbstractFormData {
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
             recipients.add(member.getLoginName());
+          }
+        }
+      }
+
+      // lastMessageが削除される場合、lastMessageの更新フラグを立てる
+      if (room != null && room.getRoomId() != null) {
+        ResultList<EipTMessage> last2Messages =
+          MessageUtils.getLast2Messages(room.getRoomId());
+        if (last2Messages != null && last2Messages.size() > 0) {
+          Integer lastMessageId = last2Messages.get(0).getMessageId();
+          // lastMessageが削除された場合、新しいlastMessageに更新する
+          if (message.getMessageId().equals(lastMessageId)) {
+            if (last2Messages.size() == 2) {
+              room.setLastMessage(ALCommonUtils.compressString(last2Messages
+                .get(1)
+                .getMessage(), 100));
+            } else {
+              room.setLastMessage(ALCommonUtils.compressString(null, 100));
+            }
+            Date now = new Date();
+            room.setLastUpdateDate(now);
           }
         }
       }

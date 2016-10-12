@@ -60,6 +60,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -443,6 +444,29 @@ public class MessageUtils {
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
   }
 
+  public static EipTMessage getLastMessage(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 1, true, false, true);
+
+    if (lastMessage.size() == 0) {
+      return null;
+    }
+    return lastMessage.get(0);
+
+  }
+
+  public static ResultList<EipTMessage> getLast2Messages(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 2, true, false, true);
+
+    return lastMessage;
+
+  }
+
   public static List<Integer> getRoomIds(int userId) {
     StringBuilder select = new StringBuilder();
 
@@ -518,10 +542,10 @@ public class MessageUtils {
     if (isSearch) {
       if (isMySQL) {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT(t4.last_name,t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT( (case when t4.login_name='admin' then #bind($alias) else t4.last_name end) ,t4.first_name) like #bind($keyword))) ");
       } else {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and (t4.last_name || t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and ( (case when t4.login_name='admin' then #bind($alias) else t4.last_name end) || t4.first_name) like #bind($keyword))) ");
       }
     }
 
@@ -535,6 +559,7 @@ public class MessageUtils {
         .param("user_id", Integer.valueOf(userId));
     if (isSearch) {
       countQuery.param("keyword", "%" + keyword + "%");
+      countQuery.param("alias", ALOrgUtilsService.getAlias());
     }
 
     int countValue = 0;
@@ -570,6 +595,7 @@ public class MessageUtils {
         Integer.valueOf(userId));
     if (isSearch) {
       query.param("keyword", "%" + keyword + "%");
+      query.param("alias", ALOrgUtilsService.getAlias());
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();

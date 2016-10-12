@@ -2125,4 +2125,10 @@ $!{record.Date.Day}
       <img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
      #end
   #end
- #end
+#end
+
+#macro(ALSelectGroupDummy)
+  #if(${client.equals("IPHONE")} && (${clientVer.equals("9")} || ${clientVer.equals("1")}))
+  <optgroup disabled class="dummy" style="display: none;"></optgroup>
+  #end
+#end

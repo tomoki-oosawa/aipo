@@ -245,7 +245,7 @@ public class ALActionAccessControlHandler extends ALAccessControlHandler {
 
   /**
    * ACLの登録（ここではコミット処理はしない）
-   * 
+   *
    */
   @Override
   public void insertDefaultRole(int uid) throws Exception {

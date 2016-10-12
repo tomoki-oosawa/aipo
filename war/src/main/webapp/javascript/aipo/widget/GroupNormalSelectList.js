@@ -43,7 +43,10 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     templateString:"<div id=\"${widgetId}\" widgetId=\"${widgetId}\"><table class=\"none\"><tr><td><div id=\"groupPopupDiv\"><div class=\"outer\"><div class=\"popup\" style=\"width:335px\"><div class=\"clearfix\"><div class=\"memberlistToTop\">${memberToTitle}</div><div class=\"memberlistFromTop\">${memberFromTitle}</div></div><div class=\"clearfix mb5\"><div class=\"memberlistToBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberToId}\" id=\"${memberToId}\"></select></div><div class=\"memberlistFromBody\"><select size=\"5\" multiple=\"multiple\" style=\"width:100%\" name=\"${memberFromId}\" id=\"${memberFromId}\"></select></div></div><div class=\"clearfix\"><div class=\"memberlistToBottom\"><div class=\"alignright\"><input id=\"${buttonRemoveId}\" name=\"${buttonRemoveId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.DELETEBTN_STR+"\" dojoAttachEvent=\"onclick:onMemberRemoveClick\"/></div></div><div class=\"memberlistFromBottom\"><div class=\"alignright\"><input id=\"${buttonAddId}\" name=\"${buttonAddId}\" type=\"button\" class=\"button\" value=\""+nlsStrings.ADDBTN_STR+"\" dojoAttachEvent=\"onclick:onMemberAddClick\"/></div></div></div></div></div></div></td></tr></table></div>\n",
     postCreate: function(){
         this.id = this.widgetId;
-
+        // iphone9系,10系において先頭のoptionタグが勝手に選択されてしまう問題対策
+        if (aipo.userAgent.isIphone9or10()){
+          this.addDummyOptGroup();
+        }
         params = {
           url: this.memberFromUrl,
           key: this.memberFromOptionKey,
@@ -53,6 +56,28 @@ dojo.declare("aipo.widget.GroupNormalSelectList", [dijit._Widget, dijit._Templat
     },
     addOption:function(select, value, text, is_selected) {
       aimluck.io.addOption(select, value, text, is_selected);
+    },
+    addDummyOptGroup:function() {
+      var addDummy = function(select) {
+        var flag = true;
+        if(select.children.length > 0) {
+          var head = select.children[0];
+          flag = !(head.nodeName == "OPTGROUP" && head.children.length == 0);
+        }
+        if(flag) {
+          var dummy = document.createElement("optgroup");
+          dummy.disabled = 'true';
+          dummy.style.display = 'none';
+          dummy.classList.add('dummy');
+          if (document.all) {
+            select.add(dummy, 0);
+          } else {
+            select.insertBefore(dummy, select.options[0]);
+          }
+        }
+      };
+      addDummy(dojo.byId(this.memberToId));
+      addDummy(dojo.byId(this.memberFromId));
     },
     addOptionSync:function(value, text, is_selected) {
       var select = dojo.byId(this.memberToId);
