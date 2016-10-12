@@ -666,6 +666,22 @@ public class ALSessionValidator extends TemplateSessionValidator {
       } catch (Throwable ignore) {
 
       }
+      if (lastPasswordLogin == null) {
+        try {
+          String lastLoginValue = rundata.getCookies().get("lastlogin");
+          if (lastLoginValue != null) {
+            String decrypt =
+              ALCommonUtils.decrypt(JetspeedResources.getString(
+                "aipo.cookie.encryptKey",
+                "secureKey"), ALCommonUtils.decodeBase64(lastLoginValue));
+            if (decrypt != null) {
+              lastPasswordLogin = new Date(Long.valueOf(decrypt).longValue());
+            }
+          }
+        } catch (Throwable ignore) {
+
+        }
+      }
       Date passwordChanged = tuser.getPasswordChanged();
       if (passwordChanged != null) {
         if (lastPasswordLogin == null) {
@@ -673,7 +689,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
           try {
             String start =
               JetspeedResources.getString(
-                "password.changed.logout.start",
+                "aipo.passwordChanged.logout.start",
                 "2016-10-11");
             lastPasswordLogin = sdf.parse(start);
           } catch (ParseException ignore) {
