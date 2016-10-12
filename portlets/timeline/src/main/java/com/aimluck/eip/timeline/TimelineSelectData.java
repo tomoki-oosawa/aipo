@@ -157,6 +157,9 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
 
+  /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
+  private boolean hasTodoOtherAclList;
+
   /**
    *
    * @param action
@@ -238,6 +241,13 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasTodoOtherAclListの権限チェック **/
+      hasTodoOtherAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -510,6 +520,16 @@ public class TimelineSelectData extends
       }
     }
 
+    /* ToDo（他ユーザーのToDo）の権限を持っていない場合、listからTodoの情報を削除 */
+    if (!hasTodoOtherAclList) {
+      for (int i = list.size() - 1; i >= 0; i--) {
+        if (list.get(i).getAppId().equals("ToDo")
+          && !list.get(i).getOwnerId().equals(uid)) {
+          list.remove(i);
+        }
+      }
+    }
+
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
@@ -569,6 +589,7 @@ public class TimelineSelectData extends
     }
 
     removePrivateMsgboardTopic(list);
+    // removePrivateTodo(list);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -996,6 +1017,102 @@ public class TimelineSelectData extends
     list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
       .contains(Integer.parseInt(obj.getExternalId()))));
 
+  }
+
+  // 161012_tk
+  private void removePrivateTodo(List<EipTTimeline> list) {
+
+    if (!hasAclTopicList) {
+      list.removeIf(obj -> (obj.getAppId().equals("ToDo")));
+      return;
+    }
+
+    /* listから自分が関係しないToDoの情報を削除 */
+
+    List<Integer> ids = new ArrayList<Integer>();
+    for (EipTTimeline obj : list) {
+      if ("Msgboard".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
+    }
+    if (ids.size() == 0) {
+      return;
+    }
+
+    // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTMsgboardTopic> topicList = null;
+    {
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(0));
+      query.setQualifier(exp1);
+
+      // アクセス制御
+      Expression exp01 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "O");
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "A");
+
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(uid));
+
+      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+        .andExp(exp12)));
+
+      Expression exp001 =
+        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
+      query.andQualifier(exp001);
+
+      query.distinct(true);
+
+      topicList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> topicIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic obj : topicList) {
+      topicIdList.add(obj.getTopicId());
+    }
+    // listのなかでIDがtopicIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
+
+    // kokomade
   }
 
   /**
