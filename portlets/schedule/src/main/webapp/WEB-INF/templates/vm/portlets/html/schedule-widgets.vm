@@ -50,8 +50,8 @@
     	</th>
     	</tr>
     	<tr class="week">
-    		#foreach($test in  $!{result.WeekRevised})
-    			<td>$test</td>
+    		#foreach($dayOfWeekStr in  $!{result.WeekRevised})
+    			<td #if($dayOfWeekStr==$l10n.SCHEDULE_SATURDAY) class='saturday' #elseif($dayOfWeekStr==$l10n.SCHEDULE_SUNDAY) class='sunday' #end>$dayOfWeekStr</td>
     		#end
     	</tr>
     	#set($entityids = "")

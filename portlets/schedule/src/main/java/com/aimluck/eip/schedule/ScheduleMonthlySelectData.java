@@ -205,7 +205,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     currentMonth.setValue(to.getTime());
 
     // 週の始まり
-    start_day_of_week =
+    startDayOfWeek =
       Integer.parseInt(ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
@@ -257,7 +257,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     Calendar cal = Calendar.getInstance();
     cal.setTime(viewMonth.getValue());
     // 週の始まり（月間）の設定に応じて表示開始日時を変更する
-    shiftCalToMatchStartDayOfWeek(cal, start_day_of_week);
+    shiftCalToMatchStartDayOfWeek(cal, startDayOfWeek);
 
     viewStart.setValue(cal.getTime());
 

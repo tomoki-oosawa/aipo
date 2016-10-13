@@ -61,13 +61,13 @@ public class AjaxScheduleMonthlySelectData extends
   /** <code>nextMonth</code> 表示されている日 */
   private ALDateTimeField viewStart;
 
-  /** <code>startDayOfWeek</code> 週の始まり(月間) */
-  protected int start_day_of_week;
+  /** <code>startDayOfWeek</code> 週の始まり(月間)　日:1,月:2,火:3,水:4,木:5,金:6,土:7 */
+  protected int startDayOfWeek;
 
   /** <code>weekRevised</code> 月間スケジュール用の週初めの曜日から始まる曜日の文字列のリスト */
   private List<String> weekRevised;
 
-  private final String[] weekday_str = {
+  private final String[] dayOfWeekStr = {
     "",
     ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY"),
     ALLocalizationUtils.getl10n("SCHEDULE_MONDAY"),
@@ -178,7 +178,7 @@ public class AjaxScheduleMonthlySelectData extends
     }
 
     // 週の始まり
-    start_day_of_week =
+    startDayOfWeek =
       Integer.parseInt(ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
@@ -190,7 +190,7 @@ public class AjaxScheduleMonthlySelectData extends
     // 表示開始日時
     cal.setTime(viewMonth.getValue());
     // 週の始まり（月間）の設定に応じて表示開始日時を変更する
-    shiftCalToMatchStartDayOfWeek(cal, start_day_of_week);
+    shiftCalToMatchStartDayOfWeek(cal, startDayOfWeek);
 
     // 月間スケジュールコンテナの初期化
     try {
@@ -211,28 +211,33 @@ public class AjaxScheduleMonthlySelectData extends
 
     // 週初めの曜日に合わせて文字列リスト作成
     weekRevised = new ArrayList<String>();
-    // weekRevised = new ArrayList<String>();
-    int tmpStartDayOfWeek = start_day_of_week;
-    do {
-      weekRevised.add(weekday_str[tmpStartDayOfWeek]);
-      tmpStartDayOfWeek = tmpStartDayOfWeek % 7;
-      tmpStartDayOfWeek++;
-    } while (tmpStartDayOfWeek != start_day_of_week);
+    for (int i = 0; i < Calendar.DAY_OF_WEEK; i++) {
+      int dayOfWeek = startDayOfWeek + i;
+      if (dayOfWeek > Calendar.DAY_OF_WEEK) {
+        dayOfWeek = dayOfWeek % Calendar.DAY_OF_WEEK;
+      }
+      weekRevised.add(dayOfWeekStr[dayOfWeek]);
+    }
   }
 
   /**
    * 週の始まり（月間）の設定に応じて表示開始日時(cal)を変更する
    *
+   * 例：木曜始まりの月(dayofweek=5)で、 週の始まり（月間）の設定が土曜（startDayOfWeek=7）の場合、
+   * diff=-5+7=2なので、calを+2ずらせば、土曜始まりの表示開始日時になる。
+   * しかし、+2すると今月の一日と二日が表示されなくなるので、diffが正のときには、diff-7=-5ずらす。
+   *
    * @param cal
-   * @param start_day_of_week
+   * @param startDayOfWeek
+   *
    */
-  protected void shiftCalToMatchStartDayOfWeek(Calendar cal,
-      int start_day_of_week) {
+  protected void shiftCalToMatchStartDayOfWeek(Calendar cal, int startDayOfWeek) {
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    if ((-dayofweek) + start_day_of_week > 0) {
-      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
+    int diff = -dayofweek + startDayOfWeek;
+    if (diff > 0) {
+      cal.add(Calendar.DATE, diff - 7);
     } else {
-      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week));
+      cal.add(Calendar.DATE, diff);
     }
   }
 
@@ -352,7 +357,7 @@ public class AjaxScheduleMonthlySelectData extends
    * @return
    */
   public int getStartDayOfWeek() {
-    return start_day_of_week;
+    return startDayOfWeek;
   }
 
   /**

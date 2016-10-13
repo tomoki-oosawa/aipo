@@ -125,8 +125,8 @@
 #end
 
 <tr>
-	#foreach($test in  $!{result.WeekRevised})
-		<th #if($velocityCount==((8-$!{result.StartDayOfWeek})%7)+1) class='sunday' #elseif($velocityCount==((7-$!{result.StartDayOfWeek})%7)+1) class='saturday' #end style="width:14.3%" nowrap="nowrap">$test</th>
+	#foreach($dayOfWeekStr in  $!{result.WeekRevised})
+		<th #if($dayOfWeekStr==$l10n.SCHEDULE_SATURDAY) class='saturday' #elseif($dayOfWeekStr==$l10n.SCHEDULE_SUNDAY) class='sunday' #end style="width:14.3%" nowrap="nowrap">$dayOfWeekStr</th>
 	#end
 </tr>
 
