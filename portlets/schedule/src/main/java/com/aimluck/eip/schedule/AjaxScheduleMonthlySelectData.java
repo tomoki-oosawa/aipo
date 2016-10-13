@@ -61,10 +61,10 @@ public class AjaxScheduleMonthlySelectData extends
   /** <code>nextMonth</code> 表示されている日 */
   private ALDateTimeField viewStart;
 
-  /** <code>startDayOfWeek</code> 週初めの曜日 */
+  /** <code>startDayOfWeek</code> 週の始まり(月間) */
   protected int start_day_of_week;
 
-  /** <code>weekRevised</code> 週初めの曜日から始まる曜日の文字列のリスト */
+  /** <code>weekRevised</code> 月間スケジュール用の週初めの曜日から始まる曜日の文字列のリスト */
   private List<String> weekRevised;
 
   private final String[] weekday_str = {
@@ -177,34 +177,20 @@ public class AjaxScheduleMonthlySelectData extends
         .toString());
     }
 
-    // 今日
-    Calendar cal = Calendar.getInstance();
-    today.setValue(cal.getTime());
-
+    // 週の始まり
     start_day_of_week =
       Integer.parseInt(ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
         .getInitParameter("z1a-rows"));
 
+    // 今日
+    Calendar cal = Calendar.getInstance();
+    today.setValue(cal.getTime());
     // 表示開始日時
     cal.setTime(viewMonth.getValue());
-    int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
-    if ((-dayofweek) + start_day_of_week > 0) {
-      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
-    } else {
-      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week));
-    }
-
-    // 週初めの曜日に合わせて文字列リスト作成
-    weekRevised = new ArrayList<String>();
-    // weekRevised = new ArrayList<String>();
-    int tmpStartDayOfWeek = start_day_of_week;
-    do {
-      weekRevised.add(weekday_str[tmpStartDayOfWeek]);
-      tmpStartDayOfWeek = tmpStartDayOfWeek % 7;
-      tmpStartDayOfWeek++;
-    } while (tmpStartDayOfWeek != start_day_of_week);
+    // 週の始まり（月間）の設定に応じて表示開始日時を変更する
+    shiftCalToMatchStartDayOfWeek(cal, start_day_of_week);
 
     // 月間スケジュールコンテナの初期化
     try {
@@ -222,6 +208,32 @@ public class AjaxScheduleMonthlySelectData extends
     nextMonth.setValue(cal2.getTime());
     cal2.add(Calendar.MONTH, -2);
     prevMonth.setValue(cal2.getTime());
+
+    // 週初めの曜日に合わせて文字列リスト作成
+    weekRevised = new ArrayList<String>();
+    // weekRevised = new ArrayList<String>();
+    int tmpStartDayOfWeek = start_day_of_week;
+    do {
+      weekRevised.add(weekday_str[tmpStartDayOfWeek]);
+      tmpStartDayOfWeek = tmpStartDayOfWeek % 7;
+      tmpStartDayOfWeek++;
+    } while (tmpStartDayOfWeek != start_day_of_week);
+  }
+
+  /**
+   * 週の始まり（月間）の設定に応じて表示開始日時(cal)を変更する
+   *
+   * @param cal
+   * @param start_day_of_week
+   */
+  protected void shiftCalToMatchStartDayOfWeek(Calendar cal,
+      int start_day_of_week) {
+    int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
+    if ((-dayofweek) + start_day_of_week > 0) {
+      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
+    } else {
+      cal.add(Calendar.DATE, (-dayofweek + start_day_of_week));
+    }
   }
 
   /**
@@ -334,6 +346,20 @@ public class AjaxScheduleMonthlySelectData extends
     return viewStart;
   }
 
+  /**
+   * 週の始まり(月間)を取得します
+   *
+   * @return
+   */
+  public int getStartDayOfWeek() {
+    return start_day_of_week;
+  }
+
+  /**
+   * 月間スケジュール用の、週初めの曜日から始まる曜日の文字列のリストを取得します
+   *
+   * @return
+   */
   public List<String> getWeekRevised() {
     return weekRevised;
   }

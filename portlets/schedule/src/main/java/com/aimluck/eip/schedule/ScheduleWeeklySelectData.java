@@ -111,9 +111,6 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
   /** ポートレット ID */
   private String portletId;
 
-  /** <code>startDayOfWeek</code> 週初めの曜日 */
-  protected int start_day_of_week;
-
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
@@ -199,12 +196,6 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
     }
     // MonthlyCalendarに表示する月を登録
     this.setMonthlyCalendarViewMonth(viewStart.getYear(), viewStart.getMonth());
-
-    start_day_of_week =
-      Integer.parseInt(ALEipUtils
-        .getPortlet(rundata, context)
-        .getPortletConfig()
-        .getInitParameter("z1a-rows"));
 
     Calendar cal2 = Calendar.getInstance();
     cal2.setTime(viewStart.getValue());
