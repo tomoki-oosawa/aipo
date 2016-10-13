@@ -55,7 +55,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class GagetsPsmlFormData extends ALAbstractFormData {
 
@@ -88,7 +88,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
     "${webappRoot}/WEB-INF/conf/psml-mapping.xml";
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -112,7 +112,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化する
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -132,7 +132,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -143,7 +143,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -169,7 +169,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -182,7 +182,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -311,7 +311,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
                   entries[j].getParameter("p6a-uids");
                 if (scheduleParameter != null) {
                   scheduleParameter.setValue("");
-                  entries[j].setParameter(0, scheduleParameter);
+                  // entries[j].setParameter(0, scheduleParameter);
                 }
               }
 
@@ -346,7 +346,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -360,7 +360,7 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
 
   /**
    * CayenneDatabasePsmlManagerService.loadMapping()を踏襲
-   * 
+   *
    * @return
    * @throws InitializationException
    */
