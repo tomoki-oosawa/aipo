@@ -674,6 +674,8 @@ public class ALUserManagement extends TurbineBaseService implements
     user.setPassword(JetspeedSecurity.encryptPassword(newPassword));
 
     user.setPasswordChanged(new Date());
+    // パスワード変更時に自動ログインを解除する
+    user.setPerm(LOGIN_COOKIE_NAME, "");
 
     saveUser(user);
   }
@@ -690,6 +692,9 @@ public class ALUserManagement extends TurbineBaseService implements
         + "' does not exist");
     }
     user.setPassword(JetspeedSecurity.encryptPassword(password));
+    user.setPasswordChanged(new Date());
+    // パスワード変更時に自動ログインを解除する
+    user.setPerm(LOGIN_COOKIE_NAME, "");
     saveUser(user);
   }
 
