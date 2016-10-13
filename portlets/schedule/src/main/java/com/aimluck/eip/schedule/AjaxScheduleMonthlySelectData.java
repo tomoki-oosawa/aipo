@@ -188,9 +188,7 @@ public class AjaxScheduleMonthlySelectData extends
         .getInitParameter("z1a-rows"));
 
     // 表示開始日時
-    Calendar tmpCal = Calendar.getInstance();
     cal.setTime(viewMonth.getValue());
-    tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
     if ((-dayofweek) + start_day_of_week > 0) {
       cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
@@ -212,7 +210,7 @@ public class AjaxScheduleMonthlySelectData extends
     try {
       monthCon = new ScheduleMonthContainer();
       monthCon.initField();
-      monthCon.setViewMonth(cal, tmpCal);
+      monthCon.setViewMonth(cal);
     } catch (Exception e) {
       // logger.error("schedule", e);
     }

@@ -46,7 +46,7 @@ public class ScheduleMonthContainer implements ALData {
    *
    * @param cal
    */
-  public void setViewMonth(Calendar cal, Calendar vcal) {
+  public void setViewMonth(Calendar cal) {
     for (int i = 1; i <= 6; i++) {
       // 日付を7日ずつずらす
       ScheduleWeekContainer con = new ScheduleWeekContainer();

@@ -271,9 +271,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     // 表示開始日時
     Calendar cal = Calendar.getInstance();
     // cal.add(field, amount);
-    Calendar tmpCal = Calendar.getInstance();
     cal.setTime(viewMonth.getValue());
-    tmpCal.setTime(viewMonth.getValue());
     int dayofweek = cal.get(Calendar.DAY_OF_WEEK);
     if ((-dayofweek) + start_day_of_week > 0) {
       cal.add(Calendar.DATE, (-dayofweek + start_day_of_week) - 7);
@@ -295,28 +293,24 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
     Calendar cal4 = Calendar.getInstance();
     cal4.setTime(cal.getTime());
-    Calendar tmpCal4 = Calendar.getInstance();
-    tmpCal4.setTime(tmpCal.getTime());
 
     Calendar cal5 = Calendar.getInstance();
     cal5.setTime(cal.getTime());
-    Calendar tmpCal5 = Calendar.getInstance();
-    tmpCal5.setTime(tmpCal.getTime());
 
     // 月間スケジュールコンテナの初期化
 
     try {
       termMonthCon = new ScheduleTermMonthContainer();
       termMonthCon.initField();
-      termMonthCon.setViewMonth(cal4, tmpCal4);
+      termMonthCon.setViewMonth(cal4);
 
       monthCon = new ScheduleMonthContainer();
       monthCon.initField();
-      monthCon.setViewMonth(cal, tmpCal);
+      monthCon.setViewMonth(cal);
 
       monthTodoCon = new ScheduleToDoMonthContainer();
       monthTodoCon.initField();
-      monthTodoCon.setViewMonth(cal5, tmpCal5);
+      monthTodoCon.setViewMonth(cal5);
     } catch (Exception e) {
       logger.error("schedule", e);
     }
@@ -1386,6 +1380,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    *
    * @return
    */
+  @Override
   public List<String> getWeekRevised() {
     return weekRevised;
   }
