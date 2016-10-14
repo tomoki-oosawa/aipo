@@ -733,6 +733,7 @@ public class AccountEditFormData extends ALAbstractFormData {
         currentUser.setPassword(user.getPassword());
         currentUser.setHasPhoto(user.hasPhotoString());
         currentUser.setPhotoModified(user.getPhotoModified());
+        currentUser.setPasswordChanged(user.getPasswordChanged());
       }
 
       // イベントログに保存
