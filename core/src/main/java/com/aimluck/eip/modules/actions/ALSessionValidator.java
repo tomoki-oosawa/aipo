@@ -699,7 +699,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
           }
         }
         if (lastPasswordLogin != null) {
-          return !lastPasswordLogin.after(passwordChanged);
+          return lastPasswordLogin.after(passwordChanged);
         }
       }
     }
