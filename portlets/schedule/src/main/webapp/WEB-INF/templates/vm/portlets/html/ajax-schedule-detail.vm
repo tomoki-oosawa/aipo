@@ -81,8 +81,12 @@ $!{result.Detail.Date}
 #end
 #* 共有カテゴリ連携（ここまで）  *#
 
+#*以下詳細画面の場所表示*#
 #ALtdcaption($l10n.SCHEDULE_PLACE)
-#ALtditem($!{result.Detail.PlaceHtml})
+##ALtditem($!{result.Detail.PlaceHtml})
+#ALtditemheader()
+<a href="http://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
+#ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
 #ALtdcaption($l10n.SCHEDULE_PUBLIC)
