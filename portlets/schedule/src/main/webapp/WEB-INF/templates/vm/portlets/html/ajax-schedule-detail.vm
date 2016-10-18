@@ -83,7 +83,6 @@ $!{result.Detail.Date}
 
 #*以下詳細画面の場所表示*#
 #ALtdcaption($l10n.SCHEDULE_PLACE)
-##ALtditem($!{result.Detail.PlaceHtml})
 #ALtditemheader()
 <a href="http://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
 #ALtditemfooter()
