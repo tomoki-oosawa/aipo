@@ -51,6 +51,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
+import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -589,7 +590,7 @@ public class TimelineSelectData extends
     }
 
     removePrivateMsgboardTopic(list);
-    // removePrivateTodo(list);
+    removePrivateTodo(list);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -1019,19 +1020,13 @@ public class TimelineSelectData extends
 
   }
 
-  // 161012_tk
   private void removePrivateTodo(List<EipTTimeline> list) {
 
-    if (!hasAclTopicList) {
-      list.removeIf(obj -> (obj.getAppId().equals("ToDo")));
-      return;
-    }
-
     /* listから自分が関係しないToDoの情報を削除 */
-
     List<Integer> ids = new ArrayList<Integer>();
+
     for (EipTTimeline obj : list) {
-      if ("Msgboard".equals(obj.getAppId())) {
+      if ("ToDo".equals(obj.getAppId())) {
         ids.add(Integer.parseInt(obj.getExternalId()));
       }
     }
@@ -1039,80 +1034,33 @@ public class TimelineSelectData extends
       return;
     }
 
-    // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
-    List<EipTMsgboardTopic> topicList = null;
+    // TodoSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTTodo> todoList = null;
     {
-      SelectQuery<EipTMsgboardTopic> query =
-        Database.query(EipTMsgboardTopic.class);
-
-      Expression exp1 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.PARENT_ID_PROPERTY,
-          Integer.valueOf(0));
-      query.setQualifier(exp1);
+      SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
       // アクセス制御
       Expression exp01 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-          "T");
-
-      Expression exp02 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
-            + "."
-            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
-          "O");
-      Expression exp03 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
-            + "."
-            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
-          "A");
-
-      Expression exp11 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
-          "F");
-      Expression exp12 =
-        ExpressionFactory.matchExp(
-          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
-            + "."
-            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
-            + "."
-            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
-          Integer.valueOf(uid));
-
-      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-        .andExp(exp12)));
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+      query.setQualifier(exp01);
 
       Expression exp001 =
-        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
+        ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, ids);
       query.andQualifier(exp001);
 
       query.distinct(true);
 
-      topicList = query.fetchList();
+      todoList = query.fetchList();
     }
 
     // topicListからidを抜き出す
-    List<Integer> topicIdList = new ArrayList<Integer>();
-    for (EipTMsgboardTopic obj : topicList) {
-      topicIdList.add(obj.getTopicId());
+    List<Integer> todoIdList = new ArrayList<Integer>();
+    for (EipTTodo obj : todoList) {
+      todoIdList.add(obj.getTodoId());
     }
-    // listのなかでIDがtopicIdListに入っていないものを削除
-    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
+    // listのなかでIDがtodoIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("ToDo") && !todoIdList
       .contains(Integer.parseInt(obj.getExternalId()))));
-
-    // kokomade
   }
 
   /**
