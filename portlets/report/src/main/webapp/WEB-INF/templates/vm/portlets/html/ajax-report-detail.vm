@@ -23,7 +23,8 @@
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
+##ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
+#ALdialogheaderPrint("$l10n.REPORT_DETAIL" "$!portlet.ID" "ReportScreenPrint" "$!{result.getViewDate().toString()})")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>

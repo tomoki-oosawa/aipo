@@ -27,7 +27,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ワークフローのResultDataです。 <BR>
- * 
+ *
  */
 public class WorkflowDetailResultData extends WorkflowResultData {
 
