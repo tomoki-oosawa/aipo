@@ -311,7 +311,6 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
                   entries[j].getParameter("p6a-uids");
                 if (scheduleParameter != null) {
                   scheduleParameter.setValue("");
-                  // entries[j].setParameter(0, scheduleParameter);
                 }
               }
 
@@ -320,7 +319,6 @@ public class GagetsPsmlFormData extends ALAbstractFormData {
                   entries[j].getParameter("p3a-accounts");
                 if (webmailParameter != null) {
                   webmailParameter.setValue("");
-                  entries[j].setParameter(0, webmailParameter);
                 }
               }
 
