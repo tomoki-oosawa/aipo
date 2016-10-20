@@ -158,6 +158,9 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
 
+  /** アクセス権限の機能名（ToDo（自分のToDo））の一覧表示権限を持っているか */
+  private boolean hasTodoAclList;
+
   /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
   private boolean hasTodoOtherAclList;
 
@@ -242,6 +245,13 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasTodoAclListの権限チェック **/
+      hasTodoAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
       /** hasTodoOtherAclListの権限チェック **/
@@ -1011,6 +1021,11 @@ public class TimelineSelectData extends
   }
 
   private void removePrivateTodo(List<EipTTimeline> list) {
+
+    if (!hasTodoAclList) {
+      list.removeIf(obj -> (obj.getAppId().equals("ToDo")));
+      return;
+    }
 
     /* listから自分が関係しないToDoの情報を削除 */
     List<Integer> ids = new ArrayList<Integer>();
