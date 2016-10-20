@@ -126,7 +126,7 @@
 
 <tr>
 	#foreach($dayOfWeekStr in  $!{result.WeekRevised})
-		<th #if($dayOfWeekStr==$l10n.SCHEDULE_SATURDAY) class='saturday' #elseif($dayOfWeekStr==$l10n.SCHEDULE_SUNDAY) class='sunday' #end style="width:14.3%" nowrap="nowrap">$dayOfWeekStr</th>
+		<th #if($result.isHoliday($dayOfWeekStr)) class='holiday' #end style="width:14.3%" nowrap="nowrap">$dayOfWeekStr</th>
 	#end
 </tr>
 
@@ -156,13 +156,17 @@
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
-#end
-#if($!{record.isHoliday()})
+##ユーザーが設定した休日
+#elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
 #set ($color_style_holiday = " holiday")
+
+#end
+##祝日を休日にする設定かつ祝日
+#if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
+#set ($color_style_holiday = " holiday")
+#set ($holiday_name = "${record.Holiday.Name}")
+##祝日
+#elseif($!{record.isHoliday()})
 #set ($holiday_name = "${record.Holiday.Name}")
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
@@ -192,12 +196,11 @@
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
 
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
+##ユーザーが設定した休日
+#elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
+#set ($color_style_holiday = " holiday")
 #end
-#if($!{record.isHoliday()})
+#if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
@@ -246,12 +249,12 @@
 #end
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
+##ユーザーが設定した休日
+#elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
+#set ($color_style_holiday = " holiday")
+
 #end
-#if($!{record.isHoliday()})
+#if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
@@ -285,14 +288,18 @@ $!{record.ToDoResultData.TodoName}
 #set ($holiday_name = "")
 #if($!{result.Today.Value} == $!{record.Date.Value})
 #set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
+##ユーザーが設定した休日
+#elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
+#set ($color_style_holiday = " holiday")
 #end
-#if($!{record.isHoliday()})
+
+##祝日を休日にする設定でありかつ祝日である場合
+#if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
 #set ($holiday_name = "${record.Holiday.Name}")
+#elseif($!{record.isHoliday()})
+#set ($holiday_name = "${record.Holiday.Name}")
+
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = " off")

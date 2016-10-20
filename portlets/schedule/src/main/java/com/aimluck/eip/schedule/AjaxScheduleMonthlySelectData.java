@@ -33,6 +33,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -367,6 +368,23 @@ public class AjaxScheduleMonthlySelectData extends
    */
   public List<String> getWeekRevised() {
     return weekRevised;
+  }
+
+  /**
+   * 曜日の文字列（例："木"）から、その曜日が休日かどうかを判定する
+   *
+   * @param str
+   * @return
+   */
+  public boolean isHoliday(String str) {
+    for (int i = 0; i < dayOfWeekStr.length; i++) {
+      if (dayOfWeekStr[i].equals(str)) {
+        // 日曜の時:0,土曜の時:6を引数とするようにする
+        return ScheduleUtils.isUserHoliday(i - 1);
+      }
+    }
+    return false;
+
   }
 
 }
