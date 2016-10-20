@@ -1040,13 +1040,19 @@ public class TimelineSelectData extends
       SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
       // アクセス制御
+
       Expression exp01 =
-        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
-      query.setQualifier(exp01);
+        ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, ids);
 
       Expression exp001 =
-        ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, ids);
-      query.andQualifier(exp001);
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+
+      Expression exp002 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
+
+      // 更新情報にあるTODOの内、公開か自分が担当者のTODOのみ取得する
+      query.setQualifier(exp01.andExp(exp001.orExp(exp002)));
 
       query.distinct(true);
 
