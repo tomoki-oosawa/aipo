@@ -521,16 +521,6 @@ public class TimelineSelectData extends
       }
     }
 
-    /* ToDo（他ユーザーのToDo）の権限を持っていない場合、listからTodoの情報を削除 */
-    if (!hasTodoOtherAclList) {
-      for (int i = list.size() - 1; i >= 0; i--) {
-        if (list.get(i).getAppId().equals("ToDo")
-          && !list.get(i).getOwnerId().equals(uid)) {
-          list.remove(i);
-        }
-      }
-    }
-
     /* スケジュール（他ユーザーの予定）の権限を持っていない場合、listから自分が関係しないスケジュールの情報を削除 */
     if (!hasScheduleOtherAclList) {
       ArrayList<Integer> scheduleIdList = new ArrayList<Integer>();
@@ -1051,8 +1041,13 @@ public class TimelineSelectData extends
         ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, Integer
           .valueOf(uid));
 
-      // 更新情報にあるTODOの内、公開か自分が担当者のTODOのみ取得する
-      query.setQualifier(exp01.andExp(exp001.orExp(exp002)));
+      if (hasTodoOtherAclList) {
+        // 更新情報にあるTODOの内、公開されているTODOか自分が担当者のTODOのみ取得する
+        query.setQualifier(exp01.andExp(exp001.orExp(exp002)));
+      } else {
+        // 更新情報にあるTODOの内、自分が担当者のTODOのみ取得する(ToDo（他ユーザーのToDo）の権限を持っていない場合、listからTodoの情報を削除)
+        query.setQualifier(exp01.andExp(exp002));
+      }
 
       query.distinct(true);
 
