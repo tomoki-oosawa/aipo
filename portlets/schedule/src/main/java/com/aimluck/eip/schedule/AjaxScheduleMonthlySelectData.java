@@ -179,11 +179,17 @@ public class AjaxScheduleMonthlySelectData extends
     }
 
     // 週の始まり
-    startDayOfWeek =
-      Integer.parseInt(ALEipUtils
+    String startDayOfWeekStr =
+      ALEipUtils
         .getPortlet(rundata, context)
         .getPortletConfig()
-        .getInitParameter("z1a-rows"));
+        .getInitParameter("z1a-rows");
+    if (startDayOfWeekStr != null) {
+      startDayOfWeek = Integer.parseInt(startDayOfWeekStr);
+    } else {
+      // ガラケーの場合 日曜始まりにしておく
+      startDayOfWeek = 1;
+    }
 
     // 今日
     Calendar cal = Calendar.getInstance();
