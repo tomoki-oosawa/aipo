@@ -36,18 +36,8 @@
 <colgroup style="width:25%;"></colgroup>
 <colgroup style="width:75%;"></colgroup>
 <tbody>
-#ALtdcaption($l10n.WORKFLOW_FLOW_STATUS)
-#ALtditemheader()
-#if($!result.Detail.Progress.Value == "D")
-$l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK
-#else
-#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end
-#end
-#ALtditemfooter()
-#ALtdcaption($l10n.WORKFLOW_REQUEST_NAME)
-#ALtditemheader()
-$!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
-#ALtditemfooter()
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_REPORT_NAME)
+#ALtditem($!result.ParentReport.ReportName)
 #ALtdcaption($l10n.WORKFLOW_CREATEDATE)
 #ALtditem($!result.Detail.CreateDate)
 #ALtdcaption($l10n.WORKFLOW_PRIORITY_VALUE)
