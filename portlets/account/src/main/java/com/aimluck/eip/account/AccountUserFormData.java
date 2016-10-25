@@ -1170,6 +1170,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setHasPhotoSmartphone(user.hasPhotoSmartphoneString());
           currentUser.setPhotoModifiedSmartphone(user
             .getPhotoModifiedSmartphone());
+          currentUser.setPasswordChanged(user.getPasswordChanged());
         }
 
         // イベントログに保存
