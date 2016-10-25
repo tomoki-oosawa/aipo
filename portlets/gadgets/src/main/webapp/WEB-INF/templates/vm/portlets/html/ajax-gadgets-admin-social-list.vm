@@ -40,9 +40,9 @@
 <div class="floatLeft auiSelectButton">
 <ul>
 #set($tab = [$l10n.GADGETS_VIEWTYPE_STANDARD, "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:6em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 #set($tab = [$l10n.GADGETS_VIEWTYPE_SOCIAL, "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminSocialListScreen')"])
-<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:9em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:10em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
 </ul>
 </div>
 <div class="floatRight" style="margin-left: 10px;margin-bottom:10px">
