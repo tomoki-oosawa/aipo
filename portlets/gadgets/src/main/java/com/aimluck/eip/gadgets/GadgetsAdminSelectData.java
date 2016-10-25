@@ -177,8 +177,8 @@ public class GadgetsAdminSelectData extends
         mediaType,
         allPortlets,
         status);
-    // ふりわけ
-    // socialアプリをはずす
+
+    // リストからソーシャルアプリを削除
     portlets.removeIf(portlet -> portlet.getParent().equals("GadgetsTemplate"));
 
     return new ResultList<PortletEntry>(
