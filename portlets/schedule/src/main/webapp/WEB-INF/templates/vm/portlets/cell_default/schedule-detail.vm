@@ -46,6 +46,17 @@ $!{result.Detail.DateForCell}
 $l10n.SCHEDULE_SUB_CLOSE_PUBLIC
 #end
 #end
+#if($!{result.Detail.isRepeat()})
+#if($!{result.Detail.Shifting.toString()} == "D")
+$l10n.SCHEDULE_SUB_HOLIDAY_DELETE
+#elseif($!{result.Detail.Shifting.toString()} == "B")
+$l10n.SCHEDULE_SUB_HOLIDAY_BEFORE
+#elseif($!{result.Detail.Shifting.toString()} == "A")
+$l10n.SCHEDULE_SUB_HOLIDAY_AFTER
+#elseif($!{result.Detail.Shifting.toString()} == "N")
+$l10n.SCHEDULE_SUB_HOLIDAY_EXECUTE
+#end
+#end
 #if($!{result.Detail.isTmpreserve()})
 $l10n.SCHEDULE_SUB_TEMP
 #end

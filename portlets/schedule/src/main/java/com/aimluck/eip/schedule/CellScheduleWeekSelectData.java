@@ -55,8 +55,9 @@ public class CellScheduleWeekSelectData extends
     ALAbstractSelectData<List<EipTScheduleMap>, List<EipTScheduleMap>> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ScheduleWeeklySelectData.class.getName());
 
   private ALDateTimeField startDate;
 
@@ -142,8 +143,9 @@ public class CellScheduleWeekSelectData extends
     int userid = ALEipUtils.getUserId(rundata);
 
     Expression expm1 =
-      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-        .valueOf(userid));
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.USER_ID_PROPERTY,
+        Integer.valueOf(userid));
     Expression expm2 =
       ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
     Expression expm3 =
@@ -168,38 +170,54 @@ public class CellScheduleWeekSelectData extends
           cal.getTime());
       cal.add(Calendar.DAY_OF_MONTH, 1);
       Expression exp12 =
-        ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
+        ExpressionFactory.lessExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.START_DATE_PROPERTY,
+          cal.getTime());
       Expression exp13 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "N");
       Expression exp14 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "S");
       Expression exp10 = exp11.andExp(exp12.andExp(exp13.orExp(exp14)));
 
       Expression exp21 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "DN");
       Expression exp22 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "DL");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
       query.setQualifier((exp10.orExp(exp20)).andExp(mapExpression));
 
       List<Ordering> orders = new ArrayList<Ordering>();
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.START_DATE_PROPERTY, true));
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.END_DATE_PROPERTY, true));
+      orders.add(
+        new Ordering(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.START_DATE_PROPERTY,
+          true));
+      orders.add(
+        new Ordering(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.END_DATE_PROPERTY,
+          true));
       query.getQuery().addOrderings(orders);
 
       List<EipTScheduleMap> list = query.fetchList();
@@ -210,13 +228,17 @@ public class CellScheduleWeekSelectData extends
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     Expression exp2 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+        "N");
     Expression exp3 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+        "S");
 
     query.setQualifier(mapExpression.andExp(exp2).andExp(exp3));
     List<EipTScheduleMap> list = query.fetchList();
@@ -264,7 +286,7 @@ public class CellScheduleWeekSelectData extends
         if (pattern.substring(1, 3).equals("XX")) {
           day = cal_event.getActualMaximum(Calendar.DATE);
         } else {
-          day = Integer.parseInt(pattern.substring(1, pattern.length() - 2));
+          day = Integer.parseInt(pattern.substring(1, 3));
         }
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(startDate.getValue());
@@ -431,7 +453,8 @@ public class CellScheduleWeekSelectData extends
   }
 
   @Override
-  protected List<EipTScheduleMap> selectDetail(RunData rundata, Context context) {
+  protected List<EipTScheduleMap> selectDetail(RunData rundata,
+      Context context) {
     return null;
   }
 
@@ -443,8 +466,12 @@ public class CellScheduleWeekSelectData extends
   public String getNow() {
     Calendar cal = Calendar.getInstance();
     StringBuffer day = new StringBuffer();
-    day.append(cal.get(Calendar.YEAR)).append("-").append(
-      cal.get(Calendar.MONDAY) + 1).append("-").append(cal.get(Calendar.DATE));
+    day
+      .append(cal.get(Calendar.YEAR))
+      .append("-")
+      .append(cal.get(Calendar.MONDAY) + 1)
+      .append("-")
+      .append(cal.get(Calendar.DATE));
     return day.toString();
   }
 

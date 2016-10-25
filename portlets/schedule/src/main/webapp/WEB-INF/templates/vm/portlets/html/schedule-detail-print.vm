@@ -87,7 +87,7 @@ $!{result.Detail.Date2}
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date2}
 #end
-#AUIiconScheduleSets($!{result.Detail}
+#AUIiconScheduleSets($!{result.Detail})
 <br/>休日は予定を
 #if($!{result.Detail.Shifting} == "D")
 $l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY
