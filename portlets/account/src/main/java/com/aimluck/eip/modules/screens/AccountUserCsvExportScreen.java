@@ -24,6 +24,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.account.AccountResultData;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.cayenne.om.account.EipMUserPosition;
@@ -174,12 +175,16 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
    */
   private SelectQuery<TurbineUser> getSelectQuery(RunData rundata) {
 
-    String target_keyword = rundata.getParameters().get("target_keyword");
+    ALStringField target_keyword = new ALStringField();
+    target_keyword.setValue(rundata.getParameters().get("target_keyword"));
     String filter_post = rundata.getParameters().get("current_post");
     String filter_role = rundata.getParameters().get("current_role");
 
     SelectQuery<TurbineUser> query =
-      AccountUtils.getSelectQuery(target_keyword, filter_post, filter_role);
+      AccountUtils.getSelectQuery(
+        target_keyword.getValue(),
+        filter_post,
+        filter_role);
 
     query.orderDesending(TurbineUser.EIP_MUSER_POSITION_PROPERTY
       + "."
