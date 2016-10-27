@@ -155,21 +155,10 @@ public class GadgetsAdminSelectData extends
   protected ResultList<PortletEntry> selectListPortletEntry(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     Status status = Status.ALL;
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Profile profile = jdata.getProfile();
     String mediaType = profile.getMediaType();
 
-    if ("1".equals(filter)) {
-      status = Status.ACTIVE;
-      current_filter = filter;
-    } else if ("0".equals(filter)) {
-      status = Status.INACTIVE;
-      current_filter = filter;
-    } else if ("all".equals(filter)) {
-      status = Status.ALL;
-      current_filter = filter;
-    }
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
     List<PortletEntry> portlets =
       CustomizeUtils.buildPortletListWithStatus(
