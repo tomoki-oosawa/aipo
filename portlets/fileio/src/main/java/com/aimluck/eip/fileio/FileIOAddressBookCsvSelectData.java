@@ -136,6 +136,8 @@ public class FileIOAddressBookCsvSelectData extends
     String token;
     int i, j, k;
     int line = 0;
+    int count = 0;
+
     String ErrorCode = "";
 
     List<FileIOAddressBookCsvData> collectList =
@@ -273,6 +275,9 @@ public class FileIOAddressBookCsvSelectData extends
           ALLocalizationUtils.getl10n("FILEIO_LAST_NAME")))
           && (!formData.getCompanyName().toString().equals(
             ALLocalizationUtils.getl10n("FILEIO_COMPANY_NAME")))) {
+          count++;
+          setLineCount(count);
+
           if (ErrCount == 0) {
             if (!b_err) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -293,8 +298,6 @@ public class FileIOAddressBookCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
-          int lc = getLineCount();
-          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -342,6 +345,7 @@ public class FileIOAddressBookCsvSelectData extends
     String token;
     int i, j;
     int line = 0;
+
     while (reader.eof != -1) {
       line++;
       if (line > LineLimit) {

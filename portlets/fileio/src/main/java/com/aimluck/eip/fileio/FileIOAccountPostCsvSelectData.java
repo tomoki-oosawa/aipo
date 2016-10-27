@@ -119,6 +119,8 @@ public class FileIOAccountPostCsvSelectData extends
     String token;
     int i, j, k;
     int line = 0;
+    int count = 0;
+
     String ErrorCode = "";
 
     List<FileIOAccountPostCsvData> collectList =
@@ -209,6 +211,9 @@ public class FileIOAccountPostCsvSelectData extends
         }
         if (!formData.getPostName().toString().equals(
           ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"))) {
+          count++;
+          setLineCount(count);
+
           if (ErrCount == 0) {
             if (!b_err) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -229,8 +234,6 @@ public class FileIOAccountPostCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
-          int lc = getLineCount();
-          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;

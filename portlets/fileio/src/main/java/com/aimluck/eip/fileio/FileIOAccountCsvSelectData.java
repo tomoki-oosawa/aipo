@@ -167,6 +167,7 @@ public class FileIOAccountCsvSelectData
     int i, j;
     String token;
     int line = 0;
+    int count = 0;
 
     String ErrorCode = "";
 
@@ -322,6 +323,10 @@ public class FileIOAccountCsvSelectData
             "," + Integer.toString(line) + "," + Boolean.toString(same_user);
           ErrorCode += "\n";
         }
+
+        count++;
+        setLineCount(count);
+
         if (ErrCount == 0) {
           if (!b_err) {
             if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {

@@ -159,6 +159,8 @@ public class FileIOScheduleCsvSelectData extends
     String token;
     int i, j;
     int line = 0;
+    int count = 0;
+
     String ErrorCode = "";
 
     while (reader.eof != -1) {
@@ -220,6 +222,9 @@ public class FileIOScheduleCsvSelectData extends
         }
         if (!formData.getUserFullName().toString().equals(
           ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
+          count++;
+          setLineCount(count);
+
           if (ErrCount == 0) {
             if (errmsg.size() == 0) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -240,8 +245,6 @@ public class FileIOScheduleCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
-          int lc = getLineCount();
-          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
