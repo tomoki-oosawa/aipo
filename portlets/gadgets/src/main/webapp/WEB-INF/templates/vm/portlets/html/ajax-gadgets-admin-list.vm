@@ -82,9 +82,7 @@
 #AUISummaryDivfooter()
 
 <table class="auiRowTable wide">
-<colgroup style="width:20px;">
-</colgroup><colgroup style="width:3em;">
-</colgroup><colgroup>
+<colgroup>
 </colgroup>
 <tbody>
 <tr>
