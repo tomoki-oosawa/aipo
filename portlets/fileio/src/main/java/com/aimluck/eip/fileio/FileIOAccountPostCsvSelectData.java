@@ -35,7 +35,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだ部署情報を表示するクラス．
- * 
+ *
  */
 public class FileIOAccountPostCsvSelectData extends
     ALCsvAbstractSelectData<FileIOAccountPostCsvData, FileIOAccountPostCsvData> {
@@ -91,7 +91,7 @@ public class FileIOAccountPostCsvSelectData extends
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -171,9 +171,7 @@ public class FileIOAccountPostCsvSelectData extends
       if (!formData.validate(errmsg)) {
         b_err = true;
       }
-      if (reader.eof == -1) {
-        break;
-      }
+
       try {
         FileIOAccountPostCsvData data = new FileIOAccountPostCsvData();
         data.initField();
@@ -232,7 +230,7 @@ public class FileIOAccountPostCsvSelectData extends
             ErrCount--;
           }
           int lc = getLineCount();
-          setLineCount(lc - 1);
+          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -257,7 +255,7 @@ public class FileIOAccountPostCsvSelectData extends
 
   /**
    * CSVファイルを読み込んでページ毎の表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @param filepath
    * @param StartLine

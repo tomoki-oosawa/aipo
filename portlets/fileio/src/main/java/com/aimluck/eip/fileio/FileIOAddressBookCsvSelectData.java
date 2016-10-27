@@ -35,8 +35,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだアドレス帳情報を表示するクラス．
- * 
- * 
+ *
+ *
  */
 public class FileIOAddressBookCsvSelectData extends
     ALCsvAbstractSelectData<FileIOAddressBookCsvData, FileIOAddressBookCsvData> {
@@ -105,7 +105,7 @@ public class FileIOAddressBookCsvSelectData extends
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -294,7 +294,7 @@ public class FileIOAddressBookCsvSelectData extends
             ErrCount--;
           }
           int lc = getLineCount();
-          setLineCount(lc - 1);
+          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -317,7 +317,7 @@ public class FileIOAddressBookCsvSelectData extends
 
   /**
    * CSVファイルを読み込んでページ毎に表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @param filepath
    * @param StartLine
@@ -432,7 +432,7 @@ public class FileIOAddressBookCsvSelectData extends
 
   /**
    * 会社情報のみ入力する場合はtrueを設定します <BR>
-   * 
+   *
    * @param flag
    */
   public void setIsCompanyOnly(boolean flag) {

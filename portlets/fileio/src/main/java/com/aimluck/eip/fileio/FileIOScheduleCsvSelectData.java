@@ -40,8 +40,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだスケジュール情報を表示するクラス．
- * 
- * 
+ *
+ *
  */
 public class FileIOScheduleCsvSelectData extends
     ALCsvAbstractSelectData<FileIOScheduleCsvData, FileIOScheduleCsvData> {
@@ -76,7 +76,7 @@ public class FileIOScheduleCsvSelectData extends
 
   /**
    * スケジュール一覧を取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -130,7 +130,7 @@ public class FileIOScheduleCsvSelectData extends
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -241,7 +241,7 @@ public class FileIOScheduleCsvSelectData extends
             ErrCount--;
           }
           int lc = getLineCount();
-          setLineCount(lc - 1);
+          setLineCount(lc);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -308,7 +308,7 @@ public class FileIOScheduleCsvSelectData extends
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -404,7 +404,7 @@ public class FileIOScheduleCsvSelectData extends
 
   /**
    * 時刻を自動入力する場合はここで"1"を入力します <BR>
-   * 
+   *
    * @param flag
    */
   public void setIsAutoTime(String flag) {
