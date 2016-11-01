@@ -40,7 +40,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
- * 
+ *
  */
 public class CellScheduleUtils {
 
@@ -86,7 +86,8 @@ public class CellScheduleUtils {
       return SCHEDULE_TYPE_SPAN;
     } else if (ptn.charAt(0) == 'D'
       || ptn.charAt(0) == 'M'
-      || ptn.charAt(0) == 'W') {
+      || ptn.charAt(0) == 'W'
+      || ptn.charAt(0) == 'Y') {
       return SCHEDULE_TYPE_REPEAT;
     }
     return SCHEDULE_TYPE_ONEDAY;

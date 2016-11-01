@@ -44,7 +44,7 @@ $l10n.SCHEDULE_REPEAT:#ALcell_br($career)
 	#if ($!{result.FormData.Shifting.toString()} == "D")$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY #end
 	#if ($!{result.FormData.Shifting.toString()} == "B")$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY #end
 	#if ($!{result.FormData.Shifting.toString()} == "A")$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY #end
-#else 予定をずらさない
+#else 休日も繰り返す
 
 #end
 

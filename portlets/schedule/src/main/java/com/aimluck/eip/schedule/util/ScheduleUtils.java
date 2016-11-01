@@ -1015,14 +1015,6 @@ public class ScheduleUtils {
     int week_count_today = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
     // 予定は第何週目か(毎週の予定ならば予定と同じ値にする)
     int week_count_schedule = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-    // 毎週の予定ならtrue、第◯週の予定ならfalse
-    int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
-    if (a >= 0 && a <= 9) {
-      count = 9;
-      week_count_schedule = Character.getNumericValue(ptn.charAt(8));
-    } else {
-      count = 8;
-    }
 
     // 今日が祝日か判定
     setDate(date.getValue());
@@ -1055,6 +1047,14 @@ public class ScheduleUtils {
       count = 1;
       // 毎週, 第何週
     } else if (ptn.charAt(0) == 'W') {
+      // 毎週の予定ならtrue、第◯週の予定ならfalse
+      int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (a >= 0 && a <= 9) {
+        count = 9;
+        week_count_schedule = Character.getNumericValue(ptn.charAt(8));
+      } else {
+        count = 8;
+      }
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
