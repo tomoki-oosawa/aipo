@@ -1,0 +1,114 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALprintformheader()
+#ALprintoptionheader()
+#ALprintoptionfooter()
+
+<script type="text/javascript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+#ALtdcaption($l10n.WORKFLOW_FLOW_STATUS)
+#ALtditemheader()
+#if($!result.Detail.Progress.Value == "D")
+$l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK
+#else
+#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.WORKFLOW_REQUEST_NAME)
+#ALtditemheader()
+$!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
+#ALtditemfooter()
+#ALtdcaption($l10n.WORKFLOW_CREATEDATE)
+#ALtditem($!result.Detail.CreateDate)
+#ALtdcaption($l10n.WORKFLOW_PRIORITY_VALUE)
+#ALtditem($!result.Detail.PriorityString)
+#if($!result.Detail.HasRootName)
+#ALtdcaption("$l10n.WORKFLOW_APPLICATION_ROUTE")
+#ALtditemheader()
+$!result.Detail.RouteName
+#ALtditemfooter()
+#end
+#ALtdcaption($l10n.WORKFLOW_ACCESS_TO)
+#ALtditem($!result.Detail.Note)
+#if($!result.Detail.OldRequestLinks.size() > 0)
+#ALtdcaption($l10n.WORKFLOW_ACCESS_TO_PAST)
+#ALtditemheader()
+#set ($count = 1)
+#foreach ($record in $!result.Detail.OldRequestLinks)
+<div>
+${count}$l10n.WORKFLOW_TH $record.CategoryName #if($record.RequestName.toString() != '') &nbsp;&nbsp; $record.RequestName #end $record.UpdateDate
+</div>
+#set ($count = $count + 1)
+#end
+#ALtditemfooter()
+#end
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.WORKFLOW_ATTACHMENT)
+#ALtditemheader()
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )$attachmentFile.FileName <br>#end
+#ALtditemfooter()
+#end
+#ALtablefooter()
+</tbody></table>
+
+<table class="p5" style="margin-top:10px;">
+<colgroup style="width:25%;"></colgroup>
+<colgroup></colgroup>
+<tbody>
+<tr>
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.WORKFLOW_APPROVE_HISTORY#ALtdheadfooter()
+</tr>
+
+#foreach ($record in $result.Detail.DecisionRecords)
+<tr>
+#ALtdcellheader()
+$!{record.StatusString}
+##end
+#ALtdcellfooter()
+
+#ALtdcellheader()
+<span class="floatLeft w50">$!{record.UserAliasName}</span>
+<span class="floatLeft right w50">
+#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
+$!{record.UpdateDate}
+</span>
+#end
+<br>
+$!record.Note
+#ALtdcellfooter()
+
+</tr>
+#end
+</tbody></table>
+</div>
+#ALprintformfooter()
