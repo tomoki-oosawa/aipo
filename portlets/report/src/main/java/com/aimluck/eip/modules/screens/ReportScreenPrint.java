@@ -78,7 +78,6 @@ public class ReportScreenPrint extends ALVelocityScreen {
         formData
           .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY);
         formData.initField();
-        formData.doViewForm(this, rundata, context);
       }
       setTemplate(rundata, context, "portlets/html/ajax-report-detail-print.vm");
     } catch (Exception ex) {

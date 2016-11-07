@@ -36,79 +36,84 @@
 <colgroup style="width:25%;"></colgroup>
 <colgroup style="width:75%;"></colgroup>
 <tbody>
-#ALtdcaption($l10n.WORKFLOW_FLOW_STATUS)
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_REPORT_NAME)
+#ALtditem($!result.ParentReport.ReportName)
+#ALtdcaption($l10n.REPORT_AUTHOR)
+#ALtditem($!result.ParentReport.ClientName)
+#ALtdcaption($l10n.REPORT_UPDATE_DATE)
+#ALtditem($!{result.ParentReport.UpdateDate.toString($l10n.REPORT_TIME)})
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_MENVERS)
 #ALtditemheader()
-#if($!result.Detail.Progress.Value == "D")
-$l10n.WORKFLOW_NEED_TO_CHECK_PASSBACK
-#else
-#if($!result.Detail.Progress.Value == "A") $l10n.WORKFLOW_CONFIRMED #else $l10n.WORKFLOW_WAITING_DECISION #end
+#foreach($record in $!result.ParentReport.MemberList)
+    $!record.AliasName<br />
 #end
 #ALtditemfooter()
-#ALtdcaption($l10n.WORKFLOW_REQUEST_NAME)
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_CREATEDATE)
+#ALtditem("$!{result.ParentReport.StartDate.toString($l10n.REPORT_TIME)}&nbsp;-&nbsp;$!{result.ParentReport.EndDate.toString($l10n.REPORT_HOUR_AND_MINUTE)}")
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_NOTE)
+#ALtditem($!{result.ParentReport.Note})
+#if($!{result.ParentReport.AttachmentFileList} && $!result.ParentReport.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_ATTACHMENT)
 #ALtditemheader()
-$!result.Detail.CategoryName #if($!result.Detail.RequestName != '') <br/> $!result.Detail.RequestName #end
-#ALtditemfooter()
-#ALtdcaption($l10n.WORKFLOW_CREATEDATE)
-#ALtditem($!result.Detail.CreateDate)
-#ALtdcaption($l10n.WORKFLOW_PRIORITY_VALUE)
-#ALtditem($!result.Detail.PriorityString)
-#if($!result.Detail.HasRootName)
-#ALtdcaption("$l10n.WORKFLOW_APPLICATION_ROUTE")
-#ALtditemheader()
-$!result.Detail.RouteName
-#ALtditemfooter()
-#end
-#ALtdcaption($l10n.WORKFLOW_ACCESS_TO)
-#ALtditem($!result.Detail.Note)
-#if($!result.Detail.OldRequestLinks.size() > 0)
-#ALtdcaption($l10n.WORKFLOW_ACCESS_TO_PAST)
-#ALtditemheader()
-#set ($count = 1)
-#foreach ($record in $!result.Detail.OldRequestLinks)
-<div>
-${count}$l10n.WORKFLOW_TH $record.CategoryName #if($record.RequestName.toString() != '') &nbsp;&nbsp; $record.RequestName #end $record.UpdateDate
+<ul>
+#foreach( $attachmentFile in $!result.ParentReport.AttachmentFileList )
+<li>$attachmentFile.FileName
+#if($attachmentFile.isImage())
+<div id='popc' style='position:absolute'></div>
+<div class="thumbBlock">
+    <img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
 </div>
-#set ($count = $count + 1)
 #end
+</li>
+#end
+</ul>
 #ALtditemfooter()
 #end
-#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
-#ALtdcaption($l10n.WORKFLOW_ATTACHMENT)
+#ALtdcaption($l10n.REPORT_SETFIELDNAME_POSITIONS)
 #ALtditemheader()
-#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )$attachmentFile.FileName <br>#end
-#ALtditemfooter()
+#foreach($record in $!result.ParentReport.MapList)
+$!record.AliasName
+<br />
 #end
+#ALtditemfooter()
 #ALtablefooter()
-</tbody></table>
 
 <table class="p5" style="margin-top:10px;">
 <colgroup style="width:25%;"></colgroup>
 <colgroup></colgroup>
 <tbody>
+
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.REPORT_INSERTION#ALtdheadfooter()
+#if($!result.CoReportList && $!result.CoReportList.size() > 0)
+#set($firstCoReport = true)
+#foreach ($record in $result.CoReportList)
+#set($firstCoReport = false)
 <tr>
-#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.WORKFLOW_APPROVE_HISTORY#ALtdheadfooter()
-</tr>
-
-#foreach ($record in $result.Detail.DecisionRecords)
-<tr>
-#ALtdcellheader()
-$!{record.StatusString}
-##end
-#ALtdcellfooter()
-
-#ALtdcellheader()
-<span class="floatLeft w50">$!{record.UserAliasName}</span>
-<span class="floatLeft right w50">
-#if($!record.Status.Value == "R" || $!record.Status.Value == "A" || $!record.Status.Value == "D" || $!record.Status.Value == "T")
-$!{record.UpdateDate}
-</span>
+#ALtditemheader()
+<div class="alignleft"><strong>$!{record.ClientName}</strong><br />$!{record.UpdateDate.toString($l10n.REPORT_TIME)}</div>
+<div class="alignright">
+</div>
+<div>
+${record.Note}
+#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+<div style="padding-top:15px;">
+<ul>
+#foreach( $attachmentFile in $!record.AttachmentFileList )
+<li>$result.getStringCR($attachmentFile.FileNameField)
+#if($attachmentFile.isImage())
+    <div class="thumbBlock">
+        <img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ReportFileThumbnailScreen").addQueryData("ownerid",  $!{result.ParentReport.UserId}).addQueryData("entityid", $!result.ParentReport.ReportId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+    </div>
 #end
-<br>
-$!record.Note
-#ALtdcellfooter()
-
-</tr>
+</li>
 #end
-</tbody></table>
+</ul>
+</div>
+#end
+</div>
+#ALtditemfooter()
+#end
+#end
+#ALtablefooter()
 </div>
 #ALprintformfooter()
