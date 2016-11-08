@@ -364,8 +364,8 @@ public class CellScheduleFormBean implements ALData {
       week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
 
       boolean isEveryWeek;
-      int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
-      if (a >= 0 && a <= 9) {
+      int week_of_month = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (week_of_month >= 0 && week_of_month <= 9) {
         count = 9;
         isEveryWeek = false;
       } else {
@@ -374,7 +374,7 @@ public class CellScheduleFormBean implements ALData {
       }
       if (!isEveryWeek) {
         repeat_week.setValue("0");
-        switch (a) {
+        switch (week_of_month) {
           case '1':
             repeat_week.setValue("1");
             break;

@@ -1048,8 +1048,8 @@ public class ScheduleUtils {
       // 毎週, 第何週
     } else if (ptn.charAt(0) == 'W') {
       // 毎週の予定ならtrue、第◯週の予定ならfalse
-      int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
-      if (a >= 0 && a <= 9) {
+      int week_of_month = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (week_of_month >= 0 && week_of_month <= 9) {
         count = 9;
         week_count_schedule = Character.getNumericValue(ptn.charAt(8));
       } else {
@@ -1060,7 +1060,7 @@ public class ScheduleUtils {
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
       if (ptn.charAt(8) == 'N'
         || ptn.charAt(8) == 'L'
-        || dowim == Character.getNumericValue(ptn.charAt(8))) {
+        || dowim == week_of_month) {
         switch (dow) {
           // 日
           case Calendar.SUNDAY:

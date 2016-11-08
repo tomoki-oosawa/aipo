@@ -190,17 +190,17 @@ public class CellScheduleWeekSelectData extends
       Expression exp10 = exp11.andExp(exp12.andExp(exp13.orExp(exp14)));
 
       Expression exp21 =
-        ExpressionFactory.matchExp(
+        ExpressionFactory.likeExp(
           EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
             + "."
             + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-          "DN");
+          "DN%");
       Expression exp22 =
-        ExpressionFactory.matchExp(
+        ExpressionFactory.likeExp(
           EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
             + "."
             + EipTSchedule.REPEAT_PATTERN_PROPERTY,
-          "DL");
+          "DL%");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
       query.setQualifier((exp10.orExp(exp20)).andExp(mapExpression));
@@ -224,7 +224,7 @@ public class CellScheduleWeekSelectData extends
       scheduleMapList.add(list);
     }
 
-    // 週間、または毎月の場合
+    // 毎週、または毎月の場合
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     Expression exp2 =
@@ -255,9 +255,15 @@ public class CellScheduleWeekSelectData extends
             Calendar cal3 = Calendar.getInstance();
             cal3.setTime(cal.getTime());
             cal3.add(Calendar.DAY_OF_MONTH, -(7 - index));
-            if (pattern.length() == 9
-              || cal3.get(Calendar.DAY_OF_WEEK_IN_MONTH) == Character
-                .getNumericValue(pattern.charAt(8))) {
+            boolean isEveryWeek;
+            int week_of_month = Character.getNumericValue(pattern.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+            if (week_of_month >= 0 && week_of_month <= 9) {
+              isEveryWeek = false;
+            } else {
+              isEveryWeek = true;
+            }
+            if (isEveryWeek
+              || cal3.get(Calendar.DAY_OF_WEEK_IN_MONTH) == week_of_month) {
               Calendar cal2 = Calendar.getInstance();
               cal2.setTime(startDate.getValue());
               cal2.add(Calendar.DAY_OF_MONTH, index);
@@ -300,7 +306,7 @@ public class CellScheduleWeekSelectData extends
         if (index >= 0
           && index <= 6
           && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
-          if (pattern.endsWith("L")) {
+          if (pattern.charAt(3) == 'L') {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
@@ -336,7 +342,7 @@ public class CellScheduleWeekSelectData extends
           && index <= 6
           && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day
           && (cal_event.get(Calendar.MONTH) + 1) == month) {
-          if (pattern.endsWith("L")) {
+          if (pattern.charAt(5) == 'L') {
             if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
               cal2.add(Calendar.DAY_OF_MONTH, 1);
               if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
