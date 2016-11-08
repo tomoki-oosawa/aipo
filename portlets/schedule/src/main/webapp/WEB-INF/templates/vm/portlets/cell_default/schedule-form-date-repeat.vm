@@ -56,6 +56,7 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br($career)
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
 <input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
+<input type="hidden" name="shift_check" value="F">
       <label for="shift_check">休日は予定を</label>
       <select id="shifting" name="shifting"/>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
@@ -98,10 +99,10 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH ##ALcell_br(career)
 <input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
-##<input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
+<input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
+<input type="hidden" name="shift_check" value="F">
       <label for="shift_check">休日は予定を</label>
       <select id="shifting" name="shifting"/>
-      	<option value="N" #if ($!{result.FormData.Shifting.toString()}=="N") selected="selected" #end>ずらさない</option>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
       	<option value="B" #if ($!{result.FormData.Shifting.toString()}=="B") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
       	<option value="A" #if ($!{result.FormData.Shifting.toString()}=="A") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
