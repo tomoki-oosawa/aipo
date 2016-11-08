@@ -22,7 +22,11 @@
 #set ($event_submit = "eventSubmit_doMsgboard_update")
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($subtitle)
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrint("$l10n.MSGBOARD_TOPIC_DETAIL" "$!portlet.ID" "MsgboardTopicScreenPrint" "$!{result.getViewDate().toString()})")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.MSGBOARD_TOPIC_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
