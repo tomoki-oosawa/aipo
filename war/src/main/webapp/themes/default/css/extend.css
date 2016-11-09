@@ -301,7 +301,7 @@
 /* Calendar*/
 .dijitCalendarContainer {
   font-size: 11px;
-  width: 200px !important;
+  width: 200px;
   background: white;
   border: 1px solid silver;
   -webkit-border-radius: 4px;
