@@ -18,39 +18,21 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.report.ReportReplyFormData;
 import com.aimluck.eip.report.ReportSelectData;
 import com.aimluck.eip.report.util.ReportUtils;
-import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * Webメールの詳細画面を処理するクラスです。 <br />
+ * 報告書の印刷画面を処理するクラスです。 <br />
  *
  */
 public class ReportScreenPrint extends ALVelocityScreen {
-
-  /** 返信用キー */
-  private final String RESULT_ON_REPORT_DETAIL = "resultOnReportDetail";
-
-  /** 返信用エラーメッセージキー */
-  private final String ERROR_MESSAGE_LIST_ON_REPORT_DETAIL =
-    "errmsgsOnReportDetail";
-
-  /** 返信用 result */
-  private Object resultOnReportDetail;
-
-  /** 返信用異常系のメッセージを格納するリスト */
-  private List<String> errmsgListOnReportDetail;
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -73,12 +55,6 @@ public class ReportScreenPrint extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      if (detailData.showReplyForm()) {
-        ReportReplyFormData formData = new ReportReplyFormData();
-        formData
-          .setAclPortletFeature(ALAccessControlConstants.POERTLET_FEATURE_REPORT_REPLY);
-        formData.initField();
-      }
       setTemplate(rundata, context, "portlets/html/ajax-report-detail-print.vm");
     } catch (Exception ex) {
       logger.error("[ReportDetailScreen] Exception.", ex);
@@ -98,21 +74,4 @@ public class ReportScreenPrint extends ALVelocityScreen {
   protected String getPortletName() {
     return ReportUtils.REPORT_PORTLET_NAME;
   }
-
-  public void addErrorMessagesOnReportDetail(List<String> msgs) {
-    if (errmsgListOnReportDetail == null) {
-      errmsgListOnReportDetail = new ArrayList<String>();
-    }
-    errmsgListOnReportDetail.addAll(msgs);
-  }
-
-  public void putDataOnReportDetail(RunData rundata, Context context) {
-    context.put(RESULT_ON_REPORT_DETAIL, resultOnReportDetail);
-    context.put(ERROR_MESSAGE_LIST_ON_REPORT_DETAIL, errmsgListOnReportDetail);
-  }
-
-  public void setResultDataOnReportDetail(Object obj) {
-    resultOnReportDetail = obj;
-  }
-
 }
