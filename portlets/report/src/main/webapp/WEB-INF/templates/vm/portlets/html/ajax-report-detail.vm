@@ -24,7 +24,7 @@
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
 #if (${client}!= "IPHONE")
-    #ALdialogheaderPrint("$l10n.REPORT_DETAIL" "$!portlet.ID" "ReportScreenPrint" "$!{result.getViewDate().toString()})")
+    #ALdialogheaderPrintReport("$l10n.REPORT_DETAIL" "$!portlet.ID" "ReportScreenPrint" "$entityid")
 #else
     #ALdialogheaderDetailSmartPhone("$l10n.REPORT_DETAIL_DETAILS")
 #end
