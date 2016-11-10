@@ -1351,7 +1351,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
 
         var params = "";
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             params += "&mode=insert";
         } else {
             params += "&mode=update";
@@ -1633,7 +1633,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         this.tmpIndex = 0;
 
         var params = "";
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             params += "&mode=insert";
         } else {
             params += "&mode=update";
