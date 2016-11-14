@@ -23,7 +23,7 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #if (${client}!= "IPHONE")
-    #ALdialogheaderPrint("$l10n.MSGBOARD_TOPIC_DETAIL" "$!portlet.ID" "MsgboardTopicScreenPrint" "$!{result.getViewDate().toString()})")
+    #ALdialogheaderPrintMsgboard("$l10n.MSGBOARD_TOPIC_DETAIL" "$!portlet.ID" "MsgboardTopicScreenPrint" "$entityid")
 #else
     #ALdialogheaderDetailSmartPhone("$l10n.MSGBOARD_TOPIC_DETAIL")
 #end

@@ -890,6 +890,11 @@ $item.get(0)
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.timeline.hideDialog();" "$link")
 #end
 
+#macro(ALdialogheaderPrintMsgboard $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
+#end
+
 #macro(ALdialogheader $title)
 #ALdialogheaderPrint($title "" "" "")
 #end

@@ -49,7 +49,6 @@
 #if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
 #ALtdcaption($l10n.MSGBOARD_FILE_ATTACH)
 #ALtditemheader()
-<div style="padding-top:15px;">
 <ul>
 #foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
 <li>$result.getStringCR($attachmentFile.FileNameField)
@@ -62,7 +61,6 @@
 </li>
 #end
 </ul>
-</div>
 #ALtditemfooter()
 #end
 #ALtablefooter()
@@ -71,37 +69,38 @@
 <colgroup style="width:25%;"></colgroup>
 <colgroup></colgroup>
 <tbody>
-<tr>
+
 #ALtdheadheaderAtt('align="center" colspan="2"')$l10n.MSGBOARD_COMMENT#ALtdheadfooter()
-</tr>
+#if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
+#set($firstCoTopic = true)
 #foreach ($record in $result.CoTopicList)
 #set($firstCoTopic = false)
-    <tr>
-        <td style="border-bottom:none;border-top:solid 1px #DDD">
-                <div class="alignleft">
-                    <b>$!{record.OwnerName}</b>
-                    <br>$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}
-                </div>
-                <div><br>
-                ${record.Note}
-                #if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
-                    <div style="padding-top:15px;">
-                        <ul>
-                        #foreach( $attachmentFile in $!record.AttachmentFileList )
-                        <li>$result.getStringCR($attachmentFile.FileNameField)
-                            #if($attachmentFile.isImage())
-                                <div id='popc' style='position:absolute'></div>
-                                <div class="thumbBlock">
-                                    <img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
-                                </div>
-                            #end
-                        </li>
-                        #end
-                        </ul>
-                #end
-            </div>
-        </td>
-    </tr>
+<tr>
+#ALtditemheader()
+<div class="alignleft"><strong>$!{record.OwnerName}</strong><br />$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}</div>
+<div class="alignright">
+</div>
+<div>
+${record.Note}
+#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+<div style="padding-top:15px;">
+<ul>
+#foreach( $attachmentFile in $!record.AttachmentFileList )
+<li>$result.getStringCR($attachmentFile.FileNameField)
+#if($attachmentFile.isImage())
+    <div class="thumbBlock">
+        <img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+    </div>
+#end
+</li>
+#end
+</ul>
+</div>
+#end
+</div>
+#ALtditemfooter()
+#end
 #end
 #ALtablefooter()
+</div>
 #ALprintformfooter()

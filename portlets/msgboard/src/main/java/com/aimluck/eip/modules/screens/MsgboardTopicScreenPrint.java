@@ -54,7 +54,6 @@ public class MsgboardTopicScreenPrint extends ALVelocityScreen {
     try {
       MsgboardTopicSelectData detailData = new MsgboardTopicSelectData();
       detailData.initField();
-      detailData.loadCategoryList(rundata, context);
       detailData.doViewDetail(this, rundata, context);
 
       String layout_template = "portlets/html/ajax-msgboard-detail-print.vm";
