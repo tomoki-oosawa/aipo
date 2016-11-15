@@ -63,11 +63,17 @@ public class CellScheduleWeekSelectData extends
 
   private ALDateTimeField endDate;
 
+  private ALDateTimeField viewStart;
+
+  private ALDateTimeField[] viewDateList;
+
   private ALDateTimeField nextweekDate;
 
   private ALDateTimeField prevweekDate;
 
   private String aclPortletFeature;
+
+  private int count_date;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -76,8 +82,12 @@ public class CellScheduleWeekSelectData extends
 
     startDate = new ALDateTimeField("yyyy-MM-dd");
     endDate = new ALDateTimeField("yyyy-MM-dd");
+    viewStart = new ALDateTimeField("yyyy-MM-dd");
+    viewStart.setNotNull(true);
     nextweekDate = new ALDateTimeField("yyyy-MM-dd");
     prevweekDate = new ALDateTimeField("yyyy-MM-dd");
+    viewDateList = new ALDateTimeField[7];
+    count_date = 0;
 
     Calendar cal = Calendar.getInstance();
     if (rundata.getParameters().getString("start_date") != null) {
@@ -96,6 +106,28 @@ public class CellScheduleWeekSelectData extends
     nextweekDate.setValue(cal.getTime());
     cal.add(Calendar.DAY_OF_MONTH, -14);
     prevweekDate.setValue(cal.getTime());
+
+    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_date_top");
+    if (tmpViewStart == null || tmpViewStart.equals("")) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.set(Calendar.HOUR_OF_DAY, 0);
+      cal2.set(Calendar.MINUTE, 0);
+      viewStart.setValue(cal2.getTime());
+    } else {
+      viewStart.setValue(tmpViewStart);
+      if (!viewStart.validate(new ArrayList<String>())) {
+        ALEipUtils.removeTemp(rundata, context, "view_start");
+      }
+    }
+    Calendar cal3 = Calendar.getInstance();
+    cal3.setTime(viewStart.getValue());
+    for (int i = 0; i < 7; i++) {
+      // 日付を1日ずつずらす
+      ALDateTimeField tempDate = new ALDateTimeField("yyyy-MM-dd");
+      tempDate.setValue(cal3.getTime());
+      viewDateList[i] = tempDate;
+      cal3.add(Calendar.DATE, 1);
+    }
 
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
@@ -126,10 +158,64 @@ public class CellScheduleWeekSelectData extends
       if (rd.getPattern().equals("S")) {
         rd.setSpan(true);
       }
-
-      resultList.add(rd);
-
+      if (!rd.getPattern().equals("N")) {
+        if (ScheduleUtils.isView(
+          viewDateList[count_date],
+          rd.getPattern(),
+          rd.getStartDate().getValue(),
+          rd.getEndDate().getValue())) {
+          Calendar temp = Calendar.getInstance();
+          temp.setTime(viewDateList[count_date].getValue());
+          temp.set(
+            Calendar.HOUR,
+            Integer.parseInt(rd.getStartDate().getHour()));
+          temp.set(
+            Calendar.MINUTE,
+            Integer.parseInt(rd.getStartDate().getMinute()));
+          temp.set(Calendar.SECOND, 0);
+          temp.set(Calendar.MILLISECOND, 0);
+          Calendar temp2 = Calendar.getInstance();
+          temp2.setTime(viewDateList[count_date].getValue());
+          temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
+          temp2.set(
+            Calendar.MINUTE,
+            Integer.parseInt(rd.getEndDate().getMinute()));
+          temp2.set(Calendar.SECOND, 0);
+          temp2.set(Calendar.MILLISECOND, 0);
+          CellScheduleResultData rd3 = new CellScheduleResultData();
+          rd3.initField();
+          rd3.setScheduleId((int) rd.getScheduleId().getValue());
+          rd3.setParentId((int) rd.getParentId().getValue());
+          rd3.setName(rd.getName().getValue());
+          // 開始日を設定し直す
+          rd3.setStartDate(temp.getTime());
+          // 終了日を設定し直す
+          rd3.setEndDate(temp2.getTime());
+          rd3.setTmpreserve(rd.isTmpreserve());
+          rd3.setPublic(rd.isPublic());
+          rd3.setHidden(rd.isHidden());
+          rd3.setDummy(rd.isDummy());
+          rd3.setLoginuser(rd.isLoginuser());
+          rd3.setOwner(rd.isOwner());
+          rd3.setMember(rd.isMember());
+          rd3.setType(rd.getType());
+          // 繰り返しはON
+          rd3.setRepeat(true);
+          resultList.add(rd3);
+        } else {
+          int length = rd.getPattern().length();
+          if (rd.getPattern().charAt(length - 1) == 'D') {
+          } else if (rd.getPattern().charAt(length - 1) == 'A') {
+            // WRITE ME!!
+          } else if (rd.getPattern().charAt(length - 1) == 'B') {
+            // WRITE ME!!
+          }
+        }
+      } else {
+        resultList.add(rd);
+      }
     }
+    count_date++;
     return resultList;
   }
 
