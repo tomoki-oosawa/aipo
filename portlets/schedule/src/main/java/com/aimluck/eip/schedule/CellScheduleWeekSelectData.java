@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -65,6 +66,8 @@ public class CellScheduleWeekSelectData extends
 
   private ALDateTimeField viewStart;
 
+  private ALDateTimeField viewEndCrt;
+
   private ALDateTimeField[] viewDateList;
 
   private ALDateTimeField nextweekDate;
@@ -75,6 +78,8 @@ public class CellScheduleWeekSelectData extends
 
   private int count_date;
 
+  private ScheduleWeekContainer weekCon;
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -84,6 +89,7 @@ public class CellScheduleWeekSelectData extends
     endDate = new ALDateTimeField("yyyy-MM-dd");
     viewStart = new ALDateTimeField("yyyy-MM-dd");
     viewStart.setNotNull(true);
+    viewEndCrt = new ALDateTimeField("yyyy-MM-dd");
     nextweekDate = new ALDateTimeField("yyyy-MM-dd");
     prevweekDate = new ALDateTimeField("yyyy-MM-dd");
     viewDateList = new ALDateTimeField[7];
@@ -113,6 +119,8 @@ public class CellScheduleWeekSelectData extends
       cal2.set(Calendar.HOUR_OF_DAY, 0);
       cal2.set(Calendar.MINUTE, 0);
       viewStart.setValue(cal2.getTime());
+      cal2.add(Calendar.MONTH, 7);
+      viewEndCrt.setValue(cal2.getTime());
     } else {
       viewStart.setValue(tmpViewStart);
       if (!viewStart.validate(new ArrayList<String>())) {
@@ -121,6 +129,15 @@ public class CellScheduleWeekSelectData extends
     }
     Calendar cal3 = Calendar.getInstance();
     cal3.setTime(viewStart.getValue());
+
+    try {
+      weekCon = new ScheduleWeekContainer();
+      weekCon.initField();
+      weekCon.setViewStartDate(cal3);
+    } catch (Exception e) {
+      logger.error("schedule", e);
+    }
+
     for (int i = 0; i < 7; i++) {
       // 日付を1日ずつずらす
       ALDateTimeField tempDate = new ALDateTimeField("yyyy-MM-dd");
@@ -158,62 +175,41 @@ public class CellScheduleWeekSelectData extends
       if (rd.getPattern().equals("S")) {
         rd.setSpan(true);
       }
-      if (!rd.getPattern().equals("N")) {
-        if (ScheduleUtils.isView(
-          viewDateList[count_date],
-          rd.getPattern(),
-          rd.getStartDate().getValue(),
-          rd.getEndDate().getValue())) {
-          Calendar temp = Calendar.getInstance();
-          temp.setTime(viewDateList[count_date].getValue());
-          temp.set(
-            Calendar.HOUR,
-            Integer.parseInt(rd.getStartDate().getHour()));
-          temp.set(
-            Calendar.MINUTE,
-            Integer.parseInt(rd.getStartDate().getMinute()));
-          temp.set(Calendar.SECOND, 0);
-          temp.set(Calendar.MILLISECOND, 0);
-          Calendar temp2 = Calendar.getInstance();
-          temp2.setTime(viewDateList[count_date].getValue());
-          temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
-          temp2.set(
-            Calendar.MINUTE,
-            Integer.parseInt(rd.getEndDate().getMinute()));
-          temp2.set(Calendar.SECOND, 0);
-          temp2.set(Calendar.MILLISECOND, 0);
-          CellScheduleResultData rd3 = new CellScheduleResultData();
-          rd3.initField();
-          rd3.setScheduleId((int) rd.getScheduleId().getValue());
-          rd3.setParentId((int) rd.getParentId().getValue());
-          rd3.setName(rd.getName().getValue());
-          // 開始日を設定し直す
-          rd3.setStartDate(temp.getTime());
-          // 終了日を設定し直す
-          rd3.setEndDate(temp2.getTime());
-          rd3.setTmpreserve(rd.isTmpreserve());
-          rd3.setPublic(rd.isPublic());
-          rd3.setHidden(rd.isHidden());
-          rd3.setDummy(rd.isDummy());
-          rd3.setLoginuser(rd.isLoginuser());
-          rd3.setOwner(rd.isOwner());
-          rd3.setMember(rd.isMember());
-          rd3.setType(rd.getType());
-          // 繰り返しはON
-          rd3.setRepeat(true);
-          resultList.add(rd3);
-        } else {
-          int length = rd.getPattern().length();
-          if (rd.getPattern().charAt(length - 1) == 'D') {
-          } else if (rd.getPattern().charAt(length - 1) == 'A') {
-            // WRITE ME!!
-          } else if (rd.getPattern().charAt(length - 1) == 'B') {
-            // WRITE ME!!
-          }
-        }
-      } else {
-        resultList.add(rd);
-      }
+      /*
+       * if (!rd.getPattern().equals("N")) { if (ScheduleUtils.isView(
+       * viewDateList[count_date], rd.getPattern(),
+       * rd.getStartDate().getValue(), rd.getEndDate().getValue())) { Calendar
+       * temp = Calendar.getInstance();
+       * temp.setTime(viewDateList[count_date].getValue()); temp.set(
+       * Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
+       * temp.set( Calendar.MINUTE,
+       * Integer.parseInt(rd.getStartDate().getMinute()));
+       * temp.set(Calendar.SECOND, 0); temp.set(Calendar.MILLISECOND, 0);
+       * Calendar temp2 = Calendar.getInstance();
+       * temp2.setTime(viewDateList[count_date].getValue());
+       * temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
+       * temp2.set( Calendar.MINUTE,
+       * Integer.parseInt(rd.getEndDate().getMinute()));
+       * temp2.set(Calendar.SECOND, 0); temp2.set(Calendar.MILLISECOND, 0);
+       * CellScheduleResultData rd3 = new CellScheduleResultData();
+       * rd3.initField(); rd3.setScheduleId((int)
+       * rd.getScheduleId().getValue()); rd3.setParentId((int)
+       * rd.getParentId().getValue()); rd3.setName(rd.getName().getValue()); //
+       * 開始日を設定し直す rd3.setStartDate(temp.getTime()); // 終了日を設定し直す
+       * rd3.setEndDate(temp2.getTime()); rd3.setTmpreserve(rd.isTmpreserve());
+       * rd3.setPublic(rd.isPublic()); rd3.setHidden(rd.isHidden());
+       * rd3.setDummy(rd.isDummy()); rd3.setLoginuser(rd.isLoginuser());
+       * rd3.setOwner(rd.isOwner()); rd3.setMember(rd.isMember());
+       * rd3.setType(rd.getType()); // 繰り返しはON rd3.setRepeat(true);
+       * resultList.add(rd3); } else { int length = rd.getPattern().length();
+       * int shift = 5; if (rd.getPattern().charAt(length - 1) == 'D') { shift =
+       * 0; } else if (rd.getPattern().charAt(length - 1) == 'A') { // WRITE
+       * ME!! shift = 1; } else if (rd.getPattern().charAt(length - 1) == 'B') {
+       * // WRITE ME!! shift = -1; }
+       *
+       * } } else { resultList.add(rd); }
+       */
+      resultList.add(rd);
     }
     count_date++;
     return resultList;
@@ -227,7 +223,6 @@ public class CellScheduleWeekSelectData extends
     Calendar cal = Calendar.getInstance();
     cal.setTime(startDate.getValue());
     int userid = ALEipUtils.getUserId(rundata);
-
     Expression expm1 =
       ExpressionFactory.matchExp(
         EipTScheduleMap.USER_ID_PROPERTY,
@@ -536,7 +531,67 @@ public class CellScheduleWeekSelectData extends
       scheduleMapList.set(i, slist);
     }
 
-    return new ResultList<List<EipTScheduleMap>>(scheduleMapList);
+    return new ResultList<List<EipTScheduleMap>>(
+      getProcessedResultList(scheduleMapList));
+  }
+
+  protected ArrayList<List<EipTScheduleMap>> getProcessedResultList(
+      ArrayList<List<EipTScheduleMap>> scheduleMapList) {
+    int k = scheduleMapList.size();
+    List<EipTScheduleMap> all_list = scheduleMapList.get(0);
+    for (int i = 0; i < k; i++) {
+      List<EipTScheduleMap> slist = scheduleMapList.get(i);
+      int s = slist.size();
+      for (int j = 0; j < s; j++) {
+        EipTScheduleMap schedule = slist.get(j);
+        if (!all_list.contains(schedule)) {
+          all_list.add(schedule);
+        }
+      }
+    }
+    HashMap<Integer, EipTScheduleMap> map =
+      new HashMap<Integer, EipTScheduleMap>();
+    int m = all_list.size();
+    for (int i = 0; i < m; i++) {
+      map.put(all_list.get(i).getScheduleId(), all_list.get(i));
+      CellScheduleResultData rd = new CellScheduleResultData();
+      rd.initField();
+      rd.setScheduleId(all_list.get(i).getScheduleId());
+      rd.setName(all_list.get(i).getEipTSchedule().getName());
+      rd.setStartDate(all_list.get(i).getEipTSchedule().getStartDate());
+      rd.setEndDate(all_list.get(i).getEipTSchedule().getEndDate());
+      rd.setPublic(
+        all_list.get(i).getEipTSchedule().getPublicFlag().equals("O"));
+      rd.setRepeat(
+        all_list.get(i).getEipTSchedule().getRepeatPattern().equals("S"));
+      rd.setPattern(all_list.get(i).getEipTSchedule().getRepeatPattern());
+      rd.setMember(true);
+      weekCon.addResultData(rd);
+    }
+
+    ArrayList<List<EipTScheduleMap>> newScheduleMapList =
+      new ArrayList<List<EipTScheduleMap>>();
+
+    for (int i = 0; i < k; i++) {
+      int n = weekCon.getDayList().get(i).getScheduleList().size();
+      List<EipTScheduleMap> templist = new ArrayList<EipTScheduleMap>();
+      for (int j = 0; j < n; j++) {
+        templist.add(
+          map.get(
+            weekCon
+              .getDayList()
+              .get(i)
+              .getScheduleList()
+              .get(j)
+              .getScheduleId()
+              .getValueWithInt()));
+      }
+      if (templist == new ArrayList<EipTScheduleMap>()) {
+        templist = null;
+      }
+      newScheduleMapList.add(templist);
+    }
+    return newScheduleMapList;
   }
 
   @Override
