@@ -54,7 +54,7 @@ public class ProjectTaskDetailScreenPrint extends ALVelocityScreen {
         "portlets/html/ajax-project-task-detail-print.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ProjectTaskDetailScreen] Exception.", ex);
+      logger.error("[ProjectTaskDetailScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

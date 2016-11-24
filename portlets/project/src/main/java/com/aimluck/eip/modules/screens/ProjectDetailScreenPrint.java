@@ -52,7 +52,7 @@ public class ProjectDetailScreenPrint extends ProjectScreen {
       String layout_template = "portlets/html/ajax-project-detail-print.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ProjectDetailScreen] Exception.", ex);
+      logger.error("[ProjectDetailScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
