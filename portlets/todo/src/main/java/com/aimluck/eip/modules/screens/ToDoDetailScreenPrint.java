@@ -53,7 +53,7 @@ public class ToDoDetailScreenPrint extends ALVelocityScreen {
       String layout_template = "portlets/html/ajax-todo-detail-print.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ToDoDetailScreen] Exception.", ex);
+      logger.error("[ToDoDetailScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
