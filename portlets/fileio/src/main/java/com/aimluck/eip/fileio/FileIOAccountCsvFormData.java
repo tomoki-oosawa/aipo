@@ -567,7 +567,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
           .getValue()));
         // JetspeedSecurity.forcePassword(user, password.getValue());
         user.setPassword(password.getValue());
-        user.setPasswordChanged(new Date());
+        user.setPasswordChanged(now);
         isNewUser = true;
         user.setCreated(now);
         user.setLastLogin(now);
