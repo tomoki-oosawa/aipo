@@ -101,8 +101,7 @@ $!{result.Detail.ProgressRate}%
 #ALtablefooter()
 
 <table class="p5" style="margin-top:10px;">
-<colgroup style="width:25%;"></colgroup>
-<colgroup></colgroup>
+<colgroup style="width:100%;"></colgroup>
 <tbody>
 
 #if (!$result.Detail.CommentList.isEmpty())
