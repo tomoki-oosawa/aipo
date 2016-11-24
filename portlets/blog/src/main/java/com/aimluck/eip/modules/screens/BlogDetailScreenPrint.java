@@ -54,7 +54,7 @@ public class BlogDetailScreenPrint extends ALVelocityScreen {
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[BlogDetailScreen] Exception.", ex);
+      logger.error("[BlogDetailScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
