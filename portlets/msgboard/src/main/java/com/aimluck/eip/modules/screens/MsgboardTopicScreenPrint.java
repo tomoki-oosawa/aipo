@@ -60,7 +60,7 @@ public class MsgboardTopicScreenPrint extends ALVelocityScreen {
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[MsgboardTopicDetailScreen] Exception.", ex);
+      logger.error("[MsgboardTopicScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
