@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.om.profile.Profile;
-import org.apache.jetspeed.om.registry.Parameter;
 import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.jetspeed.services.rundata.JetspeedRunData;
 import org.apache.turbine.util.RunData;
@@ -87,7 +86,6 @@ public class GadgetsAdminSelectData extends
       if (resultList != null) {
         list = new ArrayList<Object>();
         for (PortletEntry model : resultList) {
-          Parameter t = model.getParameter("admin_detail_screen");
           Object object = model;
           if (object != null) {
             list.add(object);
