@@ -25,6 +25,21 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.schedule.ScheduleSearchResultData;
+import com.aimluck.eip.schedule.ScheduleiCalSelectData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.util.ALEipUtils;
+
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateList;
 import net.fortuna.ical4j.model.DateTime;
@@ -46,29 +61,14 @@ import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.util.UidGenerator;
 
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.modules.screens.RawScreen;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-
-import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.schedule.ScheduleSearchResultData;
-import com.aimluck.eip.schedule.ScheduleiCalSelectData;
-import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.util.ALEipUtils;
-
 /**
  *
  */
 public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleiCalScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleiCalScreen.class.getName());
 
   /**
    * @param rundata
@@ -156,55 +156,63 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         recur = new Recur(Recur.DAILY, null);
         count = 1;
         // 毎週
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
+      } else if (ptn.charAt(0) == 'W') {
         recur = new Recur(Recur.WEEKLY, null);
-        if (ptn.charAt(1) != '0') {
-          recur.getDayList().add(WeekDay.SU);
+
+        boolean isEveryWeek;
+        int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+        if (a >= 0 && a <= 9) {
+          count = 9;
+          isEveryWeek = false;
+        } else {
+          count = 8;
+          isEveryWeek = true;
         }
-        if (ptn.charAt(2) != '0') {
-          recur.getDayList().add(WeekDay.MO);
+        if (isEveryWeek) {
+          if (ptn.charAt(1) != '0') {
+            recur.getDayList().add(WeekDay.SU);
+          }
+          if (ptn.charAt(2) != '0') {
+            recur.getDayList().add(WeekDay.MO);
+          }
+          if (ptn.charAt(3) != '0') {
+            recur.getDayList().add(WeekDay.TU);
+          }
+          if (ptn.charAt(4) != '0') {
+            recur.getDayList().add(WeekDay.WE);
+          }
+          if (ptn.charAt(5) != '0') {
+            recur.getDayList().add(WeekDay.TH);
+          }
+          if (ptn.charAt(6) != '0') {
+            recur.getDayList().add(WeekDay.FR);
+          }
+          if (ptn.charAt(7) != '0') {
+            recur.getDayList().add(WeekDay.SA);
+          }
+        } else {
+          if (ptn.charAt(1) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.SU, a));
+          }
+          if (ptn.charAt(2) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.MO, a));
+          }
+          if (ptn.charAt(3) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.TU, a));
+          }
+          if (ptn.charAt(4) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.WE, a));
+          }
+          if (ptn.charAt(5) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.TH, a));
+          }
+          if (ptn.charAt(6) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.FR, a));
+          }
+          if (ptn.charAt(7) != '0') {
+            recur.getDayList().add(new WeekDay(WeekDay.SA, a));
+          }
         }
-        if (ptn.charAt(3) != '0') {
-          recur.getDayList().add(WeekDay.TU);
-        }
-        if (ptn.charAt(4) != '0') {
-          recur.getDayList().add(WeekDay.WE);
-        }
-        if (ptn.charAt(5) != '0') {
-          recur.getDayList().add(WeekDay.TH);
-        }
-        if (ptn.charAt(6) != '0') {
-          recur.getDayList().add(WeekDay.FR);
-        }
-        if (ptn.charAt(7) != '0') {
-          recur.getDayList().add(WeekDay.SA);
-        }
-        count = 8;
-      } else if (ptn.charAt(0) == 'W' && ptn.length() == 11) {
-        recur = new Recur(Recur.MONTHLY, null);
-        int offset = Character.getNumericValue(ptn.charAt(8));
-        if (ptn.charAt(1) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.SU, offset));
-        }
-        if (ptn.charAt(2) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.MO, offset));
-        }
-        if (ptn.charAt(3) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.TU, offset));
-        }
-        if (ptn.charAt(4) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.WE, offset));
-        }
-        if (ptn.charAt(5) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.TH, offset));
-        }
-        if (ptn.charAt(6) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.FR, offset));
-        }
-        if (ptn.charAt(7) != '0') {
-          recur.getDayList().add(new WeekDay(WeekDay.SA, offset));
-        }
-        count = 9;
       } else if (ptn.charAt(0) == 'M') {
         recur = new Recur(Recur.MONTHLY, null);
         int mday;
@@ -315,8 +323,9 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           for (ScheduleSearchResultData dummy : list) {
             java.util.Calendar dummyStart = Calendar.getInstance();
             dummyStart.setTime(dummy.getStartDate().getValue());
-            dummyStart.set(Calendar.HOUR_OF_DAY, cStart
-              .get((Calendar.HOUR_OF_DAY)));
+            dummyStart.set(
+              Calendar.HOUR_OF_DAY,
+              cStart.get((Calendar.HOUR_OF_DAY)));
             dummyStart.set(Calendar.MINUTE, cStart.get((Calendar.MINUTE)));
             dateList.add(new DateTime(dummyStart.getTime()));
           }
@@ -347,7 +356,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     }
   }
 
-  private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
+  private java.util.Date getRepeatStartDate(java.util.Date startDate,
+      String ptn) {
     try {
       Calendar cal = Calendar.getInstance();
       logger.error(startDate);
@@ -391,12 +401,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     // 祝日判定
     ScheduleUtils.setDate(cal.getTime());
 
-    boolean x = ScheduleUtils.isHoliday();
-    boolean y = ScheduleUtils.isUserHoliday(day_count - 1);
-
-    if ((ScheduleUtils.isHoliday() || ScheduleUtils
-      .isUserHoliday(day_count - 1))
-      && shift != 5) {
+    if ((ScheduleUtils.isHoliday()
+      || ScheduleUtils.isUserHoliday(day_count - 1)) && shift != 5) {
       result = false;
       return result;
     }
@@ -413,7 +419,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
-        // 日
+          // 日
           case Calendar.SUNDAY:
             result = ptn.charAt(1) != '0';
             break;

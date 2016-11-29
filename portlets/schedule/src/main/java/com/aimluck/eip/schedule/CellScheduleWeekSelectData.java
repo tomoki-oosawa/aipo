@@ -76,8 +76,6 @@ public class CellScheduleWeekSelectData extends
 
   private String aclPortletFeature;
 
-  private int count_date;
-
   private ScheduleWeekContainer weekCon;
 
   @Override
@@ -93,7 +91,6 @@ public class CellScheduleWeekSelectData extends
     nextweekDate = new ALDateTimeField("yyyy-MM-dd");
     prevweekDate = new ALDateTimeField("yyyy-MM-dd");
     viewDateList = new ALDateTimeField[7];
-    count_date = 0;
 
     Calendar cal = Calendar.getInstance();
     if (rundata.getParameters().getString("start_date") != null) {
@@ -177,7 +174,6 @@ public class CellScheduleWeekSelectData extends
       }
       resultList.add(rd);
     }
-    count_date++;
     return resultList;
   }
 
