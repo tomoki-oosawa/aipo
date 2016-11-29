@@ -90,7 +90,15 @@
 </tr>
 #foreach ($record in $result.List)
 <tr>
+#if(!$record.getParameter("admin_detail_screen"))
 #ALtdcellAtt("<div>$record.Title</div>" '')
+#else
+#ALtdcellheader()
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template",$record.getParameter("admin_detail_screen").getValue()))');">$!record.Title</a>
+</div>
+#ALtdcellfooter()
+#end
 </tr>
 #end
 #ALtablefooter()
