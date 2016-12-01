@@ -77,7 +77,7 @@
 #set($firstCoTopic = false)
 <tr>
 #ALtditemheader()
-<div class="alignleft"><strong>$!{record.OwnerName}</strong><br />$!{record.UpdateDateAlternative.Year}$l10n.BLOG_YEAR$!{record.UpdateDateAlternative.Month}$l10n.BLOG_MONTH$!{record.UpdateDateAlternative.Day}$l10n.BLOG_DAY$!{record.UpdateDateAlternative.DayOfWeek} $!{record.UpdateDateAlternative.time}</div>
+<div class="alignleft"><strong>$!{record.OwnerName}</strong><span style="float: right;">$!{record.UpdateDateAlternative.Year}$l10n.BLOG_YEAR$!{record.UpdateDateAlternative.Month}$l10n.BLOG_MONTH$!{record.UpdateDateAlternative.Day}$l10n.BLOG_DAY$!{record.UpdateDateAlternative.DayOfWeek} $!{record.UpdateDateAlternative.time}</span></div><br />
 <div class="alignright">
 </div>
 <div>
