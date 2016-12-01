@@ -57,7 +57,7 @@ public class ReportScreenPrint extends ALVelocityScreen {
 
       setTemplate(rundata, context, "portlets/html/ajax-report-detail-print.vm");
     } catch (Exception ex) {
-      logger.error("[ReportDetailScreen] Exception.", ex);
+      logger.error("[ReportScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
