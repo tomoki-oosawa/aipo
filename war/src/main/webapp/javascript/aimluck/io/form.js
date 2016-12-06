@@ -378,6 +378,19 @@ aimluck.io.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, r
   }
 }
 
+//messageroom
+aimluck.io.ajaxMessageRoomDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = "このルームを削除してよろしいですか？ルームを削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。";
+	  // 'この'+button.form._name.value+'を削除してよろしいですか？'
+	  if (confirm(confirmString)) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
+
 // account
 aimluck.io.ajaxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");

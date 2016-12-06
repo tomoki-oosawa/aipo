@@ -275,10 +275,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
             MessageUtils.hasAuthorityRoom(room, (int) login_user
               .getUserId()
               .getValue());
-          if ("O".equals(room.getRoomType())) {
-            login_user_room_auth = false;
-            isGroup = false;
-          }
+        }
+        if ("O".equals(room.getRoomType())) {
+          login_user_room_auth = true;
+          isGroup = false;
         }
 
       } catch (FileuploadMinSizeException ex) {
@@ -370,7 +370,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getValue());
 
       if ("O".equals(room.getRoomType())) {
-        login_user_room_auth = false;
+        login_user_room_auth = true;
         isGroup = false;
       }
 

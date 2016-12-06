@@ -618,6 +618,10 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 	<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 
+#macro(ALajaxbuttonMessageRoomDelete $url $indicator_id $portlet_id $receive)
+    <input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxMessageRoomDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+
 #macro(ALajaxbuttonClose)
 <input name="ajaxbuttonClose" class="button" type="button" value="$l10n.COMMON_CLOSE" onclick="aipo.common.hideDialog();" />
 #end
