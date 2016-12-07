@@ -28,8 +28,8 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 public abstract class ALConfigHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALConfigHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ALConfigHandler.class.getName());
 
   public abstract String get(Property property);
 
@@ -108,6 +108,13 @@ public abstract class ALConfigHandler {
       @Override
       public String defaultValue() {
         return JetspeedResources.getString("exttimecard.version", "1");
+      }
+    },
+
+    TIMELINE_ACTIVITY_ENABLED("timeline.activity.enabled") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("timeline.activity.enabled", "T");
       }
     },
 

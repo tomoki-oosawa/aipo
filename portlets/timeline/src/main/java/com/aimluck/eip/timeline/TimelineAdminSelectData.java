@@ -30,6 +30,8 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -37,6 +39,8 @@ import com.aimluck.eip.util.CustomizeUtils;
  */
 public class TimelineAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
+
+  private String enabledActivityFlag;
 
   /**
    *
@@ -49,6 +53,8 @@ public class TimelineAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
+    enabledActivityFlag =
+      ALConfigService.get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED);
   }
 
   /**
@@ -101,5 +107,18 @@ public class TimelineAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * @return
+   */
+  public String getEnabledActivityFlag() {
+    return enabledActivityFlag;
+  }
+
+  public void setEnabledActivityFlag(String string) {
+    ALConfigService.put(
+      ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED,
+      string);
   }
 }
