@@ -23,18 +23,17 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.memo.MemoAdminSelectData;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.schedule.ScheduleAdminSelectData;
-
 
 /**
  *
  */
-public class ScheduleAdminDetailScreen extends ALVelocityScreen {
+public class MemoAdminDetailScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleAdminDetailScreen.class.getName());
+    .getLogger(MemoAdminDetailScreen.class.getName());
 
   /**
    *
@@ -45,15 +44,15 @@ public class ScheduleAdminDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ScheduleAdminSelectData detailData = new ScheduleAdminSelectData();
+      MemoAdminSelectData detailData = new MemoAdminSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-schedule-admin-detail.vm";
+      String layout_template = "portlets/html/ajax-memo-admin-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ScheduleAdminDetailScreen] Exception.", ex);
+      logger.error("[MemoAdminDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

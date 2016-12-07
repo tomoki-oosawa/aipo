@@ -23,18 +23,17 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.msgboard.MsgboardAdminSelectData;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.schedule.ScheduleAdminSelectData;
-
 
 /**
  *
  */
-public class ScheduleAdminDetailScreen extends ALVelocityScreen {
+public class MsgboardAdminDetailScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleAdminDetailScreen.class.getName());
+    .getLogger(MsgboardAdminDetailScreen.class.getName());
 
   /**
    *
@@ -45,15 +44,15 @@ public class ScheduleAdminDetailScreen extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      ScheduleAdminSelectData detailData = new ScheduleAdminSelectData();
+      MsgboardAdminSelectData detailData = new MsgboardAdminSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-schedule-admin-detail.vm";
+      String layout_template = "portlets/html/ajax-msgboard-admin-detail.vm";
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[ScheduleAdminDetailScreen] Exception.", ex);
+      logger.error("[MsgboardAdminDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }

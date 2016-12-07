@@ -88,6 +88,9 @@
         <parameter name="p4a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="admin_detail_screen" value="WebMailAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
@@ -109,8 +112,6 @@
         <parameter name="p11a-rows.style.values" value="5件,10件,20件,50件" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="webmail.WebMailAccountEditAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="_showtitlebar" value="false" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="admin_detail_screen" value="ProjectAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
