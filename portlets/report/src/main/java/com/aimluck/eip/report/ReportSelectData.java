@@ -310,14 +310,10 @@ public class ReportSelectData extends
       // 通常画面
       // 受信したもので未読
       Expression exp1 =
-        ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
-      query.andQualifier(exp1);
-      Expression exp2 =
         ExpressionFactory.matchExp(
-          EipTReportMap.STATUS_PROPERTY,
-          ReportUtils.DB_STATUS_UNREAD);
-      query.andQualifier(exp2);
-
+          EipTReportMap.USER_ID_PROPERTY,
+          login_user_id);
+      query.andQualifier(exp1);
     } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
       // 送信
       Expression exp1 =
@@ -327,7 +323,9 @@ public class ReportSelectData extends
     } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
       // 受信
       Expression exp2 =
-        ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
+        ExpressionFactory.matchExp(
+          EipTReportMap.USER_ID_PROPERTY,
+          login_user_id);
       query.andQualifier(exp2);
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
