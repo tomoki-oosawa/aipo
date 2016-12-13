@@ -25,7 +25,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -51,6 +53,7 @@ import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.services.timeline.ALTimelineHandler;
@@ -364,6 +367,13 @@ public class TimelineFormData extends ALAbstractFormData {
         topic.getTimelineId(),
         ALEventlogConstants.PORTLET_TYPE_TIMELINE,
         TimelineUtils.compressString(note.getValue()));
+
+      // プッシュ通知の処理
+      Map<String, String> params = new HashMap<String, String>();
+      List<String> recipients = new ArrayList<String>();
+      recipients.add(Database.getDomainName());
+      params.put("timelineId", String.valueOf(topic.getTimelineId()));
+      ALPushService.pushAsync("timeline", params, recipients);
 
     } catch (RuntimeException ex) {
       // RuntimeException
