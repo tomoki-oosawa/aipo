@@ -54,7 +54,7 @@ public class ALReminderManagement {
     item.setOrgId(orgId);
     item.setUserId(userId);
     ArrayList<ReminderNotifyType> list = new ArrayList<ReminderNotifyType>();
-    // list.add(ReminderNotifyType.MAIL);
+    list.add(ReminderNotifyType.MAIL);
     list.add(ReminderNotifyType.MESSAGE);
     item.setNotifyType(list);
     return item;
