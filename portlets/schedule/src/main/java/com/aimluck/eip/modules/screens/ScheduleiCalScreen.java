@@ -18,27 +18,13 @@
  */
 package com.aimluck.eip.modules.screens;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
-
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.modules.screens.RawScreen;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-
-import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.schedule.ScheduleSearchResultData;
-import com.aimluck.eip.schedule.ScheduleiCalSelectData;
-import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.util.ALEipUtils;
 
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateList;
@@ -56,10 +42,27 @@ import net.fortuna.ical4j.model.property.ExDate;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.ProdId;
+import net.fortuna.ical4j.model.property.RDate;
 import net.fortuna.ical4j.model.property.RRule;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.util.UidGenerator;
+
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.schedule.ScheduleSearchResultData;
+import com.aimluck.eip.schedule.ScheduleiCalSelectData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -67,8 +70,8 @@ import net.fortuna.ical4j.util.UidGenerator;
 public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleiCalScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleiCalScreen.class.getName());
 
   /**
    * @param rundata
@@ -323,13 +326,151 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           for (ScheduleSearchResultData dummy : list) {
             java.util.Calendar dummyStart = Calendar.getInstance();
             dummyStart.setTime(dummy.getStartDate().getValue());
-            dummyStart.set(
-              Calendar.HOUR_OF_DAY,
-              cStart.get((Calendar.HOUR_OF_DAY)));
+            dummyStart.set(Calendar.HOUR_OF_DAY, cStart
+              .get((Calendar.HOUR_OF_DAY)));
             dummyStart.set(Calendar.MINUTE, cStart.get((Calendar.MINUTE)));
             dateList.add(new DateTime(dummyStart.getTime()));
           }
           event.getProperties().add(new ExDate(dateList));
+        }
+        Character ptnFirst = ptn.charAt(0);
+        if (ptnFirst == 'D'
+          || ptnFirst == 'W'
+          || ptnFirst == 'M'
+          || ptnFirst == 'Y') {
+          Character ptnLast = ptn.charAt(ptn.length() - 1);
+          if (ptnLast == 'D' || ptnLast == 'A' || ptnLast == 'B') {
+            // 候補日のリストを作成
+            List<ALDateTimeField> candidateList =
+              new ArrayList<ALDateTimeField>();
+            ALDateTimeField candidate = new ALDateTimeField("yyyy-MM-dd");
+            // candidate.setValue(dStart);
+            Calendar cal2 = Calendar.getInstance();
+            cal2 = (Calendar) cStart.clone();
+            // cal2.set(Integer.parseInt(candidate.getYear()),
+            // Integer.parseInt(candidate.getMonth()),
+            // Integer.parseInt(candidate.getDay()));
+            // cal2.set(Calendar.HOUR_OF_DAY,
+            // Integer.parseInt(candidate.getHour()));
+            // cal2.set(Calendar.MINUTE,
+            // Integer.parseInt(candidate.getMinute()));
+
+            // candidateListを完成させる
+            Calendar eEnd = Calendar.getInstance();
+            eEnd.setTime(dEnd);
+            switch (ptnFirst) {
+              case 'D':
+                while (cal2.compareTo(eEnd) <= 0) {
+                  candidate.setValue(cal2.getTime());
+                  candidateList.add(candidate);
+                  cal2.add(Calendar.DATE, 1);
+                }
+                break;
+              case 'W':
+                boolean isEveryWeek;
+                int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+                if (a >= 0 && a <= 9) {
+                  isEveryWeek = false;
+                } else {
+                  isEveryWeek = true;
+                }
+                List<Integer> dayOfWeekList = new ArrayList<Integer>();
+                for (int i = 0; i < 7; i++) {
+                  if (ptn.charAt(i + 1) == '1') {
+                    dayOfWeekList.add(i);
+                  }
+                }
+                int startDayOfWeek = cal2.get(Calendar.DAY_OF_WEEK);
+                int currentIdx = dayOfWeekList.indexOf(startDayOfWeek);
+                int num = dayOfWeekList.size();
+
+                while (cal2.compareTo(eEnd) <= 0) {
+                  candidate.setValue(cal2.getTime());
+                  candidateList.add(candidate);
+                  cal2.add(Calendar.DATE, (dayOfWeekList.get((currentIdx + 1)
+                    % num) - dayOfWeekList.get((currentIdx) % num + 7) % 7));
+                  if (currentIdx == num - 1 && !isEveryWeek) {
+                    cal2.add(Calendar.MONTH, 1);
+                  }
+                  currentIdx++;
+                  currentIdx = (currentIdx) % num;
+                }
+                break;
+              case 'M':
+                while (cal2.compareTo(eEnd) <= 0) {
+                  candidate.setValue(cal2.getTime());
+                  candidateList.add(candidate);
+                  cal2.add(Calendar.MONTH, 1);
+                }
+                break;
+              case 'Y':
+                while (cal2.compareTo(eEnd) <= 0) {
+                  candidate.setValue(cal2.getTime());
+                  candidateList.add(candidate);
+                  cal2.add(Calendar.YEAR, 1);
+                }
+                break;
+            }
+            DateList deleteList = new DateList();
+            DateList addList = new DateList();
+            switch (ptn.charAt(ptn.length() - 1)) {
+              case 'D':
+                for (int i = 0; i < candidateList.size(); i++) {
+                  if (!ScheduleUtils.isView(
+                    candidateList.get(i),
+                    ptn,
+                    dStart,
+                    dEnd)) {
+                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                  }
+                }
+                break;
+              case 'A':
+                for (int i = 0; i < candidateList.size(); i++) {
+                  if (!ScheduleUtils.isView(
+                    candidateList.get(i),
+                    ptn,
+                    dStart,
+                    dEnd)) {
+                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                    Calendar cal3 = Calendar.getInstance();
+                    ALDateTimeField shiftDay =
+                      new ALDateTimeField("yyyy-MM-dd");
+                    cal3.setTime(candidateList.get(i).getValue());
+                    shiftDay.setValue(cal3.getTime());
+                    while (!ScheduleUtils.isView(shiftDay, ptn, dStart, dEnd)) {
+                      cal3.add(Calendar.DATE, 1);
+                      shiftDay.setValue(cal3.getTime());
+                    }
+                    addList.add(cal3.getTime());
+                  }
+                }
+                break;
+              case 'B':
+                for (int i = 0; i < candidateList.size(); i++) {
+                  if (!ScheduleUtils.isView(
+                    candidateList.get(i),
+                    ptn,
+                    dStart,
+                    dEnd)) {
+                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                    Calendar cal3 = Calendar.getInstance();
+                    ALDateTimeField shiftDay =
+                      new ALDateTimeField("yyyy-MM-dd");
+                    cal3.setTime(candidateList.get(i).getValue());
+                    shiftDay.setValue(cal3.getTime());
+                    while (!ScheduleUtils.isView(shiftDay, ptn, dStart, dEnd)) {
+                      cal3.add(Calendar.DATE, -1);
+                      shiftDay.setValue(cal3.getTime());
+                    }
+                    addList.add(cal3.getTime());
+                  }
+                }
+                break;
+            }
+            event.getProperties().add(new ExDate(deleteList));
+            event.getProperties().add(new RDate(addList));
+          }
         }
       }
       cal.getComponents().add(event);
@@ -356,8 +497,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     }
   }
 
-  private java.util.Date getRepeatStartDate(java.util.Date startDate,
-      String ptn) {
+  private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
     try {
       Calendar cal = Calendar.getInstance();
       logger.error(startDate);
@@ -401,8 +541,9 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     // 祝日判定
     ScheduleUtils.setDate(cal.getTime());
 
-    if ((ScheduleUtils.isHoliday()
-      || ScheduleUtils.isUserHoliday(day_count - 1)) && shift != 5) {
+    if ((ScheduleUtils.isHoliday() || ScheduleUtils
+      .isUserHoliday(day_count - 1))
+      && shift != 5) {
       result = false;
       return result;
     }
@@ -419,7 +560,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
-          // 日
+        // 日
           case Calendar.SUNDAY:
             result = ptn.charAt(1) != '0';
             break;
