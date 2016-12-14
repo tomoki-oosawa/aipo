@@ -73,4 +73,8 @@ public class ALReminderService {
   public static boolean isPastEnabled() {
     return getService().isPastEnabled();
   }
+
+  public static boolean isAutoSetup() {
+    return getService().isAutoSetup();
+  }
 }

@@ -84,4 +84,6 @@ public abstract class ALReminderHandler {
 
   public abstract boolean isPastEnabled();
 
+  public abstract boolean isAutoSetup();
+
 }
