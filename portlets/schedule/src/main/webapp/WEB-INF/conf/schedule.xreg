@@ -115,6 +115,7 @@
         <parameter name="p5a-view.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view.style.items" value="1,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p5a-view.style.values" value="有効,無効" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <parameter name="p7d-schk" value="f" type="style" hidden="false" cachedOnName="true" cachedOnValue="true">
             <meta-info>
                 <title>ブロックの簡易表示</title>
@@ -130,7 +131,7 @@
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="予定追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.schedule.onLoadScheduleDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-z
+
         <parameter name="admin_detail_screen" value="ScheduleAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <media-type ref="html"/>

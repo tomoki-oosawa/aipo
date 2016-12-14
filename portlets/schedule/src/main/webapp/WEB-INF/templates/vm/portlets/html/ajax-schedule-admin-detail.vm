@@ -28,11 +28,23 @@
 #ALtditemheader()
 $!result.Detail.Title
 #ALtditemfooter()
+
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+
+#ALtdcaption($l10n.GADGETS_SCHEDULE_MAP_URL)
+#set($map_flg = $!result.Detail.getMapValue())
+#if($map_flg == "F")
+#ALtdcell($l10n.ACCOUNT_INVALID)
+#else
+#ALtdcell($l10n.ACCOUNT_VALID)
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
+#if(!$!{noedit})
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.schedule.onLoadPostDialog")
+#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 
