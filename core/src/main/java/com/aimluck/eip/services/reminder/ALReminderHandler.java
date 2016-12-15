@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.services.reminder;
 
+import java.util.List;
+
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 
@@ -74,6 +76,8 @@ public abstract class ALReminderHandler {
       ReminderCategory category);
 
   public abstract void updateDefault(ALReminderDefaultItem item);
+
+  public abstract void updateDefaultBatch(List<ALReminderDefaultItem> itemList);
 
   public abstract void removeDefault(String orgId, String userId,
       ReminderCategory category);
