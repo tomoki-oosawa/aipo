@@ -68,10 +68,6 @@ import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
-import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
-import com.aimluck.eip.services.reminder.ALReminderManagement;
-import com.aimluck.eip.services.reminder.ALReminderService;
-import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserGroupLiteBean;
 import com.aimluck.eip.util.ALEipUtils;
@@ -984,20 +980,6 @@ public class AccountUserFormData extends ALAbstractFormData {
           .getDataSyncHandler()
           .addUser(user)) {
           return false;
-        }
-
-        // リマインダー初期設定
-        try {
-          if (ALReminderService.isEnabled() && ALReminderService.isAutoSetup()) {
-            ALReminderDefaultItem defaultItem =
-              ALReminderManagement.getRecommendDefault(
-                Database.getDomainName(),
-                user.getUserId(),
-                ReminderCategory.SCHEDULE);
-            ALReminderService.updateDefault(defaultItem);
-          }
-        } catch (Throwable t) {
-          logger.error(t);
         }
 
       }

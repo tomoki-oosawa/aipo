@@ -57,10 +57,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.datasync.ALDataSyncFactoryService;
-import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
-import com.aimluck.eip.services.reminder.ALReminderManagement;
-import com.aimluck.eip.services.reminder.ALReminderService;
-import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -740,20 +736,6 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         }
 
         Database.commit();
-
-        // リマインダー初期設定
-        try {
-          if (ALReminderService.isEnabled() && ALReminderService.isAutoSetup()) {
-            ALReminderDefaultItem defaultItem =
-              ALReminderManagement.getRecommendDefault(
-                Database.getDomainName(),
-                user.getUserId(),
-                ReminderCategory.SCHEDULE);
-            ALReminderService.updateDefault(defaultItem);
-          }
-        } catch (Throwable t) {
-          logger.error(t);
-        }
       }
 
       // WebAPIとのDB同期
