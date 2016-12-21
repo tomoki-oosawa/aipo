@@ -43,7 +43,9 @@ $!result.Detail.Title
 
 #ALbuttonheader()
 #if(!$!{noedit})
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.schedule.onLoadPostDialog")
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen')" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
+#set($x=$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen'))
+$x
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
