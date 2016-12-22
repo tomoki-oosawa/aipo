@@ -277,12 +277,6 @@ public class CustomizeFormJSONScreen extends ALJSONScreen {
 
     try {
       int length = portletList.length;
-      for (int i = 0; i < length; i++) {
-        Entry[] entries = portletList[i].getEntriesArray();
-        if (entries == null || entries.length <= 0) {
-          continue;
-        }
-      }
 
       search: for (int i = 0; i < length; i++) {
         Entry[] entries = portletList[i].getEntriesArray();

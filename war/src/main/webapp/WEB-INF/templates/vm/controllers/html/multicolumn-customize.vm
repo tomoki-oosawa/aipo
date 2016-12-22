@@ -24,15 +24,6 @@
         <tr>
 #set ($ndx = 0)
 #set ($col = 0)
-#set ($timelineCount = 0)
-
-#foreach ( $column in $portlets )
-#foreach ( $portlet in $column )
-#if($portlet.parent == "Timeline")
-#set ($timelineCount = $timelineCount + 1)
-#end
-#end
-#end
 
 #foreach ( $column in $portlets )
 #set ($row = 0)
@@ -59,7 +50,7 @@
                             <div class="inner ">
                                 <div class="auiPortletTitle">$!utils.escapeXML($titles.get($portlet.id))</div>
 								<div class="auiPortletTool">
-#if($accessControl == "true" && ($portlet.parent != "Timeline" || ($timelineCount > 1)))
+#if($accessControl == "true")
 									<div class="auiPortletDelete">
 										<a href="javascript:(function(e){ document.getElementById('remove_button_$portlet.id').click()})();" class="auiIcon"><i class="icon-remove"></i></a>
 										<button  type="submit" id="remove_button_$portlet.id" style="display:none" name="eventSubmit_doDelete"/>&nbsp;<i class="icon-remove"></i>&nbsp;</button>
