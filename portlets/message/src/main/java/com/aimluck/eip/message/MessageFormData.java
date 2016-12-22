@@ -508,5 +508,4 @@ public class MessageFormData extends ALAbstractFormData {
   public int getRoomId() {
     return (int) roomId.getValue();
   }
-
 }
