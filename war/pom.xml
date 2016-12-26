@@ -142,26 +142,7 @@
                 <include>aimluck/aimluck.js</include>
                 <include>aimluck/utils/utils.js</include>
                 <include>aimluck/utils/form.js</include>
-                <include>aimluck/io/*.xd.js</include>
                 <include>aipo/aipo.js</include>
-                <include>aipo/common/*.xd.js</include>
-                <include>aipo/io/*.xd.js</include>
-                <include>aimluck/dnd/*.xd.js</include>
-                <include>aimluck/widget/*.xd.js</include>
-                <include>aipo/widget/GroupSelectList.xd.js</include>
-                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
-                <include>aipo/widget/GroupNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberSelectList.xd.js</include>
-                <include>aipo/widget/MemberNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberFilterList.xd.js</include>
-                <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
-                <include>aipo/widget/DateCalendar.xd.js</include>
-                <include>aipo/widget/DropdownDatepicker.xd.js</include>
-                <include>aipo/widget/DropdownGrouppicker.xd.js</include>
-                <include>aipo/widget/DropdownMemberpicker.xd.js</include>
-                <include>aipo/widget/ToolTip.xd.js</include>
-                <include>aipo/fileupload/widget/FileuploadDialog.xd.js</include>
-                <include>aipo/fileupload/widget/FileuploadViewDialog.xd.js</include>
                 <include>aipo/gadgets.js</include>
                 <include>aipo/container.js</include>
               </includes>
