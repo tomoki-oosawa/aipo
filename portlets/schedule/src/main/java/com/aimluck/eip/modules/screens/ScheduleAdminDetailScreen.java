@@ -24,8 +24,6 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.schedule.ScheduleAdminSelectData;
-import com.aimluck.eip.services.config.ALConfigHandler.Property;
-import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
@@ -50,7 +48,7 @@ public class ScheduleAdminDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      ALConfigService.put(Property.MapValidation, "F");// デフォルトの設置
+      // ALConfigService.put(Property.MapValidation, "F");// デフォルトの設置
       // あとで設定する場所でおきます
 
       String layout_template = "portlets/html/ajax-schedule-admin-detail.vm";

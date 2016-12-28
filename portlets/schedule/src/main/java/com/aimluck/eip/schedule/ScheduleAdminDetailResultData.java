@@ -41,4 +41,8 @@ public class ScheduleAdminDetailResultData extends
   public static String getMapValue() {
     return ALConfigService.get(Property.MapValidation);
   }
+
+  public static void putMapValue(String x) {
+    ALConfigService.put(Property.MapValidation, x);
+  }
 }
