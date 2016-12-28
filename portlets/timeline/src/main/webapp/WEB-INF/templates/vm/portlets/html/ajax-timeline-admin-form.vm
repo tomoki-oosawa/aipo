@@ -18,10 +18,14 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
+#set ($action_str = $l10n.TIMELINE_UPDATE)
+#set ($subtitle = $l10n.GADGETS_APP_EDIT)
+#set ($event_submit = "eventSubmit_doTimelineAdmin_update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("$l10n.GADGETS_APP_DETAIL")
+#ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader($l10n.GADGETS_APP)
+#ALajaxscreenformheader("timelineAdminForm" $jslink $portlet "TimelineAdminJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage)")
+<input type="hidden" name="mode" value="update" />
 #ALtableheaderWide()
 
 #ALtdcaption($l10n.GADGETS_TITLE)
@@ -32,16 +36,16 @@ $!result.Detail.Title
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.TIMELINE_UPDATE_DISPLAY)
 #ALtditemheader()
-#if ($!{result.enabledActivityFlag.toString()} == "T")
-$l10n.TIMELINE_VALID
-#else
-$l10n.TIMELINE_INVALID
-#end
+<select id="enabled_activity" onChange="" name="enabled_activity"/>
+    <option value="T" #if ($!{result.enabledActivityFlag.toString()} == "T") selected="selected" #end>$l10n.TIMELINE_VALID</option>
+    <option value="F" #if ($!{result.enabledActivityFlag.toString()} == "F") selected="selected" #end>$l10n.TIMELINE_INVALID</option>
+</select>
 #ALtditemfooter()
+
 #ALtablefooter()
 
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineAdminFormScreen')" "$!portlet.ID" "aipo.timeline.onLoadDialog")#ALajaxbuttonClose()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
-
+#ALformfooter()
 #ALdialogfooter()
