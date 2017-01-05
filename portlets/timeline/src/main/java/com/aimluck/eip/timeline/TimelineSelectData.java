@@ -116,6 +116,21 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名「タイムライン（他ユーザーの投稿）管理者」の一覧表示権限 */
   private boolean hasAclTimelineListOther;
 
+  /** アクセス権限の機能名「タイムライン（他ユーザーの投稿）管理者」の削除権限 */
+  private boolean hasAclTimelineDeleteOther;
+
+  /** アクセス権限の機能名「タイムライン（自分の投稿）管理者」の追加権限 */
+  private boolean hasAclTimelineInsert;
+
+  /** アクセス権限の機能名「タイムライン（自分の投稿）管理者」の削除権限 */
+  private boolean hasAclTimelineDelete;
+
+  /** アクセス権限の機能名「タイムライン（コメント）管理者」の追加権限 */
+  private boolean hasAclTimelineCommentInsert;
+
+  /** アクセス権限の機能名「タイムライン（コメント）管理者」の削除権限 */
+  private boolean hasAclTimelineCommentDelete;
+
   /** アクセス権限の機能名「掲示板（トピック）管理者」の一覧表示権限 */
   private boolean hasAclTopicList;
 
@@ -225,12 +240,42 @@ public class TimelineSelectData extends
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      // アクセス権(他人のToDo一覧表示)
+      // タイムライン（他ユーザーの投稿）一覧表示権限
       hasAclTimelineListOther =
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
+      // タイムライン（他ユーザーの投稿）削除権限
+      hasAclTimelineDeleteOther =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST_OTHER,
+          ALAccessControlConstants.VALUE_ACL_DELETE);
+      // タイムライン（自分の投稿）の追加権限
+      hasAclTimelineInsert =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST,
+          ALAccessControlConstants.VALUE_ACL_INSERT);
+      // タイムライン（自分の投稿）の削除権限
+      hasAclTimelineDelete =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST,
+          ALAccessControlConstants.VALUE_ACL_DELETE);
+      // タイムライン（コメント）の追加権限
+      hasAclTimelineDelete =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_COMMENT,
+          ALAccessControlConstants.VALUE_ACL_INSERT);
+      // タイムライン（コメント）の削除権限
+      hasAclTimelineDelete =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_COMMENT,
+          ALAccessControlConstants.VALUE_ACL_DELETE);
 
       /** 更新情報についての一覧表示権限のチェック **/
       hasScheduleOtherAclList =
@@ -923,6 +968,43 @@ public class TimelineSelectData extends
 
   }
 
+  /**
+   * 詳細表示します。
+   *
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
+  @Override
+  public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      // 「いいね」の表示画面を見るためには、詳細表示権限の代わりにタイムライン（自分の投稿）の一覧表示権限が必要
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      action.setMode(ALEipConstants.MODE_DETAIL);
+      EipTTimeline obj = selectDetail(rundata, context);
+      if (obj != null) {
+        data = getResultDataDetail(obj);
+      }
+      action.setResultData(this);
+      action.putData(rundata, context);
+      return (data != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+  }
+
   private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
 
     if (!hasAclTopicList) {
@@ -1091,11 +1173,46 @@ public class TimelineSelectData extends
 
   /**
    * 他ユーザーの投稿を一覧表示する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclTimelineListOther() {
-    return hasAclUpdateTopicOthers;
+    return hasAclTimelineListOther;
+  }
+
+  /**
+   * @return hasAclTimelineDeleteOther
+   */
+  public boolean hasAclTimelineDeleteOther() {
+    return hasAclTimelineDeleteOther;
+  }
+
+  /**
+   * @return hasAclTimelineInsert
+   */
+  public boolean hasAclTimelineInsert() {
+    return hasAclTimelineInsert;
+  }
+
+  /**
+   * @return hasAclTimelineDelete
+   */
+  public boolean hasAclTimelineDelete() {
+    return hasAclTimelineDelete;
+  }
+
+  /**
+   * @return hasAclTimelineCommentInsert
+   */
+  public boolean hasAclTimelineCommentInsert() {
+    return hasAclTimelineCommentInsert;
+  }
+
+  /**
+   * @return hasAclTimelineCommentDelete
+   */
+  public boolean hasAclTimelineCommentDelete() {
+    return hasAclTimelineCommentDelete;
   }
 
   /**
