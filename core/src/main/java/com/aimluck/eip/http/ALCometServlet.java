@@ -229,7 +229,8 @@ public class ALCometServlet extends HttpServlet implements CometProcessor {
 
             while (iterator.hasNext()) {
               Entry<HttpServletResponse, String> next = iterator.next();
-              if (message.getRecipients().contains(next.getValue())) {
+              if (message.getRecipients().contains(next.getValue())
+                || message.getRecipients().contains("org001")) {
                 HttpServletResponse response = next.getKey();
                 try {
                   if (!response.isCommitted()) {

@@ -327,9 +327,9 @@ aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
 	}
 	if(num == 0){
 		aipo.portletReload('timeline');
-	} else {
-		dojo.query(".newMessage").style('display', '');
 	}
+	dojo.query(".newMessage").style('display', '');
+
 }
 
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {

@@ -56,7 +56,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
-import com.aimluck.eip.services.timeline.ALTimelineHandler;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -359,8 +358,8 @@ public class TimelineFormData extends ALAbstractFormData {
       ALTimelineFactoryService tlservice =
         (ALTimelineFactoryService) ((TurbineServices) TurbineServices
           .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      timelinehandler.pushToken(rundata, String.valueOf(uid));
+      // ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
+      // timelinehandler.pushToken(rundata, String.valueOf(uid));
 
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
