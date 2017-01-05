@@ -33,7 +33,6 @@ import javax.imageio.ImageIO;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -55,7 +54,6 @@ import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
-import com.aimluck.eip.services.timeline.ALTimelineFactoryService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
@@ -355,12 +353,6 @@ public class TimelineFormData extends ALAbstractFormData {
         }
       }
 
-      ALTimelineFactoryService tlservice =
-        (ALTimelineFactoryService) ((TurbineServices) TurbineServices
-          .getInstance()).getService(ALTimelineFactoryService.SERVICE_NAME);
-      // ALTimelineHandler timelinehandler = tlservice.getTimelineHandler();
-      // timelinehandler.pushToken(rundata, String.valueOf(uid));
-
       // イベントログに保存
       ALEventlogFactoryService.getInstance().getEventlogHandler().log(
         topic.getTimelineId(),
@@ -372,6 +364,10 @@ public class TimelineFormData extends ALAbstractFormData {
       List<String> recipients = new ArrayList<String>();
       recipients.add(Database.getDomainName());
       params.put("timelineId", String.valueOf(topic.getTimelineId()));
+      params.put("senderName", String.valueOf(ALEipUtils
+        .getALEipUser(uid)
+        .getName()
+        .getValue()));
       ALPushService.pushAsync("timeline", params, recipients);
 
     } catch (RuntimeException ex) {

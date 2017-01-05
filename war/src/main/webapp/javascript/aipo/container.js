@@ -311,25 +311,10 @@ aipo.IfrGadgetService.prototype.requestCheckActivity = function(activityId) {
     }
 };
 
-aipo.IfrGadgetService.prototype.requestCheckTimeline = function() {
-	var num = 0;
-
-	var submit = dojo.byId('getTimelineOnClick').innerHTML;
-	if(submit != 'true'){
-		dojo.query("#timelineOuter .elastic").forEach(function(item) {
-			if(item.value != item.defaultValue){
-				num++;
-			}
-		});
-		if(dojo.byId("modalDialog") != undefined && dojo.byId("modalDialog").style.display != "none") {
-			num++;
-		}
+aipo.IfrGadgetService.prototype.requestCheckTimeline = function(params) {
+	if(params.senderName != aipo.message.loginUserId){
+		dojo.query(".newMessage").style('display', '');
 	}
-	if(num == 0){
-		aipo.portletReload('timeline');
-	}
-	dojo.query(".newMessage").style('display', '');
-
 }
 
 aipo.IfrGadgetService.prototype.requestCheckMessage = function(params) {
