@@ -2287,7 +2287,7 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(32,'報告書（他ユーザーの報告書）
 INSERT INTO EIP_T_ACL_ROLE VALUES(33,'報告書（報告書への返信）管理者',213,20,NULL);
 
 -- timeline
-INSERT INTO EIP_T_ACL_ROLE VALUES(34, 'タイムライン（自分の投稿）',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(34, 'タイムライン（自分の投稿）管理者',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(35,'タイムライン（他ユーザーの投稿）管理者',222,1,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(36,'タイムライン（コメント）管理者',223,20,NULL);
 

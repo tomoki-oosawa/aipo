@@ -113,6 +113,9 @@ public class TimelineSelectData extends
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
+  /** アクセス権限の機能名「タイムライン（他ユーザーの投稿）管理者」の一覧表示権限 */
+  private boolean hasAclTimelineListOther;
+
   /** アクセス権限の機能名「掲示板（トピック）管理者」の一覧表示権限 */
   private boolean hasAclTopicList;
 
@@ -216,12 +219,20 @@ public class TimelineSelectData extends
         }
       }
 
-      /** 更新情報についての一覧表示権限のチェック **/
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
           .getInstance())
           .getService(ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+      // アクセス権(他人のToDo一覧表示)
+      hasAclTimelineListOther =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** 更新情報についての一覧表示権限のチェック **/
       hasScheduleOtherAclList =
         aclhandler.hasAuthority(
           uid,
@@ -270,6 +281,14 @@ public class TimelineSelectData extends
 
       // 指定グループや指定ユーザをセッションに設定する．
       setupLists(rundata, context);
+
+      // 他ユーザーの投稿の一覧表示権限がない場合には自分の投稿のみを表示する
+      if (!hasAclTimelineListOther) {
+        useridList.clear();
+        useridList.add(uid);
+        // ガイドユーザー表示用
+        useridList.add(2);
+      }
 
       if (TimelineUtils.hasResetFlag(rundata, context)) {
         TimelineUtils.resetKeyword(rundata, context);
@@ -1057,6 +1076,26 @@ public class TimelineSelectData extends
 
   public boolean showReplyForm() {
     return showReplyForm;
+  }
+
+  /**
+   * アクセス権限チェック用メソッド。<br />
+   * アクセス権限の機能名を返します。
+   *
+   * @return
+   */
+  @Override
+  public String getAclPortletFeature() {
+    return ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST;
+  }
+
+  /**
+   * 他ユーザーの投稿を一覧表示する権限があるかどうかを返します。
+   * 
+   * @return
+   */
+  public boolean hasAclTimelineListOther() {
+    return hasAclUpdateTopicOthers;
   }
 
   /**

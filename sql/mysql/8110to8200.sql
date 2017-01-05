@@ -33,7 +33,7 @@ UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(221,'timeline_post','タイムライン（自分の投稿）操作',21);
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(222,'timeline_post_other','タイムライン（他ユーザーの投稿）操作',17);
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(223,'timeline_comment','タイムライン（コメント）操作',20);
-INSERT INTO `eip_t_acl_role` VALUES(34, 'タイムライン（自分の投稿）',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL);
+INSERT INTO `eip_t_acl_role` VALUES(34, 'タイムライン（自分の投稿）管理者',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません',NULL,NULL);
 INSERT INTO `eip_t_acl_role` VALUES(35,'タイムライン（他ユーザーの投稿）管理者',222,1,NULL,NULL,NULL);
 INSERT INTO `eip_t_acl_role` VALUES(36,'タイムライン（コメント）管理者',223,20,NULL,NULL,NULL);
 -- migration

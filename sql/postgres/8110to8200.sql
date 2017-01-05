@@ -34,7 +34,7 @@ UPDATE EIP_T_EXT_TIMECARD_SYSTEM SET OVERTIME_TYPE = 'O';
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(221,'timeline_post','タイムライン（自分の投稿）操作',21);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(222,'timeline_post_other','タイムライン（他ユーザーの投稿）操作',17);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(223,'timeline_comment','タイムライン（コメント）操作',20);
-INSERT INTO EIP_T_ACL_ROLE VALUES(34, 'タイムライン（自分の投稿）',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(34, 'タイムライン（自分の投稿）管理者',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(35,'タイムライン（他ユーザーの投稿）管理者',222,1,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(36,'タイムライン（コメント）管理者',223,20,NULL);
 -- migration
