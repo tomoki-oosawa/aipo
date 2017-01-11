@@ -18,6 +18,11 @@
  */
 dojo.provide("aipo.schedule_admin");
 
+aipo.timeline.changeMapValidationFlag = function(form) {
+	form.map_validation = true;
+	console.log(form);
+}
+
 aipo.schedule_admin.onLoadScheduleAdminAclList = function(portlet_id){
     aipo.portletReload('schedule_admin');
 }

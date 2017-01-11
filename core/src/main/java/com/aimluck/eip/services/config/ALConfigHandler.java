@@ -111,7 +111,7 @@ public abstract class ALConfigHandler {
       }
     },
 
-    MapValidation("config.schedule.maps.enabled") {
+    MAP_VALIDATION("config.schedule.maps.enabled") {
       @Override
       public String defaultValue() {
         return JetspeedResources.getString("config.schedule.maps.enabled", "F");

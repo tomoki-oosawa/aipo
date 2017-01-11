@@ -48,9 +48,6 @@ public class ScheduleAdminDetailScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      // ALConfigService.put(Property.MapValidation, "F");// デフォルトの設置
-      // あとで設定する場所でおきます
-
       String layout_template = "portlets/html/ajax-schedule-admin-detail.vm";
 
       setTemplate(rundata, context, layout_template);

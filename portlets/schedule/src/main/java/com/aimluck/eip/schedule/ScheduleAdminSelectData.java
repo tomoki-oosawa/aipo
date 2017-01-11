@@ -30,6 +30,8 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -37,6 +39,8 @@ import com.aimluck.eip.util.CustomizeUtils;
  */
 public class ScheduleAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
+
+  private String mapValidation;
 
   /**
    *
@@ -48,6 +52,9 @@ public class ScheduleAdminSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    mapValidation =
+      ALConfigService.get(ALConfigHandler.Property.MAP_VALIDATION);
 
   }
 
@@ -101,5 +108,16 @@ public class ScheduleAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * @return
+   */
+  public String getMapValidationFlag() {
+    return mapValidation;
+  }
+
+  public void setMapValidationFlag(String string) {
+    ALConfigService.put(ALConfigHandler.Property.MAP_VALIDATION, string);
   }
 }

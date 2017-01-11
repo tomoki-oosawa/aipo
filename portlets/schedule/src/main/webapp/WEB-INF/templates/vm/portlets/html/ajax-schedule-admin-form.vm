@@ -26,14 +26,14 @@
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 
-#ALajaxscreenformheader("scheduleadminForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,schedule.onReceiveMessage)")
+#ALajaxscreenformheader("scheduleAdminForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.schedule.onReceiveMessage)")
 
 #ALtableheaderWide()
 #ALtdcaption("場所欄からマップアプリを開く")
 #ALtditemheader()
 #set($map_flg = $!result.Detail.getMapValue())
 <div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>
-<select name="position_id" class="w100">
+<select name="map_validation" class="w100">
 <option value="T" #if ($map_flg == "T") selected="selected" #end>$l10n.ACCOUNT_VALID</option>
 <option value="F" #if ($map_flg != "T") selected="selected" #end>$l10n.ACCOUNT_INVALID</option>
 </select>
