@@ -104,10 +104,8 @@
                 <include>aipo/io/*.js</include>
                 <include>aimluck/dnd/*.js</include>
                 <include>aimluck/widget/*.js</include>
-                <include>aipo/widget/GroupSelectList.js</include>
                 <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/GroupNormalSelectList.js</include>
-                <include>aipo/widget/MemberSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/widget/MemberFilterList.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.js</include>
@@ -148,10 +146,8 @@
                 <include>aipo/io/*.xd.js</include>
                 <include>aimluck/dnd/*.xd.js</include>
                 <include>aimluck/widget/*.xd.js</include>
-                <include>aipo/widget/GroupSelectList.xd.js</include>
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
                 <include>aipo/widget/GroupNormalSelectList.xd.js</include>
-                <include>aipo/widget/MemberSelectList.xd.js</include>
                 <include>aipo/widget/MemberNormalSelectList.xd.js</include>
                 <include>aipo/widget/MemberFilterList.xd.js</include>
                 <include>aipo/workflow/MemberNormalSelectList.xd.js</include>
