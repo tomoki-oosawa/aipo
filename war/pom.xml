@@ -106,7 +106,6 @@
                 <include>aimluck/widget/*.js</include>
                 <include>aipo/widget/GroupSelectList.js</include>
                 <include>aipo/widget/GroupNormalSelectList.js</include>
-                <include>aipo/widget/GroupNormalSelectList.js</include>
                 <include>aipo/widget/MemberSelectList.js</include>
                 <include>aipo/widget/MemberNormalSelectList.js</include>
                 <include>aipo/widget/MemberFilterList.js</include>
@@ -131,21 +130,6 @@
               <excludes>
                 <exclude>**/*.xd.js</exclude>
               </excludes>
-            </aggregation>
-            <aggregation>
-              <insertNewLine>true</insertNewLine>
-              <output>target/aipo/javascript/aipo.xd.js</output>
-              <includes>
-                <include>modules.js</include>
-                <include>dojo/dojo-aipo.xd.js</include>
-                <include>dijit/dijit-aipo.xd.js</include>
-                <include>aimluck/aimluck.js</include>
-                <include>aimluck/utils/utils.js</include>
-                <include>aimluck/utils/form.js</include>
-                <include>aipo/aipo.js</include>
-                <include>aipo/gadgets.js</include>
-                <include>aipo/container.js</include>
-              </includes>
             </aggregation>
             <aggregation>
               <insertNewLine>true</insertNewLine>
