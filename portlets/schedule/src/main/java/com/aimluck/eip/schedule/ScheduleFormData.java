@@ -1483,11 +1483,13 @@ public class ScheduleFormData extends ALAbstractFormData {
               rundata,
               schedule,
               memberList,
+              null,
               "new"));
             message.setCellularBody(ScheduleUtils.createMsg(
               rundata,
               schedule,
               memberList,
+              destMember.getUserId(),
               "new"));
             messageList.add(message);
           }
@@ -2157,11 +2159,13 @@ public class ScheduleFormData extends ALAbstractFormData {
                 rundata,
                 newSchedule,
                 memberList,
+                null,
                 "edit"));
               message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
+                destMember.getUserId(),
                 "edit"));
             }
 
@@ -2183,11 +2187,13 @@ public class ScheduleFormData extends ALAbstractFormData {
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "edit"));
               message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                destMember.getUserId(),
                 "edit"));
               messageList.add(message);
             }
@@ -2676,11 +2682,13 @@ public class ScheduleFormData extends ALAbstractFormData {
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "delete"));
               message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                destMember.getUserId(),
                 "delete"));
               messageList.add(message);
             }

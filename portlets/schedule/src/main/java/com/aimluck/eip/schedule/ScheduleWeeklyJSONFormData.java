@@ -551,11 +551,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   schedule,
                   memberList,
+                  null,
                   "edit"));
                 message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   schedule,
                   memberList,
+                  destMember.getUserId(),
                   "edit"));
                 messageList.add(message);
               }
@@ -724,11 +726,13 @@ public class ScheduleWeeklyJSONFormData {
                   rundata,
                   newSchedule,
                   memberList,
+                  null,
                   "edit"));
                 message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   newSchedule,
                   memberList,
+                  destMember.getUserId(),
                   "edit"));
                 messageList.add(message);
               }
@@ -958,11 +962,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "new"));
               message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                destMember.getUserId(),
                 "new"));
               messageList.add(message);
             }
@@ -1120,11 +1126,13 @@ public class ScheduleWeeklyJSONFormData {
                 rundata,
                 newSchedule,
                 memberList,
+                null,
                 "new"));
               message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
+                destMember.getUserId(),
                 "new"));
               messageList.add(message);
             }

@@ -3035,7 +3035,7 @@ public class ScheduleUtils {
    * @return
    */
   public static String createMsg(RunData rundata, EipTSchedule schedule,
-      List<ALEipUser> memberList, String mode) {
+      List<ALEipUser> memberList, Integer destUserID, String mode) {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -3108,15 +3108,28 @@ public class ScheduleUtils {
       context
         .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
-      if (enableAsp) {
-        context.put("globalUrl1", ALMailUtils.getGlobalurl());
+      if (destUserID != null) {
+        ALEipUser destUser;
+        try {
+          destUser = ALEipUtils.getALEipUser(destUserID);
+        } catch (ALDBErrorException ex) {
+          logger.error("schedule", ex);
+          return "";
+        }
+        context.put("globalUrl1", ALMailUtils.getGlobalurl()
+          + "?key="
+          + ALCellularUtils.getCellularKey(destUser));
       } else {
-        context.put("outsideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
-        context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put("insideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_INSIDE_OFFICE"));
-        context.put("globalUrl3", ALMailUtils.getLocalurl());
+        if (enableAsp) {
+          context.put("globalUrl1", ALMailUtils.getGlobalurl());
+        } else {
+          context.put("outsideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+          context.put("globalurl2", ALMailUtils.getGlobalurl());
+          context.put("insideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_INSIDE_OFFICE"));
+          context.put("globalUrl3", ALMailUtils.getLocalurl());
+        }
       }
 
       out = new StringWriter();
