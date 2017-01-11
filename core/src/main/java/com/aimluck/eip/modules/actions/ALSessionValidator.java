@@ -652,11 +652,13 @@ public class ALSessionValidator extends TemplateSessionValidator {
       if (tuser == null) {
         return false;
       }
-      String disabled = tuser.getDisabled();
       // 無効化ユーザーをチェック
+      /*-
+      String disabled = tuser.getDisabled();
       if (!"F".equals(disabled)) {
         return false;
       }
+       */
       // パスワードの有効期限をチェック
       Date lastPasswordLogin = null;
       try {
@@ -697,7 +699,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
           }
         }
         if (lastPasswordLogin != null) {
-          return passwordChanged.before(lastPasswordLogin);
+          return lastPasswordLogin.after(passwordChanged);
         }
       }
     }

@@ -1044,6 +1044,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!dontUpdatePasswd) {
           JetspeedSecurity.forcePassword(user, password.getValue());
         } else {
+          /* パスワード変更日時がnullのときの処置 */
+          if (user.getPasswordChanged() == null) {
+            user.setPasswordChanged(user.getCreated());
+          }
           Expression exp =
             ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, user
               .getUserId());
