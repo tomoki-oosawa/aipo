@@ -105,7 +105,8 @@
 			&nbsp;
 			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
 			#end
-			#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.isAdmin())
+			#if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 				<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 					<input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
 					<input type="hidden" name="secid" value="$secid" />
@@ -161,7 +162,8 @@
 							</form>
 						#end
 						&nbsp;
-						#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
+						#if(($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineCommentDelete())
+						||(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 							<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 								<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 								<input type="hidden" name="secid" value="$secid" />
@@ -240,7 +242,8 @@
 		#end
 		&nbsp;
 		<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record2.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
-		#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
+		#if(($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+		||(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 			<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 				<input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
 				<input type="hidden" name="secid" value="$secid" />
@@ -295,7 +298,8 @@
 						</form>
 					#end
 					&nbsp;
-				#if($!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) || $!result.isAdmin())
+				#if(($!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) && $!result.hasAclTimelineCommentDelete())
+				||(!$!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 					<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record3.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 						<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 							<input type="hidden" name="secid" value="$secid" />
