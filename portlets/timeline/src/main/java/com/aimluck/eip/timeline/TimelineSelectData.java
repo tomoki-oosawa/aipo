@@ -265,13 +265,13 @@ public class TimelineSelectData extends
           ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_POST,
           ALAccessControlConstants.VALUE_ACL_DELETE);
       // タイムライン（コメント）の追加権限
-      hasAclTimelineDelete =
+      hasAclTimelineCommentInsert =
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_COMMENT,
           ALAccessControlConstants.VALUE_ACL_INSERT);
       // タイムライン（コメント）の削除権限
-      hasAclTimelineDelete =
+      hasAclTimelineCommentDelete =
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_COMMENT,
