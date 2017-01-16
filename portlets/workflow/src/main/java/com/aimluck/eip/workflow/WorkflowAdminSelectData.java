@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
+import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  *
@@ -83,8 +84,7 @@ public class WorkflowAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    WorkflowAdminDetailResultData rd =
-      new WorkflowAdminDetailResultData(record);
+    WorkflowAdminDetailResultData rd = new WorkflowAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -92,7 +92,9 @@ public class WorkflowAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Workflow");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      WorkflowUtils.WORKFLOW_PORTLET_NAME);
   }
 
   /**

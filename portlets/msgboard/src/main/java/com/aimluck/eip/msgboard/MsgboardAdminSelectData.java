@@ -29,6 +29,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
 
@@ -83,8 +84,7 @@ public class MsgboardAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    MsgboardAdminDetailResultData rd =
-      new MsgboardAdminDetailResultData(record);
+    MsgboardAdminDetailResultData rd = new MsgboardAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -92,7 +92,9 @@ public class MsgboardAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Msgboard");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      MsgboardUtils.MSGBOARD_PORTLET_NAME);
   }
 
   /**

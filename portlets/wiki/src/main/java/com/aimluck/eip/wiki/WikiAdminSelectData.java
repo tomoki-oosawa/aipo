@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
+import com.aimluck.eip.wiki.util.WikiUtils;
 
 /**
  *
@@ -91,7 +92,7 @@ public class WikiAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Wiki");
+    return CustomizeUtils.getPortletEntry(rundata, WikiUtils.WIKI_PORTLET_NAME);
   }
 
   /**

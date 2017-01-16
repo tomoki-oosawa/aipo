@@ -30,6 +30,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.project.util.ProjectUtils;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -91,7 +92,9 @@ public class ProjectAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Project");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      ProjectUtils.PROJECT_PORTLET_NAME);
   }
 
   /**

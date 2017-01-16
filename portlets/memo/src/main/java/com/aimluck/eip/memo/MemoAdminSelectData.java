@@ -28,9 +28,9 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.memo.util.MemoUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
-import com.aimluck.eip.memo.MemoAdminDetailResultData;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -84,8 +84,7 @@ public class MemoAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    MemoAdminDetailResultData rd =
-      new MemoAdminDetailResultData(record);
+    MemoAdminDetailResultData rd = new MemoAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -93,7 +92,7 @@ public class MemoAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Memo");
+    return CustomizeUtils.getPortletEntry(rundata, MemoUtils.MEMO_PORTLET_NAME);
   }
 
   /**
