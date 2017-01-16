@@ -276,7 +276,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
               .getUserId()
               .getValue());
           if ("O".equals(room.getRoomType())) {
-            login_user_room_auth = false;
+            login_user_room_auth = true;
             isGroup = false;
           }
         }
@@ -370,7 +370,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getValue());
 
       if ("O".equals(room.getRoomType())) {
-        login_user_room_auth = false;
+        login_user_room_auth = true;
         isGroup = false;
       }
 
