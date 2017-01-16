@@ -24,7 +24,11 @@
 <span id="blog_val_confirm1" style="display:none">$l10n.BLOG_CONFIRM_DELETE_COMMENT</span>
 <span id="blog_val_confirm2" style="display:none">$l10n.BLOG_CONFIRM_DELETE_ENTRY</span>
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.BLOG_DETAIL_ENTRY)
+#if (${client}!= "IPHONE")
+#ALdialogheaderPrintBlog("$l10n.BLOG_DETAIL_ENTRY" "$!portlet.ID" "BlogDetailScreenPrint" "$entityid")
+#else
+#ALdialogheaderDetailSmartPhone("$l10n.BLOG_DETAIL_ENTRY")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxscreenformheader("blogEntryForm" $jslink $portlet "BlogEntryFormJSONScreen" "aimluck.io.disableForm(this, true)")
