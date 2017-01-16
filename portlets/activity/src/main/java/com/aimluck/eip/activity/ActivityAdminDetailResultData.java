@@ -23,7 +23,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import com.aimluck.eip.common.ALAbstractAdminDetailResultData;
 
 /**
- * タイムライントピックのResultData <BR>
+ * ResultData <BR>
  *
  */
 public class ActivityAdminDetailResultData extends

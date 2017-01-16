@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.activity.util.ActivityUtils;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -83,8 +84,7 @@ public class ActivityAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    ActivityAdminDetailResultData rd =
-      new ActivityAdminDetailResultData(record);
+    ActivityAdminDetailResultData rd = new ActivityAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -92,7 +92,9 @@ public class ActivityAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Activity");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      ActivityUtils.ACTIVITY_PORTLET_NAME);
   }
 
   /**
