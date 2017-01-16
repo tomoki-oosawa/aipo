@@ -20,10 +20,14 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 
 dojo.provide("aipo.timeline");
 
-aipo.timeline.onLoadDialog = function(portlet_id){
-
-
+aipo.timeline.onLoadTimelineDialog = function(portlet_id){
+	console.log("test");
+	aipo.portletReload("timeline");
 };
+
+aipo.timeline.onLoadTimlineAdminDetail = function(portlet_id) {
+	aipo.portletReload('timelineAdmin');
+}
 
 aipo.timeline.addHiddenValue = function(form, name, value) {
 	if (form[name] && document.getElementsByName(name).item(0)) {
@@ -378,6 +382,15 @@ aipo.timeline.onReceiveMessage = function(msg) {
 	}
 	if (dojo.byId("messageDiv_" + pid)) {
 		dojo.byId("messageDiv_" + pid).innerHTML = msg;
+	}
+}
+aipo.timeline.onReceiveAdminMessage = function(msg) {
+	if (!msg) {
+		var arrDialog = dijit.byId("modalDialog");
+		if (arrDialog) {
+			arrDialog.hide();
+		}
+		aipo.portletReload('timelineAdmin');
 	}
 }
 aipo.timeline.onReceiveMessageToList = function(msg) {
