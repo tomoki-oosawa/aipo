@@ -51,6 +51,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
+import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -157,6 +158,12 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
 
+  /** アクセス権限の機能名（ToDo（自分のToDo））の一覧表示権限を持っているか */
+  private boolean hasTodoAclList;
+
+  /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
+  private boolean hasTodoOtherAclList;
+
   /**
    *
    * @param action
@@ -238,6 +245,20 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasTodoAclListの権限チェック **/
+      hasTodoAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_SELF,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasTodoOtherAclListの権限チェック **/
+      hasTodoOtherAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -569,6 +590,7 @@ public class TimelineSelectData extends
     }
 
     removePrivateMsgboardTopic(list);
+    removePrivateTodo(list);
 
     Map<Integer, List<TimelineResultData>> result =
       new HashMap<Integer, List<TimelineResultData>>(parentIds.size());
@@ -996,6 +1018,65 @@ public class TimelineSelectData extends
     list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
       .contains(Integer.parseInt(obj.getExternalId()))));
 
+  }
+
+  private void removePrivateTodo(List<EipTTimeline> list) {
+
+    if (!hasTodoAclList) {
+      list.removeIf(obj -> (obj.getAppId().equals("ToDo")));
+      return;
+    }
+
+    /* listから自分が関係しないToDoの情報を削除 */
+    List<Integer> ids = new ArrayList<Integer>();
+
+    for (EipTTimeline obj : list) {
+      if ("ToDo".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
+    }
+    if (ids.size() == 0) {
+      return;
+    }
+
+    // TodoSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTTodo> todoList = null;
+    {
+      SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
+
+      // アクセス制御
+
+      Expression exp01 =
+        ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, ids);
+
+      Expression exp001 =
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+
+      Expression exp002 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
+
+      if (hasTodoOtherAclList) {
+        // 更新情報にあるTODOの内、公開されているTODOか自分が担当者のTODOのみ取得する
+        query.setQualifier(exp01.andExp(exp001.orExp(exp002)));
+      } else {
+        // 更新情報にあるTODOの内、自分が担当者のTODOのみ取得する(ToDo（他ユーザーのToDo）の権限を持っていない場合、listからTodoの情報を削除)
+        query.setQualifier(exp01.andExp(exp002));
+      }
+
+      query.distinct(true);
+
+      todoList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> todoIdList = new ArrayList<Integer>();
+    for (EipTTodo obj : todoList) {
+      todoIdList.add(obj.getTodoId());
+    }
+    // listのなかでIDがtodoIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("ToDo") && !todoIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
   }
 
   /**
