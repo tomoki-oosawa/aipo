@@ -52,6 +52,9 @@ public class GadgetsAdminSelectData extends
   /** 一覧データ */
   private List<Object> list;
 
+  /** 表示タイプ */
+  private final String viewtype = "standard";
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -61,7 +64,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -109,7 +112,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -152,21 +155,10 @@ public class GadgetsAdminSelectData extends
   protected ResultList<PortletEntry> selectListPortletEntry(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     Status status = Status.ALL;
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Profile profile = jdata.getProfile();
     String mediaType = profile.getMediaType();
 
-    if ("1".equals(filter)) {
-      status = Status.ACTIVE;
-      current_filter = filter;
-    } else if ("0".equals(filter)) {
-      status = Status.INACTIVE;
-      current_filter = filter;
-    } else if ("all".equals(filter)) {
-      status = Status.ALL;
-      current_filter = filter;
-    }
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
     List<PortletEntry> portlets =
       CustomizeUtils.buildPortletListWithStatus(
@@ -174,6 +166,9 @@ public class GadgetsAdminSelectData extends
         mediaType,
         allPortlets,
         status);
+
+    // リストからソーシャルアプリを削除
+    portlets.removeIf(portlet -> portlet.getParent().equals("GadgetsTemplate"));
 
     return new ResultList<PortletEntry>(
       buildPaginatedListPortletEntry(portlets),
@@ -230,7 +225,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -244,6 +239,15 @@ public class GadgetsAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * 表示タイプを取得します
+   *
+   * @return String
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
 }
