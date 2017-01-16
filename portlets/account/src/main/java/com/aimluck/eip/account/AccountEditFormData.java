@@ -714,6 +714,10 @@ public class AccountEditFormData extends ALAbstractFormData {
       if (!dontUpdatePasswd) {
         JetspeedSecurity.forcePassword(user, new_password.getValue());
       } else {
+        /* パスワード変更日時が空だったときの処置 */
+        if (user.getPasswordChanged() == null) {
+          user.setPasswordChanged(user.getCreated());
+        }
         TurbineUser tuser = Database.get(TurbineUser.class, user.getUserId());
         user.setPassword(tuser.getPasswordValue());
       }
@@ -733,6 +737,7 @@ public class AccountEditFormData extends ALAbstractFormData {
         currentUser.setPassword(user.getPassword());
         currentUser.setHasPhoto(user.hasPhotoString());
         currentUser.setPhotoModified(user.getPhotoModified());
+        currentUser.setPasswordChanged(user.getPasswordChanged());
       }
 
       // イベントログに保存

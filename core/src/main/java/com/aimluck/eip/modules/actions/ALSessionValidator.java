@@ -22,9 +22,13 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -51,7 +55,9 @@ import org.apache.turbine.services.resources.TurbineResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALConstants;
+import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
@@ -252,7 +258,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
 
     JetspeedUser loginuser = (JetspeedUser) data.getUser();
 
-    if (isLogin(loginuser)) {
+    if (isLogin(loginuser, data)) {
       try {
         JetspeedSecurityCache.load(loginuser.getUserName());
       } catch (Exception e1) {
@@ -273,13 +279,13 @@ public class ALSessionValidator extends TemplateSessionValidator {
     }
 
     if (ALSessionUtils.isImageRequest(data)) {
-      if (isLogin(loginuser)) {
+      if (isLogin(loginuser, data)) {
         return;
       }
     }
 
     if (ALSessionUtils.isJsonScreen(data)) {
-      if (isLogin(loginuser)) {
+      if (isLogin(loginuser, data)) {
         return;
       }
     }
@@ -288,7 +294,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
       ALDigestAuthenticationFilter.REQUIRE_DIGEST_AUTH) != null) {
       HttpServletRequest hreq = data.getRequest();
       HttpServletResponse hres = data.getResponse();
-      if (!isLogin(loginuser)) {
+      if (!isLogin(loginuser, data)) {
         String auth = hreq.getHeader("Authorization");
 
         if (auth == null) {
@@ -304,6 +310,9 @@ public class ALSessionValidator extends TemplateSessionValidator {
             String password = decoded.substring(pos + 1);
 
             JetspeedUser juser = JetspeedSecurity.login(username, password);
+            data.getUser().setTemp(
+              ALEipConstants.LAST_PASSWORD_LOGIN,
+              new Date());
             if (juser != null && "F".equals(juser.getDisabled())) {
               JetspeedSecurity.saveUser(juser);
             } else {
@@ -342,7 +351,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
     context.put("l10n", ALLocalizationUtils.createLocalization(data));
 
     // Cookie無効エラーを検知している場合、ログインさせない
-    if (!isLogin(loginuser)
+    if (!isLogin(loginuser, data)
       && !data.getParameters().get("template").equals("CookieError")) {
       String username = data.getParameters().getString("username", "");
       String password = data.getParameters().getString("password", "");
@@ -374,7 +383,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
     String externalLoginUrl = ALConfigService.get(Property.EXTERNAL_LOGIN_URL);
 
     boolean isScreenTimeout = false;
-    if (!isLogin(loginuser)) {
+    if (!isLogin(loginuser, data)) {
       // 未ログインの時
 
       // 理由等 ：セッションが切れた時に、エラーメッセージの表示に不具合あり
@@ -385,9 +394,21 @@ public class ALSessionValidator extends TemplateSessionValidator {
 
       Class<?> cls = null;
       try {
-        cls =
-          Class.forName(new StringBuffer().append(
-            "com.aimluck.eip.modules.screens.").append(template).toString());
+        @SuppressWarnings("unchecked")
+        Vector<String> packages =
+          JetspeedResources.getVector("module.packages");
+        for (String pk : packages) {
+          try {
+            cls =
+              Class.forName(new StringBuffer()
+                .append(pk)
+                .append(".screens.")
+                .append(template)
+                .toString());
+          } catch (Throwable ignore) {
+            // ignore
+          }
+        }
       } catch (Exception e) {
         cls = null;
       }
@@ -506,7 +527,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
     // Ajaxリクエストでセッションタイムアウトした場合はリダイレクトしない
     if (!isScreenTimeout && !"".equals(externalLoginUrl)) {
       HttpServletRequest request = data.getRequest();
-      if (!isLogin(loginuser)) {
+      if (!isLogin(loginuser, data)) {
         StringBuilder buf = new StringBuilder();
         buf.append(request.getScheme()).append("://").append(
           request.getServerName());
@@ -528,7 +549,7 @@ public class ALSessionValidator extends TemplateSessionValidator {
       }
     }
 
-    if (isLogin(loginuser)) {
+    if (isLogin(loginuser, data)) {
 
       ALPreExecuteService.migratePsml(data, context);
 
@@ -619,8 +640,70 @@ public class ALSessionValidator extends TemplateSessionValidator {
     return ret;
   }
 
-  private boolean isLogin(JetspeedUser loginuser) {
-    return (loginuser != null && loginuser.hasLoggedIn());
+  private boolean isLogin(JetspeedUser loginuser, RunData rundata) {
+    boolean result = (loginuser != null && loginuser.hasLoggedIn());
+    if (result) {
+      TurbineUser tuser = null;
+      try {
+        tuser = ALEipUtils.getTurbineUser(loginuser.getUserName());
+      } catch (ALDBErrorException e) {
+        return false;
+      }
+      if (tuser == null) {
+        return false;
+      }
+      // 無効化ユーザーをチェック
+      /*-
+      String disabled = tuser.getDisabled();
+      if (!"F".equals(disabled)) {
+        return false;
+      }
+       */
+      // パスワードの有効期限をチェック
+      Date lastPasswordLogin = null;
+      try {
+        lastPasswordLogin =
+          (Date) rundata.getSession().getAttribute(
+            ALEipConstants.LAST_PASSWORD_LOGIN);
+      } catch (Throwable ignore) {
+
+      }
+      if (lastPasswordLogin == null) {
+        try {
+          String lastLoginValue = rundata.getCookies().get("lastlogin");
+          if (lastLoginValue != null) {
+            String decrypt =
+              ALCommonUtils.decrypt(JetspeedResources.getString(
+                "aipo.cookie.encryptKey",
+                "secureKey"), ALCommonUtils.decodeBase64(lastLoginValue));
+            if (decrypt != null) {
+              lastPasswordLogin = new Date(Long.valueOf(decrypt).longValue());
+            }
+          }
+        } catch (Throwable ignore) {
+
+        }
+      }
+      Date passwordChanged = tuser.getPasswordChanged();
+      if (passwordChanged != null) {
+        if (lastPasswordLogin == null) {
+          SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+          try {
+            String start =
+              JetspeedResources.getString(
+                "aipo.passwordChanged.logout.start",
+                "2016-10-11");
+            lastPasswordLogin = sdf.parse(start);
+          } catch (ParseException ignore) {
+            // ignore
+          }
+        }
+        if (lastPasswordLogin != null) {
+          return lastPasswordLogin.after(passwordChanged);
+        }
+      }
+    }
+    return result;
   }
 
   protected boolean isICalRequest(RunData data) {
