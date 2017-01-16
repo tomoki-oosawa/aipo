@@ -19,7 +19,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("$l10n.PROJECT_PROJECT_DETAIL")
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintProject("$l10n.PROJECT_PROJECT_DETAIL" "$!portlet.ID" "ProjectDetailScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.PROJECT_PROJECT_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 #ALajaxdetailformheader("$l10n.PROJECT_PROJECT")
 #ALtableheaderWide()
