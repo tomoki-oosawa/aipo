@@ -53,7 +53,7 @@ public class GadgetsAdminSelectData extends
   private List<Object> list;
 
   /** 表示タイプ */
-  private final String viewtype = "standard";
+  private static final String viewtype = "standard";
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -80,8 +80,9 @@ public class GadgetsAdminSelectData extends
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
 
-      ResultList<PortletEntry> resultList =
-        selectListPortletEntry(rundata, context);
+      ResultList<PortletEntry> resultList = selectListPortletEntry(
+        rundata,
+        context);
 
       if (resultList != null) {
         list = new ArrayList<Object>();
@@ -123,8 +124,9 @@ public class GadgetsAdminSelectData extends
     setPageParam(records.size());
 
     int size = records.size();
-    int end =
-      (getStart() + getRowsNum() <= size) ? getStart() + getRowsNum() : size;
+    int end = (getStart() + getRowsNum() <= size)
+      ? getStart() + getRowsNum()
+      : size;
     for (int i = getStart(); i < end; i++) {
       aList.add(records.get(i));
     }
@@ -160,12 +162,11 @@ public class GadgetsAdminSelectData extends
     String mediaType = profile.getMediaType();
 
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
-    List<PortletEntry> portlets =
-      CustomizeUtils.buildPortletListWithStatus(
-        rundata,
-        mediaType,
-        allPortlets,
-        status);
+    List<PortletEntry> portlets = CustomizeUtils.buildPortletListWithStatus(
+      rundata,
+      mediaType,
+      allPortlets,
+      status);
 
     // リストからソーシャルアプリを削除
     portlets.removeIf(portlet -> portlet.getParent().equals("GadgetsTemplate"));
@@ -188,8 +189,10 @@ public class GadgetsAdminSelectData extends
   protected ALApplication selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    String appId =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    String appId = ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID);
 
     return ALApplicationService.get(new ALApplicationGetRequest().withAppId(
       appId).withStatus(Status.ALL).withIsDetail(true).withIsFetchXml(true));
