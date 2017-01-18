@@ -18,10 +18,14 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
+#set ($action_str = $l10n.EXTTIMECARD_UPDATE)
+#set ($subtitle = $l10n.GADGETS_APP_EDIT)
+#set ($event_submit = "eventSubmit_doExtTimecardAdmin_update")
 ## ---------------------------------------------------------------------------
-#ALdialogheader("$l10n.GADGETS_APP_DETAIL")
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxdetailformheader($l10n.GADGETS_APP)
+#ALdialogheader($subtitle)
+#ALajaxIndicator("$indicator_id", "$!portlet.ID" "")
+#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminJSONScreen" "aimluck.io.submit(this, '$indicator_id', '$!portlet.ID', aipo.exttimecard.onReceiveMessage)")
+<input type="hidden" name="mode" value="update" />
 #ALtableheaderWide()
 
 #ALtdcaption($l10n.GADGETS_TITLE)
@@ -30,12 +34,11 @@ $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+#ALtditemfooter
 #ALtablefooter()
-
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardAdminFormScreen')" "$!portlet.ID" "aipo.exttimecard.onLoadDialog")
+#ALsubmit($event_submit $action_str)
 #ALajaxbuttonClose()
 #ALbuttonfooter()
-
 #ALformfooter()
 #ALdialogfooter()
