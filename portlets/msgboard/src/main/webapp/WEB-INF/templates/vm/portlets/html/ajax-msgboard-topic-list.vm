@@ -69,6 +69,7 @@
 #ALtdhead("#ALajaxsort('topic_name' $l10n.MSGBOARD_TITLE $result 'MsgboardTopicListScreen')")
 #ALtdheadAtt("#ALajaxsort('category_name' $l10n.MSGBOARD_PORTLET_CATEGORY $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:10em"')
 #ALtdheadAtt("#ALajaxsort('owner_name' $l10n.COMMON_CREATE_USER $result 'MsgboardTopicListScreen')" 'class="mb_hide wName"')
+#ALtdheadAtt("#ALajaxsort('create_date' $l10n.COMMON_CREATE_DATE $result 'MsgboardTopicListScreen')" 'class="mb_hide" style="width:6em"')
 #ALtdheadAtt("#ALajaxsort('update_date' $l10n.COMMON_UPDATE_DATE $result 'MsgboardTopicListScreen')" 'style="width:6em"')
 </tr>
 #foreach ($record in $result.List)
@@ -87,6 +88,7 @@ $!record.CategoryName
 </div>
 </td>
 <td class="mb_hide" nowrap="nowrap"><a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a></td>
+#ALtdcellAtt("$!{record.CreateDate}" 'class="mb_hide right" nowrap="nowrap"')
 #ALtdcellAtt("$!{record.UpdateDate}" 'class="right" nowrap="nowrap"')
 </tr>
 #end

@@ -22,7 +22,6 @@ dojo._hasResource["aipo.widget.DropdownGrouppicker"] = true;
 dojo.provide("aipo.widget.DropdownGrouppicker");
 
 dojo.require("aimluck.widget.Dropdown");
-dojo.require("aipo.widget.GroupSelectList");
 
 /**
  * ex)
@@ -90,8 +89,6 @@ dojo.declare("aipo.widget.DropdownGrouppicker", [aimluck.widget.Dropdown], {
         this.removeAllOptions(select);
         select = dojo.byId(listWidget.memberToId);
         this.removeAllOptions(select);
-      }else{
-        this.dropDown = new aipo.widget.GroupSelectList(fparams, this.listWidgetId);
       }
 
       this.inherited(arguments);
