@@ -111,6 +111,27 @@ public abstract class ALConfigHandler {
       }
     },
 
+    EXTTIMECARD_IP_ENABLED("exttimecard.ip.enabled") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("exttimecard.ip.enabled", "F");
+      }
+    },
+
+    EXTTIMECARD_IP_ALLOWED("exttimecard.ip.allowed") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("exttimecard.ip.allowed", "");
+      }
+    },
+
+    EXTTIMECARD_IP_ALLOWED2("exttimecard.ip.allowed2") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString("exttimecard.ip.allowed2", "");
+      }
+    },
+
     HOLIDAY_OF_WEEK("holiday.of.week") {
       @Override
       public String defaultValue() {

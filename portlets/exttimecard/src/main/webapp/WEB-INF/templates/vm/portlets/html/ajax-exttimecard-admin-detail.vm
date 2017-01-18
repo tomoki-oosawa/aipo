@@ -30,6 +30,22 @@ $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
+#ALtditemheader()
+#if ($!{result.enabledIpFlag.toString()} == "T")
+$l10n.EXTTIMECARD_VALID
+#else
+$l10n.EXTTIMECARD_INVALID
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
+#ALtditemheader()
+$!result.allowedIp.toString()
+#ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
+#ALtditemheader()
+$!result.allowedIp2.toString()
+#ALtditemfooter()
 #ALtablefooter()
 
 #ALbuttonheader()

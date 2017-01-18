@@ -23,22 +23,39 @@
 #set ($event_submit = "eventSubmit_doExtTimecardAdmin_update")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
-#ALajaxIndicator("$indicator_id", "$!portlet.ID" "")
-#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminJSONScreen" "aimluck.io.submit(this, '$indicator_id', '$!portlet.ID', aipo.exttimecard.onReceiveMessage)")
+#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveAdminMessage)")
+#ALerrmsg($errmsgs)
+#ALajaxscreenformheader("exttimecardForm")
 <input type="hidden" name="mode" value="update" />
 #ALtableheaderWide()
-
 #ALtdcaption($l10n.GADGETS_TITLE)
 #ALtditemheader()
 $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
-#ALtditemfooter
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
+#ALtditemheader()
+#if ($!{result.enabledIpFlag.toString()} == "T")
+<input type="radio" name="enabled_ip" value="T" checked>有効
+<input type="radio" name="enabled_ip" value="F">無効
+#else
+<input type="radio" name="enabled_ip" value="T">有効
+<input type="radio" name="enabled_ip" value="F" checked>無効
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
+#ALtditemheader()
+<input type="text" name="allowed_ip" value="$!result.allowedIp.toString()">
+#ALtditemfooter()
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
+#ALtditemheader()
+<input type="text" name="allowed_ip2" value="$!result.allowedIp2.toString()">
+#ALtditemfooter()
 #ALtablefooter()
+
 #ALbuttonheader()
-#ALsubmit($event_submit $action_str)
-#ALajaxbuttonClose()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()
 #ALdialogfooter()

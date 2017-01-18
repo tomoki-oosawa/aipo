@@ -45,6 +45,16 @@ aipo.exttimecard.onReceiveMessage = function(msg) {
     }
 }
 
+aipo.exttimecard.onReceiveAdminMessage = function(msg) {
+	if (!msg) {
+		var arrDialog = dijit.byId("modalDialog");
+		if (arrDialog) {
+			arrDialog.hide();
+		}
+		aipo.portletReload('exttimecardAdmin');
+	}
+}
+
 aipo.exttimecard.onListReceiveMessage = function(msg) {
   if (!msg) {
     var arrDialog = dijit.byId("modalDialog");
