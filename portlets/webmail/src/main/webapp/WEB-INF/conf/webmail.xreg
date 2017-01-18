@@ -88,6 +88,9 @@
         <parameter name="p4a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="admin_detail_screen" value="WebMailAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
