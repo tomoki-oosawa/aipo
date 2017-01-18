@@ -20,15 +20,6 @@ dojo.require("aipo.widget.MemberNormalSelectList");
 
 dojo.provide("aipo.timeline");
 
-aipo.timeline.onLoadTimelineDialog = function(portlet_id){
-	console.log("test");
-	aipo.portletReload("timeline");
-};
-
-aipo.timeline.onLoadTimlineAdminDetail = function(portlet_id) {
-	aipo.portletReload('timelineAdmin');
-}
-
 aipo.timeline.addHiddenValue = function(form, name, value) {
 	if (form[name] && document.getElementsByName(name).item(0)) {
 		form[name].value = value;

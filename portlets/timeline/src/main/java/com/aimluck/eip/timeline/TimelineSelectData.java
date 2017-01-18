@@ -712,8 +712,13 @@ public class TimelineSelectData extends
       }
 
       // 更新情報
+      TimelineAdminSelectData adminSelectData = new TimelineAdminSelectData();
+      adminSelectData.init(action, rundata, context);
       Map<Integer, List<TimelineResultData>> activitiesMap =
-        getActivities(parentIds);
+        new HashMap<Integer, List<TimelineResultData>>();
+      if (adminSelectData.getEnabledActivityFlag().equals("T")) {
+        activitiesMap = getActivities(parentIds);
+      }
 
       // コメント
       List<Integer> commentIds = new ArrayList<Integer>();

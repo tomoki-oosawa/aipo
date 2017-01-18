@@ -34,7 +34,7 @@ public class TimelineAdminFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimelineAdminDetailScreen.class.getName());
+    .getLogger(TimelineAdminFormScreen.class.getName());
 
   /**
    *
@@ -53,7 +53,7 @@ public class TimelineAdminFormScreen extends ALVelocityScreen {
 
       setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[TimelineAdminDetailScreen] Exception.", ex);
+      logger.error("[TimelineAdminFormScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
