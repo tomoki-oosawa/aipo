@@ -28,6 +28,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
@@ -83,8 +84,8 @@ public class ExtTimecardAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    ExtTimecardAdminDetailResultData rd =
-      new ExtTimecardAdminDetailResultData(record);
+    ExtTimecardAdminDetailResultData rd = new ExtTimecardAdminDetailResultData(
+      record);
     rd.initField();
     return rd;
   }
@@ -92,7 +93,9 @@ public class ExtTimecardAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "ExtTimecard");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      ExtTimecardUtils.EXTTIMECARD_PORTLET_NAME);
   }
 
   /**

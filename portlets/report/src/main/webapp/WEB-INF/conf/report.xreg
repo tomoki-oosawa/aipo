@@ -53,7 +53,7 @@
         <parameter name="function_after_function1" value="aipo.report.onLoadReportDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="admin_detail_screen" value="ProjectAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
-        <parameter name="admin_detail_screen" value="ProjectAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="admin_detail_screen" value="ReportAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
