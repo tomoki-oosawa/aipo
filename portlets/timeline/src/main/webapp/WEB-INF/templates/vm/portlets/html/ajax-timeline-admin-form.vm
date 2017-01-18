@@ -24,7 +24,7 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-#ALajaxscreenformheader("timlineAdmin" $jslink $portlet "TimelineAdminJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID','');aipo.timeline.onLoadTimelineDialog")
+#ALajaxscreenformheader("timlineAdmin" $jslink $portlet "TimelineAdminJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID','aipo.timeline.onReceiveMessage')")
 <input type="hidden" name="mode" value="update" />
 #ALtableheaderWide()
 
