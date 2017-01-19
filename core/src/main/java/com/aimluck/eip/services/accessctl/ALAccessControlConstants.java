@@ -178,4 +178,7 @@ public class ALAccessControlConstants {
 
   /** アクセス権限の機能名（報告書（報告書返信）） */
   public static final String POERTLET_FEATURE_REPORT_REPLY = "report_reply";
+
+  /** アクセス権限の機能名（添付ファイル） */
+  public static final String POERTLET_FEATURE_ATTACHMENT = "attachment";
 }
