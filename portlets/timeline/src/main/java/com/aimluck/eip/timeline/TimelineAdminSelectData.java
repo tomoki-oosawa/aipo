@@ -90,7 +90,8 @@ public class TimelineAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    TimelineAdminDetailResultData rd = new TimelineAdminDetailResultData(record);
+    TimelineAdminDetailResultData rd =
+      new TimelineAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
