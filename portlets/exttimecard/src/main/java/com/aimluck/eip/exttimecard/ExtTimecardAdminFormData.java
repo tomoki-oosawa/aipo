@@ -19,6 +19,9 @@
 
 package com.aimluck.eip.exttimecard;
 
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -32,6 +35,9 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.util.ALLocalizationUtils;
+
+import info.bliki.commons.validator.routines.InetAddressValidator;
 
 /**
  *
@@ -39,8 +45,9 @@ import com.aimluck.eip.services.config.ALConfigService;
 public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardAdminFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ExtTimecardAdminFormData.class.getName());
 
   private String enabledIpFlag;
 
@@ -92,7 +99,23 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
-    return true;
+
+    // 入力されたIPアドレスが有効なものかどうか
+    if ((!allowedIp.equals("") && !isValidIpAddress(allowedIp))
+      || (!allowedIp2.equals("") && !isValidIpAddress(allowedIp2))) {
+      msgList.add(
+        ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
+    }
+
+    // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
+    if (!enabledIpFlag.equals("T")) {
+      if ((allowedIp == null || allowedIp.length() == 0)
+        && (allowedIp2 == null || allowedIp2.length() == 0)) {
+        msgList.add(
+          ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
+      }
+    }
+    return msgList.size() == 0;
   }
 
   /**
@@ -156,5 +179,20 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   protected boolean deleteFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
+  }
+
+  protected boolean isValidIpAddress(String address) {
+    if (address == null || address.length() == 0) {
+      return false;
+    }
+    if (InetAddressValidator.getInstance().isValid(address)) {
+      return true;
+    }
+
+    try {
+      return InetAddress.getByName(address) instanceof Inet6Address;
+    } catch (final UnknownHostException ex) {
+      return false;
+    }
   }
 }
