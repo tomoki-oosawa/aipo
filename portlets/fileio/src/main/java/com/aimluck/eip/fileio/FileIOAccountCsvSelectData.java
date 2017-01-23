@@ -264,7 +264,7 @@ public class FileIOAccountCsvSelectData
               && !(tmpuser2.getCode().equals(code))) {
               // tmpuser2が社員コードを持ち、それが入力された社員コードと異なっていたら
               if (existedCodeList.contains(code)) {
-                // 入力された社員コードを持つユーザーがすでに存在していたら TODO
+                // 入力された社員コードを持つユーザーがすでに存在していたら
                 same_code = true;
                 b_err = true;
               } else {
@@ -292,7 +292,7 @@ public class FileIOAccountCsvSelectData
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
           if (existedCodeList.contains(code)) {
-            // 入力された社員コードを持つユーザーがすでに存在していたら TODO
+            // 入力された社員コードを持つユーザーがすでに存在していたら
             same_code = true;
             b_err = true;
           }
