@@ -34,7 +34,6 @@ $!result.Detail.Title
 
 #ALtdcaption($l10n.GADGETS_SCHEDULE_MAP_URL)
 #set($map_flg = $!result.Detail.getMapValue())
-$map_flg
 #if($map_flg == "T")
 #ALtdcell($l10n.ACCOUNT_VALID)
 #else
@@ -43,9 +42,7 @@ $map_flg
 #ALtablefooter()
 
 #ALbuttonheader()
-#if(!$!{noedit})
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen')" "$!portlet.ID" "aipo.gadgets_admin.onLoadDialog")
-#end
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen')" "$!portlet.ID" "aipo.schedule.onLoadDialog")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 

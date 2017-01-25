@@ -57,6 +57,8 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -83,8 +85,11 @@ public class ScheduleSelectData extends
   /** <code>userid</code> ID（ユーザ or 設備） */
   private int userid;
 
-  /** <code>type</code> マップ種別（ユーザ or 設備） */
+  /** <code</code> マップ種別（ユーザ or 設備） */
   private String type;
+
+  /** <code</code> マップ有効性（有効 or 無効） */
+  private String enabledMapsFlag;
 
   /** <code>loginuserid</code> ログインユーザーID */
   private int loginuserid;
@@ -171,6 +176,8 @@ public class ScheduleSelectData extends
 
     loginuserid = ALEipUtils.getUserId(rundata);
     statusList = new HashMap<Integer, String>();
+    enabledMapsFlag =
+      ALConfigService.get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED);
 
     if (rundata.getParameters().containsKey("userid")) {
       String tmpid = rundata.getParameters().getString("userid");
@@ -895,5 +902,13 @@ public class ScheduleSelectData extends
 
   public boolean hasReminderItem() {
     return reminderItem != null ? true : false;
+  }
+
+  public String getEnabledMapsFlag() {
+    return enabledMapsFlag;
+  }
+
+  public void setEnabledMapsFlag(String string) {
+    ALConfigService.put(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED, string);
   }
 }

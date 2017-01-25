@@ -18,13 +18,23 @@
  */
 dojo.provide("aipo.schedule_admin");
 
-aipo.timeline.changeMapValidationFlag = function(form) {
-	form.map_validation = true;
-	console.log(form);
-}
-
 aipo.schedule_admin.onLoadScheduleAdminAclList = function(portlet_id){
     aipo.portletReload('schedule_admin');
+}
+
+aipo.schedule_admin.onReceiveAdminMessage = function(msg) {
+    if (!msg) {
+        var arrDialog = dijit.byId("modalDialog");
+        if (arrDialog) {
+            arrDialog.hide();
+        }
+        aipo.portletReload('scheduleAdmin');
+    }
+}
+
+aipo.schedule_admin.changeEnabledMapsFlag = function(form) {
+    form.enabled_maps = true;
+    console.log(form);
 }
 
 aipo.schedule_admin.onReceiveMessage = function(msg){

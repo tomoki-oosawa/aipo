@@ -48,8 +48,6 @@ public class ScheduleAdminFormScreen extends ALVelocityScreen {
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
 
-      // ALConfigService.put(Property.MapValidation, "F");// デフォルトの設置.初回のみ必要。
-
       String layout_template = "portlets/html/ajax-schedule-admin-form.vm";
 
       setTemplate(rundata, context, layout_template);
@@ -65,6 +63,6 @@ public class ScheduleAdminFormScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     // アプリ管理
-    return "GadgetsAdmin";
+    return "ScheduleAdmin";
   }
 }

@@ -40,7 +40,7 @@ import com.aimluck.eip.util.CustomizeUtils;
 public class ScheduleAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
 
-  private String mapValidation;
+  private String enabledMapsFlag;
 
   /**
    *
@@ -53,8 +53,8 @@ public class ScheduleAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    mapValidation =
-      ALConfigService.get(ALConfigHandler.Property.MAP_VALIDATION);
+    enabledMapsFlag =
+      ALConfigService.get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED);
 
   }
 
@@ -113,11 +113,11 @@ public class ScheduleAdminSelectData extends
   /**
    * @return
    */
-  public String getMapValidationFlag() {
-    return mapValidation;
+  public String getEnabledMapsFlag() {
+    return enabledMapsFlag;
   }
 
-  public void setMapValidationFlag(String string) {
-    ALConfigService.put(ALConfigHandler.Property.MAP_VALIDATION, string);
+  public void setEnabledMapsFlag(String string) {
+    ALConfigService.put(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED, string);
   }
 }

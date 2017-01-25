@@ -39,10 +39,10 @@ public class ScheduleAdminDetailResultData extends
   }
 
   public static String getMapValue() {
-    return ALConfigService.get(Property.MAP_VALIDATION);
+    return ALConfigService.get(Property.SCHEDULE_MAPS_ENABLED);
   }
 
   public static void putMapValue(String x) {
-    ALConfigService.put(Property.MAP_VALIDATION, x);
+    ALConfigService.put(Property.SCHEDULE_MAPS_ENABLED, x);
   }
 }

@@ -21,28 +21,28 @@
 
 #set ($action_str = $l10n.GADGETS_UPDATE)
 #set ($subtitle = $l10n.GADGETS_APP_SETTING)
-#set ($event_submit = "putMapValueT()")
+#set ($event_submit = "eventSubmit_doScheduleAdmin_update")
+## ---------------------------------------------------------------------------
 
 #ALdialogheader($subtitle)
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 
-#ALajaxscreenformheader("scheduleAdminForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID' ,aipo.schedule.onReceiveMessage)")
+#ALajaxscreenformheader("scheduleAdminForm" $jslink $portlet "ScheduleAdminJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
+<input type="hidden" name="mode" value="update" />
 
 #ALtableheaderWide()
-#ALtdcaption("場所欄からマップアプリを開く")
+
+#ALtdcaption($l10n.SCHEDULE_UPDATE_MAPS)
+
 #ALtditemheader()
-#set($map_flg = $!result.Detail.getMapValue())
-<div id="positionSelectField" #if($!{result.NewPosition})style="display:none"#end>
-<select name="map_validation" class="w100">
-<option value="T" #if ($map_flg == "T") selected="selected" #end>$l10n.ACCOUNT_VALID</option>
-<option value="F" #if ($map_flg != "T") selected="selected" #end>$l10n.ACCOUNT_INVALID</option>
+<select id="enabled_maps" onChange="" name="enabled_maps" />
+    <option value="T" #if ($!{result.enabledMapsFlag.toString()}  == "T") selected="selected" #end>$l10n.SCHEDULE_VALID</option>
+    <option value="F" #if ($!{result.enabledMapsFlag.toString()}  == "F") selected="selected" #end>$l10n.SCHEDULE_INVALID</option>
 </select>
-</div>
-
-$!result.Detail.putMapValue($x)
-
 #ALtditemfooter()
+
 #ALtablefooter()
+
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
 #ALbuttonfooter()
