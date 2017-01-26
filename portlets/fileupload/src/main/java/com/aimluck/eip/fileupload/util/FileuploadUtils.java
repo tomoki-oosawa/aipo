@@ -46,10 +46,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.jetspeed.services.resources.JetspeedResources;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.http.HttpServletRequestLocator;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -982,4 +986,47 @@ public class FileuploadUtils {
     return !isDeskopApp()
       && Arrays.asList(ACCEPT_CONTENT_TYPES).contains(contentType);
   }
+
+  public static boolean hasAclAttachmentInsert(
+      ALAccessControlHandler aclhandler, int uid) {
+    return aclhandler.hasAuthority(
+      uid,
+      ALAccessControlConstants.POERTLET_FEATURE_ATTACHMENT,
+      ALAccessControlConstants.VALUE_ACL_INSERT);
+
+  }
+
+  public static boolean hasAclAttachmentInsert(
+      ALAccessControlFactoryService factory, int uid) {
+    return hasAclAttachmentInsert(factory.getAccessControlHandler(), uid);
+  }
+
+  public static boolean hasAclAttachmentInsert(int uid) {
+    return hasAclAttachmentInsert(
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME),
+      uid);
+  }
+
+  public static boolean hasAclAttachmentDelete(
+      ALAccessControlHandler aclhandler, int uid) {
+    return aclhandler.hasAuthority(
+      uid,
+      ALAccessControlConstants.POERTLET_FEATURE_ATTACHMENT,
+      ALAccessControlConstants.VALUE_ACL_DELETE);
+
+  }
+
+  public static boolean hasAclAttachmentDelete(
+      ALAccessControlFactoryService factory, int uid) {
+    return hasAclAttachmentDelete(factory.getAccessControlHandler(), uid);
+  }
+
+  public static boolean hasAclAttachmentDelete(int uid) {
+    return hasAclAttachmentDelete(
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME),
+      uid);
+  }
+
 }

@@ -47,6 +47,7 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
@@ -236,6 +237,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
       // テーマ
       blogthema.setMode(ALEipConstants.MODE_INSERT);
       blogthema.validate(msgList);
+    }
+
+    // 添付ファイルに関するバリデーション
+    if (this.getMode().equals(ALEipConstants.MODE_NEW_FORM)) {
+      if ((fileuploadList != null && fileuploadList.size() != 0 && !FileuploadUtils
+        .hasAclAttachmentInsert(uid))) {
+        msgList.add("You have no permission of attaching file...");
+      }
     }
 
     return (msgList.size() == 0);
