@@ -19,6 +19,7 @@
 package com.aimluck.eip.accessctl.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.cayenne.exp.Expression;
@@ -26,6 +27,7 @@ import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.jetspeed.services.resources.JetspeedResources;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
@@ -43,7 +45,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ユーティリティクラスです。 <BR>
- * 
+ *
  */
 public class AccessControlUtils {
 
@@ -55,7 +57,7 @@ public class AccessControlUtils {
 
   /**
    * ロールオブジェクトモデルを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -126,6 +128,12 @@ public class AccessControlUtils {
     List<String> inActiveList = new ArrayList<String>();
     for (EipMInactiveApplication model : inActiveApplicationList) {
       inActiveList.add(model.getName().toLowerCase());
+    }
+
+    List<String> inactiveList =
+      Arrays.asList(JetspeedResources.getStringArray("aipo.migration.aclList"));
+    for (String feature : inactiveList) {
+      inActiveList.add(feature.toLowerCase());
     }
 
     for (String portletName : inActiveList) {
