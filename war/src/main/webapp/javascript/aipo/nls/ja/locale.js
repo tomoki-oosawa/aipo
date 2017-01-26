@@ -21,6 +21,10 @@
 	DW_STR:"${dw_this}${dw_name}\u3092${dw_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
 	DW_DEL:"\u524a\u9664",
 	DW_THIS:"\u3053\u306e",
+	// 'この'+button.form._name.value+'を削除してよろしいですか？'+button.form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
+	DWM_STR:"${dwm_this}${dwm_name}\u3092${dwm_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f${dwm_name}\u3092${dwm_del}\u3059\u308b\u3068\u30e1\u30c3\u30bb\u30fc\u30b8\u304c\u3059\u3079\u3066${dwm_del}\u3055\u308c\u3001\u53c2\u52a0\u8005\u306f\u95b2\u89a7\u3067\u304d\u306a\u304f\u306a\u308a\u307e\u3059\u3002",
+	DWM_DEL:"\u524a\u9664",
+	DWM_THIS:"\u3053\u306e",
 	// '選択した'+button.form.name+'を削除してよろしいですか？'
 	DWS_STR:"${dws_sel}${dws_name}\u3092${dws_del}\u3057\u3066\u3088\u308d\u3057\u3044\u3067\u3059\u304b\uff1f",
 	DWS_DEL:"\u524a\u9664",

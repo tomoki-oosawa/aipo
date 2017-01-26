@@ -44,18 +44,8 @@ line-height:140%;
 }
 </style>
 <!--
-#if($isXDomain == "true")
-<script type="text/javascript">
-  djConifg = {
-    xDomainBasePath: '${external_resources_url}/javascript'
-  };
-</script>
-<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
-<script type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
-#else
 <script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
-#end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
