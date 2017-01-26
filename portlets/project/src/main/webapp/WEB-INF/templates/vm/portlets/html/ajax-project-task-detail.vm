@@ -20,7 +20,11 @@
 #set ($subtitle = $l10n.PROJECT_TASK_DETAIL)
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($subtitle)
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintProjectTask("$subtitle" "$!portlet.ID" "ProjectTaskDetailScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$subtitle")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDivComment"></div>
