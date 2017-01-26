@@ -37,10 +37,11 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_featu
 INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), 'タイムライン（自分の投稿）管理者',(SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'timeline_post' LIMIT 1),21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'),'タイムライン（他ユーザーの投稿）管理者',(SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'timeline_post_other' LIMIT 1),1,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'),'タイムライン（コメント）管理者',(SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'timeline_comment' LIMIT 1),20,NULL);
-SELECT setval('pk_eip_t_acl_portlet_feature',300);
-SELECT setval('pk_eip_t_acl_role', 12000);
 -- migration
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'タイムライン（自分の投稿）管理者' limit 1) FROM TURBINE_USER WHERE disabled='F' and not (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'タイムライン（他ユーザーの投稿）管理者' limit 1) FROM TURBINE_USER WHERE disabled='F' and not (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'タイムライン（コメント）管理者' limit 1) FROM TURBINE_USER WHERE disabled='F' and not (login_name='admin' or login_name='anon' or login_name='template');
+SELECT setval('pk_eip_t_acl_portlet_feature', (SELECT MAX(FEATURE_ID) FROM EIP_T_ACL_PORTLET_FEATURE));
+SELECT setval('pk_eip_t_acl_role', (SELECT MAX(ROLE_ID) FROM EIP_T_ACL_ROLE));
+SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_ROLE_MAP));
 -- 20170105
