@@ -30,7 +30,7 @@ import com.aimluck.eip.services.storage.ALStorageService;
 
 /**
  * CSVファイルをセルごとに読み取るためのクラスです。 <br />
- * 
+ *
  */
 public class ALCsvTokenizer {
 
@@ -44,10 +44,10 @@ public class ALCsvTokenizer {
     + "csv";
 
   /** 一度に表示される件数 */
-  public static final int CSV_SHOW_SIZE = 1000;
+  public static final int CSV_SHOW_SIZE = 2;// 1000;
 
   /** 一度に表示されるエラーの件数 */
-  public static final int CSV_SHOW_ERROR_SIZE = 100;
+  public static final int CSV_SHOW_ERROR_SIZE = 2;// 100;
 
   /** 表示モード 初期入力確認 */
   public static final int CSV_LIST_MODE_READ = 0;
@@ -77,7 +77,7 @@ public class ALCsvTokenizer {
 
   /**
    * コンストラクタ <BR>
-   * 
+   *
    */
   public ALCsvTokenizer() {
     line = false;
@@ -87,7 +87,7 @@ public class ALCsvTokenizer {
 
   /**
    * 指定したファイルパスで初期化します。 <br />
-   * 
+   *
    * @param fname
    */
   public boolean init(String fname) {
@@ -108,7 +108,7 @@ public class ALCsvTokenizer {
 
   /**
    * CSVファイルを１アイテムずつ読み取ります。 <br />
-   * 
+   *
    * @return
    */
   public String nextToken() {
@@ -189,7 +189,7 @@ public class ALCsvTokenizer {
 
   /**
    * CSVファイルを指定した行から読み取ります。 <br />
-   * 
+   *
    * @param fname
    * @param i
    */
