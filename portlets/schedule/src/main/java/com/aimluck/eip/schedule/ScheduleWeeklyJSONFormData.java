@@ -555,12 +555,13 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(ScheduleUtils.createMsgForPc(
+                message.setPcBody(ScheduleUtils.createMsg(
                   rundata,
                   schedule,
                   memberList,
+                  null,
                   "edit"));
-                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   schedule,
                   memberList,
@@ -729,12 +730,13 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(ScheduleUtils.createMsgForPc(
+                message.setPcBody(ScheduleUtils.createMsg(
                   rundata,
                   newSchedule,
                   memberList,
+                  null,
                   "edit"));
-                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   newSchedule,
                   memberList,
@@ -964,12 +966,13 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "new"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
@@ -1127,12 +1130,13 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
+                null,
                 "new"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,

@@ -1234,6 +1234,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         } else {
             dojo.connect(null, "onkeydown", this, "onKeyPress");
             dojo.connect(null, "onkeyup", this, "onKeyPress");
+            this.onKeyPress(e);
         }
 
         aimluck.dnd.DragMoveObject.prototype.onFirstMove.apply(this, arguments);
@@ -1259,7 +1260,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         lastScroll = dojo.byId('weeklyScrollPane_'+this.portletId).scrollTop;
     },
     onKeyPress: function(e){
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             dojo.style(this.tmpDraggable, "opacity", 0.3);
         } else {
             dojo.style(this.tmpDraggable, "opacity", 0.0);
@@ -1366,7 +1367,7 @@ dojo.declare("aipo.calendar.WeeklyScheduleDragMoveObject", [aimluck.dnd.DragMove
         }
 
         var params = "";
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             params += "&mode=insert";
         } else {
             params += "&mode=update";
@@ -1497,10 +1498,11 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
        } else {
            dojo.connect(null, "onkeydown", this, "onKeyPress");
            dojo.connect(null, "onkeyup", this, "onKeyPress");
+           this.onKeyPress(e);
        }
     },
     onKeyPress: function(e){
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             dojo.style(this.tmpDraggable, "opacity", 0.3);
         } else {
             dojo.style(this.tmpDraggable, "opacity", 0.0);
@@ -1648,7 +1650,7 @@ dojo.declare("aipo.calendar.WeeklyTermScheduleDragMoveObject", [aimluck.dnd.Drag
         this.tmpIndex = 0;
 
         var params = "";
-        if(e.ctrlKey) {
+        if((e.ctrlKey && !e.metaKey) || (!e.ctrlKey && e.metaKey)) {
             params += "&mode=insert";
         } else {
             params += "&mode=update";

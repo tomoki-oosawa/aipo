@@ -3038,8 +3038,8 @@ public class ScheduleUtils {
    *
    * @return
    */
-  public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
-      List<ALEipUser> memberList, String mode) {
+  public static String createMsg(RunData rundata, EipTSchedule schedule,
+      List<ALEipUser> memberList, Integer destUserID, String mode) {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -3112,118 +3112,29 @@ public class ScheduleUtils {
       context
         .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
-      if (enableAsp) {
-        context.put("globalUrl1", ALMailUtils.getGlobalurl());
-      } else {
-        context.put("outsideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
-        context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put("insideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_INSIDE_OFFICE"));
-        context.put("globalUrl3", ALMailUtils.getLocalurl());
-      }
-
-      out = new StringWriter();
-      service.handleRequest(context, "mail/createSchedule.vm", out);
-      out.flush();
-      return out.toString();
-    } catch (IllegalArgumentException e) {
-
-    } catch (Exception e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } finally {
-      if (out != null) {
+      if (destUserID != null) {
+        ALEipUser destUser;
         try {
-          out.close();
-        } catch (IOException e) {
-          // ignore
+          destUser = ALEipUtils.getALEipUser(destUserID);
+        } catch (ALDBErrorException ex) {
+          logger.error("schedule", ex);
+          return "";
         }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * 携帯電話へ送信するメールの内容を作成する．
-   *
-   * @return
-   */
-  public static String createMsgForCellPhone(RunData rundata,
-      EipTSchedule schedule, List<ALEipUser> memberList, int destUserID,
-      String mode) {
-    ALEipUser loginUser = null;
-    ALBaseUser user = null;
-    String date_detail = "";
-    try {
-      loginUser = ALEipUtils.getALEipUser(rundata);
-      user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
-          .getUserId()
-          .toString()));
-      date_detail = getMsgDate(schedule);
-    } catch (Exception e) {
-      return "";
-    }
-
-    StringWriter out = null;
-    try {
-      VelocityService service =
-        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
-          .getService(VelocityService.SERVICE_NAME);
-      Context context = service.getContext();
-
-      context.put("userName", loginUser.getAliasName().toString());
-      context.put("mailAddress", user.getEmail());
-      if ("new".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if ("edit".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else if ("delete".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+        context.put("globalUrl1", ALMailUtils.getGlobalurl()
+          + "?key="
+          + ALCellularUtils.getCellularKey(destUser));
       } else {
-        throw new IllegalArgumentException();
-      }
-      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
-      context.put("titleValue", schedule.getName().toString());
-      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
-      context.put("dateValue", date_detail);
-
-      if (memberList != null) {
-        int size = memberList.size();
-        int i;
-        StringBuffer body = new StringBuffer("");
-        context.put("menbers", ALLocalizationUtils
-          .getl10n("SCHEDULE_SUB_MENBERS"));
-        for (i = 0; i < size; i++) {
-          if (i != 0) {
-            body.append(", ");
-          }
-          ALEipUser member = memberList.get(i);
-          body.append(member.getAliasName());
+        if (enableAsp) {
+          context.put("globalUrl1", ALMailUtils.getGlobalurl());
+        } else {
+          context.put("outsideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+          context.put("globalurl2", ALMailUtils.getGlobalurl());
+          context.put("insideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_INSIDE_OFFICE"));
+          context.put("globalUrl3", ALMailUtils.getLocalurl());
         }
-        context.put("menbersList", body.toString());
       }
-
-      ALEipUser destUser;
-      try {
-        destUser = ALEipUtils.getALEipUser(destUserID);
-      } catch (ALDBErrorException ex) {
-        logger.error("schedule", ex);
-        return "";
-      }
-
-      context.put("Alias", ALOrgUtilsService.getAlias());
-      context
-        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
-
-      context.put("globalUrl1", ALMailUtils.getGlobalurl()
-        + "?key="
-        + ALCellularUtils.getCellularKey(destUser));
 
       out = new StringWriter();
       service.handleRequest(context, "mail/createSchedule.vm", out);
@@ -3231,10 +3142,6 @@ public class ScheduleUtils {
       return out.toString();
     } catch (IllegalArgumentException e) {
 
-    } catch (RuntimeException e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
     } catch (Exception e) {
       String message = e.getMessage();
       logger.warn(message, e);
