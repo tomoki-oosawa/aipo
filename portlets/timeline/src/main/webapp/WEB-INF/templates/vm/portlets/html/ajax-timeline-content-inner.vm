@@ -120,15 +120,6 @@
                 <li><a href="#">$l10n.TIMELINE_PIN</a></li>
                 </ul>
                 </div>
-
-				<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
-					<input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
-					<input type="hidden" name="secid" value="$secid" />
-					#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete'))")
-					&nbsp;
-					##<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
-					<input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
-				</form>
 			#end
 		</div>
 	</div>
