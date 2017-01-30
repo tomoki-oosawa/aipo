@@ -27,7 +27,15 @@ ALTER TABLE `eip_t_message_room_member` ADD `history_last_message_id` int(11) NO
 
 ALTER TABLE `eip_t_ext_timecard_system` ADD `overtime_type` varchar(8) DEFAULT 'O' AFTER `outgoing_add_flag`;
 UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
+
+ALTER TABLE `eip_t_ext_timecard_system` ADD `holiday_of_week` varchar(32) DEFAULT 'A' AFTER `overtime_type`;
 -- 20160328
+
+-- 20160815
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 27 WHERE `feature_name` = 'report_other' AND `feature_alias_name` = '報告書（他ユーザーの報告書）操作';
+UPDATE `eip_t_acl_role` SET `acl_type` = 27 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'report_other') AND `role_name` = '報告書（他ユーザーの報告書）管理者';
+-- 20160815
+
 -- 20170105
 -- timeline
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(NULL,'timeline_post','タイムライン（自分の投稿）操作',21);
