@@ -23,7 +23,9 @@
 #set ($event_submit = "eventSubmit_doExtTimecardAdmin_update")
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
-#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveAdminMessage)")
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
 #ALerrmsg($errmsgs)
 #ALajaxscreenformheader("exttimecardForm")
 <input type="hidden" name="mode" value="update" />

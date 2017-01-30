@@ -93,29 +93,34 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   /**
    * @param msgList
    * @return
-   * @throws ALPageNotFoundException
-   * @throws ALDBErrorException
    */
   @Override
-  protected boolean validate(List<String> msgList)
-      throws ALPageNotFoundException, ALDBErrorException {
+  protected boolean validate(List<String> msgList) {
 
-    // 入力されたIPアドレスが有効なものかどうか
-    if ((!allowedIp.equals("") && !isValidIpAddress(allowedIp))
-      || (!allowedIp2.equals("") && !isValidIpAddress(allowedIp2))) {
-      msgList.add(
-        ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
-    }
-
-    // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
-    if (!enabledIpFlag.equals("T")) {
-      if ((allowedIp == null || allowedIp.length() == 0)
-        && (allowedIp2 == null || allowedIp2.length() == 0)) {
+    try {
+      // 入力されたIPアドレスが有効なものかどうか
+      if ((!allowedIp.equals("") && !isValidIpAddress(allowedIp))
+        || (!allowedIp2.equals("") && !isValidIpAddress(allowedIp2))) {
         msgList.add(
           ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
       }
+
+      // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
+      if (enabledIpFlag.equals("T")) {
+        if ((allowedIp == null || allowedIp.length() == 0)
+          && (allowedIp2 == null || allowedIp2.length() == 0)) {
+          msgList.add(
+            ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
+        }
+      }
+    } catch (RuntimeException ex) {
+      logger.error("exttimecard", ex);
+      return false;
+    } catch (Exception ex) {
+      logger.error("exttimecard", ex);
+      return false;
     }
-    return msgList.size() == 0;
+    return (msgList.size() == 0);
   }
 
   /**
