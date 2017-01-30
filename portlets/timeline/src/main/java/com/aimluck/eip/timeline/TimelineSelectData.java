@@ -164,6 +164,9 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
   private boolean hasTodoOtherAclList;
 
+  /** アクセス権限の機能名（タイムライン（固定化）操作）の編集権限を持っているか **/
+  private boolean hasAclTimelinePin;
+
   /**
    *
    * @param action
@@ -259,6 +262,13 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** hasAclTimelinPinの権限チェック **/
+      hasAclTimelinePin =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_PIN,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
     } catch (Exception ex) {
@@ -392,6 +402,7 @@ public class TimelineSelectData extends
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
       rd.setKeyword(target_keyword.getValue());
+      rd.setPinned(record.getPinned());
       String AppId = record.getAppId();
       // ToDoUtils.java・BlogUtils.javaに修正を加えてあるので、以下の６行はその内不要になる。
       if ("todo".equals(AppId)) {
@@ -461,6 +472,7 @@ public class TimelineSelectData extends
     rd.setReplyCount(rd.getCoTopicList().size());
     rd.setParentId(record.getParentId().longValue());
     rd.setTimelineType(record.getTimelineType());
+    rd.setPinned(record.getPinned());
 
     loadAggregateUsers();
 
@@ -1156,6 +1168,15 @@ public class TimelineSelectData extends
    */
   public boolean hasAclDeleteTopicOthers() {
     return hasAclDeleteTopicOthers;
+  }
+
+  /**
+   * タイムラインを固定化する権限があるかどうかを返します。
+   *
+   * @return
+   */
+  public boolean hasAclTimelinePin() {
+    return hasAclTimelinePin;
   }
 
   /**

@@ -45,9 +45,11 @@
 			#else
 			<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a>
 			#end
+			#if($record.Pinned=="T")
 			<div class="alignright">
 				<li class="icon-pushpin"></li>
 			</div>
+			#end
 		</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
