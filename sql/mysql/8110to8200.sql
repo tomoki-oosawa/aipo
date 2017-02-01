@@ -32,5 +32,5 @@ UPDATE `eip_t_ext_timecard_system` SET `overtime_type` = 'O';
 -- 20170118
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(NULL,'attachment','添付ファイル操作',52);
 INSERT INTO `eip_t_acl_role` VALUES(NULL, '添付ファイル操作管理者',(SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'attachment' limit 1),52,NULL,NULL,NULL);
-INSERT INTO EIP_T_ACL_USER_ROLE_MAP(user_id,role_id) SELECT user_id,(SELECT ROLE_ID from `eip_t_acl_role` WHERE ROLE_NAME = '添付ファイル操作管理者' LIMIT 1) FROM TURBINE_USER WHERE disabled='F' and not (login_name='admin' or login_name='anon');
+INSERT INTO EIP_T_ACL_USER_ROLE_MAP(user_id,role_id) SELECT user_id,(SELECT ROLE_ID from `eip_t_acl_role` WHERE ROLE_NAME = '添付ファイル操作管理者' LIMIT 1) FROM TURBINE_USER WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
 -- 20170118
