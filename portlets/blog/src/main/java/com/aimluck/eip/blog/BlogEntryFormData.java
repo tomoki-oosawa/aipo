@@ -47,7 +47,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
@@ -593,6 +592,34 @@ public class BlogEntryFormData extends ALAbstractFormData {
       if (entry == null) {
         return false;
       }
+      // サーバーに残すファイルのID
+      List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
+      List<EipTBlogFile> files = null;
+      if (attIdList != null) {
+        files = BlogUtils.getEipTBlogFileList(entry.getEntryId());
+        if (files != null) {
+          int deleting = 0;
+          int size = files.size();
+          for (int i = 0; i < size; i++) {
+            EipTBlogFile file = files.get(i);
+            if (!attIdList.contains(file.getFileId())) {
+              // 削除数に加える
+              deleting++;
+            }
+          }
+          if (deleting > 0 && !FileuploadUtils.hasAclAttachmentDelete(uid)) {
+            // 添付ファイルに関する権限違反
+            msgList.add("You are not permitted to delete attachments...");
+            return false;
+          } else if (size - deleting > 0
+            && !FileuploadUtils.hasAclAttachmentInsert(uid)) {
+            // 添付ファイルに関する権限違反
+            msgList.add("You are not permitted to insert attachments...");
+            return false;
+          }
+        }
+
+      }
 
       if (is_new_thema) {
         // テーマの登録処理
@@ -623,12 +650,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
-        // サーバーに残すファイルのID
-        List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
         // 現在選択しているエントリが持っているファイル
-        List<EipTBlogFile> files =
-          BlogUtils.getEipTBlogFileList(entry.getEntryId());
-        if (files != null) {
+        if ((files == null ? files =
+          BlogUtils.getEipTBlogFileList(entry.getEntryId()) : files) != null) {
+          // filesに内容を代入している。
           int size = files.size();
           for (int i = 0; i < size; i++) {
             EipTBlogFile file = files.get(i);
