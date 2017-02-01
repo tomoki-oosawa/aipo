@@ -1029,4 +1029,12 @@ public class FileuploadUtils {
       uid);
   }
 
+  public static String messageOfNoAclAttachmentInsertError() {
+    return "You are not permitted to insert attachments...";
+  }
+
+  public static String messageOfNoAclAttachmentDeleteError() {
+    return "You are not permitted to delete attachments...";
+  }
+
 }

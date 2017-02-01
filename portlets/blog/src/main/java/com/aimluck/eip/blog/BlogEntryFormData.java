@@ -238,14 +238,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
       blogthema.validate(msgList);
     }
 
-    // 添付ファイルに関するバリデーション
-    if (this.getMode().equals(ALEipConstants.MODE_NEW_FORM)) {
-      if ((fileuploadList != null && fileuploadList.size() != 0 && !FileuploadUtils
-        .hasAclAttachmentInsert(uid))) {
-        msgList.add("You have no permission of attaching file...");
-      }
-    }
-
     return (msgList.size() == 0);
 
   }
@@ -381,6 +373,13 @@ public class BlogEntryFormData extends ALAbstractFormData {
       List<String> msgList) {
     boolean res = true;
     try {
+      // 添付ファイルに関する権限チェック
+      if ((fileuploadList != null && fileuploadList.size() > 0 && !FileuploadUtils
+        .hasAclAttachmentInsert(uid))) {
+        msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
+        return false;
+      }
+
       if (is_new_thema) {
         // テーマの登録処理
         res = blogthema.insertFormData(rundata, context, msgList);
@@ -422,7 +421,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
         // 添付ファイルを登録する．
-        insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
+        if (!insertAttachmentFiles(
+          fileuploadList,
+          folderName,
+          uid,
+          entry,
+          msgList)) {
+          return false;
+        }
 
         Database.commit();
 
@@ -471,6 +477,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
     if (fileuploadList == null || fileuploadList.size() <= 0) {
       return true;
+    } else if (!FileuploadUtils.hasAclAttachmentInsert(uid)) {
+      msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
+      return false;
     }
 
     try {
@@ -609,12 +618,12 @@ public class BlogEntryFormData extends ALAbstractFormData {
           }
           if (deleting > 0 && !FileuploadUtils.hasAclAttachmentDelete(uid)) {
             // 添付ファイルに関する権限違反
-            msgList.add("You are not permitted to delete attachments...");
+            msgList.add(FileuploadUtils.messageOfNoAclAttachmentDeleteError());
             return false;
           } else if (size - deleting > 0
             && !FileuploadUtils.hasAclAttachmentInsert(uid)) {
             // 添付ファイルに関する権限違反
-            msgList.add("You are not permitted to insert attachments...");
+            msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
             return false;
           }
         }
@@ -670,7 +679,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
         }
 
         // 添付ファイルを登録する．
-        insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
+        if (!insertAttachmentFiles(
+          fileuploadList,
+          folderName,
+          uid,
+          entry,
+          msgList)) {
+          return false;
+        }
 
         Database.commit();
 
