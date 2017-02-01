@@ -52,6 +52,9 @@ public class GadgetsAdminSelectData extends
   /** 一覧データ */
   private List<Object> list;
 
+  /** 表示タイプ */
+  private static final String viewtype = "standard";
+
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
@@ -61,7 +64,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * 一覧表示します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -77,8 +80,9 @@ public class GadgetsAdminSelectData extends
         ALAccessControlConstants.VALUE_ACL_LIST);
       action.setMode(ALEipConstants.MODE_LIST);
 
-      ResultList<PortletEntry> resultList =
-        selectListPortletEntry(rundata, context);
+      ResultList<PortletEntry> resultList = selectListPortletEntry(
+        rundata,
+        context);
 
       if (resultList != null) {
         list = new ArrayList<Object>();
@@ -109,7 +113,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * ページング結果のリストを取得します。
-   * 
+   *
    * @param records
    *          検索結果
    */
@@ -120,8 +124,9 @@ public class GadgetsAdminSelectData extends
     setPageParam(records.size());
 
     int size = records.size();
-    int end =
-      (getStart() + getRowsNum() <= size) ? getStart() + getRowsNum() : size;
+    int end = (getStart() + getRowsNum() <= size)
+      ? getStart() + getRowsNum()
+      : size;
     for (int i = getStart(); i < end; i++) {
       aList.add(records.get(i));
     }
@@ -152,28 +157,19 @@ public class GadgetsAdminSelectData extends
   protected ResultList<PortletEntry> selectListPortletEntry(RunData rundata,
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     Status status = Status.ALL;
-    String filter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
     JetspeedRunData jdata = (JetspeedRunData) rundata;
     Profile profile = jdata.getProfile();
     String mediaType = profile.getMediaType();
 
-    if ("1".equals(filter)) {
-      status = Status.ACTIVE;
-      current_filter = filter;
-    } else if ("0".equals(filter)) {
-      status = Status.INACTIVE;
-      current_filter = filter;
-    } else if ("all".equals(filter)) {
-      status = Status.ALL;
-      current_filter = filter;
-    }
     List<PortletEntry> allPortlets = new ArrayList<PortletEntry>();
-    List<PortletEntry> portlets =
-      CustomizeUtils.buildPortletListWithStatus(
-        rundata,
-        mediaType,
-        allPortlets,
-        status);
+    List<PortletEntry> portlets = CustomizeUtils.buildPortletListWithStatus(
+      rundata,
+      mediaType,
+      allPortlets,
+      status);
+
+    // リストからソーシャルアプリを削除
+    portlets.removeIf(portlet -> portlet.getParent().equals("GadgetsTemplate"));
 
     return new ResultList<PortletEntry>(
       buildPaginatedListPortletEntry(portlets),
@@ -193,8 +189,10 @@ public class GadgetsAdminSelectData extends
   protected ALApplication selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    String appId =
-      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    String appId = ALEipUtils.getTemp(
+      rundata,
+      context,
+      ALEipConstants.ENTITY_ID);
 
     return ALApplicationService.get(new ALApplicationGetRequest().withAppId(
       appId).withStatus(Status.ALL).withIsDetail(true).withIsFetchXml(true));
@@ -230,7 +228,7 @@ public class GadgetsAdminSelectData extends
 
   /**
    * 一覧データを取得します。
-   * 
+   *
    * @return
    */
   @Override
@@ -244,6 +242,15 @@ public class GadgetsAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * 表示タイプを取得します
+   *
+   * @return String
+   */
+  public String getViewtype() {
+    return viewtype;
   }
 
 }

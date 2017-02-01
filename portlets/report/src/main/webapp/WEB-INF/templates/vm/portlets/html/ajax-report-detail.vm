@@ -23,7 +23,11 @@
 #set ($event_submit = "eventSubmit_doReport_update")
 #set ($modesrv = "update")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($l10n.REPORT_DETAIL "aipo.report.hideDialog()")
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintReport("$l10n.REPORT_DETAIL" "$!portlet.ID" "ReportScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.REPORT_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
@@ -47,7 +51,10 @@
 #ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #else
-#if($!result.isAdmin())
+#if($result.hasAuthorityUpdate())
+#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormScreen').addQueryData('entityid',$entityid)" "$!portlet.ID" "aipo.report.onLoadReportDialog")
+#end
+#if($result.hasAuthorityDelete())
 #ALajaxbuttonDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ReportFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.report.onReceiveMessage")
 #end
 #end

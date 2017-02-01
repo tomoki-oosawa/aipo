@@ -144,7 +144,10 @@ aipo.message.reloadMessageList = function() {
         		}
                 aipo.message.jumpCursor = null;
         	} else {
-                aipo.message.read(aipo.message.currentRoomId);
+        		//メッセージのタブを開いている場合と、スマホ表示のメッセージ画面の場合
+        		if(!dojo.byId("dd_message") || dojo.hasClass("dd_message", "open")){
+        			aipo.message.read(aipo.message.currentRoomId);
+        		}
         	}
             aipo.message.fixDateLine();
         }
@@ -161,8 +164,17 @@ aipo.message.reloadMessageList = function() {
         screen += "&c=" + aipo.message.jumpCursor;
         screen += "&jump=1";
     }
+    //メッセージのタブを開いている場合と、スマホ表示のメッセージ画面の場合はデータを既読に更新する
+   if (!dojo.byId("dd_message") || dojo.hasClass("dd_message", "open") ){
+    	screen += "&is_read=T";
+    }else{
+    	screen += "&is_read=F";
+    }
+
+
     aipo.message.moreMessageLock = false;
     aipo.message.messagePane.viewPage(screen);
+
 }
 
 aipo.message.roomMemberPane = null;
@@ -616,6 +628,7 @@ aipo.message.swapView = function() {
                     && aipo.message.currentRoomId && !aipo.message.moreMessageLock) {
                 aipo.message.latestMessageList();
             }
+             aipo.message.selectRoom(aipo.message.currentRoomId);
         } else {
             dojo.byId("portletsBody").style.display = "";
             var copyright = dojo.byId("copyright");
@@ -1108,6 +1121,10 @@ aipo.message.onFocus = function(input) {
 	}
 }
 
+/**
+ * 指定されたルームの未読を消します。
+ * ただし、データベースにはアクセスしていないので、これとは別にデータベースも書き換える必要があります。
+ */
 aipo.message.read = function(room_id) {
     var messageRoomUnreadCount = dojo.byId("messageRoomUnreadCount" + room_id);
     if (messageRoomUnreadCount) {
