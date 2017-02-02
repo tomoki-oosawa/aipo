@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAccountCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -52,18 +53,33 @@ public class FileIOAccountPostCsvSelectData extends
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList<FileIOAccountPostCsvData>(
-          readAccountInfoFromCsv(rundata));
+        ResultList<FileIOAccountPostCsvData> ret =
+          new ResultList<FileIOAccountPostCsvData>(
+            readAccountInfoFromCsv(rundata));
+        ALEipUtils.setTemp(rundata, context, "start_line", Integer
+          .toString(getStartLine()));
+        return ret;
+
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
+        setStartLine(Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          "start_line")));
         filepath =
           FileIOAccountCsvUtils
             .getAccountPostCsvFolderName(getTempFolderIndex())
             + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_POST_TEMP_FILENAME;
-        return new ResultList<FileIOAccountPostCsvData>(
-          readAccountInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters()
-            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        ResultList<FileIOAccountPostCsvData> ret =
+          new ResultList<FileIOAccountPostCsvData>(readAccountInfoFromCsvPage(
+            rundata,
+            filepath,
+            (rundata.getParameters().getInteger("csvpage") - 1),
+            ALCsvTokenizer.CSV_SHOW_SIZE));
+        ALEipUtils.setTemp(rundata, context, "start_line", Integer
+          .toString(getStartLine()));
+        return ret;
+
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -234,6 +250,7 @@ public class FileIOAccountPostCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
+          setStartLine(2);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -270,7 +287,8 @@ public class FileIOAccountPostCsvSelectData extends
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
+    int line_index =
+      StartLine * ALCsvTokenizer.CSV_SHOW_SIZE + getStartLine() - 1;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.setStartLine(filepath, line_index)) {
