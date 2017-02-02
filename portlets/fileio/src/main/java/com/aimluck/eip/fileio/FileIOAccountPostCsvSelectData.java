@@ -250,6 +250,10 @@ public class FileIOAccountPostCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
+          // ヘッダが先頭以外にあった場合エラー
+          if (line != 1) {
+            ErrCount++; // TODO エラー文書表示させる
+          }
           setStartLine(2);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
