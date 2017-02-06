@@ -85,7 +85,7 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 40)
 #ALtditemfooter()
-<tr #if(!$result.isFileUploadable())class="hide"#end>
+<tr #if(!$result.isFileUploadable() || (!$result.hasAttachmentInsertAuthority() && !$result.hasAttachmentDeleteAuthority()))class="hide"#end>
 <td class="caption">$l10n.BLOG_FILE_ATTACH</td>
 <td>
   #set($att_url = $!jslink.getPortletById($!portlet.ID).addQueryData("template","FileuploadFormScreen").addQueryData("mode","form"))
