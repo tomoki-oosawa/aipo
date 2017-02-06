@@ -373,12 +373,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
       List<String> msgList) {
     boolean res = true;
     try {
-      // 添付ファイルに関する権限チェック
-      if ((fileuploadList != null && fileuploadList.size() > 0 && !FileuploadUtils
-        .hasAclAttachmentInsert(uid))) {
-        msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
-        return false;
-      }
 
       if (is_new_thema) {
         // テーマの登録処理
@@ -421,14 +415,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
         // 添付ファイルを登録する．
-        if (!insertAttachmentFiles(
-          fileuploadList,
-          folderName,
-          uid,
-          entry,
-          msgList)) {
-          return false;
-        }
+        insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
         Database.commit();
 
@@ -477,9 +464,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
     if (fileuploadList == null || fileuploadList.size() <= 0) {
       return true;
-    } else if (!FileuploadUtils.hasAclAttachmentInsert(uid)) {
-      msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
-      return false;
     }
 
     try {
@@ -601,34 +585,6 @@ public class BlogEntryFormData extends ALAbstractFormData {
       if (entry == null) {
         return false;
       }
-      // サーバーに残すファイルのID
-      List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
-      List<EipTBlogFile> files = null;
-      if (attIdList != null) {
-        files = BlogUtils.getEipTBlogFileList(entry.getEntryId());
-        if (files != null) {
-          int deleting = 0;
-          int size = files.size();
-          for (int i = 0; i < size; i++) {
-            EipTBlogFile file = files.get(i);
-            if (!attIdList.contains(file.getFileId())) {
-              // 削除数に加える
-              deleting++;
-            }
-          }
-          if (deleting > 0 && !FileuploadUtils.hasAclAttachmentDelete(uid)) {
-            // 添付ファイルに関する権限違反
-            msgList.add(FileuploadUtils.messageOfNoAclAttachmentDeleteError());
-            return false;
-          } else if (size - deleting > 0
-            && !FileuploadUtils.hasAclAttachmentInsert(uid)) {
-            // 添付ファイルに関する権限違反
-            msgList.add(FileuploadUtils.messageOfNoAclAttachmentInsertError());
-            return false;
-          }
-        }
-
-      }
 
       if (is_new_thema) {
         // テーマの登録処理
@@ -659,10 +615,12 @@ public class BlogEntryFormData extends ALAbstractFormData {
         // 更新日
         entry.setUpdateDate(Calendar.getInstance().getTime());
 
+        // サーバーに残すファイルのID
+        List<Integer> attIdList = getRequestedHasFileIdList(fileuploadList);
         // 現在選択しているエントリが持っているファイル
-        if ((files == null ? files =
-          BlogUtils.getEipTBlogFileList(entry.getEntryId()) : files) != null) {
-          // filesに内容を代入している。
+        List<EipTBlogFile> files =
+          BlogUtils.getEipTBlogFileList(entry.getEntryId());
+        if (files != null) {
           int size = files.size();
           for (int i = 0; i < size; i++) {
             EipTBlogFile file = files.get(i);
@@ -679,14 +637,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
         }
 
         // 添付ファイルを登録する．
-        if (!insertAttachmentFiles(
-          fileuploadList,
-          folderName,
-          uid,
-          entry,
-          msgList)) {
-          return false;
-        }
+        insertAttachmentFiles(fileuploadList, folderName, uid, entry, msgList);
 
         Database.commit();
 
@@ -832,5 +783,63 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   public void setThemaId(long i) {
     thema_id.setValue(i);
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return true;
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      try {
+        // オブジェクトモデルを取得
+        EipTBlogEntry entry = BlogUtils.getEipTBlogEntry(rundata, context);
+        if (entry == null) {
+          return false;
+        }
+        // サーバーに残すファイルのID
+        List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
+        // 現在選択しているエントリが持っているファイル
+        List<EipTBlogFile> files =
+          BlogUtils.getEipTBlogFileList(entry.getEntryId());
+        List<Integer> existFileIdList = new ArrayList<Integer>();
+        if (files != null) {
+          for (EipTBlogFile file : files) {
+            existFileIdList.add(file.getFileId());
+          }
+        }
+
+        return FileuploadUtils.updateValidate(
+          msgList,
+          formIdList,
+          existFileIdList,
+          fileuploadList,
+          hasAttachmentInsertAuthority(),
+          hasAttachmentDeleteAuthority());
+      } catch (Exception ex) {
+        return false;
+      }
+    }
+    return true;
   }
 }
