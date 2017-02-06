@@ -104,13 +104,14 @@
 			#if($!{timelineViewType} && $!{timelineViewType}=="detail")
 		    	#if($!{record.ParentId.getValueAsString()}=="0"||$!{record.TimelineType}!="T")
 			&nbsp;
-			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
+			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})" #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>$l10n.TIMELINE_POST_COMMENT</a>
 		    	#end
 			#else
 			&nbsp;
-			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
+			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})" #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>$l10n.TIMELINE_POST_COMMENT</a>
 			#end
-			#if($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) || $!result.isAdmin())
+			#if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 				&nbsp;
 				<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}_$!{record.TimelineId}" class='customizeMenuIcon icon-ellipsis-horizontal' onclick="aipo.customize.showMenu('$!{portlet.ID}_$!{record.TimelineId}');"></a>
 				<div class="menubar body-child" id="menubar_$!{portlet.ID}_$!{record.TimelineId}" style="position:absolute;left:-5;top:5;display:none;">
@@ -172,7 +173,8 @@
 							</form>
 						#end
 						&nbsp;
-						#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
+						#if(($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineCommentDelete())
+						||(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 							<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 								<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 								<input type="hidden" name="secid" value="$secid" />
@@ -188,7 +190,7 @@
 		</div>
 		#end
 	#if($record.CoTopicList.size() > 0)
-		<div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record.TimelineId}">
+		<div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record.TimelineId}"  #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>
 			<span>$l10n.TIMELINE_POST_COMMENT</span>
 		</div>
 	#else
@@ -250,8 +252,9 @@
 			</form>
 		#end
 		&nbsp;
-		<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record2.TimelineId})">$l10n.TIMELINE_POST_COMMENT</a>
-		#if($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) || $!result.isAdmin())
+		<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record2.TimelineId})"  #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>$l10n.TIMELINE_POST_COMMENT</a>
+		#if(($!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+		||(!$!result.isMatch($!{result.UserId} , $!{record2.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 			<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record2.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 				<input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
 				<input type="hidden" name="secid" value="$secid" />
@@ -306,7 +309,8 @@
 						</form>
 					#end
 					&nbsp;
-				#if($!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) || $!result.isAdmin())
+				#if(($!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) && $!result.hasAclTimelineCommentDelete())
+				||(!$!result.isMatch($!{result.UserId} , $!{record3.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
 					<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record3.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record3.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
 						<input type="hidden" name="_name" value="$l10n.TIMELINE_COMMENT" />
 							<input type="hidden" name="secid" value="$secid" />
@@ -322,7 +326,7 @@
 	</div>
 	#end
 	#if($record2.CoTopicList.size() > 0)
-	<div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record2.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record2.TimelineId}">
+	<div onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record2.TimelineId});" class="commentInputDummy" id="commentInputDummy_$!{portlet.ID}_$!{record2.TimelineId}"  #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>
 		<span>$l10n.TIMELINE_POST_COMMENT</span>
 	</div>
 	#else
