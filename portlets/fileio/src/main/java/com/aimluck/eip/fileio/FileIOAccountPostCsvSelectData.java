@@ -58,6 +58,8 @@ public class FileIOAccountPostCsvSelectData extends
             readAccountInfoFromCsv(rundata));
         ALEipUtils.setTemp(rundata, context, "start_line", Integer
           .toString(getStartLine()));
+        ALEipUtils.setTemp(rundata, context, "page_count", Integer
+          .toString(getPageCount()));
         return ret;
 
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
@@ -254,6 +256,7 @@ public class FileIOAccountPostCsvSelectData extends
           if (line != 1) {
             ErrCount++; // TODO エラー文書表示させる
           }
+          // ヘッダがあった場合は先頭をとばす
           setStartLine(2);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
@@ -268,6 +271,9 @@ public class FileIOAccountPostCsvSelectData extends
         break;
       }
     }
+    int s = ALCsvTokenizer.CSV_SHOW_SIZE;
+    int l = collectList.size();
+    setPageCount((l + s - 1) / s);
     collectList.clear();
     collectList = null;
     setErrorCount(ErrCount);

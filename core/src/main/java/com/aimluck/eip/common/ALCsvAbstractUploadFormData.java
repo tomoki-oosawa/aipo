@@ -170,7 +170,6 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
       }
 
       try {
-        page_count = 0;
         line_count = 0;
         while (reader.eof != -1) {
           for (int i = 0; i < ALCsvTokenizer.CSV_SHOW_SIZE; i++) {
@@ -188,8 +187,6 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
             }
             line_count++;
           }
-
-          page_count++;
 
         }
       } catch (Exception e) {
