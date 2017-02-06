@@ -66,6 +66,9 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
   /** 一時フォルダの番号 */
   protected String folderIndex;
 
+  /** ヘッダ行が先頭にあるかどうか */
+  private boolean header_on_head = true;
+
   /**
    *
    * @param action
@@ -300,6 +303,24 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
    */
   public int getStartLine() {
     return start_line;
+  }
+
+  /**
+   * ヘッダが先頭にあるかどうかを示すフラグを取得します。 <BR>
+   *
+   * @return
+   */
+  public boolean getHeaderOnHead() {
+    return header_on_head;
+  }
+
+  /**
+   * ヘッダが先頭にあるかどうかを示すフラグを入力 <BR>
+   *
+   * @param flg
+   */
+  public void setHeaderOnHead(boolean flg) {
+    header_on_head = flg;
   }
 
 }

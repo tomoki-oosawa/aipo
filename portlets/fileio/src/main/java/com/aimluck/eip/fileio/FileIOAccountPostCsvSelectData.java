@@ -255,6 +255,7 @@ public class FileIOAccountPostCsvSelectData extends
           // ヘッダが先頭以外にあった場合エラー
           if (line != 1) {
             ErrCount++; // TODO エラー文書表示させる
+            setHeaderOnHead(false);
           }
           // ヘッダがあった場合は先頭をとばす
           setStartLine(2);
