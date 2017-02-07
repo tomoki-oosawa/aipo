@@ -63,7 +63,7 @@
 	<input href="javascript:void(0)" type="submit" id="al_submit_$!{portlet.ID}" class="auiButtonAction" onclick="aipo.timeline.write(this, '$indicator_id', '$portlet.ID');" value="$l10n.TIMELINE_POST" />
   </div>
   <div class="floatLeft mr10 #if(!$result.isFileUploadable())mb_hide#end">
-    #IFFileUpload()
+    #ACLIFFileUpload()
   </div>
   <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
 </div>

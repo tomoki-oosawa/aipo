@@ -123,6 +123,9 @@ public class ReportSelectData extends
 
   private boolean isFileUploadable;
 
+  /** 添付ファイル追加へのアクセス権限の有無 */
+  private boolean hasAttachmentInsertAuthority;
+
   private boolean isAdmin;
 
   /**
@@ -134,6 +137,8 @@ public class ReportSelectData extends
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+    doCheckAttachmentInsertAclPermission(rundata, context);
+
     uid = ALEipUtils.getUserId(rundata);
 
     // if (ReportUtils.hasResetFlag(rundata, context)) {
@@ -815,5 +820,23 @@ public class ReportSelectData extends
 
   public boolean isAdmin() {
     return isAdmin;
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  protected void doCheckAttachmentInsertAclPermission(RunData rundata,
+      Context context) { // ファイル追加権限の有無
+    hasAttachmentInsertAuthority =
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+  }
+
+  public boolean hasAttachmentInsertAuthority() {
+    return hasAttachmentInsertAuthority;
   }
 }

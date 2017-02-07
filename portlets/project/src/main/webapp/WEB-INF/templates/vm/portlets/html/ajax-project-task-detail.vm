@@ -212,7 +212,7 @@ $!result.Detail.Explanation
 				<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 				<td>
 					<div class="clearfix">
-					<div>#IFFileUpload()</div>
+					<div>#ACLIFFileUpload()</div>
 					<ul id="attachments_$!{portlet.ID}" class="attachments">
 					</ul>
 					</div>
