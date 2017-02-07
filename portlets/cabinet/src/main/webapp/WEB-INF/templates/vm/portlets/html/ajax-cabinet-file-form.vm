@@ -49,7 +49,7 @@
 <td>
   <div class="clearfix">
   <div>
-  #IFFileUpload()
+  #ACLIFFileUpload()
   </div>
   <ul id="attachments_$!{portlet.ID}" class="attachments">
     #if($mode=="edit_form")
