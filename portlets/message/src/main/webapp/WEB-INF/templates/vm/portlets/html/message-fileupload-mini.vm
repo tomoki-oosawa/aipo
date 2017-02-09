@@ -119,6 +119,7 @@ function submitMini(form, portletId){
 <input type="hidden" name="msize" id="msize" value="$msize" />
 <input type="hidden" name="nsize" id="nsize" value="$nsize" />
 <input type="hidden" name="secid" value="$secid" />
+#if($result.hasAttachmentInsertAuthority())
 <div id="uploadContainer">
 <span id="inputField">
 <div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
@@ -127,4 +128,5 @@ function submitMini(form, portletId){
 </div>
 </span>
 </div>
+#end
 </form>

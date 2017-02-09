@@ -60,6 +60,7 @@ function checkFile(){
 ##ALajaxtabheader($tabs "")
 #ALspacebothheader()
 #ALerrmsg($errmsgs)
+#if($result.hasAttachmentInsertAuthority())
 <div id="messageDiv"></div>
 <h3>$l10n.FILEUPLOAD_ADD_ATTACHMENT</h3>
 <form name="fileuploadForm$!portlet.ID" id="fileuploadForm$!portlet.ID" action="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFileuploadFormScreen').addQueryData('mode','update'))" method="post" enctype="multipart/form-data" onsubmit="return checkFile();">
@@ -80,6 +81,7 @@ function checkFile(){
 #ALbuttonfooter()
 </div>
 </form>
+#end
 #ALspacebothfooter()
 ##ALajaxtabfooter()
 </div>
