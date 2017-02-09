@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -41,11 +42,11 @@ import com.aimluck.eip.util.CustomizeUtils;
 public class ExtTimecardAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
 
-  private String enabled_ip;
+  private ALStringField enabled_ip;
 
-  private String allowed_ip;
+  private ALStringField allowed_ip;
 
-  private String allowed_ip2;
+  private ALStringField allowed_ip2;
 
   /**
    *
@@ -58,12 +59,16 @@ public class ExtTimecardAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    enabled_ip =
-      ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_IP_ENABLED);
-    allowed_ip =
-      ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED);
-    allowed_ip2 =
-      ALConfigService.get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED2);
+    enabled_ip = new ALStringField();
+    allowed_ip = new ALStringField();
+    allowed_ip2 = new ALStringField();
+
+    enabled_ip.setValue(ALConfigService
+      .get(ALConfigHandler.Property.EXTTIMECARD_IP_ENABLED));
+    allowed_ip.setValue(ALConfigService
+      .get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED));
+    allowed_ip2.setValue(ALConfigService
+      .get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED2));
   }
 
   /**
@@ -124,7 +129,7 @@ public class ExtTimecardAdminSelectData extends
    * @return
    */
   public String getEnabledIpFlag() {
-    return enabled_ip;
+    return enabled_ip.toString();
   }
 
   /**
@@ -132,7 +137,7 @@ public class ExtTimecardAdminSelectData extends
    * @return
    */
   public String getAllowedIp() {
-    return allowed_ip;
+    return allowed_ip.toString();
   }
 
   /**
@@ -140,6 +145,6 @@ public class ExtTimecardAdminSelectData extends
    * @return
    */
   public String getAllowedIp2() {
-    return allowed_ip2;
+    return allowed_ip2.toString();
   }
 }

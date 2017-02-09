@@ -169,7 +169,9 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ALConfigService.put(Property.EXTTIMECARD_IP_ENABLED, enabled_ip.toString());
+
+    ALConfigService.put(Property.EXTTIMECARD_IP_ENABLED, "T".equals(enabled_ip
+      .toString()) ? "T" : "F");
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED, allowed_ip.toString());
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED2, allowed_ip2
       .toString());
