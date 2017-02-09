@@ -32,20 +32,24 @@ $!result.Detail.Title
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
 #ALtditemheader()
-#if ($!{result.enabledIpFlag.toString()} == "T")
-$l10n.EXTTIMECARD_VALID
-#else
+#if ($!{result.enabledIpFlag.toString()} == "F")
 $l10n.EXTTIMECARD_INVALID
-#end
+#else
+$l10n.EXTTIMECARD_VALID
 #ALtditemfooter()
+#if ($!{result.allowedIp.toString()} != "")
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
 #ALtditemheader()
 $!result.allowedIp.toString()
 #ALtditemfooter()
+#end
+#if ($!{result.allowedIp2.toString()} != "")
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
 #ALtditemheader()
 $!result.allowedIp2.toString()
 #ALtditemfooter()
+#end
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
