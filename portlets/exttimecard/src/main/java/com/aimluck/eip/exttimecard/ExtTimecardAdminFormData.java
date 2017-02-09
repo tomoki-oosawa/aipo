@@ -19,6 +19,8 @@
 
 package com.aimluck.eip.exttimecard;
 
+import info.bliki.commons.validator.routines.InetAddressValidator;
+
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -29,6 +31,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
@@ -37,23 +40,20 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
-import info.bliki.commons.validator.routines.InetAddressValidator;
-
 /**
  *
  */
 public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardAdminFormData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardAdminFormData.class.getName());
 
-  private String enabledIpFlag;
+  private ALStringField enabled_ip;
 
-  private String allowedIp;
+  private ALStringField allowed_ip;
 
-  private String allowedIp2;
+  private ALStringField allowed_ip2;
 
   /**
    *
@@ -66,10 +66,6 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    enabledIpFlag = rundata.getParameters().getString("enabled_ip");
-    allowedIp = rundata.getParameters().getString("allowed_ip");
-    allowedIp2 = rundata.getParameters().getString("allowed_ip2");
   }
 
   /**
@@ -77,7 +73,9 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-
+    enabled_ip = new ALStringField();
+    allowed_ip = new ALStringField();
+    allowed_ip2 = new ALStringField();
   }
 
   /**
@@ -99,18 +97,20 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
     try {
       // 入力されたIPアドレスが有効なものかどうか
-      if ((!allowedIp.equals("") && !isValidIpAddress(allowedIp))
-        || (!allowedIp2.equals("") && !isValidIpAddress(allowedIp2))) {
-        msgList.add(
-          ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
+      if ((!"".equals(allowed_ip.toString()) && !isValidIpAddress(allowed_ip
+        .toString()))
+        || (!"".equals(allowed_ip2.toString()) && !isValidIpAddress(allowed_ip2
+          .toString()))) {
+        msgList.add(ALLocalizationUtils
+          .getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
       }
 
       // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
-      if (enabledIpFlag.equals("T")) {
-        if ((allowedIp == null || allowedIp.length() == 0)
-          && (allowedIp2 == null || allowedIp2.length() == 0)) {
-          msgList.add(
-            ALLocalizationUtils.getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
+      if (enabled_ip.equals("T")) {
+        if (allowed_ip.toString().length() == 0
+          && allowed_ip2.toString().length() == 0) {
+          msgList.add(ALLocalizationUtils
+            .getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
         }
       }
     } catch (RuntimeException ex) {
@@ -165,9 +165,10 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ALConfigService.put(Property.EXTTIMECARD_IP_ENABLED, enabledIpFlag);
-    ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED, allowedIp);
-    ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED2, allowedIp2);
+    ALConfigService.put(Property.EXTTIMECARD_IP_ENABLED, enabled_ip.toString());
+    ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED, allowed_ip.toString());
+    ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED2, allowed_ip2
+      .toString());
     return true;
   }
 
