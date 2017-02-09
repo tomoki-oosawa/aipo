@@ -32,12 +32,16 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -169,6 +173,15 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED, allowed_ip.toString());
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED2, allowed_ip2
       .toString());
+
+    // イベントログに保存
+    ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
+    ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+      Integer.valueOf(user.getUserId()),
+      ALEventlogConstants.PORTLET_TYPE_GADGET,
+      ALLocalizationUtils
+        .getl10nFormat("EXTTIMECARD_ADMIN_RESTRICT_IP_CHANGED"));
+
     return true;
   }
 

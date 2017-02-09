@@ -281,7 +281,7 @@ aipo.exttimecard.submit = function(form, indicator_id, portlet_id, callback) {
             }
 
             if (html != "") {
-              aimluck.io.disableForm(form, false);
+            	aipo.exttimecard.enableForm(form);
             }
           },
           error : function(error) {
@@ -298,4 +298,18 @@ aipo.exttimecard.submit = function(form, indicator_id, portlet_id, callback) {
   ;
 
   return false;
+}
+
+aipo.exttimecard.enableForm = function (form) {
+  if (form == null) {
+    return;
+  }
+  var spans = dojo.query(".auiButtonDisabled:not(.notdelete)", form);
+  for (var i = 0; i < spans.length; i++) {
+	var uuid = spans[i].id;
+	var element = dojo.query("." + uuid)[0];
+    dojo.removeClass(element, uuid);
+    element.style.display = spans[i].style.display;
+    spans[i].parentNode.removeChild(spans[i]);
+  }
 }
