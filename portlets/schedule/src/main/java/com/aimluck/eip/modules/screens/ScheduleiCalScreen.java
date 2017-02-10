@@ -255,13 +255,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(currentStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            hour = cEnd.get(Calendar.HOUR_OF_DAY);
-            min = cEnd.get(Calendar.MINUTE);
-            cEnd.setTime(currentStartDate);
-            cEnd.set(Calendar.HOUR_OF_DAY, hour);
-            cEnd.set(Calendar.MINUTE, min);
             dStart = new DateTime(cStart.getTime());
-            dEnd = new DateTime(cEnd.getTime());
           } else {
             java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
             int hour = cStart.get(Calendar.HOUR_OF_DAY);
@@ -269,13 +263,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(RepeatStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
-            hour = cEnd.get(Calendar.HOUR_OF_DAY);
-            min = cEnd.get(Calendar.MINUTE);
-            cEnd.setTime(RepeatStartDate);
-            cEnd.set(Calendar.HOUR_OF_DAY, hour);
-            cEnd.set(Calendar.MINUTE, min);
             dStart = new DateTime(cStart.getTime());
-            dEnd = new DateTime(cEnd.getTime());
           }
         } else {
           recur.setUntil(new DateTime(endDate.getTime()));
@@ -284,13 +272,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cStart.setTime(currentStartDate);
           cStart.set(Calendar.HOUR_OF_DAY, hour);
           cStart.set(Calendar.MINUTE, min);
-          hour = cEnd.get(Calendar.HOUR_OF_DAY);
-          min = cEnd.get(Calendar.MINUTE);
-          cEnd.setTime(currentStartDate);
-          cEnd.set(Calendar.HOUR_OF_DAY, hour);
-          cEnd.set(Calendar.MINUTE, min);
           dStart = new DateTime(cStart.getTime());
-          dEnd = new DateTime(cEnd.getTime());
           if (ptn.charAt(0) == 'Y') {
             if (endDate.compareTo(cStart.getTime()) < 0
               || startDate.compareTo(cEnd.getTime()) > 0) {
@@ -400,6 +382,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 while (cal2.compareTo(eEnd) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
+                  candidate = new ALDateTimeField("yyyy-MM-dd");
+                  // cal2 = (Calendar) cal2.clone();
                   cal2.add(Calendar.MONTH, 1);
                 }
                 break;
@@ -497,18 +481,37 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     }
   }
 
+  // 休日か如何を考慮せずに、候補日のうち最も早いものを返す
   private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
     try {
       Calendar cal = Calendar.getInstance();
       logger.error(startDate);
       cal.setTime(startDate);
 
-      if (isView(cal, ptn)) {
-        return startDate;
-      } else {
-        cal.add(Calendar.DATE, 1);
-        return getRepeatStartDate(cal.getTime(), ptn);
+      switch (ptn.charAt(0)) {
+        case 'D':
+          break;
+        case 'W':
+          while (ptn.charAt(cal.get(Calendar.DAY_OF_WEEK)) != '1') {
+            cal.add(Calendar.DATE, 1);
+          }
+          break;
+        case 'M':
+          while (!(Integer.parseInt(ptn.substring(1, 3)) == cal
+            .get(Calendar.DATE))) {
+            cal.add(Calendar.DATE, 1);
+          }
+          break;
+        case 'Y':
+          while (Integer.parseInt(ptn.substring(1, 3)) == cal
+            .get(Calendar.MONTH)
+            && Integer.parseInt(ptn.substring(3, 5)) == cal.get(Calendar.DATE)) {
+            cal.add(Calendar.DATE, 1);
+          }
+          break;
       }
+      startDate = new DateTime(cal.getTime());
+      return startDate;
     } catch (Exception e) {
       logger.error(e);
     }
