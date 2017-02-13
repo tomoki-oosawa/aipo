@@ -466,7 +466,7 @@ public class TimelineSelectData extends
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
       rd.setKeyword(target_keyword.getValue());
-      rd.setPinned(record.getPinned());
+      rd.setPinned("T".equals(record.getPinned()));
       String AppId = record.getAppId();
       // ToDoUtils.java・BlogUtils.javaに修正を加えてあるので、以下の６行はその内不要になる。
       if ("todo".equals(AppId)) {
@@ -536,7 +536,7 @@ public class TimelineSelectData extends
     rd.setReplyCount(rd.getCoTopicList().size());
     rd.setParentId(record.getParentId().longValue());
     rd.setTimelineType(record.getTimelineType());
-    rd.setPinned(record.getPinned());
+    rd.setPinned("T".equals(record.getPinned()));
 
     loadAggregateUsers();
 

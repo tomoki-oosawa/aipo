@@ -45,7 +45,7 @@
 			#else
 			<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a>
 			#end
-			#if($record.Pinned=="T")
+			#if($record.Pinned)
 			<div class="alignright">
 				<li class="icon-pushpin"></li>
 			</div>
