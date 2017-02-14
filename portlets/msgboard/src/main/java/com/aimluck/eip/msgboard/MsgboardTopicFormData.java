@@ -840,8 +840,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
         hasAttachmentInsertAuthority());
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
-        EipTMsgboardTopic topic =
-          MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
+        Integer topicId =
+          MsgboardUtils.getEipTMsgboardParentTopicId(rundata, context);
 
         // サーバーに残すファイルのID
         List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
@@ -851,7 +851,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           Database.query(EipTMsgboardFile.class);
         dbquery.andQualifier(ExpressionFactory.matchDbExp(
           EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
-          topic.getTopicId()));
+          topicId));
         List<EipTMsgboardFile> existsFiles = dbquery.fetchList();
 
         List<Integer> existFileIdList = new ArrayList<Integer>();

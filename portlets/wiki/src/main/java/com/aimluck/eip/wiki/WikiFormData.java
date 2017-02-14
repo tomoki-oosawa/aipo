@@ -696,15 +696,7 @@ public class WikiFormData extends ALAbstractFormData {
         hasAttachmentInsertAuthority());
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
-
-        EipTWiki wiki = WikiUtils.getEipTWiki(rundata, context);
-        // いちいちオブジェクト取得しなくても、以下のようにすれば恐らく動作する。
-        String wikiIdStr =
-          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
-        if (StringUtils.isEmpty(wikiIdStr)) {
-          return false;
-        }
-        int wikiId = Integer.valueOf(wikiIdStr);
+        int wikiId = WikiUtils.getEipTWikiId(rundata, context);
 
         // サーバーに残すファイルのID
         List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
@@ -713,7 +705,7 @@ public class WikiFormData extends ALAbstractFormData {
         SelectQuery<EipTWikiFile> dbquery = Database.query(EipTWikiFile.class);
         dbquery.andQualifier(ExpressionFactory.matchExp(
           EipTWikiFile.WIKI_ID_PROPERTY,
-          wiki.getWikiId()));
+          wikiId));
         // dbquery.andQualifier(ExpressionFactory.matchExp(
         // EipTWikiFile.WIKI_ID_PROPERTY,
         // wikiId));

@@ -332,6 +332,27 @@ public class WorkflowUtils {
   }
 
   /**
+   * Request オブジェクトモデルのIDを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static Integer getEipTWorkflowRequestForOwnerId(RunData rundata,
+      Context context) {
+    String requestid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    Integer id = null;
+    if (requestid == null || (id = Integer.valueOf(requestid)) == null) {
+      // Todo IDが空の場合
+      logger.debug("[WorkflowUtils] Empty ID...");
+      return null;
+    } else {
+      return id;
+    }
+  }
+
+  /**
    * Request オブジェクトモデルを取得します。 <BR>
    * 
    * @param rundata

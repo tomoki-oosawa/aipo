@@ -1259,9 +1259,9 @@ public class WorkflowFormData extends ALAbstractFormData {
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
         // オブジェクトモデルを取得
-        EipTWorkflowRequest oldrequest =
-          WorkflowUtils.getEipTWorkflowRequestForOwner(rundata, context);
-        if (oldrequest == null) {
+        Integer requestId =
+          WorkflowUtils.getEipTWorkflowRequestForOwnerId(rundata, context);
+        if (requestId == null) {
           return false;
         }
         // サーバーに残すファイルのID
@@ -1285,7 +1285,7 @@ public class WorkflowFormData extends ALAbstractFormData {
           Database.query(EipTWorkflowFile.class);
         dbquery.andQualifier(ExpressionFactory.matchDbExp(
           EipTWorkflowFile.EIP_TWORKFLOW_REQUEST_PROPERTY,
-          oldrequest.getRequestId()));
+          requestId));
         for (int i = 0; i < fileIDsize; i++) {
           dbquery.orQualifier(ExpressionFactory.matchDbExp(
             EipTWorkflowFile.FILE_ID_PK_COLUMN,

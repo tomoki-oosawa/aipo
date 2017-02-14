@@ -813,15 +813,14 @@ public class BlogEntryFormData extends ALAbstractFormData {
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
         // オブジェクトモデルを取得
-        EipTBlogEntry entry = BlogUtils.getEipTBlogEntry(rundata, context);
-        if (entry == null) {
+        Integer entryId = BlogUtils.getEipTBlogEntryId(rundata, context);
+        if (entryId == null) {
           return false;
         }
         // サーバーに残すファイルのID
         List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
         // 現在選択しているエントリが持っているファイル
-        List<EipTBlogFile> files =
-          BlogUtils.getEipTBlogFileList(entry.getEntryId());
+        List<EipTBlogFile> files = BlogUtils.getEipTBlogFileList(entryId);
         List<Integer> existFileIdList = new ArrayList<Integer>();
         if (files != null) {
           for (EipTBlogFile file : files) {

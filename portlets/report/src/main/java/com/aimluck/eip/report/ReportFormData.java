@@ -1046,7 +1046,6 @@ public class ReportFormData extends ALAbstractFormData {
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
         // オブジェクトモデルを取得
-        // FIXME:
         EipTReport report = ReportUtils.getEipTReport(rundata, context);
         if (report == null) {
           return false;

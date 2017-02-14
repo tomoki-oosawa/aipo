@@ -749,8 +749,8 @@ public class ProjectFormData extends ALAbstractFormData {
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
         // オブジェクトモデルを取得
-        EipTProject project = ProjectUtils.getEipTProject(rundata, context);
-        if (project == null) {
+        Integer projectId = ProjectUtils.getEipTProjectId(rundata, context);
+        if (projectId == null) {
           return false;
         }
         // サーバーに残すファイルのID
@@ -760,7 +760,7 @@ public class ProjectFormData extends ALAbstractFormData {
         List<EipTProjectFile> files =
           pfile.getSelectQueryForFiles(
             EipTProject.PROJECT_ID_PK_COLUMN,
-            project.getProjectId()).fetchList();
+            projectId).fetchList();
         List<Integer> existFileIdList = new ArrayList<Integer>();
         if (files != null) {
           for (EipTProjectFile file : files) {
