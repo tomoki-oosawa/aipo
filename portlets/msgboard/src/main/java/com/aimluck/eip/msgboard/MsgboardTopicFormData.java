@@ -45,6 +45,7 @@ import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.msgboard.util.MsgboardUtils;
 import com.aimluck.eip.orm.Database;
@@ -797,10 +798,80 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを削除する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclDeleteTopicOthers() {
     return hasAclDeleteTopicOthers;
+  }
+
+  private List<Integer> getRequestedHasFileIdList(
+      List<FileuploadLiteBean> attachmentFileNameList) {
+    List<Integer> idlist = new ArrayList<Integer>();
+    FileuploadLiteBean filebean = null;
+    // if (attachmentFileNameList != null && !"".equals(attachmentFileNameList))
+    // {
+    if (attachmentFileNameList != null) {
+      int size = attachmentFileNameList.size();
+      for (int i = 0; i < size; i++) {
+        filebean = attachmentFileNameList.get(i);
+        if (!filebean.isNewFile()) {
+          int index = filebean.getFileId();
+          idlist.add(Integer.valueOf(index));
+        }
+      }
+    }
+    return idlist;
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      try {
+        EipTMsgboardTopic topic =
+          MsgboardUtils.getEipTMsgboardParentTopic(rundata, context, false);
+
+        // サーバーに残すファイルのID
+        List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
+        // 現在選択しているエントリが持っているファイル
+        // この辺の効率化が課題とは思うものの、一応動作はしているはず。
+        SelectQuery<EipTMsgboardFile> dbquery =
+          Database.query(EipTMsgboardFile.class);
+        dbquery.andQualifier(ExpressionFactory.matchDbExp(
+          EipTMsgboardFile.EIP_TMSGBOARD_TOPIC_PROPERTY,
+          topic.getTopicId()));
+        List<EipTMsgboardFile> existsFiles = dbquery.fetchList();
+
+        List<Integer> existFileIdList = new ArrayList<Integer>();
+        if (existsFiles != null) {
+          for (EipTMsgboardFile file : existsFiles) {
+            existFileIdList.add(file.getFileId());
+          }
+        }
+
+        return FileuploadUtils.updateValidate(
+          msgList,
+          formIdList,
+          existFileIdList,
+          fileuploadList,
+          hasAttachmentInsertAuthority(),
+          hasAttachmentDeleteAuthority());
+      } catch (Exception ex) {
+        return false;
+      }
+    }
+    return true;
   }
 }
