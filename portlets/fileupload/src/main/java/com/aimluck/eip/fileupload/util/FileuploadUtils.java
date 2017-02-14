@@ -993,7 +993,8 @@ public class FileuploadUtils {
    * @return
    */
   public static boolean insertValidate(List<String> msgList,
-      List<FileuploadLiteBean> fileuploadList, boolean hasInsertAuthority) {
+      List<? extends FileuploadLiteBean> fileuploadList,
+      boolean hasInsertAuthority) {
     if ((fileuploadList != null && fileuploadList.size() > 0 && !hasInsertAuthority)) {
       msgList.add(ALAccessControlConstants.DEF_ATTACHMENT_PERMISSION_ERROR_STR);
       return false;
@@ -1014,7 +1015,7 @@ public class FileuploadUtils {
    */
   public static boolean updateValidate(List<String> msgList,
       List<Integer> formIdList, List<Integer> existFileIdList,
-      List<FileuploadLiteBean> fileuploadList,
+      List<? extends FileuploadLiteBean> fileuploadList,
       boolean hasAttachmentInsertAuthority, boolean hasAttachmentDeleteAuthority) {
 
     int deleting = 0;
