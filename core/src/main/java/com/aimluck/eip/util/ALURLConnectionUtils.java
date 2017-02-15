@@ -30,6 +30,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLHandshakeException;
+import javax.net.ssl.SSLProtocolException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
@@ -47,7 +48,7 @@ public class ALURLConnectionUtils {
 
   /**
    * HttpURLConnectionまたはHttpsURLConnectionを返す
-   * 
+   *
    * @param url
    * @return　HttpURLConnectionまたはHttpsURLConnection
    * @throws NoSuchAlgorithmException
@@ -57,15 +58,17 @@ public class ALURLConnectionUtils {
   public static HttpURLConnection openUrlConnection(URL connectURL)
       throws NoSuchAlgorithmException, KeyManagementException, IOException {
 
+    System.setProperty("jsse.enableSNIExtension", "true");
     HttpURLConnection urlconnection = null;
 
     // SSLHandshakeExceptionが発生しないか調べる
     urlconnection = (HttpURLConnection) connectURL.openConnection();
     try {
       urlconnection.getResponseMessage();
-    } catch (SSLHandshakeException ex) {
+    } catch (SSLHandshakeException | SSLProtocolException ex) {
       // SSLHandshakeExceptionの場合には証明書をチェックしないhttps接続に切り替える
       if ("https".equals(connectURL.getProtocol())) {
+        System.setProperty("jsse.enableSNIExtension", "false");
         TrustManager[] tm = { new X509TrustManager() {
           @Override
           public X509Certificate[] getAcceptedIssuers() {
@@ -97,8 +100,11 @@ public class ALURLConnectionUtils {
         ((HttpsURLConnection) urlconnection).setSSLSocketFactory(sslcontext
           .getSocketFactory());
 
+        System.setProperty("jsse.enableSNIExtension", "true");
         return urlconnection;
       }
+    } finally {
+      System.setProperty("jsse.enableSNIExtension", "true");
     }
 
     // http接続の場合
