@@ -19,6 +19,7 @@
 
 package com.aimluck.eip.schedule;
 
+
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -26,12 +27,18 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 public class ScheduleAdminFormData extends ALAbstractFormData {
 
@@ -39,7 +46,7 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ScheduleAdminFormData.class.getName());
 
-  private String enabledMapsFlag;
+  private ALStringField enabled_maps;
 
   /**
    *
@@ -52,8 +59,6 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    enabledMapsFlag = rundata.getParameters().getString("enabled_maps");
   }
 
   /**
@@ -62,6 +67,7 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
+    enabled_maps = new ALStringField();
   }
 
   /**
@@ -124,7 +130,17 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ALConfigService.put(Property.SCHEDULE_MAPS_ENABLED, enabledMapsFlag);
+
+    ALConfigService.put(Property.SCHEDULE_MAPS_ENABLED, "T".equals(enabled_maps
+      .toString()) ? "T" : "F");
+
+    // イベントログに保存
+    ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
+    ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+      Integer.valueOf(user.getUserId()),
+      ALEventlogConstants.PORTLET_TYPE_GADGET,
+      ALLocalizationUtils.getl10nFormat("SCHEDULE_ADMIN_MAPS_ENABLE_CHANGED"));
+
     return true;
   }
 
@@ -141,5 +157,4 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
   }
-
 }

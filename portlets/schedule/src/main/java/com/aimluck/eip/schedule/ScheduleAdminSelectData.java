@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -40,7 +41,7 @@ import com.aimluck.eip.util.CustomizeUtils;
 public class ScheduleAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
 
-  private String enabledMapsFlag;
+  private ALStringField enabled_maps;
 
   /**
    *
@@ -53,9 +54,9 @@ public class ScheduleAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    enabledMapsFlag =
-      ALConfigService.get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED);
-
+    enabled_maps = new ALStringField();
+    enabled_maps.setValue(ALConfigService
+      .get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED));
   }
 
   /**
@@ -114,10 +115,6 @@ public class ScheduleAdminSelectData extends
    * @return
    */
   public String getEnabledMapsFlag() {
-    return enabledMapsFlag;
-  }
-
-  public void setEnabledMapsFlag(String string) {
-    ALConfigService.put(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED, string);
+    return enabled_maps.toString();
   }
 }
