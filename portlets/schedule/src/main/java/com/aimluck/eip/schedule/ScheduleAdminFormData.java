@@ -19,7 +19,6 @@
 
 package com.aimluck.eip.schedule;
 
-
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;

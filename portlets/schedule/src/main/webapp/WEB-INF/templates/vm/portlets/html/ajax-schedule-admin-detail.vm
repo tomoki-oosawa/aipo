@@ -33,7 +33,6 @@ $!result.Detail.Title
 #ALtditem($!result.Detail.Description)
 
 #ALtdcaption($l10n.GADGETS_SCHEDULE_MAP_URL)
-
 #set($map_flg = $!result.enabledMapsFlag.toString())
 #if($map_flg == "T")
 #ALtdcell($l10n.ACCOUNT_VALID)

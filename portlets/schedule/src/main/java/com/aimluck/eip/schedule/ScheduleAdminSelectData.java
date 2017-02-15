@@ -53,7 +53,6 @@ public class ScheduleAdminSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
     enabled_maps = new ALStringField();
     enabled_maps.setValue(ALConfigService
       .get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED));
