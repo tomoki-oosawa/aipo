@@ -742,9 +742,23 @@ public class CabinetFileFormData extends ALAbstractFormData {
   protected boolean extValidate(RunData rundata, Context context,
       List<String> msgList) {
     // 添付ファイルの場合、updateでも差し替えしか存在しないので、Insert/Updateでの条件分岐は不要
-    return FileuploadUtils.insertValidate(
-      msgList,
-      fileuploadList,
-      hasAttachmentInsertAuthority());
+
+    if (ALEipConstants.MODE_INSERT.equals(getMode())
+      || ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    } else if (ALEipConstants.MODE_DELETE.equals(getMode())) {
+      if (hasAttachmentDeleteAuthority()) {
+        return true;
+      } else {
+        msgList
+          .add(ALAccessControlConstants.DEF_ATTACHMENT_PERMISSION_ERROR_STR);
+        return false;
+      }
+    } else {
+      return true;
+    }
   }
 }
