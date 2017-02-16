@@ -50,15 +50,13 @@ public class ALURLConnectionUtils {
    * HttpURLConnectionまたはHttpsURLConnectionを返す
    *
    * @param url
-   * @return　HttpURLConnectionまたはHttpsURLConnection
+   * @return HttpURLConnectionまたはHttpsURLConnection
    * @throws NoSuchAlgorithmException
    * @throws KeyManagementException
    * @throws IOException
    */
   public static HttpURLConnection openUrlConnection(URL connectURL)
       throws NoSuchAlgorithmException, KeyManagementException, IOException {
-
-    System.setProperty("jsse.enableSNIExtension", "true");
     HttpURLConnection urlconnection = null;
 
     // SSLHandshakeExceptionが発生しないか調べる
@@ -68,7 +66,6 @@ public class ALURLConnectionUtils {
     } catch (SSLHandshakeException | SSLProtocolException ex) {
       // SSLHandshakeExceptionの場合には証明書をチェックしないhttps接続に切り替える
       if ("https".equals(connectURL.getProtocol())) {
-        System.setProperty("jsse.enableSNIExtension", "false");
         TrustManager[] tm = { new X509TrustManager() {
           @Override
           public X509Certificate[] getAcceptedIssuers() {
@@ -88,23 +85,20 @@ public class ALURLConnectionUtils {
         SSLContext sslcontext = SSLContext.getInstance("SSL");
         sslcontext.init(null, tm, null);
 
-        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
-          @Override
-          public boolean verify(String hostname, SSLSession session) {
-            return true;
-          }
-        });
-
         urlconnection = (HttpsURLConnection) connectURL.openConnection();
 
         ((HttpsURLConnection) urlconnection).setSSLSocketFactory(sslcontext
           .getSocketFactory());
+        ((HttpsURLConnection) urlconnection)
+          .setHostnameVerifier(new HostnameVerifier() {
+            @Override
+            public boolean verify(String hostname, SSLSession session) {
+              return true;
+            }
+          });
 
-        System.setProperty("jsse.enableSNIExtension", "true");
         return urlconnection;
       }
-    } finally {
-      System.setProperty("jsse.enableSNIExtension", "true");
     }
 
     // http接続の場合
