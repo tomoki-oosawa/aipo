@@ -720,12 +720,14 @@ public class ProjectTaskSelectData extends
   protected Object getResultDataDetail(EipTProjectTask record) {
     ProjectTaskResultData data = ProjectUtils.getProjectTaskResultData(record);
     int taskId = (int) data.getTaskId().getValue();
-    // ファイルリスト
-    List<EipTProjectTaskFile> list =
-      pfile
-        .getSelectQueryForFiles(EipTProjectTask.TASK_ID_PK_COLUMN, taskId)
-        .fetchList();
-    data.setAttachmentFiles(pfile.getFileList(list));
+    if (hasAttachmentAuthority()) {
+      // ファイルリスト
+      List<EipTProjectTaskFile> list =
+        pfile
+          .getSelectQueryForFiles(EipTProjectTask.TASK_ID_PK_COLUMN, taskId)
+          .fetchList();
+      data.setAttachmentFiles(pfile.getFileList(list));
+    }
     // コメントリスト
     data.setCommentList(ProjectUtils.getProjectTaskCommentList("" + taskId));
     // パンくずリスト

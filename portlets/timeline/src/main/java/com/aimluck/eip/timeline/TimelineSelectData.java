@@ -722,7 +722,7 @@ public class TimelineSelectData extends
   }
 
   protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
-    if (parentIds == null || parentIds.size() == 0) {
+    if (parentIds == null || parentIds.size() == 0 || !hasAttachmentAuthority()) {
       return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =

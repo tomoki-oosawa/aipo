@@ -763,31 +763,33 @@ public class MsgboardTopicSelectData extends
       rd.setUpdateDate(record.getUpdateDate());
       rd.setLoginUserId(uid);
 
-      List<EipTMsgboardFile> list =
-        getSelectQueryForFiles(record.getTopicId().intValue()).fetchList();
-      if (list != null && list.size() > 0) {
-        List<FileuploadBean> attachmentFileList =
-          new ArrayList<FileuploadBean>();
-        FileuploadBean filebean = null;
-        EipTMsgboardFile file = null;
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-          file = list.get(i);
-          String realname = file.getFileName();
-          javax.activation.DataHandler hData =
-            new javax.activation.DataHandler(
-              new javax.activation.FileDataSource(realname));
+      if (hasAttachmentAuthority()) {
+        List<EipTMsgboardFile> list =
+          getSelectQueryForFiles(record.getTopicId().intValue()).fetchList();
+        if (list != null && list.size() > 0) {
+          List<FileuploadBean> attachmentFileList =
+            new ArrayList<FileuploadBean>();
+          FileuploadBean filebean = null;
+          EipTMsgboardFile file = null;
+          int size = list.size();
+          for (int i = 0; i < size; i++) {
+            file = list.get(i);
+            String realname = file.getFileName();
+            javax.activation.DataHandler hData =
+              new javax.activation.DataHandler(
+                new javax.activation.FileDataSource(realname));
 
-          filebean = new FileuploadBean();
-          filebean.setFileId(file.getFileId().intValue());
-          filebean.setFileName(realname);
-          if (hData != null) {
-            filebean.setContentType(hData.getContentType());
+            filebean = new FileuploadBean();
+            filebean.setFileId(file.getFileId().intValue());
+            filebean.setFileName(realname);
+            if (hData != null) {
+              filebean.setContentType(hData.getContentType());
+            }
+            filebean.setIsImage(FileuploadUtils.isImage(realname));
+            attachmentFileList.add(filebean);
           }
-          filebean.setIsImage(FileuploadUtils.isImage(realname));
-          attachmentFileList.add(filebean);
+          rd.setAttachmentFiles(attachmentFileList);
         }
-        rd.setAttachmentFiles(attachmentFileList);
       }
 
       return rd;
