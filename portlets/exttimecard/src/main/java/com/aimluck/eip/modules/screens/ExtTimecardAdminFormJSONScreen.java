@@ -62,4 +62,13 @@ public class ExtTimecardAdminFormJSONScreen extends ALJSONScreen {
 
     return result;
   }
+
+  /**
+   * @return
+   */
+  @Override
+  protected String getPortletName() {
+    // アプリ管理
+    return "GadgetsAdmin";
+  }
 }

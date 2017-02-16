@@ -63,6 +63,7 @@ public class ExtTimecardAdminFormScreen extends ALVelocityScreen {
    */
   @Override
   protected String getPortletName() {
-    return "ExtTimeline";
+    // アプリ管理
+    return "GadgetsAdmin";
   }
 }
