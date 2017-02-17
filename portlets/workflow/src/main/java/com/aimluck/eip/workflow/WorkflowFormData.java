@@ -1308,6 +1308,7 @@ public class WorkflowFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("WorkflowFormData.", ex);
         return false;
       }
     }

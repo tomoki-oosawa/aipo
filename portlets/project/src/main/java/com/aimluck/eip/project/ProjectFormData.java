@@ -776,6 +776,7 @@ public class ProjectFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("ProjectFormData.", ex);
         return false;
       }
     }

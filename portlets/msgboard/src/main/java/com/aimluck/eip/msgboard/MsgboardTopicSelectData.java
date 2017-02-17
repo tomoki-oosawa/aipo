@@ -586,6 +586,10 @@ public class MsgboardTopicSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_DETAIL);
       List<EipTMsgboardTopic> aList = selectDetailList(rundata, context);
       if (aList != null) {

@@ -1911,7 +1911,7 @@ $item.get(0)
 #end
 
 #macro(ACLFileList $record)
-<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span>#if($result.hasAttachmentDeleteAuthority())<span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">削除</span>#end</li>
+<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span>#if($result.hasAttachmentDeleteAuthority())<span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.DELETE</span>#end</li>
 #end
 
 

@@ -62,7 +62,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 掲示板トピックのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class MsgboardTopicFormData extends ALAbstractFormData {
 
@@ -113,12 +113,12 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
   private boolean hasAclDeleteTopicOthers;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -157,8 +157,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -186,7 +186,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -196,8 +196,8 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * 掲示板の各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -219,10 +219,10 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピックのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -240,7 +240,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -286,7 +286,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -398,7 +398,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピックをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -512,7 +512,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピックカテゴリをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -578,7 +578,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているトピックを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -683,7 +683,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -708,7 +708,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCategoryId() {
@@ -717,7 +717,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -726,7 +726,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * トピック名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTopicName() {
@@ -735,7 +735,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<MsgboardCategoryResultData> getCategoryList() {
@@ -758,7 +758,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getCategoryName() {
@@ -775,7 +775,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * アクセス権限チェック用メソッド。 アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -789,7 +789,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
 
   /**
    * 他ユーザのトピックを編集する権限があるかどうかを返します。
-   * 
+   *
    * @return
    */
   public boolean hasAclUpdateTopicOthers() {
@@ -869,6 +869,7 @@ public class MsgboardTopicFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("MsgboardTopicFormData.", ex);
         return false;
       }
     }

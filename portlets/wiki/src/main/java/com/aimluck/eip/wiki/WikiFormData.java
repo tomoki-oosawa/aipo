@@ -726,6 +726,7 @@ public class WikiFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("WikiFormData.", ex);
         return false;
       }
     }

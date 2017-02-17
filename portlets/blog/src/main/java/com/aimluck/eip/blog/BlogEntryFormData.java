@@ -836,6 +836,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("BlogEntryFormData.", ex);
         return false;
       }
     }

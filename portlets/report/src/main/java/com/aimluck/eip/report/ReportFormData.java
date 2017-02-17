@@ -1069,6 +1069,7 @@ public class ReportFormData extends ALAbstractFormData {
           hasAttachmentInsertAuthority(),
           hasAttachmentDeleteAuthority());
       } catch (Exception ex) {
+        logger.error("ReportFormData.", ex);
         return false;
       }
     }
