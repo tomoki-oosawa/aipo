@@ -1284,8 +1284,8 @@ public class ProjectTaskFormData extends ALAbstractFormData {
     } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
       try {
         // オブジェクトモデルを取得
-        Integer projectId = ProjectUtils.getEipTProjectId(rundata, context);
-        if (projectId == null) {
+        Integer taskId = ProjectUtils.getEipTProjectTaskId(rundata, context);
+        if (taskId == null) {
           return false;
         }
         // サーバーに残すファイルのID
@@ -1294,8 +1294,8 @@ public class ProjectTaskFormData extends ALAbstractFormData {
         // 現在選択しているエントリが持っているファイル
         List<EipTProjectTaskFile> files =
           pfile.getSelectQueryForFiles(
-            EipTProject.PROJECT_ID_PK_COLUMN,
-            projectId).fetchList();
+            EipTProjectTask.TASK_ID_PK_COLUMN,
+            taskId).fetchList();
         List<Integer> existFileIdList = new ArrayList<Integer>();
         if (files != null) {
           for (EipTProjectTaskFile file : files) {

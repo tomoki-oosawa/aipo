@@ -565,7 +565,9 @@ public class ProjectTaskSimpleSelectData extends
       data.setAttachmentFiles(pfile.getFileList(list));
     }
     // コメントリスト
-    data.setCommentList(ProjectUtils.getProjectTaskCommentList("" + taskId));
+    data.setCommentList(ProjectUtils.getProjectTaskCommentList(
+      "" + taskId,
+      hasAttachmentAuthority()));
     // パンくずリスト
     data.setTopicPath(ProjectUtils.getTaskTopicPath(record.getProjectId()));
     return data;
