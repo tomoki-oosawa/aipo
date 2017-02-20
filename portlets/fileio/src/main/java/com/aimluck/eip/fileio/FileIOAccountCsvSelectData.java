@@ -82,8 +82,12 @@ public class FileIOAccountCsvSelectData
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList<FileIOAccountCsvResultData>(
-          readAccountInfoFromCsv(rundata));
+        ResultList<FileIOAccountCsvResultData> ret =
+          new ResultList<FileIOAccountCsvResultData>(
+            readAccountInfoFromCsv(rundata));
+        ALEipUtils.setTemp(rundata, context, "page_count", Integer
+          .toString(getPageCount()));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
         filepath =
           FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())

@@ -246,7 +246,8 @@ function hide_Attention(){
 		$l10n.FILEIO_REGISTERED_PRIORITIZE_USERNAME_THAN_NAME
 	</p>
 </div>
-
+$result.getPageCount()
+$result.List
 #if($result.List && $result.getPageCount() > 0)
 #set($plist = [1..$result.getPageCount()])
 
@@ -309,6 +310,9 @@ function hide_Attention(){
 #elseif($result.getErrorCount() >0)
 <span class="caution">${result.getLineCount2()}</span>
 #end
+$result.getPageCount()
+$result.getErrorCount()
+$plist
 #if(($result.getPageCount() > 1)&&($result.getErrorCount() == 0))
 #foreach($p in $plist)
 #ALbutton('eventSubmit_doAccount_postcsv_list_page' $p "event_csv_page(this, $p)")
