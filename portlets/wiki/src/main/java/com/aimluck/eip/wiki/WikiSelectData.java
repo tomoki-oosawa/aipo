@@ -634,6 +634,10 @@ public class WikiSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_DETAIL);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_DETAIL);
 
       String sesFilter = ALEipUtils.getTemp(rundata, context, LIST_FILTER_STR);
