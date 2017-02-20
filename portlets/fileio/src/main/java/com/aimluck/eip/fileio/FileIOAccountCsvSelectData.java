@@ -87,16 +87,24 @@ public class FileIOAccountCsvSelectData
             readAccountInfoFromCsv(rundata));
         ALEipUtils.setTemp(rundata, context, "page_count", Integer
           .toString(getPageCount()));
+        ALEipUtils.setTemp(rundata, context, "start_line", Integer
+          .toString(getStartLine()));
         return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
+        setStartLine(Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          "start_line")));
         filepath =
           FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
             + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
-        return new ResultList<FileIOAccountCsvResultData>(
-          readAccountInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters()
-            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        ResultList<FileIOAccountCsvResultData> ret =
+          new ResultList<FileIOAccountCsvResultData>(
+            readAccountInfoFromCsvPage(rundata, filepath, (rundata
+              .getParameters()
+              .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -228,6 +236,14 @@ public class FileIOAccountCsvSelectData
         ErrorCode += e_line.toString();
         ErrorCode += "," + Integer.toString(line) + ",false";
         ErrorCode += "\n";
+
+        // ヘッダがあった場合は先頭をとばす
+
+        if (line != 1) {
+          ErrCount++; // TODO エラー文書表示させる
+          setHeaderOnHead(false);
+        }
+        setStartLine(2);
         continue;
       }
 
@@ -405,7 +421,8 @@ public class FileIOAccountCsvSelectData
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
+    int line_index =
+      StartLine * ALCsvTokenizer.CSV_SHOW_SIZE + getStartLine() - 1;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.setStartLine(filepath, line_index)) {
