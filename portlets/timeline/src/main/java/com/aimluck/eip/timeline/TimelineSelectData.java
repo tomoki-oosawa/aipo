@@ -768,6 +768,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -885,6 +889,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -1012,6 +1020,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_DETAIL);
       EipTTimeline obj = selectDetail(rundata, context);
       if (obj != null) {
