@@ -45,7 +45,7 @@
 #AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountPostFormJSONScreen').addQueryData('mode','multi_delete')" "$indicator_id" "$!portlet.ID" "aipo.account_company.onReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_POST_SORT $orderPost)
 #set($title = "$l10n.ACCOUNT_USER_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account_post.downloadCsv('$dlLink');" >$title</a>
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account_user.downloadCsv('$dlLink');" >$title</a>
 </div>
 #AUIajaxpageview('AccountPostListScreen' $result)
 #AUISummaryDivfooter()
