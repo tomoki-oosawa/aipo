@@ -325,7 +325,7 @@ public class TimelineSelectData extends
         aclhandler.hasAuthority(
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_PIN,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+          ALAccessControlConstants.VALUE_ACL_UPDATE);
 
     } catch (Exception ex) {
       logger.error("timeline", ex);

@@ -111,11 +111,13 @@
 			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})" #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>$l10n.TIMELINE_POST_COMMENT</a>
 			#end
 			#if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
-			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
+			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther())||$!{result.hasAclTimelinePin()})
 				&nbsp;
 				<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}_$!{record.TimelineId}" class='customizeMenuIcon icon-ellipsis-horizontal' onclick="aipo.customize.showMenu('$!{portlet.ID}_$!{record.TimelineId}');"></a>
 				<div class="menubar body-child" id="menubar_$!{portlet.ID}_$!{record.TimelineId}" style="position:absolute;left:-5;top:5;display:none;">
                 <ul>
+                #if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+            ||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
                 <form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
                     <input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
                     <input type="hidden" name="secid" value="$secid" />
@@ -123,7 +125,10 @@
                     <li><a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a></li>
                     <input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
                 </form>
+                #end
+                #if($!{result.hasAclTimelinePin()})
                 <li><a href="#">$l10n.TIMELINE_PIN</a></li>
+                #end
                 </ul>
                 </div>
 			#end
