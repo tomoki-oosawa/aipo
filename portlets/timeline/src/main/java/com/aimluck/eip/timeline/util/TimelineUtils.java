@@ -1163,6 +1163,7 @@ public class TimelineUtils {
     select.append(" eip_t_timeline.timeline_type,");
     select.append(" eip_t_timeline.update_date,");
     select.append(" eip_t_timeline.timeline_id,");
+    select.append(" eip_t_timeline.pinned,");
 
     // ログインユーザーがいいね！をしているかどうか
     select
