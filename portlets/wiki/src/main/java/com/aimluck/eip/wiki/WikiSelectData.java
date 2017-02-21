@@ -544,8 +544,10 @@ public class WikiSelectData extends
       rd.setBaseInternalLink(baseImageLink);
       rd.setBaseImageRawLink(baseImageRawLink);
 
-      rd.setAttachmentFiles(WikiFileUtils
-        .getAttachmentFiles(record.getWikiId()));
+      if (hasAttachmentAuthority()) {
+        rd.setAttachmentFiles(WikiFileUtils.getAttachmentFiles(record
+          .getWikiId()));
+      }
 
       rd.setParentId(record.getParentId());
 
