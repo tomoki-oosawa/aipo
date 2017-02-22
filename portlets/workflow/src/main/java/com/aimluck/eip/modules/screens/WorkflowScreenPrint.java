@@ -31,7 +31,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * Webメールの詳細画面を処理するクラスです。 <br />
- * 
+ *
  */
 public class WorkflowScreenPrint extends ALVelocityScreen {
 
@@ -44,7 +44,7 @@ public class WorkflowScreenPrint extends ALVelocityScreen {
     + ALEipConstants.DEF_CONTENT_ENCODING;
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
