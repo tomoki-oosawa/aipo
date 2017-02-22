@@ -36,6 +36,10 @@
 <colgroup style="width:25%;"></colgroup>
 <colgroup style="width:75%;"></colgroup>
 <tbody>
+#ALtdcaption($l10n.NOTE_CLERK_TIME)
+#ALtditem("$!{result.Detail.AcceptDate.Year}$l10n.NOTE_YEAR$!{result.Detail.AcceptDate.Month}$l10n.NOTE_MONTH$!{result.Detail.AcceptDate.Day}$l10n.NOTE_DAY$!{result.Detail.AcceptDate.DayOfWeek} $!{result.Detail.AcceptDate.time}")
+#ALtdcaption($l10n.NOTE_SRC_USER)
+#ALtditem($!result.Detail.SrcUserFullName)
 #ALtdcaption($l10n.NOTE_CLIENT)
 #ALtditem($!result.Detail.ClientName)
 #ALtdcaption($l10n.NOTE_CLIENT_CAMPANY)
