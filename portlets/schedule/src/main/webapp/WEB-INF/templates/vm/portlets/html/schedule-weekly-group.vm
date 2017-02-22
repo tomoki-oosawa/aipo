@@ -136,11 +136,16 @@
 #else
 #set($daylist = ${result.getFacilityContainer($result.FacilityList.get(0).FacilityId.Value).DayList})
 #end
+
 #foreach($record in $daylist)
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 
+##「今日」
+#if($!{result.Today.Value} == $!{record.Date.Value})
+#ALOnedayLink($!portlet.ID $filter $record 'today groupWeekly')
+
 ##祝日を休日にする設定かつ祝日であるばあい
-#if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
+#elseif($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
 #set ($stday = $velocityCount )
 #ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
 <br />
@@ -152,12 +157,10 @@
 <br />
 <span class="holiday">${record.Holiday.Name}</span>
 
-
 ##ユーザーが設定した休日
 #elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
 #ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
-#elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALOnedayLink($!portlet.ID $filter $record 'today groupWeekly')
+
 #else
 #ALOnedayLink($!portlet.ID $filter $record 'groupWeekly')
 #end
@@ -255,7 +258,7 @@
 #set ($color_style_holiday = " holiday")
 #end
 #if( ! $record.isTodoNull() )
-<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
+<td colspan="$col_span" class="term${color_style_othermonth}">
 <div class="calerndarTodoDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
 #if(! ${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
