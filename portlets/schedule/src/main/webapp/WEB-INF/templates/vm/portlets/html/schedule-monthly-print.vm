@@ -152,10 +152,10 @@ if(document.all!=undefined){
 
 <tr class='week'>
 #foreach($dayOfWeekStr in  $!{result.WeekRevised})
-		<th #if($dayOfWeekStr==$l10n.SCHEDULE_SATURDAY) class='saturday' #elseif($dayOfWeekStr==$l10n.SCHEDULE_SUNDAY) class='sunday' #end>
-			$dayOfWeekStr<br />
-			<img src="images/common/dot.gif" width="50" height="1" alt="" />
-		</th>
+  <th >
+  	$dayOfWeekStr<br />
+  	<img src="images/common/dot.gif" width="50" height="1" alt="" />
+  </th>
 #end
 </tr>
 

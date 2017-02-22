@@ -174,19 +174,19 @@ if(document.all!=undefined){
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <span class="holiday small"><br />${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
@@ -398,19 +398,19 @@ ToDo：$!{record.ToDoResultData.TodoName}
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <span class="holiday small"><br />${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
