@@ -324,7 +324,7 @@ function hide_Attention(){
 <li><span class="caution">（※11）&nbsp;$l10n.FILEIO_INFORMATION_INPUT_LIMIT_SCHEDULE_1000</span></li>
 #end
 #if($showErrmsg12)
-<li><span class="coution"> (※12) &nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
+<li><span class="caution"> (※12) &nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
 #end
 </ul>
 #else

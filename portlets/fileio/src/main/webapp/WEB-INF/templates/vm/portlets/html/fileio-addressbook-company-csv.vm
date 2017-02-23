@@ -318,7 +318,7 @@ function hide_Attention(){
 <li><span class="caution">（※10）&nbsp;$l10n.FILEIO_FILEIO_INFORMATION_INPUT_LIMIT_COMPANY_SPELL</span></li>
 #end
 #if($showErrmsg11)
-<li><span class="coution"> (※11) &nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
+<li><span class="caution"> (※11) &nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
 #end
 </ul>
 #else
