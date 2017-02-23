@@ -44,10 +44,10 @@ public class ALCsvTokenizer {
     + "csv";
 
   /** 一度に表示される件数 */
-  public static final int CSV_SHOW_SIZE = 3;// 1000;
+  public static final int CSV_SHOW_SIZE = 1000;
 
   /** 一度に表示されるエラーの件数 */
-  public static final int CSV_SHOW_ERROR_SIZE = 3;// 100;
+  public static final int CSV_SHOW_ERROR_SIZE = 100;
 
   /** 表示モード 初期入力確認 */
   public static final int CSV_LIST_MODE_READ = 0;
