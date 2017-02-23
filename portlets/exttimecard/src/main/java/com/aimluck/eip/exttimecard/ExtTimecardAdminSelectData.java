@@ -18,6 +18,11 @@
  */
 package com.aimluck.eip.exttimecard;
 
+import info.bliki.commons.validator.routines.InetAddressValidator;
+
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.jar.Attributes;
 
 import org.apache.jetspeed.om.registry.PortletEntry;
@@ -48,6 +53,8 @@ public class ExtTimecardAdminSelectData extends
 
   private ALStringField allowed_ip2;
 
+  private String ip = "";
+
   /**
    *
    * @param action
@@ -69,6 +76,10 @@ public class ExtTimecardAdminSelectData extends
       .get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED));
     allowed_ip2.setValue(ALConfigService
       .get(ALConfigHandler.Property.EXTTIMECARD_IP_ALLOWED2));
+
+    if (isValidIpAddress(rundata.getRemoteAddr())) {
+      ip = rundata.getRemoteAddr();
+    }
   }
 
   /**
@@ -146,5 +157,28 @@ public class ExtTimecardAdminSelectData extends
    */
   public String getAllowedIp2() {
     return allowed_ip2.toString();
+  }
+
+  /**
+   *
+   * @return ip
+   */
+  public String getIp() {
+    return ip;
+  }
+
+  protected boolean isValidIpAddress(String address) {
+    if (address == null || address.length() == 0) {
+      return false;
+    }
+    if (InetAddressValidator.getInstance().isValid(address)) {
+      return true;
+    }
+
+    try {
+      return InetAddress.getByName(address) instanceof Inet6Address;
+    } catch (final UnknownHostException ex) {
+      return false;
+    }
   }
 }

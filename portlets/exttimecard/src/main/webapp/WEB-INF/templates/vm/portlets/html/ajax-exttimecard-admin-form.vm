@@ -44,7 +44,7 @@ $!result.Detail.Title
 </tbody><tbody id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
 #ALtditemheader()
-<input type="text" name="allowed_ip" value="$!result.allowedIp.toString()">
+<input type="text" name="allowed_ip" placeholder="$!result.ip" value="$!result.allowedIp.toString()">
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
 #ALtditemheader()

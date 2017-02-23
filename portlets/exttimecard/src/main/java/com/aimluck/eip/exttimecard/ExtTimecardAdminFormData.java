@@ -110,7 +110,7 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
       }
 
       // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
-      if (enabled_ip.equals("T")) {
+      if (enabled_ip.toString().equals("T")) {
         if (allowed_ip.toString().length() == 0
           && allowed_ip2.toString().length() == 0) {
           msgList.add(ALLocalizationUtils
