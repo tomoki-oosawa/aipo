@@ -37,7 +37,7 @@ public class TimelineUrlThumbnailScreen extends FileuploadThumbnailScreen {
     .getLogger(TimelineFileThumbnailScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -54,5 +54,16 @@ public class TimelineUrlThumbnailScreen extends FileuploadThumbnailScreen {
     } catch (Exception e) {
       logger.error("TimelineUrlThumbnailScreen.doOutput", e);
     }
+  }
+
+  /**
+   * ファイルアクセス権限チェック用メソッド。<br />
+   * ファイルのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return false;
   }
 }

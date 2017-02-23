@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.config.ALConfigHandler;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.CustomizeUtils;
@@ -90,8 +91,7 @@ public class ScheduleAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    ScheduleAdminDetailResultData rd =
-      new ScheduleAdminDetailResultData(record);
+    ScheduleAdminDetailResultData rd = new ScheduleAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -99,7 +99,9 @@ public class ScheduleAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Schedule");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      ScheduleUtils.SCHEDULE_PORTLET_NAME);
   }
 
   /**

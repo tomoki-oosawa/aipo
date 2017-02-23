@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.blog.util.BlogUtils;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -91,7 +92,7 @@ public class BlogAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Blog");
+    return CustomizeUtils.getPortletEntry(rundata, BlogUtils.BLOG_PORTLET_NAME);
   }
 
   /**

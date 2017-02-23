@@ -648,31 +648,34 @@ public class ScheduleSelectData extends
 
       return null;
     }
-    List<EipTScheduleFile> list =
-      getSelectQueryForFiles(record.getScheduleId().intValue()).fetchList();
-    if (list != null && list.size() > 0) {
-      List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
-      FileuploadBean filebean = null;
-      EipTScheduleFile file = null;
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        file = list.get(i);
-        String realname = file.getFileName();
-        javax.activation.DataHandler hData =
-          new javax.activation.DataHandler(new javax.activation.FileDataSource(
-            realname));
+    if (hasAttachmentAuthority()) {
+      List<EipTScheduleFile> list =
+        getSelectQueryForFiles(record.getScheduleId().intValue()).fetchList();
+      if (list != null && list.size() > 0) {
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
+        FileuploadBean filebean = null;
+        EipTScheduleFile file = null;
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          file = list.get(i);
+          String realname = file.getFileName();
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
 
-        filebean = new FileuploadBean();
-        filebean.setFileId(file.getFileId().intValue());
-        filebean.setFileName(realname);
-        filebean.setUserId(file.getOwnerId());
-        if (hData != null) {
-          filebean.setContentType(hData.getContentType());
+          filebean = new FileuploadBean();
+          filebean.setFileId(file.getFileId().intValue());
+          filebean.setFileName(realname);
+          filebean.setUserId(file.getOwnerId());
+          if (hData != null) {
+            filebean.setContentType(hData.getContentType());
+          }
+          filebean.setIsImage(FileuploadUtils.isImage(realname));
+          attachmentFileList.add(filebean);
         }
-        filebean.setIsImage(FileuploadUtils.isImage(realname));
-        attachmentFileList.add(filebean);
+        rd.setAttachmentFiles(attachmentFileList);
       }
-      rd.setAttachmentFiles(attachmentFileList);
     }
 
     if (ALReminderService.isEnabled()) {

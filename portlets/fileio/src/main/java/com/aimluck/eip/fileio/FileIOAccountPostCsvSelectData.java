@@ -35,7 +35,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSV ファイルから読み込んだ部署情報を表示するクラス．
- * 
+ *
  */
 public class FileIOAccountPostCsvSelectData extends
     ALCsvAbstractSelectData<FileIOAccountPostCsvData, FileIOAccountPostCsvData> {
@@ -91,7 +91,7 @@ public class FileIOAccountPostCsvSelectData extends
 
   /**
    * CSVファイルを読み込んで表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -119,6 +119,8 @@ public class FileIOAccountPostCsvSelectData extends
     String token;
     int i, j, k;
     int line = 0;
+    int count = 0;
+
     String ErrorCode = "";
 
     List<FileIOAccountPostCsvData> collectList =
@@ -171,9 +173,7 @@ public class FileIOAccountPostCsvSelectData extends
       if (!formData.validate(errmsg)) {
         b_err = true;
       }
-      if (reader.eof == -1) {
-        break;
-      }
+
       try {
         FileIOAccountPostCsvData data = new FileIOAccountPostCsvData();
         data.initField();
@@ -211,6 +211,9 @@ public class FileIOAccountPostCsvSelectData extends
         }
         if (!formData.getPostName().toString().equals(
           ALLocalizationUtils.getl10n("FILIIO_UNIT_NAME"))) {
+          count++;
+          setLineCount(count);
+
           if (ErrCount == 0) {
             if (!b_err) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -231,8 +234,6 @@ public class FileIOAccountPostCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
-          int lc = getLineCount();
-          setLineCount(lc - 1);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -257,7 +258,7 @@ public class FileIOAccountPostCsvSelectData extends
 
   /**
    * CSVファイルを読み込んでページ毎の表示用リストを作成します <BR>
-   * 
+   *
    * @param rundata
    * @param filepath
    * @param StartLine

@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
+import com.aimluck.eip.webmail.util.WebMailUtils;
 
 /**
  *
@@ -91,7 +92,9 @@ public class WebMailAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "WebMail");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      WebMailUtils.WEBMAIL_PORTLET_NAME);
   }
 
   /**

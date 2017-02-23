@@ -29,6 +29,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.util.CustomizeUtils;
 
@@ -91,7 +92,7 @@ public class NoteAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Note");
+    return CustomizeUtils.getPortletEntry(rundata, NoteUtils.NOTE_PORTLET_NAME);
   }
 
   /**

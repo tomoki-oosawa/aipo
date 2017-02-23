@@ -652,9 +652,9 @@ public class ALSessionValidator extends TemplateSessionValidator {
       if (tuser == null) {
         return false;
       }
-      String disabled = tuser.getDisabled();
       // 無効化ユーザーをチェック
       /*-
+      String disabled = tuser.getDisabled();
       if (!"F".equals(disabled)) {
         return false;
       }

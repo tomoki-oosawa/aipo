@@ -30,6 +30,7 @@ import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.CustomizeUtils;
 
 /**
@@ -83,8 +84,7 @@ public class TimelineAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    TimelineAdminDetailResultData rd =
-      new TimelineAdminDetailResultData(record);
+    TimelineAdminDetailResultData rd = new TimelineAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -92,7 +92,9 @@ public class TimelineAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "Timeline");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      TimelineUtils.TIMELIME_PORTLET_NAME);
   }
 
   /**

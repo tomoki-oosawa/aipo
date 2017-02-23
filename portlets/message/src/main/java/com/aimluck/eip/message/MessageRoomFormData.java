@@ -276,7 +276,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
               .getUserId()
               .getValue());
           if ("O".equals(room.getRoomType())) {
-            login_user_room_auth = false;
+            login_user_room_auth = true;
             isGroup = false;
           }
         }
@@ -370,7 +370,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getValue());
 
       if ("O".equals(room.getRoomType())) {
-        login_user_room_auth = false;
+        login_user_room_auth = true;
         isGroup = false;
       }
 
@@ -695,6 +695,17 @@ public class MessageRoomFormData extends ALAbstractFormData {
     ArrayList<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return false;
   }
 
 }

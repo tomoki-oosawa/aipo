@@ -1,4 +1,4 @@
-]<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Aipo is a groupware program developed by TOWN, Inc.
@@ -58,6 +58,9 @@
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="依頼追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.workflow.onLoadWorkflowDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="admin_detail_screen" value="WorkflowAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
@@ -95,9 +98,6 @@
         <parameter name="p3a-strlen.style" value="ListBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-strlen.style.items" value="10,15,30,0" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p3a-strlen.style.values" value="10文字,15文字,30文字,制限なし" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
-        <parameter name="admin_detail_screen" value="ProjectAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

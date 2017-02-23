@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.addressbook.util.AddressBookUtils;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -83,8 +84,8 @@ public class AddressBookAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    AddressBookAdminDetailResultData rd =
-      new AddressBookAdminDetailResultData(record);
+    AddressBookAdminDetailResultData rd = new AddressBookAdminDetailResultData(
+      record);
     rd.initField();
     return rd;
   }
@@ -92,7 +93,9 @@ public class AddressBookAdminSelectData extends
   @Override
   public PortletEntry selectDetail(RunData rundata, Context context)
       throws ALDBErrorException, ALPageNotFoundException {
-    return CustomizeUtils.getPortletEntry(rundata, "AddressBook");
+    return CustomizeUtils.getPortletEntry(
+      rundata,
+      AddressBookUtils.ADDRESSBOOK_PORTLET_NAME);
   }
 
   /**
