@@ -500,7 +500,7 @@ public class FileIOAccountCsvSelectData
 
       try {
         String username = formData.getUserName().getValue();
-        String code = formData.getUserName().getValue();
+        String code = formData.getCode().getValue();
         FileIOAccountCsvResultData data = new FileIOAccountCsvResultData();
         data.initField();
         TurbineUser user = new TurbineUser();
