@@ -231,6 +231,7 @@ function hide_Attention(){
 #set($showErrmsg14 = false)
 #set($showErrmsg15 = false)
 #set($showErrmsg18 = false)
+#set($showErrmsg19 = false)
 #foreach ($record in $result.List)
 #if($!record.getName().toString() == "")#set($showErrmsg1 = true)#end
 #if($!record.getNameKana().toString() == "")#set($showErrmsg2 = true)#end
@@ -250,6 +251,7 @@ function hide_Attention(){
 #if(!$!record.getCompanyName().getValue())#set($showErrmsg16 = true)#end
 #if(!$!record.getCompanyNameKana().getValue())#set($showErrmsg17 = true)#end
 #if(!$!record.getNoteRaw())#set($showErrmsg18 = true)#end
+#if(!$!result.getHeaderOnHead())#set($showErrmsg19 = true)#end
 #end
 
 <table class="listTable wide">
@@ -257,7 +259,7 @@ function hide_Attention(){
 
 
 #if($result.isError())${result.getLineCount3()}<br>$l10n.FILEIO_ERROR_NOT_ADD_DATA #end
-#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg18)
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg18 ||$showErrmsg19)
 #if($showErrmsg || $showErrmsg11)
 <ul>
 #if($showErrmsg1)
@@ -313,6 +315,9 @@ function hide_Attention(){
 #end
 #if($showErrmsg18)
 <li><span class="caution">（※18）&nbsp;$l10n.FILEIO_INFORMATION_INPUT_LIMIT_NOTE</span></li>
+#end
+#if($showErrmsg19)
+<li><span class="caution">（※19）&nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
 #end
 </ul>
 #else
