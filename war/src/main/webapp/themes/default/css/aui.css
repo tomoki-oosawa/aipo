@@ -1203,7 +1203,7 @@ ul.hdTools .dropdown:before {
 }
 #dd_message .timelineOuter .timeline .messageContents .body:after {
   right: 100%;
-  top: 24px;
+  top: 22px;
   border: solid transparent;
   content: " ";
   height: 0;
@@ -1212,8 +1212,8 @@ ul.hdTools .dropdown:before {
   pointer-events: none;
   border-color: rgba(246, 246, 246, 0);
   border-right-color: #f6f6f6;
-  border-width: 5px;
-  margin-top: -5px;
+  border-width: 6px;
+  margin-top: -6px;
 }
 #dd_message .timelineOuter .timeline .messageContents .body .tlImageBlock {
   margin-bottom: 0;
@@ -1234,8 +1234,6 @@ ul.hdTools .dropdown:before {
 }
 #dd_message .timelineOuter .message.me .messageContents .body:after {
   left: 100%;
-  top: 24px;
-  border: solid transparent;
   border-color: rgba(255, 247, 234, 0);
   border-left-color: #fff7ea;
 }
