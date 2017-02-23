@@ -1110,24 +1110,71 @@ ul.hdTools .dropdown:before {
 /* ------------------------------------------------
    rightBlock  END
 --------------------------------------------------- */
-#dd_message .timelineOuter .message {
-  border-top: none;
+/*#dd_message .timelineOuter .message {*/
+  /*border-top: none;*/
   /* padding: 0 7px 7px; */
-  padding: 0 7px 20px;
-  margin-bottom: 0px;
+  /*padding: 0 7px 20px;*/
+  /*margin-bottom: 0px;*/
+/*}*/
+/*#dd_message .timelineOuter .message:first-child {*/
+  /*padding-top: 0 !important;*/
+/*}*/
+/*#dd_message .timelineOuter .message:last-child {*/
+  /*margin-bottom: 30px;*/
+/*}*/
+/*#dd_message .timelineOuter .message.active {*/
+  /*background: #fef6f1;*/
+  /*border-radius: 4px;*/
+/*}*/
+/*#dd_message .timelineOuter .message .avatar {*/
+  /*margin-top: 7px;*/
+/*}*/
+/*#dd_message .timelineOuter .message .time {*/
+  /*color: #999;*/
+  /*margin-bottom: 0;*/
+/*}*/
+/*#dd_message .timelineOuter .message .time a {*/
+  /*color: #999;*/
+/*}*/
+/*#dd_message .timelineOuter .message .time a:hover {*/
+  /*color: #ff9900;*/
+/*}*/
+/*#dd_message .timelineOuter .message .name {*/
+  /*padding-top: 7px;*/
+/*}*/
+/*#dd_message .timelineOuter .timeline .messageContents {*/
+  /*margin-right: 60px;*/
+/*}*/
+/*#dd_message .contents {*/
+  /*background: #ffffff;*/
+/*}*/
+/*#dd_message .subContents {*/
+  /*float: right;*/
+  /*width: 240px;*/
+  /*border-left: solid 1px #d2d2d2;*/
+/*}*/
+/*#dd_message .inputField {*/
+  /*margin-bottom: 10px;*/
+/*}*/
+#dd_message .timelineOuter .message {
+  border-top: 0;
+  padding: 0 7px 12px;
+  margin-bottom: 0;
 }
 #dd_message .timelineOuter .message:first-child {
   padding-top: 0 !important;
 }
 #dd_message .timelineOuter .message:last-child {
-  margin-bottom: 30px;
+  /* 20170222 */
+  margin-bottom: 10px;
 }
 #dd_message .timelineOuter .message.active {
   background: #fef6f1;
   border-radius: 4px;
 }
 #dd_message .timelineOuter .message .avatar {
-  margin-top: 7px;
+  /* 20170222 */
+  margin-top: 32px;
 }
 #dd_message .timelineOuter .message .time {
   color: #999;
@@ -1137,16 +1184,66 @@ ul.hdTools .dropdown:before {
   color: #999;
 }
 #dd_message .timelineOuter .message .time a:hover {
-  color: #ff9900;
+  color: #f90;
 }
 #dd_message .timelineOuter .message .name {
   padding-top: 7px;
 }
 #dd_message .timelineOuter .timeline .messageContents {
-  margin-right: 60px;
+  margin-left: 60px;
+  margin-right: 120px;
+  /* 20170222 */
+}
+#dd_message .timelineOuter .timeline .messageContents .body {
+  position: relative;
+  background: #F6F6F6;
+  border-radius: 5px;
+  padding: 10px 10px;
+  margin: 7px 0 7px 0;
+}
+#dd_message .timelineOuter .timeline .messageContents .body:after {
+  right: 100%;
+  top: 24px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(246, 246, 246, 0);
+  border-right-color: #f6f6f6;
+  border-width: 5px;
+  margin-top: -5px;
+}
+#dd_message .timelineOuter .timeline .messageContents .body .tlImageBlock {
+  margin-bottom: 0;
+}
+#dd_message .timelineOuter .timeline .messageContents .body .tlImageBlock a {
+  background: #fff;
+}
+#dd_message .timelineOuter .message.me .avatar {
+  right: 16px;
+  margin-top: 7px;
+}
+#dd_message .timelineOuter .message.me .messageContents {
+  margin-right: 70px;
+  margin-left: 110px;
+}
+#dd_message .timelineOuter .message.me .messageContents .body {
+  background: #fff7ea;
+}
+#dd_message .timelineOuter .message.me .messageContents .body:after {
+  left: 100%;
+  top: 24px;
+  border: solid transparent;
+  border-color: rgba(255, 247, 234, 0);
+  border-left-color: #fff7ea;
+}
+#dd_message .timelineOuter .message.me .messageContents .name {
+  display: none;
 }
 #dd_message .contents {
-  background: #ffffff;
+  background: #fff;
 }
 #dd_message .subContents {
   float: right;
@@ -1154,8 +1251,15 @@ ul.hdTools .dropdown:before {
   border-left: solid 1px #d2d2d2;
 }
 #dd_message .inputField {
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  margin-top: 0px;
 }
+#dd_message .loader {
+  padding-bottom: 10px;
+}
+
+/* 20170222 end */
+
 .counter {
   float: left !important;
   font-size: 10px;
