@@ -53,7 +53,7 @@ $!result.allowedIp2.toString()
 #ALtablefooter()
 
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardAdminFormScreen')" "$!portlet.ID" "aipo.exttimecard.onLoadDialog")
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardAdminFormScreen')")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 
