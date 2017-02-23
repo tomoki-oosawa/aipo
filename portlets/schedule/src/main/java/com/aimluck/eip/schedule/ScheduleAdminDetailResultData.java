@@ -21,8 +21,6 @@ package com.aimluck.eip.schedule;
 import org.apache.jetspeed.om.registry.PortletEntry;
 
 import com.aimluck.eip.common.ALAbstractAdminDetailResultData;
-import com.aimluck.eip.services.config.ALConfigHandler.Property;
-import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * タイムライントピックのResultData <BR>
@@ -36,13 +34,5 @@ public class ScheduleAdminDetailResultData extends
    */
   public ScheduleAdminDetailResultData(PortletEntry entry) {
     super(entry);
-  }
-
-  public static String getMapValue() {
-    return ALConfigService.get(Property.SCHEDULE_MAPS_ENABLED);
-  }
-
-  public static void putMapValue(String x) {
-    ALConfigService.put(Property.SCHEDULE_MAPS_ENABLED, x);
   }
 }

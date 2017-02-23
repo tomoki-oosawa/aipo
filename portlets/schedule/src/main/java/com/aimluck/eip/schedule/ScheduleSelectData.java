@@ -85,7 +85,7 @@ public class ScheduleSelectData extends
   /** <code>userid</code> ID（ユーザ or 設備） */
   private int userid;
 
-  /** <code</code> マップ種別（ユーザ or 設備） */
+  /** <code>type</code> マップ種別（ユーザ or 設備） */
   private String type;
 
   /** <code</code> マップ有効性（有効 or 無効） */
@@ -907,11 +907,7 @@ public class ScheduleSelectData extends
     return reminderItem != null ? true : false;
   }
 
-  public String getEnabledMapsFlag() {
-    return enabledMapsFlag;
-  }
-
-  public void setEnabledMapsFlag(String string) {
-    ALConfigService.put(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED, string);
+  public boolean enabledMapsFlag() {
+    return "T".equals(enabledMapsFlag);
   }
 }

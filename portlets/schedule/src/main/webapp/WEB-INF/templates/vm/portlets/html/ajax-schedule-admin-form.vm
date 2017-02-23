@@ -20,7 +20,7 @@
 #set ($indicator_id = "indicator-dlg-")
 
 #set ($action_str = $l10n.GADGETS_UPDATE)
-#set ($subtitle = $l10n.GADGETS_APP_SETTING)
+#set ($subtitle = $l10n.GADGETS_APP_EDIT)
 #set ($event_submit = "eventSubmit_doScheduleAdmin_update")
 ## ---------------------------------------------------------------------------
 

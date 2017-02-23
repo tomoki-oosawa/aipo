@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * 部署を処理するクラスです。 <br />
- *
+ * 
  */
 public class AccountPostFormScreen extends ALVelocityScreen {
 
@@ -38,7 +38,7 @@ public class AccountPostFormScreen extends ALVelocityScreen {
     .getLogger(AccountPostFormScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @param context
    * @throws Exception

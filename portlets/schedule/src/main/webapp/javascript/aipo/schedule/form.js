@@ -23,22 +23,6 @@ dojo.require("aipo.widget.DropdownDatepicker");
 dojo.require("aipo.widget.MemberNormalSelectList");
 dojo.require("aipo.widget.GroupNormalSelectList");
 
-aipo.schedule.onLoadPostDialog = function(portlet_id){
-    var picker = dijit.byId("membernormalselect");
-        if(picker){
-        var memberlist = picker;
-        var select = dojo.byId('init_memberlist');
-        var i;
-        var s_o = select.options;
-        if (s_o.length == 1 && s_o[0].value == "") return;
-        for(i = 0 ; i < s_o.length; i ++ ) {
-            memberlist.addOptionSync(s_o[i].value,s_o[i].text,true);
-        }
-
-        dojo.byId("post_name").focus();
-    }
-}
-
 aipo.schedule.setupTooltip = function(url, entityids, portlet_id) {
     ptConfig[portlet_id].isTooltipEnable = true;
 

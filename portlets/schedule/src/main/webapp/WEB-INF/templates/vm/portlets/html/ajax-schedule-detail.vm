@@ -81,10 +81,9 @@ $!{result.Detail.Date}
 #end
 #* 共有カテゴリ連携（ここまで）  *#
 
-#*以下詳細画面の場所表示(mapsEnableの値で分岐)*#
-#set($mapsEnable = $result.enabledMapsFlag.toString())
+#*以下詳細画面の場所表示*#
 #ALtdcaption($l10n.SCHEDULE_PLACE)
-#if($mapsEnable=="T")
+#if($result.enabledMapsFlag())
 #ALtditemheader()
 <a href="http://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
 #ALtditemfooter()

@@ -103,7 +103,7 @@ public class ScheduleFormData extends ALAbstractFormData {
   private static final int FLAG_EDIT_REPEAT_ALL = 0;
 
   /** <code>FLAG_EDIT_SCHEDULE_ONE</code> 全日程を編集（繰り返し編集範囲） */
-  static final int FLAG_EDIT_REPEAT_ONE = 1;
+  private static final int FLAG_EDIT_REPEAT_ONE = 1;
 
   /** <code>FLAG_DEL_MEMBER_ALL</code> [削除フラグ] すべての共有メンバーからこのスケジュールを削除する */
   public static final int FLAG_DEL_MEMBER_ALL = 0;

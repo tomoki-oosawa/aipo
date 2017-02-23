@@ -31,7 +31,7 @@ import com.aimluck.eip.schedule.ScheduleFormData;
 
 /**
  * スケジュールをJSONデータとして出力するクラスです。 <br />
- *
+ * 
  */
 public class ScheduleFormJSONScreen extends ALJSONScreen {
 
