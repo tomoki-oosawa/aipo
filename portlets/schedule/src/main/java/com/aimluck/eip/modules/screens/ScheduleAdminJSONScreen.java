@@ -67,4 +67,10 @@ public class ScheduleAdminJSONScreen extends ALJSONScreen {
     }
     return result;
   }
+
+  @Override
+  protected String getPortletName() {
+    // アプリ管理
+    return "GadgetsAdmin";
+  }
 }

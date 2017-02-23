@@ -63,6 +63,6 @@ public class ScheduleAdminFormScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     // アプリ管理
-    return "ScheduleAdmin";
+    return "GadgetsAdmin";
   }
 }
