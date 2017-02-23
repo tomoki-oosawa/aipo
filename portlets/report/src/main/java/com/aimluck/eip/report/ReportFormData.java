@@ -44,6 +44,7 @@ import com.aimluck.eip.cayenne.om.portlet.EipTReportMemberMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALDBErrorException;
+import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
@@ -72,7 +73,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 報告書のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class ReportFormData extends ALAbstractFormData {
 
@@ -127,12 +128,12 @@ public class ReportFormData extends ALAbstractFormData {
   private String aclPortletFeature = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -162,8 +163,8 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -203,7 +204,7 @@ public class ReportFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -269,8 +270,8 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * リクエストの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -289,10 +290,10 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * リクエストのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -337,7 +338,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -408,7 +409,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -491,7 +492,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * リクエストをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -633,7 +634,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているリクエストを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -654,9 +655,6 @@ public class ReportFormData extends ALAbstractFormData {
 
       // 報告書名
       report.setReportName(report_name.getValue());
-      // ユーザーID
-      report
-        .setUserId(Integer.valueOf((int) login_user.getUserId().getValue()));
       // 開始時間
       report.setStartDate(startDate.getValue());
       // 終了時間
@@ -667,9 +665,6 @@ public class ReportFormData extends ALAbstractFormData {
       report.setCreateDate(createDate.getValue());
       // 更新日
       report.setUpdateDate(Calendar.getInstance().getTime());
-      // ユーザーID
-      report.setTurbineUser(ALEipUtils.getTurbineUser(ALEipUtils
-        .getUserId(rundata)));
 
       // 古いマップデータを削除
       List<EipTReportMap> tmp_map = ReportUtils.getEipTReportMap(report);
@@ -898,7 +893,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -907,7 +902,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * メモのフィールドを設定します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -917,7 +912,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * 報告書名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getReportName() {
@@ -926,7 +921,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * 報告書名を格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -944,7 +939,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -953,7 +948,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -963,7 +958,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMapList() {
@@ -972,7 +967,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを格納します。 <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -981,7 +976,7 @@ public class ReportFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -990,7 +985,7 @@ public class ReportFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -1003,7 +998,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * 開始時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -1012,7 +1007,7 @@ public class ReportFormData extends ALAbstractFormData {
 
   /**
    * 終了時間
-   * 
+   *
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -1022,7 +1017,7 @@ public class ReportFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -1032,5 +1027,52 @@ public class ReportFormData extends ALAbstractFormData {
 
   public static String toTwoDigitString(int num) {
     return ALStringUtil.toTwoDigitString(new ALNumberField(num));
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      try {
+        // オブジェクトモデルを取得
+        EipTReport report = ReportUtils.getEipTReport(rundata, context);
+        if (report == null) {
+          return false;
+        }
+        // サーバーに残すファイルのID
+        List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
+        // 現在選択しているエントリが持っているファイル
+        List<EipTReportFile> files = ReportUtils.getEipTReportFile(report);
+        List<Integer> existFileIdList = new ArrayList<Integer>();
+        if (files != null) {
+          for (EipTReportFile file : files) {
+            existFileIdList.add(file.getFileId());
+          }
+        }
+
+        return FileuploadUtils.updateValidate(
+          msgList,
+          formIdList,
+          existFileIdList,
+          fileuploadList,
+          hasAttachmentInsertAuthority(),
+          hasAttachmentDeleteAuthority());
+      } catch (Exception ex) {
+        logger.error("ReportFormData.", ex);
+        return false;
+      }
+    }
+    return true;
   }
 }
