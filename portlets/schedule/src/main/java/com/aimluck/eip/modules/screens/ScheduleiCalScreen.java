@@ -255,7 +255,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(currentStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(currentStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
             dStart = new DateTime(cStart.getTime());
+            dEnd = new DateTime(cEnd.getTime());
           } else {
             java.util.Date RepeatStartDate = getRepeatStartDate(dStart, ptn);
             int hour = cStart.get(Calendar.HOUR_OF_DAY);
@@ -263,7 +269,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             cStart.setTime(RepeatStartDate);
             cStart.set(Calendar.HOUR_OF_DAY, hour);
             cStart.set(Calendar.MINUTE, min);
+            hour = cEnd.get(Calendar.HOUR_OF_DAY);
+            min = cEnd.get(Calendar.MINUTE);
+            cEnd.setTime(RepeatStartDate);
+            cEnd.set(Calendar.HOUR_OF_DAY, hour);
+            cEnd.set(Calendar.MINUTE, min);
             dStart = new DateTime(cStart.getTime());
+            dEnd = new DateTime(cEnd.getTime());
           }
         } else {
           recur.setUntil(new DateTime(endDate.getTime()));
@@ -272,7 +284,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           cStart.setTime(currentStartDate);
           cStart.set(Calendar.HOUR_OF_DAY, hour);
           cStart.set(Calendar.MINUTE, min);
+          hour = cEnd.get(Calendar.HOUR_OF_DAY);
+          min = cEnd.get(Calendar.MINUTE);
+          cEnd.setTime(currentStartDate);
+          cEnd.set(Calendar.HOUR_OF_DAY, hour);
+          cEnd.set(Calendar.MINUTE, min);
           dStart = new DateTime(cStart.getTime());
+          dEnd = new DateTime(cEnd.getTime());
           if (ptn.charAt(0) == 'Y') {
             if (endDate.compareTo(cStart.getTime()) < 0
               || startDate.compareTo(cEnd.getTime()) > 0) {
@@ -338,6 +356,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             // Integer.parseInt(candidate.getMinute()));
 
             // candidateListを完成させる
+            cEnd.setTime(rd.getEndDate().getValue());
+            dEnd = new DateTime(cEnd.getTime());
             Calendar eEnd = Calendar.getInstance();
             eEnd.setTime(dEnd);
             switch (ptnFirst) {
@@ -345,6 +365,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 while (cal2.compareTo(eEnd) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
+                  candidate = new ALDateTimeField("yyyy-MM-dd");
                   cal2.add(Calendar.DATE, 1);
                 }
                 break;
@@ -369,6 +390,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 while (cal2.compareTo(eEnd) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
+                  candidate = new ALDateTimeField("yyyy-MM-dd");
                   cal2.add(Calendar.DATE, (dayOfWeekList.get((currentIdx + 1)
                     % num) - dayOfWeekList.get((currentIdx) % num + 7) % 7));
                   if (currentIdx == num - 1 && !isEveryWeek) {
@@ -383,7 +405,6 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
-                  // cal2 = (Calendar) cal2.clone();
                   cal2.add(Calendar.MONTH, 1);
                 }
                 break;
@@ -391,6 +412,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 while (cal2.compareTo(eEnd) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
+                  candidate = new ALDateTimeField("yyyy-MM-dd");
                   cal2.add(Calendar.YEAR, 1);
                 }
                 break;
@@ -405,7 +427,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                     ptn,
                     dStart,
                     dEnd)) {
-                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                    deleteList
+                      .add(new DateTime(candidateList.get(i).getValue()));
                   }
                 }
                 break;
@@ -416,17 +439,16 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                     ptn,
                     dStart,
                     dEnd)) {
-                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                    deleteList
+                      .add(new DateTime(candidateList.get(i).getValue()));
                     Calendar cal3 = Calendar.getInstance();
-                    ALDateTimeField shiftDay =
-                      new ALDateTimeField("yyyy-MM-dd");
                     cal3.setTime(candidateList.get(i).getValue());
-                    shiftDay.setValue(cal3.getTime());
-                    while (!ScheduleUtils.isView(shiftDay, ptn, dStart, dEnd)) {
-                      cal3.add(Calendar.DATE, 1);
-                      shiftDay.setValue(cal3.getTime());
+                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    while (ScheduleUtils.isUserHoliday(day_count - 1)) {
+                      cal3.add(Calendar.DATE, -1);
+                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
                     }
-                    addList.add(cal3.getTime());
+                    addList.add(new DateTime(cal3.getTime()));
                   }
                 }
                 break;
@@ -437,17 +459,16 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                     ptn,
                     dStart,
                     dEnd)) {
-                    deleteList.add(candidateList.get(i).toString("yyyyMMdd"));
+                    deleteList
+                      .add(new DateTime(candidateList.get(i).getValue()));
                     Calendar cal3 = Calendar.getInstance();
-                    ALDateTimeField shiftDay =
-                      new ALDateTimeField("yyyy-MM-dd");
                     cal3.setTime(candidateList.get(i).getValue());
-                    shiftDay.setValue(cal3.getTime());
-                    while (!ScheduleUtils.isView(shiftDay, ptn, dStart, dEnd)) {
+                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    while (ScheduleUtils.isUserHoliday(day_count - 1)) {
                       cal3.add(Calendar.DATE, -1);
-                      shiftDay.setValue(cal3.getTime());
+                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
                     }
-                    addList.add(cal3.getTime());
+                    addList.add(new DateTime(cal3.getTime()));
                   }
                 }
                 break;
