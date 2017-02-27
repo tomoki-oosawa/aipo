@@ -239,13 +239,14 @@ public class FileIOScheduleCsvSelectData extends
           ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
           count++;
           setLineCount(count);
+          collectCount++;
 
           if (ErrCount == 0) {
             if (errmsg.size() == 0) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
                 list.add(data);
               }
-              collectCount++;
+
             } else {
               // list.clear();// エラーが初めて発生した場合。
               list.add(data);

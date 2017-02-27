@@ -245,6 +245,8 @@ public class FileIOAccountCsvSelectData
         }
         setStartLine(2);
         continue;
+      } else {
+        collectCount++;
       }
 
       if (usernameList.contains(formData.getUserName().getValue())) {
@@ -347,8 +349,6 @@ public class FileIOAccountCsvSelectData
           ErrorCode +=
             "," + Integer.toString(line) + "," + Boolean.toString(same_user);
           ErrorCode += "\n";
-        } else {
-          collectCount++;
         }
 
         count++;
