@@ -85,7 +85,7 @@ $!{result.Detail.Date}
 #ALtdcaption($l10n.SCHEDULE_PLACE)
 #if($result.enabledMapsFlag())
 #ALtditemheader()
-<a href="http://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
+<a href="https://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
 #ALtditemfooter()
 #else
 #ALtditem($!{result.Detail.PlaceHtml})
