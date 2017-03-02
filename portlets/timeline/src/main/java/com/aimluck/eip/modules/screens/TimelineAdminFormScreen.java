@@ -64,6 +64,6 @@ public class TimelineAdminFormScreen extends ALVelocityScreen {
   @Override
   protected String getPortletName() {
     // アプリ管理
-    return "TimelineAdmin";
+    return "GadgetsAdmin";
   }
 }
