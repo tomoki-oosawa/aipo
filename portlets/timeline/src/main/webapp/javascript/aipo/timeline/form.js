@@ -133,6 +133,12 @@ if (!aipo.timeline.revmaxlist) {
 	aipo.timeline.revmaxlist = [];
 }
 
+aipo.timeline.pinRelease = function(form, indicator, portlet, method){
+	  if (confirm("固定化を解除してよろしいですか？")) {
+		  aimluck.io.submit(form, indicator, portlet, method);
+		  }
+}
+
 aipo.timeline.refreshImageList = function(pid, i) {
 	function showImageList(pid) {
 		var page = dojo.byId("TimelinePage_" + pid);

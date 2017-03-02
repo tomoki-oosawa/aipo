@@ -73,6 +73,8 @@ public class TimelineFormData extends ALAbstractFormData {
   /** メモ */
   private ALStringField note;
 
+  private boolean pinned;
+
   private int parentId;
 
   private int uid;
@@ -117,6 +119,7 @@ public class TimelineFormData extends ALAbstractFormData {
     orgId = Database.getDomainName();
     has_photo = false;
     folderName = rundata.getParameters().getString("folderName");
+    pinned = false;
 
     String mode = rundata.getParameters().getString("mode");
 
@@ -621,6 +624,14 @@ public class TimelineFormData extends ALAbstractFormData {
 
   public boolean hasPhoto() {
     return has_photo;
+  }
+
+  public void setPinned(boolean bool) {
+    pinned = bool;
+  }
+
+  public boolean pinned() {
+    return pinned;
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
