@@ -35,10 +35,10 @@
 #ALtdcaption($l10n.SCHEDULE_UPDATE_MAPS)
 
 #ALtditemheader()
-<select id="enabled_maps" onChange="" name="enabled_maps" />
-    <option value="T" #if ($!{result.enabledMapsFlag.toString()}  == "T") selected="selected" #end>$l10n.SCHEDULE_VALID</option>
-    <option value="F" #if ($!{result.enabledMapsFlag.toString()}  == "F") selected="selected" #end>$l10n.SCHEDULE_INVALID</option>
-</select>
+  <p><input class="mt0" name="enabled_maps" type="radio" value="F" id="enabled_maps_off" #if ($!{result.enabledMapsFlag.toString()}  == "F")checked="checked"#end>
+  <label for="enabled_maps_off">&nbsp;$l10n.SCHEDULE_DO_INVALID</label></p>
+  <p><input class="mt0" name="enabled_maps" type="radio" value="T" id="enabled_maps_on" #if ($!{result.enabledMapsFlag.toString()}  == "T")checked="checked"#end>
+  <label for="enabled_maps_on">&nbsp;$l10n.SCHEDULE_DO_VALID</label></p>
 #ALtditemfooter()
 
 #ALtablefooter()
