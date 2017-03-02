@@ -794,8 +794,3 @@ aipo.timeline.onBlurSearch = function(pid) {
 		}
 	}
 }
-
-aipo.timeline.changeEnabledActivityFlag = function(form) {
-	form.enabled_activity = true;
-	console.log(form);
-}

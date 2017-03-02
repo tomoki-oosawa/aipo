@@ -26,12 +26,18 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
+import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
+import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
+import com.aimluck.eip.services.eventlog.ALEventlogConstants;
+import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
+import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  *
@@ -42,7 +48,7 @@ public class TimelineAdminFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(TimelineAdminFormData.class.getName());
 
-  private String enabledActivityFlag;
+  private ALStringField enabled_activity;
 
   /**
    *
@@ -55,8 +61,6 @@ public class TimelineAdminFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
-
-    enabledActivityFlag = rundata.getParameters().getString("enabled_activity");
   }
 
   /**
@@ -65,7 +69,7 @@ public class TimelineAdminFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-
+    enabled_activity = new ALStringField();
   }
 
   /**
@@ -128,8 +132,16 @@ public class TimelineAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
-    ALConfigService
-      .put(Property.TIMELINE_ACTIVITY_ENABLED, enabledActivityFlag);
+    ALConfigService.put(Property.TIMELINE_ACTIVITY_ENABLED, "T"
+      .equals(enabled_activity.toString()) ? "T" : "F");
+
+    ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
+    ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+      Integer.valueOf(user.getUserId()),
+      ALEventlogConstants.PORTLET_TYPE_GADGET,
+      ALLocalizationUtils
+        .getl10nFormat("TIMELINE_ADMIN_ACTIVITY_ENABLED_CHANGED"));
+
     return true;
   }
 

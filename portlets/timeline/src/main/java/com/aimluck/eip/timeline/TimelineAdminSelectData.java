@@ -24,6 +24,7 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
@@ -41,7 +42,7 @@ import com.aimluck.eip.util.CustomizeUtils;
 public class TimelineAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
 
-  private String enabledActivityFlag;
+  private ALStringField enabledActivityFlag;
 
   /**
    *
@@ -54,8 +55,9 @@ public class TimelineAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
-    enabledActivityFlag =
-      ALConfigService.get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED);
+    enabledActivityFlag = new ALStringField();
+    enabledActivityFlag.setValue(ALConfigService
+      .get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED));
   }
 
   /**
@@ -116,12 +118,6 @@ public class TimelineAdminSelectData extends
    * @return
    */
   public String getEnabledActivityFlag() {
-    return enabledActivityFlag;
-  }
-
-  public void setEnabledActivityFlag(String string) {
-    ALConfigService.put(
-      ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED,
-      string);
+    return enabledActivityFlag.toString();
   }
 }

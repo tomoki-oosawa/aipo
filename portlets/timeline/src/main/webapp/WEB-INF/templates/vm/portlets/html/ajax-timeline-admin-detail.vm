@@ -41,7 +41,7 @@ $l10n.TIMELINE_INVALID
 #ALtablefooter()
 
 #ALbuttonheader()
-#ALajaxbuttonEditCallback("$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineAdminFormScreen')" "$!portlet.ID" "aipo.timeline.onLoadDialog")#ALajaxbuttonClose()
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineAdminFormScreen')")#ALajaxbuttonClose()
 #ALbuttonfooter()
 
 #ALdialogfooter()

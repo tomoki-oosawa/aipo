@@ -57,7 +57,7 @@ public class TimelineAdminJSONScreen extends ALJSONScreen {
         }
       }
     } catch (Exception e) {
-      logger.error("[TimelineJSONScreen]", e);
+      logger.error("[TimelineAdminJSONScreen]", e);
     }
 
     return result;

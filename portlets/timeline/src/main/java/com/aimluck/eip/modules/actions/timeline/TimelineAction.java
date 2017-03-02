@@ -42,8 +42,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class TimelineAction extends ALBaseAction {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(TimelineAction.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(TimelineAction.class.getName());
 
   /**
    * 通常表示の際の処理を記述します。
@@ -62,12 +62,9 @@ public class TimelineAction extends ALBaseAction {
 
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();
-    listData.setContentHeightMax(
-      Integer.parseInt(
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p1a-rows", "0")));
+    listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p1a-rows", "0")));
 
     prepareService(rundata, context);
 
@@ -88,8 +85,8 @@ public class TimelineAction extends ALBaseAction {
    * @param rundata
    */
   @Override
-  protected void buildMaximizedContext(VelocityPortlet portlet, Context context,
-      RunData rundata) {
+  protected void buildMaximizedContext(VelocityPortlet portlet,
+      Context context, RunData rundata) {
     try {
       doTimeline_list(rundata, context);
       prepareService(rundata, context);
@@ -110,12 +107,9 @@ public class TimelineAction extends ALBaseAction {
       throws Exception {
     TimelineSelectData listData = new TimelineSelectData();
     listData.initField();
-    listData.setContentHeightMax(
-      Integer.parseInt(
-        ALEipUtils
-          .getPortlet(rundata, context)
-          .getPortletConfig()
-          .getInitParameter("p2a-rows", "0")));
+    listData.setContentHeightMax(Integer.parseInt(ALEipUtils.getPortlet(
+      rundata,
+      context).getPortletConfig().getInitParameter("p2a-rows", "0")));
     // PSMLからパラメータをロードする
     // 最大表示件数（最大化時）
     listData.setRowsNum(20);
