@@ -21,8 +21,6 @@ public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TTIMELINE_FILE_PROPERTY = "eipTTimelineFile";
     public static final String EIP_TTIMELINE_LIKE_PROPERTY = "eipTTimelineLike";
-    public static final String EIP_TTIMELINE_MAP_PROPERTY = "eipTTimelineMap";
-    public static final String EIP_TTIMELINE_URL_PROPERTY = "eipTTimelineUrl";
     public static final String TURBINE_USER_PROPERTY = "turbineUser";
 
     public static final String TIMELINE_ID_PK_COLUMN = "TIMELINE_ID";
@@ -126,28 +124,6 @@ public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
     }
     public List getEipTTimelineLike() {
         return (List)readProperty("eipTTimelineLike");
-    }
-    
-    
-    public void addToEipTTimelineMap(com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap obj) {
-        addToManyTarget("eipTTimelineMap", obj, true);
-    }
-    public void removeFromEipTTimelineMap(com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap obj) {
-        removeToManyTarget("eipTTimelineMap", obj, true);
-    }
-    public List getEipTTimelineMap() {
-        return (List)readProperty("eipTTimelineMap");
-    }
-    
-    
-    public void addToEipTTimelineUrl(com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl obj) {
-        addToManyTarget("eipTTimelineUrl", obj, true);
-    }
-    public void removeFromEipTTimelineUrl(com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl obj) {
-        removeToManyTarget("eipTTimelineUrl", obj, true);
-    }
-    public List getEipTTimelineUrl() {
-        return (List)readProperty("eipTTimelineUrl");
     }
     
     

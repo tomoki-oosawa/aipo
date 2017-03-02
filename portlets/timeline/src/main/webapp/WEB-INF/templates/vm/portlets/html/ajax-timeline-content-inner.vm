@@ -126,8 +126,11 @@
                     <input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
                 </form>
                 #end
-                #if($!{result.hasAclTimelinePin()})
+                #if(($!{result.hasAclTimelinePin()}) && !($!{record.pinned}))
                 <li><a href="#">$l10n.TIMELINE_PIN</a></li>
+                #end
+				#if(($!{result.hasAclTimelinePin()}) && ($!{record.pinned}))
+                <li><a href="#">$l10n.TIMELINE_PIN_RELEASE</a></li>
                 #end
                 </ul>
                 </div>

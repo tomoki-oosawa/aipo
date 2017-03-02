@@ -2230,7 +2230,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(213,'report_reply','報告書（報
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(221,'timeline_post','タイムライン（自分の投稿）操作',21);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(222,'timeline_post_other','タイムライン（他ユーザーの投稿）操作',17);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(223,'timeline_comment','タイムライン（コメント）操作',20);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(224,'timeline_pin','タイムライン（固定化）操作',8);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(232,'timeline_pin','タイムライン（固定化）操作',8);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(231,'attachment','添付ファイル操作',52);
 
 
