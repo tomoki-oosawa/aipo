@@ -2410,43 +2410,163 @@ body.messageRoomList .messageUserlist .index {
   padding: 0 20px;
 }
 
-/* .messageOuter .inputField {
-  margin-bottom: 0;
-  margin-bottom: 5px;
+/* 20170222 start */
+.messageOuter .inputField {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  z-index: 1000;
+  background: #fff
 }
-.messageOuter .message {
-  border-top: none;
-}
-.messageOuter .message .time {
-  color: #999;
-}
-.messageOuter .message .time a {
-  color: #999;
-} */
 
-#messageMainBlock .contents.clearfix {
-  overflow: inherit;
+.messageOuter .inputField .tlInputAttachment {
+  padding: 5px 5px 0 0
 }
-#messageMainBlock .timelineOuter #messagePane.scroll{
-  overflow: inherit;
+
+.messageOuter .inputField .tlInputAttachment .tlInputAttachmentTitle {
+  display: none
 }
-#messageMainBlock .timelineOuter .inputField {
-  margin-bottom: 5px;
+
+.messageOuter .inputField .tlInputAttachment .attachments {
+  margin: 0;
+  font-size: 0
 }
-#messageMainBlock .timelineOuter .message{
-  border-top: none;
+
+.messageOuter .inputField .tlInputAttachment .attachments li {
+  font-size: 13px;
+  display: inline-block;
+  background: #eee;
+  background-image: none;
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin: 0 0 5px 5px
 }
-#messageMainBlock .timelineOuter .message.active {
+
+.messageOuter .message {
+  border-top: none
+}
+
+.messageOuter .message .time {
+  color: #999
+}
+
+.messageOuter .message .time a {
+  color: #999
+}
+
+#messageMainBlock {
+  padding-bottom: 75px
+}
+
+#messageMainBlock .message {
+  border-top: 0;
+  padding: 0 20px 5px;
+  margin-bottom: 0
+}
+
+#messageMainBlock .message:first-child {
+  padding-top: 0 !important
+}
+
+#messageMainBlock .message:last-child {
+  margin-bottom: 10px
+}
+
+#messageMainBlock .message.active {
   background: #fef6f1;
-  margin: 0 -10px;
-  padding: 10px 10px 0;
+  border-radius: 4px
 }
-#messageMainBlock .timelineOuter .message .time {
+
+#messageMainBlock .message .avatar {
+  margin-top: 29px;
+  left: 0
+}
+
+#messageMainBlock .message .time {
   color: #999;
+  margin-bottom: 0
 }
-#messageMainBlock .timelineOuter .message .time a {
-  color: #999;
+
+#messageMainBlock .message .time a {
+  color: #999
 }
+
+#messageMainBlock .message .time a:hover {
+  color: #f90
+}
+
+#messageMainBlock .message .name {
+  padding-top: 7px
+}
+
+#messageMainBlock .message .messageContents {
+  margin-left: 22px;
+  margin-right: 22px
+}
+
+#messageMainBlock .message .messageContents .body {
+  position: relative;
+  background: #F6F6F6;
+  border-radius: 5px;
+  padding: 10px 10px;
+  margin: 3px 0 4px 0
+}
+
+#messageMainBlock .message .messageContents .body:after {
+  right: 100%;
+  top: 15px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(246, 246, 246, 0);
+  border-right-color: #f6f6f6;
+  border-width: 5px;
+  margin-top: -5px
+}
+
+#messageMainBlock .message .messageContents .body .tlImageBlock {
+  margin-bottom: 0
+}
+
+#messageMainBlock .message .messageContents .body .tlImageBlock a {
+  background: #fff
+}
+
+#messageMainBlock .message.me {
+  padding-right: 5px;
+  margin-top: 5px
+}
+
+#messageMainBlock .message.me .avatar {
+  display: none
+}
+
+#messageMainBlock .message.me .messageContents {
+  margin-right: 0;
+  margin-left: 59px
+}
+
+#messageMainBlock .message.me .messageContents .body {
+  background: #fff7ea
+}
+
+#messageMainBlock .message.me .messageContents .body:after {
+  left: 100%;
+  border-color: rgba(255, 247, 234, 0);
+  border-left-color: #fff7ea
+}
+
+#messageMainBlock .message.me .messageContents .name {
+  display: none
+}
+/* 20170222 end */
 
 .roomHeader {
   margin: 0 0 5px 0;
