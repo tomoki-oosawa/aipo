@@ -67,13 +67,13 @@ import com.aimluck.eip.util.ALURLConnectionUtils;
 public class TimelineFormData extends ALAbstractFormData {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimelineFormData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(TimelineFormData.class.getName());
 
   /** メモ */
   private ALStringField note;
 
-  private boolean pinned;
+  private String pinned;
 
   private int parentId;
 
@@ -119,7 +119,7 @@ public class TimelineFormData extends ALAbstractFormData {
     orgId = Database.getDomainName();
     has_photo = false;
     folderName = rundata.getParameters().getString("folderName");
-    pinned = false;
+    pinned = "F";
 
     String mode = rundata.getParameters().getString("mode");
 
@@ -132,10 +132,8 @@ public class TimelineFormData extends ALAbstractFormData {
         ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_COMMENT;
     } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
       int entityid =
-        Integer.parseInt(ALEipUtils.getTemp(
-          rundata,
-          context,
-          ALEipConstants.ENTITY_ID));
+        Integer.parseInt(
+          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
       EipTTimeline timeline = Database.get(EipTTimeline.class, (long) entityid);
       if (uid != timeline.getOwnerId()) {
         aclPortletFeature =
@@ -161,8 +159,8 @@ public class TimelineFormData extends ALAbstractFormData {
   public void initField() {
     // メモ
     note = new ALStringField();
-    note.setFieldName(ALLocalizationUtils
-      .getl10n("TIMELINE_SETFIELDNAME_CONTENT"));
+    note.setFieldName(
+      ALLocalizationUtils.getl10n("TIMELINE_SETFIELDNAME_CONTENT"));
     note.setTrim(false);
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();
@@ -208,10 +206,8 @@ public class TimelineFormData extends ALAbstractFormData {
 
       // FIX_ME イベントログのために一度IDと名前を取得
       int parentid =
-        Integer.parseInt(ALEipUtils.getTemp(
-          rundata,
-          context,
-          ALEipConstants.ENTITY_ID));
+        Integer.parseInt(
+          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID));
 
       EipTTimeline parent = Database.get(EipTTimeline.class, (long) parentid);
 
@@ -262,6 +258,8 @@ public class TimelineFormData extends ALAbstractFormData {
       topic.setNote(note.getValue());
       // 登録
       topic.setTimelineType(EipTTimeline.TIMELINE_TYPE_TIMELINE);
+      // 固定化状態
+      topic.setPinned(pinned);
 
       // 作成日
       topic.setCreateDate(tCal.getTime());
@@ -272,11 +270,11 @@ public class TimelineFormData extends ALAbstractFormData {
           Database.get(EipTTimeline.class, Integer.valueOf(parentId));
 
         if (parent != null && parent.getTimelineType() != null) {
-          if (EipTTimeline.TIMELINE_TYPE_TIMELINE.equals(parent
-            .getTimelineType())) {// 通常のコメント挿入時
+          if (EipTTimeline.TIMELINE_TYPE_TIMELINE.equals(
+            parent.getTimelineType())) {// 通常のコメント挿入時
             parent.setUpdateDate(tCal.getTime());
-          } else if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(parent
-            .getTimelineType())) {
+          } else if (EipTTimeline.TIMELINE_TYPE_ACTIVITY.equals(
+            parent.getTimelineType())) {
             parent.setUpdateDate(tCal.getTime());
             if (parent.getParentId().intValue() != 0) {
               EipTTimeline grandpa =
@@ -303,22 +301,28 @@ public class TimelineFormData extends ALAbstractFormData {
             String path =
               uri.getPath().replaceAll("\\.\\./", "").replaceAll("\\./", "");
             URL u =
-              new URL(String.format("%s://%s%s", uri.getScheme(), uri
-                .getAuthority(), path));
+              new URL(
+                String.format(
+                  "%s://%s%s",
+                  uri.getScheme(),
+                  uri.getAuthority(),
+                  path));
 
             URLConnection uc = ALURLConnectionUtils.openUrlConnection(u);
             uc.setRequestProperty("Referer", str); // Refererを記述
-            uc
-              .addRequestProperty("User-Agent", ALURLConnectionUtils.USER_AGENT);
+            uc.addRequestProperty(
+              "User-Agent",
+              ALURLConnectionUtils.USER_AGENT);
             uc.addRequestProperty(
               "Accept-Encoding",
               ALURLConnectionUtils.ACCEPT_ENCODING);
             InputStream is = uc.getInputStream();
-            url.setThumbnail(FileuploadUtils.getBytesShrink(
-              is,
-              FileuploadUtils.DEF_THUMBNAIL_WIDTH,
-              FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
-              msgList));
+            url.setThumbnail(
+              FileuploadUtils.getBytesShrink(
+                is,
+                FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+                FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+                msgList));
           } catch (Exception e) { // サムネイルの取得に失敗した場合、サムネイルなしで投稿
             logger.error("timeline", e);
           }
@@ -365,8 +369,8 @@ public class TimelineFormData extends ALAbstractFormData {
           targetLoginName);
 
         List<Integer> otherlist =
-          TimelineUtils.getTimelineOtherCommentUserList(Integer
-            .valueOf(parentId));
+          TimelineUtils.getTimelineOtherCommentUserList(
+            Integer.valueOf(parentId));
         for (Integer owner_id : otherlist) {
           int parentOwnerId = parententry.getOwnerId();
           String targetUserName =
@@ -411,9 +415,8 @@ public class TimelineFormData extends ALAbstractFormData {
     return true;
   }
 
-  private boolean insertAttachmentFiles(
-      List<FileuploadLiteBean> fileuploadList, String folderName, int uid,
-      EipTTimeline entry, List<String> msgList) {
+  private boolean insertAttachmentFiles(List<FileuploadLiteBean> fileuploadList,
+      String folderName, int uid, EipTTimeline entry, List<String> msgList) {
 
     if (fileuploadList == null || fileuploadList.size() <= 0) {
       return true;
@@ -456,7 +459,8 @@ public class TimelineFormData extends ALAbstractFormData {
           file.setOwnerId(Integer.valueOf(uid));
           file.setFileName(newfilebean.getFileName());
           file.setFilePath(TimelineUtils.getRelativePath(filename));
-          if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
+          if (shrinkImageSet != null
+            && shrinkImageSet.getShrinkImage() != null) {
             file.setFileThumbnail(shrinkImageSet.getShrinkImage());
           }
           file.setEipTTimeline(entry);
@@ -517,7 +521,27 @@ public class TimelineFormData extends ALAbstractFormData {
   @Override
   protected boolean updateFormData(RunData rundata, Context context,
       List<String> msgList) {
-    return false;
+    try {
+      EipTTimeline timeline =
+        TimelineUtils.getEipTTimelineParentEntry(rundata, context);
+
+      timeline.setPinned(pinned);
+
+      Database.commit();
+    }
+
+    catch (RuntimeException ex) {
+      // RuntimeException
+      Database.rollback();
+      logger.error("timeline", ex);
+      return false;
+    } catch (Exception ex) {
+      Database.rollback();
+      logger.error("timeline", ex);
+      return false;
+    }
+    return true;
+
   }
 
   /**
@@ -626,11 +650,11 @@ public class TimelineFormData extends ALAbstractFormData {
     return has_photo;
   }
 
-  public void setPinned(boolean bool) {
-    pinned = bool;
+  public void setPinned(String pin) {
+    pinned = pin;
   }
 
-  public boolean pinned() {
+  public String pinned() {
     return pinned;
   }
 

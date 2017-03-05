@@ -130,11 +130,11 @@
                 <li><a href="javascript:void(0)">$l10n.TIMELINE_PIN</a></li>
                 #end
 				#if(($!{result.hasAclTimelinePin()}) && ($!{record.pinned}))
-					<form style="display:inline" name="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" id="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('pinned', false)" method="post" onsubmit="$js;return false;">
-					<input type="hidden" name="_name" value="$name" />
+				 <form style="display:inline" name="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" id="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
-					<li><a href="javascript:void(0)"  onclick="aipo.timeline.pinRelease(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), '$indicator_id','$!portlet.ID',aipo.timeline.onReceiveMessage);">$l10n.TIMELINE_PIN_RELEASE</a></li>
-					</form>
+					<input type="hidden" name="pinned" value="F" />
+					<li><a href="javascript:void(0)"  onclick="var ok=confirm('固定化を解除してよろしいですか？'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'update');dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN_RELEASE</a></li>
+				 </form>
                 #end
                 </ul>
                 </div>
