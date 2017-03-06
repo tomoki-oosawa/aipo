@@ -50,6 +50,8 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.services.storage.ALStorageService;
@@ -536,6 +538,24 @@ public class TimelineFormData extends ALAbstractFormData {
    */
   public boolean doPin(ALAction action, RunData rundata, Context context,
       String mode) {
+
+    // 固定化の権限チェック
+    boolean hasTimelinePin;
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    hasTimelinePin =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_PIN,
+        ALAccessControlConstants.VALUE_ACL_UPDATE);
+
+    if (!hasTimelinePin) {
+      return false;
+    }
+
     try {
 
       init(action, rundata, context);
