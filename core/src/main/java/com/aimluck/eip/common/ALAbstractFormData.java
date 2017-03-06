@@ -96,7 +96,7 @@ public abstract class ALAbstractFormData implements ALData {
         }
       }
     }
-    
+
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
@@ -291,9 +291,9 @@ public abstract class ALAbstractFormData implements ALData {
           .getl10n("COMMON_FULL_DISK_DELETE_DETA_OR_CHANGE_PLAN"));
       } else {
         res =
-          (/*setFormData(rundata, context, msgList)
+          (setFormData(rundata, context, msgList)
             && validate(msgList)
-            && extValidate(rundata, context, msgList) &&*/ updateFormData(
+            && extValidate(rundata, context, msgList) && updateFormData(
             rundata,
             context,
             msgList));

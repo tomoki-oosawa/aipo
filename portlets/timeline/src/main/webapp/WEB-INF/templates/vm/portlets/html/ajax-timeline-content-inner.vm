@@ -127,13 +127,15 @@
                 </form>
                 #end
                 #if(($!{result.hasAclTimelinePin()}) && !($!{record.pinned}))
-                <li><a href="javascript:void(0)">$l10n.TIMELINE_PIN</a></li>
+                 <form style="display:inline" name="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" id="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+                	<input type="hidden" name="secid" value="$secid" />
+                	<li><a href="javascript:void(0)" onclick="var ok=confirm('固定化された投稿を変更してよろしいですか？'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'setpin');dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN</a></li>
+                 </form>
                 #end
 				#if(($!{result.hasAclTimelinePin()}) && ($!{record.pinned}))
 				 <form style="display:inline" name="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" id="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
-					<input type="hidden" name="pinned" value="F" />
-					<li><a href="javascript:void(0)"  onclick="var ok=confirm('固定化を解除してよろしいですか？'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'update');dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN_RELEASE</a></li>
+					<li><a href="javascript:void(0)"  onclick="var ok=confirm('固定化を解除してよろしいですか？'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'dispin');dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN_RELEASE</a></li>
 				 </form>
                 #end
                 </ul>
