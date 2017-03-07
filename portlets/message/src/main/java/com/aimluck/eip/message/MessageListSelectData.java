@@ -361,4 +361,14 @@ public class MessageListSelectData extends
     }
     return "O".equals(room.getRoomType());
   }
+
+  @Override
+  public List<Object> getList() {
+    List<Object> list = super.getList();
+    list.sort((a, b) -> ((MessageResultData) a)
+      .getCreateDate()
+      .getDateTime()
+      .compareTo(((MessageResultData) b).getCreateDate().getDateTime()));
+    return list;
+  }
 }

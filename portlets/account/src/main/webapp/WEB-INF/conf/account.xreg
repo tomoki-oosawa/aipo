@@ -99,6 +99,7 @@
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>
+
     <portlet-entry name="AccountLogin" hidden="true" type="ref" parent="Velocity" application="false">
         <meta-info>
             <title>ログイン</title>

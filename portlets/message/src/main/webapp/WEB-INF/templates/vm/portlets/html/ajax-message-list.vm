@@ -32,7 +32,7 @@
 #set($currentDate = $!record.CreateDateLine.toString())
 #set($currentMessageId = $!record.MessageId)
 #set($currentDateKey = $!record.CreateDateKey.toString())
-<div id="message$!record.MessageId" class="message">
+<div id="message$!record.MessageId" class="message #if($record.isOwner()) me#end">
 
 	<div class="avatar">
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">

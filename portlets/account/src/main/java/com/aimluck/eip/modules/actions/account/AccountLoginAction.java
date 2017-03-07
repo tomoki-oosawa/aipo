@@ -38,7 +38,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ログイン画面を表示するアクションクラスです。
- * 
+ *
  */
 public class AccountLoginAction extends ALBaseAction {
 
@@ -65,7 +65,7 @@ public class AccountLoginAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
    * @param groupname
    * @return
    */
@@ -74,7 +74,16 @@ public class AccountLoginAction extends ALBaseAction {
   }
 
   /**
-   * 
+   *
+   * @param groupname
+   * @return
+   */
+  public String removeSpace(String space) {
+    return (space.trim());
+  }
+
+  /**
+   *
    * @return
    */
   public Map<Integer, ALEipPost> getPostMap() {
@@ -91,7 +100,7 @@ public class AccountLoginAction extends ALBaseAction {
 
   /**
    * マッキントッシュからのアクセスかどうかを判断します。
-   * 
+   *
    * @param rundata
    * @return
    */

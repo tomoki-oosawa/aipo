@@ -225,9 +225,11 @@ function change_group(form, value) {
 <!-- auiLoginBox -->
 <div id="auiLoginBox"><div id="auiLoginInner">
 <div class="logo"><img src="themes/$!theme/images/logo_l.png" width="285" height="105" alt="$!{alias}" srcset="themes/$!theme/images/logo_l.png 1x,themes/$!theme/images/logo_l@2x.png 2x"/></div>
+
 #if($!data.Message)
 <div class="loginAlert">
 $!data.Message
+
 </div>
 #end
 <noscript><div class="alert">$utils.getl10nFormat1("WAR_CANNOT_USE_JAVASCRIPT",$!{alias})</div></noscript>
@@ -239,6 +241,7 @@ $!data.Message
 <span id="login_username_field">
 <input class='text' id='member_username' name='member_username' value='' type='text'  maxlength='50' style='ime-mode:disabled' tabindex="1" placeholder="$l10n.ACCOUNT_USER_ACCOUNT" /><span class="guide" style="display:none;" onclick="this.style.display='none';document.getElementById('member_username').focus();">$l10n.ACCOUNT_USER_ACCOUNT</span>
 </span>
+
 #if($enable_userlist)
 <span id="login_username_list_field" style="display:none">
 <select name='login_member' onChange='change_group(this.form, this.options[this.selectedIndex].value)' class="select1" tabindex="1">
