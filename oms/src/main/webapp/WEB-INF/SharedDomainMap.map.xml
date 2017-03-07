@@ -2049,8 +2049,6 @@
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>
 	<obj-relationship name="eipTTimelineFile" source="EipTTimeline" target="EipTTimelineFile" deleteRule="Nullify" db-relationship-path="eipTTimelineFile"/>
 	<obj-relationship name="eipTTimelineLike" source="EipTTimeline" target="EipTTimelineLike" deleteRule="Nullify" db-relationship-path="eipTTimelineLike"/>
-	<obj-relationship name="eipTTimelineMap" source="EipTTimeline" target="EipTTimelineMap" db-relationship-path="eipTTimelineMap"/>
-	<obj-relationship name="eipTTimelineUrl" source="EipTTimeline" target="EipTTimelineUrl" db-relationship-path="eipTTimelineUrl"/>
 	<obj-relationship name="turbineUser" source="EipTTimeline" target="TurbineUser" db-relationship-path="turbineUser"/>
 	<obj-relationship name="eipTTimeline" source="EipTTimelineFile" target="EipTTimeline" deleteRule="Nullify" db-relationship-path="eipTTimeline"/>
 	<obj-relationship name="eipTTimeline" source="EipTTimelineLike" target="EipTTimeline" deleteRule="Nullify" db-relationship-path="eipTTimeline"/>
