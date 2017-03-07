@@ -26,6 +26,24 @@ import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 
+import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
+import org.apache.jetspeed.services.logging.JetspeedLogger;
+import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.util.RunData;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
+
+import com.aimluck.commons.field.ALDateTimeField;
+import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipHolidaysManager;
+import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALHoliday;
+import com.aimluck.eip.modules.actions.common.ALAction;
+import com.aimluck.eip.schedule.ScheduleSearchResultData;
+import com.aimluck.eip.schedule.ScheduleiCalSelectData;
+import com.aimluck.eip.schedule.util.ScheduleUtils;
+import com.aimluck.eip.util.ALEipUtils;
+
 import net.fortuna.ical4j.model.Date;
 import net.fortuna.ical4j.model.DateList;
 import net.fortuna.ical4j.model.DateTime;
@@ -42,27 +60,12 @@ import net.fortuna.ical4j.model.property.ExDate;
 import net.fortuna.ical4j.model.property.Location;
 import net.fortuna.ical4j.model.property.Method;
 import net.fortuna.ical4j.model.property.ProdId;
-import net.fortuna.ical4j.model.property.RDate;
 import net.fortuna.ical4j.model.property.RRule;
+import net.fortuna.ical4j.model.property.RecurrenceId;
+import net.fortuna.ical4j.model.property.Uid;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.model.property.XProperty;
 import net.fortuna.ical4j.util.UidGenerator;
-
-import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
-import org.apache.jetspeed.services.logging.JetspeedLogger;
-import org.apache.turbine.modules.screens.RawScreen;
-import org.apache.turbine.util.RunData;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
-
-import com.aimluck.commons.field.ALDateTimeField;
-import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.schedule.ScheduleSearchResultData;
-import com.aimluck.eip.schedule.ScheduleiCalSelectData;
-import com.aimluck.eip.schedule.util.ScheduleUtils;
-import com.aimluck.eip.util.ALEipUtils;
 
 /**
  *
@@ -70,8 +73,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleiCalScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(ScheduleiCalScreen.class.getName());
 
   /**
    * @param rundata
@@ -88,6 +91,9 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
 
     VelocityContext context = new VelocityContext();
     ALEipUtils.setupContext(rundata, context);
+
+    // 国民の休日かどうかを判定する
+    ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
 
     // 前後3ヶ月の予定を取得
     Calendar date = Calendar.getInstance();
@@ -303,6 +309,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
 
       VEvent event = new VEvent(dStart, dEnd, rd.getName().getValue());
+      VEvent[] event2 = new VEvent[0];
 
       String place = rd.getPlace().getValue();
       if (place != null && place.length() > 0) {
@@ -314,8 +321,9 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         event.getProperties().add(new Description(description));
       }
 
-      event.getProperties().add(
-        new UidGenerator(rd.getScheduleId().getValueAsString()).generateUid());
+      Uid uid =
+        new UidGenerator(rd.getScheduleId().getValueAsString()).generateUid();
+      event.getProperties().add(uid);
 
       if (recur != null) {
         event.getProperties().add(new RRule(recur));
@@ -326,8 +334,9 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           for (ScheduleSearchResultData dummy : list) {
             java.util.Calendar dummyStart = Calendar.getInstance();
             dummyStart.setTime(dummy.getStartDate().getValue());
-            dummyStart.set(Calendar.HOUR_OF_DAY, cStart
-              .get((Calendar.HOUR_OF_DAY)));
+            dummyStart.set(
+              Calendar.HOUR_OF_DAY,
+              cStart.get((Calendar.HOUR_OF_DAY)));
             dummyStart.set(Calendar.MINUTE, cStart.get((Calendar.MINUTE)));
             dateList.add(new DateTime(dummyStart.getTime()));
           }
@@ -380,7 +389,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 List<Integer> dayOfWeekList = new ArrayList<Integer>();
                 for (int i = 0; i < 7; i++) {
                   if (ptn.charAt(i + 1) == '1') {
-                    dayOfWeekList.add(i);
+                    dayOfWeekList.add(i + 1);
                   }
                 }
                 int startDayOfWeek = cal2.get(Calendar.DAY_OF_WEEK);
@@ -391,13 +400,20 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
-                  cal2.add(Calendar.DATE, (dayOfWeekList.get((currentIdx + 1)
-                    % num) - dayOfWeekList.get((currentIdx) % num + 7) % 7));
-                  if (currentIdx == num - 1 && !isEveryWeek) {
-                    cal2.add(Calendar.MONTH, 1);
+                  if (num == 1) {
+                    cal2.add(Calendar.DATE, 7);
+                  } else {
+                    cal2.add(
+                      Calendar.DATE,
+                      (dayOfWeekList.get((currentIdx + 1) % num)
+                        - dayOfWeekList.get(currentIdx % num)
+                        + 7) % 7);
+                    if (currentIdx == num - 1 && !isEveryWeek) {
+                      cal2.add(Calendar.MONTH, 1);
+                    }
+                    currentIdx++;
+                    currentIdx = (currentIdx) % num;
                   }
-                  currentIdx++;
-                  currentIdx = (currentIdx) % num;
                 }
                 break;
               case 'M':
@@ -419,67 +435,109 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             }
             DateList deleteList = new DateList();
             DateList addList = new DateList();
-            switch (ptn.charAt(ptn.length() - 1)) {
-              case 'D':
-                for (int i = 0; i < candidateList.size(); i++) {
-                  if (!ScheduleUtils.isView(
-                    candidateList.get(i),
-                    ptn,
-                    dStart,
-                    dEnd)) {
-                    deleteList
-                      .add(new DateTime(candidateList.get(i).getValue()));
-                  }
+            if (ptnFirst == 'D') {
+              for (int i = 0; i < candidateList.size(); i++) {
+                if (!ScheduleUtils.isView(
+                  candidateList.get(i),
+                  ptn,
+                  dStart,
+                  dEnd)) {
+                  deleteList.add(new DateTime(candidateList.get(i).getValue()));
                 }
-                break;
-              case 'A':
-                for (int i = 0; i < candidateList.size(); i++) {
-                  if (!ScheduleUtils.isView(
-                    candidateList.get(i),
-                    ptn,
-                    dStart,
-                    dEnd)) {
-                    deleteList
-                      .add(new DateTime(candidateList.get(i).getValue()));
-                    Calendar cal3 = Calendar.getInstance();
-                    cal3.setTime(candidateList.get(i).getValue());
-                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
-                    while (ScheduleUtils.isUserHoliday(day_count - 1)) {
-                      cal3.add(Calendar.DATE, -1);
-                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
+              }
+              event.getProperties().add(new ExDate(deleteList));
+            } else {
+              switch (ptn.charAt(ptn.length() - 1)) {
+                case 'D':
+                  for (int i = 0; i < candidateList.size(); i++) {
+                    if (!ScheduleUtils.isView(
+                      candidateList.get(i),
+                      ptn,
+                      dStart,
+                      dEnd)) {
+                      deleteList.add(
+                        new DateTime(candidateList.get(i).getValue()));
                     }
-                    addList.add(new DateTime(cal3.getTime()));
                   }
-                }
-                break;
-              case 'B':
-                for (int i = 0; i < candidateList.size(); i++) {
-                  if (!ScheduleUtils.isView(
-                    candidateList.get(i),
-                    ptn,
-                    dStart,
-                    dEnd)) {
-                    deleteList
-                      .add(new DateTime(candidateList.get(i).getValue()));
-                    Calendar cal3 = Calendar.getInstance();
-                    cal3.setTime(candidateList.get(i).getValue());
-                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
-                    while (ScheduleUtils.isUserHoliday(day_count - 1)) {
-                      cal3.add(Calendar.DATE, -1);
-                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                  event.getProperties().add(new ExDate(deleteList));
+                  break;
+                case 'A':
+                  for (int i = 0; i < candidateList.size(); i++) {
+                    if (!ScheduleUtils.isView(
+                      candidateList.get(i),
+                      ptn,
+                      dStart,
+                      dEnd)) {
+                      deleteList.add(
+                        new DateTime(candidateList.get(i).getValue()));
+                      Calendar cal3 = Calendar.getInstance();
+                      cal3.setTime(candidateList.get(i).getValue());
+                      int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      ALHoliday holiday =
+                        holidaysManager.isHoliday(cal3.getTime());
+                      while (ScheduleUtils.isDayOffHoliday() && holiday != null
+                        || ScheduleUtils.isUserHoliday(day_count - 1)) {
+                        cal3.add(Calendar.DATE, 1);
+                        day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      }
+                      addList.add(new DateTime(cal3.getTime()));
                     }
-                    addList.add(new DateTime(cal3.getTime()));
                   }
-                }
-                break;
+                  break;
+                case 'B':
+                  for (int i = 0; i < candidateList.size(); i++) {
+                    if (!ScheduleUtils.isView(
+                      candidateList.get(i),
+                      ptn,
+                      dStart,
+                      dEnd)) {
+                      deleteList.add(
+                        new DateTime(candidateList.get(i).getValue()));
+                      Calendar cal3 = Calendar.getInstance();
+                      cal3.setTime(candidateList.get(i).getValue());
+                      int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      ALHoliday holiday =
+                        holidaysManager.isHoliday(cal3.getTime());
+                      while (ScheduleUtils.isDayOffHoliday() && holiday != null
+                        || ScheduleUtils.isUserHoliday(day_count - 1)) {
+                        cal3.add(Calendar.DATE, -1);
+                        day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      }
+                      addList.add(new DateTime(cal3.getTime()));
+                    }
+                  }
+                  break;
+              }
             }
-            event.getProperties().add(new ExDate(deleteList));
-            event.getProperties().add(new RDate(addList));
+            event2 = new VEvent[addList.size()];
+            if (ptn.charAt(ptn.length() - 1) == 'A'
+              || ptn.charAt(ptn.length() - 1) == 'B') {
+              for (int i = 0; i < addList.size(); i++) {
+                int hour = cStart.get(Calendar.HOUR_OF_DAY);
+                int min = cStart.get(Calendar.MINUTE);
+                cStart.setTime((java.util.Date) addList.get(i));
+                cStart.set(Calendar.HOUR_OF_DAY, hour);
+                cStart.set(Calendar.MINUTE, min);
+                hour = cEnd.get(Calendar.HOUR_OF_DAY);
+                min = cEnd.get(Calendar.MINUTE);
+                cEnd.setTime((java.util.Date) addList.get(i));
+                cEnd.set(Calendar.HOUR_OF_DAY, hour);
+                cEnd.set(Calendar.MINUTE, min);
+                dStart = new DateTime(cStart.getTime());
+                dEnd = new DateTime(cEnd.getTime());
+                event2[i] = new VEvent(dStart, dEnd, rd.getName().getValue());
+                event2[i].getProperties().add(uid);
+                event2[i].getProperties().add(
+                  new RecurrenceId((Date) deleteList.get(i)));
+              }
+            }
           }
         }
       }
       cal.getComponents().add(event);
-
+      for (int i = 0; i < event2.length; i++) {
+        cal.getComponents().add(event2[i]);
+      }
     }
 
     ServletOutputStream out = null;
@@ -503,7 +561,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
   }
 
   // 休日か如何を考慮せずに、候補日のうち最も早いものを返す
-  private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
+  private java.util.Date getRepeatStartDate(java.util.Date startDate,
+      String ptn) {
     try {
       Calendar cal = Calendar.getInstance();
       logger.error(startDate);
@@ -518,15 +577,16 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           }
           break;
         case 'M':
-          while (!(Integer.parseInt(ptn.substring(1, 3)) == cal
-            .get(Calendar.DATE))) {
+          while (!(Integer.parseInt(ptn.substring(1, 3)) == cal.get(
+            Calendar.DATE))) {
             cal.add(Calendar.DATE, 1);
           }
           break;
         case 'Y':
-          while (Integer.parseInt(ptn.substring(1, 3)) == cal
-            .get(Calendar.MONTH)
-            && Integer.parseInt(ptn.substring(3, 5)) == cal.get(Calendar.DATE)) {
+          while (Integer.parseInt(ptn.substring(1, 3)) == cal.get(
+            Calendar.MONTH)
+            && Integer.parseInt(ptn.substring(3, 5)) == cal.get(
+              Calendar.DATE)) {
             cal.add(Calendar.DATE, 1);
           }
           break;
@@ -565,9 +625,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
     // 祝日判定
     ScheduleUtils.setDate(cal.getTime());
 
-    if ((ScheduleUtils.isHoliday() || ScheduleUtils
-      .isUserHoliday(day_count - 1))
-      && shift != 5) {
+    if ((ScheduleUtils.isHoliday()
+      || ScheduleUtils.isUserHoliday(day_count - 1)) && shift != 5) {
       result = false;
       return result;
     }
@@ -584,7 +643,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         || ptn.charAt(8) == 'L'
         || dowim == Character.getNumericValue(ptn.charAt(8))) {
         switch (dow) {
-        // 日
+          // 日
           case Calendar.SUNDAY:
             result = ptn.charAt(1) != '0';
             break;
