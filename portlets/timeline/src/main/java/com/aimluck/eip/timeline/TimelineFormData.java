@@ -567,7 +567,7 @@ public class TimelineFormData extends ALAbstractFormData {
         timeline.setPinned("F");
       } else if (mode.equals("setpin")) {
         String sql =
-          "UPDATE eip_t_timeline SET pinned = 'F' WHERE pinned <> 'F';";
+          "UPDATE eip_t_timeline SET pinned = 'F' WHERE pinned <> 'F' OR pinned IS NULL;";
         Database.sql(EipTTimeline.class, sql).execute();
         timeline.setPinned("T");
       } else {

@@ -1232,10 +1232,10 @@ public class TimelineUtils {
 
     if ("T".equals(type) && "".equals(displayParam)) {
       last
-        .append(" ORDER BY eip_t_timeline.pinned DESC NULLS LAST, eip_t_timeline.create_date ASC");
+        .append(" ORDER BY eip_t_timeline.pinned DESC, eip_t_timeline.create_date ASC");
     } else {
       last
-        .append(" ORDER BY eip_t_timeline.pinned DESC NULLS LAST, eip_t_timeline.update_date DESC");
+        .append(" ORDER BY eip_t_timeline.pinned DESC, eip_t_timeline.update_date DESC");
     }
 
     SQLTemplate<EipTTimeline> countQuery =

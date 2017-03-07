@@ -62,5 +62,6 @@ ALTER TABLE `eip_t_timeline` ADD `pinned` varchar(1) DEFAULT 'F' AFTER `params`;
 INSERT INTO eip_t_acl_portlet_feature VALUES(NULL,'timeline_pin','タイムライン（固定化）操作',8);
 INSERT INTO eip_t_acl_role VALUES(NULL, 'タイムライン（固定化）管理者',(SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'timeline_pin' LIMIT 1),8,NULL,NULL,NULL);
 -- migration
-INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id from eip_t_acl_role WHERE role_name = 'タイムライン（固定化）管理者' LIMIT 1) FROM turbine_user WHERE disabled='F' and not (login_name='admin' or login_name='anon');
+INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id from eip_t_acl_role WHERE role_name = 'タイムライン（固定化）管理者' LIMIT 1) FROM turbine_user WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
+UPDATE eip_t_timeline SET pinned ='F';
 -- 20170123
