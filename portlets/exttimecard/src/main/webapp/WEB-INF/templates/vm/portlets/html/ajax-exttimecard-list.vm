@@ -19,6 +19,9 @@
 ## ---------------------------------------------------------------------------
 #set ($s = '"')
 ## ---------------------------------------------------------------------------
+
+## 「タイムカード記録(20170308現在)」のページです
+
 #AUIcontentsAreaHeader()
 
 #if($result.DateListKeys.size() == 0)
@@ -37,7 +40,14 @@
 	<div class="count"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
 	#if($!result.hasAclXlsExport())
 		<div class="floatRight">
+
+			Hello！
 		#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
+		##set($prLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth")))
+		##set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+		#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint").addQueryData("entityid","$entityid"))
+		#ALdialogheaderPrintExtTimecard("$l10n.TODO_TODO_DETAIL" "$!portlet.ID" "ExtTimecardListScreenPrint" "$entityid")
+			Hello!!
 		#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
 		</div>
 	#end
