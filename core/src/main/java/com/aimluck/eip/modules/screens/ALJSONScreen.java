@@ -94,8 +94,10 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
       String portletName = getPortletName();
       if (portletName != null
         && !"".equals(portletName)
-        && (!ALPortalApplicationService.isActive(portletName) || !CustomizeUtils
-          .isAdminUserView(portletName, rundata))) {
+        && (!ALPortalApplicationService.isActive(portletName) || !(CustomizeUtils
+          .isAdminUserView(portletName, rundata) && CustomizeUtils.isAdminView(
+          portletName,
+          rundata)))) {
         throw new ALPermissionException();
       }
 
