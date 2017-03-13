@@ -89,10 +89,10 @@ public class AccountPostCsvExportScreen extends ALCSVScreen {
         StringBuffer sb =
           new StringBuffer("\"部署名\",\"郵便番号\",\"住所\","
             + "\"電話番号（外線）\",\"電話番号（内線）\",\"FAX\"");
-        for (ListIterator<EipMPost> iterator = list.listIterator(list.size()); iterator
-          .hasPrevious();) {
+        for (ListIterator<EipMPost> iterator = list.listIterator(); iterator
+          .hasNext();) {
           sb.append(LINE_SEPARATOR);
-          data = getPostResultData(iterator.previous());
+          data = getPostResultData(iterator.next());
           sb.append("\"");
           sb.append(data.getPostName());
           sb.append("\",\"");
