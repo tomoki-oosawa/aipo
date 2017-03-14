@@ -264,7 +264,7 @@ aipo.message.latestMessageList = function() {
         load : function(response, ioArgs) {
             var messagePane = dojo.byId("messagePane");
             if(messagePane) {
-                messagePane.innerHTML = response + messagePane.innerHTML;
+                messagePane.innerHTML = messagePane.innerHTML + response;
                 if(messagePane.children.length > 1) {
                     var emptyMessage = dojo.query("#messagePane .emptyMessage");
                     if(emptyMessage.length == 1) {
@@ -966,7 +966,7 @@ aipo.message.onReceiveMessage = function(msg) {
             aipo.message.latestMessageList();
         }
         aipo.message.clearInput();
-        dojo.byId("messagePane").scrollTop = 0;
+        dojo.byId("messagePane").scrollTop = dojo.byId("messagePane").scrollHeight;
         dojo.style(dojo.byId("messageInputAttachment"), "display", "none");
         dojo.byId("attachments_global-" + aipo.message.portletId).innerHTML="";
         if(dojo.hasClass("messageUserTab","active")) {
@@ -1158,7 +1158,7 @@ aipo.message.getFirstMessageId = function() {
     var messagePane = dojo.byId("messagePane");
     if(messagePane) {
         if(messagePane.children.length > 0) {
-            var id = messagePane.children[0].id;
+            var id = messagePane.children[messagePane.children.length-1].id;
             if(id) {
                 return id.replace("message", "");
             }
@@ -1171,7 +1171,7 @@ aipo.message.getLastMessageId = function() {
     var messagePane = dojo.byId("messagePane");
     if(messagePane) {
         if(messagePane.children.length > 0) {
-            var id = messagePane.children[messagePane.children.length-1].id;
+            var id = messagePane.children[0].id;
             if(id) {
                 return id.replace("message", "").replace("Line","");
             }

@@ -365,10 +365,11 @@ public class MessageListSelectData extends
   @Override
   public List<Object> getList() {
     List<Object> list = super.getList();
+    list.sort((a, b) -> -1);
     list.sort((a, b) -> ((MessageResultData) a)
       .getCreateDate()
-      .getDateTime()
-      .compareTo(((MessageResultData) b).getCreateDate().getDateTime()));
+      .getValue()
+      .compareTo(((MessageResultData) b).getCreateDate().getValue()));
     return list;
   }
 }
