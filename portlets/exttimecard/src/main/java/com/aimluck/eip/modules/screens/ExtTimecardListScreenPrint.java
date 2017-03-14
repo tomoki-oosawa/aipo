@@ -16,23 +16,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+//ExtTimecardListから、クラス名のみ変更
 package com.aimluck.eip.modules.screens;
+
+import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.exttimecard.ExtTimecardListResultData;
+import com.aimluck.eip.exttimecard.ExtTimecardListResultDataContainer;
 import com.aimluck.eip.exttimecard.ExtTimecardSelectData;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
 /**
- * ToDoの印刷画面を処理するクラスです。 <br />
- * ->ExtTimecard
+ * タイムカードの一覧の印刷画面を処理するクラスです。 <br />
+ *
  */
-
-public class ExtTimecardListScreenPrint extends ALVelocityScreen {
+public class ExtTimecardListScreenPrint extends ExtTimecardScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -46,25 +51,37 @@ public class ExtTimecardListScreenPrint extends ALVelocityScreen {
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-    try {
-      ExtTimecardSelectData detailData = new ExtTimecardSelectData();
-      detailData.initField();
-      detailData.doViewDetail(this, rundata, context);
 
-      String layout_template = "portlets/html/ajax-exttimecard-list-print.vm";
+    try {
+      ExtTimecardSelectData listData = new ExtTimecardSelectData();
+      listData.initField();
+      listData.setRowsNum(100);
+      listData.doViewList(this, rundata, context);
+
+      ExtTimecardListResultDataContainer container =
+        ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
+          .getAllList(), null);
+      container.calculateWeekOvertime();
+
+      ExtTimecardListResultData tclistrd = null;
+      List<ExtTimecardListResultData> daykeys = listData.getDateListKeys();
+      int daykeysize = daykeys.size();
+      for (int i = 0; i < daykeysize; i++) {
+        tclistrd = daykeys.get(i);
+        tclistrd.setWeekOvertime(container.getWeekOvertime(tclistrd));
+        tclistrd.setStatutoryHoliday(container.isStatutoryOffDay(tclistrd));
+        tclistrd.calculateWeekOvertime();
+      }
+
+      String layout_template =
+        ExtTimecardUtils.isNewRule()
+          ? "portlets/html/ajax-exttimecard-new-list-print.vm"
+          : "portlets/html/ajax-exttimecard-list-print.vm";
       setTemplate(rundata, context, layout_template);
+
     } catch (Exception ex) {
       logger.error("[ExtTimecardListScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
-
-  /**
-   * @return
-   */
-  @Override
-  protected String getPortletName() {
-    return ExtTimecardUtils.EXTTIMECARD_PORTLET_NAME;
-  }
-
 }
