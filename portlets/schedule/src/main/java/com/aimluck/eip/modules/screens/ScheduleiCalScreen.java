@@ -349,7 +349,6 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
   private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
     try {
       Calendar cal = Calendar.getInstance();
-      logger.error(startDate);
       cal.setTime(startDate);
 
       if (isView(cal, ptn)) {
