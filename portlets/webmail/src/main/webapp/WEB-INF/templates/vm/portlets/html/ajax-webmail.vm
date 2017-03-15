@@ -45,7 +45,7 @@
 
 	<div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:130px;display:none;">
 		<div>
-			<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+			<ul class="filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 				#foreach( $record in $result.MailAccountList )
 					<li #if($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="selected" #end>
 						<a href="javascript:void(0)" #if($!result.isMatch($!result.AccountId,$!record.AccountId.Value)) class="selected" #end onclick="aipo.viewPage('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","WebMailScreen").addQueryData("accountid",$!record.AccountId))','$!portlet.ID');">$record.AccountName</a>

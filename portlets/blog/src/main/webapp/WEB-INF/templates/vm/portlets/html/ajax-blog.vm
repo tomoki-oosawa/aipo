@@ -62,7 +62,7 @@
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
 		<p class="caption">$l10n.BLOG_GROUP</p>
-		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$l10n.BLOG_GROUP_LIST</a></li>
 
 			#foreach($record in $result.postList)
@@ -75,7 +75,7 @@
 	</div>
 	<div>
 		<p class="caption">$l10n.BLOG_PORTLET_THEMA</p>
-		<ul class="filtertype_$!portlet.ID"data-type="thema" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID" data-type="thema" data-defaultparam="0">
 			<li #if (!$!result.issetFilter("thema")) class="selected" #end data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("thema")) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$l10n.BLOG_ALL_THEMA</a></li>
 			#foreach( $record in $result.themaList )
 			<li #if ($!result.issetFilter("thema",$!{record.ThemaId})) class="selected" #end  data-param="$!{record.ThemaId}" ><a href="javascript:void(0);" #if ($!result.issetFilter("thema",$!{record.ThemaId})) class="selected" #end onclick='aipo.blog.filterClick("$!portlet.ID",this,event)'>$!record.ThemaName</a></li>
