@@ -210,7 +210,7 @@
 #set($entityids = "$!{entityids}$!{record.TermResultData.ScheduleId},")
 ##if($record.TermResultData.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.TermResultData.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.Date.toString()})")
-<td colspan="$col_span" class="term">
+<td colspan="$col_span" class="term${color_style_othermonth}">
 #if(${record.TermResultData.isShowDetail()})
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">
