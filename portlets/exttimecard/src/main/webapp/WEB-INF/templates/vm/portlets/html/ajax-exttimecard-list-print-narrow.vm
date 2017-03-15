@@ -42,46 +42,21 @@
 <tbody>
 	## headers
 	<tr>
-	#ALtdheadAtt("氏名" "class='thin mb_hide center'")
-	#ALtdheadAtt("日付" "class='thin mb_hide center'")
-	#ALtdheadAtt("曜日" "class='thin mb_hide center'")
-	#ALtdheadAtt("勤務形態" "class='thin mb_hide center'")
-	#ALtdheadAtt("出勤時間" "class='thin mb_hide center'")
-	#ALtdheadAtt("退勤時間" "class='thin mb_hide center'")
-	#ALtdheadAtt("出勤日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("就業時間" "class='thin mb_hide center'")
-	#ALtdheadAtt("残業日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("残業時間" "class='thin mb_hide center'")
-	#ALtdheadAtt("休出日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("休出時間" "class='thin mb_hide center'")
-	#ALtdheadAtt("遅刻日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("早退日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("欠勤日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("有休日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("代休日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("その他日数" "class='thin mb_hide center'")
-	#ALtdheadAtt("修正理由、備考" "class='thin mb_hide center'")
-	#ALtdheadAtt("外出１" "class='thin mb_hide center'")
-	#ALtdheadAtt("復帰１" "class='thin mb_hide center'")
-	#ALtdheadAtt("外出２" "class='thin mb_hide center'")
-	#ALtdheadAtt("復帰２" "class='thin mb_hide center'")
-	#ALtdheadAtt("外出３" "class='thin mb_hide center'")
-	#ALtdheadAtt("復帰３" "class='thin mb_hide center'")
-	#ALtdheadAtt("外出４" "class='thin mb_hide center'")
-	#ALtdheadAtt("復帰４" "class='thin mb_hide center'")
-	#ALtdheadAtt("外出５" "class='thin mb_hide center'")
-	#ALtdheadAtt("復帰５" "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_DATE "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_WORKING_ARRANGEMENTS "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_PUNCH_IN "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_PUNCH_OUT "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_OUTGOING "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_COMEBACK "class='thin center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_WORK_DAY "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_OVERTIME_DAY "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_OFF_DAY "class='thin mb_hide center'")
+	#ALtdheadAtt($l10n.EXTTIMECARD_REASON_REMARKS "class='wide mb_hide center'")
 	</tr>
 
 	## each content
 	#foreach ($rdlist in $result.DateListKeys)
-		<tr>
-		## 氏名
-		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
-			$!utils.escapeXML($result.TargetUserName)
-		#ALtdcellfooter()
-
-		##! 各時刻の取得
+		## ここから何をやっているんだろう？
 		#set($isrd = $rdlist.IsResultData)
 		#if($isrd)
 			#set($rd = $rdlist.Rd)
@@ -103,82 +78,17 @@
           #if($beforeafter == 0)
             #set($class = "today")
           #end
-         ##! ここまで
+         ## ここまで
 
-
+		<tr>
 		## 日にち
 		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
-			$!rdlist.getDateStr("yyyy/MM/dd")	## yyyy/MM/ddスタイル
+			$!rdlist.DateStr
 		#ALtdcellfooter()
-
-		## 曜日
-		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
-			$!rdlist.getDateStr("EE")
-		#ALtdcellfooter()
-
 		## 勤務形態
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 			$!utils.escapeXML($result.TimecardSystem.SystemName)
 		#ALtdcellfooter()
-
-
-		## 各属性のデフォルト値（ExtTimecardXlsExportの移植）
-		## String work_day = "0"; // 出勤日数 0 or 1
-      	##	String work_hour = "0";// 就業時間
-      ## String overtime_day = "0";// 残業日数
-      ## String overtime_hour = "0";// 残業時間
-      ## String off_day = "0";// 休出日数
-      ## String off_hour = "0";// 休出時間
-      ## String late_coming_day = "0";// 遅刻日数
-      ## String early_leaving_day = "0";// 早退日数
-      ## String absent_day = "0";// 欠勤日数
-      ## String paid_holiday = "0";// 有休日数
-      ## String compensatory_holiday = "0";// 代休日数
-      ## String other_day = "0";// その他日数
-
-
-
-		##　出勤時刻
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-		#if($rdlist.IsNotNullClockInTime)
-      		$!{rd.getClockInTime("HH:mm")}
-		#end
-		#ALtdcellfooter()
-
-		## 退勤時刻
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-		#if($rdlist.IsNotNullClockOutTime)
-      		$!{rd.getClockOutTime("HH:mm")}
-		#end
-		#ALtdcellfooter()
-
-		## 出勤日数
-		## 就業時間
-		#if(${rdlist.IsWorkDay})
-			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
-			## 就業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}
-			#ALtdcellfooter()
-		#else
-			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
-			## 就業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				## $($rdlist.WorkHour > 0)
-				## ${rdlist.getHourToString(0)}
-				0h
-			#ALtdcellfooter()
-		#end
-
-
-
-
 
 		## 「今日」より先の日付の場合
 		#if($beforeafter > 0)
@@ -371,11 +281,8 @@
     				#ALtdcellAtt($comebacks "class='center' nowrap='nowrap'")
   				#end
 
-				## 就業時間
   				#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
-  				## 残業時間
   				#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
-  				## 休出時間
   				#ALtdcellAtt("$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}" "class='center mb_hide' nowrap='nowrap'")
 
 				<td class='mb_hide'>

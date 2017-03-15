@@ -43,6 +43,12 @@ public class ExtTimecardListScreenPrint extends ExtTimecardScreen {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
     .getLogger(ExtTimecardListScreenPrint.class.getName());
 
+  // ！！ExtTimecaardListScreenから抽出（何をやっているかよくわかりません。）
+  // /** ログインユーザーID */ // 今度Velocityへ移植
+  // String target_user_id =
+  // rundata.getParameters().getString(ExtTimecardUtils.TARGET_USER_ID);
+  // private String userid = Integer.toString(ALEipUtils.getUserId(rundata));
+
   /**
    *
    * @param rundata

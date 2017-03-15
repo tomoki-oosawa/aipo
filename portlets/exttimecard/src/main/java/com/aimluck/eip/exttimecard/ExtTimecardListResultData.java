@@ -43,9 +43,8 @@ import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 public class ExtTimecardListResultData implements ALData {
 
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ExtTimecardListResultData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ExtTimecardListResultData.class.getName());
 
   private ALDateField date = null;
 
@@ -248,9 +247,9 @@ public class ExtTimecardListResultData implements ALData {
     if (rd == null) {
       return 1;
     }
-    return Math.max(
-      Math.max(rd.getAllOutgoingTime().size(), rd.getAllComebackTime().size()),
-      1);
+    return Math.max(Math.max(rd.getAllOutgoingTime().size(), rd
+      .getAllComebackTime()
+      .size()), 1);
   }
 
   /**
@@ -529,8 +528,11 @@ public class ExtTimecardListResultData implements ALData {
 
       float time = 0f;
       time +=
-        (rd.getClockOutTime().getValue().getTime()
-          - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
+          / (1000.0 * 60.0 * 60.0);
 
       // 就業時間だけなので、残業を引く
       float agreedHours = 0f;
@@ -671,8 +673,10 @@ public class ExtTimecardListResultData implements ALData {
       } else {
         // 法定外残業
         time +=
-          (rd.getClockOutTime().getValue().getTime()
-            - rd.getClockInTime().getValue().getTime())
+          (rd.getClockOutTime().getValue().getTime() - rd
+            .getClockInTime()
+            .getValue()
+            .getTime())
             / (1000.0 * 60.0 * 60.0);
 
         /** 外出時間を就業時間に含めない場合 */
@@ -846,8 +850,11 @@ public class ExtTimecardListResultData implements ALData {
     } else {
       float time = 0f;
       time +=
-        (rd.getClockOutTime().getValue().getTime()
-          - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+        (rd.getClockOutTime().getValue().getTime() - rd
+          .getClockInTime()
+          .getValue()
+          .getTime())
+          / (1000.0 * 60.0 * 60.0);
       /** 外出時間を就業時間に含めない場合 */
       if ("F".equals(timecard_system.getOutgoingAddFlag())) {
         float outgoing_time =
@@ -907,10 +914,34 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * その日勤務したかどうか
+   *
+   * @return boolean
+   */
+  public boolean getIsWorkDay() {
+    if (getWorkHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    *
    *
    */
   public String getHourToString(float time) {
+    if (time == NO_DATA) {
+      return "";
+    }
+    return time + "h";
+  }
+
+  /**
+  *
+  *
+  */
+  public String getHourToString(int time) {
     if (time == NO_DATA) {
       return "";
     }
@@ -1582,8 +1613,11 @@ public class ExtTimecardListResultData implements ALData {
     }
     float time = 0f;
     time +=
-      (rd.getClockOutTime().getValue().getTime()
-        - rd.getClockInTime().getValue().getTime()) / (1000.0 * 60.0 * 60.0);
+      (rd.getClockOutTime().getValue().getTime() - rd
+        .getClockInTime()
+        .getValue()
+        .getTime())
+        / (1000.0 * 60.0 * 60.0);
 
     /** 外出時間を就業時間に含めない場合 */
     if ("F".equals(timecard_system.getOutgoingAddFlag())) {

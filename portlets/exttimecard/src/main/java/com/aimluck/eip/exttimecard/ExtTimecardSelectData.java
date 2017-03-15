@@ -845,6 +845,15 @@ public class ExtTimecardSelectData extends
   }
 
   /**
+   * 表示切り替え時に指定するユーザ名．
+   *
+   * @return
+   */
+  public String getTargetUserName() {
+    return ALEipUtils.getUserFullName(Integer.parseInt(getTargetUserId()));
+  }
+
+  /**
    * 指定グループに属するユーザの一覧を取得する．
    *
    * @param groupname
