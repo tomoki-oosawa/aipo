@@ -99,6 +99,14 @@
 										</ul>
 										<div class="floatRight" id="messageRoomSetting">
 											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+											#*<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" class='customizeMenuIcon auiButtonBold' onclick="aipo.customize.showMenu(this, '$messagePortletId').addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+											*<div class="menubar body-child" id="messageRoomSetting" style="width: 14em; right: 0px; display: none; ">
+											*<ul>
+                                                *<li><a href="$dlLink">$l10n.MESSAGE_ROOM_SETTING</a></li>
+                                                *<li><a href="$mfcloudLink">$l10n.MESSAGE_NOTIFICATION_SETTING</a></li>
+                                            *</ul>
+                                            *</div>
+                                            *#
 										</div>
 									</div>
 									<div id="messageFormDiv"></div>
