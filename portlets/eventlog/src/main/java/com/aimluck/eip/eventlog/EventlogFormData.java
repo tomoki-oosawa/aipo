@@ -35,7 +35,7 @@ import com.aimluck.eip.orm.Database;
 
 /**
  * イベントログのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class EventlogFormData extends ALAbstractFormData {
 
@@ -44,12 +44,12 @@ public class EventlogFormData extends ALAbstractFormData {
     .getLogger(EventlogFormData.class.getName());
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -59,16 +59,17 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
+  @Override
   public void initField() {
   }
 
   /**
    * イベントログの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -76,10 +77,10 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -88,7 +89,7 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -102,7 +103,7 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -131,7 +132,7 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * イベントログをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -145,7 +146,7 @@ public class EventlogFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているイベントログを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -157,4 +158,14 @@ public class EventlogFormData extends ALAbstractFormData {
     return false;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

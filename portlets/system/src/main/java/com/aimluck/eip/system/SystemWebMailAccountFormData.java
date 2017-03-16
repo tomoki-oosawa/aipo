@@ -455,7 +455,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -548,7 +548,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -588,7 +588,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -711,7 +711,7 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -973,4 +973,14 @@ public class SystemWebMailAccountFormData extends ALAbstractFormData {
     return pop3_encryption_flag;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

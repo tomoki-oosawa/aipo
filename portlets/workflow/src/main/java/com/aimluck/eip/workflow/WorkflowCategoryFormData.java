@@ -49,7 +49,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフローカテゴリのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowCategoryFormData extends ALAbstractFormData {
 
@@ -76,12 +76,12 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
   private List<WorkflowRouteResultData> routeList;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -124,8 +124,8 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -141,10 +141,10 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -183,7 +183,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -227,7 +227,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -264,7 +264,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているワークフローカテゴリを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -312,7 +312,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * ワークフローカテゴリを削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -378,7 +378,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを渡す
-   * 
+   *
    * @param num
    * @return
    */
@@ -395,7 +395,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCategoryName() {
@@ -404,7 +404,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * テンプレートを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTemplate() {
@@ -413,7 +413,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -422,7 +422,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * 申請経路IDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getRouteId() {
@@ -453,7 +453,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<WorkflowRouteResultData> getRouteList() {
@@ -461,7 +461,7 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -469,4 +469,14 @@ public class WorkflowCategoryFormData extends ALAbstractFormData {
     routeList = WorkflowUtils.loadRouteList(rundata, context);
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

@@ -404,7 +404,7 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<ALOAuthConsumer> getOAuthConsumers() {
@@ -479,4 +479,14 @@ public class GadgetsAdminFormData extends ALAbstractFormData {
     this.sendActivity.setValue(sendActivity);
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

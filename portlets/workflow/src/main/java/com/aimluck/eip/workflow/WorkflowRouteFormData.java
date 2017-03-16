@@ -51,7 +51,7 @@ import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
  * ワークフロー申請経路のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class WorkflowRouteFormData extends ALAbstractFormData {
 
@@ -73,12 +73,12 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
   private List<ALEipUser> memberList;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -159,8 +159,8 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路の各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -176,10 +176,10 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -221,7 +221,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路をデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -284,7 +284,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路をデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -316,7 +316,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているワークフロー申請経路を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -358,7 +358,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * ワークフロー申請経路を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -406,7 +406,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 申請経路名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getRouteName() {
@@ -415,7 +415,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 申請経路を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getRoute() {
@@ -424,7 +424,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -437,7 +437,7 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
 
   /**
    * 指定したユーザ名のオブジェクトを取得する．
-   * 
+   *
    * @param userList
    * @param userName
    * @return
@@ -454,4 +454,14 @@ public class WorkflowRouteFormData extends ALAbstractFormData {
     return null;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

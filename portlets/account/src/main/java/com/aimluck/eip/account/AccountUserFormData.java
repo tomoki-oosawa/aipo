@@ -1719,4 +1719,15 @@ public class AccountUserFormData extends ALAbstractFormData {
   public boolean isCheckAttachmentAuthority() {
     return false;
   }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

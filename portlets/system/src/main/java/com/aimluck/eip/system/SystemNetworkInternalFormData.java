@@ -46,7 +46,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『ネットワーク情報』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
@@ -63,7 +63,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   private ALNumberField port_internal;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -78,7 +78,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化する
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -117,7 +117,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -132,7 +132,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -181,7 +181,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -194,7 +194,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -245,7 +245,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -258,7 +258,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getProtocol() {
@@ -267,7 +267,7 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * IP アドレス（ローカル）を取得する．
-   * 
+   *
    * @return
    */
   public ALStringField getIpaddressInternal() {
@@ -276,11 +276,21 @@ public class SystemNetworkInternalFormData extends ALAbstractFormData {
 
   /**
    * ポート番号（ローカル）を取得する．
-   * 
+   *
    * @return
    */
   public ALNumberField getPortInternal() {
     return port_internal;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

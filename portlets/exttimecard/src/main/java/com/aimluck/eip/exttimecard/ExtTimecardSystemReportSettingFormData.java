@@ -143,4 +143,14 @@ public class ExtTimecardSystemReportSettingFormData extends ALAbstractFormData {
     return ExtTimecardUtils.isNewRule();
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

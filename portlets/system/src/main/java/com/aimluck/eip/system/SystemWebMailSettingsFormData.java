@@ -317,7 +317,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(スケジュール)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgSchedule() {
@@ -326,7 +326,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(スケジュール)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgSchedule() {
@@ -335,7 +335,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(伝言メモ)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgNote() {
@@ -344,7 +344,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(伝言メモ)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgNote() {
@@ -353,7 +353,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ブログ)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgBlog() {
@@ -362,7 +362,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ブログ)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgBlog() {
@@ -371,7 +371,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ワークフロー)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgWorkflow() {
@@ -380,7 +380,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(ワークフロー)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgWorkflow() {
@@ -389,7 +389,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(掲示板返信)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgMsgboard() {
@@ -398,7 +398,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(掲示板返信)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgMsgboard() {
@@ -407,7 +407,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(報告書)
-   * 
+   *
    * @return
    */
   public ALNumberField getPcFlgReport() {
@@ -416,7 +416,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール送信時のメッセージ種別(報告書)
-   * 
+   *
    * @return
    */
   public ALNumberField getCellFlgReport() {
@@ -425,7 +425,7 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
 
   /**
    * メール通知時間
-   * 
+   *
    * @return
    */
   public int getNotifyTimeHour() {
@@ -476,5 +476,16 @@ public class SystemWebMailSettingsFormData extends ALAbstractFormData {
    */
   public boolean isActiveReport() {
     return active_report;
+  }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
   }
 }

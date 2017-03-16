@@ -43,7 +43,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『ネットワーク情報』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class SystemNetworkFormData extends ALAbstractFormData {
 
@@ -60,7 +60,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   private ALNumberField port;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -75,7 +75,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化する
-   * 
+   *
    */
   @Override
   public void initField() {
@@ -113,7 +113,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性を検証します
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -128,7 +128,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -160,7 +160,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -173,7 +173,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -224,7 +224,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -237,7 +237,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public ALStringField getProtocol() {
@@ -246,7 +246,7 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * IP アドレスを取得する
-   * 
+   *
    * @return
    */
   public ALStringField getIpaddress() {
@@ -255,11 +255,21 @@ public class SystemNetworkFormData extends ALAbstractFormData {
 
   /**
    * ポート番号を取得する
-   * 
+   *
    * @return
    */
   public ALNumberField getPort() {
     return port;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
@@ -69,7 +69,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
   /**
    * データを更新します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -131,7 +131,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -246,4 +246,14 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
     return true;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

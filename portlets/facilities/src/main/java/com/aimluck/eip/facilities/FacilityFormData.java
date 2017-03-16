@@ -55,7 +55,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 設備のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class FacilityFormData extends ALAbstractFormData {
 
@@ -76,12 +76,12 @@ public class FacilityFormData extends ALAbstractFormData {
   private List<EipMFacilityGroup> facility_group_list;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -94,8 +94,8 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -112,8 +112,8 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備の各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -126,7 +126,7 @@ public class FacilityFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -163,10 +163,10 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備のフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -211,7 +211,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備をデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -266,7 +266,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備をデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -330,7 +330,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備をデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -423,7 +423,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されている設備を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -509,7 +509,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -518,7 +518,7 @@ public class FacilityFormData extends ALAbstractFormData {
 
   /**
    * 設備名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFacilityName() {
@@ -529,4 +529,14 @@ public class FacilityFormData extends ALAbstractFormData {
     return facility_group_list;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

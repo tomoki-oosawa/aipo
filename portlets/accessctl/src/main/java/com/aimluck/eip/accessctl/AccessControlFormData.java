@@ -55,7 +55,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アクセスコントロールのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class AccessControlFormData extends ALAbstractFormData {
 
@@ -96,7 +96,7 @@ public class AccessControlFormData extends ALAbstractFormData {
   private List<AccessControlFeatureBean> portletFeatureList;
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -105,7 +105,7 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -120,8 +120,8 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -153,8 +153,8 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * ロールの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -178,7 +178,7 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -216,7 +216,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
    */
@@ -336,7 +336,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * ロールをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -422,7 +422,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * ロールをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -482,7 +482,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * ロールをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -541,7 +541,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているロールを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -654,7 +654,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * ロール名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getAclRoleName() {
@@ -667,7 +667,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -700,7 +700,7 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   /**
    * グループメンバーを取得します。
-   * 
+   *
    * @return
    */
   public List<ALEipUser> getMemberList() {
@@ -708,7 +708,7 @@ public class AccessControlFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<AccessControlFeatureBean> getPortletFeatureList() {
@@ -741,5 +741,16 @@ public class AccessControlFormData extends ALAbstractFormData {
 
   public boolean hasAclExport() {
     return hasAcl(defineAclType, ALAccessControlConstants.VALUE_ACL_EXPORT);
+  }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
   }
 }

@@ -41,7 +41,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 会社情報のフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class SystemCompanyFormData extends ALAbstractFormData {
 
@@ -81,7 +81,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 初期化します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -94,8 +94,8 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -149,8 +149,8 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -177,10 +177,10 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -217,7 +217,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を読み込みます。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -274,7 +274,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を追加します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -291,7 +291,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -368,7 +368,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 『会社』を削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -385,7 +385,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 住所を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getAddress() {
@@ -394,7 +394,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 会社名を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyName() {
@@ -403,7 +403,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber1() {
@@ -412,7 +412,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber2() {
@@ -421,7 +421,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * FAX番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFaxNumber3() {
@@ -430,7 +430,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone1() {
@@ -439,7 +439,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone2() {
@@ -448,7 +448,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone3() {
@@ -457,7 +457,7 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode1() {
@@ -466,11 +466,21 @@ public class SystemCompanyFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getZipcode2() {
     return zipcode2;
   }
 
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

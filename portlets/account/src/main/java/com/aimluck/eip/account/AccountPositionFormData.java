@@ -359,4 +359,15 @@ public class AccountPositionFormData extends ALAbstractFormData {
   public int getPositionId() {
     return position_id;
   }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }
