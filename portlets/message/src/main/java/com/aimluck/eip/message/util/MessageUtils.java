@@ -741,44 +741,55 @@ public class MessageUtils {
    * 未読のものがあったら既読にする
    */
   public static void read(EipTMessageRoom room, int userId, int lastMessageId) {
-    SQLTemplate<EipTMessageRead> countQuery =
-      Database
-        .sql(
-          EipTMessageRead.class,
-          "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
-        .param("room_id", Integer.valueOf(room.getRoomId()))
-        .param("user_id", Integer.valueOf(userId))
-        .param("message_id", Integer.valueOf(lastMessageId));
-
     int countValue = 0;
-    List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+    try {
+      SQLTemplate<EipTMessageRead> countQuery =
+        Database
+          .sql(
+            EipTMessageRead.class,
+            "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
+          .param("room_id", Integer.valueOf(room.getRoomId()))
+          .param("user_id", Integer.valueOf(userId))
+          .param("message_id", Integer.valueOf(lastMessageId));
 
-    for (DataRow row : fetchCount) {
-      countValue = ((Long) row.get("c")).intValue();
-    }
-    if (countValue > 0) {
-      String sql =
-        "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
-      Database.sql(EipTMessageRead.class, sql).param(
-        "room_id",
-        Integer.valueOf(room.getRoomId())).param(
-        "user_id",
-        Integer.valueOf(userId)).param(
-        "message_id",
-        Integer.valueOf(lastMessageId)).execute();
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
 
-      List<String> recipients = new ArrayList<String>();
-      @SuppressWarnings("unchecked")
-      List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
-      for (EipTMessageRoomMember member : members) {
-        if (member.getUserId().intValue() != userId) {
-          recipients.add(member.getLoginName());
-        }
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
       }
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("roomId", String.valueOf(room.getRoomId()));
+    } catch (Throwable ignore) {
+      // ignore
+      logger.error("MessageUtils.read", ignore);
+    }
 
-      ALPushService.pushAsync("messagev2_read", params, recipients);
+    if (countValue > 0) {
+      try {
+        String sql =
+          "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
+        Database.sql(EipTMessageRead.class, sql).param(
+          "room_id",
+          Integer.valueOf(room.getRoomId())).param(
+          "user_id",
+          Integer.valueOf(userId)).param(
+          "message_id",
+          Integer.valueOf(lastMessageId)).execute();
+
+        List<String> recipients = new ArrayList<String>();
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+        for (EipTMessageRoomMember member : members) {
+          if (member.getUserId().intValue() != userId) {
+            recipients.add(member.getLoginName());
+          }
+        }
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("roomId", String.valueOf(room.getRoomId()));
+
+        ALPushService.pushAsync("messagev2_read", params, recipients);
+      } catch (Throwable ignore) {
+        // ignore
+        logger.error("MessageUtils.read", ignore);
+      }
     }
   }
 
