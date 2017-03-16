@@ -666,28 +666,6 @@ public class CustomizeUtils {
   }
 
   /**
-   * 管理者ユーザーのみ表示可能ポートレット
-   *
-   * @param entry
-   * @param data
-   * @return
-   */
-  public static boolean isAdminView(PortletEntry entry, RunData data) {
-
-    if (data != null) {
-      JetspeedRunData jdata = (JetspeedRunData) data;
-      if (jdata.getUserId() != null
-        && entry != null
-        && entry.getSecurityRef() != null
-        && entry.getSecurityRef().getParent() != null
-        && entry.getSecurityRef().getParent().equals("admin-view")) {
-        return ALEipUtils.isAdmin(data) ? true : false;
-      }
-    }
-    return true;
-  }
-
-  /**
    * 管理者ユーザーのみ表示可能アプリ
    *
    * @param entry
@@ -707,23 +685,6 @@ public class CustomizeUtils {
       }
     }
     return true;
-  }
-
-  /**
-   * 管理者ユーザーのみ表示可能ポートレット
-   *
-   * @param entry
-   * @param data
-   * @return
-   */
-  public static boolean isAdminView(String portletName, RunData data) {
-    PortletEntry entry = null;
-    try {
-      entry = (PortletEntry) Registry.getEntry(Registry.PORTLET, portletName);
-    } catch (Exception e) {
-      logger.error("CustomizeUtils.isAdminUserView", e);
-    }
-    return isAdminView(entry, data);
   }
 
   /**

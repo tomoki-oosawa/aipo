@@ -156,4 +156,15 @@ public class ScheduleAdminFormData extends ALAbstractFormData {
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
     return false;
   }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAdminAuthority() {
+    // 管理者権限をチェックします
+    return true;
+  }
 }

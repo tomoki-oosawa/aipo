@@ -96,7 +96,7 @@ public abstract class ALAbstractFormData implements ALData {
         }
       }
     }
-    
+
     isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
@@ -202,6 +202,8 @@ public abstract class ALAbstractFormData implements ALData {
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
+      doCheckAdminPermission(rundata, context);
+
       doCheckAttachmentInsertAclPermission(rundata, context);
       doCheckAttachmentDeleteAclPermission(rundata, context);
 
@@ -275,6 +277,8 @@ public abstract class ALAbstractFormData implements ALData {
         context,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
 
+      doCheckAdminPermission(rundata, context);
+
       doCheckAttachmentInsertAclPermission(rundata, context);
       doCheckAttachmentDeleteAclPermission(rundata, context);
 
@@ -347,6 +351,8 @@ public abstract class ALAbstractFormData implements ALData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_DELETE);
+
+      doCheckAdminPermission(rundata, context);
 
       doCheckAttachmentInsertAclPermission(rundata, context);
       doCheckAttachmentDeleteAclPermission(rundata, context);
@@ -624,6 +630,28 @@ public abstract class ALAbstractFormData implements ALData {
   }
 
   /**
+   * 管理者権限をチェックします。
+   *
+   * @return
+   */
+  protected boolean doCheckAdminPermission(RunData rundata, Context context)
+      throws ALPermissionException {
+
+    // 管理者権限のチェックをしない場合
+    boolean checkAdminAuthority = isCheckAdminAuthority();
+
+    if (!checkAdminAuthority) {
+      return true;
+    }
+
+    if (!ALEipUtils.isAdmin(rundata)) {
+      throw new ALPermissionException();
+    }
+
+    return true;
+  }
+
+  /**
    * ファイルアップロードのアクセス権限をチェックします。
    *
    * @return
@@ -718,6 +746,17 @@ public abstract class ALAbstractFormData implements ALData {
 
   public boolean isFileUploadable() {
     return isFileUploadable;
+  }
+
+  /**
+   * 管理者権限チェック用メソッド。<br />
+   * 管理者権限をチェックするかどうかを判定します。<br />
+   * デフォルトではチェックしない設定です。
+   *
+   * @return
+   */
+  public boolean isCheckAdminAuthority() {
+    return false;
   }
 
   /**
