@@ -36,10 +36,10 @@ $!result.Detail.Title
 #ALtditem($!result.Detail.Description)
 #ALtdcaption($l10n.TIMELINE_UPDATE_DISPLAY)
 #ALtditemheader()
-<select id="enabled_activity" onChange="" name="enabled_activity"/>
-    <option value="T" #if ($!{result.enabledActivityFlag.toString()} == "T") selected="selected" #end>$l10n.TIMELINE_VALID</option>
-    <option value="F" #if ($!{result.enabledActivityFlag.toString()} == "F") selected="selected" #end>$l10n.TIMELINE_INVALID</option>
-</select>
+  <p><input class="mt0" name="enabled_activity" type="radio" value="T" id="enabled_activity_on" #if ($!{result.enabledActivityFlag.toString()}  == "T")checked="checked"#end>
+  <label for="enabled_activity_on">&nbsp;$l10n.TIMELINE_DO_VALID</label></p>
+  <p><input class="mt0" name="enabled_activity" type="radio" value="F" id="enabled_activity_off" #if ($!{result.enabledActivityFlag.toString()}  == "F")checked="checked"#end>
+  <label for="enabled_activity_off">&nbsp;$l10n.TIMELINE_DO_INVALID</label></p>
 #ALtditemfooter()
 
 #ALtablefooter()
