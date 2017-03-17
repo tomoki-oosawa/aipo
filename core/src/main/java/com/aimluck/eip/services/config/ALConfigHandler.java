@@ -111,6 +111,15 @@ public abstract class ALConfigHandler {
       }
     },
 
+    TIMELINE_ACTIVITY_ENABLED("config.timeline.activity.enabled") {
+      @Override
+      public String defaultValue() {
+        return JetspeedResources.getString(
+          "config.timeline.activity.enabled",
+          "T");
+      }
+    },
+
     SCHEDULE_MAPS_ENABLED("config.schedule.maps.enabled") {
       @Override
       public String defaultValue() {

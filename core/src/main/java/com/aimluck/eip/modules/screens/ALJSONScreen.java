@@ -87,6 +87,7 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
     }
 
     try {
+
       /*
        * String portletName = getPortletName(); if (portletName != null &&
        * !"".equals(portletName) &&
