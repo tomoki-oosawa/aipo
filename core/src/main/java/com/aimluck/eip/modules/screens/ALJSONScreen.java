@@ -36,11 +36,8 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
-import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.modules.actions.common.ALAction;
-import com.aimluck.eip.services.portal.ALPortalApplicationService;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ブラウザにJSONデータを返すクラスです。 <br />
@@ -91,13 +88,13 @@ public abstract class ALJSONScreen extends RawScreen implements ALAction {
 
     try {
 
-      String portletName = getPortletName();
-      if (portletName != null
-        && !"".equals(portletName)
-        && (!ALPortalApplicationService.isActive(portletName) || !CustomizeUtils
-          .isAdminUserView(portletName, rundata))) {
-        throw new ALPermissionException();
-      }
+      /*
+       * String portletName = getPortletName(); if (portletName != null &&
+       * !"".equals(portletName) &&
+       * (!ALPortalApplicationService.isActive(portletName) || !CustomizeUtils
+       * .isAdminUserView(portletName, rundata))) { throw new
+       * ALPermissionException(); }
+       */
 
       ALEipUtils.setupContext(rundata, context);
 
