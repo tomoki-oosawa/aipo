@@ -21,7 +21,6 @@ package com.aimluck.eip.account;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -523,14 +522,15 @@ public class AccountUserFormData extends ALAbstractFormData {
             .valueOf(target_uid));
         query.andQualifier(exp2);
       }
+      ;
       // 社員コードの重複チェック（削除済みのユーザーは含めない）
-      Iterator<TurbineUser> userIter = query.fetchList().iterator();
-      while (userIter.hasNext()) {
-        if (userIter.next().getDisabled().equals("F")) {
-          msgList.add(ALLocalizationUtils.getl10nFormat(
-            "ACCOUNT_ALERT_CODE_DUP",
-            code));
-        }
+      Expression exp3 =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      query.andQualifier(exp3);
+      if (query.fetchList().size() > 0) {
+        msgList.add(ALLocalizationUtils.getl10nFormat(
+          "ACCOUNT_ALERT_CODE_DUP",
+          code));
       }
     }
 

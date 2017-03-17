@@ -595,29 +595,6 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
-   * DBから全てのユーザーの社員コードを取得します（削除済みのものをふくむ） <BR>
-   *
-   * @return
-   */
-  private ArrayList<String> getAllUsersCodeFromDB() {
-    ArrayList<String> codeList = new ArrayList<String>();
-    try {
-      SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
-      List<TurbineUser> list = query.fetchList();
-
-      for (TurbineUser user : list) {
-        if (user.getCode() != null && !(user.getCode().equals(""))) {
-          codeList.add(user.getCode());
-        }
-      }
-    } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
-      // throw new ALDBErrorException();
-    }
-    return codeList;
-  }
-
-  /**
    * DBから全てのユーザーの社員コードを取得します(削除済みのものを含まない) <BR>
    *
    * @return
@@ -631,12 +608,12 @@ public class FileIOAccountCsvSelectData
       for (TurbineUser user : list) {
         if (user.getCode() != null
           && !(user.getCode().equals(""))
-          && user.getDisabled().equals("F")) {
+          && !user.getDisabled().equals("T")) {
           codeList.add(user.getCode());
         }
       }
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("[getAllUndisableUsersCodeFromDB]", ex);
       // throw new ALDBErrorException();
     }
     return codeList;

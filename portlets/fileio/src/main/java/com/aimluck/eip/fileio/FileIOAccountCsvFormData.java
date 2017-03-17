@@ -21,7 +21,6 @@ package com.aimluck.eip.fileio;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -1248,10 +1247,9 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     if (username.getValue() == null) {
       return false;
     }
-    Iterator<TurbineUser> iter = list.iterator();
-    while (iter.hasNext()) {
-      TurbineUser user = iter.next();
-      if (user.getDisabled().equals("F")
+
+    for (TurbineUser user : list) {
+      if (!user.getDisabled().equals("T")
         && !user.getLoginName().equals(username.getValue())) {
         // 削除済みでなく、かつ同じユーザーでもない場合は重複している
         return true;
