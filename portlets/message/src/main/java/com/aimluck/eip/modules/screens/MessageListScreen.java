@@ -109,8 +109,13 @@ public class MessageListScreen extends ALVelocityScreen {
 
       if (listData.getList().size() > 0) {
         if (!"F".equals(isRead)) {
-          MessageUtils.read(room, listData.getUserId(), listData
-            .getLastMessageId());
+          try {
+            MessageUtils.read(room, listData.getUserId(), listData
+              .getLastMessageId());
+          } catch (Throwable ignore) {
+            // ignore
+            logger.error("MessageListScreen.MessageUtils.read", ignore);
+          }
         }
       }
 
