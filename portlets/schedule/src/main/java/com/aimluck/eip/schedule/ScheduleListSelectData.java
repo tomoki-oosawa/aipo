@@ -69,6 +69,12 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
+  /** <code>viewUrlStart</code> CSV用表示開始日時 */
+  private ALDateTimeField viewUrlStart;
+
+  /** <code>viewUrlEnd</code> CSV用表示終了日時 */
+  private ALDateTimeField viewUrlEnd;
+
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
@@ -89,6 +95,16 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
+
+    Calendar cal1 = Calendar.getInstance();
+
+    viewUrlStart = new ALDateTimeField();
+    cal1 = ScheduleUtils.getViewCalendar(true, rundata, context);
+    viewUrlStart.setValue(cal1.getTime());
+
+    viewUrlEnd = new ALDateTimeField();
+    cal1 = ScheduleUtils.getViewCalendar(false, rundata, context);
+    viewUrlEnd.setValue(cal1.getTime());
 
     super.init(action, rundata, context);// 表示タイプの設定
 
@@ -337,6 +353,25 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   @Override
   public ALDateTimeField getViewEnd() {
     return viewEnd;
+  }
+
+  /**
+   * CSV出力URL用表示開始日時を取得します。
+   *
+   * @return
+   */
+  public ALDateTimeField getViewUrlStart() {
+    // viewUrlStart = new ALDateTimeField();
+    return viewUrlStart;
+  }
+
+  /**
+   * CSV出力URL用表示終了日時を取得します。
+   *
+   * @return
+   */
+  public ALDateTimeField getViewUrlEnd() {
+    return viewUrlEnd;
   }
 
   /**
