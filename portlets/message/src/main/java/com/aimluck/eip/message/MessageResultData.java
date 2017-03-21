@@ -204,6 +204,13 @@ public class MessageResultData implements ALData, Serializable {
   }
 
   /**
+   * @return isOneMember
+   */
+  public boolean isOneMember() {
+    return memberCount.getValue() == 1;
+  }
+
+  /**
    * @param message
    *          セットする message
    */
