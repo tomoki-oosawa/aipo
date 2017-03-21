@@ -17,6 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *#
 #if(!$isMore)
+<div class="roomDetail">
+	<div class="clearfix">
+	</div>
+	<div id="messageRoomSetting">
+	</div>
+</div>
 <div class="index">$l10n.MESSAGE_SEARCH_RESULT1$!{result.Keyword}$l10n.MESSAGE_SEARCH_RESULT2<a class="floatRight" href="javascript: void(0)" onclick="aipo.message.clearSearchMessageList();return false;"><i class="icon-remove"></i></a></div>
 #end
 #if($userList.size() == 0 && $roomList.size() == 0 && $result.List.size() == 0)

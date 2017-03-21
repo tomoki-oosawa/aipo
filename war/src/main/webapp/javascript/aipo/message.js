@@ -188,7 +188,6 @@ aipo.message.reloadRoomMemberList = function() {
         }
     }
 
-    dojo.byId("roomMemberPane").innerHTML = '';
     var screen = aipo.message.jslink + "?template=MessageRoomMemberListScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
