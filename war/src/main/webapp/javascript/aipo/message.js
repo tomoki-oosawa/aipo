@@ -74,8 +74,7 @@ aipo.message.init = function(portletId, jslink, isMobile) {
                                     + 50 + 44 >= document.body.scrollHeight && !aipo.message.moreMessageLock) {
 		        				aipo.message.moreMessageList();
 		        			}
-                			else if (e.target.scrollTop + messagePane.clientHeight
-                                    + 100 >= e.target.scrollHeight
+                			else if (e.target.scrollTop < 100
                                     && !aipo.message.moreMessageLock) {
                                 aipo.message.moreMessageList();
                             }
@@ -221,7 +220,7 @@ aipo.message.moreMessageList = function() {
             load : function(response, ioArgs) {
                 var messagePane = dojo.byId("messagePane");
                 if(messagePane) {
-                    messagePane.innerHTML += response;
+                    messagePane.innerHTML = response + messagePane.innerHTML;
                     if(messagePane.children.length > 1) {
                         var emptyMessage = dojo.query("#messagePane .emptyMessage");
                         if(emptyMessage.length == 1) {
@@ -417,10 +416,10 @@ aipo.message.openRightBlock = function(){
     var messageMainBlockEmpty = dojo.byId("messageMainBlockEmpty");
     var messageRightBlock = dojo.byId("messageRightPane");
     if (messageMainBlock　&& !aipo.message.isMobile) {
-        messageMainBlock.style["margin"] = "0 360px 0 280px";
+        messageMainBlock.style["margin"] = "0 305px 0 280px";
     }
     if (messageMainBlockEmpty && !aipo.message.isMobile) {
-    	messageMainBlockEmpty.style["margin"] = "0 360px 0 280px";
+    	messageMainBlockEmpty.style["margin"] = "0 305px 0 280px";
     }
     if(messageRightBlock) {
     	messageRightBlock.style.display="";
