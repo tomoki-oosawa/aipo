@@ -73,7 +73,7 @@
 <div class="menubar multi " id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
 		<p class="caption">$l10n.COMMON_GROUP</p>
-		<ul class="filtertype_$!portlet.ID"data-type="post" data-defaultparam="0">
+		<ul class="filtertype_$!portlet.ID" data-type="post" data-defaultparam="0">
 			<li data-param="0"><a href="javascript:void(0)"  #if (!$!result.issetFilter("post")) class="selected" #end onclick='aipo.activity.filterClick("$!portlet.ID",this,event)'>$l10n.ACTIVITY_ALL_GROUP</a></li>
 
 			#foreach($record in $result.postList)
@@ -86,7 +86,7 @@
 	</div>
 	<div>
 		<p class="caption">$l10n.ACTIVITY_APP</p>
-		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
+		<ul class="filtertype_$!portlet.ID" data-type="category" data-defaultparam="all">
 			#ALsetCategoryFilterList('all' $l10n.ACTIVITY_ALL_APP)
 			#ALsetCategoryFilterList('Schedule' $l10n.ACTIVITY_SCHEDULE)
 			#ALsetCategoryFilterList('Msgboard' $l10n.ACTIVITY_MSGBOARD)

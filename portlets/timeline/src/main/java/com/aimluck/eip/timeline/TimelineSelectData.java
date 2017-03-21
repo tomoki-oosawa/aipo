@@ -73,6 +73,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -184,6 +186,9 @@ public class TimelineSelectData extends
 
   /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
   private boolean hasTodoOtherAclList;
+
+  /** アプリ設定「更新情報の表示」 "T" or "F" **/
+  private String enabledActivityFlag;
 
   /**
    *
@@ -321,6 +326,9 @@ public class TimelineSelectData extends
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
+
+      enabledActivityFlag =
+        ALConfigService.get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED);
 
     } catch (Exception ex) {
       logger.error("timeline", ex);
@@ -651,9 +659,9 @@ public class TimelineSelectData extends
                     iter.remove();
                   }
                 }
-              }// スケジュール以外のTimeline
+              } // スケジュール以外のTimeline
             }
-          }// 自分がオーナーのTimeline
+          } // 自分がオーナーのTimeline
         }
       }
     }
@@ -785,8 +793,12 @@ public class TimelineSelectData extends
       }
 
       // 更新情報
+
       Map<Integer, List<TimelineResultData>> activitiesMap =
-        getActivities(parentIds);
+        new HashMap<Integer, List<TimelineResultData>>();
+      if (enabledActivityFlag.equals("T")) {
+        activitiesMap = getActivities(parentIds);
+      }
 
       // コメント
       List<Integer> commentIds = new ArrayList<Integer>();
@@ -1445,12 +1457,18 @@ public class TimelineSelectData extends
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
+
     if ((!"".equals(target_display_name))
       && (!"all".equals(target_display_name))) {
       if ("posting".equals(target_display_name)) {
         displayParam = "P";
       } else if ("update".equals(target_display_name)) {
         displayParam = "U";
+      }
+    } else {
+      // 絞込みの「表示」が「すべて」で、アプリ設定の「更新情報の表示」が無効のときは、投稿のみを取得する
+      if (enabledActivityFlag.equals("F")) {
+        displayParam = "P";
       }
     }
     for (int i = 0; i < userList.size(); i++) {

@@ -152,10 +152,10 @@ if(document.all!=undefined){
 
 <tr class='week'>
 #foreach($dayOfWeekStr in  $!{result.WeekRevised})
-		<th #if($dayOfWeekStr==$l10n.SCHEDULE_SATURDAY) class='saturday' #elseif($dayOfWeekStr==$l10n.SCHEDULE_SUNDAY) class='sunday' #end>
-			$dayOfWeekStr<br />
-			<img src="images/common/dot.gif" width="50" height="1" alt="" />
-		</th>
+  <th >
+  	$dayOfWeekStr<br />
+  	<img src="images/common/dot.gif" width="50" height="1" alt="" />
+  </th>
 #end
 </tr>
 
@@ -172,24 +172,16 @@ if(document.all!=undefined){
 <tr class='days'>
 #foreach($record in $record4.DayList)
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
-#set ($color_style = "")
-#set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
 #set ($holiday_name = "")
-#if($!{record.Date.Value.Day} == 0)
-#set ($color_style = "sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = "saturday")
-#end
 #if($!{record.isHoliday()})
-#set ($color_style_holiday = "holiday")
 #set ($holiday_name = "${record.Holiday.Name}")
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = " off")
 #end
 
-<th class="${color_style}${color_style_holiday}${color_style_othermonth}">
+<th class="${color_style_othermonth}">
 <div class="calendarDay clearfix"><span class="alignright small">$!{record.Date.Day}</span>#if($!{record.isHoliday()})<span class="alignleft small">：${holiday_name}</span>#end</div>
 </th>
 #end
@@ -198,21 +190,10 @@ if(document.all!=undefined){
 #if($termConListSize > 0)
 #foreach($termcontainer in ${result.TermContainer.getWeekList($weekcount)})
 <tr class="termWeek">
+
 #set($nottermcount = 0)
 #foreach($record in $termcontainer.DayList)
-#set ($color_style = "")
-#set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
-#if($!{result.Today.Value} == $!{record.Date.Value})
-#set ($color_style = "today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = "sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = "saturday")
-#end
-#if($!{record.isHoliday()})
-#set ($color_style_holiday = "holiday")
-#end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = "off")
 #end
@@ -245,7 +226,7 @@ $!{record.TermResultData.Name}
 #set ($col_span = $col_span - 1)
 ##end
 #else
-<td class="term${color_style}${color_style_holiday}${color_style_othermonth}" #if(($col_span) && ($col_span > 0 )) style="display:none" #else style="display:" #end></td>
+<td class="term${color_style_othermonth}" #if(($col_span) && ($col_span > 0 )) style="display:none" #else style="display:" #end></td>
 #if(($col_span))
 #set ($col_span = $col_span - 1)
 #end
@@ -257,26 +238,16 @@ $!{record.TermResultData.Name}
 ### 期間スケジュール（ここまで） ###
 <tr>
 #foreach($record in $record4.DayList)
-#set ($color_style = "")
-#set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
 #set ($holiday_name = "")
-#if($!{result.Today.Value} == $!{record.Date.Value})
-#set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
-#end
 #if($!{record.isHoliday()})
-#set ($color_style_holiday = " holiday")
 #set ($holiday_name = "${record.Holiday.Name}")
 #end
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = " off")
 #end
 
-<td class="topNone${color_style}${color_style_holiday}${color_style_othermonth}">
+<td class="topNone${color_style_othermonth}">
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
 <div class="calendarScheduleDiv">

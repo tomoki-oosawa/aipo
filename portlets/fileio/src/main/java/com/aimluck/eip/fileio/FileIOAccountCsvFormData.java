@@ -1238,24 +1238,25 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
     query.setQualifier(exp);
     List<TurbineUser> list = query.fetchList();
+
     if (list == null || list.size() == 0) {
       // 社員コードがなければ重複していない
       return false;
     }
 
-    TurbineUser user = list.get(0);
-
     if (username.getValue() == null) {
       return false;
     }
 
-    if (user.getLoginName().equals(username.getValue())) {
-      // 同じユーザーの社員コードだけがある場合は重複していない
-      return false;
-    } else {
-      // 別のユーザーの社員コードがある場合は重複している
-      return true;
+    for (TurbineUser user : list) {
+      if (!user.getDisabled().equals("T")
+        && !user.getLoginName().equals(username.getValue())) {
+        // 削除済みでなく、かつ同じユーザーでもない場合は重複している
+        return true;
+      }
     }
+
+    return false;
 
   }
 

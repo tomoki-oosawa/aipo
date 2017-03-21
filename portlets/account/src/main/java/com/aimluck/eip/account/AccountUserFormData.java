@@ -522,6 +522,11 @@ public class AccountUserFormData extends ALAbstractFormData {
             .valueOf(target_uid));
         query.andQualifier(exp2);
       }
+      ;
+      // 社員コードの重複チェック（削除済みのユーザーは含めない）
+      Expression exp3 =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      query.andQualifier(exp3);
       if (query.fetchList().size() > 0) {
         msgList.add(ALLocalizationUtils.getl10nFormat(
           "ACCOUNT_ALERT_CODE_DUP",
