@@ -148,6 +148,7 @@ aipo.message.reloadMessageList = function() {
         		if(!dojo.byId("dd_message") || dojo.hasClass("dd_message", "open")){
         			aipo.message.read(aipo.message.currentRoomId);
         		}
+        		dojo.byId("messagePane").scrollTop = dojo.byId("messagePane").scrollHeight;
         	}
             aipo.message.fixDateLine();
         }

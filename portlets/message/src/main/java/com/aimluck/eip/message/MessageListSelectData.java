@@ -365,7 +365,12 @@ public class MessageListSelectData extends
   @Override
   public List<Object> getList() {
     List<Object> list = super.getList();
-    list.sort((a, b) -> -1);
+    // リストを逆順にしたものを返したいが、createdateは分より細かい単位の情報が含まれていないので、一度idでsortしている
+    // ただ逆順にするだけでは、この関数が偶数回呼ばれた際に、元の順番にもどってしまうので、このような形に。
+    list.sort((a, b) -> ((MessageResultData) a)
+      .getMessageId()
+      .getValueWithInt()
+      - ((MessageResultData) b).getMessageId().getValueWithInt());
     list.sort((a, b) -> ((MessageResultData) a)
       .getCreateDate()
       .getValue()
