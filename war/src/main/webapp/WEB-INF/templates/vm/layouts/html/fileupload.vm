@@ -36,16 +36,6 @@
 #end
 </head>
 <body class="portlet_background" onLoad="get_data('$!portlet.ID')">
-#if($isXDomain == "true")
-<script type="text/javascript">
-  djConfig = {
-    xDomainBasePath: '${external_resources_url}/javascript',
-    cacheBust: '$!{utils.CacheBust}'
-  };
-</script>
-#ALjavascriptCache("javascript/dojo/dojo.xd.js")
-#ALjavascript("javascript/aipo.xd.js")
-#else
 <script type="text/javascript">
   djConfig = {
     cacheBust: '$!{utils.CacheBust}'
@@ -53,7 +43,6 @@
 </script>
 #ALjavascriptCache("javascript/dojo/dojo.js")
 #ALjavascript("javascript/aipo.js")
-#end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 #ALjavascript("javascript/aipo/container.js")
 #parse($contentTemplate)

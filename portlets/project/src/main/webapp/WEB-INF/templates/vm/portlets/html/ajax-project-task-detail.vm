@@ -20,7 +20,11 @@
 #set ($subtitle = $l10n.PROJECT_TASK_DETAIL)
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($subtitle)
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintProjectTask("$subtitle" "$!portlet.ID" "ProjectTaskDetailScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$subtitle")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDivComment"></div>
@@ -204,11 +208,11 @@ $!result.Detail.Explanation
 					#ALtextarea('comment' '' 5 40)
 				</td>
 			</tr>
-			<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+			<tr #if(!$result.isFileUploadable() || (!$result.hasAttachmentInsertAuthority() && !$result.hasAttachmentDeleteAuthority()))class="hide"#end>
 				<td class="caption">$l10n.PROJECT_FILE_ATTACH</td>
 				<td>
 					<div class="clearfix">
-					<div>#IFFileUpload()</div>
+					<div>#ACLIFFileUpload()</div>
 					<ul id="attachments_$!{portlet.ID}" class="attachments">
 					</ul>
 					</div>

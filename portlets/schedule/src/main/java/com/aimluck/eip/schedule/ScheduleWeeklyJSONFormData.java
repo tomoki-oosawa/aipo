@@ -110,6 +110,14 @@ public class ScheduleWeeklyJSONFormData {
 
   private boolean ignore_duplicate_facility;
 
+  private boolean isDayOffHoliday; // 祝日を休日にするかどうか
+
+  /** 添付ファイル追加へのアクセス権限の有無 */
+  private boolean hasAttachmentInsertAuthority;
+
+  /** 添付ファイル削除へのアクセス権限の有無 */
+  private boolean hasAttachmentDeleteAuthority;
+
   public void initField() {
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
@@ -149,6 +157,10 @@ public class ScheduleWeeklyJSONFormData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
 
       AjaxScheduleResultData rd;
       ScheduleBean bean;
@@ -235,11 +247,15 @@ public class ScheduleWeeklyJSONFormData {
         dateList.add(container.getDate().toString());
         dayOfWeekList.add(container.getDate().getDayOfWeek());
         _scheduleList = container.getScheduleList();
+
         if (container.isHoliday()) {
           holidayList.add(container.getHoliday().getName().getValue());
+        } else if (container.isUserHoliday()) {
+          holidayList.add("set");
         } else {
           holidayList.add("");
         }
+
         if (i == 0) {
           json.put("startDate", container.getDate().toString());
         } else if (i == dayListSize - 1) {
@@ -273,6 +289,8 @@ public class ScheduleWeeklyJSONFormData {
       json.put("holiday", holidayList);
       json.put("date", dateList);
       json.put("dayOfWeek", dayOfWeekList);
+      isDayOffHoliday = ScheduleUtils.isDayOffHoliday();
+      json.put("dayoff", isDayOffHoliday);
       if ((msgList != null) && (msgList.size() > 0)) {
         json.put("errList", msgList);
       }
@@ -304,6 +322,9 @@ public class ScheduleWeeklyJSONFormData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_UPDATE);
+
+      doCheckAttachmentInsertAclPermission(rundata, context);
+      doCheckAttachmentDeleteAclPermission(rundata, context);
       boolean res = false;
       if (isOverQuota()) {
         msgList.add(ALLocalizationUtils
@@ -341,6 +362,9 @@ public class ScheduleWeeklyJSONFormData {
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_INSERT);
+
+      doCheckAttachmentInsertAclPermission(rundata, context);
+      doCheckAttachmentDeleteAclPermission(rundata, context);
       boolean res = false;
       if (isOverQuota()) {
         msgList.add(ALLocalizationUtils
@@ -547,12 +571,13 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(ScheduleUtils.createMsgForPc(
+                message.setPcBody(ScheduleUtils.createMsg(
                   rundata,
                   schedule,
                   memberList,
+                  null,
                   "edit"));
-                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   schedule,
                   memberList,
@@ -721,12 +746,13 @@ public class ScheduleWeeklyJSONFormData {
                 ALAdminMailMessage message = new ALAdminMailMessage(destMember);
                 message.setPcSubject(subject);
                 message.setCellularSubject(subject);
-                message.setPcBody(ScheduleUtils.createMsgForPc(
+                message.setPcBody(ScheduleUtils.createMsg(
                   rundata,
                   newSchedule,
                   memberList,
+                  null,
                   "edit"));
-                message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+                message.setCellularBody(ScheduleUtils.createMsg(
                   rundata,
                   newSchedule,
                   memberList,
@@ -956,12 +982,13 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "new"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
@@ -1119,12 +1146,13 @@ public class ScheduleWeeklyJSONFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
+                null,
                 "new"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
@@ -1189,6 +1217,63 @@ public class ScheduleWeeklyJSONFormData {
     }
 
     return true;
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  private boolean doCheckAttachmentAclPermission(RunData rundata,
+      Context context, int defineAclType) {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    // アクセス権限のチェックをしない場合
+    boolean checkAttachmentAuthority = isCheckAttachmentAuthority();
+    if (!checkAttachmentAuthority) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    return aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_ATTACHMENT,
+      defineAclType);
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  private void doCheckAttachmentInsertAclPermission(RunData rundata,
+      Context context) { // ファイル追加権限の有無
+    hasAttachmentInsertAuthority =
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  private void doCheckAttachmentDeleteAclPermission(RunData rundata,
+      Context context) { // ファイル削除権限の有無
+    hasAttachmentDeleteAuthority =
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_DELETE);
   }
 
   private void sendEventLog(RunData rundata, Context context) {
@@ -1295,6 +1380,24 @@ public class ScheduleWeeklyJSONFormData {
     }
 
     return true;
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  private boolean isCheckAttachmentAuthority() {
+    return true;
+  }
+
+  private boolean hasAttachmentInsertAuthority() {
+    return hasAttachmentInsertAuthority;
+  }
+
+  private boolean hasAttachmentDeleteAuthority() {
+    return hasAttachmentDeleteAuthority;
   }
 
 }
