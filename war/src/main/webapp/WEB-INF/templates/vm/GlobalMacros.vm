@@ -891,11 +891,6 @@ $item.get(0)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
 #end
-#macro(ALdialogheaderPrintExtTimecard $title $portlet_id $screen $entityid)
-##set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
-#AUIprintbutton("$prLink")
-#end
-
 #macro(ALdialogheaderPrintBlog $title $portlet_id $screen $entityid)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
