@@ -41,14 +41,12 @@
 	#if($!result.hasAclXlsExport())
 		<div class="floatRight">
 			## 印刷ボタン
-		##set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
-		##set($prLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth")))
-		##set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
-		#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint"))
-		## #ALdialogheaderPrintExtTimecard("$l10n.TODO_TODO_DETAIL" "$!portlet.ID" "ExtTimecardListScreenPrint" "$entityid")
-		#AUIprintbutton("$prLink")
+			#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint"))
+			#AUIprintbutton("$prLink")
+
 			## XLSエクスポート
-		#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
+			#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
+			#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
 		</div>
 	#end
 	</div>
