@@ -918,8 +918,34 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return boolean
    */
-  public boolean getIsWorkDay() {
+  public boolean isWorkDay() {
     if (getWorkHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * その日残業したかどうか
+   *
+   * @return boolean
+   */
+  public boolean isOverWorkDay() {
+    if (getOvertimeHourWithoutRestHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * 休出した日かどうか
+   *
+   * @return boolean
+   */
+  public boolean isOffDay() {
+    if (getOffHour() > 0.0) {
       return true;
     } else {
       return false;
