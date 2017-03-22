@@ -156,7 +156,6 @@ aipo.schedule.showTooltip = function(obj, url, entityid, portlet_id, containerNo
     }
 }
 
-
 aipo.schedule.hideDialog = function() {
     var arrDialog = dijit.byId("modalDialog");
     if(arrDialog){
@@ -865,3 +864,4 @@ aipo.schedule.reminderon = function(){
 aipo.schedule.downloadCsv = function(url){
 	window.location.href=url;
 }
+
