@@ -31,11 +31,11 @@ import com.aimluck.eip.util.ALEipUtils;
 /**
  *
  */
-public class MessageRoomNotificaionFormScreen extends ALVelocityScreen {
+public class MessageRoomNotificationFormScreen extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(MessageRoomNotificaionFormScreen.class.getName());
+    .getLogger(MessageRoomNotificationFormScreen.class.getName());
 
   /**
    *
@@ -59,10 +59,10 @@ public class MessageRoomNotificaionFormScreen extends ALVelocityScreen {
       }
 
       String layout_template =
-        "portlets/html/ajax-message-room-notificaion-form.vm";
+        "portlets/html/ajax-message-room-notification-form.vm";
       setTemplate(rundata, context, layout_template);
     } catch (Exception e) {
-      logger.error("MessageRoomNotificaionFormScreen.doOutput", e);
+      logger.error("MessageRoomNotificationFormScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);
     }
   }
