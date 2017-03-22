@@ -30,28 +30,34 @@
 #ALerrmsg($errmsgs)
 #ALajaxscreenformheader("exttimecardForm")
 <input type="hidden" name="mode" value="update" />
-#ALtableheaderWide()
-#ALtdcaption($l10n.GADGETS_TITLE)
-#ALtditemheader()
-$!result.Detail.Title
-#ALtditemfooter()
-#ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
-#ALtditem($!result.Detail.Description)
-#ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
-#ALtditemheader()
-<input type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end>有効
-<input type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end>無効
-#ALtditemfooter()
-</tbody><tbody id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
-#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
-#ALtditemheader()
-<input type="text" name="allowed_ip" placeholder="$!result.ip" value="$!result.allowedIp.toString()">
-#ALtditemfooter()
-#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
-#ALtditemheader()
-<input type="text" name="allowed_ip2" value="$!result.allowedIp2.toString()">
-#ALtditemfooter()
-#ALtablefooter()
+
+##ALtableheaderWide()
+<table class="listTable wide">
+  <tbody>
+  #ALtdcaption($l10n.GADGETS_TITLE)
+  #ALtditemheader()
+  $!result.Detail.Title
+  #ALtditemfooter()
+  #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
+  #ALtditem($!result.Detail.Description)
+  #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
+  #ALtditemheader()
+    <p><input type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end>無効にする</p>
+    <p><input type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end>有効にする</p>
+
+    <table id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
+      <tbody>
+      <tr><td>
+      <p class="mb10">アクセスを許可するIPアドレスを入力してください。<br></p>
+      <p><input type="text" name="allowed_ip" value="$!result.allowedIp.toString()"></p>
+      </td></tr>
+      <tr><td><a id="ip-access-add-form" onclick="aipo.exttimecard.addIpForm();" href="javascript:void(0);">入力欄を追加</a></td></tr>
+      </tbody>
+    </table>
+
+  </tbody>
+</table>
+##ALtablefooter()
 
 #ALbuttonheader()
 #ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
