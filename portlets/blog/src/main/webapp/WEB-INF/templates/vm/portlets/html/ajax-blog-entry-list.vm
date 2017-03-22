@@ -76,7 +76,7 @@
 </div>
 </div>
 </div>
-<div id="auiThreeColumnWidgets">
+<div id="auiThreeColumnWidgets" #if(! $!result.hasBlogOtherAclList())style="display:none" #end>
 <div class="auiWidget clearfix mb_hide">
 <form class="auiForm">
 <select name="groupId" onChange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" class="wide">

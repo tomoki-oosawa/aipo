@@ -18,6 +18,8 @@
  */
 package com.aimluck.eip.services.reminder;
 
+import java.util.List;
+
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.model.ALReminderDefaultItem;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -55,6 +57,10 @@ public class ALReminderService {
 
   public static void updateDefault(ALReminderDefaultItem item) {
     getService().updateDefault(item);
+  }
+
+  public static void updateDefaultBatch(List<ALReminderDefaultItem> itemList) {
+    getService().updateDefaultBatch(itemList);
   }
 
   public static void removeDefault(String orgId, String userId,

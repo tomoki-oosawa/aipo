@@ -63,7 +63,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * ブログエントリーのフォームデータを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogEntryFormData extends ALAbstractFormData {
 
@@ -118,12 +118,12 @@ public class BlogEntryFormData extends ALAbstractFormData {
   private String aclPortletFeature = null;
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -154,8 +154,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   public void initField() {
@@ -190,7 +190,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -200,8 +200,8 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーの各フィールドに対する制約条件を設定します。 <BR>
-   * 
-   * 
+   *
+   *
    */
   @Override
   protected void setValidator() {
@@ -219,10 +219,10 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーのフォームに入力されたデータの妥当性検証を行います。 <BR>
-   * 
+   *
    * @param msgList
    * @return TRUE 成功 FALSE 失敗
-   * 
+   *
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -244,7 +244,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースから読み出します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -299,7 +299,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースから削除します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -362,7 +362,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * エントリーをデータベースに格納します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -373,6 +373,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
       List<String> msgList) {
     boolean res = true;
     try {
+
       if (is_new_thema) {
         // テーマの登録処理
         res = blogthema.insertFormData(rundata, context, msgList);
@@ -426,7 +427,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
         // アクティビティ
         String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
-        BlogUtils.createNewBlogActivity(entry, loginName, true);
+        int loginId =
+          ALEipUtils.getALEipUser(uid).getUserId().getValueWithInt();
+        BlogUtils.createNewBlogActivity(entry, loginName, loginId, true);
       }
     } catch (Exception ex) {
       Database.rollback();
@@ -566,7 +569,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * データベースに格納されているエントリーを更新します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -640,8 +643,9 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
         // アクティビティ
         String loginName = ALEipUtils.getALEipUser(uid).getName().getValue();
-        BlogUtils.createNewBlogActivity(entry, loginName, false);
-
+        int loginId =
+          ALEipUtils.getALEipUser(uid).getUserId().getValueWithInt();
+        BlogUtils.createNewBlogActivity(entry, loginName, loginId, false);
         // イベントログに保存
         ALEventlogFactoryService.getInstance().getEventlogHandler().log(
           entry.getEntryId(),
@@ -657,7 +661,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -689,7 +693,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリIDを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getThemaId() {
@@ -698,7 +702,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * メモを取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -707,7 +711,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * Title を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTitle() {
@@ -723,7 +727,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * カテゴリ一覧を取得します。 <BR>
-   * 
+   *
    * @return
    */
   public List<BlogThemaResultData> getThemaList() {
@@ -739,7 +743,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   /**
    * テーマを取得します。
-   * 
+   *
    * @return
    */
   public BlogThemaFormData getBlogThema() {
@@ -769,7 +773,7 @@ public class BlogEntryFormData extends ALAbstractFormData {
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override
@@ -779,5 +783,63 @@ public class BlogEntryFormData extends ALAbstractFormData {
 
   public void setThemaId(long i) {
     thema_id.setValue(i);
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return true;
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    } else if (ALEipConstants.MODE_UPDATE.equals(getMode())) {
+      try {
+        // オブジェクトモデルを取得
+        Integer entryId = BlogUtils.getEipTBlogEntryId(rundata, context);
+        if (entryId == null) {
+          return false;
+        }
+        // サーバーに残すファイルのID
+        List<Integer> formIdList = getRequestedHasFileIdList(fileuploadList);
+        // 現在選択しているエントリが持っているファイル
+        List<EipTBlogFile> files = BlogUtils.getEipTBlogFileList(entryId);
+        List<Integer> existFileIdList = new ArrayList<Integer>();
+        if (files != null) {
+          for (EipTBlogFile file : files) {
+            existFileIdList.add(file.getFileId());
+          }
+        }
+
+        return FileuploadUtils.updateValidate(
+          msgList,
+          formIdList,
+          existFileIdList,
+          fileuploadList,
+          hasAttachmentInsertAuthority(),
+          hasAttachmentDeleteAuthority());
+      } catch (Exception ex) {
+        logger.error("BlogEntryFormData.", ex);
+        return false;
+      }
+    }
+    return true;
   }
 }

@@ -55,6 +55,9 @@
         <parameter name="p2e-rows.style.items" value="2,4" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p2e-rows.style.values" value="簡易表示,詳細表示" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
+        <parameter name="admin_detail_screen" value="ActivityAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

@@ -272,6 +272,7 @@
 		<db-attribute name="CREATE_DATE" type="DATE" length="4"/>
 		<db-attribute name="END_HOUR" type="INTEGER" length="2"/>
 		<db-attribute name="END_MINUTE" type="INTEGER" length="2"/>
+		<db-attribute name="HOLIDAY_OF_WEEK" type="VARCHAR" length="32"/>
 		<db-attribute name="OUTGOING_ADD_FLAG" type="VARCHAR" length="1"/>
 		<db-attribute name="OVERTIME_TYPE" type="VARCHAR" length="8"/>
 		<db-attribute name="RESTTIME_IN" type="INTEGER" length="4"/>
@@ -628,6 +629,16 @@
 		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_USER_ID" type="INTEGER" length="4"/>
+	</db-entity>
+	<db-entity name="eip_t_schedule_file">
+		<db-attribute name="CREATE_DATE" type="DATE"/>
+		<db-attribute name="FILE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true"/>
+		<db-attribute name="FILE_NAME" type="VARCHAR" isMandatory="true" length="128"/>
+		<db-attribute name="FILE_PATH" type="CLOB" isMandatory="true"/>
+		<db-attribute name="FILE_THUMBNAIL" type="LONGVARBINARY"/>
+		<db-attribute name="OWNER_ID" type="INTEGER"/>
+		<db-attribute name="SCHEDULE_ID" type="INTEGER"/>
+		<db-attribute name="UPDATE_DATE" type="TIMESTAMP"/>
 	</db-entity>
 	<db-entity name="eip_t_schedule_map">
 		<db-attribute name="COMMON_CATEGORY_ID" type="INTEGER" isMandatory="true" length="4"/>
@@ -1062,6 +1073,7 @@
 		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
 		<obj-attribute name="endHour" type="java.lang.Integer" db-attribute-path="END_HOUR"/>
 		<obj-attribute name="endMinute" type="java.lang.Integer" db-attribute-path="END_MINUTE"/>
+		<obj-attribute name="holidayOfWeek" type="java.lang.String" db-attribute-path="HOLIDAY_OF_WEEK"/>
 		<obj-attribute name="outgoingAddFlag" type="java.lang.String" db-attribute-path="OUTGOING_ADD_FLAG"/>
 		<obj-attribute name="overtimeType" type="java.lang.String" db-attribute-path="OVERTIME_TYPE"/>
 		<obj-attribute name="resttimeIn" type="java.lang.Integer" db-attribute-path="RESTTIME_IN"/>
@@ -1366,6 +1378,15 @@
 		<obj-attribute name="startDate" type="java.util.Date" db-attribute-path="START_DATE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 		<obj-attribute name="updateUserId" type="java.lang.Integer" db-attribute-path="UPDATE_USER_ID"/>
+	</obj-entity>
+	<obj-entity name="EipTScheduleFile" className="com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile" dbEntityName="eip_t_schedule_file">
+		<obj-attribute name="createDate" type="java.util.Date" db-attribute-path="CREATE_DATE"/>
+		<obj-attribute name="fileName" type="java.lang.String" db-attribute-path="FILE_NAME"/>
+		<obj-attribute name="filePath" type="java.lang.String" db-attribute-path="FILE_PATH"/>
+		<obj-attribute name="fileThumbnail" type="byte[]" db-attribute-path="FILE_THUMBNAIL"/>
+		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
+		<obj-attribute name="scheduleId" type="java.lang.Integer" db-attribute-path="SCHEDULE_ID"/>
+		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>
 	<obj-entity name="EipTScheduleMap" className="com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap" dbEntityName="eip_t_schedule_map">
 		<obj-attribute name="commonCategoryId" type="java.lang.Integer" db-attribute-path="COMMON_CATEGORY_ID"/>
@@ -1824,7 +1845,13 @@
 	<db-relationship name="eipTReport" source="eip_t_report_member_map" target="eip_t_report" toMany="false">
 		<db-attribute-pair source="REPORT_ID" target="REPORT_ID"/>
 	</db-relationship>
+	<db-relationship name="eipTScheduleFile" source="eip_t_schedule" target="eip_t_schedule_file" toMany="true">
+		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
+	</db-relationship>
 	<db-relationship name="eipTScheduleMaps" source="eip_t_schedule" target="eip_t_schedule_map" toMany="true">
+		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
+	</db-relationship>
+	<db-relationship name="eipTSchedule" source="eip_t_schedule_file" target="eip_t_schedule" toMany="false">
 		<db-attribute-pair source="SCHEDULE_ID" target="SCHEDULE_ID"/>
 	</db-relationship>
 	<db-relationship name="eipTCommonCategory" source="eip_t_schedule_map" target="eip_t_common_category" toMany="false">
@@ -2014,6 +2041,7 @@
 	<obj-relationship name="eipTReport" source="EipTReportMap" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTReport" source="EipTReportMemberMap" target="EipTReport" db-relationship-path="eipTReport"/>
 	<obj-relationship name="eipTScheduleMaps" source="EipTSchedule" target="EipTScheduleMap" db-relationship-path="eipTScheduleMaps"/>
+	<obj-relationship name="eipTSchedule" source="EipTScheduleFile" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="eipTCommonCategory" source="EipTScheduleMap" target="EipTCommonCategory" db-relationship-path="eipTCommonCategory"/>
 	<obj-relationship name="eipTSchedule" source="EipTScheduleMap" target="EipTSchedule" db-relationship-path="eipTSchedule"/>
 	<obj-relationship name="turbineUserGroupRole" source="EipTScheduleMap" target="TurbineUserGroupRole" db-relationship-path="turbineUserGroupRole"/>

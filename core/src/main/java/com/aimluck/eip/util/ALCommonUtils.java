@@ -18,10 +18,20 @@
  */
 package com.aimluck.eip.util;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Date;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+import javax.mail.internet.MimeUtility;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -486,4 +496,91 @@ public class ALCommonUtils {
     return ALEipUtils.isFileUploadable(rundata);
   }
 
+  public static boolean hasAttachmentInsertAuthority(RunData rundata) {
+    return ALAccessControlUtils.hasAttachmentInsertAuthority(rundata);
+  }
+
+  public static boolean hasAttachmentDeleteAuthority(RunData rundata) {
+    return ALAccessControlUtils.hasAttachmentDeleteAuthority(rundata);
+  }
+
+  public static byte[] encrypt(String key, String text) {
+    try {
+      SecretKeySpec sksSpec = new SecretKeySpec(key.getBytes(), "Blowfish");
+      Cipher cipher = Cipher.getInstance("Blowfish");
+      cipher.init(javax.crypto.Cipher.ENCRYPT_MODE, sksSpec);
+      return cipher.doFinal(text.getBytes());
+    } catch (Throwable t) {
+      logger.error(t.getMessage(), t);
+    }
+    return null;
+  }
+
+  public static String decrypt(String key, byte[] encrypted) {
+    try {
+      SecretKeySpec sksSpec = new SecretKeySpec(key.getBytes(), "Blowfish");
+      Cipher cipher = Cipher.getInstance("Blowfish");
+      cipher.init(Cipher.DECRYPT_MODE, sksSpec);
+      return new String(cipher.doFinal(encrypted));
+    } catch (Throwable t) {
+      logger.error(t.getMessage(), t);
+    }
+    return null;
+  }
+
+  public static String encodeBase64(byte[] data) {
+
+    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    OutputStream os = null;
+    try {
+      os = MimeUtility.encode(bos, "base64");
+      os.write(data);
+    } catch (Throwable t) {
+      logger.error(t.getMessage(), t);
+    } finally {
+      if (os != null) {
+        try {
+          os.close();
+        } catch (IOException e) {
+          logger.error(e.getMessage(), e);
+        }
+      }
+    }
+
+    try {
+      return bos.toString("iso-8859-1");
+    } catch (UnsupportedEncodingException e) {
+      logger.error(e.getMessage(), e);
+    }
+
+    return null;
+  }
+
+  public static byte[] decodeBase64(String base64) {
+
+    byte[] buf = new byte[1024];
+    ByteArrayOutputStream os = new ByteArrayOutputStream();
+
+    InputStream is = null;
+    try {
+      is =
+        MimeUtility.decode(
+          new ByteArrayInputStream(base64.getBytes()),
+          "base64");
+
+      for (int len = -1; (len = is.read(buf)) != -1;) {
+        os.write(buf, 0, len);
+      }
+    } catch (Throwable t) {
+      if (is != null) {
+        try {
+          is.close();
+        } catch (IOException e) {
+          logger.error(e.getMessage(), e);
+        }
+      }
+    }
+
+    return os.toByteArray();
+  }
 }

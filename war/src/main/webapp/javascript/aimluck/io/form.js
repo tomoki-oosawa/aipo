@@ -378,6 +378,23 @@ aimluck.io.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, r
   }
 }
 
+//messageroom
+aimluck.io.ajaxMessageRoomDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWM_STR, {
+		    dwm_del: nlsStrings.DWM_DEL,
+		    dwm_this: nlsStrings.DWM_THIS,
+		    dwm_name: button.form._name.value
+		  });
+	  // 'この'+button.form._name.value+'を削除してよろしいですか？'+button.form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
+	  if (confirm(confirmString)) {
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
+
 // account
 aimluck.io.ajaxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
@@ -646,7 +663,6 @@ aimluck.io.createOptions = function (selectId, params) {
     load: function (response, ioArgs) {
       var select = dojo.byId(selectId);
       select.options.length = 0;
-
       if (typeof pre == "undefined") {
       } else {
         aimluck.io.addOption(select, pre["key"], pre["value"], false);
@@ -1113,20 +1129,21 @@ aimluck.io.createMemberLists = function (ulId, params) {
   } else {
     clickEvent = params["clickEvent"];
   }
+  var param_keyword = "";
   if (typeof params["keyword"] == "undefined") {
   } else {
 	  keyword = params["keyword"];
 	    var target_keyword = dojo.byId(keyword);
 	    if (target_keyword) {
-	    	var search = encodeURIComponent(target_keyword.value);
-	      url = url + "&keyword=" + search;
+	    	param_keyword = target_keyword.value;
 	    }
   }
 
-  dojo.xhrGet({
+  dojo.xhrPost({
     url: url,
     timeout: 10000,
     encoding: "utf-8",
+    content: {"keyword":param_keyword},
     handleAs: "json-comment-filtered",
     headers: {
       X_REQUESTED_WITH: "XMLHttpRequest"

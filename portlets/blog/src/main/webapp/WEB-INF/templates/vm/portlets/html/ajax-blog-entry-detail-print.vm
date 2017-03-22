@@ -1,0 +1,91 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALprintformheader()
+#ALprintoptionheader()
+#ALprintoptionfooter()
+
+<script type="text/javascript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+#ALtdcaption($l10n.BLOG_TITLE)
+#ALtditem($!{result.Detail.TitleHtml})
+#ALtdcaption($l10n.BLOG_PORTLET_THEMA)
+#ALtditem($!{result.Detail.ThemaNameHtml})
+#ALtdcaption($l10n.BLOG_POSTING_NAME)
+#ALtditem(${result.Detail.OwnerName})
+#ALtdcaption($l10n.BLOG_POSTING_DAY)
+#ALtditem("$!{result.Detail.CreateDateAlternative.Year}$l10n.BLOG_YEAR$!{result.Detail.CreateDateAlternative.Month}$l10n.BLOG_MONTH$!{result.Detail.CreateDateAlternative.Day}$l10n.BLOG_DAY$!{result.Detail.CreateDateAlternative.DayOfWeek} $!{result.Detail.CreateDateAlternative.time}")
+#ALtdcaption($l10n.BLOG_ENTRY_NOTE)
+#ALtditem($!{result.Detail.Note})
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.BLOG_FILE_ATTACH)
+#ALtditemheader()
+<ul>
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+<li>$result.getStringCR($attachmentFile.FileNameField)
+#if($attachmentFile.isImage())
+<div id='popc' style='position:absolute'></div>
+<div class="thumbBlock">
+<img class="width_thumbs mb5" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("BlogFileThumbnailScreen").addPathInfo("ownerid", $!{result.Detail.OwnerId}).addPathInfo("entityid", $!result.Detail.EntryId).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.FileNameField})"><br>
+</div>
+#end
+</li>
+#end
+</ul>
+#ALtditemfooter()
+#end
+#ALtablefooter()
+
+<table class="p5" style="margin-top:10px;">
+<colgroup style="width:25%;"></colgroup>
+<colgroup></colgroup>
+<tbody>
+
+#if($!result.CommentList && $!result.CommentList.size() > 0 )
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.BLOG_COMMENT#ALtdheadfooter()
+#set($firstCoTopic = true)
+#foreach ($record in $result.CommentList)
+#set($firstCoTopic = false)
+<tr>
+#ALtditemheader()
+<div class="alignleft"><strong>$!{record.OwnerName}</strong><span style="float: right;">$!{record.UpdateDateAlternative.Year}$l10n.BLOG_YEAR$!{record.UpdateDateAlternative.Month}$l10n.BLOG_MONTH$!{record.UpdateDateAlternative.Day}$l10n.BLOG_DAY$!{record.UpdateDateAlternative.DayOfWeek} $!{record.UpdateDateAlternative.time}</span></div><br />
+<div class="alignright">
+</div>
+<div>
+${record.Comment}
+</div>
+#ALtditemfooter()
+#end
+#end
+#ALtablefooter()
+</div>
+#ALprintformfooter()

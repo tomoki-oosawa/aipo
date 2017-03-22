@@ -115,6 +115,12 @@ function submitMini(form, portletId){
 	form.submit();
 }
 
+function clickAttachmentButton(){
+    var att = document.getElementById("attachment");
+    var evt = document.createEvent("MouseEvents");
+    evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    att.dispatchEvent( evt );
+}
 //-->
 </script>
 
@@ -129,7 +135,8 @@ function submitMini(form, portletId){
 <span id="inputField">
 <div class="auiButtonBold" id="fileuploadButton$!portlet.ID" style="position: relative; display:block; cursor:default;">
 <span class="uploadText">$upload_str</span>
-<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px;" onchange="submitMini(this.form, '$!portlet.ID');" />
+<input type="file" id="attachment" name="attachment" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px; #if($!isFirefox) display:none;#end" onchange="submitMini(this.form, '$!portlet.ID');" />
+#if($!isFirefox)<input type="button" id="attachmentButton" name="attachmentButton" style="position: absolute; right: 0px; top: 0px; z-index: 1; font-size: 50px; cursor: pointer; opacity: 0; filter:alpha(opacity=0); height:32px; width:inherit;" onClick="clickAttachmentButton();">#end
 </div>
 </span>
 </div>

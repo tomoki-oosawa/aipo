@@ -19,7 +19,11 @@
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($l10n.TODO_TODO_DETAIL)
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintToDo("$l10n.TODO_TODO_DETAIL" "$!portlet.ID" "ToDoDetailScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.TODO_TODO_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 #ALajaxdetailformheader("ToDo")

@@ -117,4 +117,7 @@ public class ALEipConstants {
   /** セキュリティID */
   public static final String SECURE_ID = "secid";
 
+  /** パスワード入力ログイン日時 */
+  public static final String LAST_PASSWORD_LOGIN = "lastpasswordlogin";
+
 }

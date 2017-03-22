@@ -62,7 +62,7 @@
 #end
 #if($result.SelectData.EndHour)#set($endHour = $!{result.SelectData.EndHour} - 1)#end
 ##ALajaxscreenformheader("_scheduleForm" $jslink $portlet "ScheduleFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage)")
-<form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
+<form id = "_scheduleForm" name="scheduleForm" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleFormJSONScreen')" method="post" onsubmit="aimluck.io.selectAllOptions(this.member_to);aimluck.io.selectAllOptions(this.facility_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aipo.schedule.onSubmit(this); aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.schedule.onReceiveMessage);return false;">
 <input type="hidden" name="ignore_duplicate_facility" value="false" />
 <input type="hidden" name="secid" value="$secid" />
 <input type="hidden" name="entityid" value="$entityid" />
@@ -148,6 +148,7 @@
       #foreach ( $num in [1..31] )
       	<option value="$num" #if ($!{result.MonthDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
+      <option value="32" #if ($!{result.MonthDay.toString()} == "32") selected #end>$l10n.SCHEDULE_END_OF_MONTH</option>
       </select>
 	</p>
       </p>
@@ -363,6 +364,25 @@
     <select size="5" multiple="multiple" style="display:none;" name="init_facilitylist" id="init_facilitylist">#foreach($record in $!result.FacilityList)<option value="$!record.FacilityId">$!record.FacilityName</option>#end</select>
 </div>
 #ALtditemfooter()
+
+##ファイル添付欄の追加
+<tr #if(!$result.isFileUploadable() || (!$result.hasAttachmentInsertAuthority() && !$result.hasAttachmentDeleteAuthority()))class="hide"#end>
+<td class="caption" >$l10n.SCHEDULE_FILE_ATTACH</td>
+<td>
+  <div class="clearfix">
+  <div>
+  #ACLIFFileUpload()
+  </div>
+  <ul id="attachments_$!{portlet.ID}" class="attachments">
+    #foreach($record in $!result.AttachmentFileNameList )
+    	#ACLFileList($record)
+    #end
+  </ul>
+  <input type="hidden" id="folderName_$!{portlet.ID}" name="folderName" value="$!result.FolderName" />
+  </div>
+</td>
+</tr>
+
 
 #ALtablefooter()
 #ALbuttonheader()

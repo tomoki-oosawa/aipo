@@ -21,7 +21,7 @@ package com.aimluck.eip.mail;
 import com.aimluck.eip.mail.util.ALEipUserAddr;
 
 /**
- * 
+ *
  */
 public class ALAdminMailMessage extends ALEipUserAddr {
 

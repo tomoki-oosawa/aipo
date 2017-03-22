@@ -54,6 +54,7 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALCommonUtils;
@@ -252,7 +253,9 @@ public class MessageFormData extends ALAbstractFormData {
       model.setMessage(message.getValue());
       model.setCreateDate(now);
       model.setUpdateDate(now);
-      model.setMemberCount(members.size());
+      model.setMemberCount(containsAdmin(members)
+        ? members.size() - 1
+        : members.size());
       model.setUserId((int) login_user.getUserId().getValue());
 
       List<String> recipients = new ArrayList<String>();
@@ -298,6 +301,21 @@ public class MessageFormData extends ALAbstractFormData {
     }
 
     return true;
+  }
+
+  /**
+   * @param members
+   * @return
+   */
+  private static boolean containsAdmin(List<EipTMessageRoomMember> members) {
+    boolean containsAdmin = false;
+    for (EipTMessageRoomMember member : members) {
+      if (member.getUserId() == 1) {
+        containsAdmin = true;
+        break;
+      }
+    }
+    return containsAdmin;
   }
 
   /**
@@ -354,6 +372,27 @@ public class MessageFormData extends ALAbstractFormData {
         if (members != null) {
           for (EipTMessageRoomMember member : members) {
             recipients.add(member.getLoginName());
+          }
+        }
+      }
+
+      // lastMessageが削除される場合、lastMessageの更新フラグを立てる
+      if (room != null && room.getRoomId() != null) {
+        ResultList<EipTMessage> last2Messages =
+          MessageUtils.getLast2Messages(room.getRoomId());
+        if (last2Messages != null && last2Messages.size() > 0) {
+          Integer lastMessageId = last2Messages.get(0).getMessageId();
+          // lastMessageが削除された場合、新しいlastMessageに更新する
+          if (message.getMessageId().equals(lastMessageId)) {
+            if (last2Messages.size() == 2) {
+              room.setLastMessage(ALCommonUtils.compressString(last2Messages
+                .get(1)
+                .getMessage(), 100));
+            } else {
+              room.setLastMessage(ALCommonUtils.compressString(null, 100));
+            }
+            Date now = new Date();
+            room.setLastUpdateDate(now);
           }
         }
       }
@@ -485,5 +524,23 @@ public class MessageFormData extends ALAbstractFormData {
 
   public int getRoomId() {
     return (int) roomId.getValue();
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    }
+    return true;
   }
 }

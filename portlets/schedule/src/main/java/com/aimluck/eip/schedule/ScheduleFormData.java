@@ -42,10 +42,12 @@ import com.aimluck.commons.field.ALDateField;
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractFormData;
@@ -55,10 +57,12 @@ import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
 import com.aimluck.eip.mail.ALAdminMailContext;
 import com.aimluck.eip.mail.ALAdminMailMessage;
 import com.aimluck.eip.mail.ALMailService;
@@ -245,6 +249,12 @@ public class ScheduleFormData extends ALAbstractFormData {
   /** <code>todo_id</code> ToDo ID */
   private ALNumberField common_category_id;
 
+  /** 添付ファイルリスト */
+  private List<FileuploadLiteBean> fileuploadList = null;
+
+  /** 添付フォルダ名 */
+  private String folderName = null;
+
   /** スケジュール更新時にメール受信フラグ */
   private String mail_flag = ScheduleUtils.MAIL_FOR_ALL;
 
@@ -305,6 +315,8 @@ public class ScheduleFormData extends ALAbstractFormData {
 
     facilityAllList = new ArrayList<FacilityResultData>();
     facilityAllList.addAll(FacilitiesUtils.getFacilityAllList());
+
+    folderName = rundata.getParameters().getString("folderName");
 
     // 終日設定
     if (tmpEnd != null
@@ -681,6 +693,9 @@ public class ScheduleFormData extends ALAbstractFormData {
     // 設備リスト
     facilityList = new ArrayList<Object>();
 
+    // 添付ファイルリスト
+    fileuploadList = new ArrayList<FileuploadLiteBean>();
+
     // 2007.3.28 ToDo連携
     common_category_id = new ALNumberField();
     common_category_id.setFieldName(ALLocalizationUtils
@@ -757,6 +772,11 @@ public class ScheduleFormData extends ALAbstractFormData {
       } catch (Exception ex) {
         logger.error("schedule", ex);
       }
+    }
+    try {
+      fileuploadList = ScheduleUtils.getFileuploadList(rundata);
+    } catch (Exception ex) {
+      logger.error("schedule", ex);
     }
     return res;
   }
@@ -861,6 +881,25 @@ public class ScheduleFormData extends ALAbstractFormData {
       place.setValue(record.getPlace());
       // 内容
       note.setValue(record.getNote());
+      // ファイル
+      SelectQuery<EipTScheduleFile> querySelectFile =
+        Database.query(EipTScheduleFile.class);
+      querySelectFile.andQualifier(ExpressionFactory.matchDbExp(
+        EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+        record.getScheduleId()));
+      List<EipTScheduleFile> scheduleFileList = querySelectFile.fetchList();
+      for (EipTScheduleFile file : scheduleFileList) {
+        // スケジュールに添付ファイルがあった場合
+        // fileidを新しくセット
+        int fileid = file.getFileId();
+        FileuploadLiteBean fbean = new FileuploadLiteBean();
+        fbean.initField();
+        fbean.setFileId(fileid);
+        fbean.setFileName(file.getFileName());
+        if (!is_copy) {
+          fileuploadList.add(fbean);
+        }
+      }
       // 公開フラグ
       public_flag.setValue(record.getPublicFlag());
       // メールフラグ
@@ -895,6 +934,7 @@ public class ScheduleFormData extends ALAbstractFormData {
       // WnnnnnnnN W01111110 -> 毎週(月～金用)
       // WnnnnnnnmN -> 第m週
       // MnnN M25 -> 毎月25日
+      // MXXL -> 毎月月末
       // YnnnnN Y0101N -> 毎年01月01日
       // S -> 期間での指定
       String ptn = record.getRepeatPattern();
@@ -950,8 +990,13 @@ public class ScheduleFormData extends ALAbstractFormData {
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         repeat_type.setValue("M");
-        month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        if (ptn.substring(1, 3).equals("XX")) {
+          month_day.setValue(32);
+        } else {
+          month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+        }
         count = 3;
+
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
         repeat_type.setValue("Y");
@@ -1087,7 +1132,6 @@ public class ScheduleFormData extends ALAbstractFormData {
     } catch (Exception e) {
       logger.error("[ScheduleFormData]", e);
       throw new ALDBErrorException();
-
     }
     return true;
   }
@@ -1237,8 +1281,13 @@ public class ScheduleFormData extends ALAbstractFormData {
           }
         } else if ("M".equals(repeat_type.getValue())) {
           DecimalFormat format = new DecimalFormat("00");
-          schedule.setRepeatPattern(new StringBuffer().append('M').append(
-            format.format(month_day.getValue())).append(lim).toString());
+          if (32 == month_day.getValue()) {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              "XX").append(lim).toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              format.format(month_day.getValue())).append(lim).toString());
+          }
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer().append('Y').append(
@@ -1324,6 +1373,16 @@ public class ScheduleFormData extends ALAbstractFormData {
             return false;
           }
         }
+      }
+      // ファイルをデータベースに登録する．
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        schedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
       }
 
       // スケジュールを登録
@@ -1420,12 +1479,13 @@ public class ScheduleFormData extends ALAbstractFormData {
             ALAdminMailMessage message = new ALAdminMailMessage(destMember);
             message.setPcSubject(subject);
             message.setCellularSubject(subject);
-            message.setPcBody(ScheduleUtils.createMsgForPc(
+            message.setPcBody(ScheduleUtils.createMsg(
               rundata,
               schedule,
               memberList,
+              null,
               "new"));
-            message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+            message.setCellularBody(ScheduleUtils.createMsg(
               rundata,
               schedule,
               memberList,
@@ -1533,6 +1593,7 @@ public class ScheduleFormData extends ALAbstractFormData {
           check = false;
         }
       }
+
       // スケジュールのアップデート権限を検証する．
       /*
        * if (ownerid != schedule.getOwnerId().intValue() &&
@@ -1830,8 +1891,13 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer().append('M').append(
-              format.format(month_day.getValue())).append(lim).toString());
+            if (32 == month_day.getValue()) {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                "XX").append(lim).toString());
+            } else {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                format.format(month_day.getValue())).append(lim).toString());
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer().append('Y').append(
@@ -1933,6 +1999,16 @@ public class ScheduleFormData extends ALAbstractFormData {
             }
           }
         }
+      }
+
+      if (!ScheduleUtils.insertFileDataDelegate(
+        rundata,
+        context,
+        tmpSchedule,
+        fileuploadList,
+        folderName,
+        msgList)) {
+        return false;
       }
 
       // スケジュールを登録
@@ -2079,12 +2155,13 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
+                null,
                 "edit"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 newSchedule,
                 memberList,
@@ -2106,12 +2183,13 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "edit"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
@@ -2600,12 +2678,13 @@ public class ScheduleFormData extends ALAbstractFormData {
               ALAdminMailMessage message = new ALAdminMailMessage(destMember);
               message.setPcSubject(subject);
               message.setCellularSubject(subject);
-              message.setPcBody(ScheduleUtils.createMsgForPc(
+              message.setPcBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
+                null,
                 "delete"));
-              message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+              message.setCellularBody(ScheduleUtils.createMsg(
                 rundata,
                 schedule,
                 memberList,
@@ -2667,6 +2746,9 @@ public class ScheduleFormData extends ALAbstractFormData {
         aclType = ALAccessControlConstants.VALUE_ACL_UPDATE;
       }
       doCheckAclPermission(rundata, context, aclType);
+
+      doCheckAttachmentInsertAclPermission(rundata, context);
+      doCheckAttachmentDeleteAclPermission(rundata, context);
 
       action.setMode(isedit
         ? ALEipConstants.MODE_EDIT_FORM
@@ -2821,6 +2903,27 @@ public class ScheduleFormData extends ALAbstractFormData {
     Database.deleteAll(dellist);
 
     // 2007.3.28 ToDo連携
+
+    // 添付ファイルの削除
+    SelectQuery<EipTScheduleFile> dbquery =
+      Database.query(EipTScheduleFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
+    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+
+    if (existsFiles.size() > 0) {
+      try {
+        ALDeleteFileUtil.deleteFiles(
+          ScheduleUtils.FOLDER_FILEDIR_SCHEDULE,
+          ScheduleUtils.CATEGORY_KEY,
+          existsFiles);
+      } catch (ALFileNotRemovedException e) {
+        Database.rollback();
+        logger.error("schedule", e);
+      }
+    }
+
   }
 
   /**
@@ -3282,6 +3385,14 @@ public class ScheduleFormData extends ALAbstractFormData {
 
   public List<FacilityResultData> getFacilityAllList() {
     return facilityAllList;
+  }
+
+  public List<FileuploadLiteBean> getAttachmentFileNameList() {
+    return fileuploadList;
+  }
+
+  public String getFolderName() {
+    return folderName;
   }
 
   /**

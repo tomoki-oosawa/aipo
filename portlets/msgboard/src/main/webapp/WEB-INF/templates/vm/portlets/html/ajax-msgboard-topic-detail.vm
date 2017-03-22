@@ -22,7 +22,11 @@
 #set ($event_submit = "eventSubmit_doMsgboard_update")
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheader($subtitle)
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintMsgboard("$l10n.MSGBOARD_TOPIC_DETAIL" "$!portlet.ID" "MsgboardTopicScreenPrint" "$entityid")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.MSGBOARD_TOPIC_DETAIL")
+#end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
@@ -155,14 +159,14 @@
 				<td class="caption"><span class="required">$!resultOnTopicDetail.getFieldName('note')</span></td>
 				<td>#ALtextarea('note' $!resultOnTopicDetail.Note 5 40)</td>
 			</tr>
-			<tr #if(!$result.isFileUploadable())class="mb_hide"#end>
+			<tr #if(!$result.isFileUploadable() || (!$result.hasAttachmentInsertAuthority() && !$result.hasAttachmentDeleteAuthority()))class="hide"#end>
 				<td class="caption">$l10n.MSGBOARD_FILE_ATTACH</td>
 				<td>
 					<div class="clearfix">
-					<div>#IFFileUpload()</div>
+					<div>#ACLIFFileUpload()</div>
 					<ul id="attachments_$!{portlet.ID}" class="attachments">
 						#foreach($record in $!result.AttachmentFileNameList )
-							<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span><span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.MSGBOARD_DELETE_DO</span></li>
+							#ACLFileList($record)
 						#end
 					</ul>
 					</div>

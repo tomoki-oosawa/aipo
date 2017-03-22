@@ -155,12 +155,9 @@ public class FileIOAccountCsvSelectData
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    List<String> existedCodeList = getAllUsersCodeFromDB();
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
-    }
-    if (existedCodeList == null) {
-      existedCodeList = new ArrayList<String>();
     }
     int ErrCount = 0;
 
@@ -170,6 +167,7 @@ public class FileIOAccountCsvSelectData
     int i, j;
     String token;
     int line = 0;
+    int count = 0;
 
     String ErrorCode = "";
 
@@ -221,7 +219,6 @@ public class FileIOAccountCsvSelectData
 
       if (formData.getUserName().toString().equals(
         ALLocalizationUtils.getl10n("FILEIO_USER_NAME"))) {
-        setLineCount(getLineCount() - 1);
 
         ErrorCode += e_line.toString();
         ErrorCode += "," + Integer.toString(line) + ",false";
@@ -258,33 +255,44 @@ public class FileIOAccountCsvSelectData
         TurbineUser user = new TurbineUser();
 
         if (existedUserMap.containsKey(username)) {
+          // 入力した名前のユーザーがすでに存在していたら
           TurbineUser tmpuser2 = existedUserMap.get(username);
-          // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(username);
-            if (!(tmpuser2.getCode() == code)) {
+            if (tmpuser2.getCode() != null
+              && !(tmpuser2.getCode().equals(code))) {
+              // tmpuser2が社員コードを持ち、それが入力された社員コードと異なっていたら
               if (existedCodeList.contains(code)) {
+                // 入力された社員コードを持つユーザーがすでに存在していたら
                 same_code = true;
                 b_err = true;
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
                 if (code != null && !code.equals("")) {
-                  existedCodeList.set(existedCodeList.indexOf(tmpuser2
-                    .getCode()), code);
+                  int index = existedCodeList.indexOf(tmpuser2.getCode());
+                  if (index != -1) {
+                    existedCodeList.set(index, code);
+                  } else {
+                    existedCodeList.add(code);
+                  }
                 }
               }
             }
           } else {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(null);
             b_err = true;
           }
         } else {
+          // 入力した名前のユーザがまだ存在していなかったとき
           user.setLoginName(username);
           TurbineUser newuser = new TurbineUser();
           newuser.setLoginName(username);
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
           if (existedCodeList.contains(code)) {
+            // 入力された社員コードを持つユーザーがすでに存在していたら
             same_code = true;
             b_err = true;
           }
@@ -326,6 +334,10 @@ public class FileIOAccountCsvSelectData
             "," + Integer.toString(line) + "," + Boolean.toString(same_user);
           ErrorCode += "\n";
         }
+
+        count++;
+        setLineCount(count);
+
         if (ErrCount == 0) {
           if (!b_err) {
             if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
@@ -403,10 +415,7 @@ public class FileIOAccountCsvSelectData
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
 
-    List<String> existedCodeList = getAllUsersCodeFromDB();
-    if (existedCodeList == null) {
-      existedCodeList = new ArrayList<String>();
-    }
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
 
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
@@ -482,15 +491,20 @@ public class FileIOAccountCsvSelectData
           // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
             user.setLoginName(username);
-            if (!(tmpuser2.getCode() == code)) {
+            if (tmpuser2.getCode() != null
+              && !(tmpuser2.getCode().equals(code))) {
               if (existedCodeList.contains(code)) {
                 same_code = true;
                 iserror = true;
               } else {
                 // ユーザーを上書きする場合, DBから持ってきている社員コードを更新する.
                 if (code != null && !code.equals("")) {
-                  existedCodeList.set(existedCodeList.indexOf(tmpuser2
-                    .getCode()), code);
+                  int index = existedCodeList.indexOf(tmpuser2.getCode());
+                  if (index != -1) {
+                    existedCodeList.set(index, code);
+                  } else {
+                    existedCodeList.add(code);
+                  }
                 }
               }
             }
@@ -556,6 +570,7 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBからすべてのユーザーのデータを取得します <BR>
    *
    * @return
    */
@@ -580,22 +595,25 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBから全てのユーザーの社員コードを取得します(削除済みのものを含まない) <BR>
    *
    * @return
    */
-  private ArrayList<String> getAllUsersCodeFromDB() {
+  private ArrayList<String> getAllUndisableUsersCodeFromDB() {
     ArrayList<String> codeList = new ArrayList<String>();
     try {
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       List<TurbineUser> list = query.fetchList();
 
       for (TurbineUser user : list) {
-        if (user.getCode() != null && !(user.getCode().equals(""))) {
+        if (user.getCode() != null
+          && !(user.getCode().equals(""))
+          && !user.getDisabled().equals("T")) {
           codeList.add(user.getCode());
         }
       }
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("[getAllUndisableUsersCodeFromDB]", ex);
       // throw new ALDBErrorException();
     }
     return codeList;

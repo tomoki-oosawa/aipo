@@ -74,6 +74,7 @@
 <td class="caption">$l10n.WEBMAIL_TO</td>
 #ALtditemheader()
 <select name="detail_to_recipients" id="detail_to_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.ToRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
@@ -83,6 +84,7 @@
 <td  class="caption">CC</td>
 #ALtditemheader()
 <select name="detail_cc_recipients" id="detail_cc_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.CcRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end
@@ -92,6 +94,7 @@
 <td  class="caption">BCC</td>
 #ALtditemheader()
 <select name="detail_bcc_recipients" id="detail_bcc_recipients" size="3" multiple="multiple" class="mb5 wide">
+#ALSelectGroupDummy()
 #foreach( $record in $!result.BccRecipientList )
 <option value="$record.toString()">$record.toString()</option>
 #end

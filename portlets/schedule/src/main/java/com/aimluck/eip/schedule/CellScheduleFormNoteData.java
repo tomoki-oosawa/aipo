@@ -37,14 +37,17 @@ import org.apache.velocity.context.Context;
 import com.aimluck.commons.field.ALCellNumberField;
 import com.aimluck.commons.field.ALDateContainer;
 import com.aimluck.commons.field.ALStringField;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipGroup;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.mail.ALAdminMailContext;
@@ -214,11 +217,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
 
         } else if ("M".equals(form_data.getRepeatType().getValue())) {
           DecimalFormat format = new DecimalFormat("00");
-          schedule.setRepeatPattern(new StringBuffer()
-            .append('M')
-            .append(format.format(form_data.getMonthDay().getValue()))
-            .append(lim)
-            .toString());
+          String month_day = format.format(form_data.getMonthDay().getValue());
+          if ("32".equals(month_day)) {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              "XX").append(lim).toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              month_day).append(lim).toString());
+          }
+
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer()
@@ -604,11 +611,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           }
         } else if ("M".equals(form_data.getRepeatType().getValue())) {
           DecimalFormat format = new DecimalFormat("00");
-          schedule.setRepeatPattern(new StringBuffer()
-            .append('M')
-            .append(format.format(form_data.getMonthDay().getValue()))
-            .append(lim)
-            .toString());
+          String month_day = format.format(form_data.getMonthDay().getValue());
+          if ("32".equals(month_day)) {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              "XX").append(lim).toString());
+          } else {
+            schedule.setRepeatPattern(new StringBuffer().append('M').append(
+              month_day).append(lim).toString());
+          }
+
         } else {
           DecimalFormat format = new DecimalFormat("00");
           schedule.setRepeatPattern(new StringBuffer()
@@ -782,12 +793,13 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
           message.setPcSubject(subject);
           message.setCellularSubject(subject);
-          message.setPcBody(ScheduleUtils.createMsgForPc(
+          message.setPcBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
+            null,
             "new"));
-          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+          message.setCellularBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
@@ -1181,11 +1193,15 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
             }
           } else if ("M".equals(form_data.getRepeatType().getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            schedule.setRepeatPattern(new StringBuffer()
-              .append('M')
-              .append(format.format(form_data.getMonthDay().getValue()))
-              .append(lim)
-              .toString());
+            String month_day =
+              format.format(form_data.getMonthDay().getValue());
+            if ("32".equals(month_day)) {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                "XX").append(lim).toString());
+            } else {
+              schedule.setRepeatPattern(new StringBuffer().append('M').append(
+                month_day).append(lim).toString());
+            }
           } else {
             DecimalFormat format = new DecimalFormat("00");
             schedule.setRepeatPattern(new StringBuffer()
@@ -1411,12 +1427,13 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
           ALAdminMailMessage message = new ALAdminMailMessage(destMember);
           message.setPcSubject(subject);
           message.setCellularSubject(subject);
-          message.setPcBody(ScheduleUtils.createMsgForPc(
+          message.setPcBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
+            null,
             "edit"));
-          message.setCellularBody(ScheduleUtils.createMsgForCellPhone(
+          message.setCellularBody(ScheduleUtils.createMsg(
             rundata,
             schedule,
             form_data.getMemberList(),
@@ -1742,6 +1759,26 @@ public class CellScheduleFormNoteData extends AbstractCellScheduleFormData {
     // ダミースケジュールの削除
     if (dellist != null && dellist.size() > 0) {
       Database.deleteAll(dellist);
+    }
+
+    // 添付ファイルの削除
+    SelectQuery<EipTScheduleFile> dbquery =
+      Database.query(EipTScheduleFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
+    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+
+    if (existsFiles.size() > 0) {
+      try {
+        ALDeleteFileUtil.deleteFiles(
+          ScheduleUtils.FOLDER_FILEDIR_SCHEDULE,
+          ScheduleUtils.CATEGORY_KEY,
+          existsFiles);
+      } catch (ALFileNotRemovedException e) {
+        Database.rollback();
+        logger.error("schedule", e);
+      }
     }
   }
 

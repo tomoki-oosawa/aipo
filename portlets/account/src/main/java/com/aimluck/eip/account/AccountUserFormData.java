@@ -522,6 +522,11 @@ public class AccountUserFormData extends ALAbstractFormData {
             .valueOf(target_uid));
         query.andQualifier(exp2);
       }
+      ;
+      // 社員コードの重複チェック（削除済みのユーザーは含めない）
+      Expression exp3 =
+        ExpressionFactory.noMatchExp(TurbineUser.DISABLED_PROPERTY, "T");
+      query.andQualifier(exp3);
       if (query.fetchList().size() > 0) {
         msgList.add(ALLocalizationUtils.getl10nFormat(
           "ACCOUNT_ALERT_CODE_DUP",
@@ -1044,6 +1049,10 @@ public class AccountUserFormData extends ALAbstractFormData {
         if (!dontUpdatePasswd) {
           JetspeedSecurity.forcePassword(user, password.getValue());
         } else {
+          /* パスワード変更日時がnullのときの処置 */
+          if (user.getPasswordChanged() == null) {
+            user.setPasswordChanged(user.getCreated());
+          }
           Expression exp =
             ExpressionFactory.matchDbExp(TurbineUser.USER_ID_PK_COLUMN, user
               .getUserId());
@@ -1170,6 +1179,7 @@ public class AccountUserFormData extends ALAbstractFormData {
           currentUser.setHasPhotoSmartphone(user.hasPhotoSmartphoneString());
           currentUser.setPhotoModifiedSmartphone(user
             .getPhotoModifiedSmartphone());
+          currentUser.setPasswordChanged(user.getPasswordChanged());
         }
 
         // イベントログに保存
@@ -1702,5 +1712,16 @@ public class AccountUserFormData extends ALAbstractFormData {
    */
   public ALStringField getCode() {
     return code;
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return false;
   }
 }

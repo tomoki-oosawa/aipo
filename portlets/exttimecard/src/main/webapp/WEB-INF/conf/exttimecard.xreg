@@ -29,6 +29,10 @@
         <classname>org.apache.jetspeed.portal.portlets.VelocityPortlet</classname>
         <parameter name="template" value="exttimecard" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="action" value="exttimecard.ExtTimecardAction" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="admin_detail_screen" value="ExtTimecardAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

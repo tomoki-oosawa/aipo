@@ -206,7 +206,12 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
         count = 9;
       } else if (ptn.charAt(0) == 'M') {
         recur = new Recur(Recur.MONTHLY, null);
-        int mday = Integer.parseInt(ptn.substring(1, 3));
+        int mday;
+        if (ptn.substring(1, 3).equals("XX")) {
+          mday = -1;
+        } else {
+          mday = Integer.parseInt(ptn.substring(1, 3));
+        }
         recur.getMonthList().addAll(
           Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
         recur.getMonthDayList().add(mday);
@@ -342,15 +347,20 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
   }
 
   private java.util.Date getRepeatStartDate(java.util.Date startDate, String ptn) {
-    Calendar cal = Calendar.getInstance();
-    cal.setTime(startDate);
+    try {
+      Calendar cal = Calendar.getInstance();
+      cal.setTime(startDate);
 
-    if (isView(cal, ptn)) {
-      return startDate;
-    } else {
-      cal.add(Calendar.DATE, 1);
-      return getRepeatStartDate(cal.getTime(), ptn);
+      if (isView(cal, ptn)) {
+        return startDate;
+      } else {
+        cal.add(Calendar.DATE, 1);
+        return getRepeatStartDate(cal.getTime(), ptn);
+      }
+    } catch (Exception e) {
+      logger.error(e);
     }
+    return new Date();
   }
 
   private boolean isView(Calendar cal, String ptn) {
@@ -402,7 +412,13 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      int mday = Integer.parseInt(ptn.substring(1, 3));
+      int mday;
+      if (ptn.substring(1, 3).equals("XX")) {
+        mday = cal.getMaximum(Calendar.DATE);
+      } else {
+        mday = Integer.parseInt(ptn.substring(1, 3));
+      }
+
       result = cal.get(Calendar.DATE) == mday;
     } else if (ptn.charAt(0) == 'Y') {
       int ymonth = Integer.parseInt(ptn.substring(1, 3));

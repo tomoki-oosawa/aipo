@@ -37,6 +37,7 @@ import org.apache.jetspeed.om.profile.IdentityElement;
 import org.apache.jetspeed.om.profile.Layout;
 import org.apache.jetspeed.om.profile.Parameter;
 import org.apache.jetspeed.om.profile.Portlets;
+import org.apache.jetspeed.om.profile.Profile;
 import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.jetspeed.om.registry.PortletInfoEntry;
 import org.apache.jetspeed.om.registry.RegistryEntry;
@@ -415,6 +416,20 @@ public class CustomizeUtils {
     });
 
     return list;
+  }
+
+  public static PortletEntry getPortletEntry(RunData data, String name) {
+    JetspeedRunData jdata = (JetspeedRunData) data;
+    Profile profile = jdata.getProfile();
+    String mediaType = profile.getMediaType();
+    List<PortletEntry> portletList =
+      buildPortletList(data, mediaType, new ArrayList<PortletEntry>());
+    for (PortletEntry entry : portletList) {
+      if (entry.getName().equals(name)) {
+        return entry;
+      }
+    }
+    return null;
   }
 
   public static List<RegistryEntry> buildList(RunData data, String regName) {

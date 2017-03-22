@@ -418,18 +418,8 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/${theme}/css/print.css?$!{utils.CacheBust}" media="print" />
 <link rel="stylesheet" type="text/css" href="${external_resources_url}/themes/$!{theme}/css/font-awesome.min.css?$!{utils.CacheBust}" />
 <!--
-#if($isXDomain == "true")
-<script type="text/javascript">
-  djConifg = {
-    xDomainBasePath: '${external_resources_url}/javascript'
-  };
-</script>
-<script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.xd.js"></script>
-<script type="text/javascript" src="${external_resources_url}/javascript/aipo.xd.js"></script>
-#else
 <script type="text/javascript" src="${external_resources_url}/javascript/dojo/dojo.js"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo.js"></script>
-#end
 <script type="text/javascript" src="${unlockeddomain_url}/gadgets/js/core:rpc:shindig-container.js?c=1"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/container.js"></script>
 <script type="text/javascript" src="${external_resources_url}/javascript/aipo/customize/form.js"></script>
@@ -616,6 +606,10 @@ $l10n.SCHEDULE_ALERT_DONOT_REFLECT
 
 #macro(ALajaxbuttonDelete $url $indicator_id $portlet_id $receive)
 	<input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
+#end
+
+#macro(ALajaxbuttonMessageRoomDelete $url $indicator_id $portlet_id $receive)
+    <input name="ajaxbuttonDelete" class="button" type="button" value="$l10n.COMMON_DELETE" onclick="aimluck.io.ajaxMessageRoomDeleteSubmit(this, '$!utils.escapeXML($url)', '$indicator_id', '$portlet_id', $receive);" />
 #end
 
 #macro(ALajaxbuttonClose)
@@ -881,6 +875,10 @@ $item.get(0)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.webmail.hideDialog();" "$link")
 #end
+#macro(ALdialogheaderPrintReport $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.report.hideDialog();" "$link")
+#end
 #macro(ALdialogheaderPrintNote $title $portlet_id $screen $view_date)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.note.hideDialog();" "$link")
@@ -888,6 +886,26 @@ $item.get(0)
 #macro(ALdialogheaderPrintTimeline $title $portlet_id $screen $view_date)
 #set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("view_date","$view_date").addQueryData("userid",""))
 #ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.timeline.hideDialog();" "$link")
+#end
+#macro(ALdialogheaderPrintToDo $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
+#end
+#macro(ALdialogheaderPrintBlog $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
+#end
+#macro(ALdialogheaderPrintProject $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
+#end
+#macro(ALdialogheaderPrintProjectTask $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
+#end
+#macro(ALdialogheaderPrintMsgboard $title $portlet_id $screen $entityid)
+#set($link=$!jslink.getPortletById("$portlet_id").addQueryData("template","$screen").addQueryData("entityid","$entityid"))
+#ALdialogheaderPrintAbstract($title $portlet_id $screen $view_date "" "aipo.common.hideDialog();" "$link")
 #end
 
 #macro(ALdialogheader $title)
@@ -1886,6 +1904,17 @@ $item.get(0)
 </iframe>
 #end
 
+#macro(ACLIFFileUpload)
+#if($result.hasAttachmentInsertAuthority())
+#IFFileUpload()
+#end
+#end
+
+#macro(ACLFileList $record)
+<li data-fileid="s${record.FileId}" data-filename="$!{record.FileName}"><span>$!record.FileName</span>#if($result.hasAttachmentDeleteAuthority())<span class="deletebutton" onclick="aimluck.io.removeFileFromList(this.parentNode.parentNode,this.parentNode);">$l10n.DELETE</span>#end</li>
+#end
+
+
 #macro(AuiInformation $title $text $cookie $flag)
 #if (${flag})
 <div class="auiInfo" id="$!{cookie}"><div class="inner clearfix">
@@ -2121,4 +2150,10 @@ $!{record.Date.Day}
       <img class="avatar" src="themes/default/images/common/icon_user100.png" srcset="themes/default/images/common/icon_user100.png 1x, themes/default/images/common/icon_user100@2x.png 2x" alt="$l10n.ACCOUNT_USER_PHOTO" />
      #end
   #end
- #end
+#end
+
+#macro(ALSelectGroupDummy)
+  #if(${client.equals("IPHONE")} && (${clientVer.equals("9")} || ${clientVer.equals("1")}))
+  <optgroup disabled class="dummy" style="display: none;"></optgroup>
+  #end
+#end

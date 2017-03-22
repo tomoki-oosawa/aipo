@@ -222,10 +222,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
           }
 
         }
-        if (memberList.size() == 0) {
-          login_user.setAuthority("A");
-          memberList.add(login_user);
-        }
         roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
 
         List<FileuploadLiteBean> fileBeanList =
@@ -280,7 +276,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
               .getUserId()
               .getValue());
           if ("O".equals(room.getRoomType())) {
-            login_user_room_auth = false;
+            login_user_room_auth = true;
             isGroup = false;
           }
         }
@@ -331,7 +327,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       }
     }
 
-    if (memberList.size() < 2) {
+    if (memberList.size() < 1) {
       msgList.add(getl10n("MESSAGE_VALIDATE_ROOM_MEMBER1"));
     }
     if (!hasAuthority) {
@@ -374,7 +370,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           .getValue());
 
       if ("O".equals(room.getRoomType())) {
-        login_user_room_auth = false;
+        login_user_room_auth = true;
         isGroup = false;
       }
 
@@ -699,6 +695,17 @@ public class MessageRoomFormData extends ALAbstractFormData {
     ArrayList<FileuploadLiteBean> list = new ArrayList<FileuploadLiteBean>();
     list.add(filebean);
     return list;
+  }
+
+  /**
+   * ファイルアップロードアクセス権限チェック用メソッド。<br />
+   * ファイルアップのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  @Override
+  public boolean isCheckAttachmentAuthority() {
+    return false;
   }
 
 }

@@ -60,6 +60,7 @@ import com.aimluck.eip.orm.query.Operations;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.push.ALPushService;
 import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -439,6 +440,29 @@ public class MessageUtils {
     return new ResultList<EipTMessage>(list, -1, -1, list.size());
   }
 
+  public static EipTMessage getLastMessage(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 1, true, false, true);
+
+    if (lastMessage.size() == 0) {
+      return null;
+    }
+    return lastMessage.get(0);
+
+  }
+
+  public static ResultList<EipTMessage> getLast2Messages(int roomId) {
+    List<Integer> tmpRoomIdList = new ArrayList<Integer>();
+    tmpRoomIdList.add(roomId);
+    ResultList<EipTMessage> lastMessage =
+      MessageUtils.getMessageList(tmpRoomIdList, null, 0, 2, true, false, true);
+
+    return lastMessage;
+
+  }
+
   public static List<Integer> getRoomIds(int userId) {
     StringBuilder select = new StringBuilder();
 
@@ -514,10 +538,10 @@ public class MessageUtils {
     if (isSearch) {
       if (isMySQL) {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT(t4.last_name,t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and CONCAT( (case when t4.login_name='admin' then #bind($alias) else t4.last_name end) ,t4.first_name) like #bind($keyword))) ");
       } else {
         body
-          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and (t4.last_name || t4.first_name) like #bind($keyword))) ");
+          .append(" and ((t2.room_type='G' and t2.name like #bind($keyword)) or (t2.room_type='O' and ( (case when t4.login_name='admin' then #bind($alias) else t4.last_name end) || t4.first_name) like #bind($keyword))) ");
       }
     }
 
@@ -531,6 +555,7 @@ public class MessageUtils {
         .param("user_id", Integer.valueOf(userId));
     if (isSearch) {
       countQuery.param("keyword", "%" + keyword + "%");
+      countQuery.param("alias", ALOrgUtilsService.getAlias());
     }
 
     int countValue = 0;
@@ -566,6 +591,7 @@ public class MessageUtils {
         Integer.valueOf(userId));
     if (isSearch) {
       query.param("keyword", "%" + keyword + "%");
+      query.param("alias", ALOrgUtilsService.getAlias());
     }
 
     List<DataRow> fetchList = query.fetchListAsDataRow();
@@ -711,45 +737,59 @@ public class MessageUtils {
     return new ResultList<TurbineUser>(list, -1, -1, list.size());
   }
 
+  /**
+   * 未読のものがあったら既読にする
+   */
   public static void read(EipTMessageRoom room, int userId, int lastMessageId) {
-    SQLTemplate<EipTMessageRead> countQuery =
-      Database
-        .sql(
-          EipTMessageRead.class,
-          "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
-        .param("room_id", Integer.valueOf(room.getRoomId()))
-        .param("user_id", Integer.valueOf(userId))
-        .param("message_id", Integer.valueOf(lastMessageId));
-
     int countValue = 0;
-    List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+    try {
+      SQLTemplate<EipTMessageRead> countQuery =
+        Database
+          .sql(
+            EipTMessageRead.class,
+            "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
+          .param("room_id", Integer.valueOf(room.getRoomId()))
+          .param("user_id", Integer.valueOf(userId))
+          .param("message_id", Integer.valueOf(lastMessageId));
 
-    for (DataRow row : fetchCount) {
-      countValue = ((Long) row.get("c")).intValue();
-    }
-    if (countValue > 0) {
-      String sql =
-        "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
-      Database.sql(EipTMessageRead.class, sql).param(
-        "room_id",
-        Integer.valueOf(room.getRoomId())).param(
-        "user_id",
-        Integer.valueOf(userId)).param(
-        "message_id",
-        Integer.valueOf(lastMessageId)).execute();
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
 
-      List<String> recipients = new ArrayList<String>();
-      @SuppressWarnings("unchecked")
-      List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
-      for (EipTMessageRoomMember member : members) {
-        if (member.getUserId().intValue() != userId) {
-          recipients.add(member.getLoginName());
-        }
+      for (DataRow row : fetchCount) {
+        countValue = ((Long) row.get("c")).intValue();
       }
-      Map<String, String> params = new HashMap<String, String>();
-      params.put("roomId", String.valueOf(room.getRoomId()));
+    } catch (Throwable ignore) {
+      // ignore
+      logger.error("MessageUtils.read", ignore);
+    }
 
-      ALPushService.pushAsync("messagev2_read", params, recipients);
+    if (countValue > 0) {
+      try {
+        String sql =
+          "update eip_t_message_read set is_read = 'T' where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)";
+        Database.sql(EipTMessageRead.class, sql).param(
+          "room_id",
+          Integer.valueOf(room.getRoomId())).param(
+          "user_id",
+          Integer.valueOf(userId)).param(
+          "message_id",
+          Integer.valueOf(lastMessageId)).execute();
+
+        List<String> recipients = new ArrayList<String>();
+        @SuppressWarnings("unchecked")
+        List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
+        for (EipTMessageRoomMember member : members) {
+          if (member.getUserId().intValue() != userId) {
+            recipients.add(member.getLoginName());
+          }
+        }
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("roomId", String.valueOf(room.getRoomId()));
+
+        ALPushService.pushAsync("messagev2_read", params, recipients);
+      } catch (Throwable ignore) {
+        // ignore
+        logger.error("MessageUtils.read", ignore);
+      }
     }
   }
 

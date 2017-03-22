@@ -1,0 +1,106 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+## ---------------------------------------------------------------------------
+#ALprintformheader()
+#ALprintoptionheader()
+#ALprintoptionfooter()
+
+<script type="text/javascript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+#ALtdcaption($l10n.MSGBOARD_TITLE)
+#ALtditem($!{result.ParentTopic.TopicNameHtml})
+#ALtdcaption($l10n.MSGBOARD_PORTLET_CATEGORY)
+#ALtditem($!result.ParentTopic.CategoryNameHtml)
+#ALtdcaption($l10n.MSGBOARD_AUTHOR)
+#ALtditem($!{result.ParentTopic.OwnerName})
+#ALtdcaption($l10n.MSGBOARD_UPDATE_DATE)
+#ALtditem("$!{result.ParentTopic.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{result.ParentTopic.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{result.ParentTopic.CreateDate.Day}$l10n.MSGBOARD_DATE$!{result.ParentTopic.CreateDate.DayOfWeek}  $!{result.ParentTopic.CreateDate.time}")
+#ALtdcaption($l10n.MSGBOARD_NOTE)
+#ALtditem($!{result.ParentTopic.Note})
+#if($!result.ParentTopic.AttachmentFileList && $!result.ParentTopic.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.MSGBOARD_FILE_ATTACH)
+#ALtditemheader()
+<ul>
+#foreach( $attachmentFile in $!result.ParentTopic.AttachmentFileList )
+<li>$result.getStringCR($attachmentFile.FileNameField)
+#if($attachmentFile.isImage())
+<div id='popc' style='position:absolute'></div>
+<div class="thumbBlock">
+<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", $!{result.ParentTopic.OwnerId}).addQueryData("entityid", $!result.ParentTopic.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+</div>
+#end
+</li>
+#end
+</ul>
+#ALtditemfooter()
+#end
+#ALtablefooter()
+
+<table class="p5" style="margin-top:10px;">
+<colgroup style="width:25%;"></colgroup>
+<colgroup></colgroup>
+<tbody>
+
+#ALtdheadheaderAtt('align="center" colspan="2"')$l10n.MSGBOARD_COMMENT#ALtdheadfooter()
+#if($!result.CoTopicList && $!result.CoTopicList.size() > 0)
+#set($firstCoTopic = true)
+#foreach ($record in $result.CoTopicList)
+#set($firstCoTopic = false)
+<tr>
+#ALtditemheader()
+<div class="alignleft"><strong>$!{record.OwnerName}</strong><br />$!{record.CreateDate.Year}$l10n.MSGBOARD_YEAR$!{record.CreateDate.Month}$l10n.MSGBOARD_MONTH$!{record.CreateDate.Day}$l10n.MSGBOARD_DATE$!{record.CreateDate.DayOfWeek} $!{record.CreateDate.time}</div>
+<div class="alignright">
+</div>
+<div>
+${record.Note}
+#if($!record.AttachmentFileList && $!record.AttachmentFileList.size() > 0)
+<div style="padding-top:15px;">
+<ul>
+#foreach( $attachmentFile in $!record.AttachmentFileList )
+<li>$result.getStringCR($attachmentFile.FileNameField)
+#if($attachmentFile.isImage())
+    <div class="thumbBlock">
+        <img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("MsgboardTopicFileThumbnailScreen").addQueryData("ownerid", ${record.OwnerId}).addQueryData("entityid", $record.TopicId).addQueryData("attachmentIndex", $attachmentFile.FileId)"><br>
+    </div>
+#end
+</li>
+#end
+</ul>
+</div>
+#end
+</div>
+#ALtditemfooter()
+#end
+#end
+#ALtablefooter()
+</div>
+#ALprintformfooter()

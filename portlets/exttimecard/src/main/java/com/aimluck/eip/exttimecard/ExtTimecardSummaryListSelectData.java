@@ -155,8 +155,6 @@ public class ExtTimecardSummaryListSelectData extends
   /** 開始日 */
   private int startDay;
 
-  private Date queryStartDate;
-
   private boolean isNewRule;
 
   /**
@@ -881,8 +879,6 @@ public class ExtTimecardSummaryListSelectData extends
         .getTime());
     query.andQualifier(exp11.andExp(exp12));
 
-    queryStartDate = cal1.getTime();
-
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
@@ -1039,6 +1035,24 @@ public class ExtTimecardSummaryListSelectData extends
       /** タイムカード設定を取得 */
       EipTExtTimecardSystem timecard_system =
         ExtTimecardUtils.getEipTExtTimecardSystemByUserId(user_id);
+
+      /** user毎のstartDayの更新 */
+      int startDay = timecard_system.getStartDay();
+      Calendar tmpCal = Calendar.getInstance();
+      tmpCal.set(Calendar.YEAR, Integer.parseInt(viewMonth.getYear()));
+      tmpCal.set(Calendar.MONTH, Integer.parseInt(viewMonth.getMonth()) - 1);
+      tmpCal.set(Calendar.DAY_OF_MONTH, startDay);
+      tmpCal.set(Calendar.HOUR_OF_DAY, 0);
+      tmpCal.set(Calendar.MINUTE, 0);
+      tmpCal.set(Calendar.SECOND, 0);
+      tmpCal.set(Calendar.MILLISECOND, 0);
+
+      Calendar cal1 = Calendar.getInstance();
+      cal1.setTime(tmpCal.getTime());
+      if (cal1.get(Calendar.DAY_OF_WEEK) > 1) {
+        cal1.add(Calendar.DATE, -(cal1.get(Calendar.DAY_OF_WEEK) - 1));
+      }
+      Date queryStartDate = cal1.getTime();
 
       /**
        * userlistにはユーザー日ごとのタイムカードのResultDataがリストで入っているため、

@@ -51,7 +51,11 @@
         <parameter name="function_image1" value="icon/icon_add.gif" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_caption1" value="Wiki追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.wiki.onLoadWikiDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+        <parameter name="admin_detail_screen" value="WikiAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
         <media-type ref="html"/>
+
         <url cachedOnURL="true"/>
     </portlet-entry>
 </registry>

@@ -43,7 +43,7 @@
 <ul>
 #AUIconfigitem($l10n.EXTTIMECARD_REPORT_SETTING $linkSetting)
 </ul>
-</div>
+</div></div>
 </div>
 #AUISummaryDivfooter()
 <div id="listMessageDiv"></div>

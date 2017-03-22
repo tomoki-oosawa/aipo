@@ -29,7 +29,7 @@ import com.aimluck.eip.common.ALEipUser;
 
 /**
  * アクセス権限を管理する抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALAccessControlHandler {
 

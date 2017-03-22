@@ -29,6 +29,7 @@
 
 #set ($addUser = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserFormScreen").addQueryData("entityid","new")))
 #set ($orderUser = $!jslink.getPortletById($!portlet.ID).addQueryData("template","AccountUserChangeTurnFormScreen"))
+#set ($dlLink = $!utils.escapeXML($jslink.getTemplate('AccountUserCsvExportScreen').addQueryData('target_keyword',$!{result.TargetKeyword.toString()}).addQueryData('current_post',"$!{result.CurrentPost}").addQueryData('current_role',"$!{result.CurrentRole}")))
 
 #if (!$!result.CurrentRole || $!result.CurrentRole == "")
 #set($currentRole = "")
@@ -51,10 +52,6 @@
 <div class="floatLeft">
 #AUIbuttonAction($l10n.ACCOUNT_USER_ADD "javascript:aipo.common.showDialog('$addUser','$!portlet.ID',aipo.account_user.onLoadUserDialog);")
 </div>
-
-##AUIconfigheader($!{portlet.ID} "15em")
-##AUIconfigitem($l10n.ACCOUNT_USER_SORT $orderUser)
-##AUIconfigfooter()
 
 #AUISummaryDivfooter()
 
@@ -112,6 +109,8 @@
 #AUIajaxbuttonCheckboxEnable($l10n.ACCOUNT_MAKE_VALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonCheckboxDisable($l10n.ACCOUNT_MAKE_INVALID "$!jslink.getPortletById($!portlet.ID).addQueryData('template','AccountUserFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.account_user.onListReceiveMessage")
 #AUIajaxbuttonLink($l10n.ACCOUNT_USER_SORT $orderUser)
+#set($title = "$l10n.ACCOUNT_USER_DOWNLOAD")
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.account_user.downloadCsv('$dlLink');" >$title</a>
 </div>
 #AUIajaxpageview('AccountUserListScreen' $result)
 #AUISummaryDivfooter()

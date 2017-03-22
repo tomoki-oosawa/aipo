@@ -18,18 +18,22 @@
  */
 package com.aimluck.eip.schedule;
 
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 詳細スケジュールの検索データを管理するクラスです。
- * 
+ *
  */
 public class ScheduleDetailResultData extends ScheduleResultData {
 
@@ -56,6 +60,9 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /** <code>text</code> テキスト */
   private ALStringField text;
+
+  /** 添付ファイルリスト */
+  private List<FileuploadBean> attachmentFileList = null;
 
   /** <code>is_span</code> 期間スケジュールかどうか */
   boolean is_span;
@@ -92,11 +99,13 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     updateDate =
       new ALDateTimeField(ALLocalizationUtils
         .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
+    // ファイルリスト
+    attachmentFileList = new ArrayList<FileuploadBean>();
   }
 
   /**
    * 内容を取得します。
-   * 
+   *
    * @return
    */
   public String getNote() {
@@ -109,12 +118,17 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 場所を取得します。
-   * 
+   *
    * @return
    */
   @Override
   public ALStringField getPlace() {
     return place;
+  }
+
+  // URLエンコード
+  public String getPlaceEncode() {
+    return URLEncoder.encode(place.toString());
   }
 
   public String getPlaceHtml() {
@@ -123,7 +137,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 内容を取得します。
-   * 
+   *
    * @param string
    */
   public void setNote(String string) {
@@ -132,7 +146,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 場所を設定します。
-   * 
+   *
    * @param string
    */
   @Override
@@ -142,7 +156,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * ユーザーを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getUser() {
@@ -151,7 +165,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * ユーザーを設定します。
-   * 
+   *
    * @param user
    */
   public void setUser(ALEipUser user) {
@@ -160,7 +174,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 作成日を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getCreateDate() {
@@ -169,7 +183,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 登録ユーザーを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getCreateUser() {
@@ -178,7 +192,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 更新日時を取得します。
-   * 
+   *
    * @return
    */
   public ALDateTimeField getUpdateDate() {
@@ -187,7 +201,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 更新ユーザーを取得します。
-   * 
+   *
    * @return
    */
   public ALEipUser getUpdateUser() {
@@ -196,7 +210,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 作成日を設定します。
-   * 
+   *
    * @param date
    */
   public void setCreateDate(Date date) {
@@ -205,7 +219,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 登録ユーザーを設定します。
-   * 
+   *
    * @param user
    */
   public void setCreateUser(ALEipUser user) {
@@ -214,7 +228,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 更新日時を設定します。
-   * 
+   *
    * @param date
    */
   public void setUpdateDate(Date date) {
@@ -223,7 +237,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 更新ユーザーを設定します。
-   * 
+   *
    * @param user
    */
   public void setUpdateUser(ALEipUser user) {
@@ -231,8 +245,28 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
+   * ファイルリストを取得します。
+   *
+   * @return
+   */
+  @Override
+  public List<FileuploadBean> getAttachmentFileList() {
+    return attachmentFileList;
+  }
+
+  /**
+   * ファイルリストを設定します。
+   *
+   * @param list
+   */
+  @Override
+  public void setAttachmentFiles(List<FileuploadBean> list) {
+    attachmentFileList = list;
+  }
+
+  /**
    * 期限があるかどうかを取得します。
-   * 
+   *
    * @return is_limit
    */
   public boolean isLimit() {
@@ -241,7 +275,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 期限があるかどうかを設定します。
-   * 
+   *
    * @param is_limit
    */
   public void setLimit(boolean is_limit) {
@@ -250,7 +284,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 期間スケジュールかどうかを取得します。
-   * 
+   *
    * @return is_span
    */
   public boolean isSpan() {
@@ -259,7 +293,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 期間スケジュールかどうかを設定します。
-   * 
+   *
    * @param is_span
    */
   public void setSpan(boolean is_span) {
@@ -268,7 +302,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * テキストを追加します。
-   * 
+   *
    * @param string
    */
   public void addText(String string) {
@@ -280,7 +314,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * テキストを取得します。
-   * 
+   *
    * @return
    */
   public ALStringField getText() {
@@ -289,7 +323,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 登録ユーザーかどうかのフラグ。
-   * 
+   *
    * @return
    */
   public boolean isCreateuser() {
@@ -298,7 +332,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 登録ユーザーかどうかを設定します。
-   * 
+   *
    * @param is_span
    */
   public void setIsCreateuser(boolean is_createuser) {
@@ -307,7 +341,7 @@ public class ScheduleDetailResultData extends ScheduleResultData {
 
   /**
    * 日付を取得します。
-   * 
+   *
    * @return
    */
   public String getDateForCell() {

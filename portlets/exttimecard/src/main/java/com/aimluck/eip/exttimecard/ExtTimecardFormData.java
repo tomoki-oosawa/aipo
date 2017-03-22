@@ -712,7 +712,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         current_date.setValue(new Date());
 
         // 種類＝出勤を入れる
-        this.type.setValue("P");
+        this.type.setValue(EipTExtTimecard.TYPE_WORK);
         this.punch_date.setValue(current_date.toString());
       }
 
@@ -856,13 +856,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
       // タイプ
       timecard.setType(type.getValue());
-      if ("D".equals(type.getValue())) {
-        timecard.setType("D");
+      if (EipTExtTimecard.TYPE_NO_SELECT.equals(type.getValue())) {
+        timecard.setType(EipTExtTimecard.TYPE_NO_SELECT);
       }
 
       if (edit_mode.equals("punchin")) {
         // 出勤
         timecard.setClockInTime(cal.getTime());
+        timecard.setType(EipTExtTimecard.TYPE_WORK);
       } else if (edit_mode.equals("punchout")) {
         // 退勤
         timecard.setClockOutTime(cal.getTime());
@@ -989,6 +990,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       if (edit_mode.equals("punchin")) {
         // 出勤
         timecard.setClockInTime(cal.getTime());
+        timecard.setType(EipTExtTimecard.TYPE_WORK);
       } else if (edit_mode.equals("punchout")) {
         // 退勤
         timecard.setClockOutTime(cal.getTime());
@@ -1003,8 +1005,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
         // タイプ
         timecard.setType(type.getValue());
-        if ("D".equals(type.getValue())) {
-          timecard.setType("D");
+        if (EipTExtTimecard.TYPE_NO_SELECT.equals(type.getValue())) {
+          timecard.setType(EipTExtTimecard.TYPE_NO_SELECT);
         }
         // 修正理由
         timecard.setReason(reason.getValue());

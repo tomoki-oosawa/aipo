@@ -38,6 +38,7 @@ import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALAbstractSelectData;
@@ -46,6 +47,8 @@ import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -54,6 +57,8 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -82,6 +87,9 @@ public class ScheduleSelectData extends
 
   /** <code>type</code> マップ種別（ユーザ or 設備） */
   private String type;
+
+  /** <code</code> マップ有効性（有効 or 無効） */
+  private String enabledMapsFlag;
 
   /** <code>loginuserid</code> ログインユーザーID */
   private int loginuserid;
@@ -125,6 +133,8 @@ public class ScheduleSelectData extends
 
   private ScheduleDetailOnedaySelectData ondaySelectData = null;
 
+  private boolean isFileUploadable;
+
   /** <code>reminderItem</code> リマインダー */
   private ALReminderItem reminderItem;
 
@@ -166,6 +176,8 @@ public class ScheduleSelectData extends
 
     loginuserid = ALEipUtils.getUserId(rundata);
     statusList = new HashMap<Integer, String>();
+    enabledMapsFlag =
+      ALConfigService.get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED);
 
     if (rundata.getParameters().containsKey("userid")) {
       String tmpid = rundata.getParameters().getString("userid");
@@ -247,6 +259,8 @@ public class ScheduleSelectData extends
     ondaySelectData = new ScheduleDetailOnedaySelectData();
     ondaySelectData.initField();
     ondaySelectData.doSelectList(action, rundata, context);
+
+    isFileUploadable = ALEipUtils.isFileUploadable(rundata);
   }
 
   /**
@@ -273,6 +287,18 @@ public class ScheduleSelectData extends
   protected EipTSchedule selectDetail(RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     return ScheduleUtils.getEipTScheduleDetail(rundata, context, type);
+  }
+
+  private SelectQuery<EipTScheduleFile> getSelectQueryForFiles(int topicid) {
+    SelectQuery<EipTScheduleFile> query =
+      Database.query(EipTScheduleFile.class);
+    Expression exp =
+      ExpressionFactory.matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer
+        .valueOf(topicid));
+    query.setQualifier(exp);
+    query.orderAscending(EipTSchedule.UPDATE_DATE_PROPERTY);
+    query.orderAscending(EipTScheduleFile.FILE_PATH_PROPERTY);
+    return query;
   }
 
   /**
@@ -513,10 +539,17 @@ public class ScheduleSelectData extends
             .toString());
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
-        rd.addText(new StringBuffer().append(
-          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
-          Integer.parseInt(ptn.substring(1, 3))).append(
-          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        if (ptn.substring(1, 3).equals("XX")) {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        } else {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        }
         count = 3;
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
@@ -614,6 +647,35 @@ public class ScheduleSelectData extends
       logger.error("schedule", e);
 
       return null;
+    }
+    if (hasAttachmentAuthority()) {
+      List<EipTScheduleFile> list =
+        getSelectQueryForFiles(record.getScheduleId().intValue()).fetchList();
+      if (list != null && list.size() > 0) {
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
+        FileuploadBean filebean = null;
+        EipTScheduleFile file = null;
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          file = list.get(i);
+          String realname = file.getFileName();
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
+
+          filebean = new FileuploadBean();
+          filebean.setFileId(file.getFileId().intValue());
+          filebean.setFileName(realname);
+          filebean.setUserId(file.getOwnerId());
+          if (hData != null) {
+            filebean.setContentType(hData.getContentType());
+          }
+          filebean.setIsImage(FileuploadUtils.isImage(realname));
+          attachmentFileList.add(filebean);
+        }
+        rd.setAttachmentFiles(attachmentFileList);
+      }
     }
 
     if (ALReminderService.isEnabled()) {
@@ -825,6 +887,10 @@ public class ScheduleSelectData extends
     return !Registry.getEntry(Registry.PORTLET, "ManHour").isHidden();
   }
 
+  public boolean isFileUploadable() {
+    return isFileUploadable;
+  }
+
   public boolean isReminderEnabled() {
     return ALReminderService.isEnabled();
   }
@@ -839,5 +905,9 @@ public class ScheduleSelectData extends
 
   public boolean hasReminderItem() {
     return reminderItem != null ? true : false;
+  }
+
+  public boolean enabledMapsFlag() {
+    return "T".equals(enabledMapsFlag);
   }
 }

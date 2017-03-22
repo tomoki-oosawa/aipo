@@ -102,7 +102,11 @@
 *#
 ##ファイルネーム
 #ALtdcellheaderAtt("class='mb_hide'")
+#if($result.hasAttachmentAuthority())
 <div><a #if("$!{client}"=="IPHONE" || $!record.AcceptInline)target="_blank"#end href="$jslink.getTemplate("CabinetFileRawScreen").addPathInfo("entityid",${record.FileId}).addPathInfo("f",${record.URLEncodedFileName})">$record.WbrFileName</a></div>
+#else
+<div>$record.WbrFileName</div>
+#end
 #ALtdcellfooter()
 ##タイトル
 #ALtdcellheader()
@@ -140,7 +144,7 @@ $l10n.CABINET_NOT_PERMISSION_VIEW
 <div class="menubar multi" id="menubar_auiFilter_$!portlet.ID" style="width:260px;display:none;">
 	<div>
     	<p class="caption">$l10n.CABINET_GROUP</p>
-		<ul class="filtertype_group_$!portlet.ID"data-type="post" data-defaultparam="0">
+		<ul class="filtertype_group_$!portlet.ID" data-type="post" data-defaultparam="0">
 			#set($url = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","CabinetListScreen").addQueryData("post_name","0")))
 			<li data-param="0"><a href="javascript:void(0)" #if("$!result.SelectedPostName"==""||"$!result.SelectedPostName"=="0") class="selected" #end onclick="aipo.cabinet.onChangeGroup('$url','$!portlet.ID','')" >$l10n.CABINET_ALL_GROUP</a></li>
 

@@ -29,11 +29,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
+import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+
+import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
+import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
+import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * サムネイル画像を画像データとして出力するクラスです。 <br />
- * 
+ *
  */
 public class FileuploadThumbnailScreen extends RawScreen {
 
@@ -50,7 +57,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
   private Date lastModified = null;
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -61,7 +68,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected String getFileName() {
@@ -70,7 +77,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
 
   /**
    * ファイル名
-   * 
+   *
    * @return
    */
   protected byte[] getFile() {
@@ -94,7 +101,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @throws Exception
    */
@@ -102,6 +109,9 @@ public class FileuploadThumbnailScreen extends RawScreen {
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
     try {
+      doCheckAttachmentAclPermission(
+        rundata,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
 
       HttpServletResponse response = rundata.getResponse();
 
@@ -138,5 +148,61 @@ public class FileuploadThumbnailScreen extends RawScreen {
         logger.error("FileuploadThumbnailScreen.doOutput", ex);
       }
     }
+  }
+
+  protected boolean doCheckAclPermission(RunData rundata, String pfeature,
+      int defineAclType) throws ALPermissionException {
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    if (!aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      pfeature,
+      defineAclType)) {
+      throw new ALPermissionException();
+    }
+    return true;
+  }
+
+  /**
+   * ファイルのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  protected boolean doCheckAttachmentAclPermission(RunData rundata,
+      int defineAclType) throws ALPermissionException {
+
+    if (defineAclType == 0) {
+      return true;
+    }
+
+    // アクセス権限のチェックをしない場合
+    boolean checkAttachmentAuthority = isCheckAttachmentAuthority();
+    if (!checkAttachmentAuthority) {
+      return true;
+    }
+
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    if (!aclhandler.hasAuthority(
+      ALEipUtils.getUserId(rundata),
+      ALAccessControlConstants.POERTLET_FEATURE_ATTACHMENT,
+      defineAclType)) {
+      throw new ALPermissionException();
+    }
+    return true;
+  }
+
+  /**
+   * ファイルアクセス権限チェック用メソッド。<br />
+   * ファイルのアクセス権限をチェックするかどうかを判定します。
+   *
+   * @return
+   */
+  public boolean isCheckAttachmentAuthority() {
+    return true;
   }
 }

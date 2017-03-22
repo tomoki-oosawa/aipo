@@ -20,6 +20,7 @@ package com.aimluck.eip.modules.actions;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.Cookie;
 
@@ -49,6 +50,7 @@ import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALCellularUtils;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 import com.aimluck.eip.util.ALTimelineUtils;
@@ -223,6 +225,10 @@ public class ALJLoginUser extends ActionEvent {
       }
 
       user = JetspeedSecurity.login(username, password);
+      rundata.getSession().setAttribute(
+        ALEipConstants.LAST_PASSWORD_LOGIN,
+        new Date());
+
       JetspeedSecurity.saveUser(user);
 
       // 運営からのお知らせ用のクッキ−削除
@@ -394,9 +400,23 @@ public class ALJLoginUser extends ActionEvent {
           data.getResponse().addCookie(userName);
           data.getResponse().addCookie(loginCookie);
 
-        }
+          String lastloginValue =
+            ALCommonUtils.encodeBase64(ALCommonUtils.encrypt(JetspeedResources
+              .getString("aipo.cookie.encryptKey", "secureKey"), new Date()
+              .getTime()
+              + ""));
+          if (lastloginValue != null) {
+            Cookie lastlogin = new Cookie("lastlogin", lastloginValue);
+            lastlogin.setMaxAge(maxage);
+            lastlogin.setComment(comment);
+            // lastlogin.setDomain(domain);
+            lastlogin.setPath(path);
+            data.getResponse().addCookie(lastlogin);
+          }
 
+        }
       }
+
       JetspeedLink jsLink = JetspeedLinkFactory.getInstance(rundata);
 
       String redirectUrl = data.getParameters().getString("redirect", "");

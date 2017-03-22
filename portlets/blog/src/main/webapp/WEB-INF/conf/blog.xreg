@@ -61,6 +61,9 @@
         <parameter name="function_caption1" value="記事追加" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="function_after_function1" value="aipo.blog.onLoadBlogDialog" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
+        <parameter name="admin_detail_screen" value="BlogAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+
+
         <media-type ref="html"/>
         <url cachedOnURL="true"/>
     </portlet-entry>

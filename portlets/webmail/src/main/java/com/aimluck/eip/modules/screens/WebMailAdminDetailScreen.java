@@ -24,12 +24,11 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.webmail.WebMailAccountSelectData;
-import com.aimluck.eip.webmail.util.WebMailUtils;
+import com.aimluck.eip.webmail.WebMailAdminSelectData;
 
 /**
  * 管理者用メールアカウントの詳細画面を処理するクラスです。 <br />
- * 
+ *
  */
 public class WebMailAdminDetailScreen extends ALVelocityScreen {
 
@@ -38,25 +37,23 @@ public class WebMailAdminDetailScreen extends ALVelocityScreen {
     .getLogger(WebMailAdminDetailScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
    */
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
-
     try {
-      WebMailAccountSelectData detailData = new WebMailAccountSelectData();
+      WebMailAdminSelectData detailData = new WebMailAdminSelectData();
       detailData.initField();
       detailData.doViewDetail(this, rundata, context);
-      setTemplate(
-        rundata,
-        context,
-        "portlets/html/ajax-webmail-account-detail-admin.vm");
 
+      String layout_template = "portlets/html/ajax-webmail-admin-detail.vm";
+
+      setTemplate(rundata, context, layout_template);
     } catch (Exception ex) {
-      logger.error("[WebMailAdminScreen] Exception.", ex);
+      logger.error("[WebMailAdminDetailScreen] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
@@ -66,7 +63,7 @@ public class WebMailAdminDetailScreen extends ALVelocityScreen {
    */
   @Override
   protected String getPortletName() {
-    return WebMailUtils.WEBMAIL_ADMIN_PORTLET_NAME;
+    // アプリ管理
+    return "GadgetsAdmin";
   }
-
 }

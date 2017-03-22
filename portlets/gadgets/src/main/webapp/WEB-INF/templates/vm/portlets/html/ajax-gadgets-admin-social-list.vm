@@ -1,0 +1,150 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-list-")
+#set ($addApp = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminFormScreen").addQueryData("entityid","new")))
+#set ($linkContainer = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsContainerAdminFormScreen').addQueryData('entityid','edit'))
+#set ($linkPsml = $!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsPsmlFormScreen'))
+#set ($screen = "GadgetsAdminSocialListScreen")
+## ---------------------------------------------------------------------------
+#if(${client}=="IPHONE")
+#AUIcontentsAreaHeader()
+#end
+#AUIwideAreaHeader()
+
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIbuttonAction($l10n.GADGETS_DO_ADD_APP "javascript:aipo.common.showDialog('$addApp','$!portlet.ID',aipo.gadgets_admin.onLoadFormDialog);")
+</div>
+
+
+
+
+<div class="floatRight clearfix relative">
+<div class="floatLeft auiSelectButton">
+<ul>
+#set($tab = [$l10n.GADGETS_VIEWTYPE_STANDARD, "standard","$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="first" style="width:7em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+#set($tab = [$l10n.GADGETS_VIEWTYPE_SOCIAL, "social", "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminSocialListScreen')"])
+<li #if ($tab.get(1) == $!result.Viewtype) class="active"#end><a class="last" style="width:10em;" href="javascript:void(0);" onclick="aipo.viewPage('$!utils.escapeXML($tab.get(2))', '$!portlet.ID');"><span>$tab.get(0)</span></a></li>
+</ul>
+</div>
+<div class="floatRight" style="margin-left: 10px;margin-bottom:10px">
+#AUIconfigheader($!{portlet.ID} "14em")
+#AUIconfigitem($l10n.GADGETS_DO_SET_APPSETTING $linkPsml)
+#AUIconfigitem($l10n.GADGETS_DO_SET_CONTAINER $linkContainer)
+#AUIconfigfooter()
+</div>
+</div>
+#AUISummaryDivfooter()
+
+
+#if(!$!{result.isAdminUser()})
+#if($!{result.getAttachStatus().equals("success")}||$!{result.getDefaultStatus().equals("success")}||$!{result.getAllUserStatus().equals("success")})
+<div class="p spaceBottom">
+#ALcaution($l10n.GADGETS_SUCCEEDED_SETTING)
+</div>
+#elseif($!{result.getAttachStatus().equals("error")}||$!{result.getDefaultStatus().equals("error")}||$!{result.getAllUserStatus().equals("error")})
+<div class="p spaceBottom">
+#ALcaution($l10n.GADGETS_FAILED_SETTING)
+</div>
+#end
+#else
+<div class="p spaceBottom">
+<input type="button" disabled="disabled" value="$action_str">
+<div class="spaceTop caution"><span class="small em">$l10n.GADGETS_USER_HAS_AUTH_MSG</span></div>
+</div>
+#end
+
+#AUISummaryDiv()
+<form class="auiForm floatLeft" action="#" method="post" style="margin-right:1em;" onsubmit="return false;">
+<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="width:180px;">
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","all").addQueryData("filtertype","status"))">$l10n.GADGETS_ALL_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","1").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "1") selected="selected" #end>$l10n.GADGETS_ENABLE_APP</option>
+<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template", $screen).addQueryData("filter","0").addQueryData("filtertype","status"))" #if ($!result.CurrentFilter && $!result.CurrentFilter == "0") selected="selected" #end>$l10n.GADGETS_DISABLE_APP</option>
+</select>
+#ALformfooter()
+<div class="floatLeft ml10" style="padding-top: 0.4em;">#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")</div>
+#AUISummaryDivfooter()
+<div id="listMessageDiv"></div>
+#ALajaxlistformheader($l10n.GADGETS_APP)
+#if($result.List.size() == 0)
+#AUIEmptyMessage("icon-th" "$l10n.GADGETS_EMPTY_APP_MESSAGE")
+#else
+
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")#ALajaxIndicator("${indicator_id}" "$!{portlet.ID}" "")
+</div>
+#AUIajaxpageview(${screen} $result)
+#AUISummaryDivfooter()
+
+<table class="auiRowTable wide">
+<colgroup style="width:20px;">
+</colgroup><colgroup style="width:3em;">
+</colgroup><colgroup>
+</colgroup>
+<tbody>
+<tr>
+#ALtdheadAtt("#ALswitchCheckbox()" "class='auiMTCheck center'")
+#ALtdhead($l10n.GADGETS_STATUS)
+#ALtdhead($l10n.GADGETS_APP_NAME)
+</tr>
+#foreach ($record in $result.List)
+<tr>
+#if($record.Parent == "GadgetsTemplate")
+#set($appId = $!result.getStringNumber($!record.Name))
+#ALtdcellAtt("<input name='check$!appId' type='checkbox' value='$!appId'/>" 'align="center"  class="auiMTCheck"')
+#else
+#ALtdcellAtt("" "")
+#end
+#if($record.Type == "active")
+#ALtdcellAtt($l10n.GADGETS_ENABLE 'class="center" nowrap="nowrap"')
+#else
+#ALtdcellAtt($l10n.GADGETS_DISABLE 'class="center" nowrap="nowrap"')
+#end
+#if($record.Parent == "GadgetsTemplate")
+#set($appId = $!result.getStringNumber($!record.Name))
+#ALtdcellheader()
+<div>
+<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","GadgetsAdminDetailScreen").addQueryData("entityid",$!appId))');">$!record.Title</a>
+</div>
+#ALtdcellfooter()
+#else
+#ALtdcellAtt("<div>$record.Title</div>" '')
+#end
+</tr>
+#end
+#ALtablefooter()
+#AUISummaryDiv()
+<div class="floatLeft">
+#AUIajaxbuttonCheckboxDelete("$l10n.COMMON_DELETE" "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_delete')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxEnable($l10n.GADGETS_DO_ENABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_enable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+#AUIajaxbuttonCheckboxDisable($l10n.GADGETS_DO_DISABLE "$!jslink.getPortletById($!portlet.ID).addQueryData('template','GadgetsAdminFormJSONScreen').addQueryData('mode','multi_disable')" "${indicator_id}" "$!portlet.ID" "aipo.gadgets_admin.onReceiveMessage")
+</div>
+#AUIajaxpageview($screen $result)
+#AUISummaryDivfooter()
+#ALformfooter()
+#end
+#AUIwideAreaFooter()
+#if(${client}=="IPHONE")
+#AUIcontentsAreaFooter()
+#end

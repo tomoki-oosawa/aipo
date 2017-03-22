@@ -130,12 +130,31 @@ public class BlogUtils {
   public static final String BLOG_PORTLET_NAME = "Blog";
 
   /**
+   * エントリーオブジェクトのIDを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   * @throws ALDBErrorException
+   */
+  public static Integer getEipTBlogEntryId(RunData rundata, Context context) {
+    String entryid =
+      ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
+    Integer id = null;
+    if (entryid == null || (id = Integer.valueOf(entryid)) == null) {
+      // Todo IDが空の場合
+      logger.debug("[Blog Entry] Empty ID...");
+      return null;
+    } else {
+      return id;
+    }
+  }
+
+  /**
    * エントリーオブジェクトモデルを取得します。 <BR>
    *
    * @param rundata
    * @param context
-   * @param isJoin
-   *          テーマテーブルをJOINするかどうか
    * @return
    * @throws ALDBErrorException
    */
@@ -858,7 +877,7 @@ public class BlogUtils {
   }
 
   public static void createNewBlogActivity(EipTBlogEntry blog,
-      String loginName, boolean isNew) {
+      String loginName, int loginId, boolean isNew) {
     ALActivity RecentActivity =
       ALActivity.getRecentActivity("Blog", blog.getEntryId(), 0f);
     boolean isDeletePrev =
@@ -875,7 +894,7 @@ public class BlogUtils {
     ALActivityService.create(new ALActivityPutRequest()
       .withAppId("Blog")
       .withLoginName(loginName)
-      .withUserId(blog.getOwnerId())
+      .withUserId(loginId)
       .withPortletParams(portletParams)
       .withTitle(title)
       .withPriority(0f)
@@ -1123,11 +1142,19 @@ public class BlogUtils {
    * @return
    */
   public static SelectQuery<EipTBlogEntry> buildSelectQueryForBlogFilter(
-      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context) {
+      SelectQuery<EipTBlogEntry> query, RunData rundata, Context context,
+      boolean hasBlogOtherAclList) {
 
     // 所有者
     String ownerId = BlogUtils.getOwnerId(rundata, context);
-    if (!ownerId.equals("all")) {
+
+    if (!hasBlogOtherAclList) {
+      Expression exp =
+        ExpressionFactory.matchDbExp(EipTBlogEntry.OWNER_ID_COLUMN, ALEipUtils
+          .getUserId(rundata));
+      query.andQualifier(exp);
+
+    } else if (!ownerId.equals("all")) {
       Expression exp =
         ExpressionFactory.matchDbExp(EipTBlogEntry.OWNER_ID_COLUMN, ownerId);
       query.andQualifier(exp);

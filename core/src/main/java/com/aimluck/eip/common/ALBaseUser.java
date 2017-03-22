@@ -540,4 +540,13 @@ public class ALBaseUser extends
   public void setCode(String code) {
     setPerm(CODE, code);
   }
+
+  @Override
+  public Date getPasswordChanged() {
+    try {
+      return super.getPasswordChanged();
+    } catch (ClassCastException ignore) {
+      return null;
+    }
+  }
 }

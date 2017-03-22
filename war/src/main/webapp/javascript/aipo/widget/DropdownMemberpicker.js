@@ -22,7 +22,6 @@ dojo._hasResource["aipo.widget.DropdownMemberpicker"] = true;
 dojo.provide("aipo.widget.DropdownMemberpicker");
 
 dojo.require("aimluck.widget.Dropdown");
-dojo.require("aipo.widget.MemberSelectList");
 
 /**
  * ex)
@@ -96,8 +95,6 @@ dojo.declare("aipo.widget.DropdownMemberpicker", [aimluck.widget.Dropdown], {
         this.removeAllOptions(select);
         select = dojo.byId(listWidget.memberToId);
         this.removeAllOptions(select);
-      }else{
-        this.dropDown = new aipo.widget.MemberSelectList(userparams, this.listWidgetId);
       }
 
       this.inherited(arguments);

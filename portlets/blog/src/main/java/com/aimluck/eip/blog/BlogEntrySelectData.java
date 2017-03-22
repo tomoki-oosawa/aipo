@@ -58,7 +58,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * ブログエントリー検索データを管理するクラスです。 <BR>
- * 
+ *
  */
 public class BlogEntrySelectData extends
     ALAbstractSelectData<EipTBlogEntry, EipTBlogEntry> implements ALData {
@@ -97,6 +97,9 @@ public class BlogEntrySelectData extends
 
   private boolean other_comment_deletable;
 
+  /** アクセス権限の機能名（ブログ（他ユーザの記事））の一覧権限を持っているか **/
+  private boolean hasBlogOtherAclList;
+
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
@@ -113,7 +116,7 @@ public class BlogEntrySelectData extends
   private final List<Integer> users = new ArrayList<Integer>();
 
   /**
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -188,10 +191,18 @@ public class BlogEntrySelectData extends
         context,
         ALAccessControlConstants.VALUE_ACL_DELETE,
         ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_REPLY);
+
+    // 他人の記事の一覧表示権限
+    hasBlogOtherAclList =
+      BlogUtils.checkPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST,
+        ALAccessControlConstants.POERTLET_FEATURE_BLOG_ENTRY_OTHER);
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -202,7 +213,7 @@ public class BlogEntrySelectData extends
 
   /**
    * 一覧データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -228,24 +239,30 @@ public class BlogEntrySelectData extends
 
   /**
    * 検索条件を設定した SelectQuery を返します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
    */
   private SelectQuery<EipTBlogEntry> getSelectQuery(RunData rundata,
       Context context) {
+
     SelectQuery<EipTBlogEntry> query = Database.query(EipTBlogEntry.class);
 
     // ユーザ絞り込み
-    query = BlogUtils.buildSelectQueryForBlogFilter(query, rundata, context);
+    query =
+      BlogUtils.buildSelectQueryForBlogFilter(
+        query,
+        rundata,
+        context,
+        hasBlogOtherAclList);
     query.orderDesending(EipTBlogEntry.CREATE_DATE_PROPERTY);
     return buildSelectQueryForFilter(query, rundata, context);
   }
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -303,7 +320,7 @@ public class BlogEntrySelectData extends
 
   /**
    * 詳細データを取得します。 <BR>
-   * 
+   *
    * @param rundata
    * @param context
    * @return
@@ -321,7 +338,7 @@ public class BlogEntrySelectData extends
 
   /**
    * ResultData に値を格納して返します。（詳細データ） <BR>
-   * 
+   *
    * @param obj
    * @return
    */
@@ -379,39 +396,42 @@ public class BlogEntrySelectData extends
         }
       }
 
-      SelectQuery<EipTBlogFile> filequery = Database.query(EipTBlogFile.class);
-      Expression fileexp =
-        ExpressionFactory.matchDbExp(EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY
-          + "."
-          + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
-      filequery.setQualifier(fileexp);
-      filequery.orderAscending(EipTBlogFile.UPDATE_DATE_PROPERTY);
-      filequery.orderAscending(EipTBlogFile.FILE_PATH_PROPERTY);
-      List<EipTBlogFile> files = filequery.fetchList();
+      if (hasAttachmentAuthority()) {
+        SelectQuery<EipTBlogFile> filequery =
+          Database.query(EipTBlogFile.class);
+        Expression fileexp =
+          ExpressionFactory.matchDbExp(EipTBlogFile.EIP_TBLOG_ENTRY_PROPERTY
+            + "."
+            + EipTBlogEntry.ENTRY_ID_PK_COLUMN, record.getEntryId());
+        filequery.setQualifier(fileexp);
+        filequery.orderAscending(EipTBlogFile.UPDATE_DATE_PROPERTY);
+        filequery.orderAscending(EipTBlogFile.FILE_PATH_PROPERTY);
+        List<EipTBlogFile> files = filequery.fetchList();
 
-      if (files != null && files.size() > 0) {
-        List<FileuploadBean> attachmentFileList =
-          new ArrayList<FileuploadBean>();
-        FileuploadBean filebean = null;
-        int size = files.size();
-        for (int i = 0; i < size; i++) {
-          EipTBlogFile file = files.get(i);
+        if (files != null && files.size() > 0) {
+          List<FileuploadBean> attachmentFileList =
+            new ArrayList<FileuploadBean>();
+          FileuploadBean filebean = null;
+          int size = files.size();
+          for (int i = 0; i < size; i++) {
+            EipTBlogFile file = files.get(i);
 
-          String realname = file.getTitle();
-          javax.activation.DataHandler hData =
-            new javax.activation.DataHandler(
-              new javax.activation.FileDataSource(realname));
+            String realname = file.getTitle();
+            javax.activation.DataHandler hData =
+              new javax.activation.DataHandler(
+                new javax.activation.FileDataSource(realname));
 
-          filebean = new FileuploadBean();
-          filebean.setFileId(file.getFileId());
-          filebean.setFileName(realname);
-          if (hData != null) {
-            filebean.setContentType(hData.getContentType());
+            filebean = new FileuploadBean();
+            filebean.setFileId(file.getFileId());
+            filebean.setFileName(realname);
+            if (hData != null) {
+              filebean.setContentType(hData.getContentType());
+            }
+            filebean.setIsImage(FileuploadUtils.isImage(realname));
+            attachmentFileList.add(filebean);
           }
-          filebean.setIsImage(FileuploadUtils.isImage(realname));
-          attachmentFileList.add(filebean);
+          rd.setAttachmentFiles(attachmentFileList);
         }
-        rd.setAttachmentFiles(attachmentFileList);
       }
 
       if (record.getOwnerId().intValue() == uid) {
@@ -430,7 +450,7 @@ public class BlogEntrySelectData extends
   }
 
   /**
-   * 
+   *
    * @return
    */
   public List<BlogThemaResultData> getThemaList() {
@@ -451,7 +471,7 @@ public class BlogEntrySelectData extends
 
   /**
    * エントリーの総数を返す． <BR>
-   * 
+   *
    * @return
    */
   public int getEntrySum() {
@@ -460,7 +480,7 @@ public class BlogEntrySelectData extends
 
   /**
    * @return
-   * 
+   *
    */
   @Override
   protected Attributes getColumnMap() {
@@ -478,7 +498,7 @@ public class BlogEntrySelectData extends
   }
 
   /**
-   * 
+   *
    * @param id
    * @return
    */
@@ -542,10 +562,14 @@ public class BlogEntrySelectData extends
     return comment_deletable;
   }
 
+  public boolean hasBlogOtherAclList() {
+    return hasBlogOtherAclList;
+  }
+
   /**
    * アクセス権限チェック用メソッド。<br />
    * アクセス権限の機能名を返します。
-   * 
+   *
    * @return
    */
   @Override

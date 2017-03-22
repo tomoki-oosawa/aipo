@@ -229,7 +229,7 @@ public class CellScheduleFormBean implements ALData {
     month_day = new ALCellNumberField();
     month_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_MONTH_DAY"));
-    month_day.limitValue(1, 31);
+    month_day.limitValue(1, 32);
 
     // 毎年繰り返し月（選択されたときのみ Validate する）
     year_month = new ALCellNumberField();
@@ -241,7 +241,7 @@ public class CellScheduleFormBean implements ALData {
     year_day = new ALCellNumberField();
     year_day.setFieldName(ALLocalizationUtils
       .getl10n("SCHEDULE_SETFIELDNAME_EVERY_YEAR_DAY"));
-    year_day.limitValue(1, 31);
+    year_day.limitValue(1, 32);
 
     // 繰り返しフラグ
     limit_flag = new ALCellStringField();
@@ -363,7 +363,11 @@ public class CellScheduleFormBean implements ALData {
       count = 9;
     } else if (ptn.charAt(0) == 'M') {
       repeat_type.setValue("M");
-      month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      if (ptn.substring(1, 3).equals("XX")) {
+        month_day.setValue(32);
+      } else {
+        month_day.setValue(Integer.parseInt(ptn.substring(1, 3)));
+      }
       count = 3;
     } else if (ptn.charAt(0) == 'Y') {
       repeat_type.setValue("Y");

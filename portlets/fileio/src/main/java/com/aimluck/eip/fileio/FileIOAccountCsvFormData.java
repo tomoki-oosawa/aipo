@@ -499,6 +499,10 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     if (!code.validate(msgList)) {
       code.setValue(null);
+    } else {
+      if ((!"".equals(code.toString())) && (isDuplicateCode())) {
+        msgList.add(ALLocalizationUtils.getl10n("FILEIO_EXIST_SAME_NAME_CODE"));
+      }
     }
 
     return (msgList.size() == 0);
@@ -547,6 +551,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
 
     boolean res = true;
     try {
+      Date now = new Date();
       boolean isNewUser = false;
       ALBaseUser user = null;
       try {
@@ -566,23 +571,22 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
           .getValue()));
         // JetspeedSecurity.forcePassword(user, password.getValue());
         user.setPassword(password.getValue());
+        user.setPasswordChanged(now);
         isNewUser = true;
+        user.setCreated(now);
+        user.setLastLogin(now);
       }
 
-      Date now = new Date();
       // 作成日
       // 以下のメソッドは動作しないため、ALBaseUserにてオーバーライド
       // user.setCreateDate(now);
       // JetspeedSecurity.forcePassword(user, password.getValue());
-      user.setCreated(now);
       user.setModified(now);
-      user.setLastLogin(now);
       user.setCreatedUserId(ALEipUtils.getUserId(rundata));
       user.setUpdatedUserId(ALEipUtils.getUserId(rundata));
       user.setConfirmed(JetspeedResources.CONFIRM_VALUE);
       user.setDisabled("F");
       // user.setPassword(password.getValue());
-      user.setPasswordChanged(now);
       user.setInTelephone(in_telephone.getValue());
       user.setOutTelephone(out_telephone.getValue());
       user.setCellularPhone(cellular_phone.getValue());
@@ -1189,6 +1193,7 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
         break;
       case 13:
         setCode(token);
+        break;
       default:
         break;
     }
@@ -1216,6 +1221,43 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
       // throw new ALDBErrorException();
     }
     return map;
+  }
+
+  /**
+   * 社員コードが重複しているかどうか
+   *
+   * @return
+   */
+  private boolean isDuplicateCode() {
+    if (code.getValue() == null || code.getValue().equals("")) {
+      // 設定する社員コードがない場合は重複していない
+      return false;
+    }
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
+    query.setQualifier(exp);
+    List<TurbineUser> list = query.fetchList();
+
+    if (list == null || list.size() == 0) {
+      // 社員コードがなければ重複していない
+      return false;
+    }
+
+    if (username.getValue() == null) {
+      return false;
+    }
+
+    for (TurbineUser user : list) {
+      if (!user.getDisabled().equals("T")
+        && !user.getLoginName().equals(username.getValue())) {
+        // 削除済みでなく、かつ同じユーザーでもない場合は重複している
+        return true;
+      }
+    }
+
+    return false;
+
   }
 
   public boolean isSkipUsernameValidation() {

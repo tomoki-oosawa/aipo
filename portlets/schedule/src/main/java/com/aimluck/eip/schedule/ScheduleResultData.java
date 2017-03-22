@@ -18,12 +18,15 @@
  */
 package com.aimluck.eip.schedule;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALData;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -41,6 +44,9 @@ public class ScheduleResultData implements ALData, Cloneable {
 
   /** <code>type</code> 設備かどうか */
   private ALStringField type;
+
+  /** 添付ファイルリスト */
+  private List<FileuploadBean> attachmentFileList = null;
 
   /** <code>start_date</code> 開始時間 */
   private ALDateTimeField start_date;
@@ -129,6 +135,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     start_date = new ALDateTimeField(format);
     end_date = new ALDateTimeField(format);
     common_category_name = new ALStringField();
+    attachmentFileList = new ArrayList<FileuploadBean>();
     is_owner = true;
     is_tmpreserve = false;
     is_duplicate = false;
@@ -306,6 +313,24 @@ public class ScheduleResultData implements ALData, Cloneable {
    */
   public void setParentId(int number) {
     parent_id.setValue(number);
+  }
+
+  /**
+   * ファイルリストを取得します。
+   *
+   * @return
+   */
+  public List<FileuploadBean> getAttachmentFileList() {
+    return attachmentFileList;
+  }
+
+  /**
+   * ファイルリストを設定します。
+   *
+   * @param list
+   */
+  public void setAttachmentFiles(List<FileuploadBean> list) {
+    attachmentFileList = list;
   }
 
   /**

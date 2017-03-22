@@ -18,9 +18,5 @@
  *#
 ## ---------------------------------------------------------------------------
 #set($career = 'wm')
-<<<<<<< HEAD
 #parse("/portlets/smartphone_default/msgboard-reply-form.vm")
-=======
-#parse("/portlets/smartphone_default/msgboard-reply-form.vm")
->>>>>>> refs/remotes/origin/features/refactor-template-ja
 

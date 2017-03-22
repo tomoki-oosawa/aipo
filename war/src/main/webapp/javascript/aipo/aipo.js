@@ -276,11 +276,19 @@ aipo.userAgent={
 		return this.__userAgent.match(/android ([\d]+)\.([\d]+)\.([\d]+)/);
 	},
 	iphoneVersion:function(){
-		return this.__userAgent.match(/iphone os ([\d]+)_([\d]+)_([\d]+)/);
+		var version = this.__userAgent.match(/iphone os ([\d]+)_([\d]+)_([\d]+)/);
+		if(!version){
+			version = this.__userAgent.match(/iphone os ([\d]+)_([\d]+)/);
+		}
+		return version;
 	},
 	isIphone8_4_1:function(){
 		var version = this.iphoneVersion();
 		return !!version && version[1]==8 && version[2]==4 && version[3]==1;
+	},
+	isIphone9or10:function(){
+		var version = this.iphoneVersion();
+		return !!version && (version[1]==9 || version[1]==10);
 	},
 	isIphone:function(){
 		return this.__userAgent.indexOf("iphone") > -1;

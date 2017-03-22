@@ -51,6 +51,9 @@ public class EipTExtTimecard extends _EipTExtTimecard {
   /** タイプ「その他」 */
   public static final String TYPE_ETC = "E";
 
+  /** タイプ「未選択」　 */
+  public static final String TYPE_NO_SELECT = "D";
+
   public Integer getExtTimecardId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(TIMECARD_ID_PK_COLUMN);
@@ -72,7 +75,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 番号を指定して外出時間を設定
-   * 
+   *
    * @param date
    * @param num
    */
@@ -94,7 +97,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 番号を指定して復帰時間を設定
-   * 
+   *
    * @param date
    * @param num
    */
@@ -116,7 +119,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 番号を指定して外出時間を取得
-   * 
+   *
    * @param date
    * @param num
    */
@@ -138,7 +141,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 番号を指定して復帰時間を取得
-   * 
+   *
    * @param date
    * @param num
    */
@@ -160,7 +163,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 外出時間を設定します。
-   * 
+   *
    * @param date
    */
   public void setNewOutgoingTime(Date date) {
@@ -175,7 +178,7 @@ public class EipTExtTimecard extends _EipTExtTimecard {
 
   /**
    * 復帰時間を設定します。
-   * 
+   *
    * @param date
    */
   public void setNewComebackTime(Date date) {

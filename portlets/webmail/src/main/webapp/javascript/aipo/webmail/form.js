@@ -363,6 +363,9 @@ aipo.webmail.createSelect = function(selectid, divid, url, keyname, keymail, sel
             } else {
                 html += pre;
             }
+            if (aipo.userAgent.isIphone9or10()){
+            	html += '<optgroup disabled class="dummy" style="display: none;"></optgroup>';
+            }
             dojo.forEach(respodatanse, function(p) {
                 if(typeof p[keyname] == "undefined" || typeof p[keymail] == "undefined") {
                 } else {

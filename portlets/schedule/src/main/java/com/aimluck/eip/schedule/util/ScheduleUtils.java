@@ -18,8 +18,11 @@
  */
 package com.aimluck.eip.schedule.util;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.lang.reflect.Field;
@@ -37,7 +40,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.cayenne.DataRow;
@@ -79,12 +84,15 @@ import com.aimluck.commons.field.ALIllegalDateException;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALDateUtil;
+import com.aimluck.commons.utils.ALDeleteFileUtil;
 import com.aimluck.eip.category.util.CommonCategoryUtils;
 import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.EipTCommonCategory;
 import com.aimluck.eip.cayenne.om.portlet.EipTSchedule;
+import com.aimluck.eip.cayenne.om.portlet.EipTScheduleFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
+import com.aimluck.eip.cayenne.om.portlet.auto._EipTSchedule;
 import com.aimluck.eip.cayenne.om.security.TurbineUser;
 import com.aimluck.eip.common.ALActivity;
 import com.aimluck.eip.common.ALBaseUser;
@@ -92,9 +100,15 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALEipUser;
+import com.aimluck.eip.common.ALFileNotRemovedException;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.fileupload.beans.FileuploadBean;
+import com.aimluck.eip.fileupload.beans.FileuploadLiteBean;
+import com.aimluck.eip.fileupload.util.FileuploadUtils;
+import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
+import com.aimluck.eip.http.HttpServletRequestLocator;
 import com.aimluck.eip.mail.util.ALMailUtils;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.ResultList;
@@ -114,6 +128,8 @@ import com.aimluck.eip.schedule.ScheduleToDoWeekContainer;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.orgutils.ALOrgUtilsService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderNotifyType;
@@ -121,12 +137,14 @@ import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
 import com.aimluck.eip.services.social.ALActivityService;
 import com.aimluck.eip.services.social.model.ALActivityPutRequest;
+import com.aimluck.eip.services.storage.ALStorageService;
 import com.aimluck.eip.user.beans.UserLiteBean;
 import com.aimluck.eip.user.util.UserUtils;
 import com.aimluck.eip.userfacility.beans.UserFacilityLiteBean;
 import com.aimluck.eip.util.ALCellularUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
+import com.aimluck.eip.whatsnew.util.WhatsNewUtils;
 
 /**
  * スケジュールのユーティリティクラスです。
@@ -143,6 +161,20 @@ public class ScheduleUtils {
 
   /** <code>SCHEDULEMAP_TYPE_FACILITY</code> 設備 */
   public static final String SCHEDULEMAP_TYPE_FACILITY = "F";
+
+  /** スケジュールの添付ファイルを保管するディレクトリの指定 */
+  public static final String FOLDER_FILEDIR_SCHEDULE = JetspeedResources
+    .getString("aipo.filedir", "");
+
+  /** スケジュールの添付ファイルを保管するディレクトリのカテゴリキーの指定 */
+  public static final String CATEGORY_KEY = JetspeedResources.getString(
+    "aipo.schedule.categorykey",
+    "");
+
+  /** デフォルトエンコーディングを表わすシステムプロパティのキー */
+  public static final String FILE_ENCODING = JetspeedResources.getString(
+    "content.defaultencoding",
+    "UTF-8");
 
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
@@ -312,7 +344,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * Scheudle オブジェクトモデルを取得します。
+   * Schedule オブジェクトモデルを取得します。
    *
    * @param rundata
    * @param context
@@ -469,7 +501,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * ツールチップ表示用の Scheudle オブジェクトモデルを取得する．
+   * ツールチップ表示用の Schedule オブジェクトモデルを取得する．
    *
    * @param rundata
    * @param context
@@ -521,7 +553,7 @@ public class ScheduleUtils {
   }
 
   /**
-   * 詳細表示用の Scheudle オブジェクトモデルを取得する．
+   * 詳細表示用の Schedule オブジェクトモデルを取得する．
    *
    * @param rundata
    * @param context
@@ -861,6 +893,45 @@ public class ScheduleUtils {
   }
 
   /**
+   * ファイルオブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static EipTScheduleFile getEipTScheduleFile(RunData rundata)
+      throws ALPageNotFoundException, ALDBErrorException {
+    try {
+      int attachmentIndex =
+        rundata.getParameters().getInt("attachmentIndex", -1);
+      if (attachmentIndex < 0) {
+        // ID が空の場合
+        logger.debug("[ScheduleUtils] Empty ID...");
+        throw new ALPageNotFoundException();
+
+      }
+
+      SelectQuery<EipTScheduleFile> query =
+        Database.query(EipTScheduleFile.class);
+      Expression exp =
+        ExpressionFactory.matchDbExp(
+          EipTScheduleFile.FILE_ID_PK_COLUMN,
+          Integer.valueOf(attachmentIndex));
+      query.andQualifier(exp);
+      List<EipTScheduleFile> files = query.fetchList();
+      if (files == null || files.size() == 0) {
+        // 指定した ID のレコードが見つからない場合
+        logger.debug("[ScheduleUtils] Not found ID...");
+        throw new ALPageNotFoundException();
+      }
+      return files.get(0);
+    } catch (Exception ex) {
+      logger.error("[ScheduleUtils]", ex);
+      throw new ALDBErrorException();
+    }
+  }
+
+  /**
    * 設備メンバーを取得します。
    *
    * @param rundata
@@ -958,7 +1029,12 @@ public class ScheduleUtils {
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      int mday = Integer.parseInt(ptn.substring(1, 3));
+      int mday;
+      if (ptn.substring(1, 3).equals("XX")) {
+        mday = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        mday = Integer.parseInt(ptn.substring(1, 3));
+      }
       result = Integer.parseInt(date.getDay()) == mday;
       count = 3;
     } else if (ptn.charAt(0) == 'Y') {
@@ -2112,7 +2188,6 @@ public class ScheduleUtils {
       throws ALDBErrorException, ALPageNotFoundException {
 
     int YEAR_FIRST = 2004;
-    int YEAR_END = 2016;
     boolean dayexist = true;
 
     switch ((int) year_month.getValue()) {
@@ -2181,12 +2256,11 @@ public class ScheduleUtils {
     // 開始日時
     start_date.validate(msgList);
     int startyear = startDate.get(Calendar.YEAR);
-    if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
+    if ((startyear < YEAR_FIRST) && isCellPhone) {
       // 携帯画面用条件
       msgList.add(ALLocalizationUtils.getl10nFormat(
         "SCHEDULE_MESSAGE_SELECT_RIGHT_START_DATE",
-        YEAR_FIRST,
-        YEAR_END));
+        YEAR_FIRST));
     }
     if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
@@ -2197,12 +2271,11 @@ public class ScheduleUtils {
     // 終了日時
     end_date.validate(msgList);
     int endyear = endDate.get(Calendar.YEAR);
-    if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
+    if ((endyear < YEAR_FIRST) && isCellPhone) {
       // 携帯画面用条件
       msgList.add(ALLocalizationUtils.getl10nFormat(
-        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
-        YEAR_FIRST,
-        YEAR_END));
+        "SCHEDULE_MESSAGE_SELECT_RIGHT_END_DATE",
+        YEAR_FIRST));
     }
     if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
@@ -2300,20 +2373,18 @@ public class ScheduleUtils {
             Calendar limitStartDate = Calendar.getInstance();
             limitStartDate.setTime(limit_start_date.getValue().getDate());
             int limitstartyear = limitStartDate.get(Calendar.YEAR);
-            if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)) {
+            if ((limitstartyear < YEAR_FIRST)) {
               msgList.add(ALLocalizationUtils.getl10nFormat(
                 "SCHEDULE_MESSAGE_SELECT_START_DATE_IN_THIS_TERM",
-                YEAR_FIRST,
-                YEAR_END));
+                YEAR_FIRST));
             }
             Calendar limitEndDate = Calendar.getInstance();
             limitEndDate.setTime(limit_end_date.getValue().getDate());
             int limitendyear = limitEndDate.get(Calendar.YEAR);
-            if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)) {
+            if ((limitendyear < YEAR_FIRST)) {
               msgList.add(ALLocalizationUtils.getl10nFormat(
                 "SCHEDULE_MESSAGE_SELECT_END_DATE_IN_THIS_TERM",
-                YEAR_FIRST,
-                YEAR_END));
+                YEAR_FIRST));
             }
           }
 
@@ -2371,9 +2442,18 @@ public class ScheduleUtils {
             }
           } else if ("M".equals(repeat_type.getValue())) {
             DecimalFormat format = new DecimalFormat("00");
-            repeat_pattern =
-              new StringBuffer().append('M').append(
-                format.format(month_day.getValue())).append(lim).toString();
+            if (32 == month_day.getValue()) {
+              repeat_pattern =
+                new StringBuffer()
+                  .append('M')
+                  .append("XX")
+                  .append(lim)
+                  .toString();
+            } else {
+              repeat_pattern =
+                new StringBuffer().append('M').append(
+                  format.format(month_day.getValue())).append(lim).toString();
+            }
             date_count = 1;
           } else {
             DecimalFormat format = new DecimalFormat("00");
@@ -2958,8 +3038,8 @@ public class ScheduleUtils {
    *
    * @return
    */
-  public static String createMsgForPc(RunData rundata, EipTSchedule schedule,
-      List<ALEipUser> memberList, String mode) {
+  public static String createMsg(RunData rundata, EipTSchedule schedule,
+      List<ALEipUser> memberList, Integer destUserID, String mode) {
     boolean enableAsp = JetspeedResources.getBoolean("aipo.asp", false);
     ALEipUser loginUser = null;
     ALBaseUser user = null;
@@ -3032,118 +3112,29 @@ public class ScheduleUtils {
       context
         .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
 
-      if (enableAsp) {
-        context.put("globalUrl1", ALMailUtils.getGlobalurl());
-      } else {
-        context.put("outsideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
-        context.put("globalurl2", ALMailUtils.getGlobalurl());
-        context.put("insideOffice", ALLocalizationUtils
-          .getl10n("SCHEDULE_INSIDE_OFFICE"));
-        context.put("globalUrl3", ALMailUtils.getLocalurl());
-      }
-
-      out = new StringWriter();
-      service.handleRequest(context, "mail/createSchedule.vm", out);
-      out.flush();
-      return out.toString();
-    } catch (IllegalArgumentException e) {
-
-    } catch (Exception e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
-    } finally {
-      if (out != null) {
+      if (destUserID != null) {
+        ALEipUser destUser;
         try {
-          out.close();
-        } catch (IOException e) {
-          // ignore
+          destUser = ALEipUtils.getALEipUser(destUserID);
+        } catch (ALDBErrorException ex) {
+          logger.error("schedule", ex);
+          return "";
         }
-      }
-    }
-    return null;
-  }
-
-  /**
-   * 携帯電話へ送信するメールの内容を作成する．
-   *
-   * @return
-   */
-  public static String createMsgForCellPhone(RunData rundata,
-      EipTSchedule schedule, List<ALEipUser> memberList, int destUserID,
-      String mode) {
-    ALEipUser loginUser = null;
-    ALBaseUser user = null;
-    String date_detail = "";
-    try {
-      loginUser = ALEipUtils.getALEipUser(rundata);
-      user =
-        (ALBaseUser) JetspeedSecurity.getUser(new UserIdPrincipal(loginUser
-          .getUserId()
-          .toString()));
-      date_detail = getMsgDate(schedule);
-    } catch (Exception e) {
-      return "";
-    }
-
-    StringWriter out = null;
-    try {
-      VelocityService service =
-        (VelocityService) ((TurbineServices) TurbineServices.getInstance())
-          .getService(VelocityService.SERVICE_NAME);
-      Context context = service.getContext();
-
-      context.put("userName", loginUser.getAliasName().toString());
-      context.put("mailAddress", user.getEmail());
-      if ("new".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_ADD_SCHEDULE_FROM_USER"));
-      } else if ("edit".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_EDIT_SCHEDULE_FROM_USER"));
-      } else if ("delete".equals(mode)) {
-        context.put("addScheduleMSG", ALLocalizationUtils
-          .getl10n("SCHEDULE_DELETE_SCHEDULE_FROM_USER"));
+        context.put("globalUrl1", ALMailUtils.getGlobalurl()
+          + "?key="
+          + ALCellularUtils.getCellularKey(destUser));
       } else {
-        throw new IllegalArgumentException();
-      }
-      context.put("title", ALLocalizationUtils.getl10n("SCHEDULE_SUB_TITLE"));
-      context.put("titleValue", schedule.getName().toString());
-      context.put("date", ALLocalizationUtils.getl10n("SCHEDULE_SUB_DATE"));
-      context.put("dateValue", date_detail);
-
-      if (memberList != null) {
-        int size = memberList.size();
-        int i;
-        StringBuffer body = new StringBuffer("");
-        context.put("menbers", ALLocalizationUtils
-          .getl10n("SCHEDULE_SUB_MENBERS"));
-        for (i = 0; i < size; i++) {
-          if (i != 0) {
-            body.append(", ");
-          }
-          ALEipUser member = memberList.get(i);
-          body.append(member.getAliasName());
+        if (enableAsp) {
+          context.put("globalUrl1", ALMailUtils.getGlobalurl());
+        } else {
+          context.put("outsideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_OUTSIDE_OFFICE"));
+          context.put("globalurl2", ALMailUtils.getGlobalurl());
+          context.put("insideOffice", ALLocalizationUtils
+            .getl10n("SCHEDULE_INSIDE_OFFICE"));
+          context.put("globalUrl3", ALMailUtils.getLocalurl());
         }
-        context.put("menbersList", body.toString());
       }
-
-      ALEipUser destUser;
-      try {
-        destUser = ALEipUtils.getALEipUser(destUserID);
-      } catch (ALDBErrorException ex) {
-        logger.error("schedule", ex);
-        return "";
-      }
-
-      context.put("Alias", ALOrgUtilsService.getAlias());
-      context
-        .put("accessTo", ALLocalizationUtils.getl10n("SCHEDULE_ACCESS_TO"));
-
-      context.put("globalUrl1", ALMailUtils.getGlobalurl()
-        + "?key="
-        + ALCellularUtils.getCellularKey(destUser));
 
       out = new StringWriter();
       service.handleRequest(context, "mail/createSchedule.vm", out);
@@ -3151,10 +3142,6 @@ public class ScheduleUtils {
       return out.toString();
     } catch (IllegalArgumentException e) {
 
-    } catch (RuntimeException e) {
-      String message = e.getMessage();
-      logger.warn(message, e);
-      e.printStackTrace();
     } catch (Exception e) {
       String message = e.getMessage();
       logger.warn(message, e);
@@ -3219,11 +3206,19 @@ public class ScheduleUtils {
       count = 8;
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
-      result
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-        .append(Integer.parseInt(ptn.substring(1, 3)))
-        .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-        .toString();
+      if (ptn.substring(1, 3).equals("XX")) {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      } else {
+        result
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(Integer.parseInt(ptn.substring(1, 3)))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      }
       count = 3;
       // 毎年
     } else if (ptn.charAt(0) == 'Y') {
@@ -3283,7 +3278,6 @@ public class ScheduleUtils {
     return result.toString();
   }
 
-  @SuppressWarnings("deprecation")
   public static boolean isDuplicateFacilitySchedule(EipTSchedule schedule,
       List<Integer> facilityIdList, Integer _old_scheduleid, Date _old_viewDate) {
     /* ダミースケジュール検索用 */
@@ -4319,7 +4313,13 @@ public class ScheduleUtils {
       return false;
     }
     if (repeat_ptn.startsWith("M")) {
-      int month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      int month_day;
+      // 月末処理
+      if (repeat_ptn.substring(1, 3).equals("XX")) {
+        month_day = cal.getActualMaximum(Calendar.DATE);
+      } else {
+        month_day = Integer.parseInt(repeat_ptn.substring(1, 3));
+      }
       int ptn_day = cal.get(Calendar.DAY_OF_MONTH);
       return (month_day == ptn_day);
     }
@@ -4833,10 +4833,345 @@ public class ScheduleUtils {
   }
 
   /**
-   * リマインダー送信が有効な共有メンバーを取得します。
+   * 添付ファイルを取得します。
    *
+   * @param uid
+   * @return
+   */
+  public static ArrayList<FileuploadLiteBean> getFileuploadList(RunData rundata) {
+    String[] fileids =
+      rundata
+        .getParameters()
+        .getStrings(FileuploadUtils.KEY_FILEUPLOAD_ID_LIST);
+    if (fileids == null) {
+      return null;
+    }
+
+    ArrayList<String> hadfileids = new ArrayList<String>();
+    ArrayList<String> newfileids = new ArrayList<String>();
+
+    for (int j = 0; j < fileids.length; j++) {
+      if (fileids[j].trim().startsWith("s")) {
+        hadfileids.add(fileids[j].trim().substring(1));
+      } else {
+        newfileids.add(fileids[j].trim());
+      }
+    }
+
+    ArrayList<FileuploadLiteBean> fileNameList =
+      new ArrayList<FileuploadLiteBean>();
+    FileuploadLiteBean filebean = null;
+
+    // 新規にアップロードされたファイルの処理
+    if (newfileids.size() > 0) {
+      String folderName =
+        rundata.getParameters().getString(
+          FileuploadUtils.KEY_FILEUPLOAD_FODLER_NAME);
+      if (folderName == null || folderName.equals("")) {
+        return null;
+      }
+
+      for (String newfileid : newfileids) {
+        if ("".equals(newfileid)) {
+          continue;
+        }
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(newfileid);
+        } catch (Exception e) {
+          continue;
+        }
+
+        if (fileid == 0) {
+          filebean = new FileuploadLiteBean();
+          filebean.initField();
+          filebean.setFolderName("photo");
+          filebean.setFileName("以前の写真ファイル");
+          fileNameList.add(filebean);
+        } else {
+          BufferedReader reader = null;
+          try {
+            reader =
+              new BufferedReader(new InputStreamReader(ALStorageService
+                .getFile(
+                  FileuploadUtils.FOLDER_TMP_FOR_ATTACHMENT_FILES,
+                  ALEipUtils.getUserId(rundata)
+                    + ALStorageService.separator()
+                    + folderName,
+                  fileid + FileuploadUtils.EXT_FILENAME), FILE_ENCODING));
+            String line = reader.readLine();
+            if (line == null || line.length() <= 0) {
+              continue;
+            }
+            filebean = new FileuploadLiteBean();
+            filebean.initField();
+            filebean.setFolderName(newfileid);
+            filebean.setFileId(fileid);
+            filebean.setFileName(line);
+            fileNameList.add(filebean);
+          } catch (Exception e) {
+            logger.error("schedule", e);
+          } finally {
+            try {
+              reader.close();
+            } catch (Exception e) {
+              logger.error("schedule", e);
+            }
+          }
+        }
+      }
+    }
+
+    // すでにあるファイルの処理
+    if (hadfileids.size() > 0) {
+      ArrayList<Integer> hadfileidsValue = new ArrayList<Integer>();
+      for (String hadfileid : hadfileids) {
+        int fileid = 0;
+        try {
+          fileid = Integer.parseInt(hadfileid);
+          hadfileidsValue.add(fileid);
+        } catch (Exception e) {
+          continue;
+        }
+      }
+      try {
+        SelectQuery<EipTScheduleFile> reqquery =
+          Database.query(EipTScheduleFile.class);
+        Expression reqexp1 =
+          ExpressionFactory.inDbExp(
+            EipTScheduleFile.FILE_ID_PK_COLUMN,
+            hadfileidsValue);
+        reqquery.setQualifier(reqexp1);
+        List<EipTScheduleFile> requests = reqquery.fetchList();
+
+        for (EipTScheduleFile file : requests) {
+          int fileid = file.getFileId();
+          filebean = new FileuploadBean();
+          filebean.initField();
+          filebean.setFileId(fileid);
+          filebean.setFileName(file.getFileName());
+          filebean.setFlagNewFile(false);
+          fileNameList.add(filebean);
+        }
+      } catch (Exception ex) {
+        logger.error("[BlogUtils] Exception.", ex);
+      }
+    }
+    return fileNameList;
+  }
+
+  public static boolean insertFileDataDelegate(RunData rundata,
+      Context context, EipTSchedule schedule,
+      List<FileuploadLiteBean> fileuploadList, String folderName,
+      List<String> msgList) {
+    if (fileuploadList == null || fileuploadList.size() <= 0) {
+      fileuploadList = new ArrayList<FileuploadLiteBean>();
+    }
+
+    int uid = ALEipUtils.getUserId(rundata);
+    String orgId = Database.getDomainName();
+
+    List<Integer> hadfileids = new ArrayList<Integer>();
+    for (FileuploadLiteBean file : fileuploadList) {
+      if (!file.isNewFile()) {
+        hadfileids.add(file.getFileId());
+      }
+    }
+
+    SelectQuery<EipTScheduleFile> dbquery =
+      Database.query(EipTScheduleFile.class);
+    dbquery.andQualifier(ExpressionFactory.matchDbExp(
+      EipTScheduleFile.EIP_TSCHEDULE_PROPERTY,
+      schedule.getScheduleId()));
+    List<EipTScheduleFile> existsFiles = dbquery.fetchList();
+    List<EipTScheduleFile> delFiles = new ArrayList<EipTScheduleFile>();
+    for (EipTScheduleFile file : existsFiles) {
+      if (!hadfileids.contains(file.getFileId())) {
+        delFiles.add(file);
+      }
+    }
+
+    // ローカルファイルに保存されているファイルを削除する．
+    if (delFiles.size() > 0) {
+      try {
+        ALDeleteFileUtil.deleteFiles(
+          ScheduleUtils.FOLDER_FILEDIR_SCHEDULE,
+          ScheduleUtils.CATEGORY_KEY,
+          delFiles);
+      } catch (ALFileNotRemovedException e) {
+        Database.rollback();
+        logger.error("schedule", e);
+        return false;
+      }
+    }
+
+    // ファイル追加処理
+    try {
+      for (FileuploadLiteBean filebean : fileuploadList) {
+        if (!filebean.isNewFile()) {
+          continue;
+        }
+
+        // サムネイル処理
+        String[] acceptExts = ImageIO.getWriterFormatNames();
+        ShrinkImageSet shrinkImageSet =
+          FileuploadUtils.getBytesShrinkFilebean(
+            orgId,
+            folderName,
+            uid,
+            filebean,
+            acceptExts,
+            FileuploadUtils.DEF_THUMBNAIL_WIDTH,
+            FileuploadUtils.DEF_THUMBNAIL_HEIGHT,
+            msgList,
+            true);
+
+        String filename = "0_" + String.valueOf(System.nanoTime());
+
+        // 新規オブジェクトモデル
+        EipTScheduleFile file = Database.create(EipTScheduleFile.class);
+        // 所有者
+        file.setOwnerId(Integer.valueOf(uid));
+        // トピックID
+        file.setEipTSchedule(schedule);
+        // ファイル名
+        file.setFileName(filebean.getFileName());
+        // ファイルパス
+        file.setFilePath(ScheduleUtils.getRelativePath(filename));
+        // サムネイル画像
+        if (shrinkImageSet != null && shrinkImageSet.getShrinkImage() != null) {
+          file.setFileThumbnail(shrinkImageSet.getShrinkImage());
+        }
+        // 作成日
+        file.setCreateDate(Calendar.getInstance().getTime());
+        // 更新日
+        file.setUpdateDate(Calendar.getInstance().getTime());
+
+        if (shrinkImageSet != null && shrinkImageSet.getFixImage() != null) {
+          // ファイルの作成
+          ALStorageService.createNewFile(new ByteArrayInputStream(
+            shrinkImageSet.getFixImage()), FOLDER_FILEDIR_SCHEDULE
+            + ALStorageService.separator()
+            + Database.getDomainName()
+            + ALStorageService.separator()
+            + CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid
+            + ALStorageService.separator()
+            + filename);
+        } else {
+          // ファイルの移動
+          ALStorageService.copyTmpFile(uid, folderName, String.valueOf(filebean
+            .getFileId()), FOLDER_FILEDIR_SCHEDULE, CATEGORY_KEY
+            + ALStorageService.separator()
+            + uid, filename);
+        }
+      }
+
+      ALStorageService.deleteTmpFolder(uid, folderName);
+
+    } catch (Exception e) {
+      Database.rollback();
+      logger.error("schedule", e);
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * ユーザ毎のルート保存先（絶対パス）を取得します。
+   *
+   * @param uid
+   * @return
+   */
+  public static String getSaveDirPath(int uid) {
+    return ALStorageService.getDocumentPath(
+      FOLDER_FILEDIR_SCHEDULE,
+      CATEGORY_KEY + ALStorageService.separator() + uid);
+  }
+
+  /**
+   * ユーザ毎の保存先（相対パス）を取得します。
+   *
+   * @param uid
+   * @return
+   */
+  public static String getRelativePath(String fileName) {
+    return new StringBuffer().append("/").append(fileName).toString();
+  }
+
+  @Deprecated
+  public static void shiftWhatsNewReadFlag(RunData rundata, int entityid) {
+    int uid = ALEipUtils.getUserId(rundata);
+    boolean isPublic = false;
+
+    SelectQuery<EipTSchedule> query = Database.query(EipTSchedule.class);
+    Expression exp =
+      ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, entityid);
+    query.setQualifier(exp);
+    query.select(EipTSchedule.SCHEDULE_ID_PK_COLUMN);
+    query.distinct(true);
+
+    List<EipTSchedule> schedules = query.fetchList();
+
+    query = Database.query(EipTSchedule.class);
+    exp =
+      ExpressionFactory
+        .matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, entityid);
+    query.setQualifier(exp);
+
+    List<EipTSchedule> schedule = query.fetchList();
+    if (schedule != null
+      && (((_EipTSchedule) (schedule.get(0)).getEipTScheduleMaps())
+        .getPublicFlag().equals("T"))) {
+      isPublic = true;
+    }
+
+    if (schedules != null) {
+
+      int size = schedules.size();
+      Integer _id = null;
+
+      if (isPublic) {
+        for (int i = 0; i < size; i++) {
+          EipTSchedule record = schedules.get(i);
+          _id = record.getScheduleId();
+          WhatsNewUtils.shiftWhatsNewReadFlagPublic(
+            WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+            _id.intValue(),
+            uid);
+        }
+      } else {
+        for (int i = 0; i < size; i++) {
+          EipTSchedule record = schedules.get(i);
+          _id = record.getScheduleId();
+          WhatsNewUtils.shiftWhatsNewReadFlag(
+            WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+            _id.intValue(),
+            uid);
+        }
+      }
+    }
+    if (isPublic) {
+      WhatsNewUtils.shiftWhatsNewReadFlagPublic(
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+        entityid,
+        uid);
+    } else {
+      WhatsNewUtils.shiftWhatsNewReadFlag(
+        WhatsNewUtils.WHATS_NEW_TYPE_SCHEDULE,
+        entityid,
+        uid);
+    }
+  }
+
+  /*
+   * リマインダー送信が有効な共有メンバーを取得します。
+   * 
    * @param schedule
+   * 
    * @param viewDate
+   * 
    * @return
    */
   public static List<ALEipUser> getUsersForReminder(EipTSchedule schedule,
@@ -5241,10 +5576,17 @@ public class ScheduleUtils {
             .toString());
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
-        rd.addText(new StringBuffer().append(
-          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
-          Integer.parseInt(ptn.substring(1, 3))).append(
-          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        if (ptn.substring(1, 3).equals("XX")) {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        } else {
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+        }
         count = 3;
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
@@ -5850,5 +6192,43 @@ public class ScheduleUtils {
       }
     }
     return null;
+
+  }
+
+  public static String getHolidayOfWeek() {
+    HttpServletRequest request = HttpServletRequestLocator.get();
+    String cacheHoliday = null;
+    if (request != null) {
+      try {
+        cacheHoliday =
+          (String) request
+            .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
+      } catch (Throwable ignore) {
+
+      }
+    }
+    if (cacheHoliday == null) {
+      cacheHoliday =
+        ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
+      if (request != null) {
+        request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
+          .toString(), cacheHoliday);
+      }
+    }
+    return cacheHoliday;
+  }
+
+  /**
+   * 祝日を休日にするかどうかを検証する. 休日にする場合 true
+   */
+  public static boolean isDayOffHoliday() {
+    String cacheHoliday = getHolidayOfWeek();
+    return (cacheHoliday.charAt(8) == '0') ? false : true;
+  }
+
+  public static boolean isUserHoliday(int DayOfWeek) {
+    String cacheHoliday = getHolidayOfWeek();
+    return cacheHoliday.charAt(DayOfWeek) != '0';
+
   }
 }

@@ -81,8 +81,16 @@ $!{result.Detail.Date}
 #end
 #* 共有カテゴリ連携（ここまで）  *#
 
+#*以下詳細画面の場所表示*#
 #ALtdcaption($l10n.SCHEDULE_PLACE)
+#if($result.enabledMapsFlag())
+#ALtditemheader()
+<a href="https://maps.apple.com/maps?q=$!{result.Detail.PlaceEncode} " target="_blank">$!{result.Detail.PlaceHtml} </a>
+#ALtditemfooter()
+#else
 #ALtditem($!{result.Detail.PlaceHtml})
+#end
+
 #ALtdcaption($l10n.SCHEDULE_NOTE)
 #ALtditem($!{result.Detail.Note})
 #ALtdcaption($l10n.SCHEDULE_PUBLIC)
@@ -117,7 +125,7 @@ $l10n.SCHEDULE_HIDDEN_PUBLIC
 
 #if($hasMember)
 <div style="padding:4px 0px 0px 0px">
-#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_ENTRY_USER#else $!{result.OutsideUser}#end#end
+#if($!{result.Detail.isEditable()}) $l10n.SCHEDULE_MESSAGE_OF_EDIT_AND_DELETE#else #if($!{result.Detail.User.UserId.toString()}==$!{result.Detail.UpdateUser.UserId.toString()}) $l10n.SCHEDULE_MESSAGE_OF_DISABLE_EDIT_AND_DELETE #else $!{result.OutsideUser}#end#end
 </div>
 
 <div>
@@ -139,6 +147,26 @@ $l10n.SCHEDULE_MESSAGE_OF_DONOT_SEND_EMAIL_FOR_USER
 ${record.FacilityNameHtml}<br/>
 #end
 #ALtditemfooter()
+
+#* 添付ファイル（ここから）  *#
+#if($!result.Detail.AttachmentFileList && $!result.Detail.AttachmentFileList.size() > 0)
+#ALtdcaption($l10n.SCHEDULE_FILE_ATTACH)
+#ALtditemheader()
+<ul>
+#foreach( $attachmentFile in $!result.Detail.AttachmentFileList )
+<li><a #if("$!{client}"=="IPHONE")target="_blank"#end href="$jslink.getTemplate("ScheduleFileRawScreen").addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("ownerid", $attachmentFile.UserId).addPathInfo("entityid", $entityid).addPathInfo("f", $attachmentFile.getURLEncodedValue())">$attachmentFile.FileName</a></li>
+#if($attachmentFile.isImage())
+<div id='popc' style='position:absolute'></div>
+<div class="thumbBlock">
+	<a href="javascript:void(0);" onclick="aipo.fileupload.showImageDialog('$jslink.getTemplate('FileuploadViewScreen').addPathInfo('screen','ScheduleFileRawScreen').addPathInfo("ownerid", $attachmentFile.UserId).addPathInfo("entityid", $entityid).addPathInfo("attachmentIndex", $attachmentFile.FileId).addPathInfo("f", ${attachmentFile.getURLEncodedValue()})');">
+	<img class="width_thumbs" border="0" alt="$attachmentFile.FileName" title="$attachmentFile.FileName" src="$jslink.getTemplate("ScheduleFileThumbnailScreen").addQueryData("ownerid",  $attachmentFile.UserId).addQueryData("entityid", $entityid).addQueryData("attachmentIndex", $attachmentFile.FileId)"></a><br>
+</div>
+#end
+#end
+</ul>
+#ALtditemfooter()
+#end
+#* 添付ファイル（ここまで）  *#
 
 #ALtdcaption($l10n.COMMON_CREATE_USER)
 #ALtditemheader()

@@ -52,6 +52,15 @@ public class MessageListScreen extends ALVelocityScreen {
       boolean isNewRoom = false;
       EipTMessageRoom room = null;
       ALEipUser targetUser = null;
+      String isRead = "";
+
+      // メッセージのタブを開いているときには既読にする(非表示のときは既読にしない)
+      try {
+        isRead = rundata.getParameters().getString("is_read");
+      } catch (Throwable ignore) {
+        // ignore
+      }
+
       try {
         targetUserId = rundata.getParameters().getInteger("u");
       } catch (Throwable ignore) {
@@ -99,8 +108,15 @@ public class MessageListScreen extends ALVelocityScreen {
       listData.doViewList(this, rundata, context);
 
       if (listData.getList().size() > 0) {
-        MessageUtils.read(room, listData.getUserId(), listData
-          .getLastMessageId());
+        if (!"F".equals(isRead)) {
+          try {
+            MessageUtils.read(room, listData.getUserId(), listData
+              .getLastMessageId());
+          } catch (Throwable ignore) {
+            // ignore
+            logger.error("MessageListScreen.MessageUtils.read", ignore);
+          }
+        }
       }
 
       String layout_template = "portlets/html/ajax-message-list.vm";
