@@ -158,6 +158,7 @@
 #ALOnedayLink($!portlet.ID $filter $record 'holiday groupWeekly')
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
 #ALOnedayLink($!portlet.ID $filter $record 'today groupWeekly')
+
 #else
 #ALOnedayLink($!portlet.ID $filter $record 'groupWeekly')
 #end
@@ -255,7 +256,7 @@
 #set ($color_style_holiday = " holiday")
 #end
 #if( ! $record.isTodoNull() )
-<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
+<td colspan="$col_span" class="term${color_style_othermonth}">
 <div class="calerndarTodoDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
 #if(! ${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end

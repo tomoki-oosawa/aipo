@@ -253,7 +253,9 @@ public class MessageFormData extends ALAbstractFormData {
       model.setMessage(message.getValue());
       model.setCreateDate(now);
       model.setUpdateDate(now);
-      model.setMemberCount(members.size());
+      model.setMemberCount(containsAdmin(members)
+        ? members.size() - 1
+        : members.size());
       model.setUserId((int) login_user.getUserId().getValue());
 
       List<String> recipients = new ArrayList<String>();
@@ -299,6 +301,21 @@ public class MessageFormData extends ALAbstractFormData {
     }
 
     return true;
+  }
+
+  /**
+   * @param members
+   * @return
+   */
+  private static boolean containsAdmin(List<EipTMessageRoomMember> members) {
+    boolean containsAdmin = false;
+    for (EipTMessageRoomMember member : members) {
+      if (member.getUserId() == 1) {
+        containsAdmin = true;
+        break;
+      }
+    }
+    return containsAdmin;
   }
 
   /**
