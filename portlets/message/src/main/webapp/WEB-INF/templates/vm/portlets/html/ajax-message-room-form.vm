@@ -119,12 +119,7 @@ $!result.Name
 #ALtditemfooter()
 #end
 #end
-#if($mode!="new_form")
-  #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
-  #ALtditemheader()
-  #ALMessageNotification($result)
-  #ALtditemfooter()
-#end
+
 #ALtablefooter()
 
 #ALbuttonheader()
