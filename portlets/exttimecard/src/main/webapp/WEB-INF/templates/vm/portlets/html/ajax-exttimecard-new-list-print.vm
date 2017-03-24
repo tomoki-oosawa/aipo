@@ -110,7 +110,7 @@
         ##! ここまで
 
 
-		## 日にち
+		## 日付
 		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
 			$!rdlist.getDateStr("yyyy/MM/dd")	## yyyy/MM/ddスタイル
 		#ALtdcellfooter()
@@ -163,6 +163,25 @@
 			#ALtdcellfooter()
 		#end
 
+		## ダミー
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			## $($rdlist.WorkHour > 0)
+			## ${rdlist.getHourToString(0)}
+			hello
+		#ALtdcellfooter()
+
+		## 法定休日出勤日数
+		#if($rdlist.isStatutoryHoliday())
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+
 		##残業日数
 		##残業時間
 		#if ($rdlist.isOverWorkDay())
@@ -187,7 +206,44 @@
 
 		##休出日数
 		##休出時間
-		#if ($rdlist.isOverWorkDay)
+		## ->所定休日、法定休日など
+		#if ($rdlist.isOffDay())
+			#set($off_day = 1)
+
+			## 所定内休日、法定内休日に振り分け
+			#if ($rdlist.isStatutoryHoliday())
+				#set($statutory_off_day = 1)
+				#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkHour(true)})})
+				## !!!!!! 次回数字丸める関数getTotalWorkHour(boolean)を作る !!!!!!!
+
+			#else
+				#set($statutory_off_day = 0)
+				#set($total_statutory_off_day_work_hour = "Hello")
+			#end
+		#else
+			#set($off_day = 0)
+			#set($statutory_off_day = "good")
+			#set($total_statutory_off_day_work_hour = "bye")
+		#end
+
+		## 休出日数（いずれ消す）
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$off_day
+		#ALtdcellfooter()
+		## 法定内休日出勤日数
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$statutory_off_day
+		#ALtdcellfooter()
+		## 所定内休日労働時間（本当？）
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$total_statutory_off_day_work_hour
+		#ALtdcellfooter()
+
+
+
+
+
+		#if ($rdlist.isOffDay)
 			##　休出日数
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 				1

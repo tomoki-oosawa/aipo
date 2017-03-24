@@ -181,7 +181,7 @@
 
 		##休出日数
 		##休出時間
-		#if ($rdlist.isOverWorkDay)
+		#if ($rdlist.isOffDay)
 			##　休出日数
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 				1
