@@ -197,6 +197,28 @@ aipo.message.reloadRoomMemberList = function() {
     }
     aipo.message.roomMemberPane.viewPage(screen);
 }
+
+aipo.message.roomMemberAdmin = null;
+aipo.message.reloadRoomSettings = function() {
+    if (!aipo.message.roomMemberAdmin) {
+        aipo.message.roomMemberAdmin = dijit.byId("roomMemberAdmin");
+        aipo.message.roomMemberAdmin = new aimluck.widget.Contentpane({},
+                'roomMemberAdmin');
+        aipo.message.roomMemberAdmin.onLoad = function() {
+
+        }
+    }
+
+    dojo.byId("roomMemberAdmin").innerHTML = '';
+    var screen = aipo.message.jslink + "?template=MessageRoomSettingsScreen";
+    if (aipo.message.currentRoomId) {
+        screen += "&r=" + aipo.message.currentRoomId;
+    } else if (aipo.message.currentUserId) {
+        screen += "&u=" + aipo.message.currentUserId;
+    }
+    aipo.message.roomMemberAdmin.viewPage(screen);
+}
+
 aipo.message.moreMessageList = function() {
     var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
@@ -770,6 +792,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
 
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
+        aipo.message.reloadRoomSettings();
         aipo.message.reloadMessageList();
         if (dojo.hasClass("messageRoomTab", "active")) {
         	aipo.message.saveCookieIsLastRoomOrUser("Room");
