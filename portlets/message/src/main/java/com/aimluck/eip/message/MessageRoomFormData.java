@@ -374,6 +374,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
         isGroup = false;
       }
 
+      if (!login_user_room_auth) {
+        throw new ALPageNotFoundException();
+      }
+
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }

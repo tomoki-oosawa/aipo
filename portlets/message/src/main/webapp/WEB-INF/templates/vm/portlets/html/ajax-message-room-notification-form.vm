@@ -54,6 +54,7 @@
 
 
 #if($mode!="new_form")
+  #ALtableheaderWide()
   #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
   #ALtditemheader()
   #ALMessageNotification($result)
