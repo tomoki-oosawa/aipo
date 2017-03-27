@@ -501,6 +501,19 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * 総労働時間（所定内勤務時間 + 残業時間 + 法内残業時間）
+   *
+   * @return float
+   */
+  public float getTotalWorkHour(boolean round) {
+    float time = getTotalWorkHour();
+    if (round) {
+      time = ExtTimecardUtils.roundHour(time);
+    }
+    return time;
+  }
+
+  /**
    * 総労働時間（表示用）
    *
    * @return
@@ -914,12 +927,25 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
-   * その日勤務したかどうか
+   * その日勤務したかどうか(旧方式）
    *
    * @return boolean
    */
   public boolean isWorkDay() {
     if (getWorkHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * その日勤務したかどうか(新方式）
+   *
+   * @return boolean
+   */
+  public boolean isNewWorkDay() {
+    if (getWorkHour() != NO_DATA) {
       return true;
     } else {
       return false;
@@ -969,6 +995,17 @@ public class ExtTimecardListResultData implements ALData {
   */
   public String getHourToString(int time) {
     if (time == NO_DATA) {
+      return "";
+    }
+    return time + "h";
+  }
+
+  /**
+  *
+  *
+  */
+  public String getHourToString(String time) {
+    if (time == String.valueOf(NO_DATA)) {
       return "";
     }
     return time + "h";

@@ -139,47 +139,123 @@
 		#end
 		#ALtdcellfooter()
 
-		## 出勤日数
-		## 就業時間
-		#if(${rdlist.isWorkDay()})
-			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
-			## 就業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}
-			#ALtdcellfooter()
+		##　出勤日数の代入
+		## 所定内労働時間の代入
+		#if(${rdlist.isNewWorkDay()})
+			##　出勤日数の代入
+			#set($work_day = 1)
+			## 所定内労働時間の代入
+			#set($work_hour = ${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})})
 		#else
-			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
-			## 就業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				## $($rdlist.WorkHour > 0)
-				## ${rdlist.getHourToString(0)}
-				0h
-			#ALtdcellfooter()
+			##　出勤日数の代入
+			#set($work_day = 0)
+			## 就業時間(work_hour)の定義
+			#set($work_hour = ${rdlist.getHourToString("0.0")})
 		#end
 
-		## ダミー
+		## 総労働時間の代入
+		#set($total_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkHour(true)})})
+		#if ($total_work_hour == "")
+			#set($total_work_hour = ${rdlist.getHourToString("0.0")})
+		#end
+
+		## 所定休日、法定休日などの代入
+		#if ($rdlist.isOffDay())
+			#set($off_day = 1)
+
+			## 所定内休日、法定内休日に振り分け
+			#if ($rdlist.isStatutoryHoliday()) ## 法定内休日
+				## 所定休日出勤日数の代入
+				#set($official_off_day = 0)
+				## 法定休日出勤日数の代入
+				#set($statutory_off_day = 1)
+				## 所定休日労働時間の代入
+				#set($total_official_off_day_work_hour = ${rdlist.getHourToString("0.0")})
+				## 法定休日労働時間の代入
+				#set($total_statutory_off_day_work_hour = $total_work_hour) ## 法定休日労働時間＝総労働時間（NewXlsの方のロジックそのまま）
+
+			#else ## 所定内休日
+				## 所定休日出勤日数の代入
+				#set($official_off_day = 1)
+				## 法定休日出勤日数の代入
+				#set($statutory_off_day = 0)
+				## 所定休日労働時間の代入
+				#set($total_official_off_day_work_hour = $total_work_hour) ## 所定休日労働時間＝総労働時間（NewXlsの方のロジックそのまま）
+				## 法定休日労働時間の代入
+				#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString("0.0")})
+			#end
+		#else
+			#set($off_day = 0)
+			#set($official_off_day = 0)
+			#set($statutory_off_day = 0)
+			#set($total_official_off_day_work_hour = ${rdlist.getHourToString("0.0")})
+			#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString("0.0")})
+		#end
+
+
+		## 出勤日数の表示
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			## $($rdlist.WorkHour > 0)
-			## ${rdlist.getHourToString(0)}
-			hello
+			$work_day
 		#ALtdcellfooter()
 
-		## 法定休日出勤日数
-		#if($rdlist.isStatutoryHoliday())
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
-		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+		## 休出日数の表示（現在非表示）
+		## #ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+		##	$off_day
+		## #ALtdcellfooter()
+
+		## 所定内休日出勤日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$official_off_day
+		#ALtdcellfooter()
+		## 法定内休日出勤日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$statutory_off_day
+		#ALtdcellfooter()
+
+		## 総労働時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$total_work_hour
+		#ALtdcellfooter()
+
+		## 所定内労働時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$work_hour
+		#ALtdcellfooter()
+
+		## 法定内残業時間の代入
+		#set($overtime_within_statutory_working_hour = $rdlist.getHourToString(${rdlist.getWithinStatutoryOvertimeWorkHourWithoutOffday(true)}))
+		#if ($overtime_within_statutory_working_hour == "")
+			#set($overtime_within_statutory_working_hour = $rdlist.getHourToString("0.0"))
 		#end
+		## 法定内残業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$overtime_within_statutory_working_hour
+		#ALtdcellfooter()
+		## 残業時間の代入
+		#set($overtime_hour = $rdlist.getHourToString(${rdlist.getOvertimeHourWithoutRestHour(true)}))
+		#if ($overtime_hour == "")
+			#set($overtime_hour = $rdlist.getHourToString("0.0"))
+		#end
+		## 残業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$overtime_hour
+		#ALtdcellfooter()
+
+
+		## 所定内休日労働時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${total_official_off_day_work_hour}
+		#ALtdcellfooter()
+		## 法定内休日労働時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${total_statutory_off_day_work_hour}
+		#ALtdcellfooter()
+
+
+
+
+		## ！！！！！！！次回はここから！！！！！！！！
+
 
 
 		##残業日数
@@ -211,32 +287,53 @@
 			#set($off_day = 1)
 
 			## 所定内休日、法定内休日に振り分け
-			#if ($rdlist.isStatutoryHoliday())
+			#if ($rdlist.isStatutoryHoliday()) ## 法定内休日
+				## 所定休日出勤日数
+				#set($official_off_day = 0)
+				## 法定休日出勤日数
 				#set($statutory_off_day = 1)
-				#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkHour(true)})})
-				## !!!!!! 次回数字丸める関数getTotalWorkHour(boolean)を作る !!!!!!!
+				## 所定休日労働時間
+				#set($total_official_off_day_work_hour = 0)
+				## 法定休日労働時間
+				#set($total_statutory_off_day_work_hour = ${rdlist.getTotalWorkHourValue()})
 
-			#else
+			#else ## 所定内休日
+				## 所定休日出勤日数
+				#set($official_off_day = 1)
+				## 法定休日出勤日数
 				#set($statutory_off_day = 0)
-				#set($total_statutory_off_day_work_hour = "Hello")
+				## 法定休日労働時間
+				#set($total_official_off_day_work_hour = ${rdlist.getTotalWorkHourValue()})
+				## 法定休日労働時間
+				#set($total_statutory_off_day_work_hour = 0)
 			#end
 		#else
 			#set($off_day = 0)
-			#set($statutory_off_day = "good")
-			#set($total_statutory_off_day_work_hour = "bye")
+			#set($official_off_day = 0)
+			#set($statutory_off_day = 0)
+			#set($total_official_off_day_work_hour = 0)
+			#set($total_statutory_off_day_work_hour = 0)
 		#end
 
 		## 休出日数（いずれ消す）
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 			$off_day
 		#ALtdcellfooter()
+		## 所定内休日出勤日数
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$official_off_day
+		#ALtdcellfooter()
 		## 法定内休日出勤日数
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 			$statutory_off_day
 		#ALtdcellfooter()
-		## 所定内休日労働時間（本当？）
+		## 所定内休日労働時間
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			$total_statutory_off_day_work_hour
+			${total_official_off_day_work_hour}h
+		#ALtdcellfooter()
+		## 法定内休日労働時間
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${total_statutory_off_day_work_hour}h
 		#ALtdcellfooter()
 
 
