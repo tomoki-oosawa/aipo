@@ -69,10 +69,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
-  /** <code>viewUrlStart</code> CSV用表示開始日時 */
+  /** <code>viewUrlStart</code> yyyy/MM/dd型表示開始日時 */
   private ALDateTimeField viewUrlStart;
 
-  /** <code>viewUrlEnd</code> CSV用表示終了日時 */
+  /** <code>viewUrlEnd</code> yyyy/MM/dd型表示終了日時 */
   private ALDateTimeField viewUrlEnd;
 
   /** 閲覧権限の有無 */
@@ -96,16 +96,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    Calendar cal1 = Calendar.getInstance();
-
-    viewUrlStart = new ALDateTimeField();
-    cal1 = ScheduleUtils.getViewCalendar(true, rundata, context);
-    viewUrlStart.setValue(cal1.getTime());
-
-    viewUrlEnd = new ALDateTimeField();
-    cal1 = ScheduleUtils.getViewCalendar(false, rundata, context);
-    viewUrlEnd.setValue(cal1.getTime());
-
     super.init(action, rundata, context);// 表示タイプの設定
 
     listViewtype = "list";
@@ -123,6 +113,12 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     viewStart.setNotNull(true);
     // 表示終了日時
     viewEnd = new ALDateTimeField("yyyy-MM-dd");
+
+    // URL用
+    // 表示開始日時
+    viewUrlStart = new ALDateTimeField();
+    // 表示終了日時
+    viewUrlEnd = new ALDateTimeField();
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
@@ -356,21 +352,23 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   }
 
   /**
-   * CSV出力URL用表示開始日時を取得します。
+   * yyyy/MM/dd型表示開始日時を取得します。
    *
    * @return
    */
+
   public ALDateTimeField getViewUrlStart() {
-    // viewUrlStart = new ALDateTimeField();
+    viewUrlStart.setValue(getViewStart().toString());
     return viewUrlStart;
   }
 
   /**
-   * CSV出力URL用表示終了日時を取得します。
+   * yyyy/MM/dd型表示終了日時を取得します。
    *
    * @return
    */
   public ALDateTimeField getViewUrlEnd() {
+    viewUrlEnd.setValue(getViewEnd().toString());
     return viewUrlEnd;
   }
 
