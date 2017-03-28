@@ -2385,8 +2385,6 @@ public class ScheduleUtils {
       String entityid, List<String> msgList, boolean isCellPhone)
       throws ALDBErrorException, ALPageNotFoundException {
 
-    int YEAR_FIRST = 2004;
-    int YEAR_END = 2016;
     boolean dayexist = true;
 
     switch ((int) year_month.getValue()) {
@@ -2454,14 +2452,6 @@ public class ScheduleUtils {
 
     // 開始日時
     start_date.validate(msgList);
-    int startyear = startDate.get(Calendar.YEAR);
-    if ((startyear < YEAR_FIRST || startyear > YEAR_END) && isCellPhone) {
-      // 携帯画面用条件
-      msgList.add(ALLocalizationUtils.getl10nFormat(
-        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_DATE",
-        YEAR_FIRST,
-        YEAR_END));
-    }
     if (startDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
       msgList.add(ALLocalizationUtils
@@ -2470,14 +2460,6 @@ public class ScheduleUtils {
 
     // 終了日時
     end_date.validate(msgList);
-    int endyear = endDate.get(Calendar.YEAR);
-    if ((endyear < YEAR_FIRST || endyear > YEAR_END) && isCellPhone) {
-      // 携帯画面用条件
-      msgList.add(ALLocalizationUtils.getl10nFormat(
-        "SCHEDULE_MESSAGE_SELECT_RIGHT_START_END_DATE",
-        YEAR_FIRST,
-        YEAR_END));
-    }
     if (endDate.get(Calendar.MINUTE) % 15.0 != 0 && isCellPhone) {
       // 携帯画面用条件
       msgList.add(ALLocalizationUtils
@@ -2567,28 +2549,6 @@ public class ScheduleUtils {
               limit_end_date.getValue().getDate())) {
             msgList.add(ALLocalizationUtils
               .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_END_DAY_TO_START_DAY"));
-          }
-
-          if (isCellPhone) {
-            // 携帯画面用条件
-            Calendar limitStartDate = Calendar.getInstance();
-            limitStartDate.setTime(limit_start_date.getValue().getDate());
-            int limitstartyear = limitStartDate.get(Calendar.YEAR);
-            if ((limitstartyear < YEAR_FIRST || limitstartyear > YEAR_END)) {
-              msgList.add(ALLocalizationUtils.getl10nFormat(
-                "SCHEDULE_MESSAGE_SELECT_START_DATE_IN_THIS_TERM",
-                YEAR_FIRST,
-                YEAR_END));
-            }
-            Calendar limitEndDate = Calendar.getInstance();
-            limitEndDate.setTime(limit_end_date.getValue().getDate());
-            int limitendyear = limitEndDate.get(Calendar.YEAR);
-            if ((limitendyear < YEAR_FIRST || limitendyear > YEAR_END)) {
-              msgList.add(ALLocalizationUtils.getl10nFormat(
-                "SCHEDULE_MESSAGE_SELECT_END_DATE_IN_THIS_TERM",
-                YEAR_FIRST,
-                YEAR_END));
-            }
           }
 
           // 繰り返し期間の正当性を調べる
