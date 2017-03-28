@@ -1219,6 +1219,43 @@ public class FileIOAccountCsvFormData extends ALAbstractFormData {
     return map;
   }
 
+  /**
+   * 社員コードが重複しているかどうか
+   *
+   * @return
+   */
+  private boolean isDuplicateCode() {
+    if (code.getValue() == null || code.getValue().equals("")) {
+      // 設定する社員コードがない場合は重複していない
+      return false;
+    }
+    SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
+    Expression exp =
+      ExpressionFactory.matchExp(TurbineUser.CODE_PROPERTY, code);
+    query.setQualifier(exp);
+    List<TurbineUser> list = query.fetchList();
+
+    if (list == null || list.size() == 0) {
+      // 社員コードがなければ重複していない
+      return false;
+    }
+
+    if (username.getValue() == null) {
+      return false;
+    }
+
+    for (TurbineUser user : list) {
+      if (!user.getDisabled().equals("T")
+        && !user.getLoginName().equals(username.getValue())) {
+        // 削除済みでなく、かつ同じユーザーでもない場合は重複している
+        return true;
+      }
+    }
+
+    return false;
+
+  }
+
   public boolean isSkipUsernameValidation() {
     return isSkipUsernameValidation;
   }

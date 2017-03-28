@@ -20,7 +20,7 @@ package com.aimluck.eip.services.accessctl;
 
 /**
  * アクセスコントロール用の定数です。 <br />
- * 
+ *
  */
 public class ALAccessControlConstants {
 
@@ -30,6 +30,10 @@ public class ALAccessControlConstants {
   /** アクセス権限のパーミッションエラー時のエラー文 */
   public static final String DEF_PERMISSION_ERROR_STR =
     "アクセス権限がありません。システム管理者にお問い合わせください。";
+
+  /** 添付ファイルアクセス権限のパーミッションエラー時のエラー文 */
+  public static final String DEF_ATTACHMENT_PERMISSION_ERROR_STR =
+    "添付ファイルのアクセス権限がありません。システム管理者にお問い合わせください。";
 
   /** アクセス権（一覧表示） */
   public static final int VALUE_ACL_LIST = 1;
@@ -178,4 +182,18 @@ public class ALAccessControlConstants {
 
   /** アクセス権限の機能名（報告書（報告書返信）） */
   public static final String POERTLET_FEATURE_REPORT_REPLY = "report_reply";
+
+  /** アクセス権限の機能名（タイムライン（自分の投稿）） */
+  public static final String POERTLET_FEATURE_TIMELINE_POST = "timeline_post";
+
+  /** アクセス権限の機能名（タイムライン（他ユーザーの投稿）） */
+  public static final String POERTLET_FEATURE_TIMELINE_POST_OTHER =
+    "timeline_post_other";
+
+  /** アクセス権限の機能名（タイムライン（コメント）管理者） */
+  public static final String POERTLET_FEATURE_TIMELINE_COMMENT =
+    "timeline_comment";
+
+  /** アクセス権限の機能名（添付ファイル） */
+  public static final String POERTLET_FEATURE_ATTACHMENT = "attachment";
 }

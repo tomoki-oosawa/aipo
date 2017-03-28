@@ -43,11 +43,15 @@ import org.apache.velocity.context.Context;
 
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategory;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardCategoryMap;
+import com.aimluck.eip.cayenne.om.portlet.EipTMsgboardTopic;
 import com.aimluck.eip.cayenne.om.portlet.EipTScheduleMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimeline;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineFile;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineMap;
 import com.aimluck.eip.cayenne.om.portlet.EipTTimelineUrl;
+import com.aimluck.eip.cayenne.om.portlet.EipTTodo;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
@@ -69,6 +73,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -110,6 +116,9 @@ public class TimelineSelectData extends
   /** 返信フォーム表示の有無（トピック詳細表示） */
   private final boolean showReplyForm = false;
 
+  /** アクセス権限の機能名「掲示板（トピック）管理者」の一覧表示権限 */
+  private boolean hasAclTopicList;
+
   /** 他ユーザーの作成したトピックの編集権限 */
   private boolean hasAclUpdateTopicOthers;
 
@@ -142,11 +151,23 @@ public class TimelineSelectData extends
 
   private boolean isFileUploadable;
 
+  /** 添付ファイル追加へのアクセス権限の有無 */
+  private boolean hasAttachmentInsertAuthority;
+
   /** AppNameからportletIdを取得するハッシュ */
   private HashMap<String, String> portletIdFromAppId;
 
   /** アクセス権限の機能名（スケジュール（他ユーザーの予定））の一覧表示権限を持っているか **/
   private boolean hasScheduleOtherAclList;
+
+  /** アクセス権限の機能名（ToDo（自分のToDo））の一覧表示権限を持っているか */
+  private boolean hasTodoAclList;
+
+  /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
+  private boolean hasTodoOtherAclList;
+
+  /** アプリ設定「更新情報の表示」 "T" or "F" **/
+  private String enabledActivityFlag;
 
   /**
    *
@@ -158,6 +179,8 @@ public class TimelineSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    doCheckAttachmentInsertAclPermission(rundata, context);
 
     portletIdFromAppId = ALEipUtils.getPortletFromAppIdMap(rundata);
 
@@ -218,6 +241,21 @@ public class TimelineSelectData extends
           uid,
           ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
+
+      /** 更新情報についての一覧表示権限のチェック **/
+      hasScheduleOtherAclList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+      hasAclTopicList =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_MSGBOARD_TOPIC,
+          ALAccessControlConstants.VALUE_ACL_LIST);
+
+      enabledActivityFlag =
+        ALConfigService.get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED);
 
     } catch (Exception ex) {
       logger.error("timeline", ex);
@@ -530,9 +568,9 @@ public class TimelineSelectData extends
                     iter.remove();
                   }
                 }
-              }// スケジュール以外のTimeline
+              } // スケジュール以外のTimeline
             }
-          }// 自分がオーナーのTimeline
+          } // 自分がオーナーのTimeline
         }
       }
     }
@@ -598,7 +636,7 @@ public class TimelineSelectData extends
   }
 
   protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
-    if (parentIds == null || parentIds.size() == 0) {
+    if (parentIds == null || parentIds.size() == 0 || !hasAttachmentAuthority()) {
       return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =
@@ -644,6 +682,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -657,8 +699,12 @@ public class TimelineSelectData extends
       }
 
       // 更新情報
+
       Map<Integer, List<TimelineResultData>> activitiesMap =
-        getActivities(parentIds);
+        new HashMap<Integer, List<TimelineResultData>>();
+      if (enabledActivityFlag.equals("T")) {
+        activitiesMap = getActivities(parentIds);
+      }
 
       // コメント
       List<Integer> commentIds = new ArrayList<Integer>();
@@ -761,6 +807,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -872,7 +922,201 @@ public class TimelineSelectData extends
   }
 
   /**
-   * トピックの総数を返す． <BR>
+   * <<<<<<< HEAD ======= 詳細表示します。
+   *
+   * @param action
+   * @param rundata
+   * @param context
+   * @return TRUE 成功 FASLE 失敗
+   */
+  @Override
+  public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
+    try {
+      init(action, rundata, context);
+      // 「いいね」の表示画面を見るためには、詳細表示権限の代わりにタイムライン（自分の投稿）の一覧表示権限が必要
+      doCheckAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
+      action.setMode(ALEipConstants.MODE_DETAIL);
+      EipTTimeline obj = selectDetail(rundata, context);
+      if (obj != null) {
+        data = getResultDataDetail(obj);
+      }
+      action.setResultData(this);
+      action.putData(rundata, context);
+      return (data != null);
+    } catch (ALPermissionException e) {
+      ALEipUtils.redirectPermissionError(rundata);
+      return false;
+    } catch (ALPageNotFoundException e) {
+      ALEipUtils.redirectPageNotFound(rundata);
+      return false;
+    } catch (ALDBErrorException e) {
+      ALEipUtils.redirectDBError(rundata);
+      return false;
+    }
+  }
+
+  private void removePrivateMsgboardTopic(List<EipTTimeline> list) {
+
+    if (!hasAclTopicList) {
+      list.removeIf(obj -> (obj.getAppId().equals("Msgboard")));
+      return;
+    }
+
+    /* listから自分が関係しないmsgboardの情報を削除 */
+
+    List<Integer> ids = new ArrayList<Integer>();
+    for (EipTTimeline obj : list) {
+      if ("Msgboard".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
+    }
+    if (ids.size() == 0) {
+      return;
+    }
+
+    // MsgboardTopicSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTMsgboardTopic> topicList = null;
+    {
+      SelectQuery<EipTMsgboardTopic> query =
+        Database.query(EipTMsgboardTopic.class);
+
+      Expression exp1 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.PARENT_ID_PROPERTY,
+          Integer.valueOf(0));
+      query.setQualifier(exp1);
+
+      // アクセス制御
+      Expression exp01 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "T");
+
+      Expression exp02 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "O");
+      Expression exp03 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.STATUS_PROPERTY,
+          "A");
+
+      Expression exp11 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.PUBLIC_FLAG_PROPERTY,
+          "F");
+      Expression exp12 =
+        ExpressionFactory.matchExp(
+          EipTMsgboardTopic.EIP_TMSGBOARD_CATEGORY_PROPERTY
+            + "."
+            + EipTMsgboardCategory.EIP_TMSGBOARD_CATEGORY_MAPS_PROPERTY
+            + "."
+            + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
+          Integer.valueOf(uid));
+
+      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
+        .andExp(exp12)));
+
+      Expression exp001 =
+        ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
+      query.andQualifier(exp001);
+
+      query.distinct(true);
+
+      topicList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> topicIdList = new ArrayList<Integer>();
+    for (EipTMsgboardTopic obj : topicList) {
+      topicIdList.add(obj.getTopicId());
+    }
+    // listのなかでIDがtopicIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
+
+  }
+
+  private void removePrivateTodo(List<EipTTimeline> list) {
+
+    if (!hasTodoAclList) {
+      list.removeIf(obj -> (obj.getAppId().equals("ToDo")));
+      return;
+    }
+
+    /* listから自分が関係しないToDoの情報を削除 */
+    List<Integer> ids = new ArrayList<Integer>();
+
+    for (EipTTimeline obj : list) {
+      if ("ToDo".equals(obj.getAppId())) {
+        ids.add(Integer.parseInt(obj.getExternalId()));
+      }
+    }
+    if (ids.size() == 0) {
+      return;
+    }
+
+    // TodoSelectData.getSelectQuery()で取得出来るtopicIdだけをtopicListに格納する
+    List<EipTTodo> todoList = null;
+    {
+      SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
+
+      // アクセス制御
+
+      Expression exp01 =
+        ExpressionFactory.inDbExp(EipTTodo.TODO_ID_PK_COLUMN, ids);
+
+      Expression exp001 =
+        ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
+
+      Expression exp002 =
+        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, Integer
+          .valueOf(uid));
+
+      if (hasTodoOtherAclList) {
+        // 更新情報にあるTODOの内、公開されているTODOか自分が担当者のTODOのみ取得する
+        query.setQualifier(exp01.andExp(exp001.orExp(exp002)));
+      } else {
+        // 更新情報にあるTODOの内、自分が担当者のTODOのみ取得する(ToDo（他ユーザーのToDo）の権限を持っていない場合、listからTodoの情報を削除)
+        query.setQualifier(exp01.andExp(exp002));
+      }
+
+      query.distinct(true);
+
+      todoList = query.fetchList();
+    }
+
+    // topicListからidを抜き出す
+    List<Integer> todoIdList = new ArrayList<Integer>();
+    for (EipTTodo obj : todoList) {
+      todoIdList.add(obj.getTodoId());
+    }
+    // listのなかでIDがtodoIdListに入っていないものを削除
+    list.removeIf(obj -> (obj.getAppId().equals("ToDo") && !todoIdList
+      .contains(Integer.parseInt(obj.getExternalId()))));
+  }
+
+  /**
+   * >>>>>>> master トピックの総数を返す． <BR>
    *
    * @return
    */
@@ -1064,12 +1308,18 @@ public class TimelineSelectData extends
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
+
     if ((!"".equals(target_display_name))
       && (!"all".equals(target_display_name))) {
       if ("posting".equals(target_display_name)) {
         displayParam = "P";
       } else if ("update".equals(target_display_name)) {
         displayParam = "U";
+      }
+    } else {
+      // 絞込みの「表示」が「すべて」で、アプリ設定の「更新情報の表示」が無効のときは、投稿のみを取得する
+      if (enabledActivityFlag.equals("F")) {
+        displayParam = "P";
       }
     }
     for (int i = 0; i < userList.size(); i++) {
@@ -1183,5 +1433,23 @@ public class TimelineSelectData extends
   public void setContentHeightMax(int height) {
     contentHeight = height;
     contentHeightMax = height;
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  protected void doCheckAttachmentInsertAclPermission(RunData rundata,
+      Context context) { // ファイル追加権限の有無
+    hasAttachmentInsertAuthority =
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+  }
+
+  public boolean hasAttachmentInsertAuthority() {
+    return hasAttachmentInsertAuthority;
   }
 }

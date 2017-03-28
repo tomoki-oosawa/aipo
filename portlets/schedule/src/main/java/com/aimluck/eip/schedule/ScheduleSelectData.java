@@ -57,6 +57,8 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.reminder.ALReminderHandler.ReminderCategory;
 import com.aimluck.eip.services.reminder.ALReminderService;
 import com.aimluck.eip.services.reminder.model.ALReminderItem;
@@ -71,8 +73,8 @@ public class ScheduleSelectData extends
     ALAbstractSelectData<EipTSchedule, EipTSchedule> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ScheduleSelectData.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleSelectData.class.getName());
 
   /** <code>members</code> 共有メンバー */
   private List<ALEipUser> members;
@@ -85,6 +87,9 @@ public class ScheduleSelectData extends
 
   /** <code>type</code> マップ種別（ユーザ or 設備） */
   private String type;
+
+  /** <code</code> マップ有効性（有効 or 無効） */
+  private String enabledMapsFlag;
 
   /** <code>loginuserid</code> ログインユーザーID */
   private int loginuserid;
@@ -171,15 +176,15 @@ public class ScheduleSelectData extends
 
     loginuserid = ALEipUtils.getUserId(rundata);
     statusList = new HashMap<Integer, String>();
+    enabledMapsFlag =
+      ALConfigService.get(ALConfigHandler.Property.SCHEDULE_MAPS_ENABLED);
 
     if (rundata.getParameters().containsKey("userid")) {
       String tmpid = rundata.getParameters().getString("userid");
       if (tmpid != null && tmpid.startsWith(ScheduleUtils.TARGET_FACILITY_ID)) {
         userid =
-          Integer.parseInt(
-            tmpid.substring(
-              ScheduleUtils.TARGET_FACILITY_ID.length(),
-              tmpid.length()));
+          Integer.parseInt(tmpid.substring(ScheduleUtils.TARGET_FACILITY_ID
+            .length(), tmpid.length()));
         type = ScheduleUtils.SCHEDULEMAP_TYPE_FACILITY;
       } else {
         userid = rundata.getParameters().getInt("userid");
@@ -265,8 +270,7 @@ public class ScheduleSelectData extends
    * @return
    */
   @Override
-  protected ResultList<EipTSchedule> selectList(RunData rundata,
-      Context context) {
+  protected ResultList<EipTSchedule> selectList(RunData rundata, Context context) {
     // このメソッドは利用されません。
     return null;
   }
@@ -289,9 +293,8 @@ public class ScheduleSelectData extends
     SelectQuery<EipTScheduleFile> query =
       Database.query(EipTScheduleFile.class);
     Expression exp =
-      ExpressionFactory.matchDbExp(
-        EipTSchedule.SCHEDULE_ID_PK_COLUMN,
-        Integer.valueOf(topicid));
+      ExpressionFactory.matchDbExp(EipTSchedule.SCHEDULE_ID_PK_COLUMN, Integer
+        .valueOf(topicid));
     query.setQualifier(exp);
     query.orderAscending(EipTSchedule.UPDATE_DATE_PROPERTY);
     query.orderAscending(EipTScheduleFile.FILE_PATH_PROPERTY);
@@ -327,13 +330,11 @@ public class ScheduleSelectData extends
       SelectQuery<EipTSchedule> schedulequery =
         Database.query(EipTSchedule.class);
       Expression exp1 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.PARENT_ID_PROPERTY,
-          record.getScheduleId());
+        ExpressionFactory.matchExp(EipTSchedule.PARENT_ID_PROPERTY, record
+          .getScheduleId());
       Expression exp2 =
-        ExpressionFactory.matchExp(
-          EipTSchedule.START_DATE_PROPERTY,
-          view_date.getValue());
+        ExpressionFactory.matchExp(EipTSchedule.START_DATE_PROPERTY, view_date
+          .getValue());
       schedulequery.setQualifier(exp1);
       schedulequery.andQualifier(exp2);
       List<Integer> scheduleList = new ArrayList<Integer>();
@@ -443,10 +444,8 @@ public class ScheduleSelectData extends
       // 終了日時
       rd.setEndDate(record.getEndDate());
       // 休日はどうするか( repeatPattern の最後の文字を取得)
-      rd.setShifting(
-        String.valueOf(
-          record.getRepeatPattern().charAt(
-            record.getRepeatPattern().length() - 1)));
+      rd.setShifting(String.valueOf(record.getRepeatPattern().charAt(
+        record.getRepeatPattern().length() - 1)));
       // タイトル
       rd.setName(record.getName());
       // ID
@@ -480,113 +479,89 @@ public class ScheduleSelectData extends
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
         if (ptn.length() == 9) {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
-              .toString());
+          rd.addText(new StringBuffer()
+            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+            .toString());
           count = 8;
         } else {
           switch (ptn.charAt(8)) {
             case '1':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
+                .toString());
               break;
             case '2':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_2ND_WEEK_SPACE"))
+                .toString());
               break;
             case '3':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_3RD_WEEK_SPACE"))
+                .toString());
               break;
             case '4':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_4TH_WEEK_SPACE"))
+                .toString());
               break;
             case '5':
-              rd.addText(
-                new StringBuffer()
-                  .append(
-                    ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
-                  .toString());
+              rd.addText(new StringBuffer()
+                .append(ALLocalizationUtils.getl10n("SCHEDULE_5TH_WEEK_SPACE"))
+                .toString());
               break;
             default:
               break;
           }
           count = 9;
         }
-        rd.addText(
-          new StringBuffer()
+        rd
+          .addText(new StringBuffer()
             .append(
-              ptn.charAt(1) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
-                : "")
+              ptn.charAt(1) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SUNDAY") : "")
             .append(
-              ptn.charAt(2) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
-                : "")
+              ptn.charAt(2) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_MONDAY") : "")
             .append(
-              ptn.charAt(3) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
-                : "")
+              ptn.charAt(3) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_TUSEDAY") : "")
             .append(
-              ptn.charAt(4) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY")
-                : "")
+              ptn.charAt(4) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_WEDNESDAY") : "")
             .append(
-              ptn.charAt(5) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
-                : "")
+              ptn.charAt(5) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_THURSDAY") : "")
             .append(
-              ptn.charAt(6) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
-                : "")
+              ptn.charAt(6) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_FRIDAY") : "")
             .append(
-              ptn.charAt(7) != '0'
-                ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
-                : "")
+              ptn.charAt(7) != '0' ? ALLocalizationUtils
+                .getl10n("SCHEDULE_SATURDAY") : "")
             .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
             .toString());
         // 毎月
       } else if (ptn.charAt(0) == 'M') {
         if (ptn.substring(1, 3).equals("XX")) {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         } else {
-          rd.addText(
-            new StringBuffer()
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
-              .append(Integer.parseInt(ptn.substring(1, 3)))
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(
+            ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+            Integer.parseInt(ptn.substring(1, 3))).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         }
         count = 3;
         // 毎年
       } else if (ptn.charAt(0) == 'Y') {
-        rd.addText(
-          new StringBuffer()
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE"))
-            .append(Integer.parseInt(ptn.substring(1, 3)))
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-            .append(Integer.parseInt(ptn.substring(3, 5)))
-            .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
-            .toString());
+        rd.addText(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_YEAR_SPACE")).append(
+          Integer.parseInt(ptn.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+          Integer.parseInt(ptn.substring(3, 5))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
         count = 5;
         // 期間
       } else if (ptn.charAt(0) == 'S') {
@@ -604,30 +579,29 @@ public class ScheduleSelectData extends
         } else {
           rd.setLimit(true);
           // 期限
-          rd.addText(
-            new StringBuffer()
-              .append(" （")
-              .append(rd.getStartDate().getYear())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_YEAR"))
-              .append(rd.getStartDate().getMonth())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-              .append(rd.getStartDate().getDay())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY"))
-              .append(rd.getEndDate().getYear())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_YEAR"))
-              .append(rd.getEndDate().getMonth())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_MONTH"))
-              .append(rd.getEndDate().getDay())
-              .append(ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY"))
-              .toString());
+          rd.addText(new StringBuffer().append(" （").append(
+            rd.getStartDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getStartDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getStartDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_UNTIL_DAY")).append(
+            rd.getEndDate().getYear()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_YEAR")).append(
+            rd.getEndDate().getMonth()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_MONTH")).append(
+            rd.getEndDate().getDay()).append(
+            ALLocalizationUtils.getl10n("SCHEDULE_FROM_DAY")).toString());
         }
       }
       // 登録者
-      rd.setCreateUser(
-        ALEipUtils.getALEipUser(record.getCreateUserId().intValue()));
+      rd.setCreateUser(ALEipUtils.getALEipUser(record
+        .getCreateUserId()
+        .intValue()));
       // 更新者
-      rd.setUpdateUser(
-        ALEipUtils.getALEipUser(record.getUpdateUserId().intValue()));
+      rd.setUpdateUser(ALEipUtils.getALEipUser(record
+        .getUpdateUserId()
+        .intValue()));
       createuser = rd.getCreateUser();
       // 作成日
       rd.setCreateDate(record.getCreateDate());
@@ -677,50 +651,51 @@ public class ScheduleSelectData extends
 
       return null;
     }
-    List<EipTScheduleFile> list =
-      getSelectQueryForFiles(record.getScheduleId().intValue()).fetchList();
-    if (list != null && list.size() > 0) {
-      List<FileuploadBean> attachmentFileList = new ArrayList<FileuploadBean>();
-      FileuploadBean filebean = null;
-      EipTScheduleFile file = null;
-      int size = list.size();
-      for (int i = 0; i < size; i++) {
-        file = list.get(i);
-        String realname = file.getFileName();
-        javax.activation.DataHandler hData =
-          new javax.activation.DataHandler(
-            new javax.activation.FileDataSource(realname));
+    if (hasAttachmentAuthority()) {
+      List<EipTScheduleFile> list =
+        getSelectQueryForFiles(record.getScheduleId().intValue()).fetchList();
+      if (list != null && list.size() > 0) {
+        List<FileuploadBean> attachmentFileList =
+          new ArrayList<FileuploadBean>();
+        FileuploadBean filebean = null;
+        EipTScheduleFile file = null;
+        int size = list.size();
+        for (int i = 0; i < size; i++) {
+          file = list.get(i);
+          String realname = file.getFileName();
+          javax.activation.DataHandler hData =
+            new javax.activation.DataHandler(
+              new javax.activation.FileDataSource(realname));
 
-        filebean = new FileuploadBean();
-        filebean.setFileId(file.getFileId().intValue());
-        filebean.setFileName(realname);
-        filebean.setUserId(file.getOwnerId());
-        if (hData != null) {
-          filebean.setContentType(hData.getContentType());
+          filebean = new FileuploadBean();
+          filebean.setFileId(file.getFileId().intValue());
+          filebean.setFileName(realname);
+          filebean.setUserId(file.getOwnerId());
+          if (hData != null) {
+            filebean.setContentType(hData.getContentType());
+          }
+          filebean.setIsImage(FileuploadUtils.isImage(realname));
+          attachmentFileList.add(filebean);
         }
-        filebean.setIsImage(FileuploadUtils.isImage(realname));
-        attachmentFileList.add(filebean);
+        rd.setAttachmentFiles(attachmentFileList);
       }
-      rd.setAttachmentFiles(attachmentFileList);
     }
 
     if (ALReminderService.isEnabled()) {
       reminderItem =
-        ALReminderService.getJob(
-          Database.getDomainName(),
-          String.valueOf(loginuserid),
-          ReminderCategory.SCHEDULE,
-          record.getScheduleId().intValue());
+        ALReminderService.getJob(Database.getDomainName(), String
+          .valueOf(loginuserid), ReminderCategory.SCHEDULE, record
+          .getScheduleId()
+          .intValue());
     }
 
     // 過去のスケジュールに対してはアラームの設定状況を表示しない
-    rd.setLastStarted(
-      ScheduleUtils.isLastStarted(
-        rd.getStartDate().getValue(),
-        rd.getEndDate().getValue(),
-        rd.isSpan(),
-        rd.isRepeat(),
-        rd.isLimit()));
+    rd.setLastStarted(ScheduleUtils.isLastStarted(
+      rd.getStartDate().getValue(),
+      rd.getEndDate().getValue(),
+      rd.isSpan(),
+      rd.isRepeat(),
+      rd.isLimit()));
 
     return rd;
   }
@@ -933,5 +908,9 @@ public class ScheduleSelectData extends
 
   public boolean hasReminderItem() {
     return reminderItem != null ? true : false;
+  }
+
+  public boolean enabledMapsFlag() {
+    return "T".equals(enabledMapsFlag);
   }
 }

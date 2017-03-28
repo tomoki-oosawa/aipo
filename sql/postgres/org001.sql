@@ -2225,6 +2225,13 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','アプリ�
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(211,'report_self','報告書（自分の報告書）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(212,'report_other','報告書（他ユーザーの報告書）操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(213,'report_reply','報告書（報告書への返信）操作',20);
+<<<<<<< HEAD
+=======
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(221,'timeline_post','タイムライン（自分の投稿）操作',21);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(222,'timeline_post_other','タイムライン（他ユーザーの投稿）操作',17);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(223,'timeline_comment','タイムライン（コメント）操作',20);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(231,'attachment','添付ファイル操作',52);
+>>>>>>> master
 
 
 SELECT setval('pk_eip_t_acl_portlet_feature',300);
@@ -2283,6 +2290,16 @@ INSERT INTO EIP_T_ACL_ROLE VALUES(31, '報告書（自分の報告書）管理�
 INSERT INTO EIP_T_ACL_ROLE VALUES(32,'報告書（他ユーザーの報告書）管理者',212,3,'＊詳細表示は一覧表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(33,'報告書（報告書への返信）管理者',213,20,NULL);
 
+<<<<<<< HEAD
+=======
+-- timeline
+INSERT INTO EIP_T_ACL_ROLE VALUES(34, 'タイムライン（自分の投稿）管理者',221,21,'＊追加、削除は一覧表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(35,'タイムライン（他ユーザーの投稿）管理者',222,1,NULL);
+INSERT INTO EIP_T_ACL_ROLE VALUES(36,'タイムライン（コメント）管理者',223,20,NULL);
+-- attachment
+INSERT INTO EIP_T_ACL_ROLE VALUES(37,'添付ファイル操作管理者',231,52,NULL);
+
+>>>>>>> master
 SELECT setval('pk_eip_t_acl_role',10000);
 
 INSERT INTO EIP_T_BLOG_THEMA VALUES(1,'未分類','',0,0,NULL ,NULL);

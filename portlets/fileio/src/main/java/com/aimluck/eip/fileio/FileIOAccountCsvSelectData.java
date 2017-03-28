@@ -155,7 +155,7 @@ public class FileIOAccountCsvSelectData
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    List<String> existedCodeList = getAllUsersCodeFromDB();
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
@@ -255,12 +255,17 @@ public class FileIOAccountCsvSelectData
         TurbineUser user = new TurbineUser();
 
         if (existedUserMap.containsKey(username)) {
+          // 入力した名前のユーザーがすでに存在していたら
           TurbineUser tmpuser2 = existedUserMap.get(username);
           // same_user = true;
           if ("F".equals(tmpuser2.getDisabled())) {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(username);
-            if (!(tmpuser2.getCode().equals(code))) {
+            if (tmpuser2.getCode() != null
+              && !(tmpuser2.getCode().equals(code))) {
+              // tmpuser2が社員コードを持ち、それが入力された社員コードと異なっていたら
               if (existedCodeList.contains(code)) {
+                // 入力された社員コードを持つユーザーがすでに存在していたら
                 same_code = true;
                 b_err = true;
               } else {
@@ -272,16 +277,19 @@ public class FileIOAccountCsvSelectData
               }
             }
           } else {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(null);
             b_err = true;
           }
         } else {
+          // 入力した名前のユーザがまだ存在していなかったとき
           user.setLoginName(username);
           TurbineUser newuser = new TurbineUser();
           newuser.setLoginName(username);
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
           if (existedCodeList.contains(code)) {
+            // 入力された社員コードを持つユーザーがすでに存在していたら
             same_code = true;
             b_err = true;
           }
@@ -400,7 +408,7 @@ public class FileIOAccountCsvSelectData
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
 
-    List<String> existedCodeList = getAllUsersCodeFromDB();
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
 
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
@@ -550,6 +558,7 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBからすべてのユーザーのデータを取得します <BR>
    *
    * @return
    */
@@ -574,22 +583,25 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBから全てのユーザーの社員コードを取得します(削除済みのものを含まない) <BR>
    *
    * @return
    */
-  private ArrayList<String> getAllUsersCodeFromDB() {
+  private ArrayList<String> getAllUndisableUsersCodeFromDB() {
     ArrayList<String> codeList = new ArrayList<String>();
     try {
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       List<TurbineUser> list = query.fetchList();
 
       for (TurbineUser user : list) {
-        if (user.getCode() != null && !(user.getCode().equals(""))) {
+        if (user.getCode() != null
+          && !(user.getCode().equals(""))
+          && !user.getDisabled().equals("T")) {
           codeList.add(user.getCode());
         }
       }
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("[getAllUndisableUsersCodeFromDB]", ex);
       // throw new ALDBErrorException();
     }
     return codeList;
