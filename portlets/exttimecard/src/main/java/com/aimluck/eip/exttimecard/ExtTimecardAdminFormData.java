@@ -19,11 +19,13 @@
 
 package com.aimluck.eip.exttimecard;
 
+import static com.aimluck.eip.util.ALLocalizationUtils.*;
 import info.bliki.commons.validator.routines.InetAddressValidator;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -31,12 +33,14 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.account.util.AccountUtils;
 import com.aimluck.eip.common.ALAbstractFormData;
 import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.exttimecard.util.ExtTimecardAdminUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.services.config.ALConfigHandler.Property;
 import com.aimluck.eip.services.config.ALConfigService;
@@ -59,6 +63,23 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
   private ALStringField allowed_ip2;
 
+  /** <code></code> アクセス制限の有効/無効 */
+  private ALNumberField is_enabled;
+
+  /** <code>ip_address</code> 有効なIPアドレス */
+  private List<ALStringField> ip_addresses;
+
+  /** <code>myip</code> 接続元のIPアドレス */
+  private String myip;
+
+  public List<ALStringField> getIpAddresses() {
+    return ip_addresses;
+  }
+
+  public boolean getIsEnabled() {
+    return 1 == is_enabled.getValue();
+  }
+
   /**
    *
    * @param action
@@ -70,6 +91,13 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+    ip_addresses = new ArrayList<ALStringField>();
+
+    enabled_ip = new ALStringField();
+    allowed_ip = new ALStringField();
+    allowed_ip2 = new ALStringField();
+
+    myip = rundata.getRemoteAddr();
   }
 
   /**
@@ -77,9 +105,7 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
    */
   @Override
   public void initField() {
-    enabled_ip = new ALStringField();
-    allowed_ip = new ALStringField();
-    allowed_ip2 = new ALStringField();
+
   }
 
   /**
@@ -101,22 +127,16 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
     try {
       // 入力されたIPアドレスが有効なものかどうか
-      if ((!"".equals(allowed_ip.toString()) && !isValidIpAddress(allowed_ip
-        .toString()))
-        || (!"".equals(allowed_ip2.toString()) && !isValidIpAddress(allowed_ip2
-          .toString()))) {
-        msgList.add(ALLocalizationUtils
-          .getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
-      }
+      ExtTimecardAdminUtils.validateDelegate(ip_addresses, msgList);
 
       // IPアドレス制限を設けていて、かつIPアドレスを入力しているかどうか
       if (enabled_ip.toString().equals("T")) {
-        if (allowed_ip.toString().length() == 0
-          && allowed_ip2.toString().length() == 0) {
+        if (ip_addresses.size() == 0) {
           msgList.add(ALLocalizationUtils
             .getl10n("EXTTIMECARD_INVALID_IP_MESSAGE"));
         }
       }
+
     } catch (RuntimeException ex) {
       logger.error("exttimecard", ex);
       return false;
@@ -139,6 +159,25 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
   @Override
   protected boolean loadFormData(RunData rundata, Context context,
       List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+
+    this.is_enabled.setValue("true".equals(ALConfigService.get(
+      ExtTimecardAdminUtils.EXTTIMECARD_IP_ALLOWED,
+      "false")) ? 1 : 0);
+
+    String[] ip_address_values = ExtTimecardAdminUtils.getIpAddresses();
+    if (ip_address_values != null) {
+      for (String value : ip_address_values) {
+        if (value != null && !"".equals(value)) {
+          appendIpAddresses(value);
+        }
+      }
+    }
+
+    // 登録されているIPアドレスがない場合には、利用中のIPアドレスを自動入力する
+    if (ip_address_values.length == 1 && "".equals(ip_address_values[0])) {
+      appendIpAddresses(myip);
+    }
+
     return false;
   }
 
@@ -172,9 +211,13 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
 
     ALConfigService.put(Property.EXTTIMECARD_IP_ENABLED, "T".equals(enabled_ip
       .toString()) ? "T" : "F");
+
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED, allowed_ip.toString());
     ALConfigService.put(Property.EXTTIMECARD_IP_ALLOWED2, allowed_ip2
       .toString());
+
+    // 有効なIPアドレスを保存
+    ExtTimecardAdminUtils.setIpAddresses(ip_addresses);
 
     // イベントログに保存
     ALBaseUser user = AccountUtils.getBaseUser(rundata, context);
@@ -215,5 +258,37 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
     } catch (final UnknownHostException ex) {
       return false;
     }
+  }
+
+  @Override
+  protected boolean setFormData(RunData rundata, Context context,
+      List<String> msgList) throws ALPageNotFoundException, ALDBErrorException {
+    boolean res = super.setFormData(rundata, context, msgList);
+    if (res) {
+      try {
+        String ip_address_values[] =
+          rundata.getParameters().getStrings("allowed_ip");
+        if (ip_address_values != null) {
+          for (String value : ip_address_values) {
+            if (value != null && !"".equals(value)) {
+              appendIpAddresses(value);
+            }
+          }
+        }
+
+        return res;
+
+      } catch (Exception ex) {
+        logger.error("ExtTimecardAdminFormData.setFormData", ex);
+      }
+    }
+    return res;
+  }
+
+  private void appendIpAddresses(String value) {
+    ALStringField ip_address = new ALStringField();
+    ip_address.setFieldName(getl10n("SYSTEM_PERMITTED_IP"));
+    ip_address.setValue(value);
+    ip_addresses.add(ip_address);
   }
 }

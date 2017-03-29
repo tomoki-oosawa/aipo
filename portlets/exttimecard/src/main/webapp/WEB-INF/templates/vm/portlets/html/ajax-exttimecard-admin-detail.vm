@@ -30,6 +30,7 @@ $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
 #ALtditemheader()
 #if ($!{result.enabledIpFlag.toString()} == "F")
@@ -37,16 +38,13 @@ $l10n.EXTTIMECARD_INVALID
 #else
 $l10n.EXTTIMECARD_VALID
 #ALtditemfooter()
-#if ($!{result.allowedIp.toString()} != "")
+
+#if ($!{result.allowedIp.toString()} != "" || $!{result.allowedIp2.toString()} != "")
 #ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
 #ALtditemheader()
-$!result.allowedIp.toString()
-#ALtditemfooter()
+#foreach($ip in $!result.IpAddresses)
+  <p>$!ip</p>
 #end
-#if ($!{result.allowedIp2.toString()} != "")
-#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
-#ALtditemheader()
-$!result.allowedIp2.toString()
 #ALtditemfooter()
 #end
 #end

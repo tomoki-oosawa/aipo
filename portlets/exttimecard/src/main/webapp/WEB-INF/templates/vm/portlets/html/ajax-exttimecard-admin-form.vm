@@ -42,14 +42,16 @@
   #ALtditem($!result.Detail.Description)
   #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
   #ALtditemheader()
-    <p><input type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end>無効にする</p>
-    <p><input type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end>有効にする</p>
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end>無効にする</p>
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end>有効にする</p>
 
     <table id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
       <tbody>
       <tr><td>
-      <p class="mb10">アクセスを許可するIPアドレスを入力してください。<br></p>
-      <p><input type="text" name="allowed_ip" value="$!result.allowedIp.toString()"></p>
+      <p class="mb10">アクセスを許可するIPアドレスを入力してください。</p>
+      #foreach($ip in $!result.IpAddresses)
+      	<p><input type="text" name="allowed_ip" value= $!ip></p>
+      #end
       </td></tr>
       <tr><td><a id="ip-access-add-form" onclick="aipo.exttimecard.addIpForm();" href="javascript:void(0);">入力欄を追加</a></td></tr>
       </tbody>

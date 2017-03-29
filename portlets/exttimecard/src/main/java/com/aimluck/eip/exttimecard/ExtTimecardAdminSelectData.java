@@ -34,6 +34,7 @@ import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
+import com.aimluck.eip.exttimecard.util.ExtTimecardAdminUtils;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
@@ -181,4 +182,30 @@ public class ExtTimecardAdminSelectData extends
       return false;
     }
   }
+
+  /**
+   * EipMConfigから有効なIPアドレスを取得する
+   *
+   * @param defaultValue
+   * @return
+   */
+  public static String[] getIpAddresses() {
+    String ip_address_values1_str =
+      ALConfigService.get(ExtTimecardAdminUtils.EXTTIMECARD_IP_ALLOWED, "");
+
+    String ip_address_values2_str =
+      ALConfigService.get(ExtTimecardAdminUtils.EXTTIMECARD_IP_ALLOWED2, "");
+
+    String ip_address_values_str;
+    if ("".equals(ip_address_values2_str)) {
+      ip_address_values_str = ip_address_values1_str;
+    } else {
+      ip_address_values_str =
+        ip_address_values1_str + "," + ip_address_values2_str;
+    }
+
+    return ip_address_values_str.split(",");
+
+  }
+
 }
