@@ -48,6 +48,15 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   /** <code>facilities</code> 共有設備 */
   private List<FacilityResultData> facilities;
 
+  // /** <code>publicity</code> 公開 */
+  // private ALStringField publicity;
+  //
+  // /** <code>repeat</code> 繰り返し */
+  // private ALStringField repeat;
+  //
+  // /** <code>overlap</code> 重複 */
+  // private ALStringField overlap;
+
   /** 区切り文字 */
   public static final String DISP_SEPARATOR = ",";
 
@@ -57,6 +66,9 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     user_id = new ALNumberField();
     members = new ArrayList<ALEipUser>();
     facilities = new ArrayList<FacilityResultData>();
+    // publicity = new ALStringField();
+    // repeat = new ALStringField();
+    // overlap = new ALStringField();
   }
 
   public void addAllMember(List<ALEipUser> users) {
@@ -255,6 +267,19 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     field.setValue(str);
     return field;
   }
+
+  // 公開
+  public ALStringField getPublicExport() {
+    ALStringField field = new ALStringField();
+
+    String str = getName().getValue().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
+
+  // 繰り返し
+
+  // 重複
 
   /**
    * @return user_id

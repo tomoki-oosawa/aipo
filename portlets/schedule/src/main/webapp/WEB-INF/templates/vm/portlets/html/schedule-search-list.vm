@@ -82,6 +82,14 @@
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.schedule.downloadCsv('$dlLink');" >$title</a>
 
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
+##########
+##<div class="row">
+##<div class="col-3">
+##	<select onchange="aipo.viewPage(this.options[this.selectedIndex].value, '$!portlet.ID')" style="margin:0 0; vertical-align:middle;">
+##
+##</div>
+##</div>
+##########
 </div>
 #end
 <div class="row">
