@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -113,12 +112,17 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       Map<Integer, Map<String, List<ScheduleExportResultData>>> dummyMap =
         new HashMap<Integer, Map<String, List<ScheduleExportResultData>>>();
 
-      Date viewStart =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("start_day"));
-      Date viewEnd =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("end_day"));
+      // Date viewStart =
+      // DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
+      // rundata.getParameters().get("start_day"));
+      // Date viewEnd =
+      // DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
+      // rundata.getParameters().get("end_day"));
+
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      Date viewStart = format.parse(rundata.getParameters().get("start_day"));
+      Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
+
       int userid = ALEipUtils.getUserId(rundata);
 
       fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);

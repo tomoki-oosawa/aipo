@@ -69,12 +69,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
-  /** <code>viewUrlStart</code> yyyy/MM/dd型表示開始日時 */
-  private ALDateTimeField viewUrlStart;
-
-  /** <code>viewUrlEnd</code> yyyy/MM/dd型表示終了日時 */
-  private ALDateTimeField viewUrlEnd;
-
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
@@ -113,12 +107,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     viewStart.setNotNull(true);
     // 表示終了日時
     viewEnd = new ALDateTimeField("yyyy-MM-dd");
-
-    // URL用
-    // 表示開始日時
-    viewUrlStart = new ALDateTimeField();
-    // 表示終了日時
-    viewUrlEnd = new ALDateTimeField();
 
     // 自ポートレットからのリクエストであれば、パラメータを展開しセッションに保存する。
     if (ALEipUtils.isMatch(rundata, context)) {
@@ -351,26 +339,26 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     return viewEnd;
   }
 
-  /**
-   * yyyy/MM/dd型表示開始日時を取得します。
-   *
-   * @return
-   */
-
-  public ALDateTimeField getViewUrlStart() {
-    viewUrlStart.setValue(getViewStart().toString());
-    return viewUrlStart;
-  }
-
-  /**
-   * yyyy/MM/dd型表示終了日時を取得します。
-   *
-   * @return
-   */
-  public ALDateTimeField getViewUrlEnd() {
-    viewUrlEnd.setValue(getViewEnd().toString());
-    return viewUrlEnd;
-  }
+  // /**
+  // * yyyy/MM/dd型表示開始日時を取得します。
+  // *
+  // * @return
+  // */
+  //
+  // public ALDateTimeField getViewUrlStart() {
+  // viewUrlStart.setValue(getViewStart().toString());
+  // return viewUrlStart;
+  // }
+  //
+  // /**
+  // * yyyy/MM/dd型表示終了日時を取得します。
+  // *
+  // * @return
+  // */
+  // public ALDateTimeField getViewUrlEnd() {
+  // viewUrlEnd.setValue(getViewEnd().toString());
+  // return viewUrlEnd;
+  // }
 
   /**
    * 表示タイプを取得します。

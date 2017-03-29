@@ -77,7 +77,7 @@
 <div class="auiSummaryMeta clearfix">
 #if(${client}!="IPHONE")
 <div class="floatRight">
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('FileIOScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewUrlStart}).addQueryData('end_day',$!{result.ViewUrlEnd})))
+#set($dlLink = $!utils.escapeXML($jslink.getTemplate('FileIOScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewStart}).addQueryData('end_day',$!{result.ViewEnd})))
 #set($title = "$l10n.SCHEDULE_DOWNLOAD")
 <a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.schedule.downloadCsv('$dlLink');" >$title</a>
 
