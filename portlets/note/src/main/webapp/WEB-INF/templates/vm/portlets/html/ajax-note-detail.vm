@@ -29,9 +29,9 @@
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
 #if (${client}!= "IPHONE")
-    #ALdialogheaderPrint("$l10n.NOTE_NOTE_DETAIL" "$!portlet.ID" "NoteScreenPrint" "$!{result.getViewDate().toString()})")
+    #ALdialogheaderPrintNote("$l10n.NOTE_NOTE_DETAIL" "$!portlet.ID" "NoteScreenPrint" "$!{result.getViewDate().toString()})")
 #else
-    #ALdialogheaderDetailSmartPhone("$l10n.")
+    #ALdialogheaderDetailSmartPhone("$l10n.NOTE_NOTE_DETAIL")
 #end
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "NOTE_NOTE_DETAIL")
 #ALajaxdetailformheader($l10n.NOTE_NOTE)
