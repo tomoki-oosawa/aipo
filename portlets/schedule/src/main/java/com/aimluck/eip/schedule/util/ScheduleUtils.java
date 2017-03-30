@@ -2709,33 +2709,6 @@ public class ScheduleUtils {
               .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_SPAN_IN_THIS_TERM"));
           }
         }
-        // 1つも表示できないスケジュールははじく
-        if (repeat_pattern != "") {
-          Calendar cal = Calendar.getInstance();
-          cal.setTime(limit_start_date.getValue().getDate());
-          Calendar cal2 = Calendar.getInstance();
-          cal2.setTime(limit_end_date.getValue().getDate());
-          Date tmpDate = cal.getTime();
-          ALDateTimeField tmp = new ALDateTimeField("yyyy/MM/dd");
-          tmp.setValue(tmpDate);
-          boolean isEmpty = true;
-          while (!cal.equals(cal2)) {
-            if (!isView(tmp, repeat_pattern, limit_start_date
-              .getValue()
-              .getDate(), limit_end_date.getValue().getDate())) {
-              cal.add(Calendar.DATE, 1);
-              tmpDate = cal.getTime();
-              tmp.setValue(tmpDate);
-            } else {
-              isEmpty = false;
-              break;
-            }
-          }
-          if (isEmpty) {
-            msgList.add(ALLocalizationUtils
-              .getl10n("SCHEDULE_MESSAGE_SELECT_NO_SCHEDULE"));
-          }
-        }
 
       } catch (NumberFormatException nfe) {
         logger
