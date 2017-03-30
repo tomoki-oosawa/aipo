@@ -165,6 +165,17 @@
       	<option value="$num" #if ($!{result.YearDay.toString()} == "$num") selected #end>$num$l10n.SCHEDULE_DAY</option>
       #end
       </select>
+      ##休日だったらずらすチェックボックス--------------------------------------------------------------
+      <p>
+      <input id="shift_check" type="checkbox" value="T" #if ($!{result.ShiftCheck.toString()} == "T") checked="checked" #end name="shift_check"/>
+      <label for="shift_check">休日は予定を</label>
+      <select onChange="aipo.schedule.enableShift(this.form)" name="shifting">
+      	<option value="D" #if ($!{result.Shifting.toString()}=="D") selected #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
+      	<option value="B" #if ($!{result.Shifting.toString()}=="B") selected #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
+      	<option value="A" #if ($!{result.Shifting.toString()}=="A") selected #end>$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
+      </select>
+      </p>
+      ##----------------------------------------------------------------------------------------
       </p>
    </div>
     <div class="p auiSetDate mt15">

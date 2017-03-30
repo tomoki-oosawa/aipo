@@ -57,8 +57,9 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ScheduleWeeklySelectData.class.getName());
 
   /** <code>prevDate</code> 前の日 */
   private ALDateTimeField prevDate;
@@ -174,9 +175,11 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       // スケジュールの表示開始日時
       // e.g. 2004-3-14
       if (rundata.getParameters().containsKey("view_start")) {
-        ALEipUtils.setTemp(rundata, context, "view_start", rundata
-          .getParameters()
-          .getString("view_start"));
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          "view_start",
+          rundata.getParameters().getString("view_start"));
       }
     }
 
@@ -231,10 +234,16 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
     cal3.add(Calendar.MONTH, 2);
     nextMonth.setValue(cal3.getTime());
 
-    ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-      + "-00-00");
-    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-      + "-00-00");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      "tmpStart",
+      viewStart.toString() + "-00-00");
+    ALEipUtils.setTemp(
+      rundata,
+      context,
+      "tmpEnd",
+      viewStart.toString() + "-00-00");
 
     termWeekConList = new ArrayList<ScheduleTermWeekContainer>();
     weekTodoConList = new ArrayList<ScheduleToDoWeekContainer>();
@@ -244,10 +253,11 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       viewTodo =
         !ALPortalApplicationService.isActive(ToDoUtils.TODO_PORTLET_NAME)
           ? 0
-          : Integer.parseInt(ALEipUtils
-            .getPortlet(rundata, context)
-            .getPortletConfig()
-            .getInitParameter("p5a-view"));
+          : Integer.parseInt(
+            ALEipUtils
+              .getPortlet(rundata, context)
+              .getPortletConfig()
+              .getInitParameter("p5a-view"));
     }
 
     // スーパークラスのメソッドを呼び出す。
@@ -294,8 +304,8 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       // 時刻でソート
       ScheduleUtils.sortByTime(list);
 
-      return new ResultList<VEipTScheduleList>(ScheduleUtils
-        .sortByDummySchedule(list));
+      return new ResultList<VEipTScheduleList>(
+        ScheduleUtils.sortByDummySchedule(list));
     } catch (Exception e) {
       logger.error("[ScheduleWeeklySelectData] TorqueException", e);
       throw new ALDBErrorException();
@@ -317,8 +327,9 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
 
     // 自ユーザ
     Expression exp1 =
-      ExpressionFactory.matchExp(VEipTScheduleList.USER_ID_PROPERTY, Integer
-        .valueOf(ALEipUtils.getUserId(rundata)));
+      ExpressionFactory.matchExp(
+        VEipTScheduleList.USER_ID_PROPERTY,
+        Integer.valueOf(ALEipUtils.getUserId(rundata)));
     query.setQualifier(exp1);
     // ユーザのスケジュール
     Expression exp2 =
@@ -393,15 +404,11 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
       // 期間スケジュールの場合
       if (rd.getPattern().equals("S")) {
         int stime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getStartDate()
-            .getValue()
-            .getTime()) / 86400000);
+          -(int) ((viewStart.getValue().getTime()
+            - rd.getStartDate().getValue().getTime()) / 86400000);
         int etime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getEndDate()
-            .getValue()
-            .getTime()) / 86400000);
+          -(int) ((viewStart.getValue().getTime()
+            - rd.getEndDate().getValue().getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -477,9 +484,11 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
 
         // ポートレット ToDoPublic のへのリンクを取得する．
         String todo_url =
-          ScheduleUtils.getPortletURItoTodoDetailPane(rundata, "ToDo", record
-            .getTodoId()
-            .longValue(), portletId);
+          ScheduleUtils.getPortletURItoTodoDetailPane(
+            rundata,
+            "ToDo",
+            record.getTodoId().longValue(),
+            portletId);
         rd.setTodoId(record.getTodoId().intValue());
         rd.setTodoName(record.getTodoName());
         rd.setUserId(record.getTurbineUser().getUserId().intValue());
@@ -490,22 +499,19 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
         rd.setPublicFlag("T".equals(record.getPublicFlag()));
 
         int stime;
-        if (ScheduleUtils.equalsToDate(ToDoUtils.getEmptyDate(), rd
-          .getStartDate()
-          .getValue(), false)) {
+        if (ScheduleUtils.equalsToDate(
+          ToDoUtils.getEmptyDate(),
+          rd.getStartDate().getValue(),
+          false)) {
           stime = 0;
         } else {
           stime =
-            -(int) ((viewStart.getValue().getTime() - rd
-              .getStartDate()
-              .getValue()
-              .getTime()) / 86400000);
+            -(int) ((viewStart.getValue().getTime()
+              - rd.getStartDate().getValue().getTime()) / 86400000);
         }
         int etime =
-          -(int) ((viewStart.getValue().getTime() - rd
-            .getEndDate()
-            .getValue()
-            .getTime()) / 86400000);
+          -(int) ((viewStart.getValue().getTime()
+            - rd.getEndDate().getValue().getTime()) / 86400000);
         if (stime < 0) {
           stime = 0;
         }
@@ -539,8 +545,9 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
     SelectQuery<EipTTodo> query = Database.query(EipTTodo.class);
 
     Expression exp1 =
-      ExpressionFactory.noMatchExp(EipTTodo.STATE_PROPERTY, Short
-        .valueOf((short) 100));
+      ExpressionFactory.noMatchExp(
+        EipTTodo.STATE_PROPERTY,
+        Short.valueOf((short) 100));
     query.setQualifier(exp1);
     Expression exp2 =
       ExpressionFactory.matchExp(EipTTodo.ADDON_SCHEDULE_FLG_PROPERTY, "T");
@@ -551,31 +558,38 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
 
     // 終了日時
     Expression exp11 =
-      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewStart
-        .getValue());
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        viewStart.getValue());
     // 開始日時
     Expression exp12 =
-      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewEndCrt
-        .getValue());
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        viewEndCrt.getValue());
 
     // 開始日時のみ指定されている ToDo を検索
     Expression exp21 =
-      ExpressionFactory.lessOrEqualExp(EipTTodo.START_DATE_PROPERTY, viewEndCrt
-        .getValue());
+      ExpressionFactory.lessOrEqualExp(
+        EipTTodo.START_DATE_PROPERTY,
+        viewEndCrt.getValue());
     Expression exp22 =
-      ExpressionFactory.matchExp(EipTTodo.END_DATE_PROPERTY, ToDoUtils
-        .getEmptyDate());
+      ExpressionFactory.matchExp(
+        EipTTodo.END_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
 
     // 終了日時のみ指定されている ToDo を検索
     Expression exp31 =
-      ExpressionFactory.greaterOrEqualExp(EipTTodo.END_DATE_PROPERTY, viewStart
-        .getValue());
+      ExpressionFactory.greaterOrEqualExp(
+        EipTTodo.END_DATE_PROPERTY,
+        viewStart.getValue());
     Expression exp32 =
-      ExpressionFactory.matchExp(EipTTodo.START_DATE_PROPERTY, ToDoUtils
-        .getEmptyDate());
+      ExpressionFactory.matchExp(
+        EipTTodo.START_DATE_PROPERTY,
+        ToDoUtils.getEmptyDate());
 
-    query.andQualifier((exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
-      exp31.andExp(exp32)));
+    query.andQualifier(
+      (exp11.andExp(exp12)).orExp(exp21.andExp(exp22)).orExp(
+        exp31.andExp(exp32)));
     return query;
   }
 
@@ -724,8 +738,11 @@ public class ScheduleWeeklySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public String getViewStartFormat() {
-    return ALLocalizationUtils.getl10nFormat("SCHEDULE_DATE_FORMAT", viewStart
-      .getYear(), viewStart.getMonth(), viewStart.getDay());
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_DATE_FORMAT",
+      viewStart.getYear(),
+      viewStart.getMonth(),
+      viewStart.getDay());
   }
 
   public String getViewEndFormat() {

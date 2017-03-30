@@ -387,30 +387,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                }
 
 	                var temptoday = data.today + "-00-00";
-	                /*
-	                if (data.dayOfWeek[i] == "(土)") {
-	                    dojo.addClass(tmpNode1, "saturday");
-	                    dojo.addClass(tmpNode2, "saturday");
-	                    dojo.addClass(tmpNode3, "saturday");
-	                    dojo.addClass(tmpNode4, "saturday");
-	                } else {
-	                    dojo.removeClass(tmpNode1, "saturday");
-	                    dojo.removeClass(tmpNode2, "saturday");
-	                    dojo.removeClass(tmpNode3, "saturday");
-	                    dojo.removeClass(tmpNode4, "saturday");
-	                }
-	                if (data.dayOfWeek[i] == "(日)") {
-	                    dojo.addClass(tmpNode1, "sunday");
-	                    dojo.addClass(tmpNode2, "sunday");
-	                    dojo.addClass(tmpNode3, "sunday");
-	                    dojo.addClass(tmpNode4, "sunday");
-	                } else {
-	                    dojo.removeClass(tmpNode1, "sunday");
-	                    dojo.removeClass(tmpNode2, "sunday");
-	                    dojo.removeClass(tmpNode3, "sunday");
-	                    dojo.removeClass(tmpNode4, "sunday");
-	                }
-	                */
 	                if (data.holiday[i] == "set") {
 	                    dojo.addClass(tmpNode1, "holiday");
 	                    dojo.addClass(tmpNode2, "holiday");
@@ -439,7 +415,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                    dojo.removeClass(tmpNode4, "today");
 	                }
 	            }
-
 
 	            dojo.forEach(data.schedule, function(item) {
 	                var rowHeight = ptConfig[_portletId].rowHeight;
@@ -559,16 +534,6 @@ aipo.calendar.populateWeeklySchedule = function(_portletId, params) {
 	                termHtml = "";
 	                for(var i = 0;i < ptConfig[_portletId].scheduleDivDaySum; i++) {
 	                   tmpNode5 = dojo.byId('termDay' + i + '-' + l_count + '-' + _portletId);
-	                   /*if (data.dayOfWeek[i] == "(土)") {
-	                       dojo.addClass(tmpNode5, "saturday");
-	                   } else {
-	                       dojo.removeClass(tmpNode5, "saturday");
-	                   }
-	                   if (data.dayOfWeek[i] == "(日)") {
-	                       dojo.addClass(tmpNode5, "sunday");
-	                   } else {
-	                       dojo.removeClass(tmpNode5, "sunday");
-	                   }*/
 	                   if (data.holiday[i]) {
 	                       dojo.addClass(tmpNode5, "holiday");
 	                   } else {

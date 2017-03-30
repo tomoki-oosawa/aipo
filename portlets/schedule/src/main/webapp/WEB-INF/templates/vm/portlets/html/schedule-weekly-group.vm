@@ -472,14 +472,9 @@ $!{record.ToDoResultData.TodoName}
 
 <td class='addScheduleCell holiday' style='vertical-align:top;' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
 
-##ユーザーがせっていした休日
+##ユーザーが設定した休日
 #elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
 <td class='addScheduleCell holiday' style='vertical-align:top;' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
-
-##elseif($!{record.Date.Value.Day} == 0)
-##<td class='addScheduleCell sunday' style='vertical-align:top;' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
-##elseif($!{record.Date.Value.Day} == 6)
-##<td class='addScheduleCell saturday' style='vertical-align:top;' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
 #else
 <td class='addScheduleCell' style='vertical-align:top;' onclick="aipo.schedule.showScheduleAddDialog(this,event,'$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDialog)">
 #end

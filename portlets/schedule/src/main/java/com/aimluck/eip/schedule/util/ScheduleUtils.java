@@ -99,8 +99,10 @@ import com.aimluck.eip.common.ALBaseUser;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.common.ALEipHolidaysManager;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALFileNotRemovedException;
+import com.aimluck.eip.common.ALHoliday;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
@@ -209,6 +211,13 @@ public class ScheduleUtils {
     "com.aimluck.eip.schedule.filtertype";
 
   private static Map<String, String> tabToLayOut;
+
+  /** <code>holiday</code> 祝日情報 */
+  private static ALHoliday holiday;
+
+  public static boolean isHoliday() {
+    return (holiday == null) ? false : true;
+  }
 
   static {
     tabToLayOut = new HashMap<String, String>();
@@ -341,6 +350,12 @@ public class ScheduleUtils {
       logger.error("[ScheduleUtils]", ex);
       throw new ALDBErrorException();
     }
+  }
+
+  public static void setDate(Date date) {
+    // 祝日かどうかを検証する．
+    ALEipHolidaysManager holidaysManager = ALEipHolidaysManager.getInstance();
+    holiday = holidaysManager.isHoliday(date);
   }
 
   /**
@@ -975,19 +990,64 @@ public class ScheduleUtils {
     boolean result = false;
     Calendar cal = Calendar.getInstance();
     cal.setTime(date.getValue());
+
+    Calendar cal_dummy = Calendar.getInstance();
+    cal_dummy.setTime(date.getValue());
+
+    int mday_dummy = Integer.parseInt(date.getDay());
+    int yday_dummy = Integer.parseInt(date.getDay());
+    int ymonth_dummy = cal.get(Calendar.MONTH) + 1;
+
+    // 今日が第何週目か
+    int week_count_today = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+    // 予定は第何週目か(毎週の予定ならば予定と同じ値にする)
+    int week_count_schedule = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
+
+    // 今日が祝日か判定
+    setDate(date.getValue());
+
+    int day_count = cal.get(Calendar.DAY_OF_WEEK);
+    // ずらした先の曜日
+    int day_count_dummy = day_count;
+
+    int shift = 5;
+    if (ptn.charAt(ptn.length() - 1) != 'N' && ptn.length() > 2) {
+      if (ptn.charAt(ptn.length() - 1) == 'A') {
+        shift = 1;
+      } else if (ptn.charAt(ptn.length() - 1) == 'B') {
+        shift = -1;
+      } else if (ptn.charAt(ptn.length() - 1) == 'D') {
+        shift = 0;
+      }
+    }
+
+    // 設定した休日または祝日ならば予定を表示しない
+    if ((isDayOffHoliday() && isHoliday() || isUserHoliday(day_count - 1))
+      && shift != 5) {
+      result = false;
+      return result;
+    }
+
     // 毎日
     if (ptn.charAt(0) == 'D') {
       result = true;
       count = 1;
       // 毎週, 第何週
     } else if (ptn.charAt(0) == 'W') {
-
+      // 毎週の予定ならtrue、第◯週の予定ならfalse
+      int week_of_month = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (week_of_month >= 0 && week_of_month <= 9) {
+        count = 9;
+        week_count_schedule = Character.getNumericValue(ptn.charAt(8));
+      } else {
+        count = 8;
+      }
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
       if (ptn.charAt(8) == 'N'
         || ptn.charAt(8) == 'L'
-        || dowim == Character.getNumericValue(ptn.charAt(8))) {
+        || dowim == week_of_month) {
         switch (dow) {
         // 日
           case Calendar.SUNDAY:
@@ -1021,11 +1081,53 @@ public class ScheduleUtils {
             result = false;
             break;
         }
-        if (ptn.length() == 9) {
-          count = 8;
-        } else {
-          count = 9;
+
+        switch (shift) {
+          case -1:
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            day_count_dummy++;// 日を1日進める
+            while (isDayOffHoliday()
+              && isHoliday()
+              || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+              if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 進んだ先に予定がある
+                if (week_count_today == week_count_schedule) { // 今日の予定と予定の週が同じ
+                  // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                  result = true;
+                  // return result;
+                }
+              }
+              // 日を1日進める
+              cal_dummy.add(Calendar.DATE, 1);
+              setDate(cal_dummy.getTime());
+              day_count_dummy++;
+            }
+            break;
+          case 1:
+            // 日を1日戻す
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            day_count_dummy += 6;
+            while (isDayOffHoliday()
+              && isHoliday()
+              || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
+              if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 戻った先に予定がある
+                // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                if (week_count_today == week_count_schedule) {
+                  result = true;
+                  // return result;
+                }
+              }
+              // 日を1日戻す
+              cal_dummy.add(Calendar.DATE, -1);
+              setDate(cal_dummy.getTime());
+              day_count_dummy += 6;
+            }
+            break;
+          default:
+            break;
         }
+        setDate(cal.getTime()); // setDateを戻す(念のため)
       }
       // 毎月
     } else if (ptn.charAt(0) == 'M') {
@@ -1036,7 +1138,57 @@ public class ScheduleUtils {
         mday = Integer.parseInt(ptn.substring(1, 3));
       }
       result = Integer.parseInt(date.getDay()) == mday;
+      // 予定をずらす
+      switch (shift) {
+        case -1:
+          // 日を１日進める
+          cal_dummy.add(Calendar.DATE, 1);
+          setDate(cal_dummy.getTime());
+          mday_dummy = cal_dummy.get(Calendar.DATE);
+          day_count_dummy++;
+          while (isDayOffHoliday()
+            && isHoliday()
+            || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if (mday == mday_dummy) { // 進んだ先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            mday_dummy = cal_dummy.get(Calendar.DATE);
+            day_count_dummy++;
+          }
+          break;
+        case 1:
+          // 日を１日遡る
+          // 月末処理用
+          if (ptn.substring(1, 3).equals("XX")) {
+            Calendar cal_dummy_2 = Calendar.getInstance();
+            cal_dummy_2.setTime(date.getValue());
+            cal_dummy_2.add(Calendar.MONTH, -1);
+            mday = cal_dummy_2.getActualMaximum(Calendar.DATE);
+          }
+
+          cal_dummy.add(Calendar.DATE, -1);
+          setDate(cal_dummy.getTime());
+          mday_dummy = cal_dummy.get(Calendar.DATE);
+          day_count_dummy += 6;
+          while (isDayOffHoliday()
+            && isHoliday()
+            || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if (mday == mday_dummy) { // 遡った先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            mday_dummy = cal_dummy.get(Calendar.DATE);
+            day_count_dummy += 6;
+          }
+          break;
+        default:
+          break;
+      }
       count = 3;
+      setDate(cal.getTime());
     } else if (ptn.charAt(0) == 'Y') {
       int ymonth = Integer.parseInt(ptn.substring(1, 3));
       int yday = Integer.parseInt(ptn.substring(3, 5));
@@ -1048,6 +1200,52 @@ public class ScheduleUtils {
       } else {
         result = false;
       }
+      // 予定をずらす
+      switch (shift) {
+        case -1:
+          // 日を１日進める
+          cal_dummy.add(Calendar.DATE, 1);
+          setDate(cal_dummy.getTime());
+          yday_dummy = cal_dummy.get(Calendar.DATE);
+          ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+          day_count_dummy++;
+          while (isDayOffHoliday()
+            && isHoliday()
+            || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if ((yday == yday_dummy) && (ymonth == ymonth_dummy)) { // 進んだ先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, 1);
+            setDate(cal_dummy.getTime());
+            yday_dummy = cal_dummy.get(Calendar.DATE);
+            ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+            day_count_dummy++;
+          }
+          break;
+        case 1:
+          // 日を１日遡る
+          cal_dummy.add(Calendar.DATE, -1);
+          setDate(cal_dummy.getTime());
+          yday_dummy = cal_dummy.get(Calendar.DATE);
+          ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+          day_count_dummy += 6;
+          while (isDayOffHoliday()
+            && isHoliday()
+            || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
+            if ((yday == yday_dummy) && (ymonth == ymonth_dummy)) { // 遡った先に予定がある
+              result = true;
+            }
+            cal_dummy.add(Calendar.DATE, -1);
+            setDate(cal_dummy.getTime());
+            yday_dummy = cal_dummy.get(Calendar.DATE);
+            ymonth_dummy = cal_dummy.get(Calendar.MONTH) + 1;
+            day_count_dummy += 6;
+          }
+          break;
+        default:
+          break;
+      }
+      setDate(cal.getTime());
     } else {
       return true;
     }
@@ -2178,7 +2376,7 @@ public class ScheduleUtils {
    */
   public static boolean validateDelegate(ALDateTimeField start_date,
       ALDateTimeField end_date, ALStringField repeat_type, boolean is_repeat,
-      boolean is_span, ALStringField week_0, ALStringField week_1,
+      String sft, boolean is_span, ALStringField week_0, ALStringField week_1,
       ALStringField week_2, ALStringField week_3, ALStringField week_4,
       ALStringField week_5, ALStringField week_6, ALStringField repeat_week,
       ALStringField limit_flag, ALDateField limit_start_date,
@@ -2356,7 +2554,7 @@ public class ScheduleUtils {
             year_day.validate(msgList);
           }
         }
-
+        String repeat_pattern = "";
         if ("ON".equals(limit_flag.getValue())) {
           if (!ScheduleUtils.equalsToDate(
             limit_start_date.getValue().getDate(),
@@ -2396,22 +2594,26 @@ public class ScheduleUtils {
           if ("ON".equals(limit_flag.getValue())) {
             lim = 'L';
           }
-          String repeat_pattern;
+
           int date_count = 0;
           if ("D".equals(repeat_type.getValue())) {
             repeat_pattern =
-              new StringBuffer().append('D').append(lim).toString();
+              new StringBuffer().append('D').append(lim).append(sft).toString();
           } else if ("W".equals(repeat_type.getValue())) {
             if ("0".equals(repeat_week.getValue())) {
               repeat_pattern =
-                new StringBuffer().append('W').append(
-                  week_0.getValue() != null ? 1 : 0).append(
-                  week_1.getValue() != null ? 1 : 0).append(
-                  week_2.getValue() != null ? 1 : 0).append(
-                  week_3.getValue() != null ? 1 : 0).append(
-                  week_4.getValue() != null ? 1 : 0).append(
-                  week_5.getValue() != null ? 1 : 0).append(
-                  week_6.getValue() != null ? 1 : 0).append(lim).toString();
+                new StringBuffer()
+                  .append('W')
+                  .append(week_0.getValue() != null ? 1 : 0)
+                  .append(week_1.getValue() != null ? 1 : 0)
+                  .append(week_2.getValue() != null ? 1 : 0)
+                  .append(week_3.getValue() != null ? 1 : 0)
+                  .append(week_4.getValue() != null ? 1 : 0)
+                  .append(week_5.getValue() != null ? 1 : 0)
+                  .append(week_6.getValue() != null ? 1 : 0)
+                  .append(lim)
+                  .append(sft)
+                  .toString();
               date_count =
                 (week_0.getValue() != null ? 1 : 0)
                   + (week_1.getValue() != null ? 1 : 0)
@@ -2422,15 +2624,19 @@ public class ScheduleUtils {
                   + (week_6.getValue() != null ? 1 : 0);
             } else {
               repeat_pattern =
-                new StringBuffer().append('W').append(
-                  week_0.getValue() != null ? 1 : 0).append(
-                  week_1.getValue() != null ? 1 : 0).append(
-                  week_2.getValue() != null ? 1 : 0).append(
-                  week_3.getValue() != null ? 1 : 0).append(
-                  week_4.getValue() != null ? 1 : 0).append(
-                  week_5.getValue() != null ? 1 : 0).append(
-                  week_6.getValue() != null ? 1 : 0).append(
-                  repeat_week.getValue().charAt(0)).append(lim).toString();
+                new StringBuffer()
+                  .append('W')
+                  .append(week_0.getValue() != null ? 1 : 0)
+                  .append(week_1.getValue() != null ? 1 : 0)
+                  .append(week_2.getValue() != null ? 1 : 0)
+                  .append(week_3.getValue() != null ? 1 : 0)
+                  .append(week_4.getValue() != null ? 1 : 0)
+                  .append(week_5.getValue() != null ? 1 : 0)
+                  .append(week_6.getValue() != null ? 1 : 0)
+                  .append(repeat_week.getValue().charAt(0))
+                  .append(lim)
+                  .append(sft)
+                  .toString();
               date_count =
                 (week_0.getValue() != null ? 1 : 0)
                   + (week_1.getValue() != null ? 1 : 0)
@@ -2444,23 +2650,28 @@ public class ScheduleUtils {
             DecimalFormat format = new DecimalFormat("00");
             if (32 == month_day.getValue()) {
               repeat_pattern =
-                new StringBuffer()
-                  .append('M')
-                  .append("XX")
-                  .append(lim)
-                  .toString();
+                new StringBuffer().append('M').append("XX").append(lim).append(
+                  sft).toString();
             } else {
               repeat_pattern =
-                new StringBuffer().append('M').append(
-                  format.format(month_day.getValue())).append(lim).toString();
+                new StringBuffer()
+                  .append('M')
+                  .append(format.format(month_day.getValue()))
+                  .append(lim)
+                  .append(sft)
+                  .toString();
             }
             date_count = 1;
           } else {
             DecimalFormat format = new DecimalFormat("00");
             repeat_pattern =
-              new StringBuffer().append('Y').append(
-                format.format(year_month.getValue())).append(
-                format.format(year_day.getValue())).append(lim).toString();
+              new StringBuffer()
+                .append('Y')
+                .append(format.format(year_month.getValue()))
+                .append(format.format(year_day.getValue()))
+                .append(lim)
+                .append(sft)
+                .toString();
             date_count = 1;
           }
           // 開始時刻(期間初日)
@@ -2498,6 +2709,33 @@ public class ScheduleUtils {
               .getl10n("SCHEDULE_MESSAGE_SELECT_REPEAT_SPAN_IN_THIS_TERM"));
           }
         }
+        // 1つも表示できないスケジュールははじく
+        if (repeat_pattern != "") {
+          Calendar cal = Calendar.getInstance();
+          cal.setTime(limit_start_date.getValue().getDate());
+          Calendar cal2 = Calendar.getInstance();
+          cal2.setTime(limit_end_date.getValue().getDate());
+          Date tmpDate = cal.getTime();
+          ALDateTimeField tmp = new ALDateTimeField("yyyy/MM/dd");
+          tmp.setValue(tmpDate);
+          boolean isEmpty = true;
+          while (!cal.equals(cal2)) {
+            if (!isView(tmp, repeat_pattern, limit_start_date
+              .getValue()
+              .getDate(), limit_end_date.getValue().getDate())) {
+              cal.add(Calendar.DATE, 1);
+              tmpDate = cal.getTime();
+              tmp.setValue(tmpDate);
+            } else {
+              isEmpty = false;
+              break;
+            }
+          }
+          if (isEmpty) {
+            msgList.add(ALLocalizationUtils
+              .getl10n("SCHEDULE_MESSAGE_SELECT_NO_SCHEDULE"));
+          }
+        }
 
       } catch (NumberFormatException nfe) {
         logger
@@ -2509,7 +2747,6 @@ public class ScheduleUtils {
         throw new ALPageNotFoundException();
       }
     }
-
     return (msgList.size() == 0);
   }
 
@@ -3918,7 +4155,14 @@ public class ScheduleUtils {
                 containtsRs = true;
               }
             } else if (ptn.charAt(0) == 'W') {
-              if (ptn.length() == 9) {
+              boolean isEveryWeek;
+              int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+              if (a >= 0 && a <= 9) {
+                isEveryWeek = false;
+              } else {
+                isEveryWeek = true;
+              }
+              if (isEveryWeek) {
                 if (ptn.charAt(8) == 'L') {
                   try {
                     if ((dbStartDate.before(end_date) && dbEndDate
@@ -3932,7 +4176,7 @@ public class ScheduleUtils {
                 } else {
                   containtsRs = true;
                 }
-              } else if (ptn.length() == 10) {
+              } else {
                 if (ptn.charAt(9) == 'L') {
                   try {
                     if ((dbStartDate.before(end_date) && dbEndDate
@@ -4332,7 +4576,14 @@ public class ScheduleUtils {
     } else if (repeat_ptn.startsWith("W")) {
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);
-      if (repeat_ptn.length() == 9
+      boolean isEveryWeek;
+      int a = Character.getNumericValue(repeat_ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (a >= 0 && a <= 9) {
+        isEveryWeek = false;
+      } else {
+        isEveryWeek = true;
+      }
+      if (isEveryWeek
         || dowim == Character.getNumericValue(repeat_ptn.charAt(8))) {
         if (dow == Calendar.SUNDAY) {
           return repeat_ptn.matches("W1........?");
@@ -5512,13 +5763,21 @@ public class ScheduleUtils {
         count = 1;
         // 毎週
       } else if (ptn.charAt(0) == 'W') {
-        if (ptn.length() == 9) {
+        boolean isEveryWeek;
+        int a = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+        if (a >= 0 && a <= 9) {
+          count = 9;
+          isEveryWeek = false;
+        } else {
+          count = 8;
+          isEveryWeek = true;
+        }
+        if (isEveryWeek) {
           rd.addText(new StringBuffer()
             .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
             .toString());
-          count = 8;
         } else {
-          switch (ptn.charAt(8)) {
+          switch (a) {
             case '1':
               rd.addText(new StringBuffer()
                 .append(ALLocalizationUtils.getl10n("SCHEDULE_1ST_WEEK_SPACE"))
@@ -5547,7 +5806,6 @@ public class ScheduleUtils {
             default:
               break;
           }
-          count = 9;
         }
         rd
           .addText(new StringBuffer()

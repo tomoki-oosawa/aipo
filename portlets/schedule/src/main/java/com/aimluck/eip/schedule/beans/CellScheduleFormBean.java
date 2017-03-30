@@ -81,6 +81,11 @@ public class CellScheduleFormBean implements ALData {
   /** <code>week_6</code> 繰り返し週 */
   private ALCellStringField repeat_week;
 
+  /** <code>shifting</code> 予定をずらす */
+  private ALCellStringField shifting;
+
+  private ALCellStringField shift_check;
+
   /** <code>limit_flag</code> 期限ありなし */
   private ALCellStringField limit_flag;
 
@@ -225,6 +230,15 @@ public class CellScheduleFormBean implements ALData {
       .getl10n("SCHEDULE_SETFIELDNAME_REPEAT_WEEK"));
     repeat_week.setTrim(true);
 
+    // 予定をずらす
+    shifting = new ALCellStringField();
+    shifting.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
+
+    shift_check = new ALCellStringField();
+    shift_check.setFieldName(ALLocalizationUtils
+      .getl10n("SCHEDULE_SHIFTING_HOLIDAY"));
+
     // 繰り返し日（選択されたときのみ Validate する）
     month_day = new ALCellNumberField();
     month_day.setFieldName(ALLocalizationUtils
@@ -312,6 +326,24 @@ public class CellScheduleFormBean implements ALData {
     String ptn = record.getRepeatPattern();
     int count = 0;
 
+    // 予定を後日にずらす
+    if (ptn.charAt(ptn.length() - 1) == 'A') {
+      shifting.setValue("A");
+      shift_check.setValue("T");
+      // 予定を前日にずらす
+    } else if (ptn.charAt(ptn.length() - 1) == 'B') {
+      shifting.setValue("B");
+      shift_check.setValue("T");
+      // 繰り返さない
+    } else if (ptn.charAt(ptn.length() - 1) == 'D') {
+      shifting.setValue("D");
+      shift_check.setValue("T");
+      // ずらさない
+    } else {
+      shifting.setValue("N");
+      shift_check.setValue("F");
+    }
+
     // 毎日
     boolean is_repeat = true;
     @SuppressWarnings("unused")
@@ -320,7 +352,7 @@ public class CellScheduleFormBean implements ALData {
     if (ptn.charAt(0) == 'D') {
       repeat_type.setValue("D");
       count = 1;
-    } else if (ptn.charAt(0) == 'W' && ptn.length() == 9) {
+    } else if (ptn.charAt(0) == 'W') {
       repeat_type.setValue("W");
       week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
       week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
@@ -329,38 +361,38 @@ public class CellScheduleFormBean implements ALData {
       week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
       week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
       week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-      count = 8;
-      // 第何週
-    } else if (ptn.charAt(0) == 'W' && ptn.length() == 10) {
-      repeat_type.setValue("W");
-      week_0.setValue(ptn.charAt(1) != '0' ? "TRUE" : null);
-      week_1.setValue(ptn.charAt(2) != '0' ? "TRUE" : null);
-      week_2.setValue(ptn.charAt(3) != '0' ? "TRUE" : null);
-      week_3.setValue(ptn.charAt(4) != '0' ? "TRUE" : null);
-      week_4.setValue(ptn.charAt(5) != '0' ? "TRUE" : null);
-      week_5.setValue(ptn.charAt(6) != '0' ? "TRUE" : null);
-      week_6.setValue(ptn.charAt(7) != '0' ? "TRUE" : null);
-      repeat_week.setValue("0");
-      switch (ptn.charAt(8)) {
-        case '1':
-          repeat_week.setValue("1");
-          break;
-        case '2':
-          repeat_week.setValue("2");
-          break;
-        case '3':
-          repeat_week.setValue("3");
-          break;
-        case '4':
-          repeat_week.setValue("4");
-          break;
-        case '5':
-          repeat_week.setValue("5");
-          break;
-        default:
-          break;
+
+      boolean isEveryWeek;
+      int week_of_month = Character.getNumericValue(ptn.charAt(8)); // アルファベットは10以上の数字に、その他の記号、日本語等は-1に変換される
+      if (week_of_month >= 0 && week_of_month <= 9) {
+        count = 9;
+        isEveryWeek = false;
+      } else {
+        count = 8;
+        isEveryWeek = true;
       }
-      count = 9;
+      if (!isEveryWeek) {
+        repeat_week.setValue("0");
+        switch (week_of_month) {
+          case '1':
+            repeat_week.setValue("1");
+            break;
+          case '2':
+            repeat_week.setValue("2");
+            break;
+          case '3':
+            repeat_week.setValue("3");
+            break;
+          case '4':
+            repeat_week.setValue("4");
+            break;
+          case '5':
+            repeat_week.setValue("5");
+            break;
+          default:
+            break;
+        }
+      }
     } else if (ptn.charAt(0) == 'M') {
       repeat_type.setValue("M");
       if (ptn.substring(1, 3).equals("XX")) {
@@ -466,6 +498,7 @@ public class CellScheduleFormBean implements ALData {
       getEndDate(),
       getRepeatType(),
       is_repeat,
+      getShifting().getValue(),
       is_span,
       getWeek0(),
       getWeek1(),
@@ -647,6 +680,19 @@ public class CellScheduleFormBean implements ALData {
    */
   public ALCellStringField getRepeatWeek() {
     return repeat_week;
+  }
+
+  /**
+   * 「休日に予定をずらす情報」を取得します
+   *
+   * @return
+   */
+  public ALCellStringField getShifting() {
+    return shifting;
+  }
+
+  public ALCellStringField getShiftCheck() {
+    return shift_check;
   }
 
   /**

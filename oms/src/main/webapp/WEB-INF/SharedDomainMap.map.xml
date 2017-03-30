@@ -624,7 +624,7 @@
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PLACE" type="VARCHAR" length="99"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
-		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="10"/>
+		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="11"/>
 		<db-attribute name="SCHEDULE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
@@ -831,7 +831,7 @@
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PLACE" type="VARCHAR" length="99"/>
 		<db-attribute name="PUBLIC_FLAG" type="VARCHAR" length="1"/>
-		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="10"/>
+		<db-attribute name="REPEAT_PATTERN" type="VARCHAR" length="11"/>
 		<db-attribute name="SCHEDULE_ID" type="INTEGER" isMandatory="true" length="4"/>
 		<db-attribute name="START_DATE" type="TIMESTAMP" length="8"/>
 		<db-attribute name="STATUS" type="VARCHAR" length="1"/>

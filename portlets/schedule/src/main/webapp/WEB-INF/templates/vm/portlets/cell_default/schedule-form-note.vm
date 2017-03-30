@@ -39,6 +39,15 @@ $l10n.SCHEDULE_REPEAT:#ALcell_br($career)
 #if ($!{result.FormData.RepeatType.toString()} == "M" && $!{result.FormData.MonthDay.toString()} != "32")$l10n.SCHEDULE_EVERY_MONTH $!{result.FormData.MonthDay}$l10n.SCHEDULE_DAY #end
 #if ($!{result.FormData.RepeatType.toString()} == "M" && $!{result.FormData.MonthDay.toString()} == "32")$l10n.SCHEDULE_EVERY_MONTH $l10n.SCHEDULE_END_OF_MONTH #end
 #if ($!{result.FormData.RepeatType.toString()} == "Y") $l10n.SCHEDULE_EVERY_YEAR $!{result.FormData.YearMonth}$l10n.SCHEDULE_MONTH $!{result.FormData.YearDay}$l10n.SCHEDULE_DAY #end
+
+#if ($!{result.FormData.ShiftCheck.toString()} == "T")
+	#if ($!{result.FormData.Shifting.toString()} == "D")$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY #end
+	#if ($!{result.FormData.Shifting.toString()} == "B")$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY #end
+	#if ($!{result.FormData.Shifting.toString()} == "A")$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY #end
+#else 休日も繰り返す
+
+#end
+
 </BLOCKQUOTE>
 #if ($!{result.FormData.LimitFlag.toString()} == "ON")
 $l10n.SCHEDULE_TERM:
@@ -103,6 +112,10 @@ $l10n.SCHEDULE_ALERT_DUPLICATIVE_FACILITIES
 <input type="hidden" name="year_month" value="$!{result.FormData.YearMonth}">
 <input type="hidden" name="year_day" value="$!{result.FormData.YearDay}">
 #end
+
+<input type="hidden" name="shift_check" value="$!{result.FormData.ShiftCheck}">
+<input type="hidden" name="shifting" value="$!{result.FormData.Shifting}">
+
 <input type="hidden" name="limit_flag" value="$!{result.FormData.LimitFlag.toString()}">
 #if($!{result.FormData.LimitFlag.toString()} == "ON")
 <input type="hidden" name="limit_start_date" value="$!{result.FormData.LimitStartDateDate}">

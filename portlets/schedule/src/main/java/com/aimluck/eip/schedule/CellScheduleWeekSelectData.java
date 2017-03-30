@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.jar.Attributes;
 
@@ -55,18 +56,27 @@ public class CellScheduleWeekSelectData extends
     ALAbstractSelectData<List<EipTScheduleMap>, List<EipTScheduleMap>> {
 
   /** <code>logger</code> logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleWeeklySelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ScheduleWeeklySelectData.class.getName());
 
   private ALDateTimeField startDate;
 
   private ALDateTimeField endDate;
+
+  private ALDateTimeField viewStart;
+
+  private ALDateTimeField viewEndCrt;
+
+  private ALDateTimeField[] viewDateList;
 
   private ALDateTimeField nextweekDate;
 
   private ALDateTimeField prevweekDate;
 
   private String aclPortletFeature;
+
+  private ScheduleWeekContainer weekCon;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -75,8 +85,12 @@ public class CellScheduleWeekSelectData extends
 
     startDate = new ALDateTimeField("yyyy-MM-dd");
     endDate = new ALDateTimeField("yyyy-MM-dd");
+    viewStart = new ALDateTimeField("yyyy-MM-dd");
+    viewStart.setNotNull(true);
+    viewEndCrt = new ALDateTimeField("yyyy-MM-dd");
     nextweekDate = new ALDateTimeField("yyyy-MM-dd");
     prevweekDate = new ALDateTimeField("yyyy-MM-dd");
+    viewDateList = new ALDateTimeField[7];
 
     Calendar cal = Calendar.getInstance();
     if (rundata.getParameters().getString("start_date") != null) {
@@ -95,6 +109,39 @@ public class CellScheduleWeekSelectData extends
     nextweekDate.setValue(cal.getTime());
     cal.add(Calendar.DAY_OF_MONTH, -14);
     prevweekDate.setValue(cal.getTime());
+
+    String tmpViewStart = ALEipUtils.getTemp(rundata, context, "view_date_top");
+    if (tmpViewStart == null || tmpViewStart.equals("")) {
+      Calendar cal2 = Calendar.getInstance();
+      cal2.set(Calendar.HOUR_OF_DAY, 0);
+      cal2.set(Calendar.MINUTE, 0);
+      viewStart.setValue(cal2.getTime());
+      cal2.add(Calendar.MONTH, 7);
+      viewEndCrt.setValue(cal2.getTime());
+    } else {
+      viewStart.setValue(tmpViewStart);
+      if (!viewStart.validate(new ArrayList<String>())) {
+        ALEipUtils.removeTemp(rundata, context, "view_start");
+      }
+    }
+    Calendar cal3 = Calendar.getInstance();
+    cal3.setTime(viewStart.getValue());
+
+    try {
+      weekCon = new ScheduleWeekContainer();
+      weekCon.initField();
+      weekCon.setViewStartDate(cal3);
+    } catch (Exception e) {
+      logger.error("schedule", e);
+    }
+
+    for (int i = 0; i < 7; i++) {
+      // 日付を1日ずつずらす
+      ALDateTimeField tempDate = new ALDateTimeField("yyyy-MM-dd");
+      tempDate.setValue(cal3.getTime());
+      viewDateList[i] = tempDate;
+      cal3.add(Calendar.DATE, 1);
+    }
 
     aclPortletFeature = ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
   }
@@ -125,9 +172,7 @@ public class CellScheduleWeekSelectData extends
       if (rd.getPattern().equals("S")) {
         rd.setSpan(true);
       }
-
       resultList.add(rd);
-
     }
     return resultList;
   }
@@ -140,10 +185,10 @@ public class CellScheduleWeekSelectData extends
     Calendar cal = Calendar.getInstance();
     cal.setTime(startDate.getValue());
     int userid = ALEipUtils.getUserId(rundata);
-
     Expression expm1 =
-      ExpressionFactory.matchExp(EipTScheduleMap.USER_ID_PROPERTY, Integer
-        .valueOf(userid));
+      ExpressionFactory.matchExp(
+        EipTScheduleMap.USER_ID_PROPERTY,
+        Integer.valueOf(userid));
     Expression expm2 =
       ExpressionFactory.noMatchExp(EipTScheduleMap.STATUS_PROPERTY, "D");
     Expression expm3 =
@@ -168,170 +213,79 @@ public class CellScheduleWeekSelectData extends
           cal.getTime());
       cal.add(Calendar.DAY_OF_MONTH, 1);
       Expression exp12 =
-        ExpressionFactory.lessExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.START_DATE_PROPERTY, cal.getTime());
+        ExpressionFactory.lessExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.START_DATE_PROPERTY,
+          cal.getTime());
       Expression exp13 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "N");
       Expression exp14 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+        ExpressionFactory.matchExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "S");
       Expression exp10 = exp11.andExp(exp12.andExp(exp13.orExp(exp14)));
 
       Expression exp21 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DN");
+        ExpressionFactory.likeExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "DN%");
       Expression exp22 =
-        ExpressionFactory.matchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-          + "."
-          + EipTSchedule.REPEAT_PATTERN_PROPERTY, "DL");
+        ExpressionFactory.likeExp(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+          "DL%");
       Expression exp20 = exp21.orExp(exp22.andExp(exp11).andExp(exp12));
 
       query.setQualifier((exp10.orExp(exp20)).andExp(mapExpression));
 
       List<Ordering> orders = new ArrayList<Ordering>();
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.START_DATE_PROPERTY, true));
-      orders.add(new Ordering(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.END_DATE_PROPERTY, true));
+      orders.add(
+        new Ordering(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.START_DATE_PROPERTY,
+          true));
+      orders.add(
+        new Ordering(
+          EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+            + "."
+            + EipTSchedule.END_DATE_PROPERTY,
+          true));
       query.getQuery().addOrderings(orders);
 
       List<EipTScheduleMap> list = query.fetchList();
       scheduleMapList.add(list);
     }
 
-    // 週間、または毎月の場合
+    // 毎週、または毎月の場合
     SelectQuery<EipTScheduleMap> query = Database.query(EipTScheduleMap.class);
 
     Expression exp2 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "N");
+      ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+        "N");
     Expression exp3 =
-      ExpressionFactory.noMatchExp(EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
-        + "."
-        + EipTSchedule.REPEAT_PATTERN_PROPERTY, "S");
+      ExpressionFactory.noMatchExp(
+        EipTScheduleMap.EIP_TSCHEDULE_PROPERTY
+          + "."
+          + EipTSchedule.REPEAT_PATTERN_PROPERTY,
+        "S");
 
     query.setQualifier(mapExpression.andExp(exp2).andExp(exp3));
     List<EipTScheduleMap> list = query.fetchList();
-
-    EipTSchedule schedule = null;
-    for (int k = 0; k < list.size(); k++) {
-      schedule = list.get(k).getEipTSchedule();
-      String pattern = schedule.getRepeatPattern();
-      // 週間
-      if (pattern.startsWith("W")) {
-        for (int l = 0; l < 7; l++) {
-          if (pattern.charAt(l + 1) == '1') {
-            int index = (l - cal.get(Calendar.DAY_OF_WEEK) + 7 + 1) % 7;
-            Calendar cal3 = Calendar.getInstance();
-            cal3.setTime(cal.getTime());
-            cal3.add(Calendar.DAY_OF_MONTH, -(7 - index));
-            if (pattern.length() == 9
-              || cal3.get(Calendar.DAY_OF_WEEK_IN_MONTH) == Character
-                .getNumericValue(pattern.charAt(8))) {
-              Calendar cal2 = Calendar.getInstance();
-              cal2.setTime(startDate.getValue());
-              cal2.add(Calendar.DAY_OF_MONTH, index);
-              if (pattern.endsWith("L")) {
-                if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-                  cal2.add(Calendar.DAY_OF_MONTH, 1);
-                  if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                    List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                    list2.add(list.get(k));
-                    scheduleMapList.set(index, list2);
-                  }
-                }
-              } else {
-                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                list2.add(list.get(k));
-                scheduleMapList.set(index, list2);
-              }
-            }
-          }
-        }
-        // 毎月
-      } else if (pattern.startsWith("M")) {
-        int day;
-        Calendar cal_event = Calendar.getInstance();
-        cal_event.setTime(startDate.getValue());
-        if (pattern.substring(1, 3).equals("XX")) {
-          day = cal_event.getActualMaximum(Calendar.DATE);
-        } else {
-          day = Integer.parseInt(pattern.substring(1, pattern.length() - 1));
-        }
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(startDate.getValue());
-        cal2.set(Calendar.DAY_OF_MONTH, day);
-
-        int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
-        if (index < 0) {
-          index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
-          cal2.add(Calendar.MONTH, 1);
-        }
-        if (index >= 0
-          && index <= 6
-          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day) {
-          if (pattern.endsWith("L")) {
-            if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-              cal2.add(Calendar.DAY_OF_MONTH, 1);
-              if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                list2.add(list.get(k));
-                scheduleMapList.set(index, list2);
-              }
-            }
-          } else {
-            List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-            list2.add(list.get(k));
-            scheduleMapList.set(index, list2);
-          }
-        }
-        // 毎年
-      } else if (pattern.startsWith("Y")) {
-        int day = Integer.parseInt(pattern.substring(3, 5));
-        int month = Integer.parseInt(pattern.substring(1, 3));
-        Calendar cal2 = Calendar.getInstance();
-        Calendar cal_event = Calendar.getInstance();
-        cal2.setTime(startDate.getValue());
-        cal2.set(Calendar.DAY_OF_MONTH, day);
-        // JANUARY = 0 から始まるので月の設定は-1した値を使う
-        cal2.set(Calendar.MONTH, month - 1);
-        cal_event.setTime(startDate.getValue());
-
-        int index = (day - cal_event.get(Calendar.DAY_OF_MONTH));
-        if (index < 0) {
-          index += cal_event.getActualMaximum(Calendar.DAY_OF_MONTH);
-          cal_event.add(Calendar.MONTH, 1);
-        }
-        if (index >= 0
-          && index <= 6
-          && cal_event.getActualMaximum(Calendar.DAY_OF_MONTH) >= day
-          && (cal_event.get(Calendar.MONTH) + 1) == month) {
-          if (pattern.endsWith("L")) {
-            if (schedule.getEndDate().compareTo(cal2.getTime()) >= 0) {
-              cal2.add(Calendar.DAY_OF_MONTH, 1);
-              if (schedule.getStartDate().compareTo(cal2.getTime()) < 0) {
-                List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-                list2.add(list.get(k));
-                scheduleMapList.set(index, list2);
-              }
-            }
-          } else {
-            List<EipTScheduleMap> list2 = scheduleMapList.get(index);
-            list2.add(list.get(k));
-            scheduleMapList.set(index, list2);
-          }
-        }
-      }
-
-    }
+    scheduleMapList.add(list);
 
     // ダミースケジュールの処理
 
@@ -422,7 +376,67 @@ public class CellScheduleWeekSelectData extends
       scheduleMapList.set(i, slist);
     }
 
-    return new ResultList<List<EipTScheduleMap>>(scheduleMapList);
+    return new ResultList<List<EipTScheduleMap>>(
+      getProcessedResultList(scheduleMapList));
+  }
+
+  protected ArrayList<List<EipTScheduleMap>> getProcessedResultList(
+      ArrayList<List<EipTScheduleMap>> scheduleMapList) {
+    int k = scheduleMapList.size();
+    List<EipTScheduleMap> all_list = scheduleMapList.get(0);
+    for (int i = 0; i < k; i++) {
+      List<EipTScheduleMap> slist = scheduleMapList.get(i);
+      int s = slist.size();
+      for (int j = 0; j < s; j++) {
+        EipTScheduleMap schedule = slist.get(j);
+        if (!all_list.contains(schedule)) {
+          all_list.add(schedule);
+        }
+      }
+    }
+    HashMap<Integer, EipTScheduleMap> map =
+      new HashMap<Integer, EipTScheduleMap>();
+    int m = all_list.size();
+    for (int i = 0; i < m; i++) {
+      map.put(all_list.get(i).getScheduleId(), all_list.get(i));
+      CellScheduleResultData rd = new CellScheduleResultData();
+      rd.initField();
+      rd.setScheduleId(all_list.get(i).getScheduleId());
+      rd.setName(all_list.get(i).getEipTSchedule().getName());
+      rd.setStartDate(all_list.get(i).getEipTSchedule().getStartDate());
+      rd.setEndDate(all_list.get(i).getEipTSchedule().getEndDate());
+      rd.setPublic(
+        all_list.get(i).getEipTSchedule().getPublicFlag().equals("O"));
+      rd.setRepeat(
+        all_list.get(i).getEipTSchedule().getRepeatPattern().equals("S"));
+      rd.setPattern(all_list.get(i).getEipTSchedule().getRepeatPattern());
+      rd.setMember(true);
+      weekCon.addResultData(rd);
+    }
+
+    ArrayList<List<EipTScheduleMap>> newScheduleMapList =
+      new ArrayList<List<EipTScheduleMap>>();
+
+    for (int i = 0; i < 7; i++) {
+      int n = weekCon.getDayList().get(i).getScheduleList().size();
+      List<EipTScheduleMap> templist = new ArrayList<EipTScheduleMap>();
+      for (int j = 0; j < n; j++) {
+        templist.add(
+          map.get(
+            weekCon
+              .getDayList()
+              .get(i)
+              .getScheduleList()
+              .get(j)
+              .getScheduleId()
+              .getValueWithInt()));
+      }
+      if (templist == new ArrayList<EipTScheduleMap>()) {
+        templist = null;
+      }
+      newScheduleMapList.add(templist);
+    }
+    return newScheduleMapList;
   }
 
   @Override
@@ -431,7 +445,8 @@ public class CellScheduleWeekSelectData extends
   }
 
   @Override
-  protected List<EipTScheduleMap> selectDetail(RunData rundata, Context context) {
+  protected List<EipTScheduleMap> selectDetail(RunData rundata,
+      Context context) {
     return null;
   }
 
@@ -443,8 +458,12 @@ public class CellScheduleWeekSelectData extends
   public String getNow() {
     Calendar cal = Calendar.getInstance();
     StringBuffer day = new StringBuffer();
-    day.append(cal.get(Calendar.YEAR)).append("-").append(
-      cal.get(Calendar.MONDAY) + 1).append("-").append(cal.get(Calendar.DATE));
+    day
+      .append(cal.get(Calendar.YEAR))
+      .append("-")
+      .append(cal.get(Calendar.MONDAY) + 1)
+      .append("-")
+      .append(cal.get(Calendar.DATE));
     return day.toString();
   }
 

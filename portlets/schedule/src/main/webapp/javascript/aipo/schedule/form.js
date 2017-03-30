@@ -557,6 +557,11 @@ aipo.schedule.enableYear = function(form){
     }
 }
 
+//予定をずらす用
+aipo.schedule.enableShift = function(form){
+	form.repeat_type[4].checked=true;
+}
+
 aipo.schedule.buttonEdit = function(form, editurl) {
     aimluck.io.disableForm(form, true);
     aipo.common.showDialog(editurl);

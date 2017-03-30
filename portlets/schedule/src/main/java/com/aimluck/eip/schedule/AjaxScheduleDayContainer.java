@@ -205,7 +205,7 @@ public class AjaxScheduleDayContainer implements ALData {
   /**
    * ユーザーが設定した休日かどうか
    *
-   * 
+   *
    */
   public boolean isUserHoliday() {
     Integer weekNum = today.getDayOfWeekNum();

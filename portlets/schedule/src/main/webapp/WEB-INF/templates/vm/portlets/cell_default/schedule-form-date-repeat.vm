@@ -54,6 +54,16 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br($career)
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
+##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
+<input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
+<input type="hidden" name="shift_check" value="F">
+      <label for="shift_check">休日は予定を</label>
+      <select id="shifting" name="shifting"/>
+      	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
+      	<option value="B" #if ($!{result.FormData.Shifting.toString()}=="B") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
+      	<option value="A" #if ($!{result.FormData.Shifting.toString()}=="A") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
+      </select>
+##----------------------------------------------------------------------------------------
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)
@@ -84,10 +94,21 @@ $l10n.SCHEDULE_REAT_SPAN_SETTING#ALcell_br($career)
 <input name="week_0" type="checkbox" #if ($!{result.FormData.Week0.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SUNDAY<input name="week_1" type="checkbox" #if ($!{result.FormData.Week1.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_MONDAY<input name="week_2" type="checkbox" #if ($!{result.FormData.Week2.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_TUSEDAY<input name="week_3" type="checkbox" #if ($!{result.FormData.Week3.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_WEDNESDAY#ALcell_br($career)<input name="week_4" type="checkbox" #if ($!{result.FormData.Week4.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_THURSDAY<input name="week_5" type="checkbox" #if ($!{result.FormData.Week5.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_FRIDAY<input name="week_6" type="checkbox" #if ($!{result.FormData.Week6.toString()} == "TRUE") checked="checked" #end value="TRUE">$l10n.SCHEDULE_SATURDAY
 </BLOCKQUOTE>
 <input id="repeat_typeM" name="repeat_type" type="radio" value="M" #if ($!{result.FormData.RepeatType.toString()} == "M") checked="checked" #end>$l10n.SCHEDULE_EVERY_MONTH#ALcell_br($career)
-$l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br(career)
+$l10n.SCHEDULE_HOW_TO_END_OF_MONTH ##ALcell_br(career)
 <BLOCKQUOTE>#ALcell_textfield($career 'month_day' "$!{result.FormData.MonthDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
 <input id="repeat_typeY" name="repeat_type" type="radio" value="Y" #if ($!{result.FormData.RepeatType.toString()} == "Y") checked="checked" #end>$l10n.SCHEDULE_EVERY_YEAR
 <BLOCKQUOTE>#ALcell_textfield($career 'year_month' "$!{result.FormData.YearMonth}" 2 2 '' 'n') $l10n.SCHEDULE_MONTH #ALcell_textfield($career 'year_day' "$!{result.FormData.YearDay}" 3 2 '' 'n') $l10n.SCHEDULE_DAY</BLOCKQUOTE>
+##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
+<input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
+<input type="hidden" name="shift_check" value="F">
+      <label for="shift_check">休日は予定を</label>
+      <select id="shifting" name="shifting"/>
+      	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
+      	<option value="B" #if ($!{result.FormData.Shifting.toString()}=="B") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
+      	<option value="A" #if ($!{result.FormData.Shifting.toString()}=="A") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY</option>
+      </select>
+##----------------------------------------------------------------------------------------
+
 <hr size="1">
 $l10n.SCHEDULE_SUB_REAT_SPAN#ALcell_br($career)
 <input name="limit_flag" type="radio" value="OFF" #if ($!{result.FormData.LimitFlag.toString()} == "OFF") checked="checked" #end>$l10n.SCHEDULE_NOT_SET#ALcell_br($career)

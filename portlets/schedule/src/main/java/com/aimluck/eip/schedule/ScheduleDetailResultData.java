@@ -70,6 +70,9 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   /** <code>is_limit</code> 期限があるかどうか */
   boolean is_limit;
 
+  /** <code>shifting</code> 休日はどうするか */
+  private ALStringField shifting;
+
   /** <code>is_createuser</code> 登録ユーザーかどうか */
   private boolean is_createuser;
 
@@ -93,14 +96,16 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     text.setValue("");
     // 作成日
     createDate =
-      new ALDateTimeField(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
+      new ALDateTimeField(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
     // 更新日時
     updateDate =
-      new ALDateTimeField(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
+      new ALDateTimeField(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_DAY"));
     // ファイルリスト
     attachmentFileList = new ArrayList<FileuploadBean>();
+    // 休日はどうするか
+    shifting = new ALStringField();
   }
 
   /**
@@ -306,10 +311,8 @@ public class ScheduleDetailResultData extends ScheduleResultData {
    * @param string
    */
   public void addText(String string) {
-    text.setValue(new StringBuffer()
-      .append(text.getValue())
-      .append(string)
-      .toString());
+    text.setValue(
+      new StringBuffer().append(text.getValue()).append(string).toString());
   }
 
   /**
@@ -340,6 +343,26 @@ public class ScheduleDetailResultData extends ScheduleResultData {
   }
 
   /**
+   * 「休日はどうするか」を取得します。
+   *
+   * @return
+   */
+
+  public String getShifting() {
+    return shifting.getValue();
+  }
+
+  /**
+   * 「休日はどうするか」を設定します。
+   *
+   * @return
+   */
+
+  public void setShifting(String string) {
+    shifting.setValue(string);
+  }
+
+  /**
    * 日付を取得します。
    *
    * @return
@@ -348,10 +371,8 @@ public class ScheduleDetailResultData extends ScheduleResultData {
     if (getStartDate().getValue().equals(getEndDate().getValue())) {
       return getStartDate().toString();
     } else if ((getStartDate().getYear().equals(getEndDate().getYear())
-      && getStartDate().getMonth().equals(getEndDate().getMonth()) && getStartDate()
-      .getDay()
-      .equals(getEndDate().getDay()))
-      || isRepeat()) {
+      && getStartDate().getMonth().equals(getEndDate().getMonth())
+      && getStartDate().getDay().equals(getEndDate().getDay())) || isRepeat()) {
       return new StringBuffer()
         .append(getStartDate().toString())
         .append('-')
