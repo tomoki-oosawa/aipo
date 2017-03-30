@@ -524,7 +524,6 @@ public class ExtTimecardUtils {
     return false;
   }
 
-<<<<<<< HEAD
   public static String getHolidayOfWeek(EipTExtTimecardSystem model) {
     if (model.isDefaultHoliday()) {
       HttpServletRequest request = HttpServletRequestLocator.get();
@@ -535,21 +534,8 @@ public class ExtTimecardUtils {
             (String) request
               .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
         } catch (Throwable ignore) {
-=======
-  public static String getHolidayOfWeek() {
-    HttpServletRequest request = HttpServletRequestLocator.get();
-    String cacheHoliday = null;
-    if (request != null) {
-      try {
-        cacheHoliday =
-          (String) request
-            .getAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK.toString());
-      } catch (Throwable ignore) {
->>>>>>> features/shifting-holiday-schedule-merge
-
         }
       }
-<<<<<<< HEAD
       if (cacheHoliday == null) {
         cacheHoliday =
           ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
@@ -557,15 +543,6 @@ public class ExtTimecardUtils {
           request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
             .toString(), cacheHoliday);
         }
-=======
-    }
-    if (cacheHoliday == null) {
-      cacheHoliday =
-        ALConfigService.get(ALConfigHandler.Property.HOLIDAY_OF_WEEK);
-      if (request != null) {
-        request.setAttribute(ALConfigHandler.Property.HOLIDAY_OF_WEEK
-          .toString(), cacheHoliday);
->>>>>>> features/shifting-holiday-schedule-merge
       }
       return cacheHoliday;
     } else {
