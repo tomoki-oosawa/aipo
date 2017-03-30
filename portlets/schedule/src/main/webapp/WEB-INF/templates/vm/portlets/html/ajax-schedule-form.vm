@@ -168,7 +168,7 @@
       ##休日だったらずらすチェックボックス--------------------------------------------------------------
       <p>
       <input id="shift_check" type="checkbox" value="T" #if ($!{result.ShiftCheck.toString()} == "T") checked="checked" #end name="shift_check"/>
-      <label for="shift_check">休日は予定を</label>
+      <label for="shift_check">$l10n.SCHEDULE_SHIFTING_HOLIDAY_SETTING</label>
       <select onChange="aipo.schedule.enableShift(this.form)" name="shifting">
       	<option value="D" #if ($!{result.Shifting.toString()}=="D") selected #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
       	<option value="B" #if ($!{result.Shifting.toString()}=="B") selected #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>

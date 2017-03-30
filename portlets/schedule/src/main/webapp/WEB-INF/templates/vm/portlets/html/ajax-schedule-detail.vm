@@ -69,7 +69,9 @@ $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/
 $!{result.Detail.Date}
 #end
 #AUIiconScheduleSets($!{result.Detail})
-<br/>休日は予定を
+<br/>
+#if($!{result.Detail.isRepeat()})
+$l10n.SCHEDULE_SHIFTING_HOLIDAY_SETTING
 #if($!{result.Detail.Shifting} == "D")
 $l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY
 #elseif($!{result.Detail.Shifting} == "B")
@@ -78,6 +80,7 @@ $l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY
 $l10n.SCHEDULE_SHIFTING_AFTER_HOLIDAY
 #else
 $l10n.SCHEDULE_SHIFTING_EXECUTE_HOLIDAY
+#end
 #end
 #ALtditemfooter()
 #ALtdcaption($l10n.SCHEDULE_TITLE)

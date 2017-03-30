@@ -57,7 +57,7 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH#ALcell_br($career)
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
 <input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
 <input type="hidden" name="shift_check" value="F">
-      <label for="shift_check">休日は予定を</label>
+      <label for="shift_check">$l10n.SCHEDULE_SHIFTING_HOLIDAY_SETTING</label>
       <select id="shifting" name="shifting"/>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
       	<option value="B" #if ($!{result.FormData.Shifting.toString()}=="B") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
@@ -101,7 +101,7 @@ $l10n.SCHEDULE_HOW_TO_END_OF_MONTH ##ALcell_br(career)
 ##休日・祝日に予定をずらすか--------------------------------------------------------------------------------------------------
 <input id="shift_check" name="shift_check" type="checkbox" value="T" #if ($!{result.FormData.ShiftCheck.toString()} == "T") checked="checked" #end />
 <input type="hidden" name="shift_check" value="F">
-      <label for="shift_check">休日は予定を</label>
+      <label for="shift_check">$l10n.SCHEDULE_SHIFTING_HOLIDAY_SETTING</label>
       <select id="shifting" name="shifting"/>
       	<option value="D" #if ($!{result.FormData.Shifting.toString()}=="D") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_DELETE_HOLIDAY</option>
       	<option value="B" #if ($!{result.FormData.Shifting.toString()}=="B") selected="selected" #end>$l10n.SCHEDULE_SHIFTING_BEFORE_HOLIDAY</option>
