@@ -58,17 +58,6 @@ public class TimelineJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
-      } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
-        //
-        TimelineFormData formData = new TimelineFormData();
-        formData.initField();
-        if (formData.doUpdate(this, rundata, context)) {
-        } else {
-          JSONArray json =
-            JSONArray
-              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-          result = json.toString();
-        }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
 
         TimelineFormData formData = new TimelineFormData();

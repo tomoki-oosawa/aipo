@@ -51,6 +51,8 @@ import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.fileupload.util.FileuploadUtils.ShrinkImageSet;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.Operations;
+import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
@@ -75,8 +77,6 @@ public class TimelineFormData extends ALAbstractFormData {
 
   /** メモ */
   private ALStringField note;
-
-  private ALStringField pinned;
 
   private int parentId;
 
@@ -167,8 +167,6 @@ public class TimelineFormData extends ALAbstractFormData {
     // ファイルリスト
     fileuploadList = new ArrayList<FileuploadLiteBean>();
 
-    pinned = new ALStringField();
-    pinned.setValue("F");
   }
 
   /**
@@ -264,7 +262,7 @@ public class TimelineFormData extends ALAbstractFormData {
       // 登録
       topic.setTimelineType(EipTTimeline.TIMELINE_TYPE_TIMELINE);
       // 固定化状態
-      topic.setPinned(pinned.getValue());
+      topic.setPinned("F");
 
       // 作成日
       topic.setCreateDate(tCal.getTime());
@@ -573,9 +571,14 @@ public class TimelineFormData extends ALAbstractFormData {
       if (mode.equals("dispin")) {
         timeline.setPinned("F");
       } else if (mode.equals("setpin")) {
-        String sql =
-          "UPDATE eip_t_timeline SET pinned = 'F' WHERE pinned <> 'F' OR pinned IS NULL;";
-        Database.sql(EipTTimeline.class, sql).execute();
+        SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
+        query.where(Operations.ne(EipTTimeline.PINNED_PROPERTY, "F"));
+        List<EipTTimeline> timelineList = query.fetchList();
+        if (timelineList != null) {
+          for (EipTTimeline tmpTimeline : timelineList) {
+            tmpTimeline.setPinned("F");
+          }
+        }
         timeline.setPinned("T");
       } else {
         return false;
@@ -695,10 +698,6 @@ public class TimelineFormData extends ALAbstractFormData {
 
   public boolean hasPhoto() {
     return has_photo;
-  }
-
-  public ALStringField pinned() {
-    return pinned;
   }
 
   public List<FileuploadLiteBean> getAttachmentFileNameList() {
