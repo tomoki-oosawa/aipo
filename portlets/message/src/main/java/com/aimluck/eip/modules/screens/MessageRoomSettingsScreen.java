@@ -96,9 +96,8 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
           authority = member.getAuthority();
         }
       }
-      if ("A".equals(authority)) {
-        context.put("authority", authority);
-      }
+      context.put("authority", authority);
+      putData(rundata, context);
       /*
        * MessageRoomMemberListSelectData listData = new
        * MessageRoomMemberListSelectData(); if (isNewRoom) {
