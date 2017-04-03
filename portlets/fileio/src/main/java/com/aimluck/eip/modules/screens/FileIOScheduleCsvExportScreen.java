@@ -112,13 +112,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       Map<Integer, Map<String, List<ScheduleExportResultData>>> dummyMap =
         new HashMap<Integer, Map<String, List<ScheduleExportResultData>>>();
 
-      // Date viewStart =
-      // DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-      // rundata.getParameters().get("start_day"));
-      // Date viewEnd =
-      // DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-      // rundata.getParameters().get("end_day"));
-
       DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
       Date viewStart = format.parse(rundata.getParameters().get("start_day"));
       Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
@@ -304,8 +297,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
             sb.append(record.getMemberNameExport());
             sb.append("\",\"");
             sb.append(record.getFacilityNameExport());
-            // sb.append("\",\"");
-            // sb.append(record.get公開());
+            sb.append("\",\"");
+            sb.append(record.getPublicExport());
             // sb.append("\",\"");
             // sb.append(record.get繰り返し());
             // sb.append("\",\"");
@@ -421,6 +414,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       rd.setNote(record.getNote());
       rd.setPlace(record.getPlace());
       rd.setDescription(record.getNote());
+      rd.setPublicDegree();
 
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);

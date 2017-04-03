@@ -48,8 +48,8 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   /** <code>facilities</code> 共有設備 */
   private List<FacilityResultData> facilities;
 
-  // /** <code>publicity</code> 公開 */
-  // private ALStringField publicity;
+  /** <code>publicdegree</code> 公開 */
+  // private ALStringField publicdegree;
   //
   // /** <code>repeat</code> 繰り返し */
   // private ALStringField repeat;
@@ -66,7 +66,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     user_id = new ALNumberField();
     members = new ArrayList<ALEipUser>();
     facilities = new ArrayList<FacilityResultData>();
-    // publicity = new ALStringField();
+    // publicdegree = new ALStringField();
     // repeat = new ALStringField();
     // overlap = new ALStringField();
   }
@@ -268,11 +268,12 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return field;
   }
 
-  // 公開
+  // 公開度
   public ALStringField getPublicExport() {
     ALStringField field = new ALStringField();
 
-    String str = getName().getValue().replaceAll("\"", "");
+    // ダブルクオーテーションを削除
+    String str = getPublicDegree().getValue().replaceAll("\"", "");
     field.setValue(str);
     return field;
   }
