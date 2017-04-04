@@ -67,7 +67,7 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** 場所 */
   private ALStringField place;
 
-  /** 公開度 */
+  /** <code>公開度</code> */
   private ALStringField publicdegree;
 
   /** <code>ptn</code> 繰り返しパターン */
@@ -132,8 +132,8 @@ public class ScheduleResultData implements ALData, Cloneable {
     name = new ALStringField();
     type = new ALStringField();
     place = new ALStringField();
-    publicdegree = new ALStringField();
     description = new ALStringField();
+    publicdegree = new ALStringField();
     schedule_id = new ALNumberField();
     parent_id = new ALNumberField();
     start_date = new ALDateTimeField(format);
@@ -239,15 +239,6 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
-   * 公開度を取得
-   *
-   * @return
-   */
-  public ALStringField getPublicDegree() {
-    return publicdegree;
-  }
-
-  /**
    * 詳細を表示するかどうか
    *
    * @return
@@ -284,23 +275,29 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
+   * 公開度を取得します
+   *
+   * @param
+   */
+  public ALStringField getDegree() {
+    return publicdegree;
+  }
+
+  /**
    * 公開度を設定します
    *
-   * @param string
+   * @param boolean,boolean
    */
 
-  public void setPublicDegree() {
-    // publicdegree.setValue(string);
-    if (isPublic()) {
+  public void setDegree(boolean pub, boolean hid) {
+    if (pub && !hid) {
       publicdegree.setValue(ALLocalizationUtils
         .getl10n("SCHEDULE_OPEN_PUBLIC_WORD"));
-    } else if (!isPublic() && !isHidden()) {
+    } else if (!pub && !hid) {
       publicdegree.setValue(ALLocalizationUtils
         .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
-    } else if (isHidden()) {
+    } else if (!pub && hid) {
       publicdegree.setValue(ALLocalizationUtils.getl10n("SCHEDULE_HIDE_ALL"));
-    } else {
-      publicdegree.setValue(" ");
     }
   }
 

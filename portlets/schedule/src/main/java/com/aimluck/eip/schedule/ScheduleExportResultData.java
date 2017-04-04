@@ -48,8 +48,12 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   /** <code>facilities</code> 共有設備 */
   private List<FacilityResultData> facilities;
 
-  /** <code>publicdegree</code> 公開 */
+  /** <code>publicdegree</code> 公開度 */
+  private List<ALStringField> publicdegrees;
+
+  // /** <code>publicdegree</code> 公開 */
   // private ALStringField publicdegree;
+
   //
   // /** <code>repeat</code> 繰り返し */
   // private ALStringField repeat;
@@ -66,7 +70,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     user_id = new ALNumberField();
     members = new ArrayList<ALEipUser>();
     facilities = new ArrayList<FacilityResultData>();
-    // publicdegree = new ALStringField();
+    // publicdegrees = new ArrayList<ALStringField>();
     // repeat = new ALStringField();
     // overlap = new ALStringField();
   }
@@ -268,15 +272,38 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return field;
   }
 
+  // public void addAllPublic(List<ALStringField> pub) {
+  // publicdegrees.addAll(pub);
+  // }
+  //
+  // public List<ALStringField> getPublicDegree() {
+  // return publicdegrees;
+  // }
+
   // 公開度
   public ALStringField getPublicExport() {
     ALStringField field = new ALStringField();
 
     // ダブルクオーテーションを削除
-    String str = getPublicDegree().getValue().replaceAll("\"", "");
+    String str = getDegree().getValue().replaceAll("\"", "");
     field.setValue(str);
     return field;
   }
+
+  // public String getPublicExport() {
+  // StringBuilder b = new StringBuilder();
+  // int i = 0;
+  // for (ALStringField pub : publicdegrees) {
+  // // ダブルクオーテーションを削除
+  // String str = getDegree().getValue().replaceAll("\"", "");
+  // b.append(str);
+  // i++;
+  // if (i < publicdegrees.size()) {
+  // b.append(DISP_SEPARATOR);
+  // }
+  // }
+  // return b.toString();
+  // }
 
   // 繰り返し
 

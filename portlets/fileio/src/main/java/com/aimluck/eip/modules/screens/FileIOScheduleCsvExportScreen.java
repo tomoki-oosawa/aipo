@@ -216,6 +216,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
             ArrayList<ALEipUser> members = new ArrayList<ALEipUser>();
             ArrayList<FacilityResultData> facilities =
               new ArrayList<FacilityResultData>();
+
             if (map.containsKey(record.getScheduleId().getValueWithInt())) {
               List<ScheduleExportResultData> list =
                 map.get(record.getScheduleId().getValueWithInt());
@@ -239,6 +240,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
                 }
               }
             }
+
             // dummyを除外
             if (dummyMap.containsKey(record.getScheduleId().getValueWithInt())) {
               Map<String, List<ScheduleExportResultData>> map2 =
@@ -277,34 +279,34 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         for (ScheduleExportResultData record : arayList) {
-          if (record.isPublic()) { // 公開スケジュールのみに限定
-            sb.append(LINE_SEPARATOR);
-            sb.append("\"");
-            sb.append(record.getViewDate());
-            sb.append("\",\"");
-            sb.append(record.getStartDate());
-            sb.append("\",\"");
-            sb.append(record.getEndDateExport());
-            sb.append("\",\"");
-            sb.append(record.getEndDate());
-            sb.append("\",\"");
-            sb.append(record.getPlaceExport());
-            sb.append("\",\"");
-            sb.append(record.getNameExport());
-            sb.append("\",\"");
-            sb.append(record.getNoteExport());
-            sb.append("\",\"");
-            sb.append(record.getMemberNameExport());
-            sb.append("\",\"");
-            sb.append(record.getFacilityNameExport());
-            sb.append("\",\"");
-            sb.append(record.getPublicExport());
-            // sb.append("\",\"");
-            // sb.append(record.get繰り返し());
-            // sb.append("\",\"");
-            // sb.append(record.get重複());
-            sb.append("\"");
-          }
+          // if (record.isPublic()) { // 公開スケジュールのみに限定
+          sb.append(LINE_SEPARATOR);
+          sb.append("\"");
+          sb.append(record.getViewDate());
+          sb.append("\",\"");
+          sb.append(record.getStartDate());
+          sb.append("\",\"");
+          sb.append(record.getEndDateExport());
+          sb.append("\",\"");
+          sb.append(record.getEndDate());
+          sb.append("\",\"");
+          sb.append(record.getPlaceExport());
+          sb.append("\",\"");
+          sb.append(record.getNameExport());
+          sb.append("\",\"");
+          sb.append(record.getNoteExport());
+          sb.append("\",\"");
+          sb.append(record.getMemberNameExport());
+          sb.append("\",\"");
+          sb.append(record.getFacilityNameExport());
+          sb.append("\",\"");
+          sb.append(record.getPublicExport());
+          // sb.append("\",\"");
+          // sb.append(record.get繰り返し());
+          // sb.append("\",\"");
+          // sb.append(record.get重複());
+          sb.append("\"");
+          // }
         }
 
         return sb.toString();
@@ -414,7 +416,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       rd.setNote(record.getNote());
       rd.setPlace(record.getPlace());
       rd.setDescription(record.getNote());
-      rd.setPublicDegree();
+      rd.setDegree("O".equals(record.getPublicFlag()), "P".equals(record
+        .getPublicFlag()));
 
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);

@@ -125,6 +125,7 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setLoginuser(rd.isLoginuser());
           addRd.setOwner(rd.isOwner());
           addRd.setMember(rd.isMember());
+          addRd.setDegree(rd.isPublic(), rd.isHidden());
           addRd.setType(rd.getType());
           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
           if (!sdf.format(rd.getStartDate().getValue()).equals(
@@ -138,6 +139,7 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setNote(rd.getNoteStr());
           addRd.setPlace(rd.getPlace().getValue());
           addRd.setDescription(rd.getNoteStr());
+          addRd.setDegree(rd.isPublic(), rd.isHidden());
           addRd.setUserId(rd.getUserId().getValueWithInt());
           addResultDataInternal(addRd);
         }
