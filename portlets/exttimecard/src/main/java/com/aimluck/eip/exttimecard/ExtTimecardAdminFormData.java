@@ -173,11 +173,6 @@ public class ExtTimecardAdminFormData extends ALAbstractFormData {
       }
     }
 
-    // 登録されているIPアドレスがない場合には、利用中のIPアドレスを自動入力する
-    if (ip_address_values.length == 1 && "".equals(ip_address_values[0])) {
-      appendIpAddresses(myip);
-    }
-
     return false;
   }
 
