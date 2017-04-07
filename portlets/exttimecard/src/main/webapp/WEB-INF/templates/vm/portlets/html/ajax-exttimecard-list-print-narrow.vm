@@ -56,7 +56,6 @@
 
 	## each content
 	#foreach ($rdlist in $result.DateListKeys)
-		## ここから何をやっているんだろう？
 		#set($isrd = $rdlist.IsResultData)
 		#if($isrd)
 			#set($rd = $rdlist.Rd)
@@ -159,7 +158,7 @@
   				#end
   				</td>
 
-  			## 今日より前の普通の日！！！（めんどいよー）
+  			## 今日より前の普通の日
   			#else
   				## 出勤時刻
   				#if($rdlist.IsNotNullClockInTime)
