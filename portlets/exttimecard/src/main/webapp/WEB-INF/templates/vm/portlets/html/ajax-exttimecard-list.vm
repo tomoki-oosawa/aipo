@@ -41,7 +41,7 @@
 	#if($!result.hasAclXlsExport())
 		<div class="floatRight">
 			## 印刷ボタン
-			#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint"))
+			#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint").addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth"))
 			#AUIprintbutton("$prLink")
 
 			## XLSエクスポート
