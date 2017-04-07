@@ -251,10 +251,16 @@
 			${total_statutory_off_day_work_hour}
 		#ALtdcellfooter()
 
+		## !!!4/7!!!
+		## 残業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+
+		#ALtdcellfooter()
 
 
 
 		## ！！！！！！！次回はここから！！！！！！！！
+
 
 
 
