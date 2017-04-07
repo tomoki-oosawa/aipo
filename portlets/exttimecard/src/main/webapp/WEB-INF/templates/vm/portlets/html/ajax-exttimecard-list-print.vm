@@ -133,29 +133,32 @@
 		#end
 		#ALtdcellfooter()
 
-		## 出勤日数
-		## 就業時間
+		## 出勤日数の代入
+		## 就業時間の代入
 		#if(${rdlist.isWorkDay()})
 			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($work_day = 1)
 			## 就業時間
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})}
+			#set($work_hour = ${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})})
 			#ALtdcellfooter()
 		#else
 			##　出勤日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($work_day = 0)
 			## 就業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				## $($rdlist.WorkHour > 0)
-				## ${rdlist.getHourToString(0)}
-				0h
-			#ALtdcellfooter()
+			#set($work_hour = ${rdlist.getHourToString("0.0")})
 		#end
+
+		## 出勤日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${work_day}
+		#ALtdcellfooter()
+		## 就業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${work_hour}
+		#ALtdcellfooter()
+
+
 
 		##残業日数
 		##残業時間
@@ -188,7 +191,7 @@
 			#ALtdcellfooter()
 			## 休出時間
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}
+				${rdlist.getOffHour(true)}
 			#ALtdcellfooter()
 		#else
 			##　休出日数

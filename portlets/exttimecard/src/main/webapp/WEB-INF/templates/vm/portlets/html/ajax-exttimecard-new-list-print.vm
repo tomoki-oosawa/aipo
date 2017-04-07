@@ -152,17 +152,14 @@
 			## 就業時間(work_hour)の定義
 			#set($work_hour = ${rdlist.getHourToString("0.0")})
 		#end
-
 		## 総労働時間の代入
 		#set($total_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkHour(true)})})
 		#if ($total_work_hour == "")
 			#set($total_work_hour = ${rdlist.getHourToString("0.0")})
 		#end
-
 		## 所定休日、法定休日などの代入
 		#if ($rdlist.isOffDay())
-			#set($off_day = 1)
-
+			#set($off_day = 1) ##　現状未使用
 			## 所定内休日、法定内休日に振り分け
 			#if ($rdlist.isStatutoryHoliday()) ## 法定内休日
 				## 所定休日出勤日数の代入
@@ -173,7 +170,6 @@
 				#set($total_official_off_day_work_hour = ${rdlist.getHourToString("0.0")})
 				## 法定休日労働時間の代入
 				#set($total_statutory_off_day_work_hour = $total_work_hour) ## 法定休日労働時間＝総労働時間（NewXlsの方のロジックそのまま）
-
 			#else ## 所定内休日
 				## 所定休日出勤日数の代入
 				#set($official_off_day = 1)
@@ -185,11 +181,11 @@
 				#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString("0.0")})
 			#end
 		#else
-			#set($off_day = 0)
-			#set($official_off_day = 0)
-			#set($statutory_off_day = 0)
-			#set($total_official_off_day_work_hour = ${rdlist.getHourToString("0.0")})
-			#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString("0.0")})
+			#set($off_day = 0) ## 現状未使用
+			#set($official_off_day = 0) ## 所定休日出勤日数
+			#set($statutory_off_day = 0) ## 法定休日出勤日数
+			#set($total_official_off_day_work_hour = ${rdlist.getHourToString("0.0")}) ## 所定休日労働時間
+			#set($total_statutory_off_day_work_hour = ${rdlist.getHourToString("0.0")}) ## 法定休日労働時間
 		#end
 
 
@@ -251,206 +247,105 @@
 			${total_statutory_off_day_work_hour}
 		#ALtdcellfooter()
 
-		## !!!4/7!!!
-		## 残業時間の表示
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-
-		#ALtdcellfooter()
-
-
-
-		## ！！！！！！！次回はここから！！！！！！！！
-
-
-
-
-		##残業日数
-		##残業時間
-		#if ($rdlist.isOverWorkDay())
-			##　残業日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
-			## 残業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				$!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})}
-			#ALtdcellfooter()
-		#else
-			##　残業日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
-			## 残業時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0h
-			#ALtdcellfooter()
+		## 深夜労働時間の代入
+		#set($total_midnight_work_hour = $rdlist.getHourToString(${rdlist.getMidnightWorkHour(true)}))
+		#if ($total_midnight_work_hour == "")
+			#set($total_midnight_work_hour = $rdlist.getHourToString("0.0"))
 		#end
+		## 深夜労働時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${total_midnight_work_hour}
+		#ALtdcellfooter()
 
-		##休出日数
-		##休出時間
-		## ->所定休日、法定休日など
-		#if ($rdlist.isOffDay())
-			#set($off_day = 1)
-
-			## 所定内休日、法定内休日に振り分け
-			#if ($rdlist.isStatutoryHoliday()) ## 法定内休日
-				## 所定休日出勤日数
-				#set($official_off_day = 0)
-				## 法定休日出勤日数
-				#set($statutory_off_day = 1)
-				## 所定休日労働時間
-				#set($total_official_off_day_work_hour = 0)
-				## 法定休日労働時間
-				#set($total_statutory_off_day_work_hour = ${rdlist.getTotalWorkHourValue()})
-
-			#else ## 所定内休日
-				## 所定休日出勤日数
-				#set($official_off_day = 1)
-				## 法定休日出勤日数
-				#set($statutory_off_day = 0)
-				## 法定休日労働時間
-				#set($total_official_off_day_work_hour = ${rdlist.getTotalWorkHourValue()})
-				## 法定休日労働時間
-				#set($total_statutory_off_day_work_hour = 0)
-			#end
-		#else
-			#set($off_day = 0)
-			#set($official_off_day = 0)
-			#set($statutory_off_day = 0)
-			#set($total_official_off_day_work_hour = 0)
-			#set($total_statutory_off_day_work_hour = 0)
+		## 休憩時間の代入
+		#set($rest_hour = $rdlist.getHourToString(${rdlist.getRestHour(true)}))
+		#if ($rest_hour == "")
+			#set($rest_hour = $rdlist.getHourToString("0.0"))
 		#end
-
-		## 休出日数（いずれ消す）
+		## 休憩時間の表示
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			$off_day
-		#ALtdcellfooter()
-		## 所定内休日出勤日数
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			$official_off_day
-		#ALtdcellfooter()
-		## 法定内休日出勤日数
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			$statutory_off_day
-		#ALtdcellfooter()
-		## 所定内休日労働時間
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			${total_official_off_day_work_hour}h
-		#ALtdcellfooter()
-		## 法定内休日労働時間
-		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-			${total_statutory_off_day_work_hour}h
+			${rest_hour}
 		#ALtdcellfooter()
 
-
-
-
-
-		#if ($rdlist.isOffDay)
-			##　休出日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
-			## 休出時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				$!{rdlist.getHourToString($!{rdlist.getOffHour(true)})}
-			#ALtdcellfooter()
-		#else
-			##　休出日数
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
-			## 休出時間
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0h
-			#ALtdcellfooter()
-		#end
-
-		## 遅刻日数
+		## 遅刻日数の代入
 		#if ( $rdlist.isLateComing() )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($late_coming_day = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($late_coming_day = 0)
 		#end
+		## 遅刻日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${late_coming_day}
+		#ALtdcellfooter()
 
-		## 早退日数
+		## 早退日数の代入
 		#if ( $rdlist.isEarlyLeaving() )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($early_leaving_day = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($early_leaving_day = 0)
 		#end
+		## 早退日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${early_leaving_day}
+		#ALtdcellfooter()
 
-		#set($type = ${rd.getType().toString()})
-
-		## 欠勤日数
+		## 欠勤日数の代入
 		#if ( $rd.isTypeA )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($absent_day = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($absent_day = 0)
 		#end
+		## 欠勤日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${absent_day}
+		#ALtdcellfooter()
 
-		## 有休日数
+		## 有休日数の代入
 		#if ( $rd.isTypeH )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($paid_holiday = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($paid_holiday = 0)
 		#end
+		## 有休日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${paid_holiday}
+		#ALtdcellfooter()
 
-		## 代休日数
+		## 代休日数の代入
 		#if ( $rd.isTypeC )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($compensatory_holiday = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($compensatory_holiday = 0)
 		#end
+		## 代休日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${compensatory_holiday}
+		#ALtdcellfooter()
 
-		## その他日数
+		## その他日数の代入
 		#if ( $rd.isTypeE )
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				1
-			#ALtdcellfooter()
+			#set($other_day = 1)
 		#else
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0
-			#ALtdcellfooter()
+			#set($other_day = 0)
 		#end
+		## その他日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${other_day}
+		#ALtdcellfooter()
 
-		## 修正理由・備考
+		## 修正理由
   		#ALtdcellheaderAtt("class='center mb_hide'")
 	  		#if($!{rd.ReasonFlg})
-				$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
-				#if($!{rd.RemarksFlg})
-					、
-    			#end
-  			#end
-		  	#if($!{rd.RemarksFlg})
-				$l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
+				$!{rd.Reason}
   			#end
   		#ALtdcellfooter()
 
-  		## test
-  		##ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-	  	##	$listsize
-  		##ALtdcellfooter()
+  		## 備考
+  		#ALtdcellheaderAtt("class='center mb_hide'")
+		  	#if($!{rd.RemarksFlg})
+				$!{rd.Remarks}
+  			#end
+  		#ALtdcellfooter()
 
   		## 外出・復帰
   		#set($outcomes = $rdlist.OutgoingComeback)
@@ -472,7 +367,6 @@
 			#end
 		#else
 			#set($restsize = $displaysize - $listsize)
-
 			#foreach($outcome in $outcomes)
 			## 外出
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
@@ -497,7 +391,6 @@
 
 		</tr>
 	#end
-
 
 
 #ALtablefooter()
