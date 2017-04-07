@@ -40,14 +40,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class ExtTimecardListScreenPrint extends ExtTimecardScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ExtTimecardListScreenPrint.class.getName());
-
-  // ！！ExtTimecaardListScreenから抽出（何をやっているかよくわかりません。）
-  // /** ログインユーザーID */ // 今度Velocityへ移植
-  // String target_user_id =
-  // rundata.getParameters().getString(ExtTimecardUtils.TARGET_USER_ID);
-  // private String userid = Integer.toString(ALEipUtils.getUserId(rundata));
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ExtTimecardListScreenPrint.class.getName());
 
   /**
    *
@@ -65,8 +60,10 @@ public class ExtTimecardListScreenPrint extends ExtTimecardScreen {
       listData.doViewList(this, rundata, context);
 
       ExtTimecardListResultDataContainer container =
-        ExtTimecardUtils.groupByWeek(listData.getQueryStartDate(), listData
-          .getAllList(), null);
+        ExtTimecardUtils.groupByWeek(
+          listData.getQueryStartDate(),
+          listData.getAllList(),
+          null);
       container.calculateWeekOvertime();
 
       ExtTimecardListResultData tclistrd = null;
