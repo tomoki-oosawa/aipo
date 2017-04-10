@@ -862,5 +862,5 @@ aipo.schedule.reminderon = function(){
     aipo.schedule.setWrapperHeight();
 }
 aipo.schedule.downloadCsv = function(url){
-	window.location.href=url;
+	window.location.href = url;
 }
