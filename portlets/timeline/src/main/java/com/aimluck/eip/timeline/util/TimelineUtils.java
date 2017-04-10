@@ -1163,6 +1163,7 @@ public class TimelineUtils {
     select.append(" eip_t_timeline.timeline_type,");
     select.append(" eip_t_timeline.update_date,");
     select.append(" eip_t_timeline.timeline_id,");
+    select.append(" eip_t_timeline.pinned,");
 
     // ログインユーザーがいいね！をしているかどうか
     select
@@ -1182,6 +1183,7 @@ public class TimelineUtils {
       body.append(" LEFT JOIN eip_t_timeline AS comment ");
       body.append(" ON eip_t_timeline.timeline_id = comment.parent_id ");
     }
+
     body.append(" WHERE ");
 
     if (type != null) {
@@ -1229,9 +1231,11 @@ public class TimelineUtils {
     StringBuilder last = new StringBuilder();
 
     if ("T".equals(type) && "".equals(displayParam)) {
-      last.append(" ORDER BY eip_t_timeline.create_date ASC");
+      last
+        .append(" ORDER BY eip_t_timeline.pinned DESC, eip_t_timeline.create_date ASC");
     } else {
-      last.append(" ORDER BY eip_t_timeline.update_date DESC");
+      last
+        .append(" ORDER BY eip_t_timeline.pinned DESC, eip_t_timeline.update_date DESC");
     }
 
     SQLTemplate<EipTTimeline> countQuery =

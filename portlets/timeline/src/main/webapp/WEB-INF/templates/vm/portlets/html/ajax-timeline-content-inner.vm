@@ -45,6 +45,11 @@
 			#else
 			<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.OwnerId},arguments[0])">$!record.OwnerName</a>
 			#end
+			#if($record.Pinned)
+			<div class="alignright">
+				<li class="icon-pushpin"></li>
+			</div>
+			#end
 		</div>
 		<div class="body">
 			#if($record.TimelineType=="A")
@@ -106,15 +111,35 @@
 			<a href="javascript:void(0)" onclick="aipo.timeline.showCommentField('$!{portlet.ID}', $!{record.TimelineId})" #if(!$result.hasAclTimelineCommentInsert())style="display:none;"#end>$l10n.TIMELINE_POST_COMMENT</a>
 			#end
 			#if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
-			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
-				<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
-					<input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
+			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther())||$!{result.hasAclTimelinePin()})
+				&nbsp;
+				<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}_$!{record.TimelineId}" class='customizeMenuIcon icon-ellipsis-horizontal' onclick="aipo.customize.showMenu('$!{portlet.ID}_$!{record.TimelineId}');"></a>
+				<div class="menubar body-child" id="menubar_$!{portlet.ID}_$!{record.TimelineId}" style="position:absolute;left:-5;top:5;display:none;">
+                <ul>
+                #if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
+            ||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
+                <form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" id="deleteForm_$!{portlet.ID}_$!{record.TimelineId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen')" method="post" onsubmit="aimluck.io.disableForm(this, true);return false;">
+                    <input type="hidden" name="_name" value="$l10n.TIMELINE_POSTING" />
+                    <input type="hidden" name="secid" value="$secid" />
+                    #set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete'))")
+                    <li><a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a></li>
+                    <input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
+                </form>
+                #end
+                #if(($!{result.hasAclTimelinePin()}) && !($!{record.pinned}))
+                 <form style="display:inline" name="pinSet_$!{portlet.ID}_$!{record.TimelineId}" id="pinSet_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'','$!portlet.ID',aipo.timeline.onReceiveMessage)">
+                	<input type="hidden" name="secid" value="$secid" />
+                	<li><a href="javascript:void(0)" onclick="var ok=confirm('$l10n.TIMELINE_PIN_CONFIRM'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinSet_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'setpin');dojo.byId('pinSet_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN</a></li>
+                 </form>
+                #end
+				#if(($!{result.hasAclTimelinePin()}) && ($!{record.pinned}))
+				 <form style="display:inline" name="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" id="pinRelease_$!{portlet.ID}_$!{record.TimelineId}" action="$formUrl" method="post" onsubmit="aimluck.io.submit(this,'','$!portlet.ID',aipo.timeline.onReceiveMessage)">
 					<input type="hidden" name="secid" value="$secid" />
-					#set ($deleteSubmit = "$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData('template','TimelineJSONScreen').addQueryData('entityid',$record.TimelineId).addQueryData('mode', 'delete'))")
-					&nbsp;
-					<a href="javascript:void(0)" onclick="aimluck.io.ajaxDeleteSubmit(dojo.byId('dummy_$!{portlet.ID}_$!{record.TimelineId}'), '$deleteSubmit', '$indicator_id', '$!portlet.ID', aipo.timeline.onReceiveMessageToList);">$l10n.COMMON_DELETE</a>
-					<input type="hidden" id="dummy_$!{portlet.ID}_$!{record.TimelineId}" value="" />
-				</form>
+					<li><a href="javascript:void(0)"  onclick="var ok=confirm('$l10n.TIMELINE_PIN_RELEASE_CONFIRM'); if(ok) {aipo.timeline.addHiddenValue(dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}'), 'mode', 'dispin');dojo.byId('pinRelease_$!{portlet.ID}_$!{record.TimelineId}').onsubmit();}">$l10n.TIMELINE_PIN_RELEASE</a></li>
+				 </form>
+                #end
+                </ul>
+                </div>
 			#end
 		</div>
 	</div>

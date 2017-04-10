@@ -18,7 +18,7 @@
  *#
 ## ---------------------------------------------------------------------------
 #set ($indicator_id = "indicator-dlg-")
-#set ($action_str = $l10n.TIMELINE_UPDATE)
+#set ($action_str = $l10n.GADGETS_UPDATE)
 #set ($subtitle = $l10n.GADGETS_APP_EDIT)
 #set ($event_submit = "eventSubmit_doTimelineAdmin_update")
 ## ---------------------------------------------------------------------------

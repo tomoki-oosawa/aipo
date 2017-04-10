@@ -32,6 +32,13 @@
 
 #ALtableheaderWide()
 
+#ALtdcaption($l10n.GADGETS_TITLE)
+#ALtditemheader()
+$!result.Detail.Title
+#ALtditemfooter()
+#ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
+#ALtditem($!result.Detail.Description)
+
 #ALtdcaption($l10n.SCHEDULE_UPDATE_MAPS)
 
 #ALtditemheader()
