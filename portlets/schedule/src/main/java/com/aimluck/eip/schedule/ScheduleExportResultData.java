@@ -267,6 +267,14 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   }
 
   // 繰り返し
+  public ALStringField getRepeatExport() {
+    ALStringField field = new ALStringField();
+
+    // ダブルクオーテーションを削除
+    String str = getRepeatText().getValue().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
 
   // 重複
 

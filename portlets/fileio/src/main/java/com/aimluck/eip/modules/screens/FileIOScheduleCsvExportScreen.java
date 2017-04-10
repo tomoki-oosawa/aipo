@@ -158,7 +158,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb = new StringBuffer();
-        sb.append("開始日,開始時刻,終了日,終了時刻,場所,タイトル,内容,参加者,設備,公開,繰り返し,重複");
+        sb.append("開始日,開始時刻,終了日,終了時刻,場所,タイトル,内容,参加者,設備,公開,繰り返し");
 
         // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
@@ -279,7 +279,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         for (ScheduleExportResultData record : arayList) {
-          // if (record.isPublic()) { // 公開スケジュールのみに限定
           sb.append(LINE_SEPARATOR);
           sb.append("\"");
           sb.append(record.getViewDate());
@@ -301,12 +300,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append(record.getFacilityNameExport());
           sb.append("\",\"");
           sb.append(record.getPublicExport());
-          // sb.append("\",\"");
-          // sb.append(record.get繰り返し());
-          // sb.append("\",\"");
-          // sb.append(record.get重複());
+          sb.append("\",\"");
+          sb.append(record.getRepeatExport());
           sb.append("\"");
-          // }
         }
 
         return sb.toString();
@@ -418,7 +414,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       rd.setDescription(record.getNote());
       rd.setDegree("O".equals(record.getPublicFlag()), "P".equals(record
         .getPublicFlag()));
-
+      rd.setRepeatText(record.getRepeatPattern());
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
       }
