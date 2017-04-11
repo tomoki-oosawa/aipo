@@ -54,7 +54,6 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
       Iterator<Entry> iterator = portlets.getEntriesIterator();
 
       User user = rundata.getUser();
-
       if (!"admin".equals(user.getUserName())
         && !"anon".equals(user.getUserName())
         && !"template".equals(user.getUserName())) {
@@ -77,7 +76,6 @@ public class ALDefaultPreExecuteHanlder extends ALPreExecuteHandler {
           }
         }
       }
-
     } catch (ProfileException e) {
       logger.error(e.getMessage(), e);
     }

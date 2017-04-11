@@ -30,7 +30,7 @@ import com.aimluck.eip.services.config.ALConfigService;
 
 /**
  * 通信中にタイムアウトした場合の処理クラスです。 <br />
- * 
+ *
  */
 public class ALVelocityTimeoutScreen extends ALVelocityScreen implements
     ALErrorScreen {
