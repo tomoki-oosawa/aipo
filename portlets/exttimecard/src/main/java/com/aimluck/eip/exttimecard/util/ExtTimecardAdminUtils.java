@@ -38,17 +38,17 @@ public class ExtTimecardAdminUtils {
   /**
    * アクセス制限の有効/無効
    */
-  public static final String EXTTIMECARD_IP_ENABLED = "security.ip.enabled";
+  public static final String EXTTIMECARD_IP_ENABLED = "config.exttimecard.ip.enabled";
 
   /**
    * 有効なIPアドレス（1件目〜10件目）
    */
-  public static final String EXTTIMECARD_IP_ALLOWED = "security.ip.allowed";
+  public static final String EXTTIMECARD_IP_ALLOWED = "config.exttimecard.ip.allowed";
 
   /**
    * 有効なIPアドレス（11件目〜20件目）
    */
-  public static final String EXTTIMECARD_IP_ALLOWED2 = "security.ip.allowed2";
+  public static final String EXTTIMECARD_IP_ALLOWED2 = "config.exttimecard.ip.allowed2";
 
   /**
    * EipMConfigの1レコードに保存するIPアドレス数（valueの最大値が255文字のため、IPアドレスは17までしか保存できない）
