@@ -98,9 +98,9 @@
 										<ul class="userListIcon clearfix" id="roomMemberPane">
 										</ul>
 										<div class="floatRight" id="messageRoomSetting">
-											<a href="javascript:void(0)" id="menubar_button_$!{messagePortletId}" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aipo.customize.showMenu('$messagePortletId');"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
-											<div class="menubar body-child" id="menubar_$!{messagePortletId}" style="width: 14em; right: 0px; display: none; z-index: 9999 ">
-											<ul  id="roomMemberAdmin">
+											<a href="javascript:void(0)" id="menubar_button_$!{messagePortletId}" class="customizeMenuIcon menubarOpenButton" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aipo.customize.showMenu('$messagePortletId');"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
+											<div class="menubar body-child" id="menubar_$!{messagePortletId}" style="display: none; z-index: 9999">
+											<ul id="roomMemberAdmin">
                                             </ul>
                                             </div>
 										</div>
