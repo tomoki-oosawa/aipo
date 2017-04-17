@@ -339,27 +339,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     return viewEnd;
   }
 
-  // /**
-  // * yyyy/MM/dd型表示開始日時を取得します。
-  // *
-  // * @return
-  // */
-  //
-  // public ALDateTimeField getViewUrlStart() {
-  // viewUrlStart.setValue(getViewStart().toString());
-  // return viewUrlStart;
-  // }
-  //
-  // /**
-  // * yyyy/MM/dd型表示終了日時を取得します。
-  // *
-  // * @return
-  // */
-  // public ALDateTimeField getViewUrlEnd() {
-  // viewUrlEnd.setValue(getViewEnd().toString());
-  // return viewUrlEnd;
-  // }
-
   /**
    * 表示タイプを取得します。
    *

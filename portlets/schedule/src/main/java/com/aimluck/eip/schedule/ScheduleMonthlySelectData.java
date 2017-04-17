@@ -102,12 +102,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
-  /** <code>viewUrlStart</code> CSV出力用表示開始日時 */
-  private ALDateTimeField viewUrlStart;
-
-  /** <code>viewUrlEnd</code> CSV出力用表示終了日時 */
-  private ALDateTimeField viewUrlEnd;
-
   /** <code>viewEndCrt</code> 表示終了日時 (Criteria) */
   private ALDateTimeField viewEndCrt;
 
