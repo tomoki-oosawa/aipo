@@ -218,13 +218,13 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   }
 
   public String getViewDate() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     sdf.format(getStartDate().getValue());
     return sdf.format(getStartDate().getValue());
   }
 
   public String getEndDateExport() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     sdf.format(getEndDate().getValue());
     return sdf.format(getEndDate().getValue());
   }
