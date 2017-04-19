@@ -153,8 +153,6 @@ public class ExtTimecardSelectData extends
 
   private boolean isNewRule = false;
 
-  private final boolean isAvailableIp = false;
-
   /**
    *
    * @param action
