@@ -48,7 +48,7 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
         // insertだがpunchと区別する必要がある。
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
-        if (formData.doIpCheck(this, rundata, context, mode)) {
+        if (formData.doIpCheck(this, rundata, context)) {
           formData.setAltMode("alt_insert");
           if (formData.doInsert(this, rundata, context)) {
           } else {
@@ -67,7 +67,7 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
 
-        if (formData.doIpCheck(this, rundata, context, mode)) {
+        if (formData.doIpCheck(this, rundata, context)) {
           if (formData.doUpdate(this, rundata, context)) {
           } else {
             JSONArray json =
@@ -85,7 +85,7 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
 
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
-        if (formData.doIpCheck(this, rundata, context, mode)) {
+        if (formData.doIpCheck(this, rundata, context)) {
           if (formData.doDelete(this, rundata, context)) {
           } else {
             JSONArray json =
@@ -99,6 +99,29 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
+
+      } else if ("invalid_ip".equals(mode)) {
+
+        ExtTimecardFormData formData = new ExtTimecardFormData();
+        formData.initField();
+
+        if (formData.doIpCheck(this, rundata, context)) {
+          if ("punchin".equals(mode)
+            || "punchout".equals(mode)
+            || "outgoing".equals(mode)
+            || "comeback".equals(mode)) {
+            if (formData.doPunch(this, rundata, context, mode)) {
+            } else {
+              JSONArray json =
+                JSONArray.fromObject(context
+                  .get(ALEipConstants.ERROR_MESSAGE_LIST));
+              result = json.toString();
+            }
+          }
+        }
+        JSONArray json =
+          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+        result = json.toString();
 
       } else if ("punchin".equals(mode)
         || "punchout".equals(mode)

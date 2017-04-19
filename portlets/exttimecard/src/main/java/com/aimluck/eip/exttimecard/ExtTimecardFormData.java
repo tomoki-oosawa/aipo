@@ -1087,8 +1087,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return true;
   }
 
-  public boolean doIpCheck(ALAction action, RunData rundata, Context context,
-      String mode) {
+  public boolean doIpCheck(ALAction action, RunData rundata, Context context) {
 
     List<String> msgList = new ArrayList<String>();
 

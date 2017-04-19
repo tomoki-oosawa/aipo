@@ -114,16 +114,21 @@
 		#set($formLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date))
 		#set($formLink_ins = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date).addQueryData('userid', "$!result.TargetUserId"))
 
-		#if($!result.TargetUserId == $!result.UserId)
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
-		#elseif($!result.hasAclUpdate() && "$entityid" != "new")
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
-		#elseif($!result.hasAclInsert() && "$entityid" == "new")
-			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink_ins)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
-		#else
-			$rdlist.DateStr
-		#end
+        #set($ip_av = $result.AvailableIp)
 
+        #if($ip_av == true)
+    		#if($!result.TargetUserId == $!result.UserId)
+    			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
+    		#elseif($!result.hasAclUpdate() && "$entityid" != "new")
+    			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
+    		#elseif($!result.hasAclInsert() && "$entityid" == "new")
+    			<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($formLink_ins)', '$!portlet.ID', 'aipo.exttimecard.onLoadExtTimecardDialog')" >$rdlist.DateStr</a>
+    		#else
+    			$rdlist.DateStr
+    		#end
+    	#else
+    	   <a href="javascript:void(0);" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'invalid_ip');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'invalid_ip', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();">$rdlist.DateStr</a>
+    	#end
 		#ALtdcellfooter()
 
 		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
@@ -202,8 +207,10 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
           <td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_PUNCH_IN" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
-        #else
+        #elseif($ip_av == true)
           #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "class='center' nowrap='nowrap'")
+        #else
+          <td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_NOT_INPUT" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'invalid_ip');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'invalid_ip', 'EXTTIMECARD_NOT_INPUT');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
         #end
       #else
         #ALtdcellAtt('' "")
@@ -229,8 +236,10 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
           #else
               #set($leaving = "<span class='auiButtonDisabled notdelete'>$l10n.EXTTIMECARD_PUNCH_OUT</span>")
           #end
-        #else
+        #elseif($ip_av == true)
           #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "class='center' nowrap='nowrap'")
+        #else
+          <td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_NOT_INPUT" class="auiButtonBold" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'invalid_ip');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'invalid_ip', 'EXTTIMECARD_NOT_INPUT');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
         #end
       #else
         #ALtdcellAtt('' "")
