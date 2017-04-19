@@ -47,7 +47,6 @@ import com.aimluck.eip.common.ALEipManager;
 import com.aimluck.eip.common.ALEipPost;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.common.ALPageNotFoundException;
-import com.aimluck.eip.exttimecard.util.ExtTimecardAdminUtils;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -56,8 +55,6 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
-import com.aimluck.eip.services.config.ALConfigHandler;
-import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -156,7 +153,7 @@ public class ExtTimecardSelectData extends
 
   private boolean isNewRule = false;
 
-  private boolean isAvailableIp = false;
+  private final boolean isAvailableIp = false;
 
   /**
    *
@@ -206,9 +203,6 @@ public class ExtTimecardSelectData extends
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
-
-    // 使えるかのbooleanを設定する．
-    isAvailableIp = getIpCheck(action, rundata, context);
 
     // My グループの一覧を取得する．
     List<ALEipGroup> myGroups = ALEipUtils.getMyGroups(rundata);
@@ -937,10 +931,6 @@ public class ExtTimecardSelectData extends
     return nowtime;
   }
 
-  public boolean getAvailableIp() {
-    return isAvailableIp;
-  }
-
   /**
    * タイムカード一覧画面で、表示すべきデータをリストにして返します。
    *
@@ -1017,39 +1007,6 @@ public class ExtTimecardSelectData extends
 
   public boolean hasAclXlsExport() {
     return hasAclXlsExport;
-  }
-
-  /**
-   * 打刻のIPアドレス制限チェック用メソッド。<br />
-   * IPアドレス制限の有無を boolean で返します。
-   *
-   * @return
-   */
-  public boolean getIpCheck(ALAction action, RunData rundata, Context context) {
-
-    // ここから「打刻のIPアドレス制限」
-    boolean is_enabled =
-      "T".equals(ALConfigService
-        .get(ALConfigHandler.Property.EXTTIMECARD_IP_ENABLED));
-    String[] ip_addresses = ExtTimecardAdminUtils.getIpAddresses();
-
-    String ip = rundata.getRemoteAddr();
-
-    boolean containFlag = false;
-    for (String ip_address : ip_addresses) {
-      if (!(ip == null || ip.length() == 0) && ip.equals(ip_address)) {
-        containFlag = true;
-        break;
-      }
-    }
-
-    if (is_enabled && !containFlag) {
-      // IP制限を使い、IPの権限がない場合
-      return false;
-    } else {
-      return true;
-    }
-    // ここまで「打刻のIPアドレス制限」
   }
 
   /**

@@ -99,30 +99,6 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
-
-      } else if ("invalid_ip".equals(mode)) {
-
-        ExtTimecardFormData formData = new ExtTimecardFormData();
-        formData.initField();
-
-        if (formData.doIpCheck(this, rundata, context)) {
-          if ("punchin".equals(mode)
-            || "punchout".equals(mode)
-            || "outgoing".equals(mode)
-            || "comeback".equals(mode)) {
-            if (formData.doPunch(this, rundata, context, mode)) {
-            } else {
-              JSONArray json =
-                JSONArray.fromObject(context
-                  .get(ALEipConstants.ERROR_MESSAGE_LIST));
-              result = json.toString();
-            }
-          }
-        }
-        JSONArray json =
-          JSONArray.fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-        result = json.toString();
-
       } else if ("punchin".equals(mode)
         || "punchout".equals(mode)
         || "outgoing".equals(mode)
