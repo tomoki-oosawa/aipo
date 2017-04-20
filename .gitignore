@@ -170,4 +170,6 @@ pip-log.txt
 /work
 
 # Docker
-/logs/*
+/docker/db/data
+/docker/web/data
+/docker/web/logs
