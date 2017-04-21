@@ -29,7 +29,16 @@
 #set ($actionAllUrl_id2 = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "all")))
 #set ($clearAllUrl = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("reset_params", "true").addQueryData("target_group_name", "all").addQueryData("target_display_name", "all")))
 ## ---------------------------------------------------------------------------
-<img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
+## dojo初期読み込み
+<script type="text/javascript">
+//<![CDATA[
+dojo.addOnLoad(function() {
+	dojo.byId('getTimelineOnClick').innerHTML='';
+});
+//]]>
+</script>
+<img src="images/common/dot.gif" width="1" height="1" onload="if(typeof dojo.byId == funtion) {dojo.byId('getTimelineOnClick').innerHTML='';}" style="display:none" />
+
 <div id="timelineOuter">
 <input type="hidden" id="TimelineUserId" name="TimelineUserId" value="$result.UserId" />
 <input type="hidden" id="TimelineUrl_$!{portlet.ID}" name="TimelineUrl_$!{portlet.ID}" value="$url" />

@@ -24,7 +24,16 @@
 ## ---------------------------------------------------------------------------
 #ALdialogheaderPrintTimeline("$l10n.TIMELINE_TIMELINE_DETAIL" "" "" "")
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-<img src="images/common/dot.gif" width="1" height="1" onload="dojo.byId('getTimelineOnClick').innerHTML=''" style="display:none" />
+## dojo初期読み込み
+<script type="text/javascript">
+//<![CDATA[
+dojo.addOnLoad(function() {
+	dojo.byId('getTimelineOnClick').innerHTML='';
+});
+//]]>
+</script>
+<img src="images/common/dot.gif" width="1" height="1" onload="if(typeof dojo.byId == funtion) {dojo.byId('getTimelineOnClick').innerHTML='';}" style="display:none" />
+
 <div id="timelineOuter">
   <div id="timeline_$!{portlet.ID}" class="timeline">
   <div id="content">
