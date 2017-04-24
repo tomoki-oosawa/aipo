@@ -23,7 +23,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.MessageRoomFormData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -47,16 +46,11 @@ public class MessageRoomNotificationFormScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-
       MessageRoomFormData formData = new MessageRoomFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);
-      // @todo MessageRoomFormData内に移植したほうがベター
-      if (formData.getMemberList().size() < 1) {
-        ALEipUser loginUser = ALEipUtils.getALEipUser(rundata);
-        loginUser.setAuthority("A");
-        formData.getMemberList().add(loginUser);
-      }
+
+      putData(rundata, context);
 
       String layout_template =
         "portlets/html/ajax-message-room-notification-form.vm";

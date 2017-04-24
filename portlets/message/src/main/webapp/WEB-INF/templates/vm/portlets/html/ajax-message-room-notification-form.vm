@@ -29,29 +29,10 @@
 #set ($modesrv = "update")
 #end
 #set ($indicator_id = "indicator-dlg-")
-#if($result.hasAuth() && $result.isGroup())
-#set ($form_view = "")
-#else
-#set ($form_view = "style='display:none'")
-#end
 ## ---------------------------------------------------------------------------
 #ALdialogheader($subtitle)
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
-
-
-<div id="messageDiv"></div>
-<div id="messageDiv_$!portlet.ID"></div>
-#if($mode=="new_form" || !$result.isFileUploadable() || !$result.hasAuth())
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
-#else
-#ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
-#end
-<input type="hidden" name="mode" value="$!modesrv" />
-#if($mode!="new_form")
-<input type="hidden" name="entityid" value="$!result.RoomId" />
-#end
-
 
 #if($mode!="new_form")
   #ALtableheaderWide()
