@@ -80,6 +80,21 @@ aipo.customize.showMenu = function(portlet_id) {
     }
 }
 
+aipo.customize.showMenuTimeline = function($this,$target) {
+	var bounds = $this.getBoundingClientRect();
+	var elm = document.getElementById($target);
+	var style = elm.currentStyle || document.defaultView.getComputedStyle(elm, '');
+	var offset = $("#$this").offset();
+
+    if (style.display == 'none') {
+        elm.style.display = 'block';
+        elm.style.top = offset.top + $this.offsetHeight + 'px';
+        elm.style.left = offset.left + 'px';
+    } else {
+        elm.style.display = 'none';
+    }
+}
+
 aipo.customize.showMenuForTab = function(tab_id) {
 	var menuNode = dojo.query('#menubar_' + tab_id);
 	var buttonNode= dojo.query('#menubar_button_' + tab_id);

@@ -113,8 +113,8 @@
 			#if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
 			||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther())||$!{result.hasAclTimelinePin()})
 				&nbsp;
-				<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}_$!{record.TimelineId}" class='customizeMenuIcon icon-ellipsis-horizontal' onclick="aipo.customize.showMenu('$!{portlet.ID}_$!{record.TimelineId}');"></a>
-				<div class="menubar body-child" id="menubar_$!{portlet.ID}_$!{record.TimelineId}" style="position:absolute;left:-5;top:5;display:none;">
+				<a href="javascript:void(0);" id="menubar_button_$!{portlet.ID}_$!{record.TimelineId}" class='customizeMenuIcon icon-ellipsis-horizontal' onclick="aipo.customize.showMenuTimeline(this,'menubar_$!{portlet.ID}_$!{record.TimelineId}');"></a>
+				<div class="menubar body-child" id="menubar_$!{portlet.ID}_$!{record.TimelineId}" style="position:fixed;left:-5;top:5;display:none;">
                 <ul>
                 #if(($!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDelete())
             ||(!$!result.isMatch($!{result.UserId} , $!{record.OwnerId.Value}) && $!result.hasAclTimelineDeleteOther()))
