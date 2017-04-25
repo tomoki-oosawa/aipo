@@ -158,7 +158,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb = new StringBuffer();
-        sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前");
+        sb
+          .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
 
         // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
@@ -301,6 +302,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           // }
         }
 
+        sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
         logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
