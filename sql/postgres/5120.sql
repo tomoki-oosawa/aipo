@@ -1160,8 +1160,8 @@ SELECT setval('eip_m_mail_notify_conf_notify_id_seq',5);
 INSERT INTO EIP_T_TIMECARD_SETTINGS VALUES(1,1,9,0,18,0,360,60,360,60);
 SELECT setval('eip_t_timecard_settings_timecard_settings_id_seq',1);
 
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(111,'schedule_self','スケジュール（自分の予定）操作',31);
-INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(112,'schedule_other','スケジュール（他ユーザーの予定）操作',31);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(111,'schedule_self','スケジュール（自分の予定）操作',63);
+INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(112,'schedule_other','スケジュール（他ユーザーの予定）操作',3);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(113,'schedule_facility','スケジュール（施設の予約）操作',12);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(121,'blog_entry_self','ブログ（自分の記事）操作',31);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(122,'blog_entry_other','ブログ（他ユーザーの記事）操作',3);
@@ -1194,7 +1194,7 @@ INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(201,'portlet_customize','ポート�
 SELECT setval('eip_t_acl_portlet_feature_feature_id_seq',210);
 
 -- schedule
-INSERT INTO EIP_T_ACL_ROLE VALUES(1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
+INSERT INTO EIP_T_ACL_ROLE VALUES(1,'スケジュール（自分の予定）管理者',111,63,'＊追加、編集、削除は一覧表示と詳細表示の権限を持っていないと使用できません');
 INSERT INTO EIP_T_ACL_ROLE VALUES(2,'スケジュール（他ユーザーの予定）',112,3,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(3,'スケジュール（施設の予約）管理者',113,12,NULL);
 

@@ -161,6 +161,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
         sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前");
 
+        sb
+          .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
+
         // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
           resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
@@ -297,11 +300,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append(record.getNoteExport());
           sb.append("\",\"");
           sb.append(record.getMemberNameExport());
-          // sb.append("\",\"");
-          // sb.append(record.getFacilityNameExport());
           sb.append("\"");
         }
 
+        sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
         logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);

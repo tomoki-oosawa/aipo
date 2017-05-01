@@ -55,3 +55,13 @@ INSERT INTO `eip_t_acl_portlet_feature` VALUES(NULL,'attachment','添付ファ�
 INSERT INTO `eip_t_acl_role` VALUES(NULL, '添付ファイル操作管理者',(SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'attachment' limit 1),52,NULL,NULL,NULL);
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(user_id,role_id) SELECT user_id,(SELECT ROLE_ID from `eip_t_acl_role` WHERE ROLE_NAME = '添付ファイル操作管理者' LIMIT 1) FROM TURBINE_USER WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
 -- 20170118
+
+-- 20170425
+INSERT INTO `eip_t_acl_portlet_feature` VALUES (NULL,'schedule_self','スケジュール（自分の予定）操作',63);
+INSERT INTO `eip_t_acl_portlet_feature` VALUES (NULL,'schedule_other','スケジュール（他ユーザーの予定）操作',63);
+INSERT INTO `eip_t_acl_role` VALUES(NULL,'スケジュール（自分の予定）管理者',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_self' limit 1),63,'＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません',NULL,NULL);
+INSERT INTO `eip_t_acl_role` VALUES(NULL,'スケジュール（他ユーザーの予定）管理者',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_other' limit 1),35,NULL,NULL,NULL);
+-- migration
+INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id FROM eip_t_acl_role WHERE role_name = 'スケジュール（自分の予定）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
+INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id FROM eip_t_acl_role WHERE role_name = 'スケジュール（他ユーザーの予定）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
+-- 20170425
