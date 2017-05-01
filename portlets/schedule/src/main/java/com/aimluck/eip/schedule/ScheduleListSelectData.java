@@ -69,8 +69,14 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
+
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
+
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
 
   protected String listViewtype;
 
@@ -176,11 +182,29 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || Integer.toString(loginUserId).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+    }
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
   }
 
   @Override
@@ -407,6 +431,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   public boolean isLoginUserID(Long id) {
     return id == userid;
+  }
+
+  @Override
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
 }

@@ -158,9 +158,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb = new StringBuffer();
-
-        sb.append("開始日,開始時刻,終了日,終了時刻,場所,予定,内容,名前");
-
         sb
           .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
 
@@ -380,7 +377,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         rd.setTmpreserve("T".equals(record.getStatus()));
       }
 
-      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+      if (!hasAclviewOther && !is_member) {// 閲覧権限、外部出力権限がなく、グループでもない
         // return rd;
         return null;
       }

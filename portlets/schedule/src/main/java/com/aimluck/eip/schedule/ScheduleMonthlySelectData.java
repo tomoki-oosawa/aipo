@@ -141,6 +141,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
+
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
@@ -149,6 +152,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /** <code>target_user_id</code> 表示対象のユーザ ログイン名 */
   private String target_user_name;
+
+  /** アクセス権限の機能名　 */
+  private String aclPortletFeature = null;
 
   /** <code>viewTodo</code> ToDo 表示設定 */
   protected int viewTodo;
@@ -392,11 +398,29 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || Integer.toString(loginUserId).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+    }
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     hasAuthoritySelfInsert =
       aclhandler.hasAuthority(
@@ -1270,6 +1294,10 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   public boolean hasAuthorityFacilityInsert() {
     return hasAuthorityFacilityInsert;
+  }
+
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
   /**

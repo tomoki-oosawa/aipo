@@ -62,9 +62,9 @@ INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT nextval('pk_eip_t
 -- 20170425
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES (NULL,'schedule_self','スケジュール（自分の予定）操作',63);
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES (NULL,'schedule_other','スケジュール（他ユーザーの予定）操作',63);
-INSERT INTO EIP_T_ACL_ROLE VALUES(NULL,'スケジュール（自分の予定）操作',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_self' limit 1),63,'＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません',NULL,NULL);
-INSERT INTO EIP_T_ACL_ROLE VALUES(NULL,'スケジュール（他ユーザーの予定）操作',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_other' limit 1),35,NULL,NULL,NULL);
+INSERT INTO EIP_T_ACL_ROLE VALUES(NULL,'スケジュール（自分の予定）管理者',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_self' limit 1),63,'＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません',NULL,NULL);
+INSERT INTO EIP_T_ACL_ROLE VALUES(NULL,'スケジュール（他ユーザーの予定）管理者',(SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_other' limit 1),35,NULL,NULL,NULL);
 -- migration
-INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（自分の予定）操作' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
-INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（他ユーザーの予定）操作' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
+INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（自分の予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
+INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（他ユーザーの予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 -- 20170425
