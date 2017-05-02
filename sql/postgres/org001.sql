@@ -2236,7 +2236,7 @@ SELECT setval('pk_eip_t_acl_portlet_feature',300);
 
 -- schedule
 INSERT INTO EIP_T_ACL_ROLE VALUES(1,'スケジュール（自分の予定）管理者',111,31,'＊追加、編集、削除、外部入力は一覧表示と詳細表示の権限を持っていないと使用できません');
-INSERT INTO EIP_T_ACL_ROLE VALUES(2,'スケジュール（他ユーザーの予定）',112,3,NULL);
+INSERT INTO EIP_T_ACL_ROLE VALUES(2,'スケジュール（他ユーザーの予定）管理者',112,3,NULL);
 INSERT INTO EIP_T_ACL_ROLE VALUES(3,'スケジュール（設備の予約）管理者',113,12,NULL);
 
 -- blog

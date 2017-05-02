@@ -141,6 +141,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
+
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
+
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
@@ -388,6 +394,16 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
 
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || (Integer.toString(loginUserId)).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    }
+
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
@@ -397,6 +413,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     hasAuthoritySelfInsert =
       aclhandler.hasAuthority(
@@ -1262,6 +1284,10 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+  }
+
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
   public boolean hasAuthoritySelfInsert() {

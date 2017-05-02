@@ -23,7 +23,9 @@ CREATE TABLE `activity` (
   `external_id` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   `icon` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login_name` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `login_nam
+
+  e` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
   `module_id` int(11) NOT NULL,
   `portlet_params` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
   `priority` double DEFAULT NULL,
@@ -264,6 +266,7 @@ CREATE TABLE `eip_t_acl_portlet_feature` (
 ) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 INSERT INTO `eip_t_acl_portlet_feature` VALUES (111,'schedule_self','スケジュール（自分の予定）操作',63),(112,'schedule_other','スケジュール（他ユーザーの予定）操作',63),(113,'schedule_facility','スケジュール（設備の予約）操作',12),(121,'blog_entry_self','ブログ（自分の記事）操作',31),(122,'blog_entry_other','ブログ（他ユーザーの記事）操作',27),(123,'blog_entry_reply','ブログ（記事へのコメント）操作',20),(124,'blog_theme','ブログ（テーマ）操作',31),(125,'blog_entry_other_reply','ブログ（他ユーザーの記事へのコメント）操作',16),(131,'msgboard_topic','掲示板（トピック）操作',31),(132,'msgboard_topic_reply','掲示板（トピック返信）操作',20),(133,'msgboard_category','掲示板（自分のカテゴリ）操作',31),(134,'msgboard_category_other','掲示板（他ユーザーのカテゴリ）操作',27),(135,'msgboard_topic_other','掲示板（他ユーザーのトピック）操作',24),(141,'todo_todo_self','ToDo（自分のToDo）操作',31),(142,'todo_todo_other','ToDo（他ユーザーのToDo）操作',31),(143,'todo_category_self','ToDo（カテゴリ）操作',31),(144,'todo_category_other','ToDo（他ユーザのカテゴリ）操作',27),(151,'workflow_request_self','ワークフロー（自分の依頼）操作',31),(152,'workflow_request_other','ワークフロー（他ユーザーの依頼）操作',19),(161,'addressbook_address_inside','ユーザー名簿操作',3),(162,'addressbook_address_outside','アドレス帳（社外アドレス）操作',31),(163,'addressbook_company','アドレス帳（会社情報）操作',31),(164,'addressbook_company_group','アドレス帳（社外グループ）操作',31),(171,'timecard_timecard_self','タイムカード（自分のタイムカード）操作',47),(172,'timecard_timecard_other','タイムカード（他人のタイムカード）操作',45),(181,'cabinet_file','共有フォルダ（ファイル）操作',31),(182,'cabinet_folder','共有フォルダ（フォルダ）操作',30),(201,'portlet_customize','アプリ配置',29),(211,'report_self','報告書（自分の報告書）操作',31),(212,'report_other','報告書（他ユーザーの報告書）操作',27),(213,'report_reply','報告書（報告書への返信）操作',20),(221,'timeline_post','タイムライン（自分の投稿）操作',21),(222,'timeline_post_other','タイムライン（他ユーザーの投稿）操作',17),(223,'timeline_comment','タイムライン（コメント）操作',20), (231,'attachment','添付ファイル操作',52);
+
 
 CREATE TABLE `eip_t_acl_role` (
   `role_id` int(11) NOT NULL AUTO_INCREMENT,
