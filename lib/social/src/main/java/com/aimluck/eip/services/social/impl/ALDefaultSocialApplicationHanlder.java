@@ -957,6 +957,7 @@ public class ALDefaultSocialApplicationHanlder extends
           timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
           timeline.setParams(new SimpleDateFormat("yyyyMMdd").format(cal
             .getTime()));
+          timeline.setPinned("F");
           // 作成日
           timeline.setCreateDate(tCal.getTime());
           // 更新日
@@ -1048,6 +1049,7 @@ public class ALDefaultSocialApplicationHanlder extends
           timeline.setNote(request.getTitle());
           timeline.setTimelineType(EipTTimeline.TIMELINE_TYPE_ACTIVITY);
           timeline.setParams(request.getPortletParams());
+          timeline.setPinned("F");
           // 作成日
           timeline.setCreateDate(tCal.getTime());
           // 更新日

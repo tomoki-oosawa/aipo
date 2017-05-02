@@ -183,6 +183,9 @@ public class ALAccessControlConstants {
   /** アクセス権限の機能名（報告書（報告書返信）） */
   public static final String POERTLET_FEATURE_REPORT_REPLY = "report_reply";
 
+  /** アクセス権限の機能名（タイムライン（固定化）操作） */
+  public static final String POERTLET_FEATURE_TIMELINE_PIN = "timeline_pin";
+
   /** アクセス権限の機能名（タイムライン（自分の投稿）） */
   public static final String POERTLET_FEATURE_TIMELINE_POST = "timeline_post";
 
