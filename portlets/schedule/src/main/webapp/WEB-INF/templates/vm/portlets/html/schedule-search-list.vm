@@ -77,10 +77,10 @@
 <div class="auiSummaryMeta clearfix">
 #if(${client}!="IPHONE")
 <div class="floatRight">
-#if($!{result.hasAclCsvExport()})
+#if($!result.hasAclCsvExport())
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('FileIOScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewStart}).addQueryData('end_day',$!{result.ViewEnd})))
 #set($title = "$l10n.SCHEDULE_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.schedule.downloadCsv('$dlLink');" >$title</a>
+<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.schedule.downloadCsv('$!dlLink');" >$title</a>
 #end
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>

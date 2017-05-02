@@ -408,6 +408,18 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || Integer.toString(loginUserId).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+    }
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,

@@ -126,6 +126,7 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setOwner(rd.isOwner());
           addRd.setMember(rd.isMember());
           addRd.setDegree(rd.isPublic(), rd.isHidden());
+          addRd.setRepeatText(rd.getPattern());
           addRd.setType(rd.getType());
           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
           if (!sdf.format(rd.getStartDate().getValue()).equals(

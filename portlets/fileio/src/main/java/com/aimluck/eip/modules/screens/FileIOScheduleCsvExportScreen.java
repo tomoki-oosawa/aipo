@@ -280,7 +280,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         for (ScheduleExportResultData record : arayList) {
-          // if (record.isPublic()) { // 公開スケジュールのみに限定
           sb.append(LINE_SEPARATOR);
           sb.append("\"");
           sb.append(record.getViewDate());
@@ -299,7 +298,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append("\",\"");
           sb.append(record.getMemberNameExport());
           sb.append("\"");
-          // }
         }
 
         sb.append(",\"\"");
@@ -379,7 +377,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         rd.setTmpreserve("T".equals(record.getStatus()));
       }
 
-      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
+      if (!hasAclviewOther && !is_member) {// 閲覧権限、外部出力権限がなく、グループでもない
         // return rd;
         return null;
       }
@@ -412,7 +410,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       rd.setDescription(record.getNote());
       rd.setDegree("O".equals(record.getPublicFlag()), "P".equals(record
         .getPublicFlag()));
-
+      rd.setRepeatText(record.getRepeatPattern());
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
       }

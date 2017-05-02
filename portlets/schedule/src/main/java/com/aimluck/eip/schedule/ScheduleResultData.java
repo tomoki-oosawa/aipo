@@ -67,8 +67,11 @@ public class ScheduleResultData implements ALData, Cloneable {
   /** 場所 */
   private ALStringField place;
 
-  /** <code>公開度</code> */
+  /** 公開度 */
   private ALStringField publicdegree;
+
+  /** 繰り返し */
+  private ALStringField repeattext;
 
   /** <code>ptn</code> 繰り返しパターン */
   private String ptn;
@@ -134,6 +137,7 @@ public class ScheduleResultData implements ALData, Cloneable {
     place = new ALStringField();
     description = new ALStringField();
     publicdegree = new ALStringField();
+    repeattext = new ALStringField();
     schedule_id = new ALNumberField();
     parent_id = new ALNumberField();
     start_date = new ALDateTimeField(format);
@@ -298,6 +302,67 @@ public class ScheduleResultData implements ALData, Cloneable {
         .getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));
     } else if (!pub && hid) {
       publicdegree.setValue(ALLocalizationUtils.getl10n("SCHEDULE_HIDE_ALL"));
+    }
+  }
+
+  /**
+   * 繰り返しを取得します
+   *
+   * @param
+   */
+  public ALStringField getRepeatText() {
+    return repeattext;
+  }
+
+  /**
+   * 繰り返しを設定します
+   *
+   * @param string
+   */
+  public void setRepeatText(String rep) {
+    StringBuffer sb = new StringBuffer();
+    if (rep.charAt(0) == 'D') {
+      repeattext.setValue(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY"));
+    } else if (rep.charAt(0) == 'W') {
+      repeattext.setValue(sb.append(
+        ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE")).append(
+        rep.charAt(1) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
+          : "").append(
+        rep.charAt(2) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
+          : "").append(
+        rep.charAt(3) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
+          : "").append(
+        rep.charAt(4) != '0' ? ALLocalizationUtils
+          .getl10n("SCHEDULE_WEDNESDAY") : "").append(
+        rep.charAt(5) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
+          : "").append(
+        rep.charAt(6) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
+          : "").append(
+        rep.charAt(7) != '0'
+          ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
+          : "").append(
+        ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK")).toString());
+      sb.setLength(0);
+    } else if (rep.charAt(0) == 'M') {
+      if (rep.substring(1, 3).equals("XX")) {
+        repeattext.setValue(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH")).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+      } else {
+        repeattext.setValue(new StringBuffer().append(
+          ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE")).append(
+          Integer.parseInt(rep.substring(1, 3))).append(
+          ALLocalizationUtils.getl10n("SCHEDULE_DAY")).toString());
+      }
+      sb.setLength(0);
+    } else {
+      repeattext.setValue("");
     }
   }
 
