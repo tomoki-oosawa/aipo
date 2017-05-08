@@ -115,6 +115,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       ScheduleListSelectData listData = new ScheduleListSelectData();
 
       target_user_id = listData.getTargetUserId();
+
       // アクセス権
       if (target_user_id == null
         || "".equals(target_user_id)

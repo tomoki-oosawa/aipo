@@ -70,9 +70,8 @@
 <div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 <div id="content-$!portlet.ID" style="visibility:visible">
-#if (${client} != "IPHONE")
 <div class="auiSummaryMeta clearfix">
-</div>
+#if (${client} != "IPHONE")
 <div class="floatRight">
 #if($!result.hasAclCsvExport())
 #set($dlLink = $!utils.escapeXML($jslink.getTemplate('FileIOScheduleCsvExportScreen').addQueryData('start_day',"$!{result.ViewMonth}-01").addQueryData('end_day',"$!{result.NextMonth}-01")))
@@ -274,6 +273,7 @@
 $!{record.ToDoResultData.TodoName}
 </a>
 </div>
+
 </td>
 #else
 #if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end

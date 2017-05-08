@@ -73,7 +73,6 @@
 
 </div>
 <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
-
 <div class="auiSummaryMeta clearfix">
 #if(${client}!="IPHONE")
 <div class="floatRight">
