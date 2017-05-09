@@ -213,10 +213,8 @@ aipo.message.reloadRoomSettings = function() {
     var screen = aipo.message.jslink + "?template=MessageRoomSettingsScreen";
     if (aipo.message.currentRoomId) {
         screen += "&r=" + aipo.message.currentRoomId;
-    } else if (aipo.message.currentUserId) {
-        screen += "&u=" + aipo.message.currentUserId;
+        aipo.message.roomMemberAdmin.viewPage(screen);
     }
-    aipo.message.roomMemberAdmin.viewPage(screen);
 }
 
 aipo.message.moreMessageList = function() {
@@ -999,6 +997,8 @@ aipo.message.onReceiveMessage = function(msg) {
                 aipo.message.currentUserId = null;
                 aipo.message.tmpRoomId = null;
                 aipo.message.reloadRoomList();
+                aipo.message.reloadRoomMemberList();
+                aipo.message.reloadRoomSettings();
             }
             aipo.message.selectTab("room");
             aipo.message.getCookieIsLastRoomOrUser("Room");
