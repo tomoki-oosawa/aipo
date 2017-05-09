@@ -198,10 +198,10 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       || "".equals(target_user_id)
       || Integer.toString(loginUserId).equals(target_user_id)) {
       aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_SELF;
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     } else {
       aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
     }
 
     hasAclviewOther =
