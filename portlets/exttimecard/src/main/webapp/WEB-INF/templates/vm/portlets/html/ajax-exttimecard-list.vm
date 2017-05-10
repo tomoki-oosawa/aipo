@@ -104,7 +104,6 @@
 
 		#set($outcomes = $rdlist.OutgoingComeback)
 		#set($listsize = $outcomes.size())
-		#set($saturday_sunday_holiday = $rdlist.IsSaturdayOrSundayOrHoliday)
 		#set($beforeafter = $rdlist.BeforeAfter)
 		#set($entityid = "")
 		#if($isrd)
@@ -201,7 +200,6 @@
   				#if($rdlist.IsNotNullClockInTime)
       				#ALtdcellAtt("$!{rd.ClockInTimeHourMinuteText}" "class='center' nowrap='nowrap'")
   				#else
-    				###if($saturday_sunday_holiday == 0)
       				#if($!result.TargetUserId == $!result.UserId)
         				#if($class == "today")
           					<td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_PUNCH_IN" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
@@ -219,7 +217,6 @@
   				#if($rdlist.IsNotNullClockOutTime)
     				#ALtdcellAtt("$!{rd.ClockOutTimeHourMinuteText}" "class='center' nowrap='nowrap'")
   				#else
-    				###if($saturday_sunday_holiday == 0)
       				#if($!result.TargetUserId == $!result.UserId)
         				#if($class == "today")
           					#set($q = '"')
