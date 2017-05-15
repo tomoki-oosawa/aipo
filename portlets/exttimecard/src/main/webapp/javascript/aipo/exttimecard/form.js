@@ -28,9 +28,9 @@ aipo.exttimecard.addIpForm = function(){
 	  var td = dojo.byId("exttimecard_allowed_ip_list").children[0].children[0].children[0];
 	  var cntMember = td.children.length - 1;
 	  if(cntMember>=20){
-		  saas_systemip_alertString="登録できるIPアドレスは20件までです。";
-		  aipo.exttimecard.addErrorMessage(saas_systemip_alertString);
-		  alert(saas_systemip_alertString);
+		  exttimecard_systemip_alertString="登録できるIPアドレスは20件までです。";
+		  aipo.exttimecard.addErrorMessage(exttimecard_systemip_alertString);
+		  alert(exttimecard_systemip_alertString);
 		  return;
 	  }
 	  var newElement = dojo.clone(td.children[cntMember]);
