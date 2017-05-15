@@ -30,7 +30,7 @@ import com.aimluck.eip.exttimecard.ExtTimecardFormData;
 
 /**
  * タイムカードをJSONデータとして出力するクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardFormJSONScreen extends ALJSONScreen {
   /** logger */
@@ -44,24 +44,37 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
     String mode = this.getMode();
 
     try {
-
       if (ALEipConstants.MODE_INSERT.equals(mode)) {
         // insertだがpunchと区別する必要がある。
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
-        formData.setAltMode("alt_insert");
-        if (formData.doInsert(this, rundata, context)) {
+        if (formData.doIpCheck(this, rundata, context)) {
+          formData.setAltMode("alt_insert");
+          if (formData.doInsert(this, rundata, context)) {
+          } else {
+            JSONArray json =
+              JSONArray.fromObject(context
+                .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            result = json.toString();
+          }
         } else {
           JSONArray json =
             JSONArray
               .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
           result = json.toString();
         }
-
       } else if (ALEipConstants.MODE_UPDATE.equals(mode)) {
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
-        if (formData.doUpdate(this, rundata, context)) {
+
+        if (formData.doIpCheck(this, rundata, context)) {
+          if (formData.doUpdate(this, rundata, context)) {
+          } else {
+            JSONArray json =
+              JSONArray.fromObject(context
+                .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            result = json.toString();
+          }
         } else {
           JSONArray json =
             JSONArray
@@ -72,7 +85,14 @@ public class ExtTimecardFormJSONScreen extends ALJSONScreen {
 
         ExtTimecardFormData formData = new ExtTimecardFormData();
         formData.initField();
-        if (formData.doDelete(this, rundata, context)) {
+        if (formData.doIpCheck(this, rundata, context)) {
+          if (formData.doDelete(this, rundata, context)) {
+          } else {
+            JSONArray json =
+              JSONArray.fromObject(context
+                .get(ALEipConstants.ERROR_MESSAGE_LIST));
+            result = json.toString();
+          }
         } else {
           JSONArray json =
             JSONArray

@@ -30,9 +30,28 @@ $!result.Detail.Title
 #ALtditemfooter()
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
+#ALtditemheader()
+#if ($!{result.enabledIpFlag.toString()} == "F")
+$l10n.EXTTIMECARD_INVALID
+#else
+$l10n.EXTTIMECARD_VALID
+#ALtditemfooter()
+
+#if ($!{result.allowedIp.toString()} != "" || $!{result.allowedIp2.toString()} != "")
+#ALtdcaption($l10n.EXTTIMECARD_ADMIN_IP)
+#ALtditemheader()
+#foreach($ip in $!result.IpAddresses)
+  <p>$!ip</p>
+#end
+#ALtditemfooter()
+#end
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardAdminFormScreen')")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 
