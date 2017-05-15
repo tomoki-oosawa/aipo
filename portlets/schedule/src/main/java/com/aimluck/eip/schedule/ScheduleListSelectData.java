@@ -343,6 +343,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     return rd;
   }
 
+  @Override
+  public String getTargetUserId() {
+    return target_user_id;
+  }
+
   /**
    * 表示開始日時を取得します。
    *

@@ -113,7 +113,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       ScheduleListSelectData listData = new ScheduleListSelectData();
-
       target_user_id = listData.getTargetUserId();
 
       // アクセス権
@@ -157,6 +156,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         users = ALEipUtils.getUsers("LoginUser");
         List<Integer> userIds = new ArrayList<Integer>();
         for (ALEipUser user : users) {
+          if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
+            && user.getUserId().getValueWithInt() != userid) {
+            continue;
+          }
           userIds.add(user.getUserId().getValueWithInt());
         }
         // 有効な設備を全て取得する
@@ -414,8 +417,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         rd.setTmpreserve("T".equals(record.getStatus()));
       }
 
-      if (!hasAclviewOther && !is_member) {// 閲覧権限、外部出力権限がなく、グループでもない
-        // return rd;
+      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         return null;
       }
 
