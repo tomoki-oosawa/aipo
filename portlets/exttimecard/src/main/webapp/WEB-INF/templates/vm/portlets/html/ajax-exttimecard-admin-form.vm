@@ -42,8 +42,8 @@
   #ALtditem($!result.Detail.Description)
   #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
   #ALtditemheader()
-    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end>無効にする</p>
-    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end>有効にする</p>
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end><label for="exttimecard_enable_ip_off">&nbsp;無効にする</label></p>
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end><label for="exttimecard_enable_ip_on">&nbsp;有効にする</label></p>
 
     <table id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
       <tbody>
