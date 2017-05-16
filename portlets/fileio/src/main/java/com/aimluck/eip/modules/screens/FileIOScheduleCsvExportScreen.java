@@ -39,7 +39,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
-import com.aimluck.eip.schedule.ScheduleListSelectData;
+import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -78,10 +78,12 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private String fileNameSuffix;
 
-  private String target_user_id = null;
+  private String target_user_id;
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
+
+  ScheduleMonthlySelectData listData = new ScheduleMonthlySelectData();
 
   /**
    *
@@ -110,9 +112,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    ScheduleListSelectData listData = new ScheduleListSelectData();
-
-    target_user_id = listData.getTargetUserId();
+    // target_user_id = listData.getTargetUserId(rundata, null,
+    // "target_user_id");
+    // rundata.getParameters().getString(ScheduleUtils.TARGET_USER_ID);
 
     // アクセス権
     if (target_user_id == null
@@ -147,14 +149,15 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       Date viewStart = format.parse(rundata.getParameters().get("start_day"));
       Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
 
-      int userid = ALEipUtils.getUserId(rundata);
-
       fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
 
       // 有効なユーザーを全て取得する
       users = ALEipUtils.getUsers("LoginUser");
       List<Integer> userIds = new ArrayList<Integer>();
       for (ALEipUser user : users) {
+        if (user.getUserId().getValueWithInt() != userid) { // <-ここをtargetUserIdにする
+          continue;
+        }
         userIds.add(user.getUserId().getValueWithInt());
       }
       // 有効な設備を全て取得する

@@ -177,16 +177,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     cal5.setTime(viewStart.getValue());
     con.setViewStartDate(cal5);
 
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || (Integer.toString(userid)).equals(target_user_id)) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    }
-
     int loginUserId = ALEipUtils.getUserId(rundata);
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -212,7 +202,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
+        loginUserId,
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
   }

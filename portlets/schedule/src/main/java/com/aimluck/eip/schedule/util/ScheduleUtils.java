@@ -176,6 +176,9 @@ public class ScheduleUtils {
     "content.defaultencoding",
     "UTF-8");
 
+  /** <code>TARGET_USER_ID</code> ユーザによる表示切り替え用変数の識別子 */
+  public static final String TARGET_USER_ID = "target_user_id";
+
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
 
