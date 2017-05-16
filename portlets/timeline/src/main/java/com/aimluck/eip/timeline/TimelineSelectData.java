@@ -73,6 +73,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -89,8 +91,8 @@ public class TimelineSelectData extends
   private final String TARGET_DISPLAY_NAME = "target_display_name";
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(TimelineSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(TimelineSelectData.class.getName());
 
   /** トピックの総数 */
   private int topicSum;
@@ -167,6 +169,9 @@ public class TimelineSelectData extends
 
   private boolean isFileUploadable;
 
+  /** 添付ファイル追加へのアクセス権限の有無 */
+  private boolean hasAttachmentInsertAuthority;
+
   /** AppNameからportletIdを取得するハッシュ */
   private HashMap<String, String> portletIdFromAppId;
 
@@ -182,6 +187,12 @@ public class TimelineSelectData extends
   /** アクセス権限の機能名（ToDo（他ユーザーのToDo））の一覧表示権限を持っているか **/
   private boolean hasTodoOtherAclList;
 
+  /** アプリ設定「更新情報の表示」 "T" or "F" **/
+  private String enabledActivityFlag;
+
+  /** アクセス権限の機能名（タイムライン（固定化）操作）の編集権限を持っているか **/
+  private boolean hasAclTimelinePin;
+
   /**
    *
    * @param action
@@ -192,6 +203,8 @@ public class TimelineSelectData extends
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
+
+    doCheckAttachmentInsertAclPermission(rundata, context);
 
     portletIdFromAppId = ALEipUtils.getPortletFromAppIdMap(rundata);
 
@@ -243,8 +256,8 @@ public class TimelineSelectData extends
 
       ALAccessControlFactoryService aclservice =
         (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+          .getInstance()).getService(
+            ALAccessControlFactoryService.SERVICE_NAME);
       ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
       // タイムライン（他ユーザーの投稿）一覧表示権限
@@ -317,6 +330,16 @@ public class TimelineSelectData extends
           ALAccessControlConstants.POERTLET_FEATURE_TODO_TODO_OTHER,
           ALAccessControlConstants.VALUE_ACL_LIST);
 
+      /** hasAclTimelinPinの権限チェック **/
+      hasAclTimelinePin =
+        aclhandler.hasAuthority(
+          uid,
+          ALAccessControlConstants.POERTLET_FEATURE_TIMELINE_PIN,
+          ALAccessControlConstants.VALUE_ACL_UPDATE);
+
+      enabledActivityFlag =
+        ALConfigService.get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED);
+
     } catch (Exception ex) {
       logger.error("timeline", ex);
     }
@@ -360,8 +383,8 @@ public class TimelineSelectData extends
         TimelineUtils.resetKeyword(rundata, context);
         target_keyword.setValue("");
       } else {
-        target_keyword.setValue(TimelineUtils
-          .getTargetKeyword(rundata, context));
+        target_keyword.setValue(
+          TimelineUtils.getTargetKeyword(rundata, context));
       }
 
       ResultList<EipTTimeline> list = new ResultList<EipTTimeline>();
@@ -387,14 +410,13 @@ public class TimelineSelectData extends
     }
   }
 
-  public ResultList<EipTTimeline> selectListNew(RunData rundata, Context context) {
+  public ResultList<EipTTimeline> selectListNew(RunData rundata,
+      Context context) {
     try {
 
       int minId =
-        Integer.valueOf(ALEipUtils.getParameter(
-          rundata,
-          context,
-          "lastTimelineId"));
+        Integer.valueOf(
+          ALEipUtils.getParameter(rundata, context, "lastTimelineId"));
 
       // 表示するカラムのみデータベースから取得する．
       ResultList<EipTTimeline> list =
@@ -428,8 +450,8 @@ public class TimelineSelectData extends
       Context context) {
 
     SelectQuery<EipTTimeline> query = Database.query(EipTTimeline.class);
-    query.where(Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer
-      .valueOf(0)));
+    query.where(
+      Operations.eq(EipTTimeline.PARENT_ID_PROPERTY, Integer.valueOf(0)));
 
     return query;
   }
@@ -456,6 +478,7 @@ public class TimelineSelectData extends
       rd.setLike(record.isLike());
       rd.setLikeCount(record.getLikeCount());
       rd.setKeyword(target_keyword.getValue());
+      rd.setPinned("T".equals(record.getPinned()));
       String AppId = record.getAppId();
       // ToDoUtils.java・BlogUtils.javaに修正を加えてあるので、以下の６行はその内不要になる。
       if ("todo".equals(AppId)) {
@@ -525,6 +548,7 @@ public class TimelineSelectData extends
     rd.setReplyCount(rd.getCoTopicList().size());
     rd.setParentId(record.getParentId().longValue());
     rd.setTimelineType(record.getTimelineType());
+    rd.setPinned("T".equals(record.getPinned()));
 
     loadAggregateUsers();
 
@@ -639,16 +663,16 @@ public class TimelineSelectData extends
                 if (m.find()) {
                   Integer scheduleId = Integer.parseInt(m.group(1));
                   if (relatedScheduleIdList == null
-                    || (relatedScheduleIdList.size() == 0 || !relatedScheduleIdList
-                      .contains(scheduleId))) {
+                    || (relatedScheduleIdList.size() == 0
+                      || !relatedScheduleIdList.contains(scheduleId))) {
                     // relatedScheduleIdListが空 or
                     // relatedScheduleIdListに含まれない時は削除
                     iter.remove();
                   }
                 }
-              }// スケジュール以外のTimeline
+              } // スケジュール以外のTimeline
             }
-          }// 自分がオーナーのTimeline
+          } // 自分がオーナーのTimeline
         }
       }
     }
@@ -716,14 +740,17 @@ public class TimelineSelectData extends
     return result;
   }
 
-  protected Map<Integer, List<FileuploadBean>> getFiles(List<Integer> parentIds) {
-    if (parentIds == null || parentIds.size() == 0) {
+  protected Map<Integer, List<FileuploadBean>> getFiles(
+      List<Integer> parentIds) {
+    if (parentIds == null
+      || parentIds.size() == 0
+      || !hasAttachmentAuthority()) {
       return new HashMap<Integer, List<FileuploadBean>>();
     }
     SelectQuery<EipTTimelineFile> query =
       Database.query(EipTTimelineFile.class);
-    query
-      .where(Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
+    query.where(
+      Operations.in(EipTTimelineFile.TIMELINE_ID_PROPERTY, parentIds));
 
     query.orderAscending(EipTTimelineFile.UPDATE_DATE_PROPERTY);
     query.orderAscending(EipTTimelineFile.FILE_PATH_PROPERTY);
@@ -763,6 +790,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -776,8 +807,12 @@ public class TimelineSelectData extends
       }
 
       // 更新情報
+
       Map<Integer, List<TimelineResultData>> activitiesMap =
-        getActivities(parentIds);
+        new HashMap<Integer, List<TimelineResultData>>();
+      if (enabledActivityFlag.equals("T")) {
+        activitiesMap = getActivities(parentIds);
+      }
 
       // コメント
       List<Integer> commentIds = new ArrayList<Integer>();
@@ -822,8 +857,9 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(commentsMap.get(Integer
-            .valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(
+            commentsMap.get(
+              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -842,14 +878,15 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString())
+            || userlist.contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0
+          && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
@@ -873,13 +910,18 @@ public class TimelineSelectData extends
 
   }
 
-  public boolean doViewListNew(ALAction action, RunData rundata, Context context) {
+  public boolean doViewListNew(ALAction action, RunData rundata,
+      Context context) {
     try {
       init(action, rundata, context);
       doCheckAclPermission(
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_LIST);
 
       // 投稿
@@ -939,8 +981,9 @@ public class TimelineSelectData extends
         for (Iterator<TimelineResultData> iter = coac.iterator(); iter
           .hasNext();) {
           TimelineResultData coac_item = iter.next();
-          coac_item.setCoTopicList(commentsMap.get(Integer
-            .valueOf((int) coac_item.getTimelineId().getValue())));
+          coac_item.setCoTopicList(
+            commentsMap.get(
+              Integer.valueOf((int) coac_item.getTimelineId().getValue())));
           coac_item.setReplyCount(coac_item.getCoTopicList().size());
 
           SelectQuery<EipTTimelineMap> query_map =
@@ -959,14 +1002,15 @@ public class TimelineSelectData extends
 
           if (!(user.getUserId().toString().equals(
             coac_item.getOwnerId().toString())
-            || userlist.contains(user.getName().toString()) || userlist
-              .contains("-1"))) {
+            || userlist.contains(user.getName().toString())
+            || userlist.contains("-1"))) {
             iter.remove();
           }
         }
 
         if (!(rd.getCoActivityList().size() == 0
-          && rd.getCoTopicList().size() == 0 && rd.getNote().equals(""))) {
+          && rd.getCoTopicList().size() == 0
+          && rd.getNote().equals(""))) {
           list.add(rd);
         }
       }
@@ -999,7 +1043,8 @@ public class TimelineSelectData extends
    * @return TRUE 成功 FASLE 失敗
    */
   @Override
-  public boolean doViewDetail(ALAction action, RunData rundata, Context context) {
+  public boolean doViewDetail(ALAction action, RunData rundata,
+      Context context) {
     try {
       init(action, rundata, context);
       // 「いいね」の表示画面を見るためには、詳細表示権限の代わりにタイムライン（自分の投稿）の一覧表示権限が必要
@@ -1007,6 +1052,10 @@ public class TimelineSelectData extends
         rundata,
         context,
         ALAccessControlConstants.VALUE_ACL_LIST);
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
       action.setMode(ALEipConstants.MODE_DETAIL);
       EipTTimeline obj = selectDetail(rundata, context);
       if (obj != null) {
@@ -1098,8 +1147,8 @@ public class TimelineSelectData extends
             + EipTMsgboardCategoryMap.USER_ID_PROPERTY,
           Integer.valueOf(uid));
 
-      query.andQualifier((exp01.andExp(exp02.orExp(exp03))).orExp(exp11
-        .andExp(exp12)));
+      query.andQualifier(
+        (exp01.andExp(exp02.orExp(exp03))).orExp(exp11.andExp(exp12)));
 
       Expression exp001 =
         ExpressionFactory.inDbExp(EipTMsgboardTopic.TOPIC_ID_PK_COLUMN, ids);
@@ -1116,8 +1165,9 @@ public class TimelineSelectData extends
       topicIdList.add(obj.getTopicId());
     }
     // listのなかでIDがtopicIdListに入っていないものを削除
-    list.removeIf(obj -> (obj.getAppId().equals("Msgboard") && !topicIdList
-      .contains(Integer.parseInt(obj.getExternalId()))));
+    list.removeIf(
+      obj -> (obj.getAppId().equals("Msgboard")
+        && !topicIdList.contains(Integer.parseInt(obj.getExternalId()))));
 
   }
 
@@ -1154,8 +1204,9 @@ public class TimelineSelectData extends
         ExpressionFactory.matchExp(EipTTodo.PUBLIC_FLAG_PROPERTY, "T");
 
       Expression exp002 =
-        ExpressionFactory.matchExp(EipTTodo.USER_ID_PROPERTY, Integer
-          .valueOf(uid));
+        ExpressionFactory.matchExp(
+          EipTTodo.USER_ID_PROPERTY,
+          Integer.valueOf(uid));
 
       if (hasTodoOtherAclList) {
         // 更新情報にあるTODOの内、公開されているTODOか自分が担当者のTODOのみ取得する
@@ -1176,8 +1227,9 @@ public class TimelineSelectData extends
       todoIdList.add(obj.getTodoId());
     }
     // listのなかでIDがtodoIdListに入っていないものを削除
-    list.removeIf(obj -> (obj.getAppId().equals("ToDo") && !todoIdList
-      .contains(Integer.parseInt(obj.getExternalId()))));
+    list.removeIf(
+      obj -> (obj.getAppId().equals("ToDo")
+        && !todoIdList.contains(Integer.parseInt(obj.getExternalId()))));
   }
 
   /**
@@ -1315,6 +1367,15 @@ public class TimelineSelectData extends
   }
 
   /**
+   * タイムラインを固定化する権限があるかどうかを返します。
+   *
+   * @return
+   */
+  public boolean hasAclTimelinePin() {
+    return hasAclTimelinePin;
+  }
+
+  /**
    * 部署の一覧を取得する．
    *
    * @return
@@ -1428,12 +1489,18 @@ public class TimelineSelectData extends
     } else {
       userList = ALEipUtils.getUsers("LoginUser");
     }
+
     if ((!"".equals(target_display_name))
       && (!"all".equals(target_display_name))) {
       if ("posting".equals(target_display_name)) {
         displayParam = "P";
       } else if ("update".equals(target_display_name)) {
         displayParam = "U";
+      }
+    } else {
+      // 絞込みの「表示」が「すべて」で、アプリ設定の「更新情報の表示」が無効のときは、投稿のみを取得する
+      if (enabledActivityFlag.equals("F")) {
+        displayParam = "P";
       }
     }
     for (int i = 0; i < userList.size(); i++) {
@@ -1547,5 +1614,23 @@ public class TimelineSelectData extends
   public void setContentHeightMax(int height) {
     contentHeight = height;
     contentHeightMax = height;
+  }
+
+  /**
+   * ファイルアップロードのアクセス権限をチェックします。
+   *
+   * @return
+   */
+  protected void doCheckAttachmentInsertAclPermission(RunData rundata,
+      Context context) { // ファイル追加権限の有無
+    hasAttachmentInsertAuthority =
+      doCheckAttachmentAclPermission(
+        rundata,
+        context,
+        ALAccessControlConstants.VALUE_ACL_INSERT);
+  }
+
+  public boolean hasAttachmentInsertAuthority() {
+    return hasAttachmentInsertAuthority;
   }
 }

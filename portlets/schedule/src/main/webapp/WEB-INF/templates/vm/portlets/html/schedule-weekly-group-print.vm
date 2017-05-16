@@ -174,19 +174,19 @@ if(document.all!=undefined){
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <span class="holiday small"><br />${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
@@ -265,21 +265,8 @@ $!{record4.TermResultData.WbrName}
 #end
 #set($show_tr = 0 )
 #foreach($record in ${result.getContainer($record3.UserId.Value).DayList})
-#set ($color_style = "")
-#set ($color_style_holiday = "")
-#set ($color_style_othermonth = "")
 #set ($holiday_name = "")
-#if($!{result.Today.Value} == $!{record.Date.Value})
-#set ($color_style = " today")
-#elseif($!{record.Date.Value.Day} == 0)
-#set ($color_style = " sunday")
-#elseif($!{record.Date.Value.Day} == 6)
-#set ($color_style = " saturday")
-#end
-#if($!{record.isHoliday()})
-#set ($color_style_holiday = " holiday")
-#end
-<td class="topNone${color_style}${color_style_holiday}">
+<td class="topNone">
 #if($record.ScheduleList.size() <= 0)
 <div class="calendarBody">
 <div class="calendarScheduleDiv"><div class="small">
@@ -398,19 +385,19 @@ ToDo：$!{record.ToDoResultData.TodoName}
 #set($getScheduleDetailLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailJSONScreen').addQueryData('view_date', $!{record.Date.toString()}))
 #if($!{record.isHoliday()})
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='holiday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 <span class="holiday small"><br />${record.Holiday.Name}</span>
 #elseif($!{record.Date.Value.Day} == 0)
 #set ($stday = $velocityCount )
-#ALtdheadheaderAtt("class='sunday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{record.Date.Value.Day} == 6)
 #set ($sunday = $velocityCount )
-#ALtdheadheaderAtt("class='saturday groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #elseif($!{result.Today.Value} == $!{record.Date.Value})
-#ALtdheadheaderAtt("class='today groupWeekly' nowrap='nowrap'")
+#ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
 $!{record.Date.Day} $!{record.Date.DayOfWeek}
 #else
 #ALtdheadheaderAtt("class='groupWeekly' nowrap='nowrap'")
@@ -486,11 +473,11 @@ ${record4.TermResultData.WbrName}
 #end
 ##<table class="outer" cellspacing="1" cellpadding="2" width="100%" height="100%"><tbody><tr ><td class="item" style="vertical-align:top;background-color:#FFFFE5" height="100%">
 #elseif($!{record.isHoliday()})
-#ALtdcellheaderAtt("class='holiday' style='vertical-align:top;'")
+#ALtdcellheaderAtt("style='vertical-align:top;'")
 #elseif($!{record.Date.Value.Day} == 0)
-#ALtdcellheaderAtt("class='sunday' style='vertical-align:top;'")
+#ALtdcellheaderAtt("style='vertical-align:top;'")
 #elseif($!{record.Date.Value.Day} == 6)
-#ALtdcellheaderAtt("class='saturday' style='vertical-align:top;'")
+#ALtdcellheaderAtt("style='vertical-align:top;'")
 #else
 #ALtdcellheaderAtt("style='vertical-align:top;'")
 #end

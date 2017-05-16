@@ -253,7 +253,9 @@ public class MessageFormData extends ALAbstractFormData {
       model.setMessage(message.getValue());
       model.setCreateDate(now);
       model.setUpdateDate(now);
-      model.setMemberCount(members.size());
+      model.setMemberCount(containsAdmin(members)
+        ? members.size() - 1
+        : members.size());
       model.setUserId((int) login_user.getUserId().getValue());
 
       List<String> recipients = new ArrayList<String>();
@@ -299,6 +301,21 @@ public class MessageFormData extends ALAbstractFormData {
     }
 
     return true;
+  }
+
+  /**
+   * @param members
+   * @return
+   */
+  private static boolean containsAdmin(List<EipTMessageRoomMember> members) {
+    boolean containsAdmin = false;
+    for (EipTMessageRoomMember member : members) {
+      if (member.getUserId() == 1) {
+        containsAdmin = true;
+        break;
+      }
+    }
+    return containsAdmin;
   }
 
   /**
@@ -507,5 +524,23 @@ public class MessageFormData extends ALAbstractFormData {
 
   public int getRoomId() {
     return (int) roomId.getValue();
+  }
+
+  /**
+   * 添付ファイルに関する権限チェック
+   *
+   * @param msgList
+   * @return
+   */
+  @Override
+  protected boolean extValidate(RunData rundata, Context context,
+      List<String> msgList) {
+    if (ALEipConstants.MODE_INSERT.equals(getMode())) {
+      return FileuploadUtils.insertValidate(
+        msgList,
+        fileuploadList,
+        hasAttachmentInsertAuthority());
+    }
+    return true;
   }
 }
