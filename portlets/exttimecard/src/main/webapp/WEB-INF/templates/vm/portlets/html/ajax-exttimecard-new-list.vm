@@ -38,8 +38,10 @@
 	#if($!result.hasAclXlsExport())
 		<div class="floatRight">
 			## 印刷ボタン
+			#if (${client}!= "IPHONE")
 			#set($prLink = $!jslink.getPortletById("$portlet_id").addQueryData("template","ExtTimecardListScreenPrint").addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth"))
 			#AUIprintbutton("$prLink")
+			#end
 
 			## XLSエクスポート
 			#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardNewXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
