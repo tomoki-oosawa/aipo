@@ -498,6 +498,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                       Calendar cal3 = Calendar.getInstance();
                       cal3.setTime(candidateList.get(i).getValue());
                       int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      count = 0;
                       ALHoliday holiday =
                         holidaysManager.isHoliday(cal3.getTime());
                       while (ScheduleUtils.isDayOffHoliday()
@@ -506,6 +507,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                         cal3.add(Calendar.DATE, -1);
                         holiday = holidaysManager.isHoliday(cal3.getTime());
                         day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                        count++;
+                        if (count > 7) {
+                          break;
+                        }
                       }
                       addList.add(new DateTime(cal3.getTime()));
                     }
