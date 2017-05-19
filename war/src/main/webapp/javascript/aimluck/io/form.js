@@ -379,19 +379,34 @@ aimluck.io.ajaxDeleteSubmit = function (button, url, indicator_id, portlet_id, r
 }
 
 //messageroom
-aimluck.io.ajaxMessageRoomDeleteSubmit = function (text, url, indicator_id, portlet_id, receive) {
+aimluck.io.ajaxMessageRoomDeleteSubmit = function (button, url, indicator_id, portlet_id, receive) {
 	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
 	  var confirmString = dojo.string.substitute(nlsStrings.DWM_STR, {
 		    dwm_del: nlsStrings.DWM_DEL,
 		    dwm_this: nlsStrings.DWM_THIS,
-		    dwm_name: text
+		    dwm_name: button.form._name.value
 		  });
 	  // 'この'+button.form._name.value+'を削除してよろしいですか？'+button.form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
 	  if (confirm(confirmString)) {
-	    //aimluck.io.disableForm(button.form, true);
-	    //aimluck.io.setHiddenValue(button);
+	    aimluck.io.disableForm(button.form, true);
+	    aimluck.io.setHiddenValue(button);
+	    button.form.action = url;
+	    aimluck.io.submit(button.form, indicator_id, portlet_id, receive);
+	  }
+	}
+
+aimluck.io.ajaxMessageRoomDeleteSubmission = function (form, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWM_STR, {
+		    dwm_del: nlsStrings.DWM_DEL,
+		    dwm_this: nlsStrings.DWM_THIS,
+		    //dwm_name: form._name.value
+		  });
+	  // 'この'+form._name.value+'を削除してよろしいですか？'+form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
+	  if (confirm(confirmString)) {
+	    aimluck.io.setHiddenValue();
 	    //button.form.action = url;
-	    aimluck.io.submit(url, indicator_id, portlet_id, receive);
+	    aimluck.io.submit(form, indicator_id, portlet_id, receive);
 	  }
 	}
 
