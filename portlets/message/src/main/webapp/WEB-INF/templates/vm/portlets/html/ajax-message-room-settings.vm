@@ -28,6 +28,6 @@
 <form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post" return false;">
 <input type="hidden" name="_name" value="$l10n.MESSAGE_ROOM" />
 <input type="hidden" name="secid" value="$secid" />
-<li#if(${authority}!='A')style="display: none;"#end><a href="javascript:void(0)" onclick="aimluck.io.ajaxMessageRoomDeleteSubmission(dojo.byId('deleteForm_$!{portlet.ID}_$!{record.MessageId}'),'$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('mode', 'delete')&entityid=' + aipo.message.currentRoomId, '$indicator_id', '$messagePortletId', aipo.message.onReceiveMessageRoomDelete);">$l10n.COMMON_DELETE</a></li>
+<li #if(${authority}!='A')style="display: none;"#end><a href="javascript:void(0)" onclick="aimluck.io.ajaxMessageRoomDeleteSubmission(dojo.byId('deleteForm_$!{portlet.ID}_$!{record.MessageId}'),'$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('mode', 'delete')&entityid=' + aipo.message.currentRoomId, '$indicator_id', '$messagePortletId', aipo.message.onReceiveMessageRoomDelete);">$l10n.COMMON_DELETE</a></li>
 </form>
 
