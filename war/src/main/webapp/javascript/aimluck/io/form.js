@@ -400,12 +400,11 @@ aimluck.io.ajaxMessageRoomDeleteSubmission = function (form, url, indicator_id, 
 	  var confirmString = dojo.string.substitute(nlsStrings.DWM_STR, {
 		    dwm_del: nlsStrings.DWM_DEL,
 		    dwm_this: nlsStrings.DWM_THIS,
-		    //dwm_name: form._name.value
+		    dwm_name: form._name.value
 		  });
 	  // 'この'+form._name.value+'を削除してよろしいですか？'+form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
 	  if (confirm(confirmString)) {
-	    aimluck.io.setHiddenValue();
-	    //button.form.action = url;
+	    form.action = url;
 	    aimluck.io.submit(form, indicator_id, portlet_id, receive);
 	  }
 	}
