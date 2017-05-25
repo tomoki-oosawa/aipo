@@ -171,5 +171,7 @@ pip-log.txt
 
 # Docker
 /docker/db/data
+/docker/db/additional/*
+!.gitkeep
 /docker/web/data
 /docker/web/logs

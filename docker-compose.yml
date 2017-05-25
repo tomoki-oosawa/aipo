@@ -5,7 +5,7 @@ services:
     volumes:
       - ./docker/db/data:/var/lib/postgresql/data
       - ./sql/postgres/org001.sql:/docker-entrypoint-initdb.d/org001.sql
-      - ./sql/postgres/org001_ext.sql:/docker-entrypoint-initdb.d/org0010.sql
+      - ./docker/db/additional/*:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
     environment:
