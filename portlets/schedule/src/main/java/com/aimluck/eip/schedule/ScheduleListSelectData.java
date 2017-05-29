@@ -202,7 +202,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
+        loginUserId,
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
   }

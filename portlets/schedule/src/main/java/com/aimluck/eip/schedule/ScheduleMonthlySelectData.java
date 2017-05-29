@@ -1138,7 +1138,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @param context
    * @return
    */
-  protected String getTargetUserId(RunData rundata, Context context) {
+  public String getTargetUserId(RunData rundata, Context context) {
     return getTargetUserId(rundata, context, TARGET_USER_ID);
   }
 

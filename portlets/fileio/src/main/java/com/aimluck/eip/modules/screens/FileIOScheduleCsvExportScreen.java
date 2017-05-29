@@ -32,10 +32,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
@@ -53,6 +53,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  *
  *
  */
+
 public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -79,7 +80,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private String fileNameSuffix;
 
-  private String target_user_id = null;
+  private String target_user_id = Integer.toString(userid);
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
@@ -94,177 +95,216 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
     return "application/octet-stream";
   }
 
+  public String getTargetUserId(RunData rundata, Context context) {
+    ScheduleListSelectData listData = new ScheduleListSelectData();
+    target_user_id = listData.getTargetUserId(rundata, context);
+    return target_user_id;
+  }
+
   /**
    *
    * @param rundata
    * @return
    * @throws Exception
    */
+
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
+    ScheduleListSelectData listData = new ScheduleListSelectData();
     fileNamePrefix = "";
     fileNameSuffix = "";
-    if (ALEipUtils.isAdmin(rundata)) {
-      userid = ALEipUtils.getUserId(rundata);
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+    // if (ALEipUtils.isAdmin(rundata)) {
+    userid = ALEipUtils.getUserId(rundata);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-      ScheduleListSelectData listData = new ScheduleListSelectData();
-      target_user_id = listData.getTargetUserId();
+    target_user_id = listData.getTargetUserId();
 
-      // アクセス権
-      if (target_user_id == null
-        || "".equals(target_user_id)
-        || Integer.toString(userid).equals(target_user_id)) {
-        aclPortletFeature =
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-      } else {
-        aclPortletFeature =
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || (Integer.toString(userid)).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+    } else if (!(Integer.toString(userid)).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    } else {
+      aclPortletFeature = null;
+    }
+
+    hasAclviewOther =
+      aclhandler.hasAuthority(
+        userid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        userid,
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
+
+    if (hasAclCsvExport) {
+      Map<Integer, List<ScheduleExportResultData>> map =
+        new HashMap<Integer, List<ScheduleExportResultData>>();
+      Map<Integer, Map<String, List<ScheduleExportResultData>>> dummyMap =
+        new HashMap<Integer, Map<String, List<ScheduleExportResultData>>>();
+
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      Date viewStart = format.parse(rundata.getParameters().get("start_day"));
+      Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
+
+      int userid = ALEipUtils.getUserId(rundata);
+
+      fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
+
+      // 有効なユーザーを全て取得する
+      users = ALEipUtils.getUsers("LoginUser");
+      List<Integer> userIds = new ArrayList<Integer>();
+      for (ALEipUser user : users) {
+        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF
+          && user.getUserId().getValueWithInt() != userid) {
+          continue;
+        }
+        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
+          && user.getUserId().getValueWithInt() == userid) {
+          continue;
+        }
+        userIds.add(user.getUserId().getValueWithInt());
+      }
+      // 有効な設備を全て取得する
+      facilityAllList = FacilitiesUtils.getFacilityAllList();
+      ArrayList<Integer> facilityList = new ArrayList<Integer>();
+      for (FacilityResultData facility : facilityAllList) {
+        facilityList.add(facility.getFacilityId().getValueWithInt());
       }
 
-      hasAclviewOther =
-        aclhandler.hasAuthority(
+      List<VEipTScheduleList> scheduleList =
+        ScheduleUtils.getScheduleList(
           userid,
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+          viewStart,
+          viewEnd,
+          userIds,
+          facilityList,
+          true);
+      List<VEipTScheduleList> resultList =
+        ScheduleUtils.sortByDummySchedule(scheduleList);
 
-      hasAclCsvExport =
-        aclhandler.hasAuthority(
-          userid,
-          aclPortletFeature,
-          ALAccessControlConstants.VALUE_ACL_EXPORT);
+      Calendar cal5 = Calendar.getInstance();
+      cal5.setTime(viewStart);
+      Calendar cal6 = Calendar.getInstance();
+      cal6.setTime(viewEnd);
 
-      if (hasAclCsvExport) {
-        Map<Integer, List<ScheduleExportResultData>> map =
-          new HashMap<Integer, List<ScheduleExportResultData>>();
-        Map<Integer, Map<String, List<ScheduleExportResultData>>> dummyMap =
-          new HashMap<Integer, Map<String, List<ScheduleExportResultData>>>();
+      // 参加者調整後リスト
+      con = new ScheduleExportListContainer();
+      con.initField();
+      con.setViewStartDate(cal5);
+      con.setViewEndDate(cal6);
 
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date viewStart = format.parse(rundata.getParameters().get("start_day"));
-        Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
+      String LINE_SEPARATOR = System.getProperty("line.separator");
+      try {
+        StringBuffer sb = new StringBuffer();
+        sb
+          .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
 
-        int userid = ALEipUtils.getUserId(rundata);
-
-        fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
-
-        // 有効なユーザーを全て取得する
-        users = ALEipUtils.getUsers("LoginUser");
-        List<Integer> userIds = new ArrayList<Integer>();
-        for (ALEipUser user : users) {
-          if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
-            && user.getUserId().getValueWithInt() != userid) {
-            continue;
-          }
-          userIds.add(user.getUserId().getValueWithInt());
-        }
-        // 有効な設備を全て取得する
-        facilityAllList = FacilitiesUtils.getFacilityAllList();
-        ArrayList<Integer> facilityList = new ArrayList<Integer>();
-        for (FacilityResultData facility : facilityAllList) {
-          facilityList.add(facility.getFacilityId().getValueWithInt());
-        }
-
-        List<VEipTScheduleList> scheduleList =
-          ScheduleUtils.getScheduleList(
-            userid,
-            viewStart,
-            viewEnd,
-            userIds,
-            facilityList,
-            true);
-        List<VEipTScheduleList> resultList =
-          ScheduleUtils.sortByDummySchedule(scheduleList);
-
-        Calendar cal5 = Calendar.getInstance();
-        cal5.setTime(viewStart);
-        Calendar cal6 = Calendar.getInstance();
-        cal6.setTime(viewEnd);
-
-        // 参加者調整後リスト
-        con = new ScheduleExportListContainer();
-        con.initField();
-        con.setViewStartDate(cal5);
-        con.setViewEndDate(cal6);
-
-        String LINE_SEPARATOR = System.getProperty("line.separator");
-        try {
-          StringBuffer sb = new StringBuffer();
-          sb
-            .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
-
-          // スケジュール全件抽出
-          for (ListIterator<VEipTScheduleList> iterator =
-            resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
-            ScheduleExportResultData resultData =
-              getResultData(iterator.previous());
-            if (resultData != null) {
-              List<ScheduleExportResultData> list =
+        // スケジュール全件抽出
+        for (ListIterator<VEipTScheduleList> iterator =
+          resultList.listIterator(resultList.size()); iterator.hasPrevious();) {
+          ScheduleExportResultData resultData =
+            getResultData(iterator.previous());
+          if (resultData != null) {
+            List<ScheduleExportResultData> list =
+              new ArrayList<ScheduleExportResultData>();
+            if (map.containsKey(resultData.getScheduleId().getValueWithInt())) {
+              list = map.get(resultData.getScheduleId().getValueWithInt());
+            }
+            list.add(resultData);
+            map.put(resultData.getScheduleId().getValueWithInt(), list);
+            // dummyのリストを作成
+            if (resultData.isDummy()) {
+              Map<String, List<ScheduleExportResultData>> map2 =
+                new HashMap<String, List<ScheduleExportResultData>>();
+              List<ScheduleExportResultData> list2 =
                 new ArrayList<ScheduleExportResultData>();
-              if (map.containsKey(resultData.getScheduleId().getValueWithInt())) {
-                list = map.get(resultData.getScheduleId().getValueWithInt());
+              if (dummyMap.containsKey(resultData
+                .getParentId()
+                .getValueWithInt())) {
+                map2 = dummyMap.get(resultData.getParentId().getValueWithInt());
               }
-              list.add(resultData);
-              map.put(resultData.getScheduleId().getValueWithInt(), list);
-              // dummyのリストを作成
-              if (resultData.isDummy()) {
-                Map<String, List<ScheduleExportResultData>> map2 =
-                  new HashMap<String, List<ScheduleExportResultData>>();
-                List<ScheduleExportResultData> list2 =
-                  new ArrayList<ScheduleExportResultData>();
-                if (dummyMap.containsKey(resultData
-                  .getParentId()
-                  .getValueWithInt())) {
-                  map2 =
-                    dummyMap.get(resultData.getParentId().getValueWithInt());
-                }
-                if (map2.containsKey(resultData.getViewDate())) {
-                  list2 = map2.get(resultData.getViewDate());
-                }
-                list2.add(resultData);
-                map2.put(resultData.getViewDate(), list2);
-                dummyMap.put(resultData.getParentId().getValueWithInt(), map2);
+              if (map2.containsKey(resultData.getViewDate())) {
+                list2 = map2.get(resultData.getViewDate());
               }
+              list2.add(resultData);
+              map2.put(resultData.getViewDate(), list2);
+              dummyMap.put(resultData.getParentId().getValueWithInt(), map2);
             }
           }
-          List<ScheduleExportResultData> arayList =
-            new ArrayList<ScheduleExportResultData>();
-          // 出力用データのみ抽出
-          for (ScheduleExportResultData record : con.getScheduleList()) {
-            boolean isContain = false;
-            for (ScheduleExportResultData rd : arayList) {
-              if (record.getScheduleId().getValue() == rd
-                .getScheduleId()
-                .getValue()
-                && ScheduleUtils.equalsToDate(
-                  rd.getStartDate().getValue(),
-                  record.getStartDate().getValue(),
-                  false)) {
-                // リスト登録済
-                isContain = true;
-                break;
+        }
+        List<ScheduleExportResultData> arayList =
+          new ArrayList<ScheduleExportResultData>();
+        // 出力用データのみ抽出
+        for (ScheduleExportResultData record : con.getScheduleList()) {
+          boolean isContain = false;
+          for (ScheduleExportResultData rd : arayList) {
+            if (record.getScheduleId().getValue() == rd
+              .getScheduleId()
+              .getValue()
+              && ScheduleUtils.equalsToDate(
+                rd.getStartDate().getValue(),
+                record.getStartDate().getValue(),
+                false)) {
+              // リスト登録済
+              isContain = true;
+              break;
+            }
+          }
+          if (!isContain) {
+            // 参加者・設備をリストアップ
+            ArrayList<ALEipUser> members = new ArrayList<ALEipUser>();
+            ArrayList<FacilityResultData> facilities =
+              new ArrayList<FacilityResultData>();
+
+            if (map.containsKey(record.getScheduleId().getValueWithInt())) {
+              List<ScheduleExportResultData> list =
+                map.get(record.getScheduleId().getValueWithInt());
+              for (ScheduleExportResultData tmpRd : list) {
+                if ("F".equals(tmpRd.getType())) {
+                  for (FacilityResultData facility : facilityAllList) {
+                    if (tmpRd.getUserId().getValueWithInt() == facility
+                      .getFacilityId()
+                      .getValueWithInt()) {
+                      facilities.add(facility);
+                    }
+                  }
+                } else if ("U".equals(tmpRd.getType())) {
+                  for (ALEipUser user : users) {
+                    if (tmpRd.getUserId().getValueWithInt() == user
+                      .getUserId()
+                      .getValueWithInt()) {
+                      members.add(user);
+                    }
+                  }
+                }
               }
             }
-            if (!isContain) {
-              // 参加者・設備をリストアップ
-              ArrayList<ALEipUser> members = new ArrayList<ALEipUser>();
-              ArrayList<FacilityResultData> facilities =
-                new ArrayList<FacilityResultData>();
 
-              if (map.containsKey(record.getScheduleId().getValueWithInt())) {
+            // dummyを除外
+            if (dummyMap.containsKey(record.getScheduleId().getValueWithInt())) {
+              Map<String, List<ScheduleExportResultData>> map2 =
+                dummyMap.get(record.getScheduleId().getValueWithInt());
+              if (map2.containsKey(record.getViewDate())) {
                 List<ScheduleExportResultData> list =
-                  map.get(record.getScheduleId().getValueWithInt());
+                  map2.get(record.getViewDate());
                 for (ScheduleExportResultData tmpRd : list) {
                   if ("F".equals(tmpRd.getType())) {
                     for (FacilityResultData facility : facilityAllList) {
                       if (tmpRd.getUserId().getValueWithInt() == facility
                         .getFacilityId()
                         .getValueWithInt()) {
-                        facilities.add(facility);
+                        facilities.remove(facility);
                       }
                     }
                   } else if ("U".equals(tmpRd.getType())) {
@@ -272,82 +312,50 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
                       if (tmpRd.getUserId().getValueWithInt() == user
                         .getUserId()
                         .getValueWithInt()) {
-                        members.add(user);
+                        members.remove(user);
                       }
                     }
                   }
                 }
-              }
-
-              // dummyを除外
-              if (dummyMap
-                .containsKey(record.getScheduleId().getValueWithInt())) {
-                Map<String, List<ScheduleExportResultData>> map2 =
-                  dummyMap.get(record.getScheduleId().getValueWithInt());
-                if (map2.containsKey(record.getViewDate())) {
-                  List<ScheduleExportResultData> list =
-                    map2.get(record.getViewDate());
-                  for (ScheduleExportResultData tmpRd : list) {
-                    if ("F".equals(tmpRd.getType())) {
-                      for (FacilityResultData facility : facilityAllList) {
-                        if (tmpRd.getUserId().getValueWithInt() == facility
-                          .getFacilityId()
-                          .getValueWithInt()) {
-                          facilities.remove(facility);
-                        }
-                      }
-                    } else if ("U".equals(tmpRd.getType())) {
-                      for (ALEipUser user : users) {
-                        if (tmpRd.getUserId().getValueWithInt() == user
-                          .getUserId()
-                          .getValueWithInt()) {
-                          members.remove(user);
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-              if (!record.isDummy()
-                && (members.size() > 0 || facilities.size() > 0)) {
-                // dummyでないスケジュールで参加メンバーがいるスケジュール
-                record.addAllMember(members);
-                record.addAllFacility(facilities);
-                arayList.add(record);
               }
             }
+            if (!record.isDummy()
+              && (members.size() > 0 || facilities.size() > 0)) {
+              // dummyでないスケジュールで参加メンバーがいるスケジュール
+              record.addAllMember(members);
+              record.addAllFacility(facilities);
+              arayList.add(record);
+            }
           }
-          for (ScheduleExportResultData record : arayList) {
-            sb.append(LINE_SEPARATOR);
-            sb.append("\"");
-            sb.append(record.getViewDate());
-            sb.append("\",\"");
-            sb.append(record.getStartDate());
-            sb.append("\",\"");
-            sb.append(record.getEndDateExport());
-            sb.append("\",\"");
-            sb.append(record.getEndDate());
-            sb.append("\",\"");
-            sb.append(record.getPlaceExport());
-            sb.append("\",\"");
-            sb.append(record.getNameExport());
-            sb.append("\",\"");
-            sb.append(record.getNoteExport());
-            sb.append("\",\"");
-            sb.append(record.getMemberNameExport());
-            sb.append("\"");
-          }
-          sb.append(",\"\"");
-          return sb.toString();
-        } catch (Exception e) {
-          logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
-          return null;
         }
-      } else {
-        return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
+        for (ScheduleExportResultData record : arayList) {
+          sb.append(LINE_SEPARATOR);
+          sb.append("\"");
+          sb.append(record.getViewDate());
+          sb.append("\",\"");
+          sb.append(record.getStartDate());
+          sb.append("\",\"");
+          sb.append(record.getEndDateExport());
+          sb.append("\",\"");
+          sb.append(record.getEndDate());
+          sb.append("\",\"");
+          sb.append(record.getPlaceExport());
+          sb.append("\",\"");
+          sb.append(record.getNameExport());
+          sb.append("\",\"");
+          sb.append(record.getNoteExport());
+          sb.append("\",\"");
+          sb.append(record.getMemberNameExport());
+          sb.append("\"");
+        }
+        sb.append(",\"\"");
+        return sb.toString();
+      } catch (Exception e) {
+        logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
+        return null;
       }
     } else {
-      throw new ALPermissionException();
+      return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
     }
   }
 
@@ -472,4 +480,16 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       + fileNameSuffix
       + ".csv";
   }
+
+  /**
+   * @param rundata
+   * @return
+   * @throws Exception
+   */
+  @Override
+  protected String getCSVString(RunData rundata, Context context)
+      throws Exception {
+    return null;
+  }
+
 }

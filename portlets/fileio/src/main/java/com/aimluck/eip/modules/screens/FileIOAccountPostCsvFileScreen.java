@@ -39,7 +39,7 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOAccountPostCsvFileScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -71,7 +71,7 @@ public class FileIOAccountPostCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception

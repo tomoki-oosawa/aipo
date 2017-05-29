@@ -46,6 +46,10 @@ public class ALEmptyAccessControlHandler extends ALAccessControlHandler {
   public boolean hasAuthority(int userId, String featerName, int aclType) {
     if (ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
       .equals(featerName)) {
+      if (aclType == ALAccessControlConstants.VALUE_ACL_EXPORT
+        && !featerName.equals(null)) {
+        return true;
+      }
       boolean updatable =
         (aclType & ALAccessControlConstants.VALUE_ACL_UPDATE) == ALAccessControlConstants.VALUE_ACL_UPDATE;
       boolean deletable =
