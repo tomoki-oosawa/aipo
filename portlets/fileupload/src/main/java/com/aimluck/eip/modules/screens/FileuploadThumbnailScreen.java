@@ -45,8 +45,9 @@ import com.aimluck.eip.util.ALEipUtils;
 public class FileuploadThumbnailScreen extends RawScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileuploadThumbnailScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      FileuploadThumbnailScreen.class.getName());
 
   /** ファイル名 */
   private String fileName = null;
@@ -121,7 +122,7 @@ public class FileuploadThumbnailScreen extends RawScreen {
       Calendar calendar = Calendar.getInstance();
       calendar.add(Calendar.DATE, 30);
       Date expired = calendar.getTime();
-      response.setDateHeader("Expires ", expired.getTime());
+      response.setDateHeader("Expires", expired.getTime());
 
       if (this.lastModified != null) {
         response.setDateHeader("Last-Modified", this.lastModified.getTime());
