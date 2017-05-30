@@ -368,6 +368,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dEnd = new DateTime(cEnd.getTime());
             Calendar eEnd = Calendar.getInstance();
             eEnd.setTime(dEnd);
+            // eEndの日付は今日の日付なので、三ヶ月先まで見るため三ヶ月先にずらす
+            eEnd.add(Calendar.MONTH, 3);
             switch (ptnFirst) {
               case 'D':
                 while (cal2.compareTo(eEnd) <= 0) {
