@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
@@ -95,12 +96,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     return "application/octet-stream";
   }
 
-  public String getTargetUserId(RunData rundata, Context context) {
-    ScheduleListSelectData listData = new ScheduleListSelectData();
-    target_user_id = listData.getTargetUserId(rundata, context);
-    return target_user_id;
-  }
-
   /**
    *
    * @param rundata
@@ -111,6 +106,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
     ScheduleListSelectData listData = new ScheduleListSelectData();
+    VelocityContext context = new VelocityContext();
     fileNamePrefix = "";
     fileNameSuffix = "";
     // if (ALEipUtils.isAdmin(rundata)) {
@@ -124,7 +120,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     // "target_user_id");
     // rundata.getParameters().getString(ScheduleUtils.TARGET_USER_ID);
 
-    target_user_id = listData.getTargetUserId();
+    target_user_id = listData.getTargetUserId(rundata, context);
 
     // アクセス権
     if (target_user_id == null
@@ -169,12 +165,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       users = ALEipUtils.getUsers("LoginUser");
       List<Integer> userIds = new ArrayList<Integer>();
       for (ALEipUser user : users) {
-        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF
-          && user.getUserId().getValueWithInt() != userid) {
-          continue;
-        }
-        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
-          && user.getUserId().getValueWithInt() == userid) {
+        if (user.getUserId().getValueWithInt() != Integer
+          .valueOf(target_user_id)) {
           continue;
         }
         userIds.add(user.getUserId().getValueWithInt());
