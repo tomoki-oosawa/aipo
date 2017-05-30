@@ -428,7 +428,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        ALEipUtils.getUserId(rundata),
+        loginUserId,
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
 
@@ -1148,7 +1148,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @param context
    * @return
    */
-  protected String getTargetUserId(RunData rundata, Context context) {
+  public String getTargetUserId(RunData rundata, Context context) {
     return getTargetUserId(rundata, context, TARGET_USER_ID);
   }
 

@@ -32,6 +32,7 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALEipUser;
@@ -39,6 +40,7 @@ import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
+import com.aimluck.eip.schedule.ScheduleListSelectData;
 import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -52,6 +54,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  *
  *
  */
+
 public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -78,7 +81,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private String fileNameSuffix;
 
-  private String target_user_id;
+  private String target_user_id = Integer.toString(userid);
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
@@ -95,14 +98,22 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
     return "application/octet-stream";
   }
 
+  public String getTargetUserId(RunData rundata, Context context) {
+    ScheduleListSelectData listData = new ScheduleListSelectData();
+    target_user_id = listData.getTargetUserId(rundata, context);
+    return target_user_id;
+  }
+
   /**
    *
    * @param rundata
    * @return
    * @throws Exception
    */
+
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
+    ScheduleListSelectData listData = new ScheduleListSelectData();
     fileNamePrefix = "";
     fileNameSuffix = "";
     // if (ALEipUtils.isAdmin(rundata)) {
@@ -116,15 +127,19 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
     // "target_user_id");
     // rundata.getParameters().getString(ScheduleUtils.TARGET_USER_ID);
 
+    target_user_id = listData.getTargetUserId();
+
     // アクセス権
     if (target_user_id == null
       || "".equals(target_user_id)
-      || Integer.toString(userid).equals(target_user_id)) {
+      || (Integer.toString(userid)).equals(target_user_id)) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
+    } else if (!(Integer.toString(userid)).equals(target_user_id)) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    } else {
+      aclPortletFeature = null;
     }
 
     hasAclviewOther =
@@ -149,13 +164,20 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       Date viewStart = format.parse(rundata.getParameters().get("start_day"));
       Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
 
+      int userid = ALEipUtils.getUserId(rundata);
+
       fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
 
       // 有効なユーザーを全て取得する
       users = ALEipUtils.getUsers("LoginUser");
       List<Integer> userIds = new ArrayList<Integer>();
       for (ALEipUser user : users) {
-        if (user.getUserId().getValueWithInt() != userid) { // <-ここをtargetUserIdにする
+        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF
+          && user.getUserId().getValueWithInt() != userid) {
+          continue;
+        }
+        if (aclPortletFeature == ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER
+          && user.getUserId().getValueWithInt() == userid) {
           continue;
         }
         userIds.add(user.getUserId().getValueWithInt());
@@ -333,6 +355,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           sb.append(record.getMemberNameExport());
           sb.append("\"");
         }
+        sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
         logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
@@ -412,8 +435,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         rd.setTmpreserve("T".equals(record.getStatus()));
       }
 
-      if (!hasAclviewOther && !is_member) {// 閲覧権限、外部出力権限がなく、グループでもない
-        // return rd;
+      if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         return null;
       }
 
@@ -468,4 +490,16 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       + fileNameSuffix
       + ".csv";
   }
+
+  /**
+   * @param rundata
+   * @return
+   * @throws Exception
+   */
+  @Override
+  protected String getCSVString(RunData rundata, Context context)
+      throws Exception {
+    return null;
+  }
+
 }
