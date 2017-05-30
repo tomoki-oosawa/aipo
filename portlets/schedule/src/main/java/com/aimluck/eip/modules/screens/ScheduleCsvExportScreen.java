@@ -109,7 +109,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     VelocityContext context = new VelocityContext();
     fileNamePrefix = "";
     fileNameSuffix = "";
-    // if (ALEipUtils.isAdmin(rundata)) {
     userid = ALEipUtils.getUserId(rundata);
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -348,9 +347,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       fileNameSuffix = "error";
       return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
     }
-    // } //else {
-    // throw new ALPermissionException();
-    // }
   }
 
   /**
