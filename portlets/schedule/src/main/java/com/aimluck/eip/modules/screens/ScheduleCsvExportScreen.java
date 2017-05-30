@@ -41,7 +41,6 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
 import com.aimluck.eip.schedule.ScheduleListSelectData;
-import com.aimluck.eip.schedule.ScheduleMonthlySelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -55,10 +54,10 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  *
  */
 
-public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
+public class ScheduleCsvExportScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOScheduleCsvExportScreen.class.getName());
+    .getLogger(ScheduleCsvExportScreen.class.getName());
 
   private int userid;
 
@@ -81,12 +80,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
 
   private String fileNameSuffix;
 
-  private String target_user_id = Integer.toString(userid);
+  private String target_user_id = null;
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
-
-  ScheduleMonthlySelectData listData = new ScheduleMonthlySelectData();
 
   /**
    *
@@ -358,7 +355,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
         sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
-        logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
+        logger.error("ScheduleCsvFileScreen.getCSVString", e);
         return null;
       }
     } else {
