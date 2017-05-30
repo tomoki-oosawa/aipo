@@ -391,8 +391,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
           .getPortletConfig()
           .getInitParameter("p5a-view"));
 
+    setupLists(rundata, context);
+
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
+    target_user_id = getTargetUserId(rundata, context);
 
     if (target_user_id == null
       || "".equals(target_user_id)
@@ -428,7 +431,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        loginUserId,
+        Integer.valueOf(target_user_id),
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
 

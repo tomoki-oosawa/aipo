@@ -178,6 +178,9 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     con.setViewStartDate(cal5);
 
     int loginUserId = ALEipUtils.getUserId(rundata);
+    setupLists(rundata, context);
+    target_user_id = getTargetUserId(rundata, context);
+
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
@@ -202,7 +205,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        loginUserId,
+        Integer.valueOf(target_user_id),
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
   }

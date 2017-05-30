@@ -116,10 +116,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    // target_user_id = listData.getTargetUserId(rundata, null,
-    // "target_user_id");
-    // rundata.getParameters().getString(ScheduleUtils.TARGET_USER_ID);
-
     target_user_id = listData.getTargetUserId(rundata, context);
 
     // アクセス権
@@ -128,11 +124,9 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       || (Integer.toString(userid)).equals(target_user_id)) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else if (!(Integer.toString(userid)).equals(target_user_id)) {
+    } else {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    } else {
-      aclPortletFeature = null;
     }
 
     hasAclviewOther =
@@ -143,7 +137,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
 
     hasAclCsvExport =
       aclhandler.hasAuthority(
-        userid,
+        Integer.valueOf(target_user_id),
         aclPortletFeature,
         ALAccessControlConstants.VALUE_ACL_EXPORT);
 
@@ -351,6 +345,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         return null;
       }
     } else {
+      fileNameSuffix = "error";
       return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
     }
     // } //else {
