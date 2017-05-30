@@ -63,7 +63,8 @@ INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT nextval('pk_eip_t
 UPDATE EIP_T_ACL_PORTLET_FEATURE SET acl_type = 63 WHERE feature_name = 'schedule_self' AND feature_alias_name = 'スケジュール（自分の予定）操作';
 UPDATE EIP_T_ACL_PORTLET_FEATURE SET acl_type = 63 WHERE feature_name = 'schedule_other' AND feature_alias_name = 'スケジュール（他ユーザーの予定）操作';
 UPDATE EIP_T_ACL_ROLE SET acl_type = 63, note = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE role_name = 'スケジュール（自分の予定）管理者';
-UPDATE EIP_T_ACL_ROLE SET acl_type = 35 WHERE role_name = 'スケジュール（他ユーザーの予定）管理者';
+UPDATE EIP_T_ACL_ROLE SET role_name = 'スケジュール（他ユーザーの予定）管理者' WHERE role_name = 'スケジュール（他ユーザーの予定）';
+UPDATE EIP_T_ACL_ROLE SET acl_type = 35, note = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE role_name = 'スケジュール（他ユーザーの予定）管理者';
 -- migration
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（自分の予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（他ユーザーの予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
