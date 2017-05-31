@@ -186,16 +186,11 @@
 	<classpathentry kind="var" path="M2_REPO/org/apache/jetspeed/aipo-jetspeed/8.1.1/aipo-jetspeed-8.1.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/gnu/inet/libidn/1.15/libidn-1.15.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/easymock/easymock/3.2/easymock-3.2.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-servlet-api/7.0.78/tomcat-servlet-api-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-jasper/7.0.78/tomcat-jasper-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-juli/7.0.78/tomcat-juli-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-jsp-api/7.0.78/tomcat-jsp-api-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-el-api/7.0.78/tomcat-el-api-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-jasper-el/7.0.78/tomcat-jasper-el-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-api/7.0.78/tomcat-api-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-util/7.0.78/tomcat-util-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-annotations-api/7.0.78/tomcat-annotations-api-7.0.78.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/jasper-el/6.0.29/jasper-el-6.0.29.jar"/>
-    <classpathentry kind="var" path="M2_REPO/org/apache/tomcat/tomcat-catalina/7.0.57/tomcat-catalina-7.0.57.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/catalina.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
