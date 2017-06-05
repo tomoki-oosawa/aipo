@@ -679,6 +679,7 @@
 		<db-attribute name="OWNER_ID" type="INTEGER" length="4"/>
 		<db-attribute name="PARAMS" type="CHAR" length="99"/>
 		<db-attribute name="PARENT_ID" type="INTEGER" length="4"/>
+		<db-attribute name="PINNED" type="VARCHAR" length="1"/>
 		<db-attribute name="TIMELINE_ID" type="INTEGER" isPrimaryKey="true" isGenerated="true" isMandatory="true" length="4"/>
 		<db-attribute name="TIMELINE_TYPE" type="CHAR" length="2"/>
 		<db-attribute name="UPDATE_DATE" type="TIMESTAMP" length="8"/>
@@ -1424,6 +1425,7 @@
 		<obj-attribute name="ownerId" type="java.lang.Integer" db-attribute-path="OWNER_ID"/>
 		<obj-attribute name="params" type="java.lang.String" db-attribute-path="PARAMS"/>
 		<obj-attribute name="parentId" type="java.lang.Integer" db-attribute-path="PARENT_ID"/>
+		<obj-attribute name="pinned" type="java.lang.String" db-attribute-path="PINNED"/>
 		<obj-attribute name="timelineType" type="java.lang.String" db-attribute-path="TIMELINE_TYPE"/>
 		<obj-attribute name="updateDate" type="java.util.Date" db-attribute-path="UPDATE_DATE"/>
 	</obj-entity>

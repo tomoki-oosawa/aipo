@@ -215,7 +215,7 @@
 #set($entityids = "$!{entityids}$!{record.TermResultData.ScheduleId},")
 ##if($record.TermResultData.isShowDetail())
 #set($addScheduleLink = "$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleDetailScreen').addQueryData('entityid',$!{record.TermResultData.ScheduleId}).addQueryData('userid', $!{result.TargetUserId}).addQueryData('view_date', $!{record.Date.toString()})")
-<td colspan="$col_span" class="term">
+<td colspan="$col_span" class="term${color_style_othermonth}">
 #if(${record.TermResultData.isShowDetail()})
 	<div id="$!{portlet.ID}-$!{record.TermResultData.ScheduleId}" class="calerndarTermScheduleDiv schedule-$!{portlet.ID}-$!{record.TermResultData.ScheduleId}">
 	<a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($addScheduleLink)', '$!portlet.ID', aipo.schedule.onLoadScheduleDetail);">
@@ -242,6 +242,7 @@
 
 #if($todoConListSize > 0)
 #foreach($todocontainer in ${result.ToDoContainer.getWeekList($weekcount)})
+
 <tr>
 #set($nottodocount = 0)
 
@@ -249,6 +250,7 @@
 #set ($color_style = "")
 #set ($color_style_holiday = "")
 #set ($color_style_othermonth = "")
+
 #if($!{record.ToDoResultData})
 #set($col_span=$!{record.ToDoResultData.Rowspan})
 #end
@@ -257,7 +259,6 @@
 ##ユーザーが設定した休日
 #elseif($!{record.isUserHoliday($!{record.Date.Value.Day})})
 #set ($color_style_holiday = " holiday")
-
 #end
 #if($!{record.isDayOffHoliday()} && $!{record.isHoliday()})
 #set ($color_style_holiday = " holiday")
@@ -265,8 +266,9 @@
 #if(! ($!{result.ViewMonth.Month.toString()} == ${record.Date.Month.toString()}))
 #set ($color_style_othermonth = " off")
 #end
+
 #if( ! $record.isTodoNull() )
-<td colspan="$col_span" class="term${color_style}${color_style_holiday}${color_style_othermonth}">
+<td colspan="$col_span" class="term${color_style_othermonth}">
 <div class="calerndarTodoDiv">
 <a href="javascript:void(0);" onclick="aipo.common.showDialog('$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","ToDoDetailScreen").addQueryData("entityid",$!{record.ToDoResultData.TodoId}))');">
 #if(! ${record.ToDoResultData.isPublic()})#AUIiconSecretAtt("title='$l10n.SCHEDULE_CLOSE_PUBLIC_WORD'" "")#end
@@ -278,6 +280,7 @@ $!{record.ToDoResultData.TodoName}
 #else
 #if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end
 #end
+
 ##end
 #set ($col_span = $col_span - 1)
 #end

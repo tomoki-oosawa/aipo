@@ -56,8 +56,12 @@ SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_
 -- 20170118
 INSERT INTO EIP_T_ACL_PORTLET_FEATURE VALUES(NEXTVAL('pk_eip_t_acl_portlet_feature'),'attachment','添付ファイル操作',52);
 INSERT INTO EIP_T_ACL_ROLE VALUES(NEXTVAL('pk_eip_t_acl_role'), '添付ファイル操作管理者',(SELECT FEATURE_ID from EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'attachment' LIMIT 1),52,NULL,NULL,NULL);
-INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT nextval('pk_eip_t_acl_user_role_map'),user_id,(SELECT ROLE_ID from EIP_T_ACL_ROLE WHERE ROLE_NAME = '添付ファイル操作管理者' LIMIT 1) FROM TURBINE_USER WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
+INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT nextval('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id from EIP_T_ACL_ROLE WHERE ROLE_NAME = '添付ファイル操作管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
+SELECT setval('pk_eip_t_acl_portlet_feature', (SELECT MAX(FEATURE_ID) FROM EIP_T_ACL_PORTLET_FEATURE));
+SELECT setval('pk_eip_t_acl_role', (SELECT MAX(ROLE_ID) FROM EIP_T_ACL_ROLE));
+SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_ROLE_MAP));
 -- 20170118
+
 
 -- 20170425
 UPDATE EIP_T_ACL_PORTLET_FEATURE SET acl_type = 63 WHERE feature_name = 'schedule_self' AND feature_alias_name = 'スケジュール（自分の予定）操作';
@@ -69,3 +73,4 @@ UPDATE EIP_T_ACL_ROLE SET acl_type = 35, note = '＊追加、編集、削除、�
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（自分の予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO EIP_T_ACL_USER_ROLE_MAP(id,user_id,role_id) SELECT NEXTVAL('pk_eip_t_acl_user_role_map'),user_id,(SELECT role_id FROM EIP_T_ACL_ROLE WHERE ROLE_NAME = 'スケジュール（他ユーザーの予定）管理者' limit 1) FROM TURBINE_USER WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 -- 20170425
+
