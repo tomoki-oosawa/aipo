@@ -24,12 +24,15 @@ import org.apache.jetspeed.om.registry.PortletEntry;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALStringField;
 import com.aimluck.eip.common.ALAbstractSelectData;
 import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALData;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.timeline.util.TimelineUtils;
 import com.aimluck.eip.util.CustomizeUtils;
 
@@ -38,6 +41,8 @@ import com.aimluck.eip.util.CustomizeUtils;
  */
 public class TimelineAdminSelectData extends
     ALAbstractSelectData<PortletEntry, PortletEntry> implements ALData {
+
+  private ALStringField enabledActivityFlag;
 
   /**
    *
@@ -50,6 +55,9 @@ public class TimelineAdminSelectData extends
       throws ALPageNotFoundException, ALDBErrorException {
     super.init(action, rundata, context);
 
+    enabledActivityFlag = new ALStringField();
+    enabledActivityFlag.setValue(ALConfigService
+      .get(ALConfigHandler.Property.TIMELINE_ACTIVITY_ENABLED));
   }
 
   /**
@@ -84,7 +92,8 @@ public class TimelineAdminSelectData extends
   @Override
   protected Object getResultDataDetail(PortletEntry record)
       throws ALPageNotFoundException, ALDBErrorException {
-    TimelineAdminDetailResultData rd = new TimelineAdminDetailResultData(record);
+    TimelineAdminDetailResultData rd =
+      new TimelineAdminDetailResultData(record);
     rd.initField();
     return rd;
   }
@@ -103,5 +112,12 @@ public class TimelineAdminSelectData extends
   @Override
   protected Attributes getColumnMap() {
     return null;
+  }
+
+  /**
+   * @return
+   */
+  public String getEnabledActivityFlag() {
+    return enabledActivityFlag.toString();
   }
 }

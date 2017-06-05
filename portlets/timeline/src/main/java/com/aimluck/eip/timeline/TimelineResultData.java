@@ -102,6 +102,9 @@ public class TimelineResultData implements ALData {
   /** いいね！の数 */
   private int likeCount;
 
+  /** 固定化されているか否か */
+  private boolean pinned;
+
   private ALEipUser user = null;
 
   /** キーワード */
@@ -131,6 +134,7 @@ public class TimelineResultData implements ALData {
     attachmentFileList = new ArrayList<FileuploadBean>();
     likeCount = 0;
     keyword = new ALStringField();
+    pinned = false;
   }
 
   /**
@@ -632,6 +636,14 @@ public class TimelineResultData implements ALData {
 
   public void setLikeCount(int likeCount) {
     this.likeCount = likeCount;
+  }
+
+  public boolean getPinned() {
+    return pinned;
+  }
+
+  public void setPinned(boolean bool) {
+    pinned = bool;
   }
 
   /**

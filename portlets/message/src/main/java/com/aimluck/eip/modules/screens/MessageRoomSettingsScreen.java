@@ -96,6 +96,8 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
           authority = member.getAuthority();
         }
       }
+      String roomtype = room.getRoomType();
+      context.put("roomtype", roomtype);
       context.put("authority", authority);
       putData(rundata, context);
       /*

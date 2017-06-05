@@ -126,11 +126,6 @@ $!result.Name
 #if($result.isGroup())
 #ALsubmit($event_submit $action_str)
 #end
-#if($mode!="new_form")
-#if($result.hasAuth())
-#ALajaxbuttonMessageRoomDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
-#end
-#end
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 #ALformfooter()

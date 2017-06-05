@@ -375,6 +375,15 @@ aipo.timeline.onReceiveMessage = function(msg) {
 		dojo.byId("messageDiv_" + pid).innerHTML = msg;
 	}
 }
+aipo.timeline.onReceiveAdminMessage = function(msg) {
+	if (!msg) {
+		var arrDialog = dijit.byId("modalDialog");
+		if (arrDialog) {
+			arrDialog.hide();
+		}
+		aipo.portletReload('timelineAdmin');
+	}
+}
 aipo.timeline.onReceiveMessageToList = function(msg) {
 	var pid = dojo.byId("getTimelinePortletId").innerHTML;
 	if (!msg) {

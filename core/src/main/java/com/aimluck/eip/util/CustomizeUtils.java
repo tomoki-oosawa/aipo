@@ -680,7 +680,7 @@ public class CustomizeUtils {
         && entry != null
         && entry.getSecurityRef() != null
         && entry.getSecurityRef().getParent() != null
-        && entry.getSecurityRef().getParent().equals("admin-view")) {
+        && entry.getSecurityRef().getParent().equals("admin-user-view")) {
         return ALEipUtils.isAdmin(data) ? true : false;
       }
     }

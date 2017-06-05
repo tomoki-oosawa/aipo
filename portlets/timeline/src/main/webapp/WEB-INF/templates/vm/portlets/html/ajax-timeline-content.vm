@@ -33,3 +33,5 @@
 #if($currentPage == 1 && $velocityCount == 1) #set($firstCss = " first")#else #set($firstCss = "")#end
 	#parse("/portlets/html/ajax-timeline-content-inner.vm")
 #end
+
+<img src="images/common/dot.gif" width="1" height="1" onload="if(aipo && aipo.customize){aipo.customize.addAutoHideMenuTrigger();aipo.customize.positionInitialize();}" style="display:none" />
