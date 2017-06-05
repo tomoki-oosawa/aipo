@@ -1,0 +1,96 @@
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server version:        Apache Tomcat/7.0.70
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server built:          Jun 15 2016 16:27:45 UTC
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Server number:         7.0.70.0
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: OS Name:               Linux
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: OS Version:            4.9.27-moby
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Architecture:          amd64
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Java Home:             /usr/lib/jvm/java-1.8-openjdk/jre
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: JVM Version:           1.8.0_92-internal-alpine-r1-b14
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: JVM Vendor:            Oracle Corporation
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: CATALINA_BASE:         /opt/tomcat
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: CATALINA_HOME:         /opt/tomcat
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.util.logging.config.file=/opt/tomcat/conf/logging.properties
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djdk.tls.ephemeralDHKeySize=2048
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -agentlib:jdwp=transport=dt_socket,address=8015,server=y,suspend=n
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Xmx512M
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Xms64M
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Xss256k
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.awt.headless=true
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dsun.nio.cs.map=x-windows-iso2022jp/ISO-2022-JP
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.util.Arrays.useLegacyMergeSort=true
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.net.preferIPv4Stack=true
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Duser.timezone=Asia/Tokyo
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.endorsed.dirs=/opt/tomcat/endorsed
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dcatalina.base=/opt/tomcat
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Dcatalina.home=/opt/tomcat
+Jun 02, 2017 2:39:02 PM org.apache.catalina.startup.VersionLoggerListener log
+INFO: Command line argument: -Djava.io.tmpdir=/opt/tomcat/temp
+Jun 02, 2017 2:39:03 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["http-nio-8080"]
+Jun 02, 2017 2:39:03 PM org.apache.tomcat.util.net.NioSelectorPool getSharedSelector
+INFO: Using a shared selector for servlet write/read
+Jun 02, 2017 2:39:03 PM org.apache.coyote.AbstractProtocol init
+INFO: Initializing ProtocolHandler ["ajp-bio-8009"]
+Jun 02, 2017 2:39:03 PM org.apache.catalina.startup.Catalina load
+INFO: Initialization processed in 2332 ms
+Jun 02, 2017 2:39:03 PM org.apache.catalina.core.StandardService startInternal
+INFO: Starting service Catalina
+Jun 02, 2017 2:39:03 PM org.apache.catalina.core.StandardEngine startInternal
+INFO: Starting Servlet Engine: Apache Tomcat/7.0.70
+Jun 02, 2017 2:39:30 PM org.apache.catalina.startup.TldConfig execute
+INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+Jun 02, 2017 2:39:47 PM org.apache.catalina.startup.TldConfig execute
+INFO: At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+Jun 02, 2017 2:39:53 PM org.apache.shindig.config.JsonContainerConfig loadContainers
+INFO: Loading resources from: aipo/container.js
+Jun 02, 2017 2:39:53 PM org.apache.shindig.config.JsonContainerConfig loadResources
+INFO: Reading container config: aipo/container.js
+Jun 02, 2017 2:39:55 PM net.sf.ehcache.util.UpdateChecker doCheck
+INFO: New update(s) found: 2.4.7 [http://www.terracotta.org/confluence/display/release/Release+Notes+Ehcache+Core+2.4]. Please check http://ehcache.org for the latest version.
+Jun 02, 2017 2:39:56 PM org.apache.shindig.gadgets.servlet.CajaContentRewriter <init>
+INFO: Cajoled cache createdorg.apache.shindig.common.cache.ehcache.EhConfiguredCache@352e4ff9
+Jun 02, 2017 2:39:56 PM org.apache.shindig.gadgets.features.FeatureRegistry register
+INFO: Loading resources from: res:aipo/features.txt
+Jun 02, 2017 2:39:56 PM org.apache.shindig.common.xml.XmlUtil <clinit>
+INFO: Not using secure XML processing.
+Jun 02, 2017 2:39:56 PM org.apache.shindig.common.xml.XmlUtil <clinit>
+INFO: Reusing document builders
+Jun 02, 2017 2:39:59 PM org.apache.shindig.gadgets.servlet.CajaContentRewriter <init>
+INFO: Cajoled cache createdorg.apache.shindig.common.cache.ehcache.EhConfiguredCache@352e4ff9
+Jun 02, 2017 2:39:59 PM com.aipo.container.gadgets.oauth.AipoOAuthStore loadDefaultKey
+INFO: Loading OAuth signing key from res://aipo/oauthkey.pem
+Jun 02, 2017 2:39:59 PM org.apache.shindig.gadgets.oauth.OAuthModule$OAuthCrypterProvider <init>
+INFO: Using random key for OAuth client-side state encryption
+Jun 02, 2017 2:40:00 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["http-nio-8080"]
+Jun 02, 2017 2:40:00 PM org.apache.coyote.AbstractProtocol start
+INFO: Starting ProtocolHandler ["ajp-bio-8009"]
+Jun 02, 2017 2:40:00 PM org.apache.catalina.startup.Catalina start
+INFO: Server startup in 56984 ms

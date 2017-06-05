@@ -1,0 +1,2 @@
+2017-06-02 14:39:34,285 <WARN > (localhost-startStop-1) [JetspeedLogger.java:232]- CayenneDatabasePsmlManagerService: error in refresh-rate configuration: using default
+2017-06-02 14:41:09,206 <WARN > (http-nio-8080-exec-1) [HttpMethodBase.java:682]- Going to buffer response body of large or unknown size. Using getResponseBodyAsStream instead is recommended.
