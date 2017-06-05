@@ -215,7 +215,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
       setupLists(rundata, context);
-
       List<VEipTScheduleList> resultBaseList =
         getScheduleList(rundata, context);
       List<VEipTScheduleList> resultList =

@@ -25,7 +25,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.modules.screens.RawScreen;
 import org.apache.turbine.util.RunData;
-import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
 
@@ -118,13 +117,7 @@ public abstract class ALCSVScreen extends RawScreen {
   }
 
   /** ファイルに書き出す内容を取得します */
-
   protected abstract String getCSVString(RunData rundata) throws Exception;
-
-  protected String getCSVString(RunData rundata, Context context)
-      throws Exception {
-    return null;
-  }
 
   /** ファイル名を取得します */
   protected abstract String getFileName();

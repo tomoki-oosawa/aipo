@@ -33,7 +33,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALEipUser;
@@ -158,10 +157,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       users = ALEipUtils.getUsers("LoginUser");
       List<Integer> userIds = new ArrayList<Integer>();
       for (ALEipUser user : users) {
-        if (user.getUserId().getValueWithInt() != Integer
-          .valueOf(target_user_id)) {
-          continue;
-        }
         userIds.add(user.getUserId().getValueWithInt());
       }
       // 有効な設備を全て取得する
@@ -236,6 +231,10 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           new ArrayList<ScheduleExportResultData>();
         // 出力用データのみ抽出
         for (ScheduleExportResultData record : con.getScheduleList()) {
+          if (record.getUserId().getValueWithInt() != Integer
+            .valueOf(target_user_id)) {
+            continue;
+          }
           boolean isContain = false;
           for (ScheduleExportResultData rd : arayList) {
             if (record.getScheduleId().getValue() == rd
@@ -469,17 +468,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       + "_schedules_"
       + fileNameSuffix
       + ".csv";
-  }
-
-  /**
-   * @param rundata
-   * @return
-   * @throws Exception
-   */
-  @Override
-  protected String getCSVString(RunData rundata, Context context)
-      throws Exception {
-    return null;
   }
 
 }

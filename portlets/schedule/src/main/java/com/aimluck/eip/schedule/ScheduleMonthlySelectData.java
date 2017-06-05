@@ -142,7 +142,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   private boolean hasAclviewOther;
 
   /** 外部出力権限の有無 */
-  private boolean hasAclCsvExport;
+  private boolean hasAclCsvExport = false;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -429,12 +429,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
-    hasAclCsvExport =
-      aclhandler.hasAuthority(
-        Integer.valueOf(target_user_id),
-        aclPortletFeature,
-        ALAccessControlConstants.VALUE_ACL_EXPORT);
-
     hasAuthoritySelfInsert =
       aclhandler.hasAuthority(
         loginUserId,
@@ -446,6 +440,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        Integer.valueOf(target_user_id),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
 
     this.setUser(ALEipUtils.getALEipUser(loginUserId));
 
