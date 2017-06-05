@@ -69,14 +69,14 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
-  /** <code>viewUrlStart</code> CSV用表示開始日時 */
-  private ALDateTimeField viewUrlStart;
-
-  /** <code>viewUrlEnd</code> CSV用表示終了日時 */
-  private ALDateTimeField viewUrlEnd;
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
 
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
+
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
 
   protected String listViewtype;
 
@@ -95,16 +95,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   @Override
   public void init(ALAction action, RunData rundata, Context context)
       throws ALPageNotFoundException, ALDBErrorException {
-
-    Calendar cal1 = Calendar.getInstance();
-
-    viewUrlStart = new ALDateTimeField();
-    cal1 = ScheduleUtils.getViewCalendar(true, rundata, context);
-    viewUrlStart.setValue(cal1.getTime());
-
-    viewUrlEnd = new ALDateTimeField();
-    cal1 = ScheduleUtils.getViewCalendar(false, rundata, context);
-    viewUrlEnd.setValue(cal1.getTime());
 
     super.init(action, rundata, context);// 表示タイプの設定
 
@@ -188,15 +178,36 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     con.setViewStartDate(cal5);
 
     int loginUserId = ALEipUtils.getUserId(rundata);
+    setupLists(rundata, context);
+    target_user_id = getTargetUserId(rundata, context);
+
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || Integer.toString(loginUserId).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    }
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        Integer.valueOf(target_user_id),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
   }
 
   @Override
@@ -335,6 +346,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     return rd;
   }
 
+  @Override
+  public String getTargetUserId() {
+    return target_user_id;
+  }
+
   /**
    * 表示開始日時を取得します。
    *
@@ -353,25 +369,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   @Override
   public ALDateTimeField getViewEnd() {
     return viewEnd;
-  }
-
-  /**
-   * CSV出力URL用表示開始日時を取得します。
-   *
-   * @return
-   */
-  public ALDateTimeField getViewUrlStart() {
-    // viewUrlStart = new ALDateTimeField();
-    return viewUrlStart;
-  }
-
-  /**
-   * CSV出力URL用表示終了日時を取得します。
-   *
-   * @return
-   */
-  public ALDateTimeField getViewUrlEnd() {
-    return viewUrlEnd;
   }
 
   /**
@@ -442,6 +439,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   public boolean isLoginUserID(Long id) {
     return id == userid;
+  }
+
+  @Override
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
 }

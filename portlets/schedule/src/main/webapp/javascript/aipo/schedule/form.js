@@ -862,6 +862,5 @@ aipo.schedule.reminderon = function(){
 }
 
 aipo.schedule.downloadCsv = function(url){
-	window.location.href=url;
+	window.location.href = url;
 }
-

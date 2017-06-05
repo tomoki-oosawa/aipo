@@ -73,14 +73,13 @@
 
 </div>
 <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
-
 <div class="auiSummaryMeta clearfix">
 #if(${client}!="IPHONE")
 <div class="floatRight">
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('FileIOScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewStart}).addQueryData('end_day',$!{result.ViewEnd})))
-#set($title = "$l10n.SCHEDULE_DOWNLOAD")
-<a class="auiButton" title="$title" href="javascript:void(0);" onclick="aipo.schedule.downloadCsv('$dlLink');" >$title</a>
-
+#set($dlLink = $!utils.escapeXML($jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewStart}).addQueryData('end_day',$!{result.ViewEnd})))
+#if($!result.hasAclCsvExport())
+#AUIbutton($l10n.SCHEDULE_DOWNLOAD $dlLink)
+#end
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
 </div>
 #end

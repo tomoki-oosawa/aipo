@@ -31,7 +31,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 
 /**
  * 週間スケジュールのコンテナです。
- * 
+ *
  */
 public class ScheduleListContainer implements ALData {
 

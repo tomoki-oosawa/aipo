@@ -26,21 +26,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.Map;
 
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALEipUser;
-import com.aimluck.eip.common.ALPermissionException;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
+import com.aimluck.eip.schedule.ScheduleListSelectData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -53,15 +54,22 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  *
  *
  */
-public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
+
+public class ScheduleCsvExportScreen extends ALCSVScreen {
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOScheduleCsvExportScreen.class.getName());
+    .getLogger(ScheduleCsvExportScreen.class.getName());
 
   private int userid;
 
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
+
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
+
+  /** アクセス権限の機能名 */
+  private String aclPortletFeature = null;
 
   private ScheduleExportListContainer con;
 
@@ -72,6 +80,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
   private String fileNamePrefix;
 
   private String fileNameSuffix;
+
+  private String target_user_id = null;
 
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
@@ -92,33 +102,54 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
    * @return
    * @throws Exception
    */
+
   @Override
   protected String getCSVString(RunData rundata) throws Exception {
+    ScheduleListSelectData listData = new ScheduleListSelectData();
+    VelocityContext context = new VelocityContext();
     fileNamePrefix = "";
     fileNameSuffix = "";
-    if (ALEipUtils.isAdmin(rundata)) {
-      userid = ALEipUtils.getUserId(rundata);
-      ALAccessControlFactoryService aclservice =
-        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
-          .getInstance())
-          .getService(ALAccessControlFactoryService.SERVICE_NAME);
-      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-      hasAclviewOther =
-        aclhandler.hasAuthority(
-          userid,
-          ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
-          ALAccessControlConstants.VALUE_ACL_LIST);
+    userid = ALEipUtils.getUserId(rundata);
+    ALAccessControlFactoryService aclservice =
+      (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+        .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
+    ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
+    target_user_id = listData.getTargetUserId(rundata, context);
+
+    // アクセス権
+    if (target_user_id == null
+      || "".equals(target_user_id)
+      || (Integer.toString(userid)).equals(target_user_id)) {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+    } else {
+      aclPortletFeature =
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
+    }
+
+    hasAclviewOther =
+      aclhandler.hasAuthority(
+        userid,
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_LIST);
+
+    hasAclCsvExport =
+      aclhandler.hasAuthority(
+        Integer.valueOf(target_user_id),
+        aclPortletFeature,
+        ALAccessControlConstants.VALUE_ACL_EXPORT);
+
+    if (hasAclCsvExport) {
       Map<Integer, List<ScheduleExportResultData>> map =
         new HashMap<Integer, List<ScheduleExportResultData>>();
       Map<Integer, Map<String, List<ScheduleExportResultData>>> dummyMap =
         new HashMap<Integer, Map<String, List<ScheduleExportResultData>>>();
 
-      Date viewStart =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("start_day"));
-      Date viewEnd =
-        DateFormat.getDateInstance(DateFormat.DEFAULT, Locale.JAPAN).parse(
-          rundata.getParameters().get("end_day"));
+      DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+      Date viewStart = format.parse(rundata.getParameters().get("start_day"));
+      Date viewEnd = format.parse(rundata.getParameters().get("end_day"));
+
       int userid = ALEipUtils.getUserId(rundata);
 
       fileNameSuffix = getFileNameSurffix(viewStart, viewEnd);
@@ -127,6 +158,10 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       users = ALEipUtils.getUsers("LoginUser");
       List<Integer> userIds = new ArrayList<Integer>();
       for (ALEipUser user : users) {
+        if (user.getUserId().getValueWithInt() != Integer
+          .valueOf(target_user_id)) {
+          continue;
+        }
         userIds.add(user.getUserId().getValueWithInt());
       }
       // 有効な設備を全て取得する
@@ -161,7 +196,8 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb = new StringBuffer();
-        sb.append("開始日,開始時刻,終了日,終了時刻,場所,タイトル,内容,参加者,設備");
+        sb
+          .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
 
         // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
@@ -219,6 +255,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
             ArrayList<ALEipUser> members = new ArrayList<ALEipUser>();
             ArrayList<FacilityResultData> facilities =
               new ArrayList<FacilityResultData>();
+
             if (map.containsKey(record.getScheduleId().getValueWithInt())) {
               List<ScheduleExportResultData> list =
                 map.get(record.getScheduleId().getValueWithInt());
@@ -242,6 +279,7 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
                 }
               }
             }
+
             // dummyを除外
             if (dummyMap.containsKey(record.getScheduleId().getValueWithInt())) {
               Map<String, List<ScheduleExportResultData>> map2 =
@@ -280,37 +318,34 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         for (ScheduleExportResultData record : arayList) {
-          if (record.isPublic()) { // 公開スケジュールのみに限定
-            sb.append(LINE_SEPARATOR);
-            sb.append("\"");
-            sb.append(record.getViewDate());
-            sb.append("\",\"");
-            sb.append(record.getStartDate());
-            sb.append("\",\"");
-            sb.append(record.getEndDateExport());
-            sb.append("\",\"");
-            sb.append(record.getEndDate());
-            sb.append("\",\"");
-            sb.append(record.getPlaceExport());
-            sb.append("\",\"");
-            sb.append(record.getNameExport());
-            sb.append("\",\"");
-            sb.append(record.getNoteExport());
-            sb.append("\",\"");
-            sb.append(record.getMemberNameExport());
-            sb.append("\",\"");
-            sb.append(record.getFacilityNameExport());
-            sb.append("\"");
-          }
+          sb.append(LINE_SEPARATOR);
+          sb.append("\"");
+          sb.append(record.getViewDate());
+          sb.append("\",\"");
+          sb.append(record.getStartDate());
+          sb.append("\",\"");
+          sb.append(record.getEndDateExport());
+          sb.append("\",\"");
+          sb.append(record.getEndDate());
+          sb.append("\",\"");
+          sb.append(record.getPlaceExport());
+          sb.append("\",\"");
+          sb.append(record.getNameExport());
+          sb.append("\",\"");
+          sb.append(record.getNoteExport());
+          sb.append("\",\"");
+          sb.append(record.getMemberNameExport());
+          sb.append("\"");
         }
-
+        sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
-        logger.error("FileIOScheduleCsvFileScreen.getCSVString", e);
+        logger.error("ScheduleCsvFileScreen.getCSVString", e);
         return null;
       }
     } else {
-      throw new ALPermissionException();
+      fileNameSuffix = "error";
+      return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
     }
   }
 
@@ -381,7 +416,6 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       }
 
       if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
-        // return rd;
         return null;
       }
 
@@ -411,7 +445,9 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       rd.setNote(record.getNote());
       rd.setPlace(record.getPlace());
       rd.setDescription(record.getNote());
-
+      rd.setDegree("O".equals(record.getPublicFlag()), "P".equals(record
+        .getPublicFlag()));
+      rd.setRepeatText(record.getRepeatPattern());
       if (!rd.getPattern().equals("N") && !rd.getPattern().equals("S")) {
         rd.setRepeat(true);
       }
@@ -434,4 +470,16 @@ public class FileIOScheduleCsvExportScreen extends ALCSVScreen {
       + fileNameSuffix
       + ".csv";
   }
+
+  /**
+   * @param rundata
+   * @return
+   * @throws Exception
+   */
+  @Override
+  protected String getCSVString(RunData rundata, Context context)
+      throws Exception {
+    return null;
+  }
+
 }

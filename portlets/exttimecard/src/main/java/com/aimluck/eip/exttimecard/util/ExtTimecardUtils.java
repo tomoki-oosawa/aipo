@@ -66,7 +66,7 @@ public class ExtTimecardUtils {
   public static final String TARGET_GROUP_NAME = "target_group_name";
 
   /** <code>TARGET_USER_ID</code> ユーザによる表示切り替え用変数の識別子 */
-  public static final String TARGET_USER_ID = "target_user_id";
+  public final static String TARGET_USER_ID = "target_user_id";
 
   /** 出退勤フラグ（出勤） */
   public static final String WORK_FLG_ON = "1";

@@ -218,13 +218,13 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
   }
 
   public String getViewDate() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     sdf.format(getStartDate().getValue());
     return sdf.format(getStartDate().getValue());
   }
 
   public String getEndDateExport() {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     sdf.format(getEndDate().getValue());
     return sdf.format(getEndDate().getValue());
   }
@@ -255,6 +255,28 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     field.setValue(str);
     return field;
   }
+
+  // 公開度
+  public ALStringField getPublicExport() {
+    ALStringField field = new ALStringField();
+
+    // ダブルクオーテーションを削除
+    String str = getDegree().getValue().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
+
+  // 繰り返し
+  public ALStringField getRepeatExport() {
+    ALStringField field = new ALStringField();
+
+    // ダブルクオーテーションを削除
+    String str = getRepeatText().getValue().replaceAll("\"", "");
+    field.setValue(str);
+    return field;
+  }
+
+  // 重複
 
   /**
    * @return user_id
