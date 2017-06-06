@@ -106,7 +106,6 @@ public class AccountUserCsvExportScreen extends ALCSVScreen {
       rd.setIsAdmin(ALEipUtils.isAdmin(Integer.valueOf(record.getUserId())));
       rd.setPhotoModified(record.getPhotoModified().getTime());
       rd.setCode(record.getCode());
-
       return rd;
     } catch (Exception ex) {
       logger.error("AccountUserCsvExportScreen.getResultData", ex);

@@ -49,7 +49,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『テンプレート更新』のフォームデータを管理するクラス．
- * 
+ *
  */
 public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
@@ -69,7 +69,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
 
   /**
    * データを更新します。
-   * 
+   *
    * @param action
    * @param rundata
    * @param context
@@ -131,7 +131,7 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -213,7 +213,6 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
               Parameter scheduleParameter = entries[j].getParameter("p6a-uids");
               if (scheduleParameter != null) {
                 scheduleParameter.setValue("");
-                entries[j].setParameter(0, scheduleParameter);
               }
             }
 
@@ -222,7 +221,6 @@ public class AdvancedGagetsPsmlFormData extends GagetsPsmlFormData {
                 entries[j].getParameter("p3a-accounts");
               if (webmailParameter != null) {
                 webmailParameter.setValue("");
-                entries[j].setParameter(0, webmailParameter);
               }
             }
 

@@ -29,7 +29,7 @@ import com.aimluck.eip.util.ALEipUtils;
 
 /**
  * タイムカードを処理するクラスです。 <br />
- * 
+ *
  */
 public class ExtTimecardFormScreen extends ALVelocityScreen {
 
@@ -38,7 +38,7 @@ public class ExtTimecardFormScreen extends ALVelocityScreen {
     .getLogger(ExtTimecardFormScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @throws Exception
