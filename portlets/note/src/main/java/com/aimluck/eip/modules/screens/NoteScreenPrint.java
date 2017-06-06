@@ -24,20 +24,19 @@ import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.common.ALEipConstants;
+import com.aimluck.eip.note.NoteSelectData;
+import com.aimluck.eip.note.util.NoteUtils;
 import com.aimluck.eip.util.ALEipUtils;
-import com.aimluck.eip.workflow.WorkflowAllSelectData;
-import com.aimluck.eip.workflow.WorkflowSelectData;
-import com.aimluck.eip.workflow.util.WorkflowUtils;
 
 /**
- * Webメールの詳細画面を処理するクラスです。 <br />
+ * 伝言メモの詳細画面を処理するクラスです。 <br />
  *
  */
-public class WorkflowScreenPrint extends ALVelocityScreen {
+public class NoteScreenPrint extends ALVelocityScreen {
 
   /** logger */
   private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(WorkflowScreenPrint.class.getName());
+    .getLogger(NoteScreenPrint.class.getName());
 
   /** コンテントタイプ */
   private static final String CONTENT_TYPE = "text/html;charset="
@@ -52,28 +51,13 @@ public class WorkflowScreenPrint extends ALVelocityScreen {
   @Override
   protected void doOutput(RunData rundata, Context context) throws Exception {
     try {
-      String tabParam = rundata.getParameters().getString("tab");
-      String currentTab = ALEipUtils.getTemp(rundata, context, "tab");
-      if ((WorkflowAllSelectData.TAB_ALLDISPLAY).equals(tabParam)
-        || (WorkflowAllSelectData.TAB_ALLDISPLAY).equals(currentTab)) {
-        WorkflowAllSelectData detailData = new WorkflowAllSelectData();
-        detailData.initField();
-        detailData.doViewDetail(this, rundata, context);
-      } else {
-        WorkflowSelectData detailData = new WorkflowSelectData();
-        detailData.initField();
-        detailData.doViewDetail(this, rundata, context);
-      }
-      String mailIndex =
-        rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
-      // context.put("currentTab", ALEipUtils.getTemp(rundata, context, "tab"));
-      context.put(ALEipConstants.ENTITY_ID, mailIndex);
-      setTemplate(
-        rundata,
-        context,
-        "portlets/html/ajax-workflow-detail-print.vm");
+      NoteSelectData detailData = new NoteSelectData();
+      detailData.initField();
+      detailData.doViewDetail(this, rundata, context);
+
+      setTemplate(rundata, context, "portlets/html/ajax-note-detail-print.vm");
     } catch (Exception ex) {
-      logger.error("[WorkflowDetailScreen] Exception.", ex);
+      logger.error("[NoteScreenPrint] Exception.", ex);
       ALEipUtils.redirectDBError(rundata);
     }
   }
@@ -88,7 +72,7 @@ public class WorkflowScreenPrint extends ALVelocityScreen {
    */
   @Override
   protected String getPortletName() {
-    return WorkflowUtils.WORKFLOW_PORTLET_NAME;
+    return NoteUtils.NOTE_PORTLET_NAME;
   }
 
 }
