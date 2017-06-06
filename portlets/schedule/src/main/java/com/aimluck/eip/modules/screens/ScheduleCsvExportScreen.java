@@ -318,6 +318,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
             }
           }
         }
+        // 他ユーザーの非公開の予定は場所と内容を出力しない
         for (ScheduleExportResultData record : arayList) {
           sb.append(LINE_SEPARATOR);
           sb.append("\"");
