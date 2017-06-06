@@ -233,7 +233,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     ALStringField field = new ALStringField();
 
     // ダブルクオーテーションを削除
-    String str = getNote().replaceAll("\"", "");
+    String str = getNoteStr().replaceAll("\"", "");
     if (isPublic() || isUser) {
       field.setValue(str);
       return field;

@@ -314,9 +314,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     prevYear.setValue(cal2.getTime());
 
     ALEipUtils.setTemp(rundata, context, "tmpStart", viewStart.toString()
-      + "-00");
-    // ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
-    // + "-00-00");
+      + "-00-00");
+    ALEipUtils.setTemp(rundata, context, "tmpEnd", viewStart.toString()
+      + "-00-00");
 
     // ログインユーザの ID を設定する．
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
