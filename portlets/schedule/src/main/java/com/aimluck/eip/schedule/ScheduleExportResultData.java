@@ -229,22 +229,31 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return sdf.format(getEndDate().getValue());
   }
 
-  public ALStringField getNoteExport() {
+  public ALStringField getNoteExport(boolean isUser) {
     ALStringField field = new ALStringField();
 
     // ダブルクオーテーションを削除
-    String str = getNoteStr().replaceAll("\"", "");
-    field.setValue(str);
-    return field;
+    String str = getNote().replaceAll("\"", "");
+    if (isPublic() || isUser) {
+      field.setValue(str);
+      return field;
+    } else {
+      field.setValue("");
+      return field;
+    }
   }
 
-  public ALStringField getPlaceExport() {
+  public ALStringField getPlaceExport(boolean isUser) {
     ALStringField field = new ALStringField();
-
     // ダブルクオーテーションを削除
     String str = getPlace().getValue().replaceAll("\"", "");
-    field.setValue(str);
-    return field;
+    if (isPublic() || isUser) {
+      field.setValue(str);
+      return field;
+    } else {
+      field.setValue("");
+      return field;
+    }
   }
 
   public ALStringField getNameExport() {

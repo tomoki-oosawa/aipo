@@ -82,6 +82,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
 
   private String target_user_id = null;
 
+  private boolean isUser = false;
+
   /** 日付の表示フォーマット */
   public static final String DEFAULT_DATE_TIME_FORMAT = "yyyyMMdd";
 
@@ -115,11 +117,10 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     target_user_id = listData.getTargetUserId(rundata, context);
+    isUser = Integer.toString(userid).equals(target_user_id);
 
     // アクセス権
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || (Integer.toString(userid)).equals(target_user_id)) {
+    if (target_user_id == null || "".equals(target_user_id) || isUser) {
       aclPortletFeature =
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
     } else {
@@ -229,6 +230,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         }
         List<ScheduleExportResultData> arayList =
           new ArrayList<ScheduleExportResultData>();
+
         // 出力用データのみ抽出
         for (ScheduleExportResultData record : con.getScheduleList()) {
           if (record.getUserId().getValueWithInt() != Integer
@@ -327,11 +329,11 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           sb.append("\",\"");
           sb.append(record.getEndDate());
           sb.append("\",\"");
-          sb.append(record.getPlaceExport());
+          sb.append(record.getPlaceExport(isUser));
           sb.append("\",\"");
           sb.append(record.getNameExport());
           sb.append("\",\"");
-          sb.append(record.getNoteExport());
+          sb.append(record.getNoteExport(isUser));
           sb.append("\",\"");
           sb.append(record.getMemberNameExport());
           sb.append("\"");
