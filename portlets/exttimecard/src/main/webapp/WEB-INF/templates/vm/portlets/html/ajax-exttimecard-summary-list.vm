@@ -20,8 +20,6 @@
 #set($meisaiflag = 1)
 ## ---------------------------------------------------------------------------
 
-## 「タイムカード集計（20170308現在）」のページです
-
 #AUIcontentsAreaHeader()
 
 #set($user_results = $result.GroupExtTimecards)
