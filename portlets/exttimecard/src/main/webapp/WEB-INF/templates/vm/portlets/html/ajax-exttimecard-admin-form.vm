@@ -1,0 +1,68 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#set ($action_str = $l10n.EXTTIMECARD_UPDATE)
+#set ($subtitle = $l10n.GADGETS_APP_EDIT)
+#set ($event_submit = "eventSubmit_doExtTimecardAdmin_update")
+## ---------------------------------------------------------------------------
+#ALdialogheader($subtitle)
+#ALerrmsg($errmsgs)
+<div id="messageDiv"></div>
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#ALajaxscreenformheader("exttimecardAdminForm" $jslink $portlet "ExtTimecardAdminFormJSONScreen" "aimluck.io.submit(this,'$indicator_id','$!portlet.ID',aipo.exttimecard.onReceiveMessage)")
+#ALerrmsg($errmsgs)
+#ALajaxscreenformheader("exttimecardForm")
+<input type="hidden" name="mode" value="update" />
+
+##ALtableheaderWide()
+<table class="listTable wide">
+  <tbody>
+  #ALtdcaption($l10n.GADGETS_TITLE)
+  #ALtditemheader()
+  $!result.Detail.Title
+  #ALtditemfooter()
+  #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
+  #ALtditem($!result.Detail.Description)
+  #ALtdcaption($l10n.EXTTIMECARD_ADMIN_RESTRICT_IP)
+  #ALtditemheader()
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_off" name="enabled_ip" value="F" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='none';" #if ($!{result.enabledIpFlag.toString()} == "F") checked #end><label for="exttimecard_enable_ip_off">&nbsp;無効にする</label></p>
+    <p><input class="mt0" type="radio" id="exttimecard_enable_ip_on" name="enabled_ip" value="T" onclick="dojo.byId('exttimecard_allowed_ip_list').style.display='';" #if ($!{result.enabledIpFlag.toString()} == "T") checked #end><label for="exttimecard_enable_ip_on">&nbsp;有効にする</label></p>
+
+    <table id="exttimecard_allowed_ip_list" #if ($!{result.enabledIpFlag.toString()} == "F") style="display:none" #end>
+      <tbody>
+      <tr><td>
+      <p class="mb10">アクセスを許可するIPアドレスを入力してください。</p>
+      #foreach($ip in $!result.IpAddresses)
+      	<p><input type="text" name="allowed_ip" value= $!ip></p>
+      #end
+      </td></tr>
+      <tr><td><a id="ip-access-add-form" onclick="aipo.exttimecard.addIpForm();" href="javascript:void(0);">入力欄を追加</a></td></tr>
+      </tbody>
+    </table>
+
+  </tbody>
+</table>
+##ALtablefooter()
+
+#ALbuttonheader()
+#ALsubmit($event_submit $action_str)#ALajaxbuttonClose()
+#ALbuttonfooter()
+#ALformfooter()
+#ALdialogfooter()

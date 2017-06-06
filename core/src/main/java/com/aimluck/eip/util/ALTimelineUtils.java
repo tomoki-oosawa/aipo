@@ -59,6 +59,7 @@ public class ALTimelineUtils {
     timeline.setNote(ALLocalizationUtils.getl10n("TIMELINE_GUIDE_MESSAGE"));
     timeline.setTimelineType("T");
     timeline.setParams(null);
+    timeline.setPinned("F");
     timeline.setCreateDate(now);
     timeline.setUpdateDate(now);
 
