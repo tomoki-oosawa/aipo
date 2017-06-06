@@ -621,7 +621,7 @@ CREATE TABLE `eip_t_schedule` (
   `schedule_id` int(11) NOT NULL AUTO_INCREMENT,
   `parent_id` int(11) DEFAULT NULL,
   `owner_id` int(11) DEFAULT NULL,
-  `repeat_pattern` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `repeat_pattern` varchar(11) COLLATE utf8_unicode_ci DEFAULT NULL,
   `start_date` datetime DEFAULT NULL,
   `end_date` datetime DEFAULT NULL,
   `name` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
