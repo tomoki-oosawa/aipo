@@ -152,7 +152,7 @@
 			#set($work_hour = ${rdlist.getHourToString("0.0")})
 		#end
 		## 総労働時間の代入
-		#set($total_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkHour(true)})})
+		#set($total_work_hour = ${rdlist.getHourToString(${rdlist.getTotalWorkRoundHour()})})
 		#if ($total_work_hour == "")
 			#set($total_work_hour = ${rdlist.getHourToString("0.0")})
 		#end
@@ -247,7 +247,7 @@
 		#ALtdcellfooter()
 
 		## 深夜労働時間の代入
-		#set($total_midnight_work_hour = $rdlist.getHourToString(${rdlist.getMidnightWorkHour(true)}))
+		#set($total_midnight_work_hour = $rdlist.getHourToString(${rdlist.getMidnightWorkRoundHour()}))
 		#if ($total_midnight_work_hour == "")
 			#set($total_midnight_work_hour = $rdlist.getHourToString("0.0"))
 		#end
@@ -257,7 +257,7 @@
 		#ALtdcellfooter()
 
 		## 休憩時間の代入
-		#set($rest_hour = $rdlist.getHourToString(${rdlist.getRestHour(true)}))
+		#set($rest_hour = $rdlist.getHourToString(${rdlist.getRestRoundHour()}))
 		#if ($rest_hour == "")
 			#set($rest_hour = $rdlist.getHourToString("0.0"))
 		#end

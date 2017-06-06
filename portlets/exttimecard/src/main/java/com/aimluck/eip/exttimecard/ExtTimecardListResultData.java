@@ -506,12 +506,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return float
    */
-  public float getTotalWorkHour(boolean round) {
-    float time = getTotalWorkHour();
-    if (round) {
-      time = ExtTimecardUtils.roundHour(time);
-    }
-    return time;
+  public float getTotalWorkRoundHour() {
+    return ExtTimecardUtils.roundHour(getTotalWorkHour());
   }
 
   /**
@@ -883,12 +879,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return float
    */
-  public float getRestHour(boolean round) {
-    float time = getRestHour();
-    if (round) {
-      time = ExtTimecardUtils.roundHour(time);
-    }
-    return time;
+  public float getRestRoundHour() {
+    return ExtTimecardUtils.roundHour(getRestHour());
   }
 
   /**
@@ -1511,12 +1503,8 @@ public class ExtTimecardListResultData implements ALData {
    *
    * @return
    */
-  public float getMidnightWorkHour(boolean round) {
-    float time = getMidnightWorkHour();
-    if (round) {
-      time = ExtTimecardUtils.roundHour(time);
-    }
-    return time;
+  public float getMidnightWorkRoundHour() {
+    return ExtTimecardUtils.roundHour(getMidnightWorkHour());
   }
 
   /**
