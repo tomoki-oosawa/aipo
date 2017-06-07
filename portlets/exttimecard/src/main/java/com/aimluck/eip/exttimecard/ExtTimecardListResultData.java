@@ -1003,7 +1003,7 @@ public class ExtTimecardListResultData implements ALData {
   *
   */
   public String getHourToString(String time) {
-    if (time == String.valueOf(NO_DATA)) {
+    if (time.equals(String.valueOf(NO_DATA))) {
       return "";
     }
     return time + "h";
