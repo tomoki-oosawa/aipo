@@ -502,6 +502,15 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * 総労働時間（所定内勤務時間 + 残業時間 + 法内残業時間）
+   *
+   * @return float
+   */
+  public float getTotalWorkRoundHour() {
+    return ExtTimecardUtils.roundHour(getTotalWorkHour());
+  }
+
+  /**
    * 総労働時間（表示用）
    *
    * @return
@@ -866,6 +875,15 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * 休憩時間
+   *
+   * @return float
+   */
+  public float getRestRoundHour() {
+    return ExtTimecardUtils.roundHour(getRestHour());
+  }
+
+  /**
    * その日遅刻したかどうか
    *
    * @return boolean
@@ -907,11 +925,85 @@ public class ExtTimecardListResultData implements ALData {
   }
 
   /**
+   * その日勤務したかどうか(旧方式）
+   *
+   * @return boolean
+   */
+  public boolean isWorkDay() {
+    if (getWorkHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * その日勤務したかどうか(新方式）
+   *
+   * @return boolean
+   */
+  public boolean isNewWorkDay() {
+    if (getWorkHour() != NO_DATA) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * その日残業したかどうか
+   *
+   * @return boolean
+   */
+  public boolean isOverWorkDay() {
+    if (getOvertimeHourWithoutRestHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * 休出した日かどうか
+   *
+   * @return boolean
+   */
+  public boolean isOffDay() {
+    if (getOffHour() > 0.0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
    *
    *
    */
   public String getHourToString(float time) {
     if (time == NO_DATA) {
+      return "";
+    }
+    return time + "h";
+  }
+
+  /**
+  *
+  *
+  */
+  public String getHourToString(int time) {
+    if (time == NO_DATA) {
+      return "";
+    }
+    return time + "h";
+  }
+
+  /**
+  *
+  *
+  */
+  public String getHourToString(String time) {
+    if (time.equals(String.valueOf(NO_DATA))) {
       return "";
     }
     return time + "h";
@@ -1404,6 +1496,15 @@ public class ExtTimecardListResultData implements ALData {
       return time;
     }
     return 0f;
+  }
+
+  /**
+   * 深夜残業時間
+   *
+   * @return
+   */
+  public float getMidnightWorkRoundHour() {
+    return ExtTimecardUtils.roundHour(getMidnightWorkHour());
   }
 
   /**
