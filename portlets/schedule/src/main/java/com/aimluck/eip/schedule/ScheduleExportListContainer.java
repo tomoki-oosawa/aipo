@@ -112,9 +112,11 @@ public class ScheduleExportListContainer implements ALData {
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
 
-          if (temp.get(Calendar.DATE) == lastDayofMonth) {
+          if (temp.get(Calendar.DATE) == lastDayofMonth
+            && temp.get(Calendar.HOUR_OF_DAY) == 24) {
             break;
           }
+
           addRd.initField();
           addRd.setScheduleId((int) rd.getScheduleId().getValue());
           addRd.setParentId((int) rd.getParentId().getValue());
