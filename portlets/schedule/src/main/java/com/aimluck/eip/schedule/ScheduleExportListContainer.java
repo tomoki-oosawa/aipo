@@ -70,6 +70,7 @@ public class ScheduleExportListContainer implements ALData {
     isSort = false;
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(viewStartDate.getValue());
+    int lastDayofMonth = startDate.getActualMaximum(Calendar.DATE);
     Calendar endDate = Calendar.getInstance();
     endDate.setTime(viewEndDate.getValue());
     while (startDate.before(endDate)) {
@@ -110,6 +111,10 @@ public class ScheduleExportListContainer implements ALData {
             .getMinute()));
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
+
+          if (temp.get(Calendar.DATE) == lastDayofMonth) {
+            break;
+          }
           addRd.initField();
           addRd.setScheduleId((int) rd.getScheduleId().getValue());
           addRd.setParentId((int) rd.getParentId().getValue());
