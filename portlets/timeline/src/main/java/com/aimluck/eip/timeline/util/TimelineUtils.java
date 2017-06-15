@@ -123,6 +123,12 @@ public class TimelineUtils {
   /** カテゴリの公開／非公開の値（非公開） */
   public static final String PUBLIC_FLG_VALUE_NONPUBLIC = "F";
 
+  /** カテゴリの公開／非公開の値（非公開） */
+  public static final String LIMIT_FILE_VALUE = "K";
+
+  /** カテゴリの公開／非公開の値（非公開） */
+  public static final String LIMIT_LINK_VALUE = "L";
+
   /** カテゴリの状態値（自分のみのカテゴリ） */
   public static final String STAT_VALUE_OWNER = "O";
 
@@ -1143,6 +1149,10 @@ public class TimelineUtils {
     switch (displayParam) {
       case "P":
         type = "T";
+      case "L":
+        type = "L";
+      case "F":
+        type = "K";
         break;
       case "U":
         type = "A";

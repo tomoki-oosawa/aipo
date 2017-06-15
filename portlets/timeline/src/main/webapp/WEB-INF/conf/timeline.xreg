@@ -70,8 +70,8 @@
         </parameter>
         <parameter name="p4a-group.style" value="TimelineClassificationBox" hidden="true" cachedOnName="true" cachedOnValue="true"/>
         <parameter name="p4a-group.style.initialvalue" value="すべて" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4a-group.style.items" value="all,posting,update" hidden="true" cachedOnName="true" cachedOnValue="true"/>
-        <parameter name="p4a-group.style.values" value="すべて,投稿のみ,更新情報のみ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-group.style.items" value="all,posting,update,link,file" hidden="true" cachedOnName="true" cachedOnValue="true"/>
+        <parameter name="p4a-group.style.values" value="すべて,投稿のみ,更新情報のみ,リンク付きのみ,ファイル付のみ" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
         <parameter name="admin_detail_screen" value="TimelineAdminDetailScreen" hidden="true" cachedOnName="true" cachedOnValue="true"/>
 
