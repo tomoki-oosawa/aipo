@@ -1,4 +1,0 @@
-2017-06-05 14:49:17,675 <ERROR> (http-nio-8080-exec-4) [SimpleLog4JLogSystem.java:181]- RHS of #set statement is null. Context will not be modified. /portlets/html/ajax-wiki.vm [line 20, column 1]
-2017-06-05 14:49:17,711 <ERROR> (http-nio-8080-exec-4) [SimpleLog4JLogSystem.java:181]- Left side ($result.List.size()) of '==' operation has null value. If a reference, it may not be in the context. Operation not possible. /portlets/html/ajax-report.vm [line 20, column 28]
-2017-06-05 14:49:17,711 <ERROR> (http-nio-8080-exec-3) [SimpleLog4JLogSystem.java:181]- RHS of #set statement is null. Context will not be modified. /portlets/html/ajax-wiki.vm [line 20, column 1]
-2017-06-05 14:49:17,783 <ERROR> (http-nio-8080-exec-3) [SimpleLog4JLogSystem.java:181]- Left side ($result.List.size()) of '==' operation has null value. If a reference, it may not be in the context. Operation not possible. /portlets/html/ajax-report.vm [line 20, column 28]
