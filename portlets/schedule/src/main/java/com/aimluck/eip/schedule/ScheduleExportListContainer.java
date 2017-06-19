@@ -66,13 +66,21 @@ public class ScheduleExportListContainer implements ALData {
     scheduleList = new ArrayList<ScheduleExportResultData>();
   }
 
+  public String getEndDate() {
+    Calendar endDate = Calendar.getInstance();
+    endDate.setTime(viewEndDate.getValue());
+    return endDate.toString();
+  }
+
   public boolean addResultData(ScheduleExportResultData rd) {
     isSort = false;
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(viewStartDate.getValue());
-    int lastDayofMonth = startDate.getActualMaximum(Calendar.DATE);
+    startDate.setLenient(false);
+    int lastDayofMonth = startDate.getActualMaximum(Calendar.MONTH);
     Calendar endDate = Calendar.getInstance();
     endDate.setTime(viewEndDate.getValue());
+    endDate.add(Calendar.MINUTE, -3);
     while (startDate.before(endDate)) {
       ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd-HH-mm");
       ScheduleExportResultData addRd = new ScheduleExportResultData();
@@ -93,9 +101,11 @@ public class ScheduleExportListContainer implements ALData {
             .getValue(), rd.getEndDate().getValue())) {
           isClone = true;
         }
+
+        Calendar temp = Calendar.getInstance();
+        temp.setTime(field.getValue());
+
         if (isClone) {
-          Calendar temp = Calendar.getInstance();
-          temp.setTime(field.getValue());
           temp
             .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
           temp.set(Calendar.MINUTE, Integer.parseInt(rd
@@ -111,11 +121,6 @@ public class ScheduleExportListContainer implements ALData {
             .getMinute()));
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
-
-          if (temp.get(Calendar.DATE) == lastDayofMonth
-            && temp.get(Calendar.HOUR_OF_DAY) == 24) {
-            break;
-          }
 
           addRd.initField();
           addRd.setScheduleId((int) rd.getScheduleId().getValue());
@@ -150,6 +155,7 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setUserId(rd.getUserId().getValueWithInt());
           addResultDataInternal(addRd);
         }
+
       } else {
         addResultDataInternal(rd);
         return true;
@@ -251,6 +257,7 @@ public class ScheduleExportListContainer implements ALData {
 
           cal.setTime(a.getStartDate().getValue());
           cal2.setTime(b.getStartDate().getValue());
+
           if ((cal.getTime()).compareTo(cal2.getTime()) != 0) {
             return (cal.getTime()).compareTo(cal2.getTime());
           } else {

@@ -223,6 +223,10 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     return sdf.format(getStartDate().getValue());
   }
 
+  public String getMonthDate() {
+    return getStartDate().getMonth();
+  }
+
   public String getEndDateExport() {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     sdf.format(getEndDate().getValue());

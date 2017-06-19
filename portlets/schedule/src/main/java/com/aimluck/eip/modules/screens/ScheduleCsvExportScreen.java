@@ -41,6 +41,7 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
 import com.aimluck.eip.schedule.ScheduleListSelectData;
+import com.aimluck.eip.schedule.ScheduleResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -182,6 +183,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       cal5.setTime(viewStart);
       Calendar cal6 = Calendar.getInstance();
       cal6.setTime(viewEnd);
+      cal6.add(Calendar.MINUTE, -4);
 
       // 参加者調整後リスト
       con = new ScheduleExportListContainer();
@@ -232,6 +234,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           new ArrayList<ScheduleExportResultData>();
 
         // 出力用データのみ抽出
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
+        Calendar start = Calendar.getInstance();
         for (ScheduleExportResultData record : con.getScheduleList()) {
           if (record.getUserId().getValueWithInt() != Integer
             .valueOf(target_user_id)) {
@@ -319,25 +323,32 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         // 他ユーザーの非公開の予定は場所と内容を出力しない
+
+        ScheduleResultData rd = new ScheduleResultData();
         for (ScheduleExportResultData record : arayList) {
-          sb.append(LINE_SEPARATOR);
-          sb.append("\"");
-          sb.append(record.getViewDate());
-          sb.append("\",\"");
-          sb.append(record.getStartDate());
-          sb.append("\",\"");
-          sb.append(record.getEndDateExport());
-          sb.append("\",\"");
-          sb.append(record.getEndDate());
-          sb.append("\",\"");
-          sb.append(record.getPlaceExport(isUser));
-          sb.append("\",\"");
-          sb.append(record.getNameExport());
-          sb.append("\",\"");
-          sb.append(record.getNoteExport(isUser));
-          sb.append("\",\"");
-          sb.append(record.getMemberNameExport());
-          sb.append("\"");
+          if (sdf.parse(record.getViewDate()).compareTo(
+            rd.getEndDate().getValue()) == 1) {
+            break;
+          } else {
+            sb.append(LINE_SEPARATOR);
+            sb.append("\"");
+            sb.append(record.getViewDate());
+            sb.append("\",\"");
+            sb.append(record.getStartDate());
+            sb.append("\",\"");
+            sb.append(record.getEndDateExport());
+            sb.append("\",\"");
+            sb.append(record.getEndDate());
+            sb.append("\",\"");
+            sb.append(record.getPlaceExport(isUser));
+            sb.append("\",\"");
+            sb.append(record.getNameExport());
+            sb.append("\",\"");
+            sb.append(record.getNoteExport(isUser));
+            sb.append("\",\"");
+            sb.append(record.getMemberNameExport());
+            sb.append("\"");
+          }
         }
         sb.append(",\"\"");
         return sb.toString();
@@ -420,7 +431,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       if (!hasAclviewOther && !is_member) {// 閲覧権限がなく、グループでもない
         return null;
       }
-
       // ID
       rd.setScheduleId(record.getScheduleId().intValue());
       // 親スケジュール ID
