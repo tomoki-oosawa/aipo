@@ -342,8 +342,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
-        logger.error("ScheduleCsvFileScreen.getCSVString", e);
-        return null;
+        fileNameSuffix = "error";
+        return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
       }
     } else {
       fileNameSuffix = "error";
