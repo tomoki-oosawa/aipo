@@ -347,7 +347,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           || ptnFirst == 'M'
           || ptnFirst == 'Y') {
           Character ptnLast = ptn.charAt(ptn.length() - 1);
-          if (ptnLast == 'D' || ptnLast == 'A' || ptnLast == 'B') {
+          if (ptnLast == 'D'
+            || ptnLast == 'A'
+            || ptnLast == 'B'
+            || ptnLast == 'N') {
             // 候補日のリストを作成
             List<ALDateTimeField> candidateList =
               new ArrayList<ALDateTimeField>();
@@ -447,6 +450,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
               event.getProperties().add(new ExDate(deleteList));
             } else {
               switch (ptn.charAt(ptn.length() - 1)) {
+                case 'N':
                 case 'D':
                   for (int i = 0; i < candidateList.size(); i++) {
                     if (!ScheduleUtils.isView(
