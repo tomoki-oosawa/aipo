@@ -41,7 +41,6 @@ import com.aimluck.eip.facilities.util.FacilitiesUtils;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
 import com.aimluck.eip.schedule.ScheduleListSelectData;
-import com.aimluck.eip.schedule.ScheduleResultData;
 import com.aimluck.eip.schedule.util.ScheduleUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
@@ -323,32 +322,25 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           }
         }
         // 他ユーザーの非公開の予定は場所と内容を出力しない
-
-        ScheduleResultData rd = new ScheduleResultData();
         for (ScheduleExportResultData record : arayList) {
-          if (sdf.parse(record.getViewDate()).compareTo(
-            rd.getEndDate().getValue()) == 1) {
-            break;
-          } else {
-            sb.append(LINE_SEPARATOR);
-            sb.append("\"");
-            sb.append(record.getViewDate());
-            sb.append("\",\"");
-            sb.append(record.getStartDate());
-            sb.append("\",\"");
-            sb.append(record.getEndDateExport());
-            sb.append("\",\"");
-            sb.append(record.getEndDate());
-            sb.append("\",\"");
-            sb.append(record.getPlaceExport(isUser));
-            sb.append("\",\"");
-            sb.append(record.getNameExport());
-            sb.append("\",\"");
-            sb.append(record.getNoteExport(isUser));
-            sb.append("\",\"");
-            sb.append(record.getMemberNameExport());
-            sb.append("\"");
-          }
+          sb.append(LINE_SEPARATOR);
+          sb.append("\"");
+          sb.append(record.getViewDate());
+          sb.append("\",\"");
+          sb.append(record.getStartDate());
+          sb.append("\",\"");
+          sb.append(record.getEndDateExport());
+          sb.append("\",\"");
+          sb.append(record.getEndDate());
+          sb.append("\",\"");
+          sb.append(record.getPlaceExport(isUser));
+          sb.append("\",\"");
+          sb.append(record.getNameExport());
+          sb.append("\",\"");
+          sb.append(record.getNoteExport(isUser));
+          sb.append("\",\"");
+          sb.append(record.getMemberNameExport());
+          sb.append("\"");
         }
         sb.append(",\"\"");
         return sb.toString();

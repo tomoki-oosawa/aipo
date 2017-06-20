@@ -4626,7 +4626,7 @@ public class ScheduleUtils {
       if (viewStart != null && viewEnd != null) {
         body.append(" AND ( ");
         body.append(" ( ");
-        body.append(" t4.start_date <= '");
+        body.append(" t4.start_date < '");
         body
           .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
         body.append("' ");
