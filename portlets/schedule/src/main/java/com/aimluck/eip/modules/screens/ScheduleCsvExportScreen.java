@@ -182,7 +182,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       cal5.setTime(viewStart);
       Calendar cal6 = Calendar.getInstance();
       cal6.setTime(viewEnd);
-      cal6.add(Calendar.MINUTE, -4);
 
       // 参加者調整後リスト
       con = new ScheduleExportListContainer();
@@ -233,8 +232,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           new ArrayList<ScheduleExportResultData>();
 
         // 出力用データのみ抽出
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd");
-        Calendar start = Calendar.getInstance();
         for (ScheduleExportResultData record : con.getScheduleList()) {
           if (record.getUserId().getValueWithInt() != Integer
             .valueOf(target_user_id)) {

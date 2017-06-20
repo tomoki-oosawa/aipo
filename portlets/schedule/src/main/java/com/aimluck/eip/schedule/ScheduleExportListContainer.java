@@ -76,11 +76,8 @@ public class ScheduleExportListContainer implements ALData {
     isSort = false;
     Calendar startDate = Calendar.getInstance();
     startDate.setTime(viewStartDate.getValue());
-    startDate.setLenient(false);
-    int lastDayofMonth = startDate.getActualMaximum(Calendar.MONTH);
     Calendar endDate = Calendar.getInstance();
     endDate.setTime(viewEndDate.getValue());
-    endDate.add(Calendar.MINUTE, -3);
     while (startDate.before(endDate)) {
       ALDateTimeField field = new ALDateTimeField("yyyy-MM-dd-HH-mm");
       ScheduleExportResultData addRd = new ScheduleExportResultData();
@@ -102,10 +99,9 @@ public class ScheduleExportListContainer implements ALData {
           isClone = true;
         }
 
-        Calendar temp = Calendar.getInstance();
-        temp.setTime(field.getValue());
-
         if (isClone) {
+          Calendar temp = Calendar.getInstance();
+          temp.setTime(field.getValue());
           temp
             .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
           temp.set(Calendar.MINUTE, Integer.parseInt(rd
