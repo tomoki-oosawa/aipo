@@ -68,20 +68,20 @@ public class MessageRoomNotificationFormJSONScreen extends ALJSONScreen {
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();
-        JSONArray json =
-          JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
-        JSONObject obj = new JSONObject();
-        obj.put("params", json);
-        result = obj.toString();
-        /*
-         * if (formData.doUpdate(this, rundata, context)) { JSONArray json =
-         * JSONArray.fromObject(Arrays.asList(formData.getRoomId())); JSONObject
-         * obj = new JSONObject(); obj.put("params", json); result =
-         * obj.toString(); } else { JSONArray json = JSONArray
-         * .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-         * JSONObject obj = new JSONObject(); obj.put("err", json); result =
-         * obj.toString(); }
-         */
+        if (formData.doUpdate(this, rundata, context)) {
+          JSONArray json =
+            JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
+          JSONObject obj = new JSONObject();
+          obj.put("params", json);
+          result = obj.toString();
+        } else {
+          JSONArray json =
+            JSONArray
+              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
+          JSONObject obj = new JSONObject();
+          obj.put("err", json);
+          result = obj.toString();
+        }
       } else if (ALEipConstants.MODE_DELETE.equals(mode)) {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();

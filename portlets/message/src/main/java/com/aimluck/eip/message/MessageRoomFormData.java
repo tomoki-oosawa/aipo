@@ -555,7 +555,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         Date now = new Date();
 
         Database.deleteAll(model.getEipTMessageRoomMember());
-
         boolean isFirst = true;
         StringBuilder autoName = new StringBuilder();
         for (ALEipUser user : memberList) {
@@ -607,6 +606,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
           model.setPhotoModified(null);
           model.setHasPhoto("F");
         }
+
       }
 
       Database.commit();
