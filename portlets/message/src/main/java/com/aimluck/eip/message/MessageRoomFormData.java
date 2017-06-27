@@ -55,7 +55,6 @@ import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
-import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -474,7 +473,10 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       if (StringUtils.isEmpty(name.getValue())) {
         model.setAutoName("T");
-        model.setName(ALCommonUtils.compressString(autoName.toString(), 252));
+        if (autoName.length() > 255) {
+          autoName.delete(255, autoName.length());
+        }
+        model.setName(autoName.toString());
       } else {
         model.setAutoName("F");
         model.setName(name.getValue());
