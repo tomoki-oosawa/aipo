@@ -299,7 +299,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
     name.limitMaxLength(50);
-
   }
 
   /**
@@ -377,6 +376,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
+
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
       List<String> memberNames = new ArrayList<String>();
@@ -473,6 +473,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       if (StringUtils.isEmpty(name.getValue())) {
         model.setAutoName("T");
+        if (autoName.length() > 255) {
+          autoName.delete(255, autoName.length());
+        }
         model.setName(autoName.toString());
       } else {
         model.setAutoName("F");
@@ -573,6 +576,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
         if (StringUtils.isEmpty(name.getValue())) {
           model.setAutoName("T");
+          if (autoName.length() > 255) {
+            autoName.delete(255, autoName.length() - 1);
+          }
           model.setName(autoName.toString());
         } else {
           model.setAutoName("F");
@@ -645,7 +651,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         MessageUtils.FOLDER_FILEDIR_MESSAGE,
         MessageUtils.CATEGORY_KEY,
         files);
-
       Database.delete(model);
       Database.commit();
     } catch (Throwable t) {
