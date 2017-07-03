@@ -95,6 +95,8 @@ public class ALEipConstants {
 
   public static final String UTILS = "utils";
 
+  public static final String NOTIFICATIONFLAG = "notificationFlag";
+
   /** 携帯電話の固有 ID のプレフィックス */
   public static final String KEY_CELLULAR_UID = "cellularuid_";
 

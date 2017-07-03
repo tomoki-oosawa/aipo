@@ -91,6 +91,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private String folderName = null;
 
+  private String notificationFlag = null;
+
   private byte[] facePhoto;
 
   private byte[] facePhoto_smartphone;
@@ -224,6 +226,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
         }
         roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
 
+        notificationFlag =
+          rundata.getParameters().getString(ALEipConstants.NOTIFICATIONFLAG);
+
         List<FileuploadLiteBean> fileBeanList =
           FileuploadUtils.getFileuploadList(rundata);
         if (fileBeanList != null && fileBeanList.size() > 0) {
@@ -314,6 +319,11 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
     // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定以外の値の検証は不要
     if (!login_user_room_auth || !isGroup) {
+      return true;
+    }
+
+    // 通知設定用の分岐　通知設定以外の値の検証は不要
+    if (notificationFlag.equals("T")) {
       return true;
     }
 

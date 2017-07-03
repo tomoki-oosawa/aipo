@@ -47,24 +47,6 @@ public class MessageRoomNotificationFormJSONScreen extends ALJSONScreen {
     String mode = this.getMode();
     try {
 
-      if (ALEipConstants.MODE_INSERT.equals(mode)) {
-        MessageRoomFormData formData = new MessageRoomFormData();
-        formData.initField();
-        if (formData.doInsert(this, rundata, context)) {
-          JSONArray json =
-            JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
-          JSONObject obj = new JSONObject();
-          obj.put("params", json);
-          result = obj.toString();
-        } else {
-          JSONArray json =
-            JSONArray
-              .fromObject(context.get(ALEipConstants.ERROR_MESSAGE_LIST));
-          JSONObject obj = new JSONObject();
-          obj.put("err", json);
-          result = obj.toString();
-        }
-      }
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();
