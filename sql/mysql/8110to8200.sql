@@ -65,3 +65,8 @@ INSERT INTO `eip_t_acl_role` VALUES(NULL, 'タイムライン（固定化）管�
 INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id from eip_t_acl_role WHERE role_name = 'タイムライン（固定化）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 UPDATE eip_t_timeline SET pinned ='F';
 -- 20170123
+
+-- 20170706
+ALTER TABLE eip_t_message_read DROP INDEX eip_t_message_read_index2;
+ALTER TABLE eip_t_message_read ADD INDEX eip_t_message_read_index2(ROOM_ID);
+-- 20170706
