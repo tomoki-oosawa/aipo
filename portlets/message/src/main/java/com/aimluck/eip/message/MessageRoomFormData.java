@@ -435,7 +435,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       }
 
       roomId = room.getRoomId();
-      // room.setSettingNotification("nukukunu");
       isSettingNotification = room.getSettingNotification();
 
     } catch (ALPageNotFoundException e) {
@@ -510,7 +509,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
-      // model.setSettingNotification("nukukunu");
       isSettingNotification = model.getSettingNotification();
 
     } catch (Exception ex) {
@@ -622,7 +620,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
-      // model.setSettingNotification("nukukunu");
       isSettingNotification = model.getSettingNotification();
 
     } catch (Throwable t) {
