@@ -47,7 +47,6 @@ public class MessageRoomFormScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-
       MessageRoomFormData formData = new MessageRoomFormData();
       formData.initField();
       formData.doViewForm(this, rundata, context);

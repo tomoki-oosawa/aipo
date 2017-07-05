@@ -36,6 +36,8 @@ public class EipTMessageRoom extends _EipTMessageRoom {
 
   private Long photoModified = null;
 
+  private String isSettingNotification = null;
+
   public Integer getRoomId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(ROOM_ID_PK_COLUMN);
@@ -139,6 +141,24 @@ public class EipTMessageRoom extends _EipTMessageRoom {
    */
   public Integer getUserId() {
     return userId;
+  }
+
+  /**
+   * @param isSettingNotification
+   *          セットする isSettingNotification
+   */
+  @Override
+  public void setSettingNotification(String isSettingNotification) {
+    this.isSettingNotification = isSettingNotification;
+  }
+
+  /**
+   * @return isSettingNotification
+   */
+  @Override
+  public String getSettingNotification() {
+    return isSettingNotification;
+
   }
 
 }

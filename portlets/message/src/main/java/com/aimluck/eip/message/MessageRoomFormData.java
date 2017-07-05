@@ -91,7 +91,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private String folderName = null;
 
-  private String notificationFlag = null;
+  private String isSettingNotification = null;
 
   private byte[] facePhoto;
 
@@ -144,7 +144,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
     if (res) {
       try {
-
         String memberNames[] = rundata.getParameters().getStrings("member_to");
         String memberAuthorities[] =
           rundata.getParameters().getStrings("member_authority_to");
@@ -225,9 +224,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
         }
         roomId = rundata.getParameters().getInteger(ALEipConstants.ENTITY_ID);
-
-        notificationFlag =
-          rundata.getParameters().getString(ALEipConstants.NOTIFICATIONFLAG);
 
         List<FileuploadLiteBean> fileBeanList =
           FileuploadUtils.getFileuploadList(rundata);
@@ -323,9 +319,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
     }
 
     // 通知設定用の分岐　通知設定以外の値の検証は不要
-    if (notificationFlag.equals("T")) {
-      return true;
-    }
+    // if (notificationFlag.equals("T")) {
+    // return true;
+    // }
 
     boolean hasAuthority = false;
 
@@ -439,6 +435,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
       }
 
       roomId = room.getRoomId();
+      // room.setSettingNotification("nukukunu");
+      isSettingNotification = room.getSettingNotification();
 
     } catch (ALPageNotFoundException e) {
       throw e;
@@ -512,6 +510,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
+      // model.setSettingNotification("nukukunu");
+      isSettingNotification = model.getSettingNotification();
 
     } catch (Exception ex) {
       Database.rollback();
@@ -622,6 +622,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
+      // model.setSettingNotification("nukukunu");
+      isSettingNotification = model.getSettingNotification();
 
     } catch (Throwable t) {
       Database.rollback();
@@ -691,8 +693,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
     return login_user_room_auth;
   }
 
-  public boolean isDesktopNotification() {
-    return isDesktopNotification;
+  public String getSettingNotification() {
+    return isSettingNotification;
   }
 
   public boolean isMobileNotification() {

@@ -34,6 +34,8 @@
 
 #ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
 
+$result.SettingNotification
+
 <div id="messageDiv"></div>
 <div id="messageDiv_$!portlet.ID"></div>
 #if($mode=="new_form" || !$result.isFileUploadable() || !$result.hasAuth())
@@ -42,18 +44,20 @@
 #ALajaxscreenformheader($l10n.MESSAGE_ROOM $jslink $portlet "MessageRoomNotificationFormJSONScreen" "aimluck.io.selectAllOptions(this.member_to);aimluck.io.createSelectFromFileList(this, '$!portlet.ID');aimluck.io.submit_callbackparams(this,'$indicator_id','$!portlet.ID',aipo.message.onReceiveMessageRoom)")
 #end
 <input type="hidden" name="mode" value="$!modesrv" />
-<input type="hidden" name="notificationFlag" value="T" />
+
+###<input type="hidden" name="notificationFlag" value="T" />
 #if($mode!="new_form")
 <input type="hidden" name="entityid" value="$!result.RoomId" />
 #end
 
-#if($mode!="new_form")
-  #ALtableheaderWide()
-  #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
-  #ALtditemheader()
-  #ALMessageNotification($result)
-  #ALtditemfooter()
-#end
+$result.SettingNotification
+
+#ALtableheaderWide()
+#ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
+#ALtditemheader()
+#ALMessageNotification($result)
+#ALtditemfooter()
+
 #ALtablefooter()
 
 #ALbuttonheader()

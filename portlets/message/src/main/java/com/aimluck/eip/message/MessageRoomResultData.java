@@ -61,6 +61,8 @@ public class MessageRoomResultData implements ALData, Serializable {
 
   private boolean isAutoName;
 
+  private String isSettingNotification;
+
   /**
    *
    */
@@ -76,6 +78,7 @@ public class MessageRoomResultData implements ALData, Serializable {
     updateDateTime = new ALDateTimeField("H:mm");
     updateYear = new ALDateTimeField("yyyy年");
     updateDateYear = new ALDateTimeField("yyyy年M月d日");
+    isSettingNotification = null;
   }
 
   /**
@@ -161,6 +164,14 @@ public class MessageRoomResultData implements ALData, Serializable {
 
   public void setAutoName(boolean isAutoName) {
     this.isAutoName = isAutoName;
+  }
+
+  public void setSettingNotification(String isSettingNotification) {
+    this.isSettingNotification = isSettingNotification;
+  }
+
+  public String isSettingNotification() {
+    return isSettingNotification;
   }
 
   /**
