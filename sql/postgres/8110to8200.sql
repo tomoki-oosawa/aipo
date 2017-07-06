@@ -62,12 +62,9 @@ SELECT setval('pk_eip_t_acl_role', (SELECT MAX(ROLE_ID) FROM EIP_T_ACL_ROLE));
 SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_ROLE_MAP));
 -- 20170118
 
-
 -- 20170425
-UPDATE EIP_T_ACL_PORTLET_FEATURE SET acl_type = 63 WHERE feature_name = 'schedule_self' AND feature_alias_name = 'スケジュール（自分の予定）操作';
-UPDATE EIP_T_ACL_PORTLET_FEATURE SET acl_type = 63 WHERE feature_name = 'schedule_other' AND feature_alias_name = 'スケジュール（他ユーザーの予定）操作';
-UPDATE EIP_T_ACL_ROLE SET acl_type = 63, note = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE role_name = 'スケジュール（自分の予定）管理者';
-UPDATE EIP_T_ACL_ROLE SET role_name = 'スケジュール（他ユーザーの予定）管理者' WHERE role_name = 'スケジュール（他ユーザーの予定）';
-UPDATE EIP_T_ACL_ROLE SET acl_type = 35, note = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE role_name = 'スケジュール（他ユーザーの予定）管理者';
+UPDATE EIP_T_ACL_PORTLET_FEATURE SET ACL_TYPE = 63 WHERE FEATURE_NAME = 'schedule_self' AND FEATURE_ALIAS_NAME = 'スケジュール（自分の予定）操作';
+UPDATE EIP_T_ACL_PORTLET_FEATURE SET ACL_TYPE = 63 WHERE FEATURE_NAME = 'schedule_other' AND FEATURE_ALIAS_NAME = 'スケジュール（他ユーザーの予定）操作';
+UPDATE EIP_T_ACL_ROLE SET ACL_TYPE = 63, NOTE = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE FEATURE_ID IN (SELECT FEATURE_ID FROM EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'schedule_self') AND ROLE_NAME = 'スケジュール（自分の予定）管理者';
+UPDATE EIP_T_ACL_ROLE SET ACL_TYPE = 35, ROLE_NAME = 'スケジュール（他ユーザーの予定）管理者', NOTE = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE FEATURE_ID IN (SELECT FEATURE_ID FROM EIP_T_ACL_PORTLET_FEATURE WHERE FEATURE_NAME = 'schedule_other') AND ROLE_NAME = 'スケジュール（他ユーザーの予定）';
 -- 20170425
-
