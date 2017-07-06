@@ -52,7 +52,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
     .getLogger(EventlogCsvExportScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -63,7 +63,7 @@ public class EventlogCsvExportScreen extends ALCSVScreen {
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
-   *
+   * 
    * @param obj
    * @return
    */

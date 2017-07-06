@@ -73,6 +73,7 @@ public class ExtTimecardXlsExportScreen extends ALXlsScreen {
     String target_user_id =
       rundata.getParameters().getString(ExtTimecardUtils.TARGET_USER_ID);
     userid = Integer.toString(ALEipUtils.getUserId(rundata));
+
     // アクセス権
     if (target_user_id == null
       || "".equals(target_user_id)

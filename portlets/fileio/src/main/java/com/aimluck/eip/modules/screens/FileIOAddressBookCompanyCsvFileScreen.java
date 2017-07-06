@@ -39,7 +39,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOAddressBookCompanyCsvFileScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -76,7 +76,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception

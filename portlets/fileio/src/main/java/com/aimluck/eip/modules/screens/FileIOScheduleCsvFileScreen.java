@@ -42,7 +42,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOScheduleCsvFileScreen.class.getName());
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    */
@@ -52,7 +52,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception
@@ -85,7 +85,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   *
+   * 
    * @param rundata
    * @return
    * @throws Exception

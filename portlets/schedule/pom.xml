@@ -105,8 +105,6 @@
       <artifactId>aipo-portlet-timeline</artifactId>
       <version>${aipo.version}</version>
     </dependency>
-
-
   </dependencies>
 
 </project>

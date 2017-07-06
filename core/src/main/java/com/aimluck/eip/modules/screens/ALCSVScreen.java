@@ -52,7 +52,6 @@ public abstract class ALCSVScreen extends RawScreen {
    * @param rundata
    * @throws Exception
    */
-
   @Override
   protected void doOutput(RunData rundata) throws Exception {
     ServletOutputStream out = null;
@@ -106,7 +105,6 @@ public abstract class ALCSVScreen extends RawScreen {
    * @param rundata
    * @return
    */
-
   @Override
   protected String getContentType(RunData rundata) {
     return CONTENT_TYPE;
