@@ -67,6 +67,5 @@ UPDATE eip_t_timeline SET pinned ='F';
 -- 20170123
 
 -- 20170706
-ALTER TABLE eip_t_message_read DROP INDEX eip_t_message_read_index2;
-ALTER TABLE eip_t_message_read ADD INDEX eip_t_message_read_index2(ROOM_ID);
+ALTER TABLE eip_t_message_read ADD INDEX eip_t_message_read_index3(room_id);
 -- 20170706
