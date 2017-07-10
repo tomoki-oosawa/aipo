@@ -23,7 +23,6 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.message.MessageRoomFormData;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
@@ -47,8 +46,6 @@ public class MessageRoomNotificationFormScreen extends ALVelocityScreen {
   protected void doOutput(RunData rundata, Context context) throws Exception {
 
     try {
-      EipTMessageRoom room_for_setting = MessageUtils.getRoom(rundata, context);
-      room_for_setting.setSettingNotification("true");
 
       MessageRoomFormData formData = new MessageRoomFormData();
       formData.initField();
@@ -59,6 +56,7 @@ public class MessageRoomNotificationFormScreen extends ALVelocityScreen {
       String layout_template =
         "portlets/html/ajax-message-room-notification-form.vm";
       // "portlets/html/ajax-message-room-notification-form-switch.vm";
+      setTemplate(rundata, context, layout_template);
     } catch (Exception e) {
       logger.error("MessageRoomNotificationFormScreen.doOutput", e);
       ALEipUtils.redirectDBError(rundata);

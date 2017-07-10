@@ -319,9 +319,9 @@ public class MessageRoomFormData extends ALAbstractFormData {
     }
 
     // 通知設定用の分岐　通知設定以外の値の検証は不要
-    // if (notificationFlag.equals("T")) {
-    // return true;
-    // }
+    if ("T".equals(isSettingNotification)) {
+      return true;
+    }
 
     boolean hasAuthority = false;
 
@@ -542,6 +542,83 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定のみ更新
       if (!login_user_room_auth || !isGroup) {
+        EipTMessageRoomMember currentMember =
+          MessageUtils.getRoomMember(roomId, login_user
+            .getUserId()
+            .getValueWithInt());
+        for (ALEipUser user : memberList) {
+          if (user.getUserId().getValueWithInt() == login_user
+            .getUserId()
+            .getValueWithInt()) {
+            currentMember.setDesktopNotification(user
+              .getDesktopNotification()
+              .getValue());
+            currentMember.setMobileNotification(user
+              .getMobileNotification()
+              .getValue());
+          }
+        }
+      } else {
+
+        Date now = new Date();
+
+        Database.deleteAll(model.getEipTMessageRoomMember());
+        boolean isFirst = true;
+        StringBuilder autoName = new StringBuilder();
+        for (ALEipUser user : memberList) {
+          EipTMessageRoomMember map =
+            Database.create(EipTMessageRoomMember.class);
+          int userid = (int) user.getUserId().getValue();
+          map.setEipTMessageRoom(model);
+          map.setTargetUserId(1);
+          map.setUserId(Integer.valueOf(userid));
+          map.setLoginName(user.getName().getValue());
+          map.setAuthority(user.getAuthority().getValue());
+          map.setDesktopNotification(user.getDesktopNotification().getValue());
+          map.setMobileNotification(user.getMobileNotification().getValue());
+          if (!isFirst) {
+            autoName.append(",");
+          }
+          autoName.append(user.getAliasName().getValue());
+          isFirst = false;
+        }
+
+        if (StringUtils.isEmpty(name.getValue())) {
+          model.setAutoName("T");
+          model.setName(autoName.toString());
+        } else {
+          model.setAutoName("F");
+          model.setName(name.getValue());
+        }
+
+        model.setRoomType("G");
+        model.setUpdateDate(now);
+
+        if (filebean != null && filebean.getFileId() != 0) {
+          model.setPhotoSmartphone(facePhoto_smartphone);
+          model.setPhoto(facePhoto);
+          model.setPhotoModified(new Date());
+          model.setHasPhoto("N");
+        }
+
+        if (filebean != null) {
+          if (filebean.getFileId() != 0) {
+            model.setPhoto(facePhoto);
+            model.setPhotoSmartphone(facePhoto_smartphone);
+            model.setPhotoModified(new Date());
+            model.setHasPhoto("N");
+          }
+        } else {
+          model.setPhoto(null);
+          model.setPhotoSmartphone(null);
+          model.setPhotoModified(null);
+          model.setHasPhoto("F");
+        }
+
+      }
+
+      // 通知設定のみ更新
+      if ("T".equals(isSettingNotification)) {
         EipTMessageRoomMember currentMember =
           MessageUtils.getRoomMember(roomId, login_user
             .getUserId()

@@ -28,8 +28,10 @@ import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.message.MessageRoomFormData;
+import com.aimluck.eip.message.util.MessageUtils;
 
 /**
  *
@@ -50,6 +52,9 @@ public class MessageRoomNotificationFormJSONScreen extends ALJSONScreen {
       if (ALEipConstants.MODE_UPDATE.equals(mode)) {
         MessageRoomFormData formData = new MessageRoomFormData();
         formData.initField();
+        EipTMessageRoom room_for_setting =
+          MessageUtils.getRoom(rundata, context);
+        room_for_setting.setSettingNotification("T");
         if (formData.doUpdate(this, rundata, context)) {
           JSONArray json =
             JSONArray.fromObject(Arrays.asList(formData.getRoomId()));
