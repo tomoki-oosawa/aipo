@@ -102,6 +102,10 @@
                         $l10n.TIMELINE_ONLY_POSTING
                         #elseif("$!{result.TargetDisplayName}" == "update")
                         $l10n.TIMELINE_ONLY_UPDATE
+                        #elseif("$!{result.TargetDisplayName}" == "link")
+                        $!l10n.TIMELINE_ONLY_LINK
+                        #elseif("$!{result.TargetDisplayName}" == "file")
+                        $l10n.TIMELINE_ONLY_FILE
                         #end
 					</span>
 				</a>
