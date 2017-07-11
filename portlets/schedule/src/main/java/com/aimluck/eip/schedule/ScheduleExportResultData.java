@@ -128,8 +128,8 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
 
   public String getDateFull() {
     SimpleDateFormat sdf =
-      new SimpleDateFormat(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
+      new SimpleDateFormat(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
@@ -143,8 +143,8 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
 
   public String getDateFullOnlyDate() {
     SimpleDateFormat sdf =
-      new SimpleDateFormat(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
+      new SimpleDateFormat(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
     StringBuilder b = new StringBuilder();
     b.append(sdf.format(getStartDate().getValue()));
     return b.toString();
@@ -152,8 +152,8 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
 
   public String getDateShort() {
     SimpleDateFormat sdf =
-      new SimpleDateFormat(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_SHORT"));
+      new SimpleDateFormat(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT_SHORT"));
     StringBuilder b = new StringBuilder();
     b.append(sdf.format(getStartDate().getValue()));
     return b.toString();
@@ -199,8 +199,8 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
 
   public String getDateDetail() {
     SimpleDateFormat sdf =
-      new SimpleDateFormat(ALLocalizationUtils
-        .getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
+      new SimpleDateFormat(
+        ALLocalizationUtils.getl10n("SCHEDULE_SIMPLE_DATE_FORMAT"));
     StringBuilder b = new StringBuilder();
     if ("S".equals(getPattern())) {
       b.append(sdf.format(getStartDate().getValue()));
@@ -270,7 +270,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     ALStringField field = new ALStringField();
 
     // ダブルクオーテーションを削除
-    String str = getDegree().getValue().replaceAll("\"", "");
+    String str = getDegree().replaceAll("\"", "");
     field.setValue(str);
     return field;
   }
@@ -280,7 +280,7 @@ public class ScheduleExportResultData extends ScheduleDetailResultData {
     ALStringField field = new ALStringField();
 
     // ダブルクオーテーションを削除
-    String str = getRepeatText().getValue().replaceAll("\"", "");
+    String str = getRepeatText().replaceAll("\"", "");
     field.setValue(str);
     return field;
   }

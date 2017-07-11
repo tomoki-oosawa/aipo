@@ -39,8 +39,9 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
  */
 public class ScheduleExportListContainer implements ALData {
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ScheduleExportListContainer.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ScheduleExportListContainer.class.getName());
 
   private ALDateTimeField viewStartDate;
 
@@ -93,28 +94,31 @@ public class ScheduleExportListContainer implements ALData {
           isSpan = true;
         }
         if (!rd.getPattern().equals("S")
-          && ScheduleUtils.isView(field, rd.getPattern(), rd
-            .getStartDate()
-            .getValue(), rd.getEndDate().getValue())) {
+          && ScheduleUtils.isView(
+            field,
+            rd.getPattern(),
+            rd.getStartDate().getValue(),
+            rd.getEndDate().getValue())) {
           isClone = true;
         }
 
         if (isClone) {
           Calendar temp = Calendar.getInstance();
           temp.setTime(field.getValue());
-          temp
-            .set(Calendar.HOUR, Integer.parseInt(rd.getStartDate().getHour()));
-          temp.set(Calendar.MINUTE, Integer.parseInt(rd
-            .getStartDate()
-            .getMinute()));
+          temp.set(
+            Calendar.HOUR,
+            Integer.parseInt(rd.getStartDate().getHour()));
+          temp.set(
+            Calendar.MINUTE,
+            Integer.parseInt(rd.getStartDate().getMinute()));
           temp.set(Calendar.SECOND, 0);
           temp.set(Calendar.MILLISECOND, 0);
           Calendar temp2 = Calendar.getInstance();
           temp2.setTime(field.getValue());
           temp2.set(Calendar.HOUR, Integer.parseInt(rd.getEndDate().getHour()));
-          temp2.set(Calendar.MINUTE, Integer.parseInt(rd
-            .getEndDate()
-            .getMinute()));
+          temp2.set(
+            Calendar.MINUTE,
+            Integer.parseInt(rd.getEndDate().getMinute()));
           temp2.set(Calendar.SECOND, 0);
           temp2.set(Calendar.MILLISECOND, 0);
 
@@ -133,8 +137,6 @@ public class ScheduleExportListContainer implements ALData {
           addRd.setLoginuser(rd.isLoginuser());
           addRd.setOwner(rd.isOwner());
           addRd.setMember(rd.isMember());
-          addRd.setDegree(rd.isPublic(), rd.isHidden());
-          addRd.setRepeatText(rd.getPattern());
           addRd.setType(rd.getType());
           SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
           if (!sdf.format(rd.getStartDate().getValue()).equals(
@@ -172,9 +174,10 @@ public class ScheduleExportListContainer implements ALData {
       if (rd.isRepeat()
         && rd2.isDummy()
         && rd.getScheduleId().getValue() == rd2.getParentId().getValue()
-        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-          .getStartDate()
-          .getValue(), false)) {
+        && ScheduleUtils.equalsToDate(
+          rd.getStartDate().getValue(),
+          rd2.getStartDate().getValue(),
+          false)) {
         // [繰り返しスケジュール] 親の ID を検索
         canAdd = false;
         break;
@@ -182,9 +185,10 @@ public class ScheduleExportListContainer implements ALData {
       if (rd2.isRepeat()
         && rd.isDummy()
         && rd2.getScheduleId().getValue() == rd.getParentId().getValue()
-        && ScheduleUtils.equalsToDate(rd.getStartDate().getValue(), rd2
-          .getStartDate()
-          .getValue(), false)) {
+        && ScheduleUtils.equalsToDate(
+          rd.getStartDate().getValue(),
+          rd2.getStartDate().getValue(),
+          false)) {
         // [繰り返しスケジュール] 親の ID を検索
         // i.remove();
         canAdd = true;
@@ -203,33 +207,19 @@ public class ScheduleExportListContainer implements ALData {
           // 重複スケジュールを検出する。
           // 時間が重なっている場合重複スケジュールとする。
           if ((rd.getStartDate().getValue().before(
-            rd2.getStartDate().getValue()) && rd2
-            .getStartDate()
-            .getValue()
-            .before(rd.getEndDate().getValue()))
+            rd2.getStartDate().getValue())
+            && rd2.getStartDate().getValue().before(rd.getEndDate().getValue()))
             || (rd2.getStartDate().getValue().before(
-              rd.getStartDate().getValue()) && rd
-              .getStartDate()
-              .getValue()
-              .before(rd2.getEndDate().getValue()))
-            || (rd
-              .getStartDate()
-              .getValue()
-              .before(rd2.getEndDate().getValue()) && rd2
-              .getEndDate()
-              .getValue()
-              .before(rd.getEndDate().getValue()))
-            || (rd2
-              .getStartDate()
-              .getValue()
-              .before(rd.getEndDate().getValue()) && rd
-              .getEndDate()
-              .getValue()
-              .before(rd2.getEndDate().getValue()))
-            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue()) && rd
-              .getStartDate()
-              .getValue()
-              .equals(rd2.getStartDate().getValue()))) {
+              rd.getStartDate().getValue())
+              && rd.getStartDate().getValue().before(
+                rd2.getEndDate().getValue()))
+            || (rd.getStartDate().getValue().before(rd2.getEndDate().getValue())
+              && rd2.getEndDate().getValue().before(rd.getEndDate().getValue()))
+            || (rd2.getStartDate().getValue().before(rd.getEndDate().getValue())
+              && rd.getEndDate().getValue().before(rd2.getEndDate().getValue()))
+            || (rd.getEndDate().getValue().equals(rd2.getEndDate().getValue())
+              && rd.getStartDate().getValue().equals(
+                rd2.getStartDate().getValue()))) {
             rd2.setDuplicate(true);
             rd.setDuplicate(true);
           }
@@ -262,7 +252,8 @@ public class ScheduleExportListContainer implements ALData {
               cal2.setTime(b.getEndDate().getValue());
 
               return (cal.getTime()).compareTo(cal2.getTime());
-            } else if (a.getPattern().equals("S") && b.getPattern().equals("S")) {
+            } else if (a.getPattern().equals("S")
+              && b.getPattern().equals("S")) {
               if (a.isTerm()) {
                 return -1;
               } else if (b.isTerm()) {
