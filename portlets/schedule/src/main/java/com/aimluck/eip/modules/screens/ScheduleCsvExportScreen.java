@@ -340,7 +340,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           sb.append(record.getMemberNameExport());
           sb.append("\"");
         }
-        sb.append(",\"\"");
         return sb.toString();
       } catch (Exception e) {
         fileNameSuffix = "error";
