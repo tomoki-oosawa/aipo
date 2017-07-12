@@ -91,8 +91,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   private String folderName = null;
 
-  private String isSettingNotification = null;
-
   private byte[] facePhoto;
 
   private byte[] facePhoto_smartphone;
@@ -105,6 +103,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
   /** 1ルームの最大人数 **/
   private final int MAX_ROOM_MEMBER = 300;
+
+  private boolean isNotificationSettingForm = false;
 
   @Override
   public void init(ALAction action, RunData rundata, Context context)
@@ -313,13 +313,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
   protected boolean validate(List<String> msgList)
       throws ALPageNotFoundException, ALDBErrorException {
 
-    // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定以外の値の検証は不要
-    if (!login_user_room_auth || !isGroup) {
-      return true;
-    }
-
-    // 通知設定用の分岐　通知設定以外の値の検証は不要
-    if ("T".equals(isSettingNotification)) {
+    if (isNotificationSettingForm) {
       return true;
     }
 
@@ -435,7 +429,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       }
 
       roomId = room.getRoomId();
-      isSettingNotification = room.getSettingNotification();
 
     } catch (ALPageNotFoundException e) {
       throw e;
@@ -509,7 +502,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
-      isSettingNotification = model.getSettingNotification();
 
     } catch (Exception ex) {
       Database.rollback();
@@ -540,101 +532,21 @@ public class MessageRoomFormData extends ALAbstractFormData {
         return false;
       }
 
-      // ログインユーザーに権限がない場合、またRoomTypeがOの場合、通知設定のみ更新
-      if (!login_user_room_auth || !isGroup) {
+      if (isNotificationSettingForm) {
         EipTMessageRoomMember currentMember =
           MessageUtils.getRoomMember(roomId, login_user
             .getUserId()
             .getValueWithInt());
-        for (ALEipUser user : memberList) {
-          if (user.getUserId().getValueWithInt() == login_user
-            .getUserId()
-            .getValueWithInt()) {
-            currentMember.setDesktopNotification(user
-              .getDesktopNotification()
-              .getValue());
-            currentMember.setMobileNotification(user
-              .getMobileNotification()
-              .getValue());
-          }
-        }
-      } else {
-
-        Date now = new Date();
-
-        Database.deleteAll(model.getEipTMessageRoomMember());
-        boolean isFirst = true;
-        StringBuilder autoName = new StringBuilder();
-        for (ALEipUser user : memberList) {
-          EipTMessageRoomMember map =
-            Database.create(EipTMessageRoomMember.class);
-          int userid = (int) user.getUserId().getValue();
-          map.setEipTMessageRoom(model);
-          map.setTargetUserId(1);
-          map.setUserId(Integer.valueOf(userid));
-          map.setLoginName(user.getName().getValue());
-          map.setAuthority(user.getAuthority().getValue());
-          map.setDesktopNotification(user.getDesktopNotification().getValue());
-          map.setMobileNotification(user.getMobileNotification().getValue());
-          if (!isFirst) {
-            autoName.append(",");
-          }
-          autoName.append(user.getAliasName().getValue());
-          isFirst = false;
-        }
-
-        if (StringUtils.isEmpty(name.getValue())) {
-          model.setAutoName("T");
-          model.setName(autoName.toString());
-        } else {
-          model.setAutoName("F");
-          model.setName(name.getValue());
-        }
-
-        model.setRoomType("G");
-        model.setUpdateDate(now);
-
-        if (filebean != null && filebean.getFileId() != 0) {
-          model.setPhotoSmartphone(facePhoto_smartphone);
-          model.setPhoto(facePhoto);
-          model.setPhotoModified(new Date());
-          model.setHasPhoto("N");
-        }
-
-        if (filebean != null) {
-          if (filebean.getFileId() != 0) {
-            model.setPhoto(facePhoto);
-            model.setPhotoSmartphone(facePhoto_smartphone);
-            model.setPhotoModified(new Date());
-            model.setHasPhoto("N");
-          }
-        } else {
-          model.setPhoto(null);
-          model.setPhotoSmartphone(null);
-          model.setPhotoModified(null);
-          model.setHasPhoto("F");
-        }
-
-      }
-
-      // 通知設定のみ更新
-      if ("T".equals(isSettingNotification)) {
-        EipTMessageRoomMember currentMember =
-          MessageUtils.getRoomMember(roomId, login_user
-            .getUserId()
-            .getValueWithInt());
-        for (ALEipUser user : memberList) {
-          if (user.getUserId().getValueWithInt() == login_user
-            .getUserId()
-            .getValueWithInt()) {
-            currentMember.setDesktopNotification(user
-              .getDesktopNotification()
-              .getValue());
-            currentMember.setMobileNotification(user
-              .getMobileNotification()
-              .getValue());
-          }
-        }
+        String desktopNotification =
+          rundata.getParameters().getString("desktop_notification", "A");
+        String mobileNotification =
+          rundata.getParameters().getString("mobile_notification", "A");
+        currentMember.setDesktopNotification("A".equals(desktopNotification)
+          ? "A"
+          : "F");
+        currentMember.setMobileNotification("A".equals(mobileNotification)
+          ? "A"
+          : "F");
       } else {
 
         Date now = new Date();
@@ -697,7 +609,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
       Database.commit();
 
       roomId = model.getRoomId();
-      isSettingNotification = model.getSettingNotification();
 
     } catch (Throwable t) {
       Database.rollback();
@@ -767,8 +678,8 @@ public class MessageRoomFormData extends ALAbstractFormData {
     return login_user_room_auth;
   }
 
-  public String getSettingNotification() {
-    return isSettingNotification;
+  public boolean isDesktopNotification() {
+    return isDesktopNotification;
   }
 
   public boolean isMobileNotification() {
@@ -797,6 +708,21 @@ public class MessageRoomFormData extends ALAbstractFormData {
   @Override
   public boolean isCheckAttachmentAuthority() {
     return false;
+  }
+
+  /**
+   * @return isNotificationSettingForm
+   */
+  public boolean isNotificationSettingForm() {
+    return isNotificationSettingForm;
+  }
+
+  /**
+   * @param isNotificationSettingForm
+   *          セットする isNotificationSettingForm
+   */
+  public void setNotificationSettingForm(boolean isNotificationSettingForm) {
+    this.isNotificationSettingForm = isNotificationSettingForm;
   }
 
 }
