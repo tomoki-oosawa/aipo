@@ -48,9 +48,6 @@ INSERT INTO `eip_t_acl_role` VALUES(NULL,'タイムライン（コメント）�
 INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id FROM eip_t_acl_role WHERE role_name = 'タイムライン（自分の投稿）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id FROM eip_t_acl_role WHERE role_name = 'タイムライン（他ユーザーの投稿）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id FROM eip_t_acl_role WHERE role_name = 'タイムライン（コメント）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
-SELECT setval('pk_eip_t_acl_portlet_feature', (SELECT MAX(FEATURE_ID) FROM EIP_T_ACL_PORTLET_FEATURE));
-SELECT setval('pk_eip_t_acl_role', (SELECT MAX(ROLE_ID) FROM EIP_T_ACL_ROLE));
-SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_ROLE_MAP));
 -- 20170105
 
 -- 20170118
