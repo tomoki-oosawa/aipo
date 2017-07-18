@@ -56,9 +56,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 public class ScheduleCsvExportScreen extends ALCSVScreen {
   /** logger */
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(
-      ScheduleCsvExportScreen.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ScheduleCsvExportScreen.class.getName());
 
   private int userid;
 
@@ -193,8 +192,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       String LINE_SEPARATOR = System.getProperty("line.separator");
       try {
         StringBuffer sb = new StringBuffer();
-        sb.append(
-          "\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
+        sb
+          .append("\"開始日\",\"開始時刻\",\"終了日\",\"終了時刻\",\"場所\",\"予定\",\"内容\",\"名前\"");
 
         // スケジュール全件抽出
         for (ListIterator<VEipTScheduleList> iterator =
@@ -215,8 +214,9 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
                 new HashMap<String, List<ScheduleExportResultData>>();
               List<ScheduleExportResultData> list2 =
                 new ArrayList<ScheduleExportResultData>();
-              if (dummyMap.containsKey(
-                resultData.getParentId().getValueWithInt())) {
+              if (dummyMap.containsKey(resultData
+                .getParentId()
+                .getValueWithInt())) {
                 map2 = dummyMap.get(resultData.getParentId().getValueWithInt());
               }
               if (map2.containsKey(resultData.getViewDate())) {
@@ -233,8 +233,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
 
         // 出力用データのみ抽出
         for (ScheduleExportResultData record : con.getScheduleList()) {
-          if (record.getUserId().getValueWithInt() != Integer.valueOf(
-            target_user_id)) {
+          if (record.getUserId().getValueWithInt() != Integer
+            .valueOf(target_user_id)) {
             continue;
           }
           boolean isContain = false;
@@ -282,8 +282,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
             }
 
             // dummyを除外
-            if (dummyMap.containsKey(
-              record.getScheduleId().getValueWithInt())) {
+            if (dummyMap.containsKey(record.getScheduleId().getValueWithInt())) {
               Map<String, List<ScheduleExportResultData>> map2 =
                 dummyMap.get(record.getScheduleId().getValueWithInt());
               if (map2.containsKey(record.getViewDate())) {
@@ -359,8 +358,8 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
   private String getFileNameSurffix(Date viewStart, Date viewEnd) {
 
     String viewStartFormat =
-      new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT).format(
-        viewStart.getTime());
+      new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT)
+        .format(viewStart.getTime());
 
     Calendar cal = Calendar.getInstance();
     cal.setTime(viewEnd);
@@ -403,9 +402,9 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         return null;
       }
       if ("C".equals(record.getPublicFlag())
-        && ("F".equals(record.getType())
-          || ("U".equals(record.getType())
-            && userid != record.getUserId().intValue()))
+        && ("F".equals(record.getType()) || ("U".equals(record.getType()) && userid != record
+          .getUserId()
+          .intValue()))
         && (userid != record.getOwnerId().intValue())
         && !is_member) {
         rd.setName(ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD"));

@@ -3020,6 +3020,44 @@ public class ScheduleUtils {
     return "F";
   }
 
+  public static String hasExportOther(RunData rundata) {
+    try {
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_EXPORT)) {
+        return "T";
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+    }
+    return "F";
+  }
+
+  public static String hasExportSelf(RunData rundata) {
+    try {
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_EXPORT)) {
+        return "T";
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+    }
+    return "F";
+  }
+
   public static int getOwnerId(RunData rundata) {
     String scheduleId =
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
