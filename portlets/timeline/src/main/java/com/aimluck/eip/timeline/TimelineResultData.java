@@ -110,6 +110,9 @@ public class TimelineResultData implements ALData {
   /** キーワード */
   private ALStringField keyword;
 
+  /** displayparam */
+  private String displayparam;
+
   /**
    *
    *
@@ -135,6 +138,7 @@ public class TimelineResultData implements ALData {
     likeCount = 0;
     keyword = new ALStringField();
     pinned = false;
+    displayparam = new String();
   }
 
   /**

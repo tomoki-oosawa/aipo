@@ -1562,7 +1562,7 @@ public class TimelineSelectData extends
    * @param context
    * @return
    */
-  protected String getTargetDisplayName(RunData rundata, Context context,
+  public String getTargetDisplayName(RunData rundata, Context context,
       String target_key) {
     String target_display_name = null;
     String idParam = null;

@@ -1132,6 +1132,8 @@ public class TimelineUtils {
       List<Integer> parentIds, String type, int page, int limit, int minId,
       List<Integer> userIds, String keywordParam, String displayParam) {
 
+    StringBuilder select = new StringBuilder();
+
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
         new ArrayList<EipTTimeline>(0),
@@ -1148,10 +1150,13 @@ public class TimelineUtils {
         type = "A";
         break;
     }
-    boolean hasKeyword = false;
-    StringBuilder select = new StringBuilder();
-
-    select.append("SELECT");
+    if (displayParam.equals("FILE")) {
+      select
+        .append("SELECT eip_t_timeline.timeline_id FROM eip_t_timeline INTERSECT SELECT eip_t_timeline_file.timeline_id FROM eip_t_timeline_file,");
+    } else {
+      select.append("SELECT eip_t_timeline.timeline_id FROM eip_t_timeline,");
+    }
+    select.append(" SELECT");
     select.append(" DISTINCT ");
     select.append(" eip_t_timeline.app_id,");
     select.append(" eip_t_timeline.create_date,");
@@ -1162,9 +1167,7 @@ public class TimelineUtils {
     select.append(" eip_t_timeline.parent_id,");
     select.append(" eip_t_timeline.timeline_type,");
     select.append(" eip_t_timeline.update_date,");
-    select.append(" eip_t_timeline.timeline_id,");
     select.append(" eip_t_timeline.pinned,");
-
     // ログインユーザーがいいね！をしているかどうか
     select
       .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t0 WHERE (t0.timeline_id = eip_t_timeline.timeline_id) AND (t0.owner_id = #bind($user_id))) AS is_like,");
@@ -1178,6 +1181,7 @@ public class TimelineUtils {
     StringBuilder body = new StringBuilder();
     body.append(" FROM eip_t_timeline ");
 
+    boolean hasKeyword = false;
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
       hasKeyword = true;
       body.append(" LEFT JOIN eip_t_timeline AS comment ");
@@ -1309,7 +1313,6 @@ public class TimelineUtils {
     } else {
       return new ResultList<EipTTimeline>(list, -1, -1, list.size());
     }
-
   }
 
   public static void deleteTimelineActivity(RunData rundata, Context context,
