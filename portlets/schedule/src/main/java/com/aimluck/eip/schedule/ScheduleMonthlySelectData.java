@@ -441,7 +441,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
-    // アクセスコントロール
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
 

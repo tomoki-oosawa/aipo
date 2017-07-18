@@ -203,7 +203,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
-    // アクセスコントロール
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
 
