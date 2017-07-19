@@ -1132,8 +1132,6 @@ public class TimelineUtils {
       List<Integer> parentIds, String type, int page, int limit, int minId,
       List<Integer> userIds, String keywordParam, String displayParam) {
 
-    StringBuilder select = new StringBuilder();
-
     if (parentIds == null || parentIds.size() == 0) {
       return new ResultList<EipTTimeline>(
         new ArrayList<EipTTimeline>(0),
@@ -1149,13 +1147,14 @@ public class TimelineUtils {
       case "U":
         type = "A";
         break;
+      case "L":
+        type = "T";
+        break;
+      case "FILE":
+        type = "T";
+        break;
     }
-    if (displayParam.equals("FILE")) {
-      select
-        .append("SELECT eip_t_timeline.timeline_id FROM eip_t_timeline INTERSECT SELECT eip_t_timeline_file.timeline_id FROM eip_t_timeline_file,");
-    } else {
-      select.append("SELECT eip_t_timeline.timeline_id FROM eip_t_timeline,");
-    }
+    StringBuilder select = new StringBuilder();
     select.append(" SELECT");
     select.append(" DISTINCT ");
     select.append(" eip_t_timeline.app_id,");
@@ -1167,6 +1166,7 @@ public class TimelineUtils {
     select.append(" eip_t_timeline.parent_id,");
     select.append(" eip_t_timeline.timeline_type,");
     select.append(" eip_t_timeline.update_date,");
+    select.append(" eip_t_timeline.timeline_id,");
     select.append(" eip_t_timeline.pinned,");
     // ログインユーザーがいいね！をしているかどうか
     select
@@ -1179,7 +1179,7 @@ public class TimelineUtils {
     count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline ");
+    body.append(" FROM eip_t_timeline, eip_t_timeline_url ");
 
     boolean hasKeyword = false;
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
@@ -1189,6 +1189,12 @@ public class TimelineUtils {
     }
 
     body.append(" WHERE ");
+
+    // TODO:条件をつける事で、重いSQLが発行されているかもしれないので要検討です。
+    if ("L".equals(displayParam)) {
+      body
+        .append(" eip_t_timeline.timeline_id = eip_t_timeline_url.timeline_id AND");
+    }
 
     if (type != null) {
       body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
