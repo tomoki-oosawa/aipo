@@ -69,6 +69,12 @@
 <input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_NO_SELECT</label>
 #ALtditemfooter()
 
+
+
+${dup_data}
+
+
+
 #if($!result.IsPast)
 #ALtdcaption("#ALrequired($!result.getFieldName('reason'))")
 #ALtditemheader()

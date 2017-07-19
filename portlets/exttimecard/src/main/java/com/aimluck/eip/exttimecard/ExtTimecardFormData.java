@@ -151,6 +151,8 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
+  boolean duplicated = false;
+
   /**
    *
    * @param action
@@ -643,6 +645,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
     if (res) {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
+
+        boolean duplicated =
+          ExtTimecardUtils.checkDuplicatedDate(rundata, context);
+        context.put("dup_data", duplicated);
+
         try {
           if (!(this.entity_id > 0)) {
             String entity_idstr =
@@ -681,7 +688,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           return false;
         }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
+
+        boolean duplicated =
+          ExtTimecardUtils.checkDuplicatedDate(rundata, context);
+        context.put("dup_data", duplicated);
+
         String session_date = rundata.getParameters().get("date");
+
         if (session_date != null && !"".equals(session_date)) {
           this.punch_date.setValue(session_date);
           this.type.setValue("P");
@@ -1480,6 +1493,10 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    */
   public int getRestNum() {
     return Integer.parseInt(rest_num.getValue());
+  }
+
+  public boolean getDuplicateCheck() {
+    return duplicated;
   }
 
   /**

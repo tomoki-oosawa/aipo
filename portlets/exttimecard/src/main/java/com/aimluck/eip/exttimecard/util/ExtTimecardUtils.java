@@ -272,6 +272,45 @@ public class ExtTimecardUtils {
   }
 
   /**
+   * ExtTimecard オブジェクトモデルを取得します。 <BR>
+   *
+   * @param rundata
+   * @param context
+   *          カテゴリテーブルをJOINするかどうか
+   * @return
+   */
+  public static boolean checkDuplicatedDate(RunData rundata, Context context) {
+
+    boolean date_duplicated = false;
+
+    Calendar from_calendar = Calendar.getInstance();
+
+    SelectQuery<EipTExtTimecard> query = Database.query(EipTExtTimecard.class);
+
+    Expression exp1 =
+      ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+        .valueOf(ALEipUtils.getUserId(rundata)));
+
+    Expression exp2 =
+      ExpressionFactory.matchExp(
+        EipTExtTimecard.PUNCH_DATE_PROPERTY,
+        from_calendar.getTime());
+
+    query.setQualifier(exp1.andExp(exp2));
+    List<EipTExtTimecard> date_list = query.fetchList();
+
+    // TODO 消す
+    int hoge = date_list.size();
+
+    // 一つ以上存在していたら、「もうあるよ」とう情報を送る
+    // 問題は、参照したいのは「今日」ではなく、その日であること。
+    if (date_list.size() > 0) {
+      date_duplicated = true;
+    }
+    return date_duplicated;
+  }
+
+  /**
    * 指定した2つの日付を比較する．
    *
    * @param date1
