@@ -747,7 +747,7 @@ public class MessageUtils {
         Database
           .sql(
             EipTMessageRead.class,
-            "select count(*) as c from eip_t_message_read ignore index (eip_t_message_read_index3) where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
+            "select count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id = #bind($user_id) and is_read = 'F' and message_id <= #bind($message_id)")
           .param("room_id", Integer.valueOf(room.getRoomId()))
           .param("user_id", Integer.valueOf(userId))
           .param("message_id", Integer.valueOf(lastMessageId));
@@ -975,7 +975,7 @@ public class MessageUtils {
       Database
         .sql(
           EipTMessageRead.class,
-          "select message_id, is_read, count(*) as c from eip_t_message_read use index (eip_t_message_read_index3) where room_id = #bind($room_id) and user_id <> #bind($user_id) and message_id >= #bind($min_message_id) and message_id <= #bind($max_message_id) group by message_id, is_read order by message_id desc")
+          "select message_id, is_read, count(*) as c from eip_t_message_read where room_id = #bind($room_id) and user_id <> #bind($user_id) and message_id >= #bind($min_message_id) and message_id <= #bind($max_message_id) group by message_id, is_read order by message_id desc")
         .param("room_id", Integer.valueOf(roomId))
         .param("user_id", Integer.valueOf(userId))
         .param("min_message_id", Integer.valueOf(minMessageId))

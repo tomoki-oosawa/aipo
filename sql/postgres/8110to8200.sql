@@ -74,3 +74,7 @@ SELECT setval('pk_eip_t_acl_portlet_feature', (SELECT MAX(FEATURE_ID) FROM EIP_T
 SELECT setval('pk_eip_t_acl_role', (SELECT MAX(ROLE_ID) FROM EIP_T_ACL_ROLE));
 SELECT setval('pk_eip_t_acl_user_role_map', (SELECT MAX(ID) FROM EIP_T_ACL_USER_ROLE_MAP));
 -- 20170123
+
+-- 20170706
+CREATE INDEX eip_t_message_read_index3 ON EIP_T_MESSAGE_READ (ROOM_ID, MESSAGE_ID, USER_ID, IS_READ);
+-- 20170706
