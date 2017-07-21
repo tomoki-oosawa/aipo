@@ -36,6 +36,7 @@ import com.aimluck.eip.fileio.util.FileIOScheduleCsvUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -87,17 +88,30 @@ public class FileIOScheduleCsvSelectData extends
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList<FileIOScheduleCsvData>(
-          readScheduleInfoFromCsv(rundata));
+        ResultList<FileIOScheduleCsvData> ret =
+          new ResultList<FileIOScheduleCsvData>(
+            readScheduleInfoFromCsv(rundata));
+        ALEipUtils.setTemp(rundata, context, "start_line", Integer
+          .toString(getStartLine()));
+        ALEipUtils.setTemp(rundata, context, "page_count", Integer
+          .toString(getPageCount()));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
+        setStartLine(Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          "start_line")));
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
             + ALStorageService.separator()
             + FileIOScheduleCsvUtils.FOLDER_TMP_FOR_USERINFO_CSV_FILENAME;
-        return new ResultList<FileIOScheduleCsvData>(
-          readScheduleInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters()
-            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        ResultList<FileIOScheduleCsvData> ret =
+          new ResultList<FileIOScheduleCsvData>(readScheduleInfoFromCsvPage(
+            rundata,
+            filepath,
+            (rundata.getParameters().getInteger("csvpage") - 1),
+            ALCsvTokenizer.CSV_SHOW_SIZE));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         filepath =
           FileIOScheduleCsvUtils.getScheduleCsvFolderName(getTempFolderIndex())
@@ -160,6 +174,7 @@ public class FileIOScheduleCsvSelectData extends
     int i, j;
     int line = 0;
     int count = 0;
+    int collectCount = 0;
 
     String ErrorCode = "";
 
@@ -224,12 +239,14 @@ public class FileIOScheduleCsvSelectData extends
           ALLocalizationUtils.getl10n("FILEIO_NAME"))) {
           count++;
           setLineCount(count);
+          collectCount++;
 
           if (ErrCount == 0) {
             if (errmsg.size() == 0) {
               if (list.size() < ALCsvTokenizer.CSV_SHOW_SIZE) {
                 list.add(data);
               }
+
             } else {
               // list.clear();// エラーが初めて発生した場合。
               list.add(data);
@@ -245,6 +262,11 @@ public class FileIOScheduleCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
+          if (line != 1) {
+            ErrCount++; // TODO エラー文書表示させる
+            setHeaderOnHead(false);
+          }
+          setStartLine(2);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -260,6 +282,8 @@ public class FileIOScheduleCsvSelectData extends
     if (ErrCount > 0) {
       outputErrorData(rundata, ErrorCode, filepath_err);
     }
+    setPageCount((collectCount + ALCsvTokenizer.CSV_SHOW_SIZE - 1)
+      / ALCsvTokenizer.CSV_SHOW_SIZE);
     return list;
   }
 
@@ -320,7 +344,8 @@ public class FileIOScheduleCsvSelectData extends
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
+    int line_index =
+      StartLine * ALCsvTokenizer.CSV_SHOW_SIZE + getStartLine() - 1;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.setStartLine(filepath, line_index)) {
@@ -336,6 +361,9 @@ public class FileIOScheduleCsvSelectData extends
     while (reader.eof != -1) {
       boolean iserror = false;
       line++;
+      if (line > LineLimit) {
+        break;
+      }
       List<String> errmsg = new ArrayList<String>();
       FileIOScheduleCsvFormData formData = new FileIOScheduleCsvFormData();
       formData.initField();
@@ -389,7 +417,8 @@ public class FileIOScheduleCsvSelectData extends
 
       try {
 
-        FileIOScheduleCsvData data = setupData(formData, errmsg, line);
+        FileIOScheduleCsvData data =
+          setupData(formData, errmsg, line + line_index);
         data.setIsError(iserror);
         list.add(data);
 

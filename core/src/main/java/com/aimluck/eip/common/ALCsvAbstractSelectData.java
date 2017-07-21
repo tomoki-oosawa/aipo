@@ -48,6 +48,9 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
   /** CSVファイルの行数 */
   protected int line_count;
 
+  /** 実際のデータの入力が始まる行数(テンプレートの１行目の対応) **/
+  protected int start_line = 1;
+
   /** エラー総数 */
   protected int error_count;
 
@@ -62,6 +65,9 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
 
   /** 一時フォルダの番号 */
   protected String folderIndex;
+
+  /** ヘッダ行が先頭にあるかどうか */
+  private boolean header_on_head = true;
 
   /**
    *
@@ -279,6 +285,42 @@ public abstract class ALCsvAbstractSelectData<M1, M2> extends
    */
   public String getTempFolderIndex() {
     return folderIndex;
+  }
+
+  /**
+   * start_lineを設定します <br />
+   *
+   * @param i
+   */
+  public void setStartLine(int i) {
+    start_line = i;
+  }
+
+  /**
+   * start_linewを取得します <br />
+   *
+   * @return
+   */
+  public int getStartLine() {
+    return start_line;
+  }
+
+  /**
+   * ヘッダが先頭にあるかどうかを示すフラグを取得します。 <BR>
+   *
+   * @return
+   */
+  public boolean getHeaderOnHead() {
+    return header_on_head;
+  }
+
+  /**
+   * ヘッダが先頭にあるかどうかを示すフラグを入力 <BR>
+   *
+   * @param flg
+   */
+  public void setHeaderOnHead(boolean flg) {
+    header_on_head = flg;
   }
 
 }
