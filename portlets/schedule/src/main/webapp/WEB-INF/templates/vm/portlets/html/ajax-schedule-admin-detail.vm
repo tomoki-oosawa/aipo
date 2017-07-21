@@ -28,11 +28,21 @@
 #ALtditemheader()
 $!result.Detail.Title
 #ALtditemfooter()
+
 #ALtdcaption($l10n.GADGETS_APP_DESCRIPTION)
 #ALtditem($!result.Detail.Description)
+
+#ALtdcaption($l10n.GADGETS_SCHEDULE_MAP_URL)
+#set($map_flg = $!result.enabledMapsFlag.toString())
+#if($map_flg == "T")
+#ALtdcell($l10n.SCHEDULE_VALID)
+#else
+#ALtdcell($l10n.SCHEDULE_INVALID)
+#end
 #ALtablefooter()
 
 #ALbuttonheader()
+#ALajaxbuttonEdit("$!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleAdminFormScreen')")
 #ALajaxbuttonClose()
 #ALbuttonfooter()
 

@@ -19,6 +19,7 @@
 ## ---------------------------------------------------------------------------
 #set($meisaiflag = 1)
 ## ---------------------------------------------------------------------------
+
 #AUIcontentsAreaHeader()
 
 #set($user_results = $result.GroupExtTimecards)
@@ -60,8 +61,9 @@
 <div class="count"><strong>$!{result.ViewMonthYearMonthText}</strong></div>
 #if($!result.hasAclXlsExport())
 <div class="floatRight">
-#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardSummaryXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('target_group_name', "$!result.TargetGroupName").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
-#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
+	## XLSファイルダウンロード
+	#set($dlLink = $!utils.escapeXML($jslink.getTemplate('ExtTimecardSummaryXlsExportScreen').addPathInfo('target_user_id', "$!result.TargetUserId").addPathInfo('target_group_name', "$!result.TargetGroupName").addPathInfo('view_month', "$!result.ViewMonth").addPathInfo("f", "timecard.xls")))
+	#AUIbutton($l10n.EXTTIMECARD_DOWNLOAD_DISPLAY_LIST $dlLink)
 </div>
 #end
 </div>

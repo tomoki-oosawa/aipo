@@ -28,8 +28,12 @@
 #set ($tabs = [[$l10n.NOTE_NOTE_DETAIL, "",""]])
 #set ($indicator_id = "indicator-dlg-")
 ## ---------------------------------------------------------------------------
-#ALdialogheaderCloseJS($l10n.NOTE_NOTE_DETAIL "aipo.note.hideDialog()")
-#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+#if (${client}!= "IPHONE")
+    #ALdialogheaderPrintNote("$l10n.NOTE_NOTE_DETAIL" "$!portlet.ID" "NoteScreenPrint" "$!{result.getViewDate().toString()})")
+#else
+    #ALdialogheaderDetailSmartPhone("$l10n.NOTE_NOTE_DETAIL")
+#end
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "NOTE_NOTE_DETAIL")
 #ALajaxdetailformheader($l10n.NOTE_NOTE)
 #ALtableheaderWide()
 #ALtdcaption($l10n.NOTE_CLERK_TIME)

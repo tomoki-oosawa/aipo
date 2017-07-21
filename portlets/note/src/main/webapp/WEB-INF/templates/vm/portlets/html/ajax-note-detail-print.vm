@@ -1,0 +1,105 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($indicator_id = "indicator-dlg-")
+#if($!result.currentTab == "received_notes")
+#set($person_key = $l10n.NOTE_SRC_USER)
+#set($person_value = $!result.Detail.SrcUserFullName)
+#else
+#set($person_key = $l10n.NOTE_DEST_USER)
+#set($person_value = $!result.Detail.DestUserFullName)
+#end
+## ---------------------------------------------------------------------------
+#ALprintformheader()
+#ALprintoptionheader()
+#ALprintoptionfooter()
+
+<script type="text/javascript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+#ALtdcaption($l10n.NOTE_CLERK_TIME)
+#ALtditem("$!{result.Detail.AcceptDate.Year}$l10n.NOTE_YEAR$!{result.Detail.AcceptDate.Month}$l10n.NOTE_MONTH$!{result.Detail.AcceptDate.Day}$l10n.NOTE_DAY$!{result.Detail.AcceptDate.DayOfWeek} $!{result.Detail.AcceptDate.time}")
+#ALtdcaption($person_key)
+#ALtditemheader()
+#if($!result.currentTab == "received_notes")
+$person_value
+#else
+#foreach($record in $!result.MemberList)
+#if(!($!{record.UserId.toString()} == $!{result.Detail.SrcUserId.toString()}))
+#if($result.getStatus($record.UserId.Value) == "1" || $result.getStatus($record.UserId.Value) == "2")
+<i class="auiIcon auiIconMail" title="$l10n.NOTE_UNREAD_MESSAGE"></i>
+#elseif($result.getStatus($record.UserId.Value) == "3")
+<i class="auiIcon auiIconMailOpen" title="$l10n.NOTE_READ_MESSAGE"></i>
+#else
+<img src="images/note/note_deleted_message.gif" alt="$l10n.NOTE_DELETED_MESSAGE" title="$l10n.NOTE_DELETED_MESSAGE"/>
+#end
+$!record.AliasName
+<br/>
+#end
+#end
+#end
+#ALtditemfooter()
+#ALtdcaption($l10n.NOTE_CLIENT)
+#ALtditem($!result.Detail.ClientName)
+#ALtdcaption($l10n.NOTE_CLIENT_CAMPANY)
+#ALtditem($!result.Detail.CompanyName)
+#ALtdcaption($l10n.NOTE_CLIENT_CELLILAR_PHONE)
+#ALtditem("#ALtelLink($!result.Detail.Telephone $!utils.replaceToTelLink($!result.Detail.Telephone.toString()))")
+#ALtdcaption($l10n.NOTE_CLIENT_EMAIL)
+#ALtditem($!result.Detail.EmailAddress)
+#set($count = 0)
+#if ($!result.Detail.AddDestTypePc.toString() == "1") #set ($dest_type_pc_dist = $l10n.NOTE_PC) #set($count = $count+1) #end
+#if ($!result.Detail.AddDestTypeCellphone.toString() == "1") #set ($dest_type_cellphone_dist = $l10n.NOTE_CELLULAR_PHONE) #set($count = $count+1) #end
+#ALtdcaption($l10n.NOTE_ADDING_ADDRESS)
+#if($count == 0)
+#ALtditem("-----")
+#else
+#ALtditemheader()
+$!dest_type_pc_dist #if($count == 2) と #end $!dest_type_cellphone_dist
+#ALtditemfooter()
+#end
+#if ($!result.Detail.SubjectType.toString() == "0") #set ($subject = $!result.Detail.CustomSubject.toString()) #end
+#if ($!result.Detail.SubjectType.toString() == "1") #set ($subject = $l10n.NOTE_CALL_AGAIN) #end
+#if ($!result.Detail.SubjectType.toString() == "2") #set ($subject = $l10n.NOTE_CALL_BACK) #end
+#if ($!result.Detail.SubjectType.toString() == "3") #set ($subject = $l10n.NOTE_TELL_ME) #end
+#if ($!result.Detail.SubjectType.toString() == "4") #set ($subject = $l10n.NOTE_TAKE_A_MESSAGE) #end
+#ALtdcaption($l10n.NOTE_SUBJECT)
+#ALtditem($!subject)
+#ALtdcaption($l10n.NOTE_MESSAGE)
+#ALtditem($!result.Detail.Message)
+#ALtdcaption($l10n.COMMON_CREATE_DATE)
+#ALtditem("$!{result.Detail.CreateDate.Year}$l10n.NOTE_YEAR$!{result.Detail.CreateDate.Month}$l10n.NOTE_MONTH$!{result.Detail.CreateDate.Day}$l10n.NOTE_DAY$!{result.Detail.CreateDate.DayOfWeek} $!{result.Detail.CreateDate.time}")
+#if($!{result.Detail.ConfirmDate})
+#ALtdcaption($l10n.NOTE_CHECK_TIME)
+#ALtditem("$!{result.Detail.ConfirmDate.Year}$l10n.NOTE_YEAR$!{result.Detail.ConfirmDate.Month}$l10n.NOTE_MONTH$!{result.Detail.ConfirmDate.Day}$l10n.NOTE_DAY$!{result.Detail.ConfirmDate.DayOfWeek} $!{result.Detail.ConfirmDate.time}")
+#end
+
+</tbody></table>
+</div>
+#ALprintformfooter()

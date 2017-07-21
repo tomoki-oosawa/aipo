@@ -1,0 +1,43 @@
+version: '2'
+services:
+  db:
+    build: ./docker/db
+    volumes:
+      - ./docker/db/data:/var/lib/postgresql/data
+      - ./sql/postgres/org001.sql:/docker-entrypoint-initdb.d/org001.sql
+      - ./docker/db/additional/sampledata.sql:/docker-entrypoint-initdb.d/sampledata.sql
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: aipo
+      POSTGRES_USER: postgres
+      POSTGRES_DB: org001
+    hostname: db
+  web:
+    build: ./docker/web
+    volumes:
+      - ./docker/web/conf.d/server.xml:/opt/tomcat/conf/server.xml
+      - ./docker/web/conf.d/dbcp-org001.properties:/opt/tomcat/datasource/dbcp-org001.properties
+      - .:/opt/app/aipo
+      - ../aipo-opensocial:/opt/app/aipo-opensocial
+      - ./docker/web/logs:/opt/tomcat/logs
+      - ./docker/web/data:/opt/tomcat/data
+    ports:
+      - "8080:8080"
+      - "8015:8015"
+    environment:
+      JPDA_ADDRESS: 8015
+      CATALINA_OPTS: "-server -Xmx512M -Xms64M -Xss256k -Djava.awt.headless=true -Dsun.nio.cs.map=x-windows-iso2022jp/ISO-2022-JP -Djava.util.Arrays.useLegacyMergeSort=true -Djava.net.preferIPv4Stack=true -Duser.timezone=Asia/Tokyo"
+    entrypoint:
+      - /opt/tomcat/bin/catalina.sh
+      - jpda
+      - run
+    links:
+      - db
+    hostname: webhost
+volumes:
+  db_data:
+    driver: local
+  data:
+    driver: local
+

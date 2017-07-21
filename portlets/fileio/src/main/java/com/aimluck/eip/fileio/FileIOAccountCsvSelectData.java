@@ -49,13 +49,13 @@ import com.aimluck.eip.util.ALLocalizationUtils;
  * CSV ファイルから読み込んだアカウント情報を表示するクラス．
  *
  */
-public class FileIOAccountCsvSelectData
-    extends
+public class FileIOAccountCsvSelectData extends
     ALCsvAbstractSelectData<FileIOAccountCsvResultData, FileIOAccountCsvResultData> {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileIOAccountCsvSelectData.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      FileIOAccountCsvSelectData.class.getName());
 
   /** 最大登録可能数を超えているかのフラグ */
   private boolean overMaxUser = false;
@@ -85,25 +85,31 @@ public class FileIOAccountCsvSelectData
         ResultList<FileIOAccountCsvResultData> ret =
           new ResultList<FileIOAccountCsvResultData>(
             readAccountInfoFromCsv(rundata));
-        ALEipUtils.setTemp(rundata, context, "page_count", Integer
-          .toString(getPageCount()));
-        ALEipUtils.setTemp(rundata, context, "start_line", Integer
-          .toString(getStartLine()));
-        return ret;
-      } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
-        setStartLine(Integer.parseInt(ALEipUtils.getTemp(
+        ALEipUtils.setTemp(
           rundata,
           context,
-          "start_line")));
+          "page_count",
+          Integer.toString(getPageCount()));
+        ALEipUtils.setTemp(
+          rundata,
+          context,
+          "start_line",
+          Integer.toString(getStartLine()));
+        return ret;
+      } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
+        setStartLine(
+          Integer.parseInt(ALEipUtils.getTemp(rundata, context, "start_line")));
         filepath =
           FileIOAccountCsvUtils.getAccountCsvFolderName(getTempFolderIndex())
             + ALStorageService.separator()
             + FileIOAccountCsvUtils.CSV_ACCOUNT_TEMP_FILENAME;
         ResultList<FileIOAccountCsvResultData> ret =
           new ResultList<FileIOAccountCsvResultData>(
-            readAccountInfoFromCsvPage(rundata, filepath, (rundata
-              .getParameters()
-              .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+            readAccountInfoFromCsvPage(
+              rundata,
+              filepath,
+              (rundata.getParameters().getInteger("csvpage") - 1),
+              ALCsvTokenizer.CSV_SHOW_SIZE));
         return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
@@ -167,7 +173,7 @@ public class FileIOAccountCsvSelectData
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
     Map<String, TurbineUser> existedUserMap = getAllUsersFromDB();
-    List<String> existedCodeList = getAllUsersCodeFromDB();
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
     if (existedUserMap == null) {
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
@@ -278,12 +284,16 @@ public class FileIOAccountCsvSelectData
         TurbineUser user = new TurbineUser();
 
         if (existedUserMap.containsKey(username)) {
+          // 入力した名前のユーザーがすでに存在していたら
           TurbineUser tmpuser2 = existedUserMap.get(username);
           if ("F".equals(tmpuser2.getDisabled())) {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(username);
             if (tmpuser2.getCode() != null
               && !(tmpuser2.getCode().equals(code))) {
+              // tmpuser2が社員コードを持ち、それが入力された社員コードと異なっていたら
               if (existedCodeList.contains(code)) {
+                // 入力された社員コードを持つユーザーがすでに存在していたら
                 same_code = true;
                 b_err = true;
               } else {
@@ -299,16 +309,19 @@ public class FileIOAccountCsvSelectData
               }
             }
           } else {
+            // tmpuser2が削除されていなかったら
             user.setLoginName(null);
             b_err = true;
           }
         } else {
+          // 入力した名前のユーザがまだ存在していなかったとき
           user.setLoginName(username);
           TurbineUser newuser = new TurbineUser();
           newuser.setLoginName(username);
           newuser.setDisabled("F");
           existedUserMap.put(username, newuser);
           if (existedCodeList.contains(code)) {
+            // 入力された社員コードを持つユーザーがすでに存在していたら
             same_code = true;
             b_err = true;
           }
@@ -402,8 +415,9 @@ public class FileIOAccountCsvSelectData
     if (ErrCount > 0) {
       outputErrorData(rundata, ErrorCode, filepath_err);
     }
-    setPageCount((collectCount + ALCsvTokenizer.CSV_SHOW_SIZE - 1)
-      / ALCsvTokenizer.CSV_SHOW_SIZE);
+    setPageCount(
+      (collectCount + ALCsvTokenizer.CSV_SHOW_SIZE - 1)
+        / ALCsvTokenizer.CSV_SHOW_SIZE);
     return list;
   }
 
@@ -434,7 +448,7 @@ public class FileIOAccountCsvSelectData
       existedUserMap = new LinkedHashMap<String, TurbineUser>();
     }
 
-    List<String> existedCodeList = getAllUsersCodeFromDB();
+    List<String> existedCodeList = getAllUndisableUsersCodeFromDB();
 
     List<FileIOAccountCsvResultData> list =
       new ArrayList<FileIOAccountCsvResultData>();
@@ -589,6 +603,7 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBからすべてのユーザーのデータを取得します <BR>
    *
    * @return
    */
@@ -613,22 +628,25 @@ public class FileIOAccountCsvSelectData
   }
 
   /**
+   * DBから全てのユーザーの社員コードを取得します(削除済みのものを含まない) <BR>
    *
    * @return
    */
-  private ArrayList<String> getAllUsersCodeFromDB() {
+  private ArrayList<String> getAllUndisableUsersCodeFromDB() {
     ArrayList<String> codeList = new ArrayList<String>();
     try {
       SelectQuery<TurbineUser> query = Database.query(TurbineUser.class);
       List<TurbineUser> list = query.fetchList();
 
       for (TurbineUser user : list) {
-        if (user.getCode() != null && !(user.getCode().equals(""))) {
+        if (user.getCode() != null
+          && !(user.getCode().equals(""))
+          && !user.getDisabled().equals("T")) {
           codeList.add(user.getCode());
         }
       }
     } catch (Exception ex) {
-      logger.error("[ALEipUtils]", ex);
+      logger.error("[getAllUndisableUsersCodeFromDB]", ex);
       // throw new ALDBErrorException();
     }
     return codeList;

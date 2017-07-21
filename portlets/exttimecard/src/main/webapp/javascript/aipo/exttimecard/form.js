@@ -24,6 +24,40 @@ dojo.require("dojo.string");
 dojo.require("aimluck.io");
 dojo.requireLocalization("aipo", "locale");
 
+aipo.exttimecard.addIpForm = function(){
+	  var td = dojo.byId("exttimecard_allowed_ip_list").children[0].children[0].children[0];
+	  var cntMember = td.children.length - 1;
+	  if(cntMember>=20){
+		  exttimecard_systemip_alertString="登録できるIPアドレスは20件までです。";
+		  aipo.exttimecard.addErrorMessage(exttimecard_systemip_alertString);
+		  alert(exttimecard_systemip_alertString);
+		  return;
+	  }
+	  var newElement = dojo.clone(td.children[cntMember]);
+
+	  newElement.children[0].readonly = null
+	  newElement.children[0].value = "";
+	  td.appendChild(newElement);
+}
+
+aipo.exttimecard.addErrorMessage =  function(msg){
+	var messageDiv = dojo.byId('messageDiv');
+    if (messageDiv) {
+    	var ul;
+    	if(messageDiv.children.length==0){
+    	  ul = document.createElement("ul");
+    	  messageDiv.appendChild(ul);
+    	}else{
+    	  ul = messageDiv.children[0];
+    	}
+    	var li = document.createElement("li");
+    	var span = document.createElement("span");
+    	dojo.query(span).addClass("caution");
+    	span.innerHTML= msg;
+    	li.appendChild(span);
+    	ul.appendChild(li);
+    }
+}
 
 aipo.exttimecard.onReceiveMessage = function(msg) {
   if (!msg) {
@@ -281,7 +315,7 @@ aipo.exttimecard.submit = function(form, indicator_id, portlet_id, callback) {
             }
 
             if (html != "") {
-              aimluck.io.disableForm(form, false);
+            	aipo.exttimecard.enableForm(form);
             }
           },
           error : function(error) {
@@ -298,4 +332,18 @@ aipo.exttimecard.submit = function(form, indicator_id, portlet_id, callback) {
   ;
 
   return false;
+}
+
+aipo.exttimecard.enableForm = function (form) {
+  if (form == null) {
+    return;
+  }
+  var spans = dojo.query(".auiButtonDisabled:not(.notdelete)", form);
+  for (var i = 0; i < spans.length; i++) {
+	var uuid = spans[i].id;
+	var element = dojo.query("." + uuid)[0];
+    dojo.removeClass(element, uuid);
+    element.style.display = spans[i].style.display;
+    spans[i].parentNode.removeChild(spans[i]);
+  }
 }

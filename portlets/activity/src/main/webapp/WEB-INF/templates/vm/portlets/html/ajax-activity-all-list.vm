@@ -126,7 +126,7 @@ $l10n.COMMON_UPDATE_DATE
 	</div>
 	<div>
 		<p class="caption">$l10n.ACTIVITY_APP</p>
-		<ul class="filtertype_$!portlet.ID"data-type="category" data-defaultparam="all">
+		<ul class="filtertype_$!portlet.ID" data-type="category" data-defaultparam="all">
 			#ALsetCategoryFilterList('all' $l10n.ACTIVITY_ALL_APP)
 			#ALsetCategoryFilterList('Schedule' $l10n.ACTIVITY_SCHEDULE)
 			#ALsetCategoryFilterList('Msgboard' $l10n.ACTIVITY_MSGBOARD)
