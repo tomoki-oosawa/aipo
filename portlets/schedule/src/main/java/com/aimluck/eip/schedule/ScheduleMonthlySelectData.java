@@ -144,9 +144,6 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** 外部出力権限の有無 */
   private boolean hasAclCsvExport = false;
 
-  /** アクセス権限の機能名 */
-  private String aclPortletFeature = null;
-
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
@@ -397,31 +394,10 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     int loginUserId = ALEipUtils.getUserId(rundata);
     target_user_id = getTargetUserId(rundata, context);
 
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || (Integer.toString(loginUserId)).equals(target_user_id)) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    }
-
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
-
-    // アクセス権
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || Integer.toString(loginUserId).equals(target_user_id)) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    }
 
     hasAclviewOther =
       aclhandler.hasAuthority(
@@ -443,8 +419,11 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self) || "T".equals(has_acl_other)) {
+    if ("T".equals(has_acl_self)
+      || "T".equals(has_acl_other)
+      || "T".equals(has_acl_facility)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;
@@ -950,7 +929,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @param context
    * @throws ALDBErrorException
    */
-  protected void setupLists(RunData rundata, Context context) {
+  public void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
     boolean fgroup_flag = false;
     String target_group_id = "";

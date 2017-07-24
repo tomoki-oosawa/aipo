@@ -67,14 +67,13 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
   /** 外部出力権限の有無 */
   private boolean hasAclCsvExport;
 
-  /** アクセス権限の機能名 */
-  private String aclPortletFeature = null;
-
   private ScheduleExportListContainer con;
 
   private List<ALEipUser> users;
 
   private List<FacilityResultData> facilityAllList;
+
+  private List<FacilityResultData> facilityListData;
 
   private String fileNamePrefix;
 
@@ -116,17 +115,10 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
+    listData.setupLists(rundata, context);
+    facilityListData = listData.getFacilityList();
     target_user_id = listData.getTargetUserId(rundata, context);
     isUser = Integer.toString(userid).equals(target_user_id);
-
-    // アクセス権
-    if (target_user_id == null || "".equals(target_user_id) || isUser) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    }
 
     hasAclviewOther =
       aclhandler.hasAuthority(
@@ -136,8 +128,11 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
 
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self) || "T".equals(has_acl_other)) {
+    if ("T".equals(has_acl_self)
+      || "T".equals(has_acl_other)
+      || "T".equals(has_acl_facility)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;
@@ -233,26 +228,43 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         }
         List<ScheduleExportResultData> arayList =
           new ArrayList<ScheduleExportResultData>();
+        boolean isContain = false;
+        boolean isFacilityScreen = false;
+        boolean isOutput = false;
+        if (target_user_id.charAt(0) == 'f') {
+          isFacilityScreen = true;
+        }
 
-        // 出力用データのみ抽出
         for (ScheduleExportResultData record : con.getScheduleList()) {
-          if (record.getUserId().getValueWithInt() != Integer
-            .valueOf(target_user_id)) {
-            continue;
-          }
-          boolean isContain = false;
-          for (ScheduleExportResultData rd : arayList) {
-            if (record.getScheduleId().getValue() == rd
-              .getScheduleId()
-              .getValue()
-              && ScheduleUtils.equalsToDate(
-                rd.getStartDate().getValue(),
-                record.getStartDate().getValue(),
-                false)) {
-              // リスト登録済
-              isContain = true;
-              break;
+          isOutput = false;
+          if (!isFacilityScreen) {
+            if (record.getUserId().toString().equals(target_user_id)) {
+              isOutput = true;
             }
+          } else {
+            if (("f" + record.getUserId().toString()).equals(target_user_id)) {
+              isOutput = true;
+            }
+          }
+          // 出力用データのみ抽出
+          if (isOutput) {
+            isContain = false;
+            for (ScheduleExportResultData rd : arayList) {
+
+              if (record.getScheduleId().getValue() == rd
+                .getScheduleId()
+                .getValue()
+                && ScheduleUtils.equalsToDate(
+                  rd.getStartDate().getValue(),
+                  record.getStartDate().getValue(),
+                  false)) {
+                // リスト登録済
+                isContain = true;
+                break;
+              }
+            }
+          } else {
+            continue;
           }
           if (!isContain) {
             // 参加者・設備をリストアップ

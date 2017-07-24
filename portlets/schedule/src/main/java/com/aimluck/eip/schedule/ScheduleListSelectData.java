@@ -205,8 +205,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self) || "T".equals(has_acl_other)) {
+    if ("T".equals(has_acl_self)
+      || "T".equals(has_acl_other)
+      || "T".equals(has_acl_facility)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;
