@@ -44,8 +44,8 @@ import com.aimluck.eip.util.ALEipUtils;
 public abstract class FileuploadRawScreen extends RawScreen {
 
   /** logger */
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(FileuploadRawScreen.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(FileuploadRawScreen.class.getName());
 
   /** ファイル名 */
   private String fileName = null;
@@ -71,10 +71,10 @@ public abstract class FileuploadRawScreen extends RawScreen {
     String inline = rundata.getParameters().get("inline");
     String contentType = FileuploadUtils.getInlineContentType(getFileName());
 
-    return (contentType != null && (FileuploadUtils
-      .isAcceptInline(getFileName()) || "1".equals(inline)))
-      ? contentType
-      : "application/octet-stream";
+    return (contentType != null
+      && (FileuploadUtils.isAcceptInline(getFileName()) || "1".equals(inline)))
+        ? contentType
+        : "application/octet-stream";
   }
 
   /**
@@ -145,10 +145,9 @@ public abstract class FileuploadRawScreen extends RawScreen {
 
       HttpServletResponse response = rundata.getResponse();
       // ファイル名の送信(attachment部分をinlineに変更すればインライン表示)
-      response.setHeader("Content-disposition", type
-        + "; filename=\""
-        + attachmentRealName
-        + "\"");
+      response.setHeader(
+        "Content-disposition",
+        type + "; filename=\"" + attachmentRealName + "\"");
       response.setHeader("Cache-Control", "aipo");
       response.setHeader("Pragma", "aipo");
 
@@ -161,15 +160,39 @@ public abstract class FileuploadRawScreen extends RawScreen {
       }
       in = ALStorageService.getFile(filepath);
       out = new BufferedOutputStream(response.getOutputStream());
+      long fileSize = ALStorageService.getFileSize(filepath);
+      String httpRange = rundata.getRequest().getHeader("range");
+      response.setHeader("Content-Length", String.valueOf(fileSize));
+      if (httpRange != null) {
+        String[] httpRangeBytes = httpRange.split("=");
+        String[] httpRangeValue = httpRangeBytes[1].split("-");
+        Integer rangeLength =
+          Integer.parseInt(httpRangeValue[1])
+            - Integer.parseInt(httpRangeValue[0])
+            + 1;
+        response.setStatus(206);
+        response.setHeader("Content-Length", rangeLength.toString());
+        response.setHeader(
+          "Content-Range",
+          "bytes " + httpRangeBytes[1] + "/" + fileSize);
 
-      byte[] buf = new byte[1024];
-      int length;
-      while ((length = in.read(buf)) > 0) {
-        out.write(buf, 0, length);
+        // TODO set response body
+
+      } else {
+        byte[] buf = new byte[1024];
+
+        int length;
+        while ((length = in.read(buf)) > 0) {
+          out.write(buf, 0, length);
+        }
       }
-    } catch (RuntimeException e) {
+    } catch (
+
+    RuntimeException e) {
       throw e;
-    } catch (Exception e) {
+    } catch (
+
+    Exception e) {
       logger.error("FileuploadRawScreen.doOutput", e);
     } finally {
       try {

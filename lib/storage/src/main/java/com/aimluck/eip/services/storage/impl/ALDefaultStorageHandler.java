@@ -46,8 +46,9 @@ import com.aimluck.eip.services.storage.ALStorageHandler;
  */
 public class ALDefaultStorageHandler extends ALStorageHandler {
 
-  private static final JetspeedLogger logger = JetspeedLogFactoryService
-    .getLogger(ALDefaultStorageHandler.class.getName());
+  private static final JetspeedLogger logger =
+    JetspeedLogFactoryService.getLogger(
+      ALDefaultStorageHandler.class.getName());
 
   private static final String EXT_FILENAME = ".txt";
 
@@ -154,7 +155,8 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
    * @param filename
    */
   @Override
-  public void createNewFile(InputStream is, String folderPath, String filename) {
+  public void createNewFile(InputStream is, String folderPath,
+      String filename) {
     File path = new File(getAbsolutePath(folderPath));
 
     if (!path.exists()) {
@@ -201,13 +203,14 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       String fileName, String realFileName) {
 
     File path =
-      new File(getAbsolutePath(FOLDER_TMP_FOR_ATTACHMENT_FILES)
-        + separator()
-        + Database.getDomainName()
-        + separator()
-        + uid
-        + separator()
-        + dir);
+      new File(
+        getAbsolutePath(FOLDER_TMP_FOR_ATTACHMENT_FILES)
+          + separator()
+          + Database.getDomainName()
+          + separator()
+          + uid
+          + separator()
+          + dir);
 
     if (!path.exists()) {
       try {
@@ -247,8 +250,10 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       PrintWriter w = null;
       try {
         w =
-          new PrintWriter(new OutputStreamWriter(new FileOutputStream(filepath
-            + EXT_FILENAME), "UTF-8"));
+          new PrintWriter(
+            new OutputStreamWriter(
+              new FileOutputStream(filepath + EXT_FILENAME),
+              "UTF-8"));
         w.println(realFileName);
       } catch (IOException e) {
         logger.error("ALDefaultStorageHandler.createNewTmpFile", e);
@@ -270,16 +275,16 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   }
 
   @Override
-  public boolean copyFile(String srcRootPath, String srcDir,
-      String srcFileName, String destRootPath, String destDir,
-      String destFileName) {
+  public boolean copyFile(String srcRootPath, String srcDir, String srcFileName,
+      String destRootPath, String destDir, String destFileName) {
 
     File srcPath =
-      new File(getAbsolutePath(srcRootPath)
-        + separator()
-        + Database.getDomainName()
-        + separator()
-        + srcDir);
+      new File(
+        getAbsolutePath(srcRootPath)
+          + separator()
+          + Database.getDomainName()
+          + separator()
+          + srcDir);
 
     if (!srcPath.exists()) {
       try {
@@ -291,11 +296,12 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
     }
 
     File destPath =
-      new File(getAbsolutePath(destRootPath)
-        + separator()
-        + Database.getDomainName()
-        + separator()
-        + destDir);
+      new File(
+        getAbsolutePath(destRootPath)
+          + separator()
+          + Database.getDomainName()
+          + separator()
+          + destDir);
 
     if (!destPath.exists()) {
       try {
@@ -348,11 +354,8 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
    */
   @Override
   public long getFolderSize(String rootPath, String dir) {
-    return getFolderSize(rootPath
-      + separator()
-      + Database.getDomainName()
-      + separator()
-      + dir);
+    return getFolderSize(
+      rootPath + separator() + Database.getDomainName() + separator() + dir);
   }
 
   protected long getFolderSize(String folderPath) {
@@ -384,13 +387,20 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
   @Override
   public long getFileSize(String rootPath, String dir, String filename) {
-    return getFileSize(new File(getAbsolutePath(rootPath)
-      + separator()
-      + Database.getDomainName()
-      + separator()
-      + dir
-      + separator()
-      + filename));
+    return getFileSize(
+      new File(
+        getAbsolutePath(rootPath)
+          + separator()
+          + Database.getDomainName()
+          + separator()
+          + dir
+          + separator()
+          + filename));
+  }
+
+  @Override
+  public long getFileSize(String filePath) {
+    return getFileSize(new File(getAbsolutePath(filePath)));
   }
 
   protected int getFileSize(File file) {
@@ -427,11 +437,12 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   @Override
   public boolean deleteFolder(String rootPath, String dir) {
     File file =
-      new File(getAbsolutePath(rootPath)
-        + separator()
-        + Database.getDomainName()
-        + separator()
-        + dir);
+      new File(
+        getAbsolutePath(rootPath)
+          + separator()
+          + Database.getDomainName()
+          + separator()
+          + dir);
 
     if (!file.exists()) {
       return true;
@@ -485,13 +496,14 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
   @Override
   public InputStream getFile(String rootPath, String dir, String fileName)
       throws FileNotFoundException {
-    return getFile(rootPath
-      + separator()
-      + Database.getDomainName()
-      + separator()
-      + dir
-      + separator()
-      + fileName);
+    return getFile(
+      rootPath
+        + separator()
+        + Database.getDomainName()
+        + separator()
+        + dir
+        + separator()
+        + fileName);
   }
 
   @Override
@@ -520,11 +532,12 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
 
     // パスを作成
     base =
-      new File(rootDir.getAbsolutePath()
-        + separator()
-        + org_name
-        + separator()
-        + categoryKey);
+      new File(
+        rootDir.getAbsolutePath()
+          + separator()
+          + org_name
+          + separator()
+          + categoryKey);
 
     if (!base.exists()) {
       try {
@@ -599,9 +612,8 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       int length = folders_path.length;
       for (int i = 0; i < length; i++) {
         File folder =
-          new File(parent_folder.getAbsolutePath()
-            + File.separator
-            + folders_path[i]);
+          new File(
+            parent_folder.getAbsolutePath() + File.separator + folders_path[i]);
         mod.setTimeInMillis(folder.lastModified());// ファイルの最終更新日時を格納
         if (folder.isDirectory()) {
           if (!deleteOldFolder(folder.getAbsolutePath(), cal)) {// フォルダの中身が空もしくは全部削除された場合
