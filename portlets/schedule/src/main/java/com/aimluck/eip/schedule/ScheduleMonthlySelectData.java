@@ -153,6 +153,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** <code>target_user_id</code> 表示対象のユーザ ログイン名 */
   private String target_user_name;
 
+  private String hasAclPortlet = null;
+
   /** <code>viewTodo</code> ToDo 表示設定 */
   protected int viewTodo;
 
@@ -421,9 +423,16 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
     String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self)
-      || "T".equals(has_acl_other)
-      || "T".equals(has_acl_facility)) {
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+    if ("T".equals(hasAclPortlet)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;

@@ -73,7 +73,7 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
 
   private List<FacilityResultData> facilityAllList;
 
-  private List<FacilityResultData> facilityListData;
+  private String hasAclPortlet = null;
 
   private String fileNamePrefix;
 
@@ -116,7 +116,6 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
     listData.setupLists(rundata, context);
-    facilityListData = listData.getFacilityList();
     target_user_id = listData.getTargetUserId(rundata, context);
     isUser = Integer.toString(userid).equals(target_user_id);
 
@@ -130,9 +129,14 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
     String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self)
-      || "T".equals(has_acl_other)
-      || "T".equals(has_acl_facility)) {
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null || "".equals(target_user_id) || isUser) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+    if ("T".equals(hasAclPortlet)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;

@@ -77,7 +77,7 @@
 #if(${client}!="IPHONE")
 <div class="floatRight">
 #set($dlLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleCsvExportScreen').addQueryData('start_day',$!{result.ViewStart}).addQueryData('end_day',$!{result.ViewEnd}))
-#if($!result.hasAclCsvExport())
+#if($!{result.hasAclCsvExport()})
 #AUIbutton($l10n.SCHEDULE_DOWNLOAD $dlLink)
 #end
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new"))
