@@ -35,8 +35,7 @@ public class ALStorageService {
     return ALStorageFactoryService.getInstance().getStorageHandler();
   }
 
-  public static void saveFile(InputStream is, String folderPath,
-      String fileName) {
+  public static void saveFile(InputStream is, String folderPath, String fileName) {
     getService().saveFile(is, folderPath, fileName);
   }
 
@@ -102,8 +101,7 @@ public class ALStorageService {
     return getService().deleteFolder(rootPath, dir);
   }
 
-  public static boolean deleteFile(String rootPath, String dir,
-      String filename) {
+  public static boolean deleteFile(String rootPath, String dir, String filename) {
     return getService().deleteFile(rootPath, dir, filename);
   }
 
@@ -111,8 +109,8 @@ public class ALStorageService {
     return getService().deleteFile(filePath);
   }
 
-  public static InputStream getFile(String rootPath, String dir,
-      String fineName) throws FileNotFoundException {
+  public static InputStream getFile(String rootPath, String dir, String fineName)
+      throws FileNotFoundException {
     return getService().getFile(rootPath, dir, fineName);
   }
 

@@ -32,8 +32,8 @@ import org.apache.jetspeed.services.resources.JetspeedResources;
 public abstract class ALStorageHandler {
 
   @SuppressWarnings("unused")
-  private static final JetspeedLogger logger =
-    JetspeedLogFactoryService.getLogger(ALStorageHandler.class.getName());
+  private static final JetspeedLogger logger = JetspeedLogFactoryService
+    .getLogger(ALStorageHandler.class.getName());
 
   public static final String FOLDER_TMP_FOR_ATTACHMENT_FILES =
     JetspeedResources.getString("aipo.tmp.fileupload.attachment.directory", "");
@@ -45,34 +45,29 @@ public abstract class ALStorageHandler {
       String filename);
 
   public long getTmpFolderSize(int uid, String dir) {
-    return getFolderSize(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      uid + ALStorageService.separator() + dir);
+    return getFolderSize(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+      + ALStorageService.separator()
+      + dir);
   }
 
   public boolean copyTmpFile(int uid, String srcDir, String srcFileName,
       String destRootPath, String destDir, String destFileName) {
-    return copyFile(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      uid + ALStorageService.separator() + srcDir,
-      srcFileName,
-      destRootPath,
-      destDir,
-      destFileName);
+    return copyFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+      + ALStorageService.separator()
+      + srcDir, srcFileName, destRootPath, destDir, destFileName);
   }
 
   public boolean deleteTmpFolder(int uid, String dir) {
-    return deleteFolder(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      uid + ALStorageService.separator() + dir);
+    return deleteFolder(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+      + ALStorageService.separator()
+      + dir);
   }
 
   public InputStream getTmpFile(int uid, String folderName, String finename)
       throws FileNotFoundException {
-    return getFile(
-      FOLDER_TMP_FOR_ATTACHMENT_FILES,
-      uid + ALStorageService.separator() + folderName,
-      finename);
+    return getFile(FOLDER_TMP_FOR_ATTACHMENT_FILES, uid
+      + ALStorageService.separator()
+      + folderName, finename);
   }
 
   public abstract boolean copyFile(String srcRootPath, String srcDir,
@@ -81,8 +76,7 @@ public abstract class ALStorageHandler {
 
   public abstract long getFolderSize(String rootPath, String dir);
 
-  public abstract long getFileSize(String rootPath, String dir,
-      String filename);
+  public abstract long getFileSize(String rootPath, String dir, String filename);
 
   public abstract long getFileSize(String filePath);
 
