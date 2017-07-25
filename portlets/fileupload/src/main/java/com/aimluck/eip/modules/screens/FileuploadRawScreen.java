@@ -169,9 +169,8 @@ public abstract class FileuploadRawScreen extends RawScreen {
         String[] httpRangeValue = httpRangeBytes[1].split("-");
         int startRange = Integer.parseInt(httpRangeValue[0]);
         int endRange = Integer.parseInt(httpRangeValue[1]);
-
         Integer rangeLength = endRange - startRange + 1;
-        response.setStatus(206);
+        response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
         response.setContentType(new MimetypesFileTypeMap()
           .getContentType(getFileName()));
         response.setContentLength(rangeLength);
@@ -187,12 +186,13 @@ public abstract class FileuploadRawScreen extends RawScreen {
         byte[] buf = new byte[1024];
         int length;
         in.skip(startRange);
+        int toRead = rangeLength;
 
         while ((length = in.read(buf)) > 0) {
-          if ((rangeLength -= length) > 0) {
+          if ((toRead -= length) > 0) {
             out.write(buf, 0, length);
           } else {
-            out.write(buf, 0, rangeLength + length);
+            out.write(buf, 0, toRead + length);
             break;
           }
         }
