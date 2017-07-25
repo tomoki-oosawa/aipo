@@ -399,6 +399,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 int startDayOfWeek = cal2.get(Calendar.DAY_OF_WEEK);
                 int currentIdx = dayOfWeekList.indexOf(startDayOfWeek);
                 int num = dayOfWeekList.size();
+                // int week_count_schedule = ptn.charAt(8);
 
                 while (cal2.compareTo(eEnd) <= 0) {
                   candidate.setValue(cal2.getTime());
@@ -410,9 +411,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                     cal2.add(Calendar.DATE, (dayOfWeekList.get((currentIdx + 1)
                       % num)
                       - dayOfWeekList.get(currentIdx % num) + 7) % 7);
-                    if (currentIdx == num - 1 && !isEveryWeek) {
-                      cal2.add(Calendar.MONTH, 1);
-                    }
+
                     currentIdx++;
                     currentIdx = (currentIdx) % num;
                   }
@@ -487,9 +486,14 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                         holiday = holidaysManager.isHoliday(cal3.getTime());
                         day_count = cal3.get(Calendar.DAY_OF_WEEK);
                       }
-                      addList.add(new DateTime(cal3.getTime()));
+                      if (isView(cal3, ptn)) {
+                        addList.add(new DateTime(cal3.getTime()));
+                      } else {
+                        deleteList.add(new DateTime(cal3.getTime()));
+                      }
                     }
                   }
+                  event.getProperties().add(new ExDate(deleteList));
                   break;
                 case 'B':
                   for (int i = 0; i < candidateList.size(); i++) {
@@ -501,6 +505,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                       deleteList.add(new DateTime(candidateList
                         .get(i)
                         .getValue()));
+                      continue;
+                    } else {
                       Calendar cal3 = Calendar.getInstance();
                       cal3.setTime(candidateList.get(i).getValue());
                       int day_count = cal3.get(Calendar.DAY_OF_WEEK);
@@ -518,9 +524,14 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                           break;
                         }
                       }
-                      addList.add(new DateTime(cal3.getTime()));
+                      if (isView(cal3, ptn)) {
+                        addList.add(new DateTime(cal3.getTime()));
+                      } else {
+                        deleteList.add(new DateTime(cal3.getTime()));
+                      }
                     }
                   }
+                  event.getProperties().add(new ExDate(deleteList));
                   break;
               }
             }
