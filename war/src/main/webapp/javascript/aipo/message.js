@@ -757,7 +757,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
             var roomTitle = dojo.query("#messageRoom" + room_id + " .name");
             if(roomTitle && roomTitle[0]) {
                 if(!aipo.message.tmpPortletTitle) {
-                    aipo.message.tmpPortletTitle = dojo.byId("portletTitle").innerHTML;
+                aipo.message.tmpPortletTitle = dojo.byId("portletTitle").innerHTML;
                 }
                 dojo.byId("portletTitle").innerHTML = roomTitle[0].innerHTML;
             }
