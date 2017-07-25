@@ -1179,7 +1179,12 @@ public class TimelineUtils {
     count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline, eip_t_timeline_url ");
+    body.append(" FROM eip_t_timeline");
+    if ("L".equals(displayParam)) {
+      body.append(", eip_t_timeline_url");
+    } else if ("FILE".equals(displayParam)) {
+      body.append(", eip_t_timeline_file");
+    }
 
     boolean hasKeyword = false;
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
@@ -1190,10 +1195,13 @@ public class TimelineUtils {
 
     body.append(" WHERE ");
 
-    // TODO:条件をつける事で、重いSQLが発行されているかもしれないので要検討です。
+    // testアカウントでは上手く行きましたが、データ量が大きくなったときにどうなるか要検証です。
     if ("L".equals(displayParam)) {
       body
         .append(" eip_t_timeline.timeline_id = eip_t_timeline_url.timeline_id AND");
+    } else if ("FILE".equals(displayParam)) {
+      body
+        .append(" eip_t_timeline.timeline_id = eip_t_timeline_file.timeline_id AND");
     }
 
     if (type != null) {
