@@ -33,13 +33,15 @@ aipo.blog.toggleMenu=function (node,filters,event){
         	top:document.documentElement.scrollTop||document.body.scrollTop
         };
         node.style.opacity="0";
-        node.style.display="block";
+        setTimeout( function(){
+        	dojo.style(node, "display" , "block");
+        }, 0);
         if(html.right-node.clientWidth>rect.left){
        		node.style.left=rect.left+scroll.left+"px";
         }else{
         	node.style.left=rect.right-node.clientWidth+scroll.left+"px";
         }
-         if(html.bottom-node.clientHeight>rect.bottom){
+        if(html.bottom-node.clientHeight>rect.bottom||event){
        		node.style.top=rect.bottom+scroll.top+"px";
         }else{
         	node.style.top=rect.top-node.clientHeight+scroll.top+"px";

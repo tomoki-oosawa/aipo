@@ -55,6 +55,7 @@ import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.orm.query.SelectQuery;
+import com.aimluck.eip.util.ALCommonUtils;
 import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
@@ -300,7 +301,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
   protected void setValidator() throws ALPageNotFoundException,
       ALDBErrorException {
     name.limitMaxLength(50);
-
   }
 
   /**
@@ -382,6 +382,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
+
       @SuppressWarnings("unchecked")
       List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
       List<String> memberNames = new ArrayList<String>();
@@ -478,7 +479,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
       if (StringUtils.isEmpty(name.getValue())) {
         model.setAutoName("T");
-        model.setName(autoName.toString());
+        model.setName(ALCommonUtils.compressString(autoName.toString(), 252));
       } else {
         model.setAutoName("F");
         model.setName(name.getValue());
@@ -574,7 +575,7 @@ public class MessageRoomFormData extends ALAbstractFormData {
 
         if (StringUtils.isEmpty(name.getValue())) {
           model.setAutoName("T");
-          model.setName(autoName.toString());
+          model.setName(ALCommonUtils.compressString(autoName.toString(), 252));
         } else {
           model.setAutoName("F");
           model.setName(name.getValue());
@@ -647,7 +648,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         MessageUtils.FOLDER_FILEDIR_MESSAGE,
         MessageUtils.CATEGORY_KEY,
         files);
-
       Database.delete(model);
       Database.commit();
     } catch (Throwable t) {

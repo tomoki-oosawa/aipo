@@ -31,6 +31,7 @@ import com.aimluck.eip.common.ALCsvTokenizer;
 import com.aimluck.eip.fileio.util.FileIOAddressBookCsvUtils;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.services.storage.ALStorageService;
+import com.aimluck.eip.util.ALEipUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -66,18 +67,30 @@ public class FileIOAddressBookCsvSelectData extends
     String filepath;
     try {
       if (stats == ALCsvTokenizer.CSV_LIST_MODE_READ) {
-        return new ResultList<FileIOAddressBookCsvData>(
-          readAddressBookInfoFromCsv(rundata));
+        ResultList<FileIOAddressBookCsvData> ret =
+          new ResultList<FileIOAddressBookCsvData>(
+            readAddressBookInfoFromCsv(rundata));
+        ALEipUtils.setTemp(rundata, context, "start_line", Integer
+          .toString(getStartLine()));
+        ALEipUtils.setTemp(rundata, context, "page_count", Integer
+          .toString(getPageCount()));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_NO_ERROR) {
+        setStartLine(Integer.parseInt(ALEipUtils.getTemp(
+          rundata,
+          context,
+          "start_line")));
         filepath =
           FileIOAddressBookCsvUtils
             .getAddressBookCsvFolderName(getTempFolderIndex())
             + ALStorageService.separator()
             + FileIOAddressBookCsvUtils.CSV_ADDRESSBOOK_TEMP_FILENAME;
-        return new ResultList<FileIOAddressBookCsvData>(
-          readAddressBookInfoFromCsvPage(rundata, filepath, (rundata
-            .getParameters()
-            .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        ResultList<FileIOAddressBookCsvData> ret =
+          new ResultList<FileIOAddressBookCsvData>(
+            readAddressBookInfoFromCsvPage(rundata, filepath, (rundata
+              .getParameters()
+              .getInteger("csvpage") - 1), ALCsvTokenizer.CSV_SHOW_SIZE));
+        return ret;
       } else if (stats == ALCsvTokenizer.CSV_LIST_MODE_ERROR) {
         if (this.error_count > 0) {
           filepath =
@@ -298,6 +311,13 @@ public class FileIOAddressBookCsvSelectData extends
           if (ErrCount > 0) {
             ErrCount--;
           }
+          // ヘッダが先頭以外にあった場合エラー
+          if (line != 1) {
+            ErrCount++; // TODO エラー文書表示させる
+            setHeaderOnHead(false);
+          }
+          // ヘッダがあった場合は先頭をとばす
+          setStartLine(2);
         }
         if (ErrCount >= ALCsvTokenizer.CSV_SHOW_ERROR_SIZE) {
           break;
@@ -309,6 +329,9 @@ public class FileIOAddressBookCsvSelectData extends
         break;
       }
     }
+    int s = ALCsvTokenizer.CSV_SHOW_SIZE;
+    int l = collectList.size();
+    setPageCount((l + s - 1) / s);
     collectList.clear();
     collectList = null;
     setErrorCount(ErrCount);
@@ -332,7 +355,8 @@ public class FileIOAddressBookCsvSelectData extends
       RunData rundata, String filepath, int StartLine, int LineLimit)
       throws Exception {
 
-    int line_index = StartLine * ALCsvTokenizer.CSV_SHOW_SIZE;
+    int line_index =
+      StartLine * ALCsvTokenizer.CSV_SHOW_SIZE + getStartLine() - 1;
 
     ALCsvTokenizer reader = new ALCsvTokenizer();
     if (!reader.setStartLine(filepath, line_index)) {

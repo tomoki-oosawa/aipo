@@ -1,0 +1,339 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+#set ($s = '"')
+## ---------------------------------------------------------------------------
+
+## 「タイムカード記録」のプリント用のページです
+## ページの先頭に色々つける
+#ALprintformheader()
+#ALprintoptionheader()
+#ALprintoptionfooter()
+
+<script type="text/javascript">
+  //<![CDATA[
+  function change_print_form(){
+    document.getElementById('printBody').style.width=document.getElementById('print_width').value;
+    document.getElementById('printBody').style.fontSize=document.getElementById('print_word_size').value;
+  }
+  //]]>
+</script>
+<div id="printBody" style="width:600px;font-size:10pt;">
+<table class="p5">
+<colgroup style="width:25%;"></colgroup>
+<colgroup style="width:75%;"></colgroup>
+<tbody>
+	## headers
+	<tr>
+	#ALtdheadAtt("氏名" "class='thin mb_hide center'")
+	#ALtdheadAtt("日付" "class='thin mb_hide center'")
+	#ALtdheadAtt("曜日" "class='thin mb_hide center'")
+	#ALtdheadAtt("勤務形態" "class='thin mb_hide center'")
+	#ALtdheadAtt("出勤時間" "class='thin mb_hide center'")
+	#ALtdheadAtt("退勤時間" "class='thin mb_hide center'")
+	#ALtdheadAtt("出勤日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("就業時間" "class='thin mb_hide center'")
+	#ALtdheadAtt("残業日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("残業時間" "class='thin mb_hide center'")
+	#ALtdheadAtt("休出日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("休出時間" "class='thin mb_hide center'")
+	#ALtdheadAtt("遅刻日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("早退日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("欠勤日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("有休日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("代休日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("その他日数" "class='thin mb_hide center'")
+	#ALtdheadAtt("修正理由、備考" "class='thin mb_hide center' nowrap='nowrap'")
+	#ALtdheadAtt("外出１" "class='thin mb_hide center'")
+	#ALtdheadAtt("復帰１" "class='thin mb_hide center'")
+	#ALtdheadAtt("外出２" "class='thin mb_hide center'")
+	#ALtdheadAtt("復帰２" "class='thin mb_hide center'")
+	#ALtdheadAtt("外出３" "class='thin mb_hide center'")
+	#ALtdheadAtt("復帰３" "class='thin mb_hide center'")
+	#ALtdheadAtt("外出４" "class='thin mb_hide center'")
+	#ALtdheadAtt("復帰４" "class='thin mb_hide center'")
+	#ALtdheadAtt("外出５" "class='thin mb_hide center'")
+	#ALtdheadAtt("復帰５" "class='thin mb_hide center'")
+	</tr>
+
+	## each content
+	#foreach ($rdlist in $result.DateListKeys)
+		<tr>
+		## 氏名
+		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
+			$!utils.escapeXML($result.TargetUserName)
+		#ALtdcellfooter()
+
+		##! いろんな設定
+		#set($isrd = $rdlist.IsResultData)
+		#if($isrd)
+			#set($rd = $rdlist.Rd)
+		#else
+		#set($rd = "")
+		#end
+
+		#set($saturday_sunday_holiday = $rdlist.IsSaturdayOrSundayOrHoliday)
+		#set($beforeafter = $rdlist.BeforeAfter)
+		#set($entityid = "")
+		#if($isrd)
+			#set($entityid = $rd.TimecardId.toString())
+		#else
+			#set($entityid = "new")
+		#end
+		#set($class = "")
+        #if($beforeafter == 0)
+        	#set($class = "today")
+        #end
+        ##! ここまで
+
+
+		## 日にち
+		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
+			$!rdlist.getDateStr("yyyy/MM/dd")	## yyyy/MM/ddスタイル
+		#ALtdcellfooter()
+
+		## 曜日
+		#ALtdcellheaderAtt("class='center' nowrap='nowrap'")
+			$!rdlist.getDateStr("EE")
+		#ALtdcellfooter()
+
+		## 勤務形態
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			$!utils.escapeXML($result.TimecardSystem.SystemName)
+		#ALtdcellfooter()
+
+		##　出勤時刻
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+		#if($rdlist.IsNotNullClockInTime)
+      		$!{rd.getClockInTime("HH:mm")}
+		#end
+		#ALtdcellfooter()
+
+		## 退勤時刻
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+		#if($rdlist.IsNotNullClockOutTime)
+      		$!{rd.getClockOutTime("HH:mm")}
+		#end
+		#ALtdcellfooter()
+
+		## 出勤日数の代入
+		## 就業時間の代入
+		#if(${rdlist.isWorkDay()})
+			##　出勤日数
+			#set($work_day = 1)
+			## 就業時間
+			#set($work_hour = ${rdlist.getHourToString($!{rdlist.getWorkHourWithoutRestHour(true)})})
+		#else
+			##　出勤日数
+			#set($work_day = 0)
+			## 就業時間
+			#set($work_hour = ${rdlist.getHourToString("0.0")})
+		#end
+		## 出勤日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${work_day}
+		#ALtdcellfooter()
+		## 就業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${work_hour}
+		#ALtdcellfooter()
+
+		## 残業日数の代入
+		## 業時間の代入
+		#if ($rdlist.isOverWorkDay())
+			## 残業日数
+			#set($overwork_day = 1)
+			## 残業時間
+			#set($overwork_hour = $!{rdlist.getHourToString($!{rdlist.getOvertimeHourWithoutRestHour(true)})})
+		#else
+			## 残業日数
+			#set($overwork_day = 0)
+			## 残業時間
+			#set($overwork_hour = $rdlist.getHourToString("0.0"))
+		#end
+		## 残業日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${overwork_day}
+		#ALtdcellfooter()
+		## 残業時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${overwork_hour}
+		#ALtdcellfooter()
+
+		## 休出日数の代入
+		## 休出時間の代入
+		#if ($rdlist.isOffDay())
+			## 休出日数
+			#set($off_day = 1)
+			## 休出時間
+			#set($off_hour = $!{rdlist.getHourToString(${rdlist.getOffHour(true)})})
+		#else
+			## 休出日数
+			#set($off_day = 0)
+			## 休出時間
+			#set($off_hour = $rdlist.getHourToString("0.0"))
+		#end
+		## 休出日数の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${off_day}
+		#ALtdcellfooter()
+		## 休出時間の表示
+		#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+			${off_hour}
+		#ALtdcellfooter()
+
+		## 遅刻日数
+		#if ( $rdlist.isLateComing() )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		## 早退日数
+		#if ( $rdlist.isEarlyLeaving() )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		#set($type = ${rd.getType().toString()})
+
+		## 欠勤日数
+		#if ( $rd.isTypeA )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		## 有休日数
+		#if ( $rd.isTypeH )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		## 代休日数
+		#if ( $rd.isTypeC )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		## その他日数
+		#if ( $rd.isTypeE )
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				1
+			#ALtdcellfooter()
+		#else
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+				0
+			#ALtdcellfooter()
+		#end
+
+		## 修正理由・備考
+  		#ALtdcellheaderAtt("class='center mb_hide'")
+	  		#if($!{rd.ReasonFlg})
+				$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
+				#if($!{rd.RemarksFlg})
+					、
+    			#end
+  			#end
+		  	#if($!{rd.RemarksFlg})
+				$l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
+  			#end
+  		#ALtdcellfooter()
+
+  		## test
+  		##ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+	  	##	$listsize
+  		##ALtdcellfooter()
+
+  		## 外出・復帰
+  		#set($outcomes = $rdlist.OutgoingComeback)
+		#set($listsize = $outcomes.size())
+		#set($displaysize = 5)	##外出回数を何回分表示するか決める変数
+
+		#if($listsize >= $displaysize)
+			#foreach($outcome in $outcomes)
+			#if ($velocityCount <= $displaysize)
+			## 外出
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+	  			$outcome.get('outgoing')
+  			#ALtdcellfooter()
+  			## 復帰
+  			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+	  			$outcome.get('comeback')
+  			#ALtdcellfooter()
+  			#end
+			#end
+		#else
+			#set($restsize = $displaysize - $listsize)
+
+			#foreach($outcome in $outcomes)
+			## 外出
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+	  			$outcome.get('outgoing')
+  			#ALtdcellfooter()
+  			## 復帰
+  			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+	  			$outcome.get('comeback')
+  			#ALtdcellfooter()
+			#end
+
+			#foreach("" in [1 .. $restsize])
+			## 外出
+			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+  			#ALtdcellfooter()
+  			## 復帰
+  			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
+  			#ALtdcellfooter()
+			#end
+		#end
+		## 外出・復帰おわり
+
+		</tr>
+	#end
+
+
+
+#ALtablefooter()
+</div>
+#ALprintformfooter()
+
+##parse("/portlets/html/exttimecard-widget.vm")
