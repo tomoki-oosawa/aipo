@@ -47,7 +47,7 @@ import com.aimluck.eip.util.CustomizeUtils;
 
 /**
  * ブラウザにHTML（Velocity）を返すクラスです。 <br />
- * 
+ *
  */
 public abstract class ALVelocityScreen extends RawScreen implements ALAction {
 
@@ -128,7 +128,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       throws Exception;
 
   /**
-   * 
+   *
    * @param obj
    */
   @Override
@@ -137,7 +137,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param obj
    */
   @Override
@@ -149,7 +149,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param objList
    */
   @Override
@@ -158,7 +158,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param msg
    */
   @Override
@@ -170,7 +170,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param msg
    */
   @Override
@@ -182,7 +182,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param msgs
    */
   @Override
@@ -191,7 +191,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param mode
    */
   @Override
@@ -200,7 +200,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @return
    */
   @Override
@@ -209,7 +209,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param context
    */
   @Override
@@ -225,6 +225,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
       ALEipConstants.ENTITY_ID));
     context.put("config", new JetspeedResources());
     context.put("utils", new ALCommonUtils());
+    context.put("globalPortlets", ALEipUtils.getGlobalPortlets(rundata));
     context.put("l10n", ALLocalizationUtils.createLocalization(rundata));
     // For security
     context.put(ALEipConstants.SECURE_ID, rundata.getUser().getTemp(
@@ -239,7 +240,7 @@ public abstract class ALVelocityScreen extends RawScreen implements ALAction {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */

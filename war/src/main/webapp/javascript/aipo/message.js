@@ -197,6 +197,26 @@ aipo.message.reloadRoomMemberList = function() {
     }
     aipo.message.roomMemberPane.viewPage(screen);
 }
+
+aipo.message.roomMemberAdmin = null;
+aipo.message.reloadRoomSettings = function() {
+    if (!aipo.message.roomMemberAdmin) {
+        aipo.message.roomMemberAdmin = dijit.byId("roomMemberAdmin");
+        aipo.message.roomMemberAdmin = new aimluck.widget.Contentpane({},
+                'roomMemberAdmin');
+        aipo.message.roomMemberAdmin.onLoad = function() {
+
+        }
+    }
+
+    dojo.byId("roomMemberAdmin").innerHTML = '';
+    var screen = aipo.message.jslink + "?template=MessageRoomSettingsScreen";
+    if (aipo.message.currentRoomId) {
+        screen += "&r=" + aipo.message.currentRoomId;
+        aipo.message.roomMemberAdmin.viewPage(screen);
+    }
+}
+
 aipo.message.moreMessageList = function() {
     var screen = aipo.message.jslink + "?template=MessageListScreen";
     if (aipo.message.currentRoomId) {
@@ -737,7 +757,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
             var roomTitle = dojo.query("#messageRoom" + room_id + " .name");
             if(roomTitle && roomTitle[0]) {
                 if(!aipo.message.tmpPortletTitle) {
-                    aipo.message.tmpPortletTitle = dojo.byId("portletTitle").innerHTML;
+                aipo.message.tmpPortletTitle = dojo.byId("portletTitle").innerHTML;
                 }
                 dojo.byId("portletTitle").innerHTML = roomTitle[0].innerHTML;
             }
@@ -770,6 +790,7 @@ aipo.message.selectRoom = function(room_id, scroll) {
 
         aipo.message.fixMessageWindow();
         aipo.message.reloadRoomMemberList();
+        aipo.message.reloadRoomSettings();
         aipo.message.reloadMessageList();
         if (dojo.hasClass("messageRoomTab", "active")) {
         	aipo.message.saveCookieIsLastRoomOrUser("Room");
@@ -976,6 +997,8 @@ aipo.message.onReceiveMessage = function(msg) {
                 aipo.message.currentUserId = null;
                 aipo.message.tmpRoomId = null;
                 aipo.message.reloadRoomList();
+                aipo.message.reloadRoomMemberList();
+                aipo.message.reloadRoomSettings();
             }
             aipo.message.selectTab("room");
             aipo.message.getCookieIsLastRoomOrUser("Room");
