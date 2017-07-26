@@ -42,7 +42,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOScheduleCsvFileScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -52,7 +52,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
@@ -74,7 +74,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
         .append("\"2011/06/29\",\"08:30\",\"2011/06/29\",\"09:30\",\"会議室\",\"部長会議\",\"一ヶ月間の反省と今後の予定を確認\",\"鈴木 花子\",\"suzuki0\"");
       sb.append(LINE_SEPARATOR);
       sb
-        .append("\"2011/11/01\",\"\",\"2011/11/30\",\"\",\"\",\"開発期間\",\"製品の開発期間\",\"山田 太郎, 鈴木 太郎\",\"yamada, suzuki0\"");
+        .append("\"2011/11/01\",\"\",\"2011/11/30\",\"\",\"\",\"開発期間\",\"製品の開発期間\",\"山田 太郎、鈴木 太郎\",\"yamada、suzuki0\"");
       sb.append(LINE_SEPARATOR);
 
       return sb.toString();
@@ -85,7 +85,7 @@ public class FileIOScheduleCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception

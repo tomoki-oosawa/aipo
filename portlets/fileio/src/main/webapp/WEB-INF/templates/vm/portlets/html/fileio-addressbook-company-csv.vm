@@ -98,10 +98,9 @@ function download_csv(){
         }
     }
 	if(flag == 0){
-        alert('$l10n.FILEIO_SELECT_DOWNLOAD_TEMPLATE');
+        alert("$l10n.FILEIO_SELECT_DOWNLOAD_TEMPLATE");
     }
 }
-
 
 function import_csv(){
     var importflag = 0;
