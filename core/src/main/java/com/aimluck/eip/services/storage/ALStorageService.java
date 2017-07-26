@@ -81,6 +81,10 @@ public class ALStorageService {
     return getService().getFileSize(rootPath, dir, filename);
   }
 
+  public static long getFileSize(String filePath) {
+    return getService().getFileSize(filePath);
+  }
+
   public static boolean copyFile(String srcRootPath, String srcDir,
       String srcFileName, String destRootPath, String destDir,
       String destFileName) {
