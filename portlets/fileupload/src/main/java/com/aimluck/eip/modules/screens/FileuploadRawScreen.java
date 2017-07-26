@@ -119,8 +119,9 @@ public abstract class FileuploadRawScreen extends RawScreen {
         ALAccessControlConstants.VALUE_ACL_EXPORT);
       String attachmentRealName = null;
       boolean isAndroid = ALEipUtils.isAndroidBrowser(rundata);
+      boolean isIOS = ALEipUtils.isIOSBrowser(rundata);
 
-      if (isAndroid) {// androidだと日本語タイトルが変換されるので一律でfileに変更
+      if (isAndroid || isIOS) {// androidだと日本語タイトルが変換されるので一律でfileに変更
         attachmentRealName = "file";
         if (getFileName().lastIndexOf(".") > -1) {
           attachmentRealName +=
@@ -172,7 +173,7 @@ public abstract class FileuploadRawScreen extends RawScreen {
         Integer rangeLength = endRange - startRange + 1;
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
         response.setContentType(new MimetypesFileTypeMap()
-          .getContentType(getFileName()));
+          .getContentType(attachmentRealName));
         response.setContentLength(rangeLength);
         response.setHeader("Accept-Ranges", "bytes");
         response.setHeader("Connection", "keep-alive");
@@ -200,7 +201,7 @@ public abstract class FileuploadRawScreen extends RawScreen {
       } else {
         response.setContentLength((int) fileSize);
         response.setContentType(new MimetypesFileTypeMap()
-          .getContentType(getFileName()));
+          .getContentType(attachmentRealName));
         byte[] buf = new byte[1024];
 
         int length;
@@ -208,13 +209,9 @@ public abstract class FileuploadRawScreen extends RawScreen {
           out.write(buf, 0, length);
         }
       }
-    } catch (
-
-    RuntimeException e) {
+    } catch (RuntimeException e) {
       throw e;
-    } catch (
-
-    Exception e) {
+    } catch (Exception e) {
       logger.error("FileuploadRawScreen.doOutput", e);
     } finally {
       try {
