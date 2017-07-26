@@ -374,11 +374,6 @@ public class MessageRoomFormData extends ALAbstractFormData {
         isGroup = false;
       }
 
-      if (!login_user_room_auth) {
-        login_user_room_auth = true;
-        isGroup = true;
-      }
-
       if ("F".equals(room.getAutoName())) {
         name.setValue(room.getName());
       }
@@ -549,62 +544,64 @@ public class MessageRoomFormData extends ALAbstractFormData {
           ? "A"
           : "F");
       } else {
+        if (login_user_room_auth) {
+          Date now = new Date();
 
-        Date now = new Date();
-
-        Database.deleteAll(model.getEipTMessageRoomMember());
-        boolean isFirst = true;
-        StringBuilder autoName = new StringBuilder();
-        for (ALEipUser user : memberList) {
-          EipTMessageRoomMember map =
-            Database.create(EipTMessageRoomMember.class);
-          int userid = (int) user.getUserId().getValue();
-          map.setEipTMessageRoom(model);
-          map.setTargetUserId(1);
-          map.setUserId(Integer.valueOf(userid));
-          map.setLoginName(user.getName().getValue());
-          map.setAuthority(user.getAuthority().getValue());
-          map.setDesktopNotification(user.getDesktopNotification().getValue());
-          map.setMobileNotification(user.getMobileNotification().getValue());
-          if (!isFirst) {
-            autoName.append(",");
+          Database.deleteAll(model.getEipTMessageRoomMember());
+          boolean isFirst = true;
+          StringBuilder autoName = new StringBuilder();
+          for (ALEipUser user : memberList) {
+            EipTMessageRoomMember map =
+              Database.create(EipTMessageRoomMember.class);
+            int userid = (int) user.getUserId().getValue();
+            map.setEipTMessageRoom(model);
+            map.setTargetUserId(1);
+            map.setUserId(Integer.valueOf(userid));
+            map.setLoginName(user.getName().getValue());
+            map.setAuthority(user.getAuthority().getValue());
+            map
+              .setDesktopNotification(user.getDesktopNotification().getValue());
+            map.setMobileNotification(user.getMobileNotification().getValue());
+            if (!isFirst) {
+              autoName.append(",");
+            }
+            autoName.append(user.getAliasName().getValue());
+            isFirst = false;
           }
-          autoName.append(user.getAliasName().getValue());
-          isFirst = false;
-        }
 
-        if (StringUtils.isEmpty(name.getValue())) {
-          model.setAutoName("T");
-          model.setName(ALCommonUtils.compressString(autoName.toString(), 252));
-        } else {
-          model.setAutoName("F");
-          model.setName(name.getValue());
-        }
+          if (StringUtils.isEmpty(name.getValue())) {
+            model.setAutoName("T");
+            model.setName(ALCommonUtils
+              .compressString(autoName.toString(), 252));
+          } else {
+            model.setAutoName("F");
+            model.setName(name.getValue());
+          }
 
-        model.setRoomType("G");
-        model.setUpdateDate(now);
+          model.setRoomType("G");
+          model.setUpdateDate(now);
 
-        if (filebean != null && filebean.getFileId() != 0) {
-          model.setPhotoSmartphone(facePhoto_smartphone);
-          model.setPhoto(facePhoto);
-          model.setPhotoModified(new Date());
-          model.setHasPhoto("N");
-        }
-
-        if (filebean != null) {
-          if (filebean.getFileId() != 0) {
-            model.setPhoto(facePhoto);
+          if (filebean != null && filebean.getFileId() != 0) {
             model.setPhotoSmartphone(facePhoto_smartphone);
+            model.setPhoto(facePhoto);
             model.setPhotoModified(new Date());
             model.setHasPhoto("N");
           }
-        } else {
-          model.setPhoto(null);
-          model.setPhotoSmartphone(null);
-          model.setPhotoModified(null);
-          model.setHasPhoto("F");
-        }
 
+          if (filebean != null) {
+            if (filebean.getFileId() != 0) {
+              model.setPhoto(facePhoto);
+              model.setPhotoSmartphone(facePhoto_smartphone);
+              model.setPhotoModified(new Date());
+              model.setHasPhoto("N");
+            }
+          } else {
+            model.setPhoto(null);
+            model.setPhotoSmartphone(null);
+            model.setPhotoModified(null);
+            model.setHasPhoto("F");
+          }
+        }
       }
 
       Database.commit();

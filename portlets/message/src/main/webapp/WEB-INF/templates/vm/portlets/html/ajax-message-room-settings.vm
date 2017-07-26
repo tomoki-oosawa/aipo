@@ -33,13 +33,7 @@
   <a href="javascript:void(0)" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomNotificationFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);">$l10n.MESSAGE_NOTIFICATION_SETTING</a>
 </li>
 
-#*
-<li>
-	<a href="javascript:void(0)" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomNotificationFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);">$l10n.MESSAGE_NOTIFICATION_SETTING</a>
-</li>
-*#
-
-<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post" return false;">
+<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post">
 <input type="hidden" name="_name" value="$l10n.MESSAGE_ROOM" />
 <input type="hidden" name="secid" value="$secid" />
 

@@ -18,16 +18,12 @@
  */
 package com.aimluck.eip.modules.screens;
 
-import java.util.List;
-
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
 import org.apache.jetspeed.services.logging.JetspeedLogger;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
 import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoom;
-import com.aimluck.eip.cayenne.om.portlet.EipTMessageRoomMember;
-import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.message.util.MessageUtils;
 import com.aimluck.eip.util.ALEipUtils;
 
@@ -53,7 +49,6 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
       Integer roomId = null;
       boolean isNewRoom = false;
       EipTMessageRoom room = null;
-      ALEipUser targetUser = null;
       try {
         targetUserId = rundata.getParameters().getInteger("u");
       } catch (Throwable ignore) {
@@ -62,10 +57,7 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
       int userId = ALEipUtils.getUserId(rundata);
       if (targetUserId != null && targetUserId > 0) {
         room = MessageUtils.getRoom(userId, targetUserId);
-        if (room != null) {
-          // roomId = room.getRoomId();
-        } else {
-          targetUser = ALEipUtils.getALEipUser(targetUserId);
+        if (room == null) {
           isNewRoom = true;
         }
       } else {
@@ -89,24 +81,12 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
         }
       }
 
-      List<EipTMessageRoomMember> members = room.getEipTMessageRoomMember();
-      String authority = "";
-      for (EipTMessageRoomMember member : members) {
-        if (member.getUserId().equals(userId)) {
-          authority = member.getAuthority();
-        }
-      }
-      String roomtype = room.getRoomType();
-      context.put("roomtype", roomtype);
+      boolean hasAuthorityRoom = MessageUtils.hasAuthorityRoom(room, userId);
+      String authority = hasAuthorityRoom ? "A" : "";
+
+      context.put("roomtype", room.getRoomType());
       context.put("authority", authority);
       putData(rundata, context);
-      /*
-       * MessageRoomMemberListSelectData listData = new
-       * MessageRoomMemberListSelectData(); if (isNewRoom) {
-       * listData.setTargetUserId((int) targetUser.getUserId().getValue()); }
-       * else { listData.setRoom(room); } listData.initField();
-       * listData.doViewList(this, rundata, context);
-       */
 
       String layout_template = "portlets/html/ajax-message-room-settings.vm";
       setTemplate(rundata, context, layout_template);
