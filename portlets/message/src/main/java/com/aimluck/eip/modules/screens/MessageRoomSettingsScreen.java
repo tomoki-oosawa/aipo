@@ -57,7 +57,10 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
       int userId = ALEipUtils.getUserId(rundata);
       if (targetUserId != null && targetUserId > 0) {
         room = MessageUtils.getRoom(userId, targetUserId);
-        if (room == null) {
+        if (room != null) {
+          // roomId = room.getRoomId();
+        } else {
+          // targetUser = ALEipUtils.getALEipUser(targetUserId);
           isNewRoom = true;
         }
       } else {
@@ -67,16 +70,22 @@ public class MessageRoomSettingsScreen extends ALVelocityScreen {
           // ignore
         }
         if (roomId == null) {
+          // ALEipUtils.redirectPageNotFound(rundata);
           return;
         }
 
         room = MessageUtils.getRoom(roomId);
         if (room == null) {
+          // ALEipUtils.redirectPageNotFound(rundata);
           return;
         }
       }
+      if (isNewRoom || room == null) {
+        return;
+      }
       if (!isNewRoom) {
         if (!MessageUtils.isJoinRoom(room, userId)) {
+          // ALEipUtils.redirectPageNotFound(rundata);
           return;
         }
       }
