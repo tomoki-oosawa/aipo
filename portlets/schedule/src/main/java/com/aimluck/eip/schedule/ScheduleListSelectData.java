@@ -70,7 +70,7 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   private ALDateTimeField viewEnd;
 
   /** アクセス権限の機能名 */
-  private String aclPortletFeature = null;
+  private String hasAclPortlet = null;
 
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
@@ -186,17 +186,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
 
-    // アクセス権
-    if (target_user_id == null
-      || "".equals(target_user_id)
-      || Integer.toString(loginUserId).equals(target_user_id)) {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
-    } else {
-      aclPortletFeature =
-        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER;
-    }
-
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
@@ -205,8 +194,19 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
     String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
     String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
-    if ("T".equals(has_acl_self) || "T".equals(has_acl_other)) {
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+
+    if ("T".equals(hasAclPortlet)) {
       hasAclCsvExport = true;
     } else {
       hasAclCsvExport = false;

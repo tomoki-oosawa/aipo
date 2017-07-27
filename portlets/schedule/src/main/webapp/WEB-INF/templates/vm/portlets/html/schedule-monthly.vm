@@ -75,7 +75,7 @@
 
 <div class="floatRight">
 #set($dlLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleCsvExportScreen').addQueryData('start_day',"$!{result.ViewMonth}-01").addQueryData('end_day',"$!{result.NextMonth}-01"))
-#if ($!result.hasAclCsvExport())
+#if ($!{result.hasAclCsvExport()})
 #AUIbutton($l10n.SCHEDULE_MONTH_DOWNLOAD $dlLink)
 #end
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new").addQueryData("view_month",$!{result.ViewMonth.toString()}))
