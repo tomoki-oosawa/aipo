@@ -186,7 +186,7 @@ public abstract class FileuploadRawScreen extends RawScreen {
 
         byte[] buf = new byte[1024];
         int length;
-        in.skip(startRange);
+        skip(in, startRange);
         int toRead = rangeLength;
 
         while ((length = in.read(buf)) > 0) {
@@ -281,4 +281,22 @@ public abstract class FileuploadRawScreen extends RawScreen {
     return true;
   }
 
+  private static void skip(InputStream is, long n) {
+    try {
+      while (n > 0) {
+        long n1 = is.skip(n);
+        if (n1 > 0) {
+          n -= n1;
+        } else if (n1 == 0) {
+          if (is.read() == -1) {
+            break;
+          } else {
+            n--;
+          }
+        }
+      }
+    } catch (Exception e) {
+      logger.error("FileuploadRawScreen.skip", e);
+    }
+  }
 }
