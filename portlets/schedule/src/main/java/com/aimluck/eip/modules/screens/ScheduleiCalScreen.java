@@ -371,11 +371,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dEnd = new DateTime(cEnd.getTime());
             Calendar eEnd = Calendar.getInstance();
             eEnd.setTime(dEnd);
-            // eEndの日付は今日の日付なので、三ヶ月先まで見るため三ヶ月先にずらす
             eEnd.add(Calendar.MONTH, 3);
+
             switch (ptnFirst) {
               case 'D':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -399,9 +399,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 int startDayOfWeek = cal2.get(Calendar.DAY_OF_WEEK);
                 int currentIdx = dayOfWeekList.indexOf(startDayOfWeek);
                 int num = dayOfWeekList.size();
-                // int week_count_schedule = ptn.charAt(8);
 
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -418,7 +417,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 }
                 break;
               case 'M':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -426,7 +425,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 }
                 break;
               case 'Y':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
