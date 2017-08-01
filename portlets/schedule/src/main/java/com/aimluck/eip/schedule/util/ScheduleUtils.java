@@ -1042,6 +1042,9 @@ public class ScheduleUtils {
       } else {
         count = 8;
       }
+      if (week_count_schedule != week_count_today) {
+        return false;
+      }
       int dow = cal.get(Calendar.DAY_OF_WEEK);
       // 第何週目かを表すフィールド
       int dowim = cal.get(Calendar.DAY_OF_WEEK_IN_MONTH);

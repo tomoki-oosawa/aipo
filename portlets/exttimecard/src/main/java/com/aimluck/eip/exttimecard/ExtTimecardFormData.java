@@ -48,6 +48,7 @@ import com.aimluck.eip.common.ALDBErrorException;
 import com.aimluck.eip.common.ALEipConstants;
 import com.aimluck.eip.common.ALPageNotFoundException;
 import com.aimluck.eip.common.ALPermissionException;
+import com.aimluck.eip.exttimecard.util.ExtTimecardAdminUtils;
 import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
@@ -55,6 +56,8 @@ import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
 import com.aimluck.eip.services.accessctl.ALAccessControlFactoryService;
 import com.aimluck.eip.services.accessctl.ALAccessControlHandler;
+import com.aimluck.eip.services.config.ALConfigHandler;
+import com.aimluck.eip.services.config.ALConfigService;
 import com.aimluck.eip.services.eventlog.ALEventlogConstants;
 import com.aimluck.eip.services.eventlog.ALEventlogFactoryService;
 import com.aimluck.eip.util.ALEipUtils;
@@ -1084,6 +1087,37 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return true;
   }
 
+  public boolean doIpCheck(ALAction action, RunData rundata, Context context) {
+
+    List<String> msgList = new ArrayList<String>();
+
+    // ここから「打刻のIPアドレス制限」
+    boolean is_enabled =
+      "T".equals(ALConfigService
+        .get(ALConfigHandler.Property.EXTTIMECARD_IP_ENABLED));
+    String[] ip_addresses = ExtTimecardAdminUtils.getIpAddresses();
+
+    String ip = rundata.getRemoteAddr();
+
+    boolean containFlag = false;
+    for (String ip_address : ip_addresses) {
+      if (!(ip == null || ip.length() == 0) && ip.equals(ip_address)) {
+        containFlag = true;
+        break;
+      }
+    }
+
+    if (is_enabled && !containFlag) {
+      msgList.add(ALLocalizationUtils.getl10n("EXTTIMECARD_IP_RESTRICTED"));
+      action.addErrorMessages(msgList);
+      action.putData(rundata, context);
+      return false;
+    } else {
+      return true;
+    }
+    // ここまで「打刻のIPアドレス制限」
+  }
+
   /**
    * 各ボタンを押したときの動作 <BR>
    *
@@ -1094,6 +1128,33 @@ public class ExtTimecardFormData extends ALAbstractFormData {
    */
   public boolean doPunch(ALAction action, RunData rundata, Context context,
       String mode) {
+
+    List<String> msgList = new ArrayList<String>();
+
+    {// ここから「打刻のIPアドレス制限」
+      boolean is_enabled =
+        "T".equals(ALConfigService
+          .get(ALConfigHandler.Property.EXTTIMECARD_IP_ENABLED));
+      String[] ip_addresses = ExtTimecardAdminUtils.getIpAddresses();
+
+      String ip = rundata.getRemoteAddr();
+
+      boolean containFlag = false;
+      for (String ip_address : ip_addresses) {
+        if (!(ip == null || ip.length() == 0) && ip.equals(ip_address)) {
+          containFlag = true;
+          break;
+        }
+      }
+
+      if (is_enabled && !containFlag) {
+        msgList.add(ALLocalizationUtils.getl10n("EXTTIMECARD_IP_RESTRICTED"));
+        action.addErrorMessages(msgList);
+        action.putData(rundata, context);
+        return false;
+      }
+    }// ここまで「打刻のIPアドレス制限」
+
     try {
       edit_mode = mode;
       EipTExtTimecard timecard =
@@ -1423,7 +1484,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   /**
    * 編集のとき、フォームに入力されている退勤時間を取得します。
-   * */
+   */
   public void setClockOutTime(RunData rundata) {
     try {
       Field[] fields = this.getClass().getDeclaredFields();

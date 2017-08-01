@@ -53,5 +53,19 @@ INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role
 -- 20170118
 INSERT INTO `eip_t_acl_portlet_feature` VALUES(NULL,'attachment','添付ファイル操作',52);
 INSERT INTO `eip_t_acl_role` VALUES(NULL, '添付ファイル操作管理者',(SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'attachment' limit 1),52,NULL,NULL,NULL);
-INSERT INTO EIP_T_ACL_USER_ROLE_MAP(user_id,role_id) SELECT user_id,(SELECT ROLE_ID from `eip_t_acl_role` WHERE ROLE_NAME = '添付ファイル操作管理者' LIMIT 1) FROM TURBINE_USER WHERE disabled!='T' and not (login_name='admin' or login_name='anon');
+INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id from eip_t_acl_role WHERE role_name = '添付ファイル操作管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
 -- 20170118
+
+-- 20170123
+-- timeline
+ALTER TABLE `eip_t_timeline` ADD `pinned` varchar(1) DEFAULT 'F' AFTER `params`;
+INSERT INTO `eip_t_acl_portlet_feature` VALUES(NULL,'timeline_pin','タイムライン（固定化）操作',8);
+INSERT INTO `eip_t_acl_role` VALUES(NULL, 'タイムライン（固定化）管理者',(SELECT feature_id from eip_t_acl_portlet_feature WHERE feature_name = 'timeline_pin' limit 1),8,NULL,NULL,NULL);
+-- migration
+INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role_id from eip_t_acl_role WHERE role_name = 'タイムライン（固定化）管理者' limit 1) FROM turbine_user WHERE disabled!='T' AND NOT (login_name='admin' or login_name='anon' or login_name='template');
+UPDATE eip_t_timeline SET pinned ='F';
+-- 20170123
+
+-- 20170606
+ALTER TABLE eip_t_schedule MODIFY repeat_pattern varchar(11);
+-- 20170606

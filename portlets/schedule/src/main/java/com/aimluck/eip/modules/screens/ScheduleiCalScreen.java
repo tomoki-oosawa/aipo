@@ -347,7 +347,10 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
           || ptnFirst == 'M'
           || ptnFirst == 'Y') {
           Character ptnLast = ptn.charAt(ptn.length() - 1);
-          if (ptnLast == 'D' || ptnLast == 'A' || ptnLast == 'B') {
+          if (ptnLast == 'D'
+            || ptnLast == 'A'
+            || ptnLast == 'B'
+            || ptnLast == 'N') {
             // 候補日のリストを作成
             List<ALDateTimeField> candidateList =
               new ArrayList<ALDateTimeField>();
@@ -368,11 +371,11 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             dEnd = new DateTime(cEnd.getTime());
             Calendar eEnd = Calendar.getInstance();
             eEnd.setTime(dEnd);
-            // eEndの日付は今日の日付なので、三ヶ月先まで見るため三ヶ月先にずらす
             eEnd.add(Calendar.MONTH, 3);
+
             switch (ptnFirst) {
               case 'D':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -397,7 +400,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 int currentIdx = dayOfWeekList.indexOf(startDayOfWeek);
                 int num = dayOfWeekList.size();
 
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -407,16 +410,14 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                     cal2.add(Calendar.DATE, (dayOfWeekList.get((currentIdx + 1)
                       % num)
                       - dayOfWeekList.get(currentIdx % num) + 7) % 7);
-                    if (currentIdx == num - 1 && !isEveryWeek) {
-                      cal2.add(Calendar.MONTH, 1);
-                    }
+
                     currentIdx++;
                     currentIdx = (currentIdx) % num;
                   }
                 }
                 break;
               case 'M':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -424,7 +425,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 }
                 break;
               case 'Y':
-                while (cal2.compareTo(eEnd) <= 0) {
+                while (cal2.getTime().compareTo(endDate) <= 0) {
                   candidate.setValue(cal2.getTime());
                   candidateList.add(candidate);
                   candidate = new ALDateTimeField("yyyy-MM-dd");
@@ -447,6 +448,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
               event.getProperties().add(new ExDate(deleteList));
             } else {
               switch (ptn.charAt(ptn.length() - 1)) {
+                case 'N':
                 case 'D':
                   for (int i = 0; i < candidateList.size(); i++) {
                     if (!ScheduleUtils.isView(
@@ -463,60 +465,83 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                   break;
                 case 'A':
                   for (int i = 0; i < candidateList.size(); i++) {
-                    if (!ScheduleUtils.isView(
+                    // 祝日の後ろにずらす調整
+                    ALDateTimeField adjustHoliday =
+                      new ALDateTimeField("yyyy-MM-dd");
+                    Calendar beforeAdj = Calendar.getInstance();
+                    Calendar cal3 = Calendar.getInstance();
+                    cal3.setTime(candidateList.get(i).getValue());
+                    beforeAdj.setTime(candidateList.get(i).getValue());
+                    boolean adjust = false;
+                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    ALHoliday holiday =
+                      holidaysManager.isHoliday(cal3.getTime());
+                    while (ScheduleUtils.isDayOffHoliday()
+                      && holiday != null
+                      || ScheduleUtils.isUserHoliday(day_count - 1)) {
+                      adjust = true;
+                      cal3.add(Calendar.DATE, 1);
+                      holiday = holidaysManager.isHoliday(cal3.getTime());
+                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    }
+                    adjustHoliday.setValue(cal3.getTime());
+                    candidateList.set(i, adjustHoliday);
+                    if (ScheduleUtils.isView(
                       candidateList.get(i),
                       ptn,
                       dStart,
                       dEnd)) {
-                      deleteList.add(new DateTime(candidateList
-                        .get(i)
-                        .getValue()));
-                      Calendar cal3 = Calendar.getInstance();
-                      cal3.setTime(candidateList.get(i).getValue());
-                      int day_count = cal3.get(Calendar.DAY_OF_WEEK);
-                      ALHoliday holiday =
-                        holidaysManager.isHoliday(cal3.getTime());
-                      while (ScheduleUtils.isDayOffHoliday()
-                        && holiday != null
-                        || ScheduleUtils.isUserHoliday(day_count - 1)) {
-                        cal3.add(Calendar.DATE, 1);
-                        holiday = holidaysManager.isHoliday(cal3.getTime());
-                        day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                      // 祝日後にずらす調整をした場合、調整前の日付を消す
+                      if (adjust) {
+                        deleteList.add(new DateTime(beforeAdj.getTime()));
                       }
-                      addList.add(new DateTime(cal3.getTime()));
+                      addList
+                        .add(new DateTime(candidateList.get(i).getValue()));
+                    } else {
+                      deleteList.add(new DateTime(beforeAdj.getTime()));
                     }
                   }
+                  event.getProperties().add(new ExDate(deleteList));
                   break;
                 case 'B':
                   for (int i = 0; i < candidateList.size(); i++) {
-                    if (!ScheduleUtils.isView(
+                    // 祝日の前にずらす調整
+                    ALDateTimeField adjustHoliday =
+                      new ALDateTimeField("yyyy-MM-dd");
+                    Calendar beforeAdj = Calendar.getInstance();
+                    Calendar cal3 = Calendar.getInstance();
+                    cal3.setTime(candidateList.get(i).getValue());
+                    beforeAdj.setTime(candidateList.get(i).getValue());
+                    boolean adjust = false;
+                    int day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    ALHoliday holiday =
+                      holidaysManager.isHoliday(cal3.getTime());
+                    while (ScheduleUtils.isDayOffHoliday()
+                      && holiday != null
+                      || ScheduleUtils.isUserHoliday(day_count - 1)) {
+                      adjust = true;
+                      cal3.add(Calendar.DATE, -1);
+                      holiday = holidaysManager.isHoliday(cal3.getTime());
+                      day_count = cal3.get(Calendar.DAY_OF_WEEK);
+                    }
+                    adjustHoliday.setValue(cal3.getTime());
+                    candidateList.set(i, adjustHoliday);
+                    if (ScheduleUtils.isView(
                       candidateList.get(i),
                       ptn,
                       dStart,
                       dEnd)) {
-                      deleteList.add(new DateTime(candidateList
-                        .get(i)
-                        .getValue()));
-                      Calendar cal3 = Calendar.getInstance();
-                      cal3.setTime(candidateList.get(i).getValue());
-                      int day_count = cal3.get(Calendar.DAY_OF_WEEK);
-                      count = 0;
-                      ALHoliday holiday =
-                        holidaysManager.isHoliday(cal3.getTime());
-                      while (ScheduleUtils.isDayOffHoliday()
-                        && holiday != null
-                        || ScheduleUtils.isUserHoliday(day_count - 1)) {
-                        cal3.add(Calendar.DATE, -1);
-                        holiday = holidaysManager.isHoliday(cal3.getTime());
-                        day_count = cal3.get(Calendar.DAY_OF_WEEK);
-                        count++;
-                        if (count > 7) {
-                          break;
-                        }
+                      // 祝日前にずらす調整をした場合、調整前の日付を消す
+                      if (adjust) {
+                        deleteList.add(new DateTime(beforeAdj.getTime()));
                       }
-                      addList.add(new DateTime(cal3.getTime()));
+                      addList
+                        .add(new DateTime(candidateList.get(i).getValue()));
+                    } else {
+                      deleteList.add(new DateTime(beforeAdj.getTime()));
                     }
                   }
+                  event.getProperties().add(new ExDate(deleteList));
                   break;
               }
             }
@@ -539,7 +564,7 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
                 event2[i] = new VEvent(dStart, dEnd, rd.getName().getValue());
                 event2[i].getProperties().add(uid);
                 event2[i].getProperties().add(
-                  new RecurrenceId((Date) deleteList.get(i)));
+                  new RecurrenceId((Date) addList.get(i)));
               }
             }
           }

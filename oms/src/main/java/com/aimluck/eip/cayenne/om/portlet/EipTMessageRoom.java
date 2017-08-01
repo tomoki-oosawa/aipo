@@ -36,6 +36,8 @@ public class EipTMessageRoom extends _EipTMessageRoom {
 
   private Long photoModified = null;
 
+  public Long photoModified2 = null;
+
   public Integer getRoomId() {
     if (getObjectId() != null && !getObjectId().isTemporary()) {
       Object obj = getObjectId().getIdSnapshot().get(ROOM_ID_PK_COLUMN);

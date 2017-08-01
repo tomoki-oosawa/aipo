@@ -16,6 +16,7 @@ public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
     public static final String OWNER_ID_PROPERTY = "ownerId";
     public static final String PARAMS_PROPERTY = "params";
     public static final String PARENT_ID_PROPERTY = "parentId";
+    public static final String PINNED_PROPERTY = "pinned";
     public static final String TIMELINE_TYPE_PROPERTY = "timelineType";
     public static final String UPDATE_DATE_PROPERTY = "updateDate";
     public static final String EIP_TTIMELINE_FILE_PROPERTY = "eipTTimelineFile";
@@ -77,6 +78,14 @@ public class _EipTTimeline extends org.apache.cayenne.CayenneDataObject {
     }
     public Integer getParentId() {
         return (Integer)readProperty("parentId");
+    }
+    
+    
+    public void setPinned(String pinned) {
+        writeProperty("pinned", pinned);
+    }
+    public String getPinned() {
+        return (String)readProperty("pinned");
     }
     
     

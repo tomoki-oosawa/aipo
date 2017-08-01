@@ -66,9 +66,9 @@ if(document.all!=undefined){
 
 <div id="printBody" style="width:600px;font-size:10pt;">
 #if($!{result.Detail.isSpan()})
-<h1>$!{result.User.AliasName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}</h1>
+<h1>$!{result.User.AliasName} $!{result.ViewDateFormatText}$!{result.ViewDateFormatDayOfWeek}</h1>
 #else
-<h1>$!{result.User.AliasName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
+<h1>$!{result.User.AliasName} $!{result.ViewDateFormatText}$!{result.ViewDateFormatDayOfWeek}$!{result.Detail.Date2}</h1>
 #end
 
 <table><tbody>
