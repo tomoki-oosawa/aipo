@@ -1154,8 +1154,10 @@ public class TimelineUtils {
         type = "T";
         break;
     }
+    boolean hasKeyword = false;
     StringBuilder select = new StringBuilder();
-    select.append(" SELECT");
+
+    select.append("SELECT");
     select.append(" DISTINCT ");
     select.append(" eip_t_timeline.app_id,");
     select.append(" eip_t_timeline.create_date,");
@@ -1186,7 +1188,6 @@ public class TimelineUtils {
       body.append(", eip_t_timeline_file");
     }
 
-    boolean hasKeyword = false;
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
       hasKeyword = true;
       body.append(" LEFT JOIN eip_t_timeline AS comment ");
