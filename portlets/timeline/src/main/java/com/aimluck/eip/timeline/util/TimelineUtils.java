@@ -1188,11 +1188,11 @@ public class TimelineUtils {
     }
     body.append(" eip_t_timeline ");
     if ("L".equals(displayParam)) {
-      body
-        .append("JOIN eip_t_timeline_url AS url ON eip_t_timeline.timeline_id = url.timeline_id ) ");
+      body.append(" JOIN eip_t_timeline_url AS url ");
+      body.append(" ON eip_t_timeline.timeline_id = url.timeline_id ) ");
     } else if ("FILE".equals(displayParam)) {
-      body
-        .append("JOIN eip_t_timeline_file AS file ON eip_t_timeline.timeline_id = file.timeline_id ) ");
+      body.append(" JOIN eip_t_timeline_file AS file ");
+      body.append(" ON eip_t_timeline.timeline_id = file.timeline_id ) ");
     }
 
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
