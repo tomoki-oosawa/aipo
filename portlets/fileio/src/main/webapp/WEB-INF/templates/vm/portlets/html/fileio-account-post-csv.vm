@@ -111,7 +111,7 @@ function import_csv(){
         }
 	}
 	if(importflag == 0){
-        alert("$l10n.FILEIO_SELECT_TYPE_LOAD_CSV");
+        alert('$l10n.FILEIO_SELECT_TYPE_LOAD_CSV');
     }
 	document.readcsv.submit();
 }
