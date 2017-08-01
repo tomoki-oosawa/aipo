@@ -1198,10 +1198,10 @@ public class TimelineUtils {
     // testアカウントでは上手く行きましたが、データ量が大きくなったときにどうなるか要検証です。
     if ("L".equals(displayParam)) {
       body
-        .append(" eip_t_timeline.timeline_id = eip_t_timeline_url.timeline_id AND");
+        .append(" eip_t_timeline.timeline_id = eip_t_timeline_url.timeline_id AND ");
     } else if ("FILE".equals(displayParam)) {
       body
-        .append(" eip_t_timeline.timeline_id = eip_t_timeline_file.timeline_id AND");
+        .append(" eip_t_timeline.timeline_id = eip_t_timeline_file.timeline_id AND ");
     }
 
     if (type != null) {
