@@ -1242,7 +1242,7 @@ public class TimelineUtils {
     if (hasKeyword) {
       body.append(" AND ");
       body
-        .append("(eip_t_timeline.note LIKE #bind($keyword) OR comment.note LIKE #bind($ckeyword))");
+        .append("(eip_t_timeline.note LIKE #bind($keyword)  OR comment.note LIKE #bind($ckeyword))");
     }
 
     StringBuilder last = new StringBuilder();
