@@ -1181,11 +1181,18 @@ public class TimelineUtils {
     count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline");
+
+    body.append(" FROM ");
+    if ("L".equals(displayParam) || "FILE".equals(displayParam)) {
+      body.append("(");
+    }
+    body.append(" eip_t_timeline ");
     if ("L".equals(displayParam)) {
-      body.append(", eip_t_timeline_url");
+      body
+        .append("JOIN eip_t_timeline_url AS url ON eip_t_timeline.timeline_id = url.timeline_id ) ");
     } else if ("FILE".equals(displayParam)) {
-      body.append(", eip_t_timeline_file");
+      body
+        .append("JOIN eip_t_timeline_file AS file ON eip_t_timeline.timeline_id = file.timeline_id ) ");
     }
 
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
@@ -1195,15 +1202,6 @@ public class TimelineUtils {
     }
 
     body.append(" WHERE ");
-
-    // testアカウントでは上手く行きましたが、データ量が大きくなったときにどうなるか要検証です。
-    if ("L".equals(displayParam)) {
-      body
-        .append(" eip_t_timeline.timeline_id = eip_t_timeline_url.timeline_id AND ");
-    } else if ("FILE".equals(displayParam)) {
-      body
-        .append(" eip_t_timeline.timeline_id = eip_t_timeline_file.timeline_id AND ");
-    }
 
     if (type != null) {
       body.append(" eip_t_timeline.timeline_type = #bind($type) AND ");
@@ -1244,7 +1242,7 @@ public class TimelineUtils {
     if (hasKeyword) {
       body.append(" AND ");
       body
-        .append("(eip_t_timeline.note LIKE #bind($keyword)  OR comment.note LIKE #bind($ckeyword))");
+        .append("(eip_t_timeline.note LIKE #bind($keyword) OR comment.note LIKE #bind($ckeyword))");
     }
 
     StringBuilder last = new StringBuilder();
