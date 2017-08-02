@@ -493,7 +493,7 @@ public class ALDateTimeField extends ALAbstractField {
    * @param dateFormat
    * @return
    */
-  protected Date translateDate(String dateStr, String dateFormat) {
+  public Date translateDate(String dateStr, String dateFormat) {
     if (dateStr == null || dateStr.equals("")) {
       return null;
     }

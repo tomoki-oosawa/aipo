@@ -70,10 +70,17 @@
 #ALtditemfooter()
 
 
-
 ${dup_data}
 
+$!result.ClockInTime.Hour
+:
+$!result.ClockInTime.Minute
 
+$!result.ClockOutTime.Hour
+:
+$!result.ClockOutTime.Minute
+
+#set ($start_hour = $result.TimecardSystem.ChangeHour)
 
 #if($!result.IsPast)
 #ALtdcaption("#ALrequired($!result.getFieldName('reason'))")
@@ -84,7 +91,9 @@ ${dup_data}
 <tr id="clock_time_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "D") style="display:none" #end>
 <td class="caption">#ALrequired($!result.getFieldName('clock_in_time'))</td>
 #ALtditemheader()
+
 <select name="clock_in_time_hour" size="1" >
+
 <option value="-1">--</option>
 #foreach ( $num in [$start_hour..23] )
 <option value="$num" #if ($!result.ClockInTime.Hour == "$num") selected="selected" #end>$num</option>
@@ -96,7 +105,9 @@ ${dup_data}
 <option value="$num" #if ($!result.ClockInTime.Hour == "$num2") selected="selected" #end>$num2</option>
 #end
 #end
+
 </select> :
+
 <select name="clock_in_time_minute" size="1">
 <option value="-1">--</option>
 #foreach ( $num in [0..59] )
@@ -106,9 +117,11 @@ ${dup_data}
 &nbsp;-&nbsp;
 <select name="clock_out_time_hour" size="1" >
 <option value="-1">--</option>
+
 #foreach ( $num in [$start_hour..23] )
 <option value="$num" #if ($!result.ClockOutTime.Hour == "$num") selected="selected" #end>$num</option>
 #end
+
 #if ($end_hour > -1)
 #set($num = 23)
 #foreach ( $num2 in [0..$end_hour] )
