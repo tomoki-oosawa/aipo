@@ -34,6 +34,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
@@ -272,38 +273,33 @@ public class ExtTimecardUtils {
   }
 
   /**
-   * ExtTimecard オブジェクトモデルを取得します。 <BR>
-   *
-   * @param rundata
-   * @param context
-   *          カテゴリテーブルをJOINするかどうか
-   * @return
+   * 選択されている日にちのデータベースが埋まっていたら true を返します <BR>
+   * 
+   * @param target_uid
+   * @param target_date
+   * @return date_duplicated
    */
-  public static boolean checkDuplicatedDate(RunData rundata, Context context) {
+  public static boolean isDateDuplicated(int target_uid, String target_date) {
 
     boolean date_duplicated = false;
 
-    Calendar from_calendar = Calendar.getInstance();
+    ALDateTimeField hoge = new ALDateTimeField();
+    Date target_date_date = hoge.translateDate(target_date, "yyyy/MM/dd");
 
     SelectQuery<EipTExtTimecard> query = Database.query(EipTExtTimecard.class);
 
     Expression exp1 =
       ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
-        .valueOf(ALEipUtils.getUserId(rundata)));
+        .valueOf(target_uid));
 
     Expression exp2 =
       ExpressionFactory.matchExp(
         EipTExtTimecard.PUNCH_DATE_PROPERTY,
-        from_calendar.getTime());
+        target_date_date);
 
     query.setQualifier(exp1.andExp(exp2));
     List<EipTExtTimecard> date_list = query.fetchList();
 
-    // TODO 消す
-    int hoge = date_list.size();
-
-    // 一つ以上存在していたら、「もうあるよ」とう情報を送る
-    // 問題は、参照したいのは「今日」ではなく、その日であること。
     if (date_list.size() > 0) {
       date_duplicated = true;
     }

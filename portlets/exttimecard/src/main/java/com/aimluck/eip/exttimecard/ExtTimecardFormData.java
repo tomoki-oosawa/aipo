@@ -151,7 +151,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
-  boolean duplicated = false;
+  boolean duplicated;
 
   /**
    *
@@ -269,6 +269,18 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   public boolean doViewForm(ALAction action, RunData rundata, Context context) {
     try {
       init(action, rundata, context);
+
+      String session_date = rundata.getParameters().get("date");
+      boolean duplicated =
+        ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
+      context.put("dup_data", duplicated);
+
+      // TODO: 新規フォームでオブジェクトモデルを取得することはできません。
+      // なので、duplicateをチェックする関数と同じ要領で、最新の変更の日付を取得します。
+      // boolean duplicated =
+      // ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
+      // context.put("dup_data", duplicated);
+
       boolean isedit =
         (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
 
@@ -643,13 +655,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     setClockOutTime(rundata);
     boolean res = super.setFormData(rundata, context, msgList);
 
+    String session_date = rundata.getParameters().get("date");
+
+    boolean duplicated =
+      ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
+    context.put("dup_data", duplicated);
+
     if (res) {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
-
-        boolean duplicated =
-          ExtTimecardUtils.checkDuplicatedDate(rundata, context);
-        context.put("dup_data", duplicated);
-
         try {
           if (!(this.entity_id > 0)) {
             String entity_idstr =
@@ -667,7 +680,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
             String type = rundata.getParameters().get("type");
             this.type.setValue(type);
           }
-
           String punch_date_year =
             rundata.getParameters().get("punch_date_year");
           String punch_date_month =
@@ -687,13 +699,22 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           logger.error("exttimecard", e);
           return false;
         }
+        // } else if (duplicated
+        // && ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
+        //
+        // EipTExtTimecard timecard =
+        // ExtTimecardUtils.getEipTExtTimecard(rundata, context);
+        // if (timecard == null) {
+        // return false;
+        // }
+        // clock_in_time.setValue(timecard.getClockInTime());
+        // clock_out_time.setValue(timecard.getClockOutTime());
+        //
+        // if (session_date != null && !"".equals(session_date)) {
+        // this.punch_date.setValue(session_date);
+        // this.type.setValue("P");
+        // }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
-
-        boolean duplicated =
-          ExtTimecardUtils.checkDuplicatedDate(rundata, context);
-        context.put("dup_data", duplicated);
-
-        String session_date = rundata.getParameters().get("date");
 
         if (session_date != null && !"".equals(session_date)) {
           this.punch_date.setValue(session_date);
@@ -724,6 +745,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         this.remarks.setValue(remarks);
 
       } else {
+
         ALDateTimeField current_date = new ALDateTimeField();
         current_date.setValue(new Date());
 
@@ -759,6 +781,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         return false;
       }
       //
+      String session_date = rundata.getParameters().get("date");
+      boolean duplicated =
+        ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
+      context.put("dup_data", duplicated);
+
       timecard_id.setValue(timecard.getExtTimecardId().longValue());
       user_id.setValue(timecard.getUserId().intValue());
       punch_date.setValue(timecard.getPunchDate());
