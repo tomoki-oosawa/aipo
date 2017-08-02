@@ -73,18 +73,18 @@ public class FileIOAccountCsvFileScreen extends ALCSVScreen {
         LINE_SEPARATOR);
 
       sb.append("yamada,a,山田,太郎");
-      sb.append(",ヤマダ,タロウ,a@a.com");
-      sb.append(",99-99-91,1001,111-1111-1111,a@a.ne.jp,営業部/人事部,,").append(
+      sb.append(",ヤマダ,タロウ,a@example.com");
+      sb.append(",99-99-91,1001,111-1111-1111,a@example.com,営業部/人事部,,").append(
         LINE_SEPARATOR);
 
       sb.append("suzuki0,b,鈴木,花子");
-      sb.append(",スズキ,ハナコ,b@b.com");
-      sb.append(",99-99-92,2002,222-2222-2222,b@b.ne.jp,業務部,業務部長,").append(
+      sb.append(",スズキ,ハナコ,b@example.com");
+      sb.append(",99-99-92,2002,222-2222-2222,b@example.com,業務部,業務部長,").append(
         LINE_SEPARATOR);
 
       sb.append("suzuki1,c,鈴木,太郎");
-      sb.append(",スズキ,タロウ,c@c.com");
-      sb.append(",99-99-93,,,c@c.ne.jp,,,").append(LINE_SEPARATOR);
+      sb.append(",スズキ,タロウ,c@example.com");
+      sb.append(",99-99-93,,,c@example.com,,,").append(LINE_SEPARATOR);
 
       return sb.toString();
     } catch (Exception e) {

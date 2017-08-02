@@ -39,7 +39,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
     .getLogger(FileIOAddressBookCompanyCsvFileScreen.class.getName());
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    */
@@ -60,10 +60,10 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
       sb.append(LINE_SEPARATOR);
 
       sb
-        .append("やまだ商事,営業部,ヤマダショウジ,111-1111,東京都○○,99-9999-9999,99-9999-9999,http://");
+        .append("やまだ商事,営業部,ヤマダショウジ,111-1111,東京都○○,99-9999-9999,99-9999-9999,http://www.example.com");
       sb.append(LINE_SEPARATOR);
       sb
-        .append("イトウ水産,業務部,イトウスイサン,222-2222,東京都○○,99-9999-9998,99-9999-9998,http://");
+        .append("イトウ水産,業務部,イトウスイサン,222-2222,東京都○○,99-9999-9998,99-9999-9998,http://www.example.com");
       sb.append(LINE_SEPARATOR);
       sb.append("たなか建設,,タナカケンセツ,,,99-9999-9999,99-9999-9999,");
       sb.append(LINE_SEPARATOR);
@@ -76,7 +76,7 @@ public class FileIOAddressBookCompanyCsvFileScreen extends ALCSVScreen {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @return
    * @throws Exception
