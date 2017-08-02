@@ -67,12 +67,17 @@
 </div>
 </div>
 
-##<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
+<div class="indicator" id="indicator-$!portlet.ID" style="display:none">$l10n.SCHEDULE_READING</div>
 <div class="center loader" id="indicator-$!portlet.ID" style="display:none"><i class="indicator"></i></div>
 <div id="content-$!portlet.ID" style="visibility:visible">
-#if (${client} != "IPHONE")
 <div class="auiSummaryMeta clearfix">
+#if (${client} != "IPHONE")
+
 <div class="floatRight">
+#set($dlLink = $!jslink.getPortletById($!portlet.ID).addQueryData('template','ScheduleCsvExportScreen').addQueryData('start_day',"$!{result.ViewMonth}-01").addQueryData('end_day',"$!{result.NextMonth}-01"))
+#if ($!{result.hasAclCsvExport()})
+#AUIbutton($l10n.SCHEDULE_MONTH_DOWNLOAD $dlLink)
+#end
 #AUIprintbutton($!jslink.getPortletById($!portlet.ID).addQueryData("template","ScheduleScreenPrint").addQueryData("entityid","new").addQueryData("view_month",$!{result.ViewMonth.toString()}))
 </div>
 #end
@@ -105,8 +110,7 @@
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id",$!{record.UserId.toString()}).addQueryData("view_month",$!{result.ViewMonth.toString()}))" #if($!result.TargetUserId != "all") #if($!result.TargetUserId == $!record.UserId.toString()) selected="selected" #end #end>$!record.AliasName</option>
         #end
         #if(($result.Users.size() > 0) && ($result.FacilityList.size() > 0))
-    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>
-		#end
+    		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name","all").addQueryData("target_user_id", "none"))">----------</option>#end
         #foreach($record in $!result.FacilityList)
     		<option value="$!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","$!{schedulescreen}").addQueryData("target_group_name",$!{result.TargetGroupName}).addQueryData("target_user_id","f$!{record.FacilityId.toString()}").addQueryData("view_month",$!{result.ViewMonth.toString()}))" #if($!result.TargetUserId == "f$!record.FacilityId.toString()") selected="selected" #end>$!record.FacilityName</option>
         #end
@@ -270,6 +274,7 @@
 $!{record.ToDoResultData.TodoName}
 </a>
 </div>
+
 </td>
 #else
 #if($col_span <= 0 )<td class="term${color_style}${color_style_holiday}${color_style_othermonth}"></td>#end

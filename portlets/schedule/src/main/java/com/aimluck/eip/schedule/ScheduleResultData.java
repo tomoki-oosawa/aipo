@@ -271,6 +271,81 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   /**
+   * 公開度を取得します
+   *
+   * @param
+   */
+  public String getDegree() {
+    if (isPublic() && !isHidden()) {
+      return ALLocalizationUtils.getl10n("SCHEDULE_OPEN_PUBLIC_WORD");
+    } else if (!isPublic() && !isHidden()) {
+      return ALLocalizationUtils.getl10n("SCHEDULE_CLOSE_PUBLIC_WORD");
+    } else if (!isPublic() && isHidden()) {
+      return ALLocalizationUtils.getl10n("SCHEDULE_HIDE_ALL");
+    }
+    return "";
+  }
+
+  /**
+   * 繰り返しを取得します
+   *
+   * @param
+   */
+  public String getRepeatText() {
+    if (getPattern().charAt(0) == 'D') {
+      return ALLocalizationUtils.getl10n("SCHEDULE_EVERY_DAY");
+    } else if (getPattern().charAt(0) == 'W') {
+      return new StringBuffer()
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_WEEK_SPACE"))
+        .append(
+          getPattern().charAt(1) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_SUNDAY")
+            : "")
+        .append(
+          getPattern().charAt(2) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_MONDAY")
+            : "")
+        .append(
+          getPattern().charAt(3) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_TUSEDAY")
+            : "")
+        .append(
+          getPattern().charAt(4) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_WEDNESDAY")
+            : "")
+        .append(
+          getPattern().charAt(5) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_THURSDAY")
+            : "")
+        .append(
+          getPattern().charAt(6) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_FRIDAY")
+            : "")
+        .append(
+          getPattern().charAt(7) != '0'
+            ? ALLocalizationUtils.getl10n("SCHEDULE_SATURDAY")
+            : "")
+        .append(ALLocalizationUtils.getl10n("SCHEDULE_A_DAY_OF_THE_WEEK"))
+        .toString();
+    } else if (getPattern().charAt(0) == 'M') {
+      if (getPattern().substring(1, 3).equals("XX")) {
+        return new StringBuffer()
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_END_OF_MONTH"))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      } else {
+        return new StringBuffer()
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_EVERY_MONTH_SPACE"))
+          .append(Integer.parseInt(getPattern().substring(1, 3)))
+          .append(ALLocalizationUtils.getl10n("SCHEDULE_DAY"))
+          .toString();
+      }
+    }
+    return "";
+  }
+
+  /**
    * フォーマットを設定します。
    *
    * @param string
@@ -597,10 +672,8 @@ public class ScheduleResultData implements ALData, Cloneable {
     if (start_date.getValue().equals(end_date.getValue())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-      && start_date.getMonth().equals(end_date.getMonth()) && start_date
-      .getDay()
-      .equals(end_date.getDay()))
-      || is_repeat) {
+      && start_date.getMonth().equals(end_date.getMonth())
+      && start_date.getDay().equals(end_date.getDay())) || is_repeat) {
       return new StringBuffer()
         .append(start_date.toString())
         .append(" ")
@@ -629,10 +702,8 @@ public class ScheduleResultData implements ALData, Cloneable {
       && start_date.getMinute().equals(end_date.getMinute())) {
       return start_date.toString();
     } else if ((start_date.getYear().equals(end_date.getYear())
-      && start_date.getMonth().equals(end_date.getMonth()) && start_date
-      .getDay()
-      .equals(end_date.getDay()))
-      || is_repeat) {
+      && start_date.getMonth().equals(end_date.getMonth())
+      && start_date.getDay().equals(end_date.getDay())) || is_repeat) {
       return new StringBuffer()
         .append(start_date.toString())
         .append(" - ")
@@ -673,10 +744,16 @@ public class ScheduleResultData implements ALData, Cloneable {
   }
 
   public String getSpanDateText() {
-    return ALLocalizationUtils.getl10nFormat("SCHEDULE_UNTIL_SPAN", start_date
-      .getYear(), start_date.getMonth(), start_date.getDay(), start_date
-      .getDayOfWeek(), end_date.getYear(), end_date.getMonth(), end_date
-      .getDay(), end_date.getDayOfWeek());
+    return ALLocalizationUtils.getl10nFormat(
+      "SCHEDULE_UNTIL_SPAN",
+      start_date.getYear(),
+      start_date.getMonth(),
+      start_date.getDay(),
+      start_date.getDayOfWeek(),
+      end_date.getYear(),
+      end_date.getMonth(),
+      end_date.getDay(),
+      end_date.getDayOfWeek());
   }
 
   public void setDayStart(boolean b) {

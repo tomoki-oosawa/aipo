@@ -66,6 +66,15 @@ INSERT INTO eip_t_acl_user_role_map(user_id,role_id) SELECT user_id,(SELECT role
 UPDATE eip_t_timeline SET pinned ='F';
 -- 20170123
 
+-- 20170425
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 63 WHERE `feature_name` = 'schedule_self' AND `feature_alias_name` = 'スケジュール（自分の予定）操作';
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 63 WHERE `feature_name` = 'schedule_other' AND `feature_alias_name` = 'スケジュール（他ユーザーの予定）操作';
+UPDATE `eip_t_acl_portlet_feature` SET `acl_type` = 44 WHERE `feature_name` = 'schedule_facility' AND `feature_alias_name` = 'スケジュール（設備の予約）操作';
+UPDATE `eip_t_acl_role` SET `acl_type` = 63, `note` = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_self') AND `role_name` = 'スケジュール（自分の予定）管理者';
+UPDATE `eip_t_acl_role` SET `role_name` = 'スケジュール（他ユーザーの予定）管理者', `note` = '＊追加、編集、削除、外部入力は一覧表示の権限を持っていないと使用できません' WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_other') AND `role_name` = 'スケジュール（他ユーザーの予定）';
+UPDATE `eip_t_acl_role` SET `acl_type` = 44 WHERE feature_id IN (SELECT feature_id FROM eip_t_acl_portlet_feature WHERE feature_name = 'schedule_facility') AND `role_name` = 'スケジュール（設備の予約）管理者';
+-- 20170425
+
 -- 20170706
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `user_id`, `is_read`);
 -- 20170706

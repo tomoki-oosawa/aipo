@@ -176,6 +176,9 @@ public class ScheduleUtils {
     "content.defaultencoding",
     "UTF-8");
 
+  /** <code>TARGET_USER_ID</code> ユーザによる表示切り替え用変数の識別子 */
+  public static final String TARGET_USER_ID = "target_user_id";
+
   /** <code>TARGET_FACILITY_ID</code> ユーザによる表示切り替え用変数の識別子 */
   public static final String TARGET_FACILITY_ID = "f";
 
@@ -248,6 +251,62 @@ public class ScheduleUtils {
     15,
     30,
     60);
+
+  /**
+   * @param start_end
+   *          true=>start, false =>end
+   * @param rundata
+   * @param context
+   * @return
+   */
+  public static Calendar getViewCalendar(boolean start_end, RunData rundata,
+      Context context) {
+    Calendar cal = Calendar.getInstance();
+    cal.set(Calendar.HOUR_OF_DAY, 0);
+    cal.set(Calendar.MINUTE, 0);
+    cal.set(Calendar.SECOND, 0);
+    if (start_end) {
+      cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) - 1);
+    }
+    int[] par = { Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH };
+    String[] str = { "_date_year", "_date_month", "_date_day" };
+    String head = (start_end) ? "start" : "end";
+    for (int i = 0; i < str.length; i++) {
+      str[i] = head.concat(str[i]);
+      setCalendar(cal, par[i], str[i], rundata, context);
+    }
+    return cal;
+  }
+
+  /**
+   * @param cal
+   * @param par
+   * @param viewdate
+   * @param rundata
+   * @param context
+   */
+  private static void setCalendar(Calendar cal, int par, String viewdate,
+      RunData rundata, Context context) {
+    String temp = ALEipUtils.getTemp(rundata, context, viewdate);
+    String idParam = rundata.getParameters().getString(viewdate);
+    if (idParam == null && temp == null) {
+    } else if (idParam != null) {
+      ALEipUtils.setTemp(rundata, context, viewdate, idParam);
+      int i = Integer.parseInt(idParam);
+      if (par == Calendar.MONTH) {
+        i--;
+      }
+      cal.set(par, i);
+    } else if (temp != null) {
+      ALEipUtils.setTemp(rundata, context, viewdate, temp);
+      int i = Integer.parseInt(temp);
+      if (par == Calendar.MONTH) {
+        i--;
+      }
+      cal.set(par, i);
+
+    }
+  }
 
   /**
    * Scheudle オブジェクトモデルを取得します。
@@ -2961,6 +3020,63 @@ public class ScheduleUtils {
     return "F";
   }
 
+  public static String hasExportOther(RunData rundata) {
+    try {
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
+        ALAccessControlConstants.VALUE_ACL_EXPORT)) {
+        return "T";
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+    }
+    return "F";
+  }
+
+  public static String hasExportSelf(RunData rundata) {
+    try {
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF,
+        ALAccessControlConstants.VALUE_ACL_EXPORT)) {
+        return "T";
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+    }
+    return "F";
+  }
+
+  public static String hasExportFacility(RunData rundata) {
+    try {
+      ALAccessControlFactoryService aclservice =
+        (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
+          .getInstance())
+          .getService(ALAccessControlFactoryService.SERVICE_NAME);
+      ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+      if (aclhandler.hasAuthority(
+        ALEipUtils.getUserId(rundata),
+        ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
+        ALAccessControlConstants.VALUE_ACL_EXPORT)) {
+        return "T";
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleUtils]", e);
+    }
+    return "F";
+  }
+
   public static int getOwnerId(RunData rundata) {
     String scheduleId =
       rundata.getParameters().getString(ALEipConstants.ENTITY_ID);
@@ -4567,7 +4683,7 @@ public class ScheduleUtils {
       if (viewStart != null && viewEnd != null) {
         body.append(" AND ( ");
         body.append(" ( ");
-        body.append(" t4.start_date <= '");
+        body.append(" t4.start_date < '");
         body
           .append(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(viewEnd));
         body.append("' ");
@@ -6231,4 +6347,5 @@ public class ScheduleUtils {
     return cacheHoliday.charAt(DayOfWeek) != '0';
 
   }
+
 }

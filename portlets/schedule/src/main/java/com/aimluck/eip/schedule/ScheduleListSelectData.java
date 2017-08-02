@@ -69,8 +69,14 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
   /** <code>viewEnd</code> 表示終了日時 */
   private ALDateTimeField viewEnd;
 
+  /** アクセス権限の機能名 */
+  private String hasAclPortlet = null;
+
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
+
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport;
 
   protected String listViewtype;
 
@@ -172,15 +178,39 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     con.setViewStartDate(cal5);
 
     int loginUserId = ALEipUtils.getUserId(rundata);
+    setupLists(rundata, context);
+    target_user_id = getTargetUserId(rundata, context);
+
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
+
+    String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
+    String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
+
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+
+    if ("T".equals(hasAclPortlet)) {
+      hasAclCsvExport = true;
+    } else {
+      hasAclCsvExport = false;
+    }
   }
 
   @Override
@@ -188,7 +218,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
       Context context) throws ALPageNotFoundException, ALDBErrorException {
     try {
       setupLists(rundata, context);
-
       List<VEipTScheduleList> resultBaseList =
         getScheduleList(rundata, context);
       List<VEipTScheduleList> resultList =
@@ -319,6 +348,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     return rd;
   }
 
+  @Override
+  public String getTargetUserId() {
+    return target_user_id;
+  }
+
   /**
    * 表示開始日時を取得します。
    *
@@ -407,6 +441,11 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   public boolean isLoginUserID(Long id) {
     return id == userid;
+  }
+
+  @Override
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
 }

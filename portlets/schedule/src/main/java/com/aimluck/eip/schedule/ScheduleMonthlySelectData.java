@@ -141,6 +141,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** 閲覧権限の有無 */
   private boolean hasAclviewOther;
 
+  /** 外部出力権限の有無 */
+  private boolean hasAclCsvExport = false;
+
   /** <code>hasAuthoritySelfInsert</code> アクセス権限 */
   private boolean hasAuthoritySelfInsert = false;
 
@@ -149,6 +152,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
 
   /** <code>target_user_id</code> 表示対象のユーザ ログイン名 */
   private String target_user_name;
+
+  private String hasAclPortlet = null;
 
   /** <code>viewTodo</code> ToDo 表示設定 */
   protected int viewTodo;
@@ -385,13 +390,17 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
           .getPortletConfig()
           .getInitParameter("p5a-view"));
 
+    setupLists(rundata, context);
+
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
+    target_user_id = getTargetUserId(rundata, context);
 
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
         .getInstance()).getService(ALAccessControlFactoryService.SERVICE_NAME);
     ALAccessControlHandler aclhandler = aclservice.getAccessControlHandler();
+
     hasAclviewOther =
       aclhandler.hasAuthority(
         loginUserId,
@@ -409,6 +418,25 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         loginUserId,
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
+
+    String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
+    String has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
+
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+    if ("T".equals(hasAclPortlet)) {
+      hasAclCsvExport = true;
+    } else {
+      hasAclCsvExport = false;
+    }
 
     this.setUser(ALEipUtils.getALEipUser(loginUserId));
 
@@ -910,7 +938,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @param context
    * @throws ALDBErrorException
    */
-  protected void setupLists(RunData rundata, Context context) {
+  public void setupLists(RunData rundata, Context context) {
     target_group_name = getTargetGroupName(rundata, context);
     boolean fgroup_flag = false;
     String target_group_id = "";
@@ -1020,7 +1048,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    *          TARGET_USER_ID or TARGET_USER_ID_AT_SERCH
    * @return
    */
-  protected String getTargetUserId(RunData rundata, Context context,
+  public String getTargetUserId(RunData rundata, Context context,
       String target_key) {
     String target_user_id = null;
     String idParam = null;
@@ -1114,7 +1142,7 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
    * @param context
    * @return
    */
-  protected String getTargetUserId(RunData rundata, Context context) {
+  public String getTargetUserId(RunData rundata, Context context) {
     return getTargetUserId(rundata, context, TARGET_USER_ID);
   }
 
@@ -1262,6 +1290,10 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   @Override
   public String getAclPortletFeature() {
     return ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_SELF;
+  }
+
+  public boolean hasAclCsvExport() {
+    return hasAclCsvExport;
   }
 
   public boolean hasAuthoritySelfInsert() {
