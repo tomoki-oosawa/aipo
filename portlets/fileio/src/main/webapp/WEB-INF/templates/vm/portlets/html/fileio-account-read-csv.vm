@@ -33,6 +33,12 @@ function event_account_csv(button) {
   button.form.submit();
 }
 
+function event_csv_page(button,page) {
+  	disableButton(button.form);
+  	button.form.action = "$!jslink.getPortletById($!portlet.ID)" + '?' + button.name + '=1' + '&csvpage=' + page;
+  	button.form.submit();
+}
+
 function event_account_csv_regist(button) {
   if(confirm('$l10n.FILEIO_FILEIO_OVERWRITE_USER_INFORMATION')) {
     disableButton(button.form);
@@ -199,6 +205,9 @@ function hide_Attention(){
 	</p>
 </div>
 
+#if($result.List && $result.getPageCount() > 0)
+#set($plist = [1..$result.getPageCount()])
+
 #if($!result.List && $!result.List.size() > 0)
 #set($showErrmsg1 = false)
 #set($showErrmsg2 = false)
@@ -219,6 +228,7 @@ function hide_Attention(){
 #set($showErrmsg17 = false)
 #set($showErrmsg18 = false)
 #set($showErrmsg19 = false)
+#set($showErrmsg20 = false)
 #if($!result.overMaxUser())#set($showErrmsg16 = true)#else #set($showErrmsg16 = false)#end
 #foreach ($record in $result.List)
 #if(!$!record.User.LoginName)#set($showErrmsg1 = true)#end
@@ -240,12 +250,13 @@ function hide_Attention(){
 #if(!$!record.User.Code.toString())#set($showErrmsg18 = true)#end
 #if($!record.getSameCode())#set($showErrmsg19 = true)#end
 #end
+#if(! $!result.getHeaderOnHead())#set($showErrmsg20 = true)#end
 
 <table class="listTable wide">
 <td>
 
 #if($result.isError())${result.getLineCount3()}<br>$l10n.FILEIO_ERROR_NOT_ADD_DATA #end
-#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg16 || $showErrmsg17 || $showErrmsg18 || $showErrmsg19)
+#set($showErrmsg = $showErrmsg1 || $showErrmsg2 || $showErrmsg3 || $showErrmsg4 || $showErrmsg5 || $showErrmsg6 || $showErrmsg7 || $showErrmsg8 || $showErrmsg9 || $showErrmsg10 || $showErrmsg11 || $showErrmsg12 || $showErrmsg13 || $showErrmsg14 || $showErrmsg15 || $showErrmsg16 || $showErrmsg17 || $showErrmsg18 || $showErrmsg19 || $showErrmsg20)
 #if($showErrmsg)
 <ul>
 #if($showErrmsg1)
@@ -306,6 +317,9 @@ function hide_Attention(){
 #end
 #if($showErrmsg19)
 <li><span class="caution">（※19）&nbsp;$l10n.FILEIO_EXIST_SAME_NAME_CODE</span></li>
+#end
+#if($showErrmsg20)
+<li><span class="coution"> (※20) &nbsp;$l10n.FILEIO_ERROR_HEADER</span></li>
 #end
 </ul>
 #else
@@ -428,6 +442,7 @@ $!rec
 #end
 </tr>
 </table>
+#end
 #end
 </form>
 #if(${client}=="IPHONE")

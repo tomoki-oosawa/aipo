@@ -395,6 +395,20 @@ aimluck.io.ajaxMessageRoomDeleteSubmit = function (button, url, indicator_id, po
 	  }
 	}
 
+aimluck.io.ajaxMessageRoomDeleteSubmission = function (form, url, indicator_id, portlet_id, receive) {
+	  var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");
+	  var confirmString = dojo.string.substitute(nlsStrings.DWM_STR, {
+		    dwm_del: nlsStrings.DWM_DEL,
+		    dwm_this: nlsStrings.DWM_THIS,
+		    dwm_name: form._name.value
+		  });
+	  // 'この'+form._name.value+'を削除してよろしいですか？'+form._name.value+'を削除するとメッセージがすべて削除され、参加者は閲覧できなくなります。'
+	  if (confirm(confirmString)) {
+	    form.action = url;
+	    aimluck.io.submit(form, indicator_id, portlet_id, receive);
+	  }
+	}
+
 // account
 aimluck.io.ajaxEnableSubmit = function (button, url, indicator_id, portlet_id, receive) {
   var nlsStrings = dojo.i18n.getLocalization("aipo", "locale");

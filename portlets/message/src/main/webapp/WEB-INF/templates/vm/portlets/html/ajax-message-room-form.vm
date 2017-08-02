@@ -119,20 +119,12 @@ $!result.Name
 #ALtditemfooter()
 #end
 #end
-#if($mode!="new_form")
-  #ALtdcaption($l10n.MESSAGE_NOTIFICATION_SETTING)
-  #ALtditemheader()
-  #ALMessageNotification($result)
-  #ALtditemfooter()
-#end
+
 #ALtablefooter()
 
 #ALbuttonheader()
+#if($result.isGroup())
 #ALsubmit($event_submit $action_str)
-#if($mode!="new_form")
-#if($result.hasAuth())
-#ALajaxbuttonMessageRoomDelete("$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('entityid',$entityid).addQueryData('mode', 'delete')" "$indicator_id" "$!portlet.ID" "aipo.message.onReceiveMessageRoomDelete")
-#end
 #end
 #ALajaxbuttonClose()
 #ALbuttonfooter()

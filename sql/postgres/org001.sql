@@ -1898,6 +1898,7 @@ CREATE TABLE EIP_T_MESSAGE_READ
 
 create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_READ);
 create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
+create index eip_t_message_read_index3 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,USER_ID,IS_READ);
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE

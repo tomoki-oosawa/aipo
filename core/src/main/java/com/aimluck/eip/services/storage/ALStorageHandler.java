@@ -78,6 +78,8 @@ public abstract class ALStorageHandler {
 
   public abstract long getFileSize(String rootPath, String dir, String filename);
 
+  public abstract long getFileSize(String filePath);
+
   public abstract boolean deleteFolder(String rootPath, String dir);
 
   public abstract boolean deleteFile(String rootPath, String dir,
@@ -101,4 +103,5 @@ public abstract class ALStorageHandler {
   public abstract boolean deleteOldFolder(String folderPath, Calendar cal);
 
   public abstract void createNewFile(InputStream inputStream, String filepath);
+
 }

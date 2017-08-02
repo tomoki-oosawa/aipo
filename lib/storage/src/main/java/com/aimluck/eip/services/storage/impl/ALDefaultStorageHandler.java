@@ -393,6 +393,11 @@ public class ALDefaultStorageHandler extends ALStorageHandler {
       + filename));
   }
 
+  @Override
+  public long getFileSize(String filePath) {
+    return getFileSize(new File(getAbsolutePath(filePath)));
+  }
+
   protected int getFileSize(File file) {
     if (file == null) {
       return -1;

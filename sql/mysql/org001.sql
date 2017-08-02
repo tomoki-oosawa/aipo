@@ -1509,3 +1509,5 @@ ALTER TABLE `eip_t_message_read` ADD FOREIGN KEY (`message_id`) REFERENCES `eip_
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `user_id`, `is_read`);
 
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `is_read`);
+
+ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `user_id`, `is_read`);

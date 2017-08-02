@@ -2282,6 +2282,10 @@ public class ALEipUtils {
     return isMatchUserAgent("Android", rundata);
   }
 
+  public static boolean isIOSBrowser(RunData rundata) {
+    return isMatchUserAgent("iPhone", rundata);
+  }
+
   public static boolean isAndroid2Browser(RunData rundata) {
     int[] version = getAndroidVersion(rundata);
     return version != null && version[0] == 2;

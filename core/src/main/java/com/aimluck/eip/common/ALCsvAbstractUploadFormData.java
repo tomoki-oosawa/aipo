@@ -34,7 +34,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * CSVデータを管理するための抽象クラスです。 <br />
- * 
+ *
  */
 public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
@@ -66,14 +66,14 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
 
   /**
    * 一時フォルダを指定します。 <br />
-   * 
+   *
    * @return
    */
   public abstract String getTempFilePath();
 
   /**
    * データに値を設定します。 <br />
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -113,7 +113,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param msgList
    * @return
    */
@@ -125,7 +125,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -138,7 +138,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -151,7 +151,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
@@ -170,7 +170,6 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
       }
 
       try {
-        page_count = 0;
         line_count = 0;
         while (reader.eof != -1) {
           for (int i = 0; i < ALCsvTokenizer.CSV_SHOW_SIZE; i++) {
@@ -188,7 +187,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
             }
             line_count++;
           }
-          page_count++;
+
         }
       } catch (Exception e) {
 
@@ -203,7 +202,7 @@ public abstract class ALCsvAbstractUploadFormData extends ALAbstractFormData {
   }
 
   /**
-   * 
+   *
    * @param rundata
    * @param context
    * @param msgList
