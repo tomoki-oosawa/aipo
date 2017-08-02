@@ -5662,6 +5662,12 @@ a.auiIconMailOpen:hover {
   text-decoration: none;
   text-shadow: none;
 }
+#messageRoomSetting .auiWFicon,
+#messageRoomSetting .auiWFicon [class^="icon-"] {
+  height: 24px;
+  width: 24px;
+  line-height: 24px;
+}
 
 a:hover .auiWFicon [class^="icon-"] {
   color: #333333;
