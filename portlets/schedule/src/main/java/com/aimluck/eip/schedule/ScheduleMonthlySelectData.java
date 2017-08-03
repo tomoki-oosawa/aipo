@@ -164,6 +164,12 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   /** <code>target_user_id</code> 表示対象のユーザ ID */
   protected String target_user_id;
 
+  private String has_acl_self;
+
+  private String has_acl_other;
+
+  private String has_acl_facility;
+
   /**
    *
    * @param action
@@ -390,11 +396,8 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
           .getPortletConfig()
           .getInitParameter("p5a-view"));
 
-    setupLists(rundata, context);
-
     // アクセスコントロール
     int loginUserId = ALEipUtils.getUserId(rundata);
-    target_user_id = getTargetUserId(rundata, context);
 
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -419,24 +422,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_FACILITY,
         ALAccessControlConstants.VALUE_ACL_INSERT);
 
-    String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
-    String has_acl_other = ScheduleUtils.hasExportOther(rundata);
-    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
-
-    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
-      hasAclPortlet = has_acl_facility;
-    } else if (target_user_id == null
-      || "".equals(target_user_id)
-      || String.valueOf(userid).equals(target_user_id)) {
-      hasAclPortlet = has_acl_self;
-    } else {
-      hasAclPortlet = has_acl_other;
-    }
-    if ("T".equals(hasAclPortlet)) {
-      hasAclCsvExport = true;
-    } else {
-      hasAclCsvExport = false;
-    }
+    has_acl_self = ScheduleUtils.hasExportSelf(rundata);
+    has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
 
     this.setUser(ALEipUtils.getALEipUser(loginUserId));
 
@@ -1293,6 +1281,20 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public boolean hasAclCsvExport() {
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+    if ("T".equals(hasAclPortlet)) {
+      hasAclCsvExport = true;
+    } else {
+      hasAclCsvExport = false;
+    }
     return hasAclCsvExport;
   }
 

@@ -84,6 +84,12 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   private int userid;
 
+  private String has_acl_self;
+
+  private String has_acl_other;
+
+  private String has_acl_facility;
+
   /**
    *
    * @param action
@@ -178,8 +184,6 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
     con.setViewStartDate(cal5);
 
     int loginUserId = ALEipUtils.getUserId(rundata);
-    setupLists(rundata, context);
-    target_user_id = getTargetUserId(rundata, context);
 
     ALAccessControlFactoryService aclservice =
       (ALAccessControlFactoryService) ((TurbineServices) TurbineServices
@@ -192,25 +196,9 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
         ALAccessControlConstants.POERTLET_FEATURE_SCHEDULE_OTHER,
         ALAccessControlConstants.VALUE_ACL_LIST);
 
-    String has_acl_self = ScheduleUtils.hasExportSelf(rundata);
-    String has_acl_other = ScheduleUtils.hasExportOther(rundata);
-    String has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
-
-    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
-      hasAclPortlet = has_acl_facility;
-    } else if (target_user_id == null
-      || "".equals(target_user_id)
-      || String.valueOf(userid).equals(target_user_id)) {
-      hasAclPortlet = has_acl_self;
-    } else {
-      hasAclPortlet = has_acl_other;
-    }
-
-    if ("T".equals(hasAclPortlet)) {
-      hasAclCsvExport = true;
-    } else {
-      hasAclCsvExport = false;
-    }
+    has_acl_self = ScheduleUtils.hasExportSelf(rundata);
+    has_acl_other = ScheduleUtils.hasExportOther(rundata);
+    has_acl_facility = ScheduleUtils.hasExportFacility(rundata);
   }
 
   @Override
@@ -445,6 +433,21 @@ public class ScheduleListSelectData extends ScheduleMonthlySelectData {
 
   @Override
   public boolean hasAclCsvExport() {
+    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
+      hasAclPortlet = has_acl_facility;
+    } else if (target_user_id == null
+      || "".equals(target_user_id)
+      || String.valueOf(userid).equals(target_user_id)) {
+      hasAclPortlet = has_acl_self;
+    } else {
+      hasAclPortlet = has_acl_other;
+    }
+
+    if ("T".equals(hasAclPortlet)) {
+      hasAclCsvExport = true;
+    } else {
+      hasAclCsvExport = false;
+    }
     return hasAclCsvExport;
   }
 
