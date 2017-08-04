@@ -34,10 +34,12 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.VelocityContext;
 
+import com.aimluck.eip.cayenne.om.portlet.EipMFacility;
 import com.aimluck.eip.cayenne.om.portlet.VEipTScheduleList;
 import com.aimluck.eip.common.ALEipUser;
 import com.aimluck.eip.facilities.FacilityResultData;
 import com.aimluck.eip.facilities.util.FacilitiesUtils;
+import com.aimluck.eip.orm.Database;
 import com.aimluck.eip.schedule.ScheduleExportListContainer;
 import com.aimluck.eip.schedule.ScheduleExportResultData;
 import com.aimluck.eip.schedule.ScheduleListSelectData;
@@ -236,6 +238,21 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       if (target_user_id.charAt(0) == 'f') {
         isFacilityScreen = true;
       }
+      ALEipUser targetAlEipUser = null;
+      FacilityResultData targetFacilityResultData = null;
+      if (!isFacilityScreen) {
+        targetAlEipUser = ALEipUtils.getALEipUser(target_user_id);
+      } else {
+        try {
+          EipMFacility eipMFacility =
+            Database.get(EipMFacility.class, Integer.valueOf(target_user_id
+              .substring(1)));
+          targetFacilityResultData =
+            FacilitiesUtils.getFacilityResultData(eipMFacility);
+        } catch (Exception ex) {
+          logger.error("ScheduleCsvExportScreen", ex);
+        }
+      }
 
       for (ScheduleExportResultData record : con.getScheduleList()) {
         isOutput = false;
@@ -329,9 +346,15 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
           if (!record.isDummy()
             && (members.size() > 0 || facilities.size() > 0)) {
             // dummyでないスケジュールで参加メンバーがいるスケジュール
-            record.addAllMember(members);
-            record.addAllFacility(facilities);
-            arayList.add(record);
+            // target_user_idがメンバーに含まれているスケジュール
+            if ((!isFacilityScreen && isContains(members, targetAlEipUser))
+              || (isFacilityScreen && FacilitiesUtils.isContains(
+                facilities,
+                targetFacilityResultData))) {
+              record.addAllMember(members);
+              record.addAllFacility(facilities);
+              arayList.add(record);
+            }
           }
         }
       }
@@ -357,7 +380,9 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
         sb.append("\"");
       }
       return sb.toString();
-    } else {
+    } else
+
+    {
       fileNameSuffix = "error";
       return ALAccessControlConstants.DEF_PERMISSION_ERROR_STR;
     }
@@ -479,6 +504,26 @@ public class ScheduleCsvExportScreen extends ALCSVScreen {
       + "_schedules_"
       + fileNameSuffix
       + ".csv";
+  }
+
+  /**
+   * 第一引数のリストに，第二引数で指定したユーザ ID が含まれているかを検証する．
+   *
+   * @param memberIdList
+   * @param memberId
+   * @return
+   */
+  private boolean isContains(List<ALEipUser> userList, ALEipUser user) {
+    int size = userList.size();
+    long fid = user.getUserId().getValue();
+    ALEipUser tmpUser = null;
+    for (int i = 0; i < size; i++) {
+      tmpUser = userList.get(i);
+      if (tmpUser.getUserId().getValue() == fid) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }
