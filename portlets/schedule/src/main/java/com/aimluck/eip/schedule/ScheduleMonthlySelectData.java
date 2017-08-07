@@ -1281,19 +1281,26 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
   }
 
   public boolean hasAclCsvExport() {
-    if (target_user_id != null && target_user_id.charAt(0) == 'f') {
-      hasAclPortlet = has_acl_facility;
-    } else if (target_user_id == null
-      || "".equals(target_user_id)
-      || String.valueOf(userid).equals(target_user_id)) {
-      hasAclPortlet = has_acl_self;
-    } else {
-      hasAclPortlet = has_acl_other;
+    if (target_user_id.length() < 1) {
+      return false;
     }
-    if ("T".equals(hasAclPortlet)) {
-      hasAclCsvExport = true;
-    } else {
-      hasAclCsvExport = false;
+    try {
+      if (target_user_id != null && target_user_id.substring(0, 1).equals("f")) {
+        hasAclPortlet = has_acl_facility;
+      } else if (target_user_id == null
+        || "".equals(target_user_id)
+        || String.valueOf(userid).equals(target_user_id)) {
+        hasAclPortlet = has_acl_self;
+      } else {
+        hasAclPortlet = has_acl_other;
+      }
+      if ("T".equals(hasAclPortlet)) {
+        hasAclCsvExport = true;
+      } else {
+        hasAclCsvExport = false;
+      }
+    } catch (Exception e) {
+      logger.error("[ScheduleMonthlySelectData]", e);
     }
     return hasAclCsvExport;
   }
