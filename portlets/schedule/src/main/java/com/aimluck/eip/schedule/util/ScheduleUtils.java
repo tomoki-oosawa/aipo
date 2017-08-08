@@ -1088,7 +1088,6 @@ public class ScheduleUtils {
         } else {
           result = false;
         }
-        boolean switch_result = false;
         switch (shift) {
           case -1:
             cal_dummy.add(Calendar.DATE, 1);
@@ -1102,7 +1101,6 @@ public class ScheduleUtils {
                   .get(Calendar.DAY_OF_WEEK_IN_MONTH)) { // 今日の予定と予定の週が同じ
                   // 今日の予定に組み込む(予定ありとしてtrueを返す)
                   result = true;
-                  switch_result = true;
                   // return result;
                 }
               }
@@ -1110,9 +1108,6 @@ public class ScheduleUtils {
               cal_dummy.add(Calendar.DATE, 1);
               setDate(cal_dummy.getTime());
               day_count_dummy++;
-            }
-            if (!switch_result) {
-              result = false;
             }
             break;
           case 1:
@@ -1128,7 +1123,6 @@ public class ScheduleUtils {
                 if (week_count_schedule == cal_dummy
                   .get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
                   result = true;
-                  switch_result = true;
                   // return result;
                 }
               }
@@ -1136,9 +1130,6 @@ public class ScheduleUtils {
               cal_dummy.add(Calendar.DATE, -1);
               setDate(cal_dummy.getTime());
               day_count_dummy += 6;
-            }
-            if (!switch_result) {
-              result = false;
             }
             break;
           default:
