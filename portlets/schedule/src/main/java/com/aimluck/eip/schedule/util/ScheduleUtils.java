@@ -1097,11 +1097,17 @@ public class ScheduleUtils {
               && isHoliday()
               || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
               if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 進んだ先に予定がある
-                if (week_count_schedule == cal_dummy
-                  .get(Calendar.DAY_OF_WEEK_IN_MONTH)) { // 今日の予定と予定の週が同じ
-                  // 今日の予定に組み込む(予定ありとしてtrueを返す)
-                  result = true;
-                  // return result;
+                switch (ptn.length()) {
+                  case 10:
+                    result = true;
+                    break;
+                  case 11:
+                    if (week_count_schedule == cal_dummy
+                      .get(Calendar.DAY_OF_WEEK_IN_MONTH)) { // 今日の予定と予定の週が同じ
+                      // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                      result = true;
+                    }
+                    break;
                 }
               }
               // 日を1日進める
@@ -1119,11 +1125,17 @@ public class ScheduleUtils {
               && isHoliday()
               || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り繰り返す
               if (ptn.charAt((day_count_dummy - 1) % 7 + 1) == '1') { // 戻った先に予定がある
-                // 今日の予定に組み込む(予定ありとしてtrueを返す)
-                if (week_count_schedule == cal_dummy
-                  .get(Calendar.DAY_OF_WEEK_IN_MONTH)) {
-                  result = true;
-                  // return result;
+                switch (ptn.length()) {
+                  case 10:
+                    result = true;
+                    break;
+                  case 11:
+                    if (week_count_schedule == cal_dummy
+                      .get(Calendar.DAY_OF_WEEK_IN_MONTH)) { // 今日の予定と予定の週が同じ
+                      // 今日の予定に組み込む(予定ありとしてtrueを返す)
+                      result = true;
+                    }
+                    break;
                 }
               }
               // 日を1日戻す
