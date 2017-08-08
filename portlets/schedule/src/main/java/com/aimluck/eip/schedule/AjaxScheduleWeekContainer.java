@@ -28,7 +28,7 @@ import com.aimluck.eip.schedule.util.ScheduleUtils;
 
 /**
  * カレンダー用週間スケジュールのコンテナです。
- * 
+ *
  */
 public class AjaxScheduleWeekContainer implements ALData {
 
@@ -45,7 +45,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * 表示開始する日付を設定します。
-   * 
+   *
    * @param cal
    */
   public void setViewStartDate(Calendar cal) {
@@ -61,7 +61,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * スケジュールをコンテナに格納します。
-   * 
+   *
    * @param rd
    */
   public boolean addResultData(AjaxScheduleResultData rd, boolean show_all) {
@@ -132,7 +132,7 @@ public class AjaxScheduleWeekContainer implements ALData {
 
   /**
    * スケジュールリストを取得します。
-   * 
+   *
    * @return
    */
   public List<AjaxScheduleDayContainer> getDayList() {
