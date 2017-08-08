@@ -337,7 +337,7 @@ public class ReportSelectData extends
         ExpressionFactory.matchExp(
           EipTReportMap.USER_ID_PROPERTY,
           login_user_id);
-      q.andQualifier(exp1);
+      q.setQualifier(exp1);
       Expression exp2 =
         ExpressionFactory.matchExp(
           EipTReportMap.STATUS_PROPERTY,
@@ -392,6 +392,12 @@ public class ReportSelectData extends
       Expression exp3 =
         ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
       query.andQualifier(exp3);
+      // Expression exp1 =
+      // ExpressionFactory.matchExp("userid.eip_t_report_map", login_user_id);
+      // query.andQualifier(exp1);
+      // Expression exp2 =
+      // ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
+      // query.andQualifier(exp2);
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
     }
@@ -409,22 +415,6 @@ public class ReportSelectData extends
       Expression ex2 =
         ExpressionFactory.likeExp(EipTReport.NOTE_PROPERTY, "%" + search + "%");
       query.andQualifier(ex1.orExp(ex2));
-      List<EipTReport> queryList = query.fetchList();
-      List<Integer> resultid = new ArrayList<Integer>();
-      for (EipTReport item : queryList) {
-        if (item.getParentId() != 0 && !resultid.contains(item.getParentId())) {
-          resultid.add(item.getParentId());
-        } else if (!resultid.contains(item.getReportId())) {
-          resultid.add(item.getReportId());
-        }
-      }
-      if (resultid.size() == 0) {
-        // 検索結果がないことを示すために-1を代入
-        resultid.add(-1);
-      }
-      // Expression ex3 =
-      // ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-      // query.andQualifier(ex3);
     }
 
     // replyを除く
