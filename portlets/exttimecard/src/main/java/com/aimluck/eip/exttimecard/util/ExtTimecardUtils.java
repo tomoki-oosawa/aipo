@@ -167,6 +167,36 @@ public class ExtTimecardUtils {
   }
 
   /**
+   * 特定ユーザー、特定の日にちのEipTExtTimecardSystemのリストを取得します。
+   *
+   * @param target_uid
+   * @param target_date
+   * @return date_duplicated
+   */
+  public static List<EipTExtTimecard> getEipTExtTimecardsByUserIdAndDate(
+      int target_uid, String target_date) {
+    try {
+      ALDateTimeField datetime = new ALDateTimeField();
+      Date target_date_date = datetime.translateDate(target_date, "yyyy/MM/dd");
+      SelectQuery<EipTExtTimecard> query =
+        Database.query(EipTExtTimecard.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+          .valueOf(target_uid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecard.PUNCH_DATE_PROPERTY,
+          target_date_date);
+      query.setQualifier(exp1.andExp(exp2));
+      List<EipTExtTimecard> date_list = query.fetchList();
+      return date_list;
+    } catch (Exception ex) {
+      logger.error("exttimecard", ex);
+      return null;
+    }
+  }
+
+  /**
    * 特定ユーザーのEipTExtTimecardSystemを取得します。
    *
    * @param rundata
@@ -270,40 +300,6 @@ public class ExtTimecardUtils {
       logger.error("exttimecard", ex);
       return null;
     }
-  }
-
-  /**
-   * 選択されている日にちのデータベースが埋まっていたら true を返します <BR>
-   * 
-   * @param target_uid
-   * @param target_date
-   * @return date_duplicated
-   */
-  public static boolean isDateDuplicated(int target_uid, String target_date) {
-
-    boolean date_duplicated = false;
-
-    ALDateTimeField hoge = new ALDateTimeField();
-    Date target_date_date = hoge.translateDate(target_date, "yyyy/MM/dd");
-
-    SelectQuery<EipTExtTimecard> query = Database.query(EipTExtTimecard.class);
-
-    Expression exp1 =
-      ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
-        .valueOf(target_uid));
-
-    Expression exp2 =
-      ExpressionFactory.matchExp(
-        EipTExtTimecard.PUNCH_DATE_PROPERTY,
-        target_date_date);
-
-    query.setQualifier(exp1.andExp(exp2));
-    List<EipTExtTimecard> date_list = query.fetchList();
-
-    if (date_list.size() > 0) {
-      date_duplicated = true;
-    }
-    return date_duplicated;
   }
 
   /**

@@ -151,7 +151,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
-  boolean duplicated;
+  private boolean duplicated;
+
+  private String session_date;
 
   /**
    *
@@ -167,6 +169,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     super.init(action, rundata, context);
 
     login_uid = ALEipUtils.getUserId(rundata);
+    session_date = rundata.getParameters().get("date");
     selectedUserId = rundata.getParameters().getString("userid", "");
 
     // 出勤・退勤時間
@@ -270,16 +273,26 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     try {
       init(action, rundata, context);
 
-      String session_date = rundata.getParameters().get("date");
-      boolean duplicated =
-        ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
-      context.put("dup_data", duplicated);
+      // まず timecards として 該当の日のデータをリストで取得し、仮にそのデータが１つ以上あるばあい、
+      // データの重複を示す変数duplicatedにtrueを入れる。
+      List<EipTExtTimecard> timecards =
+        ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
+          login_uid,
+          session_date);
+      duplicated = timecards.size() > 0;
 
-      // TODO: 新規フォームでオブジェクトモデルを取得することはできません。
-      // なので、duplicateをチェックする関数と同じ要領で、最新の変更の日付を取得します。
-      // boolean duplicated =
-      // ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
-      // context.put("dup_data", duplicated);
+      // 仮にduplicateが真なら、その操作が 新規のフォームであるとはいえないため、
+      // entity idを取得し、setする。
+      if (duplicated) {
+        entity_id = timecards.get(0).getExtTimecardId();
+        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
+          .valueOf(entity_id));
+        boolean hoge =
+          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null;
+        // ついでに日にちも渡す。
+        this.clock_in_time.setValue(timecards.get(0).getClockInTime());
+      }
+      context.put("dup_data", duplicated);
 
       boolean isedit =
         (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
@@ -314,7 +327,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
       }
       doCheckAclPermission(rundata, context, aclType);
-
+      // ここでリザルトをセットしている。
       action.setResultData(this);
       if (!msgList.isEmpty()) {
         action.addErrorMessages(msgList);
@@ -655,22 +668,32 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     setClockOutTime(rundata);
     boolean res = super.setFormData(rundata, context, msgList);
 
-    String session_date = rundata.getParameters().get("date");
+    this.session_date = rundata.getParameters().get("date");
+    List<EipTExtTimecard> timecards =
+      ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
+        login_uid,
+        session_date);
 
-    boolean duplicated =
-      ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
+    duplicated = timecards.size() > 0;
+    if (duplicated) {
+      this.clock_in_time.setValue(timecards.get(0).getClockInTime());
+    }
+
     context.put("dup_data", duplicated);
 
     if (res) {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         try {
+          if (duplicated) {
+            EipTExtTimecard timecard = timecards.get(0);
+            this.entity_id = timecard.getExtTimecardId();
+          }
           if (!(this.entity_id > 0)) {
             String entity_idstr =
               ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
             if (entity_idstr == null
               || entity_idstr.equals("")
               || Integer.valueOf(entity_idstr) == null) {
-              // アカウントIDが空の場合
               logger.debug("[ExtTimecard] Empty entityID...");
               return false;
             }
@@ -699,21 +722,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           logger.error("exttimecard", e);
           return false;
         }
-        // } else if (duplicated
-        // && ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
-        //
-        // EipTExtTimecard timecard =
-        // ExtTimecardUtils.getEipTExtTimecard(rundata, context);
-        // if (timecard == null) {
-        // return false;
-        // }
-        // clock_in_time.setValue(timecard.getClockInTime());
-        // clock_out_time.setValue(timecard.getClockOutTime());
-        //
-        // if (session_date != null && !"".equals(session_date)) {
-        // this.punch_date.setValue(session_date);
-        // this.type.setValue("P");
-        // }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
 
         if (session_date != null && !"".equals(session_date)) {
@@ -775,16 +783,33 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTExtTimecard timecard =
-        ExtTimecardUtils.getEipTExtTimecard(rundata, context);
+      EipTExtTimecard timecard = null;
+      // 以下がnullなら、新規のフォームで duplicate してるからこっちのルートにきたってことになる。
+      if (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) == null) {
+        // オブジェクトモデルを取得
+        List<EipTExtTimecard> timecards =
+          ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
+            login_uid,
+            session_date);
+        timecard = timecards.get(0);
+        entity_id = timecard.getExtTimecardId();
+        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
+          .valueOf(entity_id));
+
+        timecard = ExtTimecardUtils.getEipTExtTimecard(rundata, context);
+
+        context.put("dup_data", duplicated);
+      } else {
+        // エンティティが存在した場合。
+        timecard = ExtTimecardUtils.getEipTExtTimecard(rundata, context);
+      }
       if (timecard == null) {
         return false;
       }
-      //
-      String session_date = rundata.getParameters().get("date");
-      boolean duplicated =
-        ExtTimecardUtils.isDateDuplicated(login_uid, session_date);
-      context.put("dup_data", duplicated);
+
+      entity_id = timecard.getExtTimecardId();
+      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
+        .valueOf(entity_id));
 
       timecard_id.setValue(timecard.getExtTimecardId().longValue());
       user_id.setValue(timecard.getUserId().intValue());
