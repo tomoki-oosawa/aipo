@@ -392,12 +392,12 @@ public class ReportSelectData extends
       Expression exp3 =
         ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
       query.andQualifier(exp3);
-      // Expression exp1 =
-      // ExpressionFactory.matchExp("userid.eip_t_report_map", login_user_id);
-      // query.andQualifier(exp1);
-      // Expression exp2 =
-      // ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
-      // query.andQualifier(exp2);
+
+      // Expression exp =
+      // ExpressionFactory.matchExp(
+      // EipTReport.REPORT_ID_PK_COLUMN,
+      // EipTReportMap.REPORT_ID_PROPERTY);
+      // query.andQualifier(exp);
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
     }
