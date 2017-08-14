@@ -151,8 +151,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
-  private boolean duplicated;
-
   private String session_date;
 
   /**
@@ -273,26 +271,13 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     try {
       init(action, rundata, context);
 
-      // まず timecards として 該当の日のデータをリストで取得し、仮にそのデータが１つ以上あるばあい、
-      // データの重複を示す変数duplicatedにtrueを入れる。
-      List<EipTExtTimecard> timecards =
-        ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
-          login_uid,
-          session_date);
-      duplicated = timecards.size() > 0;
-
-      // 仮にduplicateが真なら、その操作が 新規のフォームであるとはいえないため、
-      // entity idを取得し、setする。
-      if (duplicated) {
-        entity_id = timecards.get(0).getExtTimecardId();
+      // ALEipConstants.ENTITY_ID は null だが entity が存在する場合
+      if ((ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) == null)
+        && (hasEntityId(login_uid, session_date))) {
+        // entity_id を ALEipConstants.ENTITY_ID にをセットする
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
           .valueOf(entity_id));
-        boolean hoge =
-          ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null;
-        // ついでに日にちも渡す。
-        this.clock_in_time.setValue(timecards.get(0).getClockInTime());
       }
-      context.put("dup_data", duplicated);
 
       boolean isedit =
         (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) != null);
@@ -327,7 +312,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           ALAccessControlConstants.POERTLET_FEATURE_TIMECARD_TIMECARD_OTHER;
       }
       doCheckAclPermission(rundata, context, aclType);
-      // ここでリザルトをセットしている。
       action.setResultData(this);
       if (!msgList.isEmpty()) {
         action.addErrorMessages(msgList);
@@ -668,32 +652,16 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     setClockOutTime(rundata);
     boolean res = super.setFormData(rundata, context, msgList);
 
-    this.session_date = rundata.getParameters().get("date");
-    List<EipTExtTimecard> timecards =
-      ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
-        login_uid,
-        session_date);
-
-    duplicated = timecards.size() > 0;
-    if (duplicated) {
-      this.clock_in_time.setValue(timecards.get(0).getClockInTime());
-    }
-
-    context.put("dup_data", duplicated);
-
     if (res) {
       if (ALEipConstants.MODE_UPDATE.equals(this.getMode())) {
         try {
-          if (duplicated) {
-            EipTExtTimecard timecard = timecards.get(0);
-            this.entity_id = timecard.getExtTimecardId();
-          }
           if (!(this.entity_id > 0)) {
             String entity_idstr =
               ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID);
             if (entity_idstr == null
               || entity_idstr.equals("")
               || Integer.valueOf(entity_idstr) == null) {
+              // アカウントIDが空の場合
               logger.debug("[ExtTimecard] Empty entityID...");
               return false;
             }
@@ -723,7 +691,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           return false;
         }
       } else if (ALEipConstants.MODE_NEW_FORM.equals(this.getMode())) {
-
+        String session_date = rundata.getParameters().get("date");
         if (session_date != null && !"".equals(session_date)) {
           this.punch_date.setValue(session_date);
           this.type.setValue("P");
@@ -753,7 +721,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         this.remarks.setValue(remarks);
 
       } else {
-
         ALDateTimeField current_date = new ALDateTimeField();
         current_date.setValue(new Date());
 
@@ -783,33 +750,11 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       List<String> msgList) {
     try {
       // オブジェクトモデルを取得
-      EipTExtTimecard timecard = null;
-      // 以下がnullなら、新規のフォームで duplicate してるからこっちのルートにきたってことになる。
-      if (ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) == null) {
-        // オブジェクトモデルを取得
-        List<EipTExtTimecard> timecards =
-          ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
-            login_uid,
-            session_date);
-        timecard = timecards.get(0);
-        entity_id = timecard.getExtTimecardId();
-        ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
-          .valueOf(entity_id));
-
-        timecard = ExtTimecardUtils.getEipTExtTimecard(rundata, context);
-
-        context.put("dup_data", duplicated);
-      } else {
-        // エンティティが存在した場合。
-        timecard = ExtTimecardUtils.getEipTExtTimecard(rundata, context);
-      }
+      EipTExtTimecard timecard =
+        ExtTimecardUtils.getEipTExtTimecard(rundata, context);
       if (timecard == null) {
         return false;
       }
-
-      entity_id = timecard.getExtTimecardId();
-      ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
-        .valueOf(entity_id));
 
       timecard_id.setValue(timecard.getExtTimecardId().longValue());
       user_id.setValue(timecard.getUserId().intValue());
@@ -1547,10 +1492,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
     return Integer.parseInt(rest_num.getValue());
   }
 
-  public boolean getDuplicateCheck() {
-    return duplicated;
-  }
-
   /**
    * 編集のとき、フォームに入力されている退勤時間を取得します。
    */
@@ -1604,6 +1545,29 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   public boolean isNewRule() {
     return ExtTimecardUtils.isNewRule();
+  }
+
+  /**
+   * 新規フォーム作成の際、すでに Entity が存在するなら entity_id をセットさせます。
+   */
+  public boolean hasEntityId(int target_uid, String target_date) {
+    try {
+      List<EipTExtTimecard> timecards =
+        ExtTimecardUtils.getEipTExtTimecardsByUserIdAndDate(
+          target_uid,
+          target_date);
+      if (timecards.size() == 0) {
+        // ENTITY_ID は null だし、 entity も存在 *しない* 場合
+        return false;
+      } else {
+        // ENTITY_ID は null だが、 entity は存在 *する* 場合
+        this.entity_id = timecards.get(0).getExtTimecardId();
+        return true;
+      }
+    } catch (Exception ex) {
+      logger.error("exttimecard", ex);
+      return false;
+    }
   }
 
 }
