@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -55,7 +56,10 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
+import com.aimluck.eip.orm.query.CountQuery;
+import com.aimluck.eip.orm.query.CustomSelectQuery;
 import com.aimluck.eip.orm.query.ResultList;
+import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
 import com.aimluck.eip.report.util.ReportUtils;
 import com.aimluck.eip.services.accessctl.ALAccessControlConstants;
@@ -145,7 +149,7 @@ public class ReportSelectData extends
     // ReportUtils.clearReportSession(rundata, context);
     // }
     login_user = ALEipUtils.getALEipUser(rundata);
-
+    // uid = ALEipUtils.getUserId(rundata);
     String subMenuParam = rundata.getParameters().getString("submenu");
     currentSubMenu = ALEipUtils.getTemp(rundata, context, "submenu");
     if (subMenuParam == null && currentSubMenu == null) {
@@ -247,28 +251,26 @@ public class ReportSelectData extends
       } else {
         target_keyword.setValue(ReportUtils.getTargetKeyword(rundata, context));
       }
-//      SelectQuery<EipTReport> query = getSelectQuery(rundata, context);
-//      buildSelectQueryForFilter(query, rundata, context);
-//      buildSelectQueryForListView(query);
-//      buildSelectQueryForListViewSort(query, rundata, context);
-//
-//      ResultList<EipTReport> list = query.getResultList();
+      // SelectQuery<EipTReport> query = getSelectQuery(rundata, context);
+      // buildSelectQueryForFilter(query, rundata, context);
+      // buildSelectQueryForListView(query);
+      // buildSelectQueryForListViewSort(query, rundata, context);
+      //
+      // ResultList<EipTReport> list = query.getResultList();
       SQLTemplate<EipTReport> query = getSelectQuery(rundata, context);
-      List<DataRow> fetchList = query.fetchListAsDataRow();
-      List<EipTReport> list = new ArrayList<EipTReport>();
+      CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
+      CountQuery countQuery = new CountQuery(EipTReport.class);
+      DataContext dataContext = DataContext.getThreadDataContext();
+      List<EipTReport> fetchList = query.fetchList();
+      int totalCount = countQuery.count(dataContext, delegate.isDistinct());
       int pageSize = delegate.getFetchLimit();
-      if (pageSize > 0) {
-        int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
-        if ((num > 0) && (num < page)) {
-          page = num;
-        }
-        int offset = pageSize * (page - 1);
-        offset(offset);
-      } else {
-        page = 1;
+      int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
+      int page = 1;
+      if ((num > 0) && (num < page)) {
+        page = num;
       }
-
-    ResultList<EipTReport> list = new Result<EipTReport>(fe
+      ResultList<EipTReport> list =
+        new ResultList<EipTReport>(fetchList, page, 20, totalCount);
       return list;
     } catch (Exception ex) {
       logger.error("report", ex);
@@ -441,142 +443,137 @@ public class ReportSelectData extends
   //
   // }
 
-  private  SQLTemplate<EipTReport> getSelectQuery(RunData rundata,
-    Context context) {
+  private SQLTemplate<EipTReport> getSelectQuery(RunData rundata,
+      Context context) {
+    uid = ALEipUtils.getUserId(rundata);
+    Integer login_user_id =
+      Integer.valueOf((int) login_user.getUserId().getValue());
+    String login_id = login_user_id.toString();
+    StringBuilder select = new StringBuilder();
+    StringBuilder body = new StringBuilder();
 
-  Integer login_user_id =
-    Integer.valueOf((int) login_user.getUserId().getValue());
-  String login_id = login_user_id.toString();
-  StringBuilder select = new StringBuilder();
-  StringBuilder body = new StringBuilder();
+    if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
+      ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
+        .getValue());
+    } else {
+      ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
+    }
 
-  if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
-    ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
-      .getValue());
-  } else {
-    ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
-  }
+    if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
+      // 通常画面
+      // 受信したもので未読
+      select.append("SELECT ");
+      select.append(" t0.create_date, ");
+      select.append(" t0.end_date, ");
+      select.append(" t0.note, ");
+      select.append(" t0.parent_id, ");
+      select.append(" t0.user_id, ");
+      select.append(" t0.report_id, ");
+      select.append(" t0.report_name, ");
+      select.append(" t0.start_date, ");
+      select.append(" t0.update_date, ");
 
-  if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
-    // 通常画面
-    // 受信したもので未読
-  select.append("SELECT ");
-  select.append(" t0.create_date, ");
-  select.append(" t0.end_date, ");
-  select.append(" t0.note, ");
-  select.append(" t0.parent_id, ");
-  select.append(" t0.user_id, ");
-  select.append(" t0.report_id, ");
-  select.append(" t0.report_name, ");
-  select.append(" t0.start_date, ");
-  select.append(" t0.update_date, ");
+      body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
+      body.append(" WHERE ");
+      body.append(" t0.user_id = #bind($login_id) AND ");
+      body.append(" t1.status = 'U' ");
 
-  body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
-  body.append(" WHERE ");
-  body.append(" t0.user_id = " + login_id + " AND ");
-  body.append(" t0.status = 'U' ");
+    } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
+      // 送信
 
-  } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
-    // 送信
+      select.append("SELECT ");
+      select.append(" t0.create_date, ");
+      select.append(" t0.end_date, ");
+      select.append(" t0.note, ");
+      select.append(" t0.parent_id, ");
+      select.append(" t0.user_id, ");
+      select.append(" t0.report_id, ");
+      select.append(" t0.report_name, ");
+      select.append(" t0.start_date, ");
+      select.append(" t0.update_date, ");
 
-  select.append("SELECT ");
-  select.append(" t0.create_date, ");
-  select.append(" t0.end_date, ");
-  select.append(" t0.note, ");
-  select.append(" t0.parent_id, ");
-  select.append(" t0.user_id, ");
-  select.append(" t0.report_id, ");
-  select.append(" t0.report_name, ");
-  select.append(" t0.start_date, ");
-  select.append(" t0.update_date, ");
+      body.append(" FROM eip_t_report t0 ");
+      body.append(" WHERE ");
+      body.append(" t0.user_id = #bind($login_id) AND ");
 
-  body.append(" FROM eip_t_report t0 ");
-  body.append(" WHERE ");
-  body.append(" t0.user_id = " + login_id + " AND ");
+    } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
+      // 受信
+      select.append("SELECT ");
+      select.append(" t0.create_date, ");
+      select.append(" t0.end_date, ");
+      select.append(" t0.note, ");
+      select.append(" t0.parent_id, ");
+      select.append(" t0.user_id, ");
+      select.append(" t0.report_id, ");
+      select.append(" t0.report_name, ");
+      select.append(" t0.start_date, ");
+      select.append(" t0.update_date, ");
 
-  } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
-    // 受信
-  select.append("SELECT ");
-  select.append(" t0.create_date, ");
-  select.append(" t0.end_date, ");
-  select.append(" t0.note, ");
-  select.append(" t0.parent_id, ");
-  select.append(" t0.user_id, ");
-  select.append(" t0.report_id, ");
-  select.append(" t0.report_name, ");
-  select.append(" t0.start_date, ");
-  select.append(" t0.update_date, ");
+      body.append(" FROM eip_t_report t0, ");
+      body.append(" eip_t_report_map t1 ");
+      body.append(" WHERE ");
+      body.append("  t0.user_id = #bind($login_id) AND ");
+      body.append("  t0.report_id = t1.report_id AND ");
 
-  body.append(" FROM eip_t_report t0, ");
-  body.append(" eip_t_report_map t1 ");
-  body.append("  t0.user_id = t1.user_id ");
+    } else if (SUBMENU_ALL.equals(currentSubMenu)) {
+      // 全て
+      select.append("SELECT ");
+      select.append(" t0.create_date, ");
+      select.append(" t0.end_date, ");
+      select.append(" t0.note, ");
+      select.append(" t0.parent_id, ");
+      select.append(" t0.user_id, ");
+      select.append(" t0.report_id, ");
+      select.append(" t0.report_name, ");
+      select.append(" t0.start_date, ");
+      select.append(" t0.update_date, ");
 
+      body.append(" FROM eip_t_report t0 ");
+      body.append(" WHERE ");
 
-  } else if (SUBMENU_ALL.equals(currentSubMenu)) {
-  // 全て
-  select.append("SELECT ");
-  select.append(" t0.create_date, ");
-  select.append(" t0.end_date, ");
-  select.append(" t0.note, ");
-  select.append(" t0.parent_id, ");
-  select.append(" t0.user_id, ");
-  select.append(" t0.report_id, ");
-  select.append(" t0.report_name, ");
-  select.append(" t0.start_date, ");
-  select.append(" t0.update_date, ");
+    }
 
-  body.append(" FROM eip_t_report t0 ");
-  body.append(" WHERE ");
+    // 検索
 
-  }
+    String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
 
-  // 検索
+    if (search != null && !search.equals("")) {
+      current_search = search;
+      select.append("SELECT ");
+      select.append(" t0.create_date, ");
+      select.append(" t0.end_date, ");
+      select.append(" t0.note, ");
+      select.append(" t0.parent_id, ");
+      select.append(" t0.user_id, ");
+      select.append(" t0.report_id, ");
+      select.append(" t0.report_name, ");
+      select.append(" t0.start_date, ");
+      select.append(" t0.update_date, ");
 
-  String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
+      body.append(" FROM eip_t_report t0 ");
+      body.append(" WHERE ");
+      body.append(" t0.report_name LIKE #bind($search) OR ");
+      body.append(" t0.note LIKE #bind($search) AND ");
+    }
+    // replyを除く
 
-  if (search != null && !search.equals("")) {
-  current_search = search;
+    body.append(" t0.report_name <> '' ");
 
-  select.append("SELECT ");
-  select.append(" t0.create_date, ");
-  select.append(" t0.end_date, ");
-  select.append(" t0.note, ");
-  select.append(" t0.parent_id, ");
-  select.append(" t0.user_id, ");
-  select.append(" t0.report_id, ");
-  select.append(" t0.report_name, ");
-  select.append(" t0.start_date, ");
-  select.append(" t0.update_date, ");
+    StringBuilder last = new StringBuilder();
 
-  body.append(" FROM eip_t_report t0 ");
-  body.append(" WHERE ");
-  body.append(" t0.report_name = '%" + search + "%' AND ");
-  body.append(" t0.note = '%" + search + "%' AND ");
-  }
-    //replyを除く
-if(SUBMENU_REQUESTED.equals(currentSubMenu) || SUBMENU_ALL.equals(currentSubMenu)) {
+    last.append(" ORDER BY t0.create_date desc ");
 
-body.append(" t0.report_name <> '' AND ");
-
- StringBuilder last = new StringBuilder();
-
-  last.append(" ORDER BY t0.create_date desc ");
-
-Integer limit;
-if (limit > 0) {
     last.append(" LIMIT ");
-    last.append(limit);
-  }
+    last.append(20);
 
-  SQLTemplate<EipTReport> query =
-    Database.sql(
-      EipTReport.class,
-      select.toString() + body.toString() + last.toString()).param(
-      "user_id",
-      Integer.valueOf(userid));
- tchlist, page, 20, list.size());
- return query;
-}
+    SQLTemplate<EipTReport> query =
+      Database.sql(
+        EipTReport.class,
+        select.toString() + body.toString() + last.toString()).param(
+        "user_id",
+        Integer.valueOf(uid));
+    return query;
+  }
 
   /**
    * ResultData に値を格納して返します。（一覧データ） <BR>
