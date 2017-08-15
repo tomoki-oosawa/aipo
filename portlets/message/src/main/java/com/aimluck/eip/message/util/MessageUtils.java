@@ -389,15 +389,18 @@ public class MessageUtils {
     StringBuilder last = new StringBuilder();
 
     if (isReverse) {
-      last.append(" order by t1.create_date asc ");
+      last.append(" order by t1.create_date asc");
     } else {
-      last.append(" order by t1.create_date desc ");
+      last.append(" order by t1.create_date desc");
     }
 
     if (limit > 0) {
       last.append(" limit ");
       last.append(limit);
     }
+
+    // last
+    // .append(" create index room_member_id_index on eip_t_message_room_member(room_id) ");
 
     SQLTemplate<EipTMessage> query =
       Database.sql(EipTMessage.class, select.toString()
