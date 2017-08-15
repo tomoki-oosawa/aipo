@@ -1285,10 +1285,9 @@ public class ScheduleMonthlySelectData extends AjaxScheduleMonthlySelectData {
       return false;
     }
     try {
-      if (target_user_id != null && target_user_id.substring(0, 1).equals("f")) {
+      if (target_user_id.substring(0, 1).equals("f")) {
         hasAclPortlet = has_acl_facility;
-      } else if (target_user_id == null
-        || "".equals(target_user_id)
+      } else if ("".equals(target_user_id)
         || String.valueOf(userid).equals(target_user_id)) {
         hasAclPortlet = has_acl_self;
       } else {
