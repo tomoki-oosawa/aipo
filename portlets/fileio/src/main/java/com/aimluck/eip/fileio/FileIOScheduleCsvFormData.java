@@ -47,8 +47,8 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * 『スケジュール』のフォームデータを管理するクラスです。 <BR>
- *
- *
+ * 
+ * 
  */
 public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
@@ -109,8 +109,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドを初期化します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   public void initField() {
@@ -191,8 +191,8 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 各フィールドに対する制約条件を設定します。 <BR>
-   *
-   *
+   * 
+   * 
    */
   @Override
   protected void setValidator() {
@@ -210,10 +210,10 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームに入力されたデータの妥当性検証を行います。 <BR>
-   *
+   * 
    * @param msgList
    * @return
-   *
+   * 
    */
   @Override
   protected boolean validate(List<String> msgList) {
@@ -336,7 +336,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を読み込みます。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -350,7 +350,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『ユーザー』を追加します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -442,7 +442,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『スケジュール』を更新します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -456,7 +456,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 『スケジュール』を削除します。 <BR>
-   *
+   * 
    * @param rundata
    * @param context
    * @param msgList
@@ -470,7 +470,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザーの氏名からユーザーIDを取得する。 <BR>
-   *
+   * 
    * @param userFullName
    * @return
    */
@@ -499,7 +499,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * オブジェクトモデルからユーザー名を取得する。 <BR>
-   *
+   * 
    * @param userFullName
    * @return
    */
@@ -524,7 +524,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(フルネーム)を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getUserFullName() {
@@ -533,7 +533,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 予定を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getScheduleName() {
@@ -542,7 +542,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getNote() {
@@ -551,7 +551,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 場所を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALStringField getPlace() {
@@ -560,7 +560,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 作成日を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getCreateDate() {
@@ -569,7 +569,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartDate() {
@@ -578,7 +578,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndDate() {
@@ -587,7 +587,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartTime() {
@@ -596,7 +596,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndTime() {
@@ -605,7 +605,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getStartDateTime() {
@@ -625,7 +625,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を取得します <BR>
-   *
+   * 
    * @return
    */
   public ALDateTimeField getEndDateTime() {
@@ -645,7 +645,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserName(String str) {
@@ -654,7 +654,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名(フルネーム)を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setUserFullName(String str) {
@@ -663,7 +663,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 予定を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setScheduleName(String str) {
@@ -672,7 +672,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setNote(String str) {
@@ -681,7 +681,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 場所を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setPlace(String str) {
@@ -690,7 +690,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setCreateDate(String str) {
@@ -699,7 +699,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartDate(String str) {
@@ -708,7 +708,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndDate(String str) {
@@ -717,7 +717,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartTime(String str) {
@@ -726,7 +726,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndTime(String str) {
@@ -735,7 +735,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setStartDateTime(String str) {
@@ -744,7 +744,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を入力します <BR>
-   *
+   * 
    * @param str
    */
   public void setEndDateTime(String str) {
@@ -753,7 +753,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を入力します
-   *
+   * 
    * @param date
    */
   public void setCreateDate(Date date) {
@@ -762,7 +762,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartDate(Date date) {
@@ -771,7 +771,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndDate(Date date) {
@@ -780,7 +780,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始時刻を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartTime(Date date) {
@@ -789,7 +789,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了時刻を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndTime(Date date) {
@@ -798,7 +798,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 開始日時を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setStartDate_Time(Date date) {
@@ -807,7 +807,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 終了日時を入力します <BR>
-   *
+   * 
    * @param date
    */
   public void setEndDateTime(Date date) {
@@ -816,7 +816,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 時間を自動補完する場合は"1"を入力します <BR>
-   *
+   * 
    * @param flag
    */
   public void setIsAutoTime(String flag) {
@@ -829,7 +829,7 @@ public class FileIOScheduleCsvFormData extends ALAbstractFormData {
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   *
+   * 
    * @param token
    * @param i
    */
