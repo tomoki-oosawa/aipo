@@ -83,6 +83,8 @@
 								</ul>
 							</div>
 						</div>
+						<div id="roomDetailPane" class="rightBlock" style="">
+						</div>
 						<div id="messageRightPane" class="rightBlock" style="display:none">
 				            <div class="loader"><i class="indicator"></i></div>
 						</div>
@@ -94,16 +96,7 @@
 						<div id="messageMainBlock" class="mainBlock" style="display:none;">
 							<div class="contents clearfix">
 								<div class="timelineOuter">
-									<div class="roomHeader clearfix">
-										<ul class="userListIcon clearfix" id="roomMemberPane">
-										</ul>
-										<div class="floatRight" id="messageRoomSetting">
-											<a href="javascript:void(0)" id="menubar_button_$!{messagePortletId}" class="customizeMenuIcon menubarOpenButton" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aipo.customize.showMenu('$messagePortletId');"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
-											<div class="menubar body-child" id="menubar_$!{messagePortletId}" style="display: none; z-index: 9999">
-											<ul id="roomMemberAdmin">
-                                            </ul>
-                                            </div>
-										</div>
+									<div id="messagePane" class="timeline scroll">
 									</div>
 									<div id="messageFormDiv"></div>
 									<div class="inputField">
@@ -134,8 +127,6 @@
 												</div>
 											</div>
 										</form>
-									</div>
-									<div id="messagePane" class="timeline scroll">
 									</div>
 								</div>
 							</div>

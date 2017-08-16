@@ -32,20 +32,20 @@
 #set($currentDate = $!record.CreateDateLine.toString())
 #set($currentMessageId = $!record.MessageId)
 #set($currentDateKey = $!record.CreateDateKey.toString())
-<div id="message$!record.MessageId" class="message">
+<div id="message$!record.MessageId" class="message#if($!record.isOwner()) me#end">
 
-	<div class="avatar">
+	<div class="avatar avatar_m">
 		<a href="javascript: void(0)" onclick="aipo.message.popupProfile(${record.UserId.Value},arguments[0])">
 		#if($!record.isHasPhoto())
-			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.DisplayName" width="50" height="50" class="avatar_l"/>
+			<img src="$!utils.escapeXML($jslink.getTemplate("FileuploadFacePhotoScreen").addQueryData("uid", $!record.UserId).addQueryData("t", "$!record.PhotoModified"))" alt="$!record.DisplayName" width="32" height="32" class="avatar_l"/>
 		#elseif("${record.UserId.Value}" == "1")
-			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" width="50" height="50"/>
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" width="32" height="32"/>
 		#elseif("${record.UserId.Value}" == "2")
-			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" width="50" height="50"/>
+			<img src="themes/default/images/common/icon_aipo100.png" alt="$!record.DisplayName" width="32" height="32"/>
         #elseif("${record.UserId.Value}" == "3")
-			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" width="50" height="50"/>
+			<img src="themes/default/images/common/icon_message100.png" alt="$!record.DisplayName" width="32" height="32"/>
         #else
-			<img src="themes/default/images/common/icon_user100.png" alt="$!record.DisplayName" width="50" height="50"/>
+			<img src="themes/default/images/common/icon_user100.png" alt="$!record.DisplayName" width="32" height="32"/>
 		#end
 		</a>
 	</div>

@@ -1,0 +1,54 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+
+<div class="roomDetail">
+<div class="clearfix">
+<span class="avatar"><img src="themes/default/images/common/icon_group100.png" class="avatar_l"></span>
+<span class="name">プロジェクトAチームプロジェクトAチームプロジェクトAチーム</span>
+</div>
+<div id="messageRoomSetting">
+<a href="javascript:void(0)" class="setting toggle" title="ルーム設定" onclick="popupToggle(this,'roomSetting');"><i class="icon-cog"></i></a>
+<div class="menubar" id="roomSetting" style="display: none; right: 0px; top: 20px;">
+<ul>
+<li><a href="javascript:void(0);" onclick="">ルーム設定</a></li>
+<li class="last"><a href="javascript:void(0);" onclick="">通知設定</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="roomDisc"></div>
+<ul class="user">
+<li class="index">参加ユーザー<span>5人</span>
+##<a class="floatRight setting toggle" href="javascript:void(0)" title="ユーザー設定" onclick=""><i class="icon-cog"></i></a>
+<a class="floatRight plus" href="javascript:void(0)"  title="ユーザーを追加"><i class="icon-plus"></i></a>
+</li>
+<li id="messageRightUser***" class="messageRightUser">
+<a href="javascript:void(0)" onclick="aipo.message.openDirect()">
+<span class="avatar"><img src="themes/default/images/common/icon_user100.png" alt="田村 涼子" class="avatar_s"></span>
+<span class="admin">管理者</span>
+<span class="name">田村 涼子涼子涼子涼子涼子涼子涼子涼子涼子涼子涼子涼子涼子</span>
+</a>
+</li>
+<li id="messageRightUser***" class="messageRightUser">
+<a href="javascript:void(0)" onclick="aipo.message.openDirect()">
+<span class="avatar"><img src="themes/default/images/common/icon_user100.png" alt="田村 涼子" class="avatar_s"></span>
+<span class="name">田村 涼子</span>
+</a>
+</li>
+</ul>
