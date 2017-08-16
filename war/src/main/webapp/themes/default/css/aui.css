@@ -934,101 +934,152 @@ ul.hdTools .dropdown:before {
   -webkit-appearance: caret;
 }
 /***************************************************
-	dd_message
+	dd_message 20170222
 --------------------------------------------------*/
 #dd_message {
+  min-width: 940px;
   width: 100%;
   overflow: hidden;
-  border-radius: 3px;
+  border-radius: 3px
 }
+
 #dd_message > .body {
-  /* background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAARgAAAABCAYAAAAFILFrAAAAFUlEQVR42mMwNjb+P4pH8SgexbTAAPnyvlAL+gbgAAAAAElFTkSuQmCC);
-  background-repeat: repeat-y;
-  background-position: left; */
-  background: #eee;
+  background: #eee
 }
+
 #dd_message .title {
   height: 50px;
   line-height: 34px;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5
 }
+
 #dd_message .mainBlock {
-   margin-left: 280px;
-  /*border-left: solid 1px #d2d2d2; */
-  /*margin-left: 240px;*/
+  margin-left: 280px;
+  margin-right: 305px
 }
+
 #dd_message .mainBlock > .contents {
-  /* padding: 10px 10px 0 10px; */
-  padding: 10px 15px 0 15px;
+  padding: 0 0 0 0
 }
-/* ------------------------------------------------
-   rightBlock  2015.05.11
---------------------------------------------------- */
+
 #dd_message .rightBlock {
   position: absolute;
   top: 50px;
   bottom: 0;
   right: 0;
-  width: 359px;
-  background: #ffffff;
+  width: 304px;
+  background: #fff;
   border-left: 1px solid #e5e5e5;
-  overflow-y: scroll;
+  overflow-y: scroll
 }
+
 #dd_message .rightBlock div.index {
   background: #f6f6f6;
   padding: 11px 20px 9px 10px;
-  color: #333;
+  color: #333
 }
+
 #dd_message .rightBlock div.index a {
-  text-decoration: none !important;
+  text-decoration: none !important
 }
-#dd_message .rightBlock ul.close li {
-  display: none;
+
+#dd_message .rightBlock .roomDetail {
+  position: relative;
+  padding: 15px 40px 15px 70px
 }
-#dd_message .rightBlock ul.close li.index {
+
+#dd_message .rightBlock .roomDetail .avatar {
+  position: absolute;
+  top: 15px;
+  left: 10px;
+  float: left
+}
+
+#dd_message .rightBlock .roomDetail .name {
   display: block;
+  height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: bold
 }
+
+#dd_message .rightBlock .roomDetail #messageRoomSetting {
+  position: absolute;
+  top: 32px;
+  right: 20px
+}
+
+#dd_message .rightBlock .roomDetail #messageRoomSetting a i {
+  color: #d2d2d2
+}
+
+#dd_message .rightBlock .roomDetail #messageRoomSetting a:hover i {
+  color: #000
+}
+
+#dd_message .rightBlock .roomDisc {
+  padding: 0 15px 15px 15px
+}
+
+#dd_message .rightBlock ul.close li {
+  display: none
+}
+
+#dd_message .rightBlock ul.close li.index {
+  display: block
+}
+
+#dd_message .rightBlock ul.user, #dd_message .rightBlock ul.room, #dd_message .rightBlock ul.messages, #dd_message .rightBlock ul.files {
+  border-top: 1px solid #e5e5e5;
+  margin-bottom: 10px
+}
+
 #dd_message .rightBlock ul.user li, #dd_message .rightBlock ul.room li {
-  height: 38px;
-  border: 1px solid #E7E7E7;
+  display: block;
+  height: 40px
 }
+
 #dd_message .rightBlock ul.user li:hover, #dd_message .rightBlock ul.room li:hover {
-  border: 1px solid #999;
+  background: #f6f6f6
 }
+
+#dd_message .rightBlock ul.user li:hover span, #dd_message .rightBlock ul.room li:hover span {
+  text-decoration: none
+}
+
 #dd_message .rightBlock ul.user li a, #dd_message .rightBlock ul.room li a {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  height: 38px;
-  padding: 7px 16px 7px 38px;
+  height: 40px;
+  padding: 7px 16px 7px 50px;
   display: block;
-  text-decoration: none;
+  text-decoration: none
 }
-#dd_message .rightBlock ul.user li:hover span,
-#dd_message .rightBlock ul.room li:hover span {
-  text-decoration: none;
-}
-#dd_message .rightBlock ul.user li .name,
-#dd_message .rightBlock ul.room li .name,
-#dd_message .rightBlock ul.user li .date,
-#dd_message .rightBlock ul.room li .date {
-  line-height: 25px;
+
+#dd_message .rightBlock ul.user li .name, #dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.user li .admin, #dd_message .rightBlock ul.room li .name, #dd_message .rightBlock ul.room li .date, #dd_message .rightBlock ul.room li .admin {
+  line-height: 27px;
   height: 25px;
   white-space: nowrap;
   overflow: hidden;
   -ms-text-overflow: ellipsis;
   -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis
 }
-#dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.room li .date {
+
+#dd_message .rightBlock ul.user li .date, #dd_message .rightBlock ul.user li .admin, #dd_message .rightBlock ul.room li .date, #dd_message .rightBlock ul.room li .admin {
   float: right;
   color: #999;
   font-size: 11px;
+  margin-left: 5px
 }
+
 #dd_message .rightBlock ul.user li .nrCount, #dd_message .rightBlock ul.room li .nrCount {
-  background-color: #ff3333;
+  background-color: #f33;
   border-radius: 3px;
-  color: #ffffff;
+  color: #fff;
   display: inline-block;
   float: left;
   font-size: 10px;
@@ -1037,125 +1088,319 @@ ul.hdTools .dropdown:before {
   min-width: 8px;
   padding: 0 3px;
   text-align: center;
-  text-decoration: none;
+  text-decoration: none
 }
+
+#dd_message .rightBlock ul.files li {
+  display: block;
+  margin: 0 5px 5px 0
+}
+
+#dd_message .rightBlock ul.files li:not(.index) {
+  line-height: 0;
+  display: inline-block
+}
+
+#dd_message .rightBlock ul.files li:nth-child(3n+2) {
+  margin-left: 15px
+}
+
+#dd_message .rightBlock ul.files li a img {
+  border: 1px solid #fff;
+  height: auto;
+  max-height: 200px;
+  max-width: 200px;
+  padding: 0px
+}
+
+#dd_message .rightBlock ul.files li a:hover img {
+  border: 1px solid #ff9900
+}
+
 #dd_message .rightBlock ul li {
   position: relative;
-  margin: 0 15px 7px 15px;
-  border-radius: 4px;
-  background: #ffffff;
+  margin: 0;
+  background: #fff
 }
+
 #dd_message .rightBlock ul li.index {
-  background: none;
+  background: 0;
   color: #333;
-  border: none;
-  padding: 0 15px 0;
-  margin: 15px 0 7px;
+  border: 0;
+  padding: 15px 15px 14px;
+  margin: 0;
   cursor: auto;
   height: auto;
-  border: none;
+  border: 0
 }
+
 #dd_message .rightBlock ul li.index a {
   height: auto;
   padding: 0;
   margin-right: 4px;
-  text-decoration: none !important;
+  text-decoration: none !important
 }
+
+#dd_message .rightBlock ul li.index a.setting, #dd_message .rightBlock ul li.index a.plus {
+  margin: 3px 5px 0 15px
+}
+
 #dd_message .rightBlock ul li.index a i {
-  text-decoration: none;
+  text-decoration: none
 }
+
 #dd_message .rightBlock ul li.index:hover {
-  border: none;
+  border: 0;
+  background: #fff
 }
+
 #dd_message .rightBlock ul li.index span {
   color: #999;
   display: inline-block;
   margin-left: 10px;
-  font-size: 11px;
+  font-size: 11px
 }
+
 #dd_message .rightBlock ul li.index a i {
   color: #d2d2d2;
-  text-decoration: none;
+  text-decoration: none
 }
+
 #dd_message .rightBlock ul li.index a:hover i {
-  color: #333;
+  color: #333
 }
+
+#dd_message .rightBlock ul li.select {
+  padding: 0 15px 15px;
+  text-align: center
+}
+
+#dd_message .rightBlock ul li.select ul {
+  font-size: 0
+}
+
+#dd_message .rightBlock ul li.select ul li {
+  text-align: center;
+  font-size: 13px;
+  display: inline-block;
+  border-bottom: 1px solid #d2d2d2;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box
+}
+
+#dd_message .rightBlock ul li.select ul li a {
+  width: 100%;
+  display: inline-block;
+  padding: 5px 7px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: #999
+}
+
+#dd_message .rightBlock ul li.select ul li.active {
+  border-bottom: 2px solid #000
+}
+
+#dd_message .rightBlock ul li.select ul li.active a {
+  color: #000
+}
+
+#dd_message .rightBlock ul li.select.column2 ul li {
+  width: 50%
+}
+
 #dd_message .rightBlock ul li span {
-  display: block;
+  display: block
 }
+
 #dd_message .rightBlock ul li .avatar {
-  left: 0;
-  padding: 7px;
+  left: 15px;
+  padding: 0px;
   position: absolute;
-  top: 0;
+  top: 8px
 }
+
 #dd_message .rightBlock ul li.message {
-  padding: 7px 16px 7px 38px;
+  padding: 7px 16px 7px 50px
 }
+
 #dd_message .rightBlock ul li.message .tlClipBoard {
   border: 1px solid #f0f0f0;
   font-size: 11px;
   padding: 7px;
-  margin: 10px 0 5px;
+  margin: 10px 0 5px
 }
+
 #dd_message .rightBlock ul li.message .time {
-  color: #999;
+  color: #999
 }
+
 #dd_message .rightBlock ul li.message .time a {
-  color: #999;
+  color: #999
 }
+
 #dd_message .rightBlock ul li.message .time a:hover {
-  color: #ff9900;
+  color: #f90
 }
-/* ------------------------------------------------
-   rightBlock  END
---------------------------------------------------- */
+
 #dd_message .timelineOuter .message {
-  border-top: none;
-  /* padding: 0 7px 7px; */
-  padding: 0 7px 20px;
-  margin-bottom: 0px;
+  border-top: 0;
+  padding: 0 20px 12px;
+  margin-bottom: 0
 }
+
 #dd_message .timelineOuter .message:first-child {
-  padding-top: 0 !important;
+  padding-top: 0 !important
 }
+
 #dd_message .timelineOuter .message:last-child {
-  margin-bottom: 30px;
+  margin-bottom: 10px
 }
+
 #dd_message .timelineOuter .message.active {
   background: #fef6f1;
-  border-radius: 4px;
+  border-radius: 4px
 }
+
 #dd_message .timelineOuter .message .avatar {
-  margin-top: 7px;
+  margin-top: 32px
 }
+
 #dd_message .timelineOuter .message .time {
   color: #999;
-  margin-bottom: 0;
+  margin-bottom: 0
 }
+
 #dd_message .timelineOuter .message .time a {
-  color: #999;
+  color: #999
 }
+
 #dd_message .timelineOuter .message .time a:hover {
-  color: #ff9900;
+  color: #f90
 }
+
 #dd_message .timelineOuter .message .name {
-  padding-top: 7px;
+  padding-top: 7px
 }
+
 #dd_message .timelineOuter .timeline .messageContents {
-  margin-right: 60px;
+  margin-left: 42px;
+  margin-right: 100px
 }
+
+#dd_message .timelineOuter .timeline .messageContents .body {
+  position: relative;
+  background: #F6F6F6;
+  border-radius: 5px;
+  padding: 10px 10px;
+  margin: 7px 0 7px 0
+}
+
+#dd_message .timelineOuter .timeline .messageContents .body:after {
+  right: 100%;
+  top: 15px;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(246, 246, 246, 0);
+  border-right-color: #f6f6f6;
+  border-width: 5px;
+  margin-top: -5px
+}
+
+#dd_message .timelineOuter .timeline .messageContents .body .tlImageBlock {
+  margin-bottom: 0
+}
+
+#dd_message .timelineOuter .timeline .messageContents .body .tlImageBlock a {
+  background: #fff
+}
+
+#dd_message .timelineOuter .message.me .avatar {
+  right: 20px;
+  margin-top: 7px
+}
+
+#dd_message .timelineOuter .message.me .messageContents {
+  margin-right: 42px;
+  margin-left: 100px
+}
+
+#dd_message .timelineOuter .message.me .messageContents .body {
+  background: #fff7ea
+}
+
+#dd_message .timelineOuter .message.me .messageContents .body:after {
+  left: 100%;
+  border-color: rgba(255, 247, 234, 0);
+  border-left-color: #fff7ea
+}
+
+#dd_message .timelineOuter .message.me .messageContents .name {
+  display: none
+}
+
 #dd_message .contents {
-  background: #ffffff;
+  background: #fff
 }
+
 #dd_message .subContents {
   float: right;
   width: 240px;
-  border-left: solid 1px #d2d2d2;
+  border-left: solid 1px #d2d2d2
 }
+
 #dd_message .inputField {
-  margin-bottom: 10px;
+  margin: 0;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-top: 1px solid #E5E5E5
 }
+
+#dd_message .inputField .tlInputMention {
+  padding: 10px
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic {
+  padding: 0 !important
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic:placeholder-shown {
+  color: #dcdcdc
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic::-webkit-input-placeholder {
+  color: #dcdcdc
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic:-moz-placeholder {
+  color: #dcdcdc;
+  opacity: 1
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic::-moz-placeholder {
+  color: #dcdcdc;
+  opacity: 1
+}
+
+#dd_message .inputField .tlInputMention textarea.elastic:-ms-input-placeholder {
+  color: #dcdcdc
+}
+
+#dd_message .loader {
+  padding-bottom: 10px
+}
+
+/* 20170222 end :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: */
+
 .counter {
   float: left !important;
   font-size: 10px;
