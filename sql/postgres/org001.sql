@@ -1898,7 +1898,6 @@ CREATE TABLE EIP_T_MESSAGE_READ
 
 create index eip_t_message_read_index1 ON eip_t_message_read(ROOM_ID,USER_ID,IS_READ);
 create index eip_t_message_read_index2 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,IS_READ);
-create index eip_t_message_read_index3 ON eip_t_message_read(ROOM_ID,MESSAGE_ID,USER_ID,IS_READ);
 
 -----------------------------------------------------------------------------
 -- CREATE SEQUENCE
@@ -2388,7 +2387,7 @@ INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(4,2,'1','新規',1, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(5,2,'2','進行中',2, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(6,2,'3','フィードバック',3, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(7,2,'4','完了',4, now(), now());
-INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(8,2,'5','却下',5, now(), now());wsss
+INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(8,2,'5','却下',5, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(9,2,'6','停止',6, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(10,3,'1','高',1, now(), now());
 INSERT INTO EIP_M_PROJECT_KUBUN_VALUE VALUES(11,3,'2','中',2, now(), now());
