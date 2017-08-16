@@ -50,7 +50,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を取得します <BR>
-   * 
+   *
    * @return
    */
   public int getLineCount() {
@@ -59,7 +59,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを取得します <BR>
-   * 
+   *
    * @return
    */
   public boolean getSamePost() {
@@ -68,7 +68,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * エラーを含むかどうかを示すフラグを取得します <BR>
-   * 
+   *
    * @return
    */
   public boolean getIsError() {
@@ -77,7 +77,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * データのCSVファイル上での位置(行数)を入力します <BR>
-   * 
+   *
    * @param i
    */
   public void setLineCount(int i) {
@@ -86,7 +86,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * 同じ部署名がデータベースに存在するかどうかを示すフラグを入力します <BR>
-   * 
+   *
    * @param flg
    */
   public void setSamePost(boolean flg) {
@@ -95,7 +95,7 @@ public class FileIOAccountPostCsvData extends AccountPostResultData {
 
   /**
    * エラーを含むかどうかを示すフラグを入力します <BR>
-   * 
+   *
    * @param flg
    */
   public void setIsError(boolean flg) {

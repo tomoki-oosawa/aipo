@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.ecs.ConcreteElement;
@@ -118,8 +119,9 @@ public abstract class FileuploadRawScreen extends RawScreen {
         ALAccessControlConstants.VALUE_ACL_EXPORT);
       String attachmentRealName = null;
       boolean isAndroid = ALEipUtils.isAndroidBrowser(rundata);
+      boolean isIOS = ALEipUtils.isIOSBrowser(rundata);
 
-      if (isAndroid) {// androidだと日本語タイトルが変換されるので一律でfileに変更
+      if (isAndroid || isIOS) {// androidだと日本語タイトルが変換されるので一律でfileに変更
         attachmentRealName = "file";
         if (getFileName().lastIndexOf(".") > -1) {
           attachmentRealName +=
@@ -161,11 +163,51 @@ public abstract class FileuploadRawScreen extends RawScreen {
       }
       in = ALStorageService.getFile(filepath);
       out = new BufferedOutputStream(response.getOutputStream());
+      long fileSize = ALStorageService.getFileSize(filepath);
+      String httpRange = rundata.getRequest().getHeader("range");
+      if (httpRange != null) {
+        String[] httpRangeBytes = httpRange.split("=");
+        String[] httpRangeValue = httpRangeBytes[1].split("-");
+        int startRange = Integer.parseInt(httpRangeValue[0]);
+        int endRange = Integer.parseInt(httpRangeValue[1]);
+        Integer rangeLength = endRange - startRange + 1;
+        response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
+        response.setContentType(new MimetypesFileTypeMap()
+          .getContentType(attachmentRealName));
+        response.setContentLength(rangeLength);
+        response.setHeader("Accept-Ranges", "bytes");
+        response.setHeader("Connection", "keep-alive");
+        response.setHeader("Content-Range", "bytes "
+          + startRange
+          + "-"
+          + endRange
+          + "/"
+          + fileSize);
 
-      byte[] buf = new byte[1024];
-      int length;
-      while ((length = in.read(buf)) > 0) {
-        out.write(buf, 0, length);
+        byte[] buf = new byte[1024];
+        int length;
+        skip(in, startRange);
+        int toRead = rangeLength;
+
+        while ((length = in.read(buf)) > 0) {
+          if ((toRead -= length) > 0) {
+            out.write(buf, 0, length);
+          } else {
+            out.write(buf, 0, toRead + length);
+            break;
+          }
+        }
+
+      } else {
+        response.setContentLength((int) fileSize);
+        response.setContentType(new MimetypesFileTypeMap()
+          .getContentType(attachmentRealName));
+        byte[] buf = new byte[1024];
+
+        int length;
+        while ((length = in.read(buf)) > 0) {
+          out.write(buf, 0, length);
+        }
       }
     } catch (RuntimeException e) {
       throw e;
@@ -239,4 +281,22 @@ public abstract class FileuploadRawScreen extends RawScreen {
     return true;
   }
 
+  private static void skip(InputStream is, long n) {
+    try {
+      while (n > 0) {
+        long n1 = is.skip(n);
+        if (n1 > 0) {
+          n -= n1;
+        } else if (n1 == 0) {
+          if (is.read() == -1) {
+            break;
+          } else {
+            n--;
+          }
+        }
+      }
+    } catch (Exception e) {
+      logger.error("FileuploadRawScreen.skip", e);
+    }
+  }
 }

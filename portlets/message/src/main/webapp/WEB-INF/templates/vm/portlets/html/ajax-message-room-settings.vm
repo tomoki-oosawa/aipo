@@ -1,0 +1,47 @@
+#*
+ * Aipo is a groupware program developed by TOWN, Inc.
+ * Copyright (C) 2004-2015 TOWN, Inc.
+ * http://www.aipo.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *#
+## ---------------------------------------------------------------------------
+
+#set($messagePortletId = $!globalPortlets.get('Message').getId())
+#set($indicator_id = "indicator-dlg-")
+
+#ALajaxIndicator("$indicator_id" "$!portlet.ID" "")
+
+#if( ( (${authority}=='A') && (${roomtype}=='G') ) )
+  <li>
+  	<a href="javascript:void(0)" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);">$l10n.MESSAGE_ROOM_SETTING</a>
+  </li>
+#end
+
+<li>
+  <a href="javascript:void(0)" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomNotificationFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);">$l10n.MESSAGE_NOTIFICATION_SETTING</a>
+</li>
+
+<form style="display:inline" name="deleteForm_$!{portlet.ID}_$!{record.MessageId}" id="deleteForm_$!{portlet.ID}_$!{record.MessageId}" action="$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageFormJSONScreen')" method="post">
+<input type="hidden" name="_name" value="$l10n.MESSAGE_ROOM" />
+<input type="hidden" name="secid" value="$secid" />
+
+#if(${authority}=='A')
+  <li>
+	  <a href="javascript:void(0)" onclick="aimluck.io.ajaxMessageRoomDeleteSubmission(dojo.byId('deleteForm_$!{portlet.ID}_$!{record.MessageId}'),'$!jslink.getPortletById($!portlet.ID).addQueryData('template','MessageRoomFormJSONScreen').addQueryData('mode', 'delete')&entityid=' + aipo.message.currentRoomId, '$indicator_id', '$messagePortletId', aipo.message.onReceiveMessageRoomDelete);">$l10n.COMMON_DELETE</a>
+  </li>
+#end
+
+</form>
+

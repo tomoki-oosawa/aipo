@@ -54,7 +54,7 @@ import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
  * アドレス帳用入力フォームデータです。
- * 
+ *
  */
 public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
   private static final JetspeedLogger logger = JetspeedLogFactoryService
@@ -366,7 +366,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 自分がオーナーのグループを取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -397,7 +397,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 指定アドレスのグループを取得する。
-   * 
+   *
    * @param rundata
    * @param context
    */
@@ -855,7 +855,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * アドレス情報の登録を行います。
-   * 
+   *
    */
   @Override
   protected boolean insertFormData(RunData rundata, Context context,
@@ -989,7 +989,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フォームへデータをセットします。
-   * 
+   *
    */
   @Override
   protected boolean setFormData(RunData rundata, Context context,
@@ -1026,7 +1026,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 文字列の配列が全て空白の場合にtrueを返します <BR>
-   * 
+   *
    * @param str
    * @return
    */
@@ -1042,7 +1042,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯メールアドレスを取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCellularMail() {
@@ -1051,7 +1051,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCellularPhone1() {
@@ -1068,7 +1068,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを取得します <BR>
-   * 
+   *
    * @return
    */
   public ALNumberField getCompanyId() {
@@ -1077,7 +1077,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getEmail() {
@@ -1086,7 +1086,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ(名)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstNameKana() {
@@ -1095,7 +1095,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前(名)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getFirstName() {
@@ -1104,7 +1104,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ(氏)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastNameKana() {
@@ -1113,7 +1113,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前(氏)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getLastName() {
@@ -1122,7 +1122,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getNote() {
@@ -1131,7 +1131,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPositionName() {
@@ -1140,7 +1140,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 公開フラグを取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPublicFlag() {
@@ -1149,7 +1149,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号(フィールド1)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone1() {
@@ -1158,7 +1158,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号(フィールド2)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone2() {
@@ -1167,7 +1167,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号(フィールド3)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getTelephone3() {
@@ -1176,7 +1176,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALDateField getCreateDate() {
@@ -1185,7 +1185,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 更新日時を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALDateField getUpdateDate() {
@@ -1194,7 +1194,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力ユーザー名を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCreateUser() {
@@ -1203,7 +1203,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 所有グループのリストを取得します <BR>
-   * 
+   *
    * @return
    */
   public List<AddressBookGroupResultData> getGroupList() {
@@ -1212,7 +1212,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社リストを取得します <BR>
-   * 
+   *
    * @return
    */
   public List<AddressBookCompanyResultData> getCompanyList() {
@@ -1221,7 +1221,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 更新ユーザー名を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getUpdateUser() {
@@ -1230,7 +1230,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * グループオブジェクトを取得します <BR>
-   * 
+   *
    * @return
    */
   public List<AddressBookGroupResultData> getGroups() {
@@ -1246,7 +1246,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話アドレスを入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setCellularMail(FileIOStringField field) {
@@ -1255,7 +1255,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社IDを入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setCompanyId(ALNumberField field) {
@@ -1264,7 +1264,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * メールアドレスを入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setEmail(FileIOStringField field) {
@@ -1273,7 +1273,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ(名)を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setFirstNameKana(ALStringField field) {
@@ -1282,7 +1282,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前(名)を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setFirstName(ALStringField field) {
@@ -1291,7 +1291,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ(氏)を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setLastNameKana(ALStringField field) {
@@ -1300,7 +1300,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 名前(氏)を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setLastName(ALStringField field) {
@@ -1309,7 +1309,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 備考を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setNote(ALStringField field) {
@@ -1318,7 +1318,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setPositionName(ALStringField field) {
@@ -1327,7 +1327,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 公開フラグを入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setPublicFlag(ALStringField field) {
@@ -1336,7 +1336,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力日時を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setCreateDate(ALDateField field) {
@@ -1345,7 +1345,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 更新日時を入力します <BR>
-   * 
+   *
    * @param field
    */
   public void setUpdateDate(ALDateField field) {
@@ -1370,7 +1370,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * フリガナ(会社名)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompanyNameKana() {
@@ -1379,7 +1379,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 部署名を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getPostName() {
@@ -1388,7 +1388,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号(フィールド1)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompZipcode1() {
@@ -1397,7 +1397,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号(フィールド2)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompZipcode2() {
@@ -1406,7 +1406,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社住所を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCompAddress() {
@@ -1415,7 +1415,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社電話番号(フィールド1)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompTelephone1() {
@@ -1424,7 +1424,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社電話番号(フィールド2)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompTelephone2() {
@@ -1433,7 +1433,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社電話番号(フィールド3)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompTelephone3() {
@@ -1442,7 +1442,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社FAX番号(フィールド1)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompFaxNumber1() {
@@ -1451,7 +1451,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社FAX番号(フィールド2)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompFaxNumber2() {
@@ -1460,7 +1460,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社FAX番号(フィールド3)を取得します <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getCompFaxNumber3() {
@@ -1469,7 +1469,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社URLを取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCompUrl() {
@@ -1478,7 +1478,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社情報一括登録を行うかを示す値を返す。
-   * 
+   *
    * @return
    */
   public boolean isNewCompany() {
@@ -1550,7 +1550,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力ユーザー名を取得します。(通常は管理者) <BR>
-   * 
+   *
    * @return
    */
   public ALStringField getUserName() {
@@ -1559,7 +1559,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getTelephone() {
@@ -1568,7 +1568,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCellularPhone() {
@@ -1577,7 +1577,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社の郵便番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCompZipcode() {
@@ -1586,7 +1586,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社の電話番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCompTelephone() {
@@ -1595,7 +1595,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社のFAX番号を取得します <BR>
-   * 
+   *
    * @return
    */
   public FileIOStringField getCompFaxNumber() {
@@ -1604,7 +1604,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ会社名がデータベースに存在するかどうかを取得します <BR>
-   * 
+   *
    * @return
    */
   public boolean getSameCompany() {
@@ -1613,7 +1613,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号を入力します <BR>
-   * 
+   *
    * @param str
    */
   public void setTelephone(String str) {
@@ -1622,7 +1622,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 携帯電話番号を入力します <BR>
-   * 
+   *
    * @param str
    */
   public void setCellularPhone(String str) {
@@ -1631,7 +1631,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 郵便番号を入力します <BR>
-   * 
+   *
    * @param str
    */
   public void setCompZipcode(String str) {
@@ -1640,7 +1640,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 電話番号(会社)を入力します <BR>
-   * 
+   *
    * @param str
    */
   public void setCompTelephone(String str) {
@@ -1649,7 +1649,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * FAX番号(会社)を入力します <BR>
-   * 
+   *
    * @param str
    */
   public void setCompFaxNumber(String str) {
@@ -1658,7 +1658,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 入力ユーザー名を入力します。(通常は管理者) <BR>
-   * 
+   *
    * @param str
    */
   public void setUserName(String str) {
@@ -1667,7 +1667,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 同じ会社名がデータベースに存在するかどうか示すフラグを入力します <BR>
-   * 
+   *
    * @param flg
    */
   public void setSameCompany(boolean flg) {
@@ -1676,7 +1676,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社情報のみ入力する場合はtrueを設定します <BR>
-   * 
+   *
    * @param flag
    */
   public void setIsCompanyOnly(boolean flag) {
@@ -1685,7 +1685,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 読み取った単語を指定されたフィールドに格納します。 <BR>
-   * 
+   *
    * @param token
    * @param i
    */
@@ -1819,7 +1819,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * ユーザー名からユーザーIDを取得 <BR>
-   * 
+   *
    * @return
    */
   private TurbineUser getTurbineUser() {
@@ -1845,7 +1845,7 @@ public class FileIOAddressBookCsvFormData extends ALAbstractFormData {
 
   /**
    * 会社名から会社IDを取得 <BR>
-   * 
+   *
    * @return
    */
   private EipMAddressbookCompany getEipMCompany() {

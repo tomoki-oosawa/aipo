@@ -256,7 +256,6 @@ public class TimelineLikeFormData extends ALAbstractFormData {
             Database.deleteAll(maps);
 
             Database.commit();
-
           }
 
           TimelineUtils.createNewLikeActivity(
@@ -264,6 +263,19 @@ public class TimelineLikeFormData extends ALAbstractFormData {
             loginName,
             targetLoginName);
         }
+        // イベントログのためにIDを取得
+        int parentid =
+          Integer.parseInt(ALEipUtils.getTemp(
+            rundata,
+            context,
+            ALEipConstants.ENTITY_ID));
+        EipTTimeline parent = Database.get(EipTTimeline.class, (long) parentid);
+        // イベントログに保存
+        ALEventlogFactoryService.getInstance().getEventlogHandler().log(
+          parent.getTimelineId(),
+          ALEventlogConstants.PORTLET_TYPE_TIMELINE,
+          TimelineUtils.compressString(parent.getNote()));
+
       }
     } catch (RuntimeException ex) {
       // RuntimeException

@@ -151,6 +151,10 @@ dojo.addOnLoad(function() {
                                 var isHideDropdown = false;
                                 break;
                             }
+                            if (node[i].className.indexOf('menubar body-child') >= 0) {
+                                var isHideDropdown = false;
+                                break;
+                            }
                         }
                     }
                     if (isHideDropdown) {
