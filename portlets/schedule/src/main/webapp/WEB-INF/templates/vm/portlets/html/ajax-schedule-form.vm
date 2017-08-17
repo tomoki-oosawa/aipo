@@ -95,14 +95,20 @@
 #end
 #ALtditemfooter()
 #end
+## 日時
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
   <div id="normalField" style="display:#if($!{result.Repeat} && ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} != 1))none#end">
     <div class="p auiSetDate">
+    	## カレンダー表示用
+    	開始日:
         <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
+        終了日:
+        ##<span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString() && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none" callback="aipo.schedule.onSpanEndChange"></span>
         <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
           <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
         </span>
+      ## 終日のチェックボックス
       <span id="allDayField" style="display:#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")none#end">
         <input id="all_day_flag_checkbox" type="checkbox"  #if ($!{result.AllDayFlag.toString()} == "ON") checked="checked" #end value="ON" name="all_day_flag_checkbox" onclick="aipo.schedule.formSwitchAllDay(this)"/>
         <label for="all_day_flag_checkbox">$l10n.SCHEDULE_ALL_DAY</label>
@@ -183,7 +189,10 @@
   </div>
   <div class="p auiSetDate mt15">
     <h3 id="timeLabelField" style="display:#if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))none#end">$l10n.SCHEDULE_TIME</h3>
-    <div id="timeField"  style="display:#if($!{result.Span})none#end">
+    ## <div id="timeField"  style="display:#if($!{result.Span})none#end">
+    <div id="timeField">
+    </div>
+    	## 開始時間
         <span id="startTimeSpan">
         <select name="start_date_hour" size="1">
             #foreach ( $num in [0..23] )
@@ -206,6 +215,7 @@
             <option value="55" #if ($!result.StartDate.Minute == "55") selected="selected" #end>55</option>
             </select>
         </span>&nbsp;-&nbsp;
+        ## 終了時間
         <span id="endTimeSpan">
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameTime) selected="selected" #end>--</option>
@@ -252,6 +262,7 @@
 #ALtditemheader()
 #ALtextarea('note' $!result.Note 10 50)
 #ALtditemfooter()
+## 公開
 #ALtdcaption($!result.getFieldName("public_flag"))
 #ALtditemheader()
 <p><input name="public_flag" type="radio" value="O" id="public_flagO_$!{portlet.ID}" #if ("$!result.PublicFlag.toString()" == "O") checked="checked" #end onclick="aipo.schedule.formPublicOn(this.form)"/>&nbsp;<label for="public_flagO_$!{portlet.ID}" onclick="aipo.schedule.formPublicOn(this.form)">$l10n.SCHEDULE_OPEN_PUBLIC</label></p>

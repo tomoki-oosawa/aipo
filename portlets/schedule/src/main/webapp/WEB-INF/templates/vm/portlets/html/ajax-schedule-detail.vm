@@ -65,7 +65,7 @@ $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date}
 #else
-$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
+$!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} - $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek}<br/>
 $!{result.Detail.Date}
 #end
 #AUIiconScheduleSets($!{result.Detail})
