@@ -1181,7 +1181,6 @@ public class ScheduleUtils {
         case 1:
           // 日を１日遡る
           // 月末処理用
-          boolean switch_result = false;
           if (ptn.substring(1, 3).equals("XX")) {
             Calendar cal_dummy_2 = Calendar.getInstance();
             cal_dummy_2.setTime(date.getValue());
@@ -1198,15 +1197,11 @@ public class ScheduleUtils {
             || isUserHoliday((day_count_dummy - 1) % 7)) { // 休日である限り
             if (mday == mday_dummy) { // 遡った先に予定がある
               result = true;
-              switch_result = true;
             }
             cal_dummy.add(Calendar.DATE, -1);
             setDate(cal_dummy.getTime());
             mday_dummy = cal_dummy.get(Calendar.DATE);
             day_count_dummy += 6;
-          }
-          if (!switch_result) {
-            result = false;
           }
           break;
         default:
