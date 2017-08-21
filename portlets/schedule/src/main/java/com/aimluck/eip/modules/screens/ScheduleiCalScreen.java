@@ -355,16 +355,8 @@ public class ScheduleiCalScreen extends RawScreen implements ALAction {
             List<ALDateTimeField> candidateList =
               new ArrayList<ALDateTimeField>();
             ALDateTimeField candidate = new ALDateTimeField("yyyy-MM-dd");
-            // candidate.setValue(dStart);
             Calendar cal2 = Calendar.getInstance();
             cal2 = (Calendar) cStart.clone();
-            // cal2.set(Integer.parseInt(candidate.getYear()),
-            // Integer.parseInt(candidate.getMonth()),
-            // Integer.parseInt(candidate.getDay()));
-            // cal2.set(Calendar.HOUR_OF_DAY,
-            // Integer.parseInt(candidate.getHour()));
-            // cal2.set(Calendar.MINUTE,
-            // Integer.parseInt(candidate.getMinute()));
 
             // candidateListを完成させる
             cEnd.setTime(rd.getEndDate().getValue());
