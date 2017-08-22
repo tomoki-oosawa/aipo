@@ -74,7 +74,14 @@ if(document.all!=undefined){
 <table><tbody>
 
 #ALtdcaption($l10n.SCHEDULE_NAME)
-#ALtditem($!{result.Detail.User.AliasName})
+#* #ALtditemheader()
+#if($!{result.Detail.Type} == "U")
+$!{result.Detail.User.getName}
+#end
+#ALtditemfooter()
+#ALtditem($!{result.Detail.User.getName})*#
+ #ALtditem($!{result.Detail.User.AliasName})
+
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
 #if($!{result.Detail.isSpan()})
