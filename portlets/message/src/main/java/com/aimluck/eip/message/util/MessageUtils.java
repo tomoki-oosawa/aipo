@@ -336,6 +336,7 @@ public class MessageUtils {
     StringBuilder select = new StringBuilder();
 
     boolean isSearch = (keyword != null && keyword.length() > 0);
+    boolean isMySQL = Database.isJdbcMySQL();
 
     select.append("select");
     select.append(" t1.message_id, ");
@@ -356,8 +357,12 @@ public class MessageUtils {
     count.append("select count(t1.message_id) AS c ");
 
     StringBuilder body = new StringBuilder();
+    body.append("  from eip_t_message t1 ");
+    if (isMySQL) {
+      body.append(" force index (eip_t_message_room_id_create_date) ");
+    }
     body
-      .append("  from eip_t_message t1, turbine_user t2 where t1.user_id = t2.user_id and t1.room_id IN(");
+      .append(", turbine_user t2 where t1.user_id = t2.user_id and t1.room_id IN(");
     boolean isFirst = true;
     for (Integer roomId : roomList) {
       if (!isFirst) {
@@ -536,8 +541,13 @@ public class MessageUtils {
     count.append("select count(t2.room_id) AS c ");
 
     StringBuilder body = new StringBuilder();
+    body.append("  from eip_t_message_room_member t1 ");
+    if (isMySQL) {
+      body
+        .append(" force index (eip_t_message_room_member_user_id_target_user_id) ");
+    }
     body
-      .append("  from eip_t_message_room_member t1, eip_t_message_room t2, turbine_user t4 where t1.user_id = #bind($user_id) and t1.room_id = t2.room_id and t1.target_user_id = t4.user_id ");
+      .append(", eip_t_message_room t2, turbine_user t4 where t1.user_id = #bind($user_id) and t1.room_id = t2.room_id and t1.target_user_id = t4.user_id ");
     if (isSearch) {
       if (isMySQL) {
         body
