@@ -404,9 +404,6 @@ public class MessageUtils {
       last.append(limit);
     }
 
-    // last
-    // .append(" create index room_member_id_index on eip_t_message_room_member(room_id) ");
-
     SQLTemplate<EipTMessage> query =
       Database.sql(EipTMessage.class, select.toString()
         + body.toString()
