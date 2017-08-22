@@ -258,10 +258,9 @@ public class ReportSelectData extends
       // buildSelectQueryForListViewSort(query, rundata, context);
       //
       // ResultList<EipTReport> list = query.getResultList();
-      int login_user_id =
-        Integer.valueOf((int) login_user.getUserId().getValue());
-      SQLTemplate<EipTReport> query =
-        getSelectQuery(rundata, context, login_user_id);
+      // int login_user_id =
+      // Integer.valueOf((int) login_user.getUserId().getValue());
+      SQLTemplate<EipTReport> query = getSelectQuery(rundata, context);
       CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
       CountQuery countQuery = new CountQuery(EipTReport.class);
       DataContext dataContext = DataContext.getThreadDataContext();
@@ -451,8 +450,7 @@ public class ReportSelectData extends
   //
   // }
 
-  public SQLTemplate<EipTReport> getSelectQuery(RunData rundata,
-      Context context, int login_user_id) {
+  public SQLTemplate<EipTReport> getSelectQuery(RunData rundata, Context context) {
     uid = ALEipUtils.getUserId(rundata);
     StringBuilder select = new StringBuilder();
     StringBuilder body = new StringBuilder();
@@ -482,7 +480,8 @@ public class ReportSelectData extends
       body.append(" WHERE ");
       body.append(" t0.user_id = #bind($login_user_id) AND ");
       body.append(" t0.report_id = t1.report_id AND ");
-      body.append(" t1.status = 'U' ");
+      body.append(" t1.status = 'U' AND ");
+      body.append(" t0.report_name <> '' ");
 
     } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
       // 送信
@@ -496,11 +495,12 @@ public class ReportSelectData extends
       select.append(" t0.report_id, ");
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
-      select.append(" t0.update_date, ");
+      select.append(" t0.update_date ");
 
       body.append(" FROM eip_t_report t0 ");
       body.append(" WHERE ");
-      body.append(" t0.user_id = #bind($login_id) AND ");
+      body.append(" t0.user_id = #bind($login_user_id) AND ");
+      body.append(" t0.report_name <> '' ");
 
     } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
       // 受信
@@ -513,13 +513,14 @@ public class ReportSelectData extends
       select.append(" t0.report_id, ");
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
-      select.append(" t0.update_date, ");
+      select.append(" t0.update_date ");
 
       body.append(" FROM eip_t_report t0, ");
       body.append(" eip_t_report_map t1 ");
       body.append(" WHERE ");
-      body.append("  t0.user_id = #bind($login_id) AND ");
+      body.append("  t0.user_id = #bind($login_user_id) AND ");
       body.append("  t0.report_id = t1.report_id AND ");
+      body.append("  t0.report_name <> '' ");
 
     } else if (SUBMENU_ALL.equals(currentSubMenu)) {
       // 全て
@@ -532,11 +533,11 @@ public class ReportSelectData extends
       select.append(" t0.report_id, ");
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
-      select.append(" t0.update_date, ");
+      select.append(" t0.update_date ");
 
       body.append(" FROM eip_t_report t0 ");
       body.append(" WHERE ");
-
+      body.append(" t0.report_name <> '' ");
     }
 
     // 検索
@@ -554,30 +555,28 @@ public class ReportSelectData extends
       select.append(" t0.report_id, ");
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
-      select.append(" t0.update_date, ");
+      select.append(" t0.update_date ");
 
       body.append(" FROM eip_t_report t0 ");
       body.append(" WHERE ");
-      body.append(" t0.report_name LIKE #bind($search) OR ");
-      body.append(" t0.note LIKE #bind($search) AND ");
+      body.append(" (t0.report_name LIKE #bind($search) OR ");
+      body.append(" t0.note LIKE #bind($search)) AND ");
+      body.append(" t0.report_name <> '' ");
     }
     // replyを除く
-
-    body.append(" AND t0.report_name <> '' ");
 
     StringBuilder last = new StringBuilder();
 
     last.append(" ORDER BY t0.create_date desc ");
-
-    last.append(" LIMIT ");
-    last.append("20");
+    last.append(" limit ");
+    last.append(20);
 
     SQLTemplate<EipTReport> query =
       Database.sql(
         EipTReport.class,
         select.toString() + body.toString() + last.toString()).param(
         "login_user_id",
-        Integer.valueOf(uid));
+        uid);
     return query;
   }
 
