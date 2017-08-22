@@ -538,13 +538,8 @@ public class MessageUtils {
     count.append("select count(t2.room_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append("  from eip_t_message_room_member t1 ");
-    if (isMySQL) {
-      body
-        .append(" force index (eip_t_message_room_member_user_id_target_user_id) ");
-    }
     body
-      .append(", eip_t_message_room t2, turbine_user t4 where t1.user_id = #bind($user_id) and t1.room_id = t2.room_id and t1.target_user_id = t4.user_id ");
+      .append("  from eip_t_message_room_member t1, eip_t_message_room t2, turbine_user t4 where t1.user_id = #bind($user_id) and t1.room_id = t2.room_id and t1.target_user_id = t4.user_id ");
     if (isSearch) {
       if (isMySQL) {
         body
