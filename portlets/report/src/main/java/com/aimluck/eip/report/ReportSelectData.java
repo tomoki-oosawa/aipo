@@ -27,6 +27,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.jar.Attributes;
 
+import org.apache.cayenne.DataRow;
 import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
@@ -257,11 +258,20 @@ public class ReportSelectData extends
       // buildSelectQueryForListViewSort(query, rundata, context);
       //
       // ResultList<EipTReport> list = query.getResultList();
-      SQLTemplate<EipTReport> query = getSelectQuery(rundata, context);
+      int login_user_id =
+        Integer.valueOf((int) login_user.getUserId().getValue());
+      SQLTemplate<EipTReport> query =
+        getSelectQuery(rundata, context, login_user_id);
       CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
       CountQuery countQuery = new CountQuery(EipTReport.class);
       DataContext dataContext = DataContext.getThreadDataContext();
-      List<EipTReport> fetchList = query.fetchList();
+      List<DataRow> fetchList = query.fetchListAsDataRow();
+      List<EipTReport> list = new ArrayList<EipTReport>();
+      for (DataRow row : fetchList) {
+        EipTReport object = Database.objectFromRowData(row, EipTReport.class);
+        list.add(object);
+      }
+      // List<EipTReport> fetchList = query.fetchList();
       int totalCount = countQuery.count(dataContext, delegate.isDistinct());
       int pageSize = delegate.getFetchLimit();
       int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
@@ -269,9 +279,7 @@ public class ReportSelectData extends
       if ((num > 0) && (num < page)) {
         page = num;
       }
-      ResultList<EipTReport> list =
-        new ResultList<EipTReport>(fetchList, page, 20, totalCount);
-      return list;
+      return new ResultList<EipTReport>(list, page, 20, totalCount);
     } catch (Exception ex) {
       logger.error("report", ex);
       return null;
@@ -443,12 +451,9 @@ public class ReportSelectData extends
   //
   // }
 
-  private SQLTemplate<EipTReport> getSelectQuery(RunData rundata,
-      Context context) {
+  public SQLTemplate<EipTReport> getSelectQuery(RunData rundata,
+      Context context, int login_user_id) {
     uid = ALEipUtils.getUserId(rundata);
-    Integer login_user_id =
-      Integer.valueOf((int) login_user.getUserId().getValue());
-    String login_id = login_user_id.toString();
     StringBuilder select = new StringBuilder();
     StringBuilder body = new StringBuilder();
 
@@ -471,11 +476,12 @@ public class ReportSelectData extends
       select.append(" t0.report_id, ");
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
-      select.append(" t0.update_date, ");
+      select.append(" t0.update_date ");
 
       body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
       body.append(" WHERE ");
-      body.append(" t0.user_id = #bind($login_id) AND ");
+      body.append(" t0.user_id = #bind($login_user_id) AND ");
+      body.append(" t0.report_id = t1.report_id AND ");
       body.append(" t1.status = 'U' ");
 
     } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
@@ -557,20 +563,20 @@ public class ReportSelectData extends
     }
     // replyを除く
 
-    body.append(" t0.report_name <> '' ");
+    body.append(" AND t0.report_name <> '' ");
 
     StringBuilder last = new StringBuilder();
 
     last.append(" ORDER BY t0.create_date desc ");
 
     last.append(" LIMIT ");
-    last.append(20);
+    last.append("20");
 
     SQLTemplate<EipTReport> query =
       Database.sql(
         EipTReport.class,
         select.toString() + body.toString() + last.toString()).param(
-        "user_id",
+        "login_user_id",
         Integer.valueOf(uid));
     return query;
   }
