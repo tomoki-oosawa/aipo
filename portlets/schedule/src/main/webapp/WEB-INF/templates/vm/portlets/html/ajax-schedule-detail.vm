@@ -61,6 +61,7 @@ $!{result.Detail.User.AliasNameHtml}
 #if($!{result.Detail.isSpan()})
 $!{result.Detail.StartDateFormatSpace} $!{result.Detail.StartDate.DayOfWeek} -
 $!{result.Detail.EndDateFormatSpace} $!{result.Detail.EndDate.DayOfWeek}
+$!{result.Detail.Date}
 #elseif($!{result.Detail.isRepeat()})
 $!{result.Detail.Text}<br/>
 $!{result.Detail.Date}

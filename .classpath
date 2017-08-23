@@ -121,7 +121,7 @@
 	<classpathentry kind="var" path="M2_REPO/ant/ant/1.5/ant-1.5.jar"/>
 	<classpathentry kind="var" path="M2_REPO/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
 	<classpathentry kind="var" path="M2_REPO/castor/castor/0.9.3/castor-0.9.3.jar"/>
-	<classpathentry kind="var" path="M2_REPO/org/apache/cayenne/cayenne/2.0.4/cayenne-2.0.4.jar" sourcepath="/CAYENNE2_SRC">
+	<classpathentry kind="var" path="M2_REPO/org/apache/cayenne/cayenne/2.0.4/cayenne-2.0.4.jar" sourcepath="SOURCE_ATTACHER/cayenne-2.0.4-sources.jar">
 		<attributes>
 			<attribute name="source_encoding" value="UTF-8"/>
 		</attributes>

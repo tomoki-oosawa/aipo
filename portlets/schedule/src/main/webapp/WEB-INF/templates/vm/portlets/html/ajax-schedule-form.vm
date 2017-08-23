@@ -103,9 +103,8 @@
     	## カレンダー表示用
     	開始日:
         <span dojoType="aipo.widget.DropdownDatepicker" id="startDateSpan" widgetId="startDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_START_DATE" hiddenId="start_date" #if ($!result.StartDateCheck.toString() && ($!result.StartDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.StartDateSub}"checked="checked" #end inputId="start_date_input" dateId="start_date" displayCheck="none" callback="aipo.schedule.onSpanStartChange"></span>
-        終了日:
-        ##<span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString() && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none" callback="aipo.schedule.onSpanEndChange"></span>
-        <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp;
+        <span id="spanField" style="display:#if(!$!{result.Span} || $!{result.AllDayFlag.toString()} == "ON" )none#end">&nbsp;-&nbsp; ##スパンがなく終日の場合は表示しない
+          終了日:
           <span dojoType="aipo.widget.DropdownDatepicker" id="endDateSpan" widgetId="endDateSpan"  iconURL="images/icon/icon_date.gif" iconAlt="$l10n.SCHEDULE_END_DATE" hiddenId="end_date" #if ($!result.EndDateCheck.toString()  && ($!result.EndDateCheck.toString() == "TRUE")) initValue="" #else initValue="$!{result.EndDateSub}"checked="checked" #end inputId="end_date_input" dateId="end_date" displayCheck="none"  callback="aipo.schedule.onSpanEndChange"></span>
         </span>
       ## 終日のチェックボックス
@@ -194,6 +193,7 @@
     </div>
     	## 開始時間
         <span id="startTimeSpan">
+        開始時間:
         <select name="start_date_hour" size="1">
             #foreach ( $num in [0..23] )
             <option value="$num" #if ($!result.StartDate.Hour == "$num") selected="selected" #end>$num</option>
@@ -216,7 +216,7 @@
             </select>
         </span>&nbsp;-&nbsp;
         ## 終了時間
-        <span id="endTimeSpan">
+        終了時間:
             <select name="end_date_hour" size="1" onchange="aipo.schedule.changeEnd(this.form)">
             <option value="" #if ($!result.isSameTime) selected="selected" #end>--</option>
 			#foreach ( $num in [0..23] )
@@ -239,7 +239,8 @@
             <option value="50" #if (!$!result.isSameTime && $!result.EndDate.Minute == "50") selected="selected" #end>50</option>
             <option value="55" #if (!$!result.isSameTime && $!result.EndDate.Minute == "55") selected="selected" #end>55</option>
             </select>
-        </span></div>
+        </span>
+        </div>
   </div>
   <span id="repeatButtonField" style="display:#if($!{result.Span})none#end"><input name="repeat_button" type="button" class="button" value=" #if(!$!{result.Repeat} || ($!{result.getInt($!{result.EditRepeatFlag.getValue()})} == 1))$l10n.SCHEDULE_REPEATING#else$l10n.SCHEDULE_DONOT_REPEAT#end " onclick="aipo.schedule.formSwitchRepeat(this)" /></span>
   <span id="spanButtonField" style="display:#if($!{result.Repeat} || $!{result.AllDayFlag.toString()} == "ON" )none#end"><input name="span_button" type="button" class="button" value="#if($!{result.Span} && $!{result.AllDayFlag.toString()} != "ON")$l10n.SCHEDULE_SET_TIME#else$l10n.SCHEDULE_SET_SPAN#end" onclick="aipo.schedule.formSwitchSpan(this)" /></span>
