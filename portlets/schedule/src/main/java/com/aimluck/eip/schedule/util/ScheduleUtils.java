@@ -2299,15 +2299,18 @@ public class ScheduleUtils {
       // 開始日時 と 終了日時 の時間を 0時0分0秒 に設定する
       Calendar tmp_start_date = Calendar.getInstance();
       tmp_start_date.setTime(start_date.getValue());
-      tmp_start_date.set(Calendar.HOUR_OF_DAY, 0);
-      tmp_start_date.set(Calendar.MINUTE, 0);
+      tmp_start_date.set(Calendar.HOUR_OF_DAY, Integer.valueOf(start_date
+        .getHour()));
+      tmp_start_date.set(Calendar.MINUTE, Integer.valueOf(start_date
+        .getMinute()));
       tmp_start_date.set(Calendar.SECOND, 0);
       start_date.setValue(tmp_start_date.getTime());
 
       Calendar tmp_end_date = Calendar.getInstance();
       tmp_end_date.setTime(end_date.getValue());
-      tmp_end_date.set(Calendar.HOUR_OF_DAY, 0);
-      tmp_end_date.set(Calendar.MINUTE, 0);
+      tmp_end_date.set(Calendar.HOUR_OF_DAY, Integer
+        .valueOf(end_date.getHour()));
+      tmp_end_date.set(Calendar.MINUTE, Integer.valueOf(end_date.getMinute()));
       tmp_end_date.set(Calendar.SECOND, 0);
       end_date.setValue(tmp_end_date.getTime());
     }
