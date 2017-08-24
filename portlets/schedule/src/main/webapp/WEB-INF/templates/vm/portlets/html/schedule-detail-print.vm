@@ -76,11 +76,18 @@ if(document.all!=undefined){
 #ALtdcaption($l10n.SCHEDULE_NAME)
 #* #ALtditemheader()
 #if($!{result.Detail.Type} == "U")
-$!{result.Detail.User.getName}
+$!{result.Detail.User.AliasName}
 #end
-#ALtditemfooter()
-#ALtditem($!{result.Detail.User.getName})*#
- #ALtditem($!{result.Detail.User.AliasName})
+#ALtditemfooter()*#
+#*#ALtditemheader()
+#if($!{result.Detail.Type} == "F")
+設備
+#else
+ユーザー
+#end
+#ALtditemfooter()*#
+
+#ALtditem($!{result.Detail.User.AliasName})
 
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
