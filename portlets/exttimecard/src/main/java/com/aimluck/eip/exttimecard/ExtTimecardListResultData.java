@@ -618,11 +618,9 @@ public class ExtTimecardListResultData implements ALData {
           }
         }
 
-        float overTime =
-          ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
-
-        if (time >= overTime) {
-          return overTime;
+        agreedHours = this.getAgreedHours();
+        if (time >= agreedHours) {
+          return agreedHours;
         } else {
           return time;
         }
