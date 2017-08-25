@@ -94,3 +94,15 @@ aipo.exttimecardsystem.originalHolidayFieldON = function(){
 aipo.exttimecardsystem.originalHolidayFieldOFF = function(){
     dojo.byId('originalHolidayField').style.display = "none";
 }
+
+aipo.exttimecardsystem.resttimeTypeIntervals = function(){
+    dojo.byId("resttime_time_intervals_in").style.display = "";
+    dojo.byId("resttime_time_intervals_out").style.display = "";
+    dojo.byId("resttime_time_points").style.display = "none";
+}
+
+aipo.exttimecardsystem.resttimeTypePoints = function(){
+    dojo.byId("resttime_time_intervals_in").style.display = "none";
+    dojo.byId("resttime_time_intervals_out").style.display = "none";
+    dojo.byId("resttime_time_points").style.display = "";
+}

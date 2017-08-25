@@ -78,3 +78,11 @@ UPDATE `eip_t_acl_role` SET `acl_type` = 44 WHERE feature_id IN (SELECT feature_
 -- 20170706
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `user_id`, `is_read`);
 -- 20170706
+
+-- 20170825
+ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_start_hour` int(11) DEFAULT NULL AFTER `resttime_out`;
+ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_start_minute` int(11) DEFAULT NULL AFTER `resttime_start_hour`;
+ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_end_hour` int(11) DEFAULT NULL AFTER `resttime_start_minute`;
+ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_end_minute` int(11) DEFAULT NULL AFTER `resttime_end_hour`;
+ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_type` varchar(1) DEFAULT 'I' AFTER `resttime_end_minute`;
+-- 20170825

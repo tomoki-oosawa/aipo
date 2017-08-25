@@ -467,6 +467,11 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   `resttime_in` int(11) DEFAULT NULL,
   `worktime_out` int(11) DEFAULT NULL,
   `resttime_out` int(11) DEFAULT NULL,
+  `resttime_start_hour` int(11) DEFAULT NULL,
+  `resttime_start_minute` int(11) DEFAULT NULL,
+  `resttime_end_hour` int(11) DEFAULT NULL,
+  `resttime_end_minute` int(11) DEFAULT NULL,
+  `resttime_type` varchar(1) DEFAULT 'I',
   `change_hour` int(11) DEFAULT NULL,
   `outgoing_add_flag` varchar(1) COLLATE utf8_unicode_ci DEFAULT NULL,
   `overtime_type` varchar(8) DEFAULT 'O',
@@ -476,7 +481,7 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   PRIMARY KEY (`system_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,4,'T','L480','A',now(),now());
+INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,12,0,13,0,'I',4,'T','L480','A',now(),now());
 
 CREATE TABLE `eip_t_ext_timecard_system_map` (
   `system_map_id` int(11) NOT NULL AUTO_INCREMENT,
