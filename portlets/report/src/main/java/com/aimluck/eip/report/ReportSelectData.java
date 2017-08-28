@@ -260,7 +260,7 @@ public class ReportSelectData extends
       // ResultList<EipTReport> list = query.getResultList();
       // int login_user_id =
       // Integer.valueOf((int) login_user.getUserId().getValue());
-      SQLTemplate<EipTReport> query = getSelectQuery(rundata, context);
+      SQLTemplate<EipTReport> query = getSQLTemplate(rundata, context);
       CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
       CountQuery countQuery = new CountQuery(EipTReport.class);
       DataContext dataContext = DataContext.getThreadDataContext();
@@ -336,123 +336,14 @@ public class ReportSelectData extends
   }
 
   /**
-   * 検索条件を設定した SelectQuery を返します。 <BR>
+   * 検索条件を設定した SQLTemplate を返します。 <BR>
    *
    * @param rundata
    * @param context
    * @return
    */
-  // private SelectQuery<EipTReport> getSelectQuery(RunData rundata,
-  // Context context) {
-  //
-  // SelectQuery<EipTReport> query = Database.query(EipTReport.class);
-  //
-  // Integer login_user_id =
-  // Integer.valueOf((int) login_user.getUserId().getValue());
-  // if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
-  // ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
-  // .getValue());
-  // } else {
-  // ALEipUtils.removeTemp(rundata, context, LIST_SEARCH_STR);
-  // }
-  //
-  // if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
-  // // 通常画面
-  // // 受信したもので未読
-  // SelectQuery<EipTReportMap> q = Database.query(EipTReportMap.class);
-  // Expression exp1 =
-  // ExpressionFactory.matchExp(
-  // EipTReportMap.USER_ID_PROPERTY,
-  // login_user_id);
-  // q.setQualifier(exp1);
-  // Expression exp2 =
-  // ExpressionFactory.matchExp(
-  // EipTReportMap.STATUS_PROPERTY,
-  // ReportUtils.DB_STATUS_UNREAD);
-  // q.andQualifier(exp2);
-  // List<EipTReportMap> queryList = q.fetchList();
-  //
-  // List<Integer> resultid = new ArrayList<Integer>();
-  // for (EipTReportMap item : queryList) {
-  // if (item.getReportId() != 0 && !resultid.contains(item.getReportId())) {
-  // resultid.add(item.getReportId());
-  // } else if (!resultid.contains(item.getReportId())) {
-  // resultid.add(item.getReportId());
-  // }
-  // }
-  // if (resultid.size() == 0) {
-  // // 検索結果がないことを示すために-1を代入
-  // resultid.add(-1);
-  // }
-  // Expression ex =
-  // ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-  // query.andQualifier(ex);
-  //
-  // } else if (SUBMENU_CREATED.equals(currentSubMenu)) {
-  // // 送信
-  // Expression exp1 =
-  // ExpressionFactory.matchExp(EipTReport.USER_ID_PROPERTY, login_user_id);
-  // query.andQualifier(exp1);
-  //
-  // } else if (SUBMENU_REQUESTED.equals(currentSubMenu)) {
-  // // 受信
-  // SelectQuery<EipTReportMap> q = Database.query(EipTReportMap.class);
-  // Expression exp1 =
-  // ExpressionFactory.matchExp(
-  // EipTReportMap.USER_ID_PROPERTY,
-  // login_user_id);
-  // q.andQualifier(exp1);
-  // List<EipTReportMap> queryList = q.fetchList();
-  //
-  // List<Integer> resultid = new ArrayList<Integer>();
-  // for (EipTReportMap item : queryList) {
-  // if (item.getReportId() != 0 && !resultid.contains(item.getReportId())) {
-  // resultid.add(item.getReportId());
-  // } else if (!resultid.contains(item.getReportId())) {
-  // resultid.add(item.getReportId());
-  // }
-  // }
-  // if (resultid.size() == 0) {
-  // // 検索結果がないことを示すために-1を代入
-  // resultid.add(-1);
-  // }
-  // Expression exp3 =
-  // ExpressionFactory.inDbExp(EipTReport.REPORT_ID_PK_COLUMN, resultid);
-  // query.andQualifier(exp3);
-  //
-  // // Expression exp =
-  // // ExpressionFactory.matchExp(
-  // // EipTReport.REPORT_ID_PK_COLUMN,
-  // // EipTReportMap.REPORT_ID_PROPERTY);
-  // // query.andQualifier(exp);
-  // } else if (SUBMENU_ALL.equals(currentSubMenu)) {
-  // // 全て
-  // }
-  //
-  // // 検索
-  //
-  // String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
-  //
-  // if (search != null && !search.equals("")) {
-  // current_search = search;
-  // Expression ex1 =
-  // ExpressionFactory.likeExp(EipTReport.REPORT_NAME_PROPERTY, "%"
-  // + search
-  // + "%");
-  // Expression ex2 =
-  // ExpressionFactory.likeExp(EipTReport.NOTE_PROPERTY, "%" + search + "%");
-  // query.andQualifier(ex1.orExp(ex2));
-  // }
-  //
-  // // replyを除く
-  // Expression ex =
-  // ExpressionFactory.noMatchExp(EipTReport.REPORT_NAME_PROPERTY, "");
-  // query.andQualifier(ex);
-  // return query;
-  //
-  // }
 
-  public SQLTemplate<EipTReport> getSelectQuery(RunData rundata, Context context) {
+  public SQLTemplate<EipTReport> getSQLTemplate(RunData rundata, Context context) {
     boolean onlyUnread = false;
     uid = ALEipUtils.getUserId(rundata);
     StringBuilder select = new StringBuilder();
