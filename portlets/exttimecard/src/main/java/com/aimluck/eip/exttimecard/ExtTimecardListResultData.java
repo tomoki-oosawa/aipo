@@ -1471,18 +1471,36 @@ public class ExtTimecardListResultData implements ALData {
       cal.add(Calendar.MINUTE, overTime);
       Date to = cal.getTime();
 
-      // TODO 休憩時間調整
       float add = 0f;
-      float worktimein = (timecard_system.getWorktimeIn() / 60f);
       while (true) {
         add = 0f;
         time = (to.getTime() - from.getTime()) / (float) (60 * 60 * 1000);
-        if (worktimein != 0F) {
+        if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
+          Calendar restStart = Calendar.getInstance();
+          restStart.set(Calendar.HOUR_OF_DAY, timecard_system
+            .getResttimeStartHour());
+          restStart.set(Calendar.MINUTE, timecard_system
+            .getResttimeStartMinute());
+
+          Calendar restEnd = Calendar.getInstance();
+          restEnd.set(Calendar.HOUR_OF_DAY, timecard_system
+            .getResttimeEndHour());
+          restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
+          float resttime =
+            ExtTimecardUtils.getResttime(from, to, restStart.getTime(), restEnd
+              .getTime());
+          if (resttime != 0F) {
+            time -= resttime;
+          }
+        } else {
+          float worktimein = (timecard_system.getWorktimeIn() / 60f);
           float resttimein = (timecard_system.getResttimeIn() / 60f);
-          int resttimes = (int) (time / worktimein);
-          float rest = resttimein * resttimes;
-          if (rest > 0) {
-            add += rest;
+          if (worktimein != 0F) {
+            int resttimes = (int) (time / worktimein);
+            float rest = resttimein * resttimes;
+            if (rest > 0) {
+              add += rest;
+            }
           }
         }
         if (getTimecardSystem().getOutgoingAddFlag().equals("F")) {
