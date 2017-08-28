@@ -451,6 +451,7 @@ public class ReportSelectData extends
   // }
 
   public SQLTemplate<EipTReport> getSelectQuery(RunData rundata, Context context) {
+    boolean onlyUnread = false;
     uid = ALEipUtils.getUserId(rundata);
     StringBuilder select = new StringBuilder();
     StringBuilder body = new StringBuilder();
@@ -463,6 +464,7 @@ public class ReportSelectData extends
     }
 
     if (ALEipUtils.getTemp(rundata, context, "Report_Maximize") == "false") {
+      onlyUnread = true;
       // 通常画面
       // 受信したもので未読
       select.append("SELECT ");
@@ -478,7 +480,7 @@ public class ReportSelectData extends
 
       body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
       body.append(" WHERE ");
-      body.append(" t0.user_id = #bind($login_user_id) AND ");
+      body.append(" t1.user_id = #bind($login_user_id) AND ");
       body.append(" t0.report_id = t1.report_id AND ");
       body.append(" t1.status = 'U' AND ");
       body.append(" t0.report_name <> '' ");
@@ -569,7 +571,11 @@ public class ReportSelectData extends
 
     last.append(" ORDER BY t0.create_date desc ");
     last.append(" limit ");
-    last.append(20);
+    if (onlyUnread) {
+      last.append(5);
+    } else {
+      last.append(20);
+    }
 
     SQLTemplate<EipTReport> query =
       Database.sql(
