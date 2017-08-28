@@ -278,7 +278,9 @@ public class ReportSelectData extends
       if ((num > 0) && (num < page)) {
         page = num;
       }
-      return new ResultList<EipTReport>(list, page, 20, totalCount);
+      ResultList<EipTReport> list2 =
+        new ResultList<EipTReport>(list, page, 20, totalCount);
+      return list2;
     } catch (Exception ex) {
       logger.error("report", ex);
       return null;
@@ -547,23 +549,10 @@ public class ReportSelectData extends
     String search = ALEipUtils.getTemp(rundata, context, LIST_SEARCH_STR);
 
     if (search != null && !search.equals("")) {
-      current_search = search;
-      select.append("SELECT ");
-      select.append(" t0.create_date, ");
-      select.append(" t0.end_date, ");
-      select.append(" t0.note, ");
-      select.append(" t0.parent_id, ");
-      select.append(" t0.user_id, ");
-      select.append(" t0.report_id, ");
-      select.append(" t0.report_name, ");
-      select.append(" t0.start_date, ");
-      select.append(" t0.update_date ");
-
-      body.append(" FROM eip_t_report t0 ");
-      body.append(" WHERE ");
+      current_search = "%" + search + "%";
+      body.append(" AND ");
       body.append(" (t0.report_name LIKE #bind($search) OR ");
-      body.append(" t0.note LIKE #bind($search)) AND ");
-      body.append(" t0.report_name <> '' ");
+      body.append(" t0.note LIKE #bind($search)) ");
     }
     // replyを除く
 
@@ -583,6 +572,9 @@ public class ReportSelectData extends
         select.toString() + body.toString() + last.toString()).param(
         "login_user_id",
         uid);
+    if (search != null) {
+      query.param("search", current_search);
+    }
     return query;
   }
 
