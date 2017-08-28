@@ -76,56 +76,60 @@
 #end
 </select>
 #ALtditemfooter()
-#ALtdcaptionAtt("#ALrequired($l10n.EXTTIMECARD_RESTTIME)" "rowspan='4'")
+#ALtdcaption("#ALrequired($l10n.EXTTIMECARD_RESTTIME)")
+
 #ALtditemheader()
-<input name="resttime_type" type="radio" value="I" id="resttime_typeI_$!{portlet.ID}" #if ($!{result.ResttimeType.toString()} == "I") checked="checked" #end onclick="aipo.exttimecardsystem.resttimeTypeIntervals()"/>
-<label for="resttime_typeI_$!{portlet.ID}" onclick="aipo.exttimecardsystem.resttimeTypeIntervals()">$l10n.EXTTIMECARD_RESTTIME_TIME_INTERVALS</label>
+#if($!result.isNewRule())
+<p>
 <input name="resttime_type" type="radio" value="P" id="resttime_typeP_$!{portlet.ID}" #if ($!{result.ResttimeType.toString()} == "P") checked="checked" #end onclick="aipo.exttimecardsystem.resttimeTypePoints()"/>
 <label for="resttime_typeP_$!{portlet.ID}" onclick="aipo.exttimecardsystem.resttimeTypePoints()">$l10n.EXTTIMECARD_RESTTIME_TIME_POINTS</label>
-#ALtditemfooter()
-#ALtditemheader()
+<input name="resttime_type" type="radio" value="I" id="resttime_typeI_$!{portlet.ID}" #if ($!{result.ResttimeType.toString()} == "I") checked="checked" #end onclick="aipo.exttimecardsystem.resttimeTypeIntervals()"/>
+<label for="resttime_typeI_$!{portlet.ID}" onclick="aipo.exttimecardsystem.resttimeTypeIntervals()">$l10n.EXTTIMECARD_RESTTIME_TIME_INTERVALS</label>
+</p>
+#else
+<input name="resttime_type" type="hidden" value="I"/>
+#end
 <div id="resttime_time_points" #if ($!{result.ResttimeType.toString()} == "I") style="display:none" #end>
 <select name="resttime_start_hour" size="1" >
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.ResttimeStartTimeHour.toString() == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.ResttimeStartHour.toString() == "$num") selected="selected" #end>$num</option>
 #end
 </select>
 :
 <select name="resttime_start_minute" size="1">
 #foreach ( $num in [0..59] )
 #if($num % 5 == 0)
-<option value="$num" #if ($!result.ResttimeStartTimeMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
+<option value="$num" #if ($!result.ResttimeStartMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 #end
 </select>&nbsp;-&nbsp;<select name="resttime_end_hour" size="1" >
 #foreach ( $num in [0..23] )
-<option value="$num" #if ($!result.ResttimeEndTimeHour.toString() == "$num") selected="selected" #end>$num</option>
+<option value="$num" #if ($!result.ResttimeEndHour.toString() == "$num") selected="selected" #end>$num</option>
 #end
 </select>
 :
 <select name="resttime_end_minute" size="1">
 #foreach ( $num in [0..59] )
 #if($num % 5 == 0)
-<option value="$num" #if ($!result.ResttimeEndTimeMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
+<option value="$num" #if ($!result.ResttimeEndMinute.toString() == "$num") selected="selected" #end>#if($num<10)0#end$num</option>
 #end
 #end
 </select>
 </div>
-#ALtditemfooter()
-#ALtditemheader()
+
 <div id="resttime_time_intervals_in" #if ($!{result.ResttimeType.toString()} == "P") style="display:none" #end>
 <h3>$l10n.EXTTIMECARD_WORKTIME_IN</h3>
 $!{result.WorkTimeInRestTimeInText}
 <div class="spaceTop">#ALcaution($l10n.EXTTIMECARD_ALERT_RESTTIME)</div>
 </div>
-#ALtditemfooter()
-#ALtditemheader()
+
 <div id="resttime_time_intervals_out" #if ($!{result.ResttimeType.toString()} == "P") style="display:none" #end>
 <h3>$l10n.EXTTIMECARD_WORKTIME_OUT</h3>
 $!{result.WorkTimeOutRestTimeOutText}
 <div class="spaceTop">#ALcaution($l10n.EXTTIMECARD_ALERT_RESTTIME)</div>
 </div>
 #ALtditemfooter()
+
 #ALtdcaption("#ALrequired($l10n.EXTTIMECARD_CHANGE_HOUR)")
 #ALtditemheader()
 <select name="change_hour" size="1">

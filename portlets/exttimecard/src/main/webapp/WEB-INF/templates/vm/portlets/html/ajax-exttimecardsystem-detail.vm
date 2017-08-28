@@ -37,8 +37,12 @@ ${result.Detail.StartDay}$l10n.EXTTIMECARD_DAY
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_RESTTIME)
 #ALtditemheader()
+#if($!result.isNewRule() && $result.Detail.isResttimeTypePoints())
+${result.Detail.RestTimeSpan}
+#else
 <h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_IN</h3><p>$!{result.Detail.WorkTimeInRestTimeInText}</p>
 <h3 class="mb5">$l10n.EXTTIMECARD_WORKTIME_OUT</h3><p>$!{result.Detail.WorkTimeOutRestTimeOutText}</p>
+#end
 #ALtditemfooter()
 #ALtdcaption($l10n.EXTTIMECARD_CHANGE_HOUR)
 #ALtditemheader()

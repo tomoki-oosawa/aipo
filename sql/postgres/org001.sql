@@ -2326,7 +2326,7 @@ INSERT INTO EIP_T_WORKFLOW_CATEGORY VALUES(8,0,'特別有給休暇届（業務�
 INSERT INTO EIP_T_WORKFLOW_CATEGORY VALUES(9,0,'忌引き休暇届','',NULL,NULL);
 SELECT setval('pk_eip_t_workflow_category',9);
 
-INSERT INTO EIP_T_EXT_TIMECARD_SYSTEM VALUES(1, 0, '通常', 9, 0, 18, 0, 1, 360, 60, 360, 60, 12, 0, 13, 0, 'I', 4, 'T', 'L480', 'A', now(), now());
+INSERT INTO EIP_T_EXT_TIMECARD_SYSTEM VALUES(1, 0, '通常', 9, 0, 18, 0, 1, 360, 60, 360, 60, 12, 0, 13, 0, 'P', 4, 'T', 'L480', 'A', now(), now());
 SELECT setval('pk_eip_t_ext_timecard_system',1);
 
 INSERT INTO EIP_M_GPDB_KUBUN VALUES (1, '都道府県', now(), now());

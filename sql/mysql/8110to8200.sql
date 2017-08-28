@@ -85,4 +85,8 @@ ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_start_minute` int(11) DEFA
 ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_end_hour` int(11) DEFAULT NULL AFTER `resttime_start_minute`;
 ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_end_minute` int(11) DEFAULT NULL AFTER `resttime_end_hour`;
 ALTER TABLE `eip_t_ext_timecard_system` ADD `resttime_type` varchar(1) DEFAULT 'I' AFTER `resttime_end_minute`;
+UPDATE `eip_t_ext_timecard_system` SET `resttime_start_hour` =12;
+UPDATE `eip_t_ext_timecard_system` SET `resttime_start_minute` =0;
+UPDATE `eip_t_ext_timecard_system` SET `resttime_end_hour` =13;
+UPDATE `eip_t_ext_timecard_system` SET `resttime_end_minute` =0;
 -- 20170825

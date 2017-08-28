@@ -481,7 +481,7 @@ CREATE TABLE `eip_t_ext_timecard_system` (
   PRIMARY KEY (`system_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,12,0,13,0,'I',4,'T','L480','A',now(),now());
+INSERT INTO `eip_t_ext_timecard_system` VALUES (1,0,'通常',9,0,18,0,1,360,60,360,60,12,0,13,0,'P',4,'T','L480','A',now(),now());
 
 CREATE TABLE `eip_t_ext_timecard_system_map` (
   `system_map_id` int(11) NOT NULL AUTO_INCREMENT,
