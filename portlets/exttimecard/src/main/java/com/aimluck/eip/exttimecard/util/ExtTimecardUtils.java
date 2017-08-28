@@ -564,4 +564,26 @@ public class ExtTimecardUtils {
     cal.setTime(date);
     return cacheHoliday.charAt(cal.get(Calendar.DAY_OF_WEEK) - 1) != '0';
   }
+
+  /**
+   * 時間帯指定による休憩時間の設定
+   *
+   * @param model
+   * @return
+   */
+  public static boolean isResttimePoints(EipTExtTimecardSystem model) {
+    return (isNewRule() && "P".equals(model.getResttimeType()));
+  }
+
+  public static float getResttime(Date start, Date end, Date restStart,
+      Date restEnd) {
+    long startTime = start.getTime();
+    long endTime = end.getTime();
+    long restStartTime = restStart.getTime();
+    long restEndTime = restEnd.getTime();
+    if (startTime < restStartTime && restEndTime < endTime) {
+      return restEndTime - restStartTime / 60f;
+    }
+    return 0;
+  }
 }
