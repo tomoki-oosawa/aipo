@@ -518,7 +518,7 @@ public class ReportSelectData extends
       body.append(" FROM eip_t_report t0, ");
       body.append(" eip_t_report_map t1 ");
       body.append(" WHERE ");
-      body.append("  t0.user_id = #bind($login_user_id) AND ");
+      body.append("  t1.user_id = #bind($login_user_id) AND ");
       body.append("  t0.report_id = t1.report_id AND ");
       body.append("  t0.report_name <> '' ");
 
