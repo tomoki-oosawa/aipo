@@ -21,6 +21,7 @@ package com.aimluck.eip.exttimecard;
 import com.aimluck.commons.field.ALNumberField;
 import com.aimluck.commons.field.ALStringField;
 import com.aimluck.commons.utils.ALStringUtil;
+import com.aimluck.eip.exttimecard.util.ExtTimecardUtils;
 import com.aimluck.eip.util.ALLocalizationUtils;
 
 /**
@@ -474,7 +475,8 @@ public class ExtTimecardSystemDetailResultData extends
   }
 
   public boolean isResttimeTypePoints() {
-    return "P".equals(resttime_type.getValue());
+    return ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS
+      .equals(resttime_type.getValue());
   }
 
   public String getRestTimeSpan() {

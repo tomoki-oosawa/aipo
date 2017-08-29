@@ -277,7 +277,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       if (isNewRule) {
         resttime_type.setValue(record.getResttimeType());
       } else {
-        resttime_type.setValue("I");
+        resttime_type
+          .setValue(ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_INTERVALS);
       }
 
       change_hour.setValue(String.valueOf(record.getChangeHour()));
@@ -357,10 +358,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setResttimeEndHour((int) resttime_end_hour.getValue());
       record.setResttimeEndMinute((int) resttime_end_minute.getValue());
       String tmp2;
-      if ("P".equals(resttime_type.getValue())) {
-        tmp2 = "P";
+      if (ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS
+        .equals(resttime_type.getValue())) {
+        tmp2 = ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS;
       } else {
-        tmp2 = "I";
+        tmp2 = ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_INTERVALS;
       }
       record.setResttimeType(tmp2);
       String tmp;
@@ -495,10 +497,11 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
       record.setResttimeEndHour((int) resttime_end_hour.getValue());
       record.setResttimeEndMinute((int) resttime_end_minute.getValue());
       String tmp2;
-      if ("P".equals(resttime_type.getValue())) {
-        tmp2 = "P";
+      if (ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS
+        .equals(resttime_type.getValue())) {
+        tmp2 = ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS;
       } else {
-        tmp2 = "I";
+        tmp2 = ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_INTERVALS;
       }
       record.setResttimeType(tmp2);
 
@@ -621,7 +624,8 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           if (isNewRule) {
             resttime_type.setValue(record.getResttimeType());
           } else {
-            resttime_type.setValue("I");
+            resttime_type
+              .setValue(ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_INTERVALS);
           }
 
           change_hour.setValue(String.valueOf(record.getChangeHour()));
@@ -759,7 +763,9 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
 
     system_name.validate(msgList);
 
-    if (isNewRule && "P".equals(resttime_type.getValue())) {
+    if (isNewRule
+      && ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS.equals(resttime_type
+        .getValue())) {
       long start_time = start_hour.getValue() * 60 + start_minute.getValue();
       long end_time = end_hour.getValue() * 60 + end_minute.getValue();
       long resttime_start_time =
@@ -775,7 +781,6 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
           .getl10n("EXTTIMECARD_ALERT_SELECT_RESTTIME"));
       }
     } else {
-
       worktime_in.validate(msgList);
       resttime_in.validate(msgList);
       worktime_out.validate(msgList);
@@ -796,14 +801,12 @@ public class ExtTimecardSystemFormData extends ALAbstractFormData {
    */
   private boolean isValidRestTime(long start_time, long end_time,
       long resttime_start_time, long resttime_end_time) {
-
     if (start_time < end_time
       && resttime_start_time < resttime_end_time
       && start_time < resttime_start_time
       && resttime_end_time < end_time) {
       return true;
     }
-
     return false;
   }
 

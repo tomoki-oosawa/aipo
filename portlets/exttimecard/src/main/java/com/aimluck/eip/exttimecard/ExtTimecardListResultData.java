@@ -299,20 +299,10 @@ public class ExtTimecardListResultData implements ALData {
         /** 就業時間の中で決まった時間の休憩を取らせます。 */
         /** 決まった時間ごとの休憩時間を取らせます。 */
         if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-          Calendar restStart = Calendar.getInstance();
-          restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeStartHour());
-          restStart.set(Calendar.MINUTE, timecard_system
-            .getResttimeStartMinute());
-
-          Calendar restEnd = Calendar.getInstance();
-          restEnd.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeEndHour());
-          restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
           float resttime =
             ExtTimecardUtils.getResttime(rd.getClockInTime().getValue(), rd
               .getClockOutTime()
-              .getValue(), restStart.getTime(), restEnd.getTime());
+              .getValue(), timecard_system);
           if (resttime != 0F) {
             time -= resttime;
           }
@@ -444,18 +434,10 @@ public class ExtTimecardListResultData implements ALData {
     /** 就業時間の中で決まった時間の休憩を取らせます。 */
     /** 決まった時間ごとの休憩時間を取らせます。 */
     if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-      Calendar restStart = Calendar.getInstance();
-      restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-        .getResttimeStartHour());
-      restStart.set(Calendar.MINUTE, timecard_system.getResttimeStartMinute());
-
-      Calendar restEnd = Calendar.getInstance();
-      restEnd.set(Calendar.HOUR_OF_DAY, timecard_system.getResttimeEndHour());
-      restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
       float resttime =
         ExtTimecardUtils.getResttime(rd.getClockInTime().getValue(), rd
           .getClockOutTime()
-          .getValue(), restStart.getTime(), restEnd.getTime());
+          .getValue(), timecard_system);
       if (resttime != 0F) {
         time -= resttime;
       }
@@ -637,20 +619,10 @@ public class ExtTimecardListResultData implements ALData {
         /** 就業時間の中で決まった時間の休憩を取らせます。 */
         /** 決まった時間ごとの休憩時間を取らせます。 */
         if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-          Calendar restStart = Calendar.getInstance();
-          restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeStartHour());
-          restStart.set(Calendar.MINUTE, timecard_system
-            .getResttimeStartMinute());
-
-          Calendar restEnd = Calendar.getInstance();
-          restEnd.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeEndHour());
-          restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
           float resttime =
             ExtTimecardUtils.getResttime(rd.getClockInTime().getValue(), rd
               .getClockOutTime()
-              .getValue(), restStart.getTime(), restEnd.getTime());
+              .getValue(), timecard_system);
           if (resttime != 0F) {
             time -= resttime;
           }
@@ -758,11 +730,22 @@ public class ExtTimecardListResultData implements ALData {
         /** 就業時間の中で決まった時間の休憩を取らせます。 */
         /** 決まった時間ごとの休憩時間を取らせます。 */
         /** 法定外残業は就業内の休憩の設定 */
-        float worktimein = (timecard_system.getWorktimeOut() / 60f);
-        float resttimein = (timecard_system.getResttimeOut() / 60f);
-        if (worktimein != 0F) {
-          int resttimes = (int) (time / worktimein);
-          time -= resttimes * resttimein;
+
+        if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
+          float resttime =
+            ExtTimecardUtils.getResttime(rd.getClockInTime().getValue(), rd
+              .getClockOutTime()
+              .getValue(), timecard_system);
+          if (resttime != 0F) {
+            time -= resttime;
+          }
+        } else {
+          float worktimein = (timecard_system.getWorktimeOut() / 60f);
+          float resttimein = (timecard_system.getResttimeOut() / 60f);
+          if (worktimein != 0F) {
+            int resttimes = (int) (time / worktimein);
+            time -= resttimes * resttimein;
+          }
         }
         float overTime =
           ExtTimecardUtils.getOvertimeMinuteByDay(timecard_system) / 60f;
@@ -773,6 +756,7 @@ public class ExtTimecardListResultData implements ALData {
         }
       }
     }
+
   }
 
   /**
@@ -1476,19 +1460,8 @@ public class ExtTimecardListResultData implements ALData {
         add = 0f;
         time = (to.getTime() - from.getTime()) / (float) (60 * 60 * 1000);
         if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-          Calendar restStart = Calendar.getInstance();
-          restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeStartHour());
-          restStart.set(Calendar.MINUTE, timecard_system
-            .getResttimeStartMinute());
-
-          Calendar restEnd = Calendar.getInstance();
-          restEnd.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeEndHour());
-          restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
           float resttime =
-            ExtTimecardUtils.getResttime(from, to, restStart.getTime(), restEnd
-              .getTime());
+            ExtTimecardUtils.getResttime(from, to, timecard_system);
           if (resttime != 0F) {
             time -= resttime;
           }
@@ -1785,18 +1758,10 @@ public class ExtTimecardListResultData implements ALData {
     /** 就業時間の中で決まった時間の休憩を取らせます。 */
     /** 決まった時間ごとの休憩時間を取らせます。 */
     if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-      Calendar restStart = Calendar.getInstance();
-      restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-        .getResttimeStartHour());
-      restStart.set(Calendar.MINUTE, timecard_system.getResttimeStartMinute());
-
-      Calendar restEnd = Calendar.getInstance();
-      restEnd.set(Calendar.HOUR_OF_DAY, timecard_system.getResttimeEndHour());
-      restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
       float resttime =
         ExtTimecardUtils.getResttime(rd.getClockInTime().getValue(), rd
           .getClockOutTime()
-          .getValue(), restStart.getTime(), restEnd.getTime());
+          .getValue(), timecard_system);
       if (resttime != 0F) {
         time -= resttime;
       }

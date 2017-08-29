@@ -234,22 +234,11 @@ public class ExtTimecardResultData implements ALData {
         /** 就業時間の中で決まった時間の休憩を取らせます。 */
         /** 決まった時間ごとの休憩時間を取らせます。 */
         if (ExtTimecardUtils.isResttimePoints(timecard_system)) {
-          Calendar restStart = Calendar.getInstance();
-          restStart.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeStartHour());
-          restStart.set(Calendar.MINUTE, timecard_system
-            .getResttimeStartMinute());
-
-          Calendar restEnd = Calendar.getInstance();
-          restEnd.set(Calendar.HOUR_OF_DAY, timecard_system
-            .getResttimeEndHour());
-          restEnd.set(Calendar.MINUTE, timecard_system.getResttimeEndMinute());
           float resttime =
             ExtTimecardUtils.getResttime(
               clock_in_time.getValue(),
               clock_out_time.getValue(),
-              restStart.getTime(),
-              restEnd.getTime());
+              timecard_system);
           if (resttime != 0F) {
             time -= resttime;
           }

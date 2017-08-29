@@ -131,7 +131,8 @@ public class ExtTimecardSystemSelectData extends
       rd.setWorkTimeOut(record.getWorktimeOut());
       rd.setRestTimeOut(record.getResttimeOut());
       rd.setResttimeType(record.getResttimeType());
-      if ("P".equals(record.getResttimeType())) {
+      if (ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS.equals(record
+        .getResttimeType())) {
         rd.setResttimeStartHour(record.getResttimeStartHour());
         rd.setResttimeStartMinute(record.getResttimeStartMinute());
         rd.setResttimeEndHour(record.getResttimeEndHour());
@@ -196,13 +197,13 @@ public class ExtTimecardSystemSelectData extends
       rd.setRestTimeIn(record.getResttimeIn());
       rd.setRestTimeOut(record.getResttimeOut());
       rd.setResttimeType(record.getResttimeType());
-      if ("P".equals(record.getResttimeType())) {
+      if (ExtTimecardUtils.EXTTIMECARD_RESTTIME_TIME_POINTS.equals(record
+        .getResttimeType())) {
         rd.setResttimeStartHour(record.getResttimeStartHour());
         rd.setResttimeStartMinute(record.getResttimeStartMinute());
         rd.setResttimeEndHour(record.getResttimeEndHour());
         rd.setResttimeEndMinute(record.getResttimeEndMinute());
       }
-      rd.setResttimeType(record.getResttimeType());
       rd.setChangeHour(record.getChangeHour());
       rd.setOutgoingAddFlag(record.getOutgoingAddFlag());
       rd.setCreateDate(record.getCreateDate().toString());
