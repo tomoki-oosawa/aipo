@@ -65,29 +65,54 @@ if(document.all!=undefined){
 
 
 <div id="printBody" style="width:600px;font-size:10pt;">
+#foreach($record in $!result.FacilityList)
+#if(($!{result.Detail.User.UserId.toString()}==$!{record.FacilityId.toString()}) && $velocityCount == 1)
+#if($!{result.Detail.isSpan()})
+<h1>$!{record.FacilityName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}</h1>
+#else
+<h1>$!{record.FacilityName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
+#end
+#elseif(($!{result.Detail.User.UserId.toString()}!=$!{record.FacilityId.toString()}) && $velocityCount == 1)
 #if($!{result.Detail.isSpan()})
 <h1>$!{result.Detail.User.AliasName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}</h1>
 #else
 <h1>$!{result.Detail.User.AliasName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
 #end
+#elseif($velocityCount == 1)
+#if($!{result.Detail.isSpan()})
+<h1>$!{record.FacilityName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}</h1>
+#else
+<h1>$!{record.FacilityName} $!{result.ViewDateFormatText}$!{result.Detail.StartDate.DayOfWeek}$!{result.Detail.Date2}</h1>
+#end
+#end
+#end
 
 <table><tbody>
 
 #ALtdcaption($l10n.SCHEDULE_NAME)
-#* #ALtditemheader()
-#if($!{result.Detail.Type} == "U")
+#*#ALtditemheader()
+#foreach($record in $!result.FacilityList)
+#if(($!{result.Detail.User.UserId.toString()}==$!{record.FacilityId.toString()}) && $velocityCount == 1)
+$!{record.FacilityName}
+#elseif($velocityCount == 1)
 $!{result.Detail.User.AliasName}
 #end
-#ALtditemfooter()*#
-#*#ALtditemheader()
-#if($!{result.Detail.Type} == "F")
-設備
-#else
-ユーザー
 #end
 #ALtditemfooter()*#
 
-#ALtditem($!{result.Detail.User.AliasName})
+##ALtditem($!{result.Detail.User.UserId.toString()})
+
+#ALtditemheader()
+#foreach($record in $!result.FacilityList)
+#if(($!{result.Detail.User.UserId.toString()}==$!{record.FacilityId.toString()}) && $velocityCount == 1)
+$!{record.FacilityName}
+#elseif(($!{result.Detail.User.UserId.toString()}!=$!{record.FacilityId.toString()}) && $velocityCount == 1)
+$!{result.Detail.User.AliasName}
+#elseif($velocityCount == 1)
+$!{record.FacilityName}
+#end
+#end
+#ALtditemfooter()
 
 #ALtdcaption($l10n.SCHEDULE_DATE)
 #ALtditemheader()
