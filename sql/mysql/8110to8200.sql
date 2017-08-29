@@ -78,3 +78,7 @@ UPDATE `eip_t_acl_role` SET `acl_type` = 44 WHERE feature_id IN (SELECT feature_
 -- 20170706
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `user_id`, `is_read`);
 -- 20170706
+
+-- 20170829
+ALTER TABLE eip_t_report_map ADD INDEX eip_t_report_map_index1(user_id,report_id);
+-- 20170829
