@@ -90,18 +90,6 @@ if(document.all!=undefined){
 <table><tbody>
 
 #ALtdcaption($l10n.SCHEDULE_NAME)
-#*#ALtditemheader()
-#foreach($record in $!result.FacilityList)
-#if(($!{result.Detail.User.UserId.toString()}==$!{record.FacilityId.toString()}) && $velocityCount == 1)
-$!{record.FacilityName}
-#elseif($velocityCount == 1)
-$!{result.Detail.User.AliasName}
-#end
-#end
-#ALtditemfooter()*#
-
-##ALtditem($!{result.Detail.User.UserId.toString()})
-
 #ALtditemheader()
 #foreach($record in $!result.FacilityList)
 #if(($!{result.Detail.User.UserId.toString()}==$!{record.FacilityId.toString()}) && $velocityCount == 1)
