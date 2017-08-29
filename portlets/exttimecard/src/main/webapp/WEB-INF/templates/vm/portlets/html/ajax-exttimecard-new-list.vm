@@ -151,12 +151,16 @@
 
 		#if($beforeafter > 0)
 
-  #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
+  #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeM} || $!{rd.IsTypeAN} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
     <td class='center' nowrap='nowrap' colspan='10'>
     #if($!{rd.IsTypeA})
 $l10n.EXTTIMECARD_ABSENT_DAY
     #elseif($!{rd.IsTypeH})
 $l10n.EXTTIMECARD_PAID_HOLIDAY
+    #elseif($!{rd.IsTypeM})
+$l10n.EXTTIMECARD_MORNING_OFF
+    #elseif($!{rd.IsTypeAN})
+$l10n.EXTTIMECARD_AFTERNOON_OFF
     #elseif($!{rd.IsTypeC})
 $l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
     #elseif($!{rd.IsTypeE})
@@ -193,12 +197,16 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 
 #else
 
-#if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
+#if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeM} || $!{rd.IsTypeAN} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
   <td class='center' nowrap='nowrap' colspan='10'>
   #if($!{rd.IsTypeA})
       $l10n.EXTTIMECARD_ABSENT_DAY
   #elseif($!{rd.IsTypeH})
       $l10n.EXTTIMECARD_PAID_HOLIDAY
+  #elseif($!{rd.IsTypeM})
+      $l10n.EXTTIMECARD_MORNING_OFF
+  #elseif($!{rd.IsTypeAN})
+      $l10n.EXTTIMECARD_AFTERNOON_OFF
   #elseif($!{rd.IsTypeC})
       $l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
   #elseif($!{rd.IsTypeE})
