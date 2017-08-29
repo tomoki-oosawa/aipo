@@ -123,6 +123,10 @@ public class ReportSelectData extends
   /** 報告書作成ユーザ **/
   private int view_uid;
 
+  private int page;
+
+  private int limit;
+
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
 
@@ -258,11 +262,11 @@ public class ReportSelectData extends
       // buildSelectQueryForListViewSort(query, rundata, context);
       //
       // ResultList<EipTReport> list = query.getResultList();
-      // int login_user_id =
-      // Integer.valueOf((int) login_user.getUserId().getValue());
       SQLTemplate<EipTReport> query = getSQLTemplate(rundata, context);
+      SQLTemplate<EipTReport> countQuery =
+        getCountSQLTemplate(rundata, context);
+      CountQuery totalCountQuery = new CountQuery(EipTReport.class);
       CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
-      CountQuery countQuery = new CountQuery(EipTReport.class);
       DataContext dataContext = DataContext.getThreadDataContext();
       List<DataRow> fetchList = query.fetchListAsDataRow();
       List<EipTReport> list = new ArrayList<EipTReport>();
@@ -271,15 +275,19 @@ public class ReportSelectData extends
         list.add(object);
       }
       // List<EipTReport> fetchList = query.fetchList();
-      int totalCount = countQuery.count(dataContext, delegate.isDistinct());
-      int pageSize = delegate.getFetchLimit();
+      int totalCount =
+        totalCountQuery.count(dataContext, delegate.isDistinct());
+      int pageSize = 0;
+      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+      for (DataRow row : fetchCount) {
+        pageSize = ((Long) row.get("c")).intValue();
+      }
       int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
-      int page = 1;
       if ((num > 0) && (num < page)) {
         page = num;
       }
       ResultList<EipTReport> list2 =
-        new ResultList<EipTReport>(list, page, 20, totalCount);
+        new ResultList<EipTReport>(list, page, limit, totalCount);
       return list2;
     } catch (Exception ex) {
       logger.error("report", ex);
@@ -466,7 +474,22 @@ public class ReportSelectData extends
     if (search != null) {
       query.param("search", current_search);
     }
+
     return query;
+  }
+
+  public SQLTemplate<EipTReport> getCountSQLTemplate(RunData rundata,
+      Context context) {
+    StringBuilder cnt = new StringBuilder();
+    cnt.append("");
+
+    StringBuilder body = new StringBuilder();
+
+    SQLTemplate<EipTReport> countQuery =
+      Database.sql(EipTReport.class, cnt.toString() + body.toString()).param(
+        "login_user_id",
+        uid);
+    return countQuery;
   }
 
   /**
