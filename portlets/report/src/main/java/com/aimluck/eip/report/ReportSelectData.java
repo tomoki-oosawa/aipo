@@ -28,7 +28,6 @@ import java.util.Set;
 import java.util.jar.Attributes;
 
 import org.apache.cayenne.DataRow;
-import org.apache.cayenne.access.DataContext;
 import org.apache.cayenne.exp.Expression;
 import org.apache.cayenne.exp.ExpressionFactory;
 import org.apache.jetspeed.services.logging.JetspeedLogFactoryService;
@@ -57,8 +56,6 @@ import com.aimluck.eip.fileupload.beans.FileuploadBean;
 import com.aimluck.eip.fileupload.util.FileuploadUtils;
 import com.aimluck.eip.modules.actions.common.ALAction;
 import com.aimluck.eip.orm.Database;
-import com.aimluck.eip.orm.query.CountQuery;
-import com.aimluck.eip.orm.query.CustomSelectQuery;
 import com.aimluck.eip.orm.query.ResultList;
 import com.aimluck.eip.orm.query.SQLTemplate;
 import com.aimluck.eip.orm.query.SelectQuery;
@@ -123,9 +120,11 @@ public class ReportSelectData extends
   /** 報告書作成ユーザ **/
   private int view_uid;
 
-  private int page;
+  private int page = 1;
 
-  private int limit;
+  private int limit = 0;
+
+  private int countValue = 0;;
 
   /** アクセス権限の機能名 */
   private String aclPortletFeature = null;
@@ -263,11 +262,6 @@ public class ReportSelectData extends
       //
       // ResultList<EipTReport> list = query.getResultList();
       SQLTemplate<EipTReport> query = getSQLTemplate(rundata, context);
-      SQLTemplate<EipTReport> countQuery =
-        getCountSQLTemplate(rundata, context);
-      CountQuery totalCountQuery = new CountQuery(EipTReport.class);
-      CustomSelectQuery delegate = new CustomSelectQuery(EipTReport.class);
-      DataContext dataContext = DataContext.getThreadDataContext();
       List<DataRow> fetchList = query.fetchListAsDataRow();
       List<EipTReport> list = new ArrayList<EipTReport>();
       for (DataRow row : fetchList) {
@@ -275,19 +269,8 @@ public class ReportSelectData extends
         list.add(object);
       }
       // List<EipTReport> fetchList = query.fetchList();
-      int totalCount =
-        totalCountQuery.count(dataContext, delegate.isDistinct());
-      int pageSize = 0;
-      List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
-      for (DataRow row : fetchCount) {
-        pageSize = ((Long) row.get("c")).intValue();
-      }
-      int num = ((int) (Math.ceil(totalCount / (double) pageSize)));
-      if ((num > 0) && (num < page)) {
-        page = num;
-      }
       ResultList<EipTReport> list2 =
-        new ResultList<EipTReport>(list, page, limit, totalCount);
+        new ResultList<EipTReport>(list, page, limit, countValue);
       return list2;
     } catch (Exception ex) {
       logger.error("report", ex);
@@ -355,7 +338,11 @@ public class ReportSelectData extends
     boolean onlyUnread = false;
     uid = ALEipUtils.getUserId(rundata);
     StringBuilder select = new StringBuilder();
+    StringBuilder count = new StringBuilder();
     StringBuilder body = new StringBuilder();
+
+    count.append("SELECT ");
+    count.append(" COUNT(*) AS C ");
 
     if ((target_keyword != null) && (!target_keyword.getValue().equals(""))) {
       ALEipUtils.setTemp(rundata, context, LIST_SEARCH_STR, target_keyword
@@ -378,7 +365,6 @@ public class ReportSelectData extends
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
       select.append(" t0.update_date ");
-
       body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
       body.append(" WHERE ");
       body.append(" t1.user_id = #bind($login_user_id) AND ");
@@ -399,7 +385,6 @@ public class ReportSelectData extends
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
       select.append(" t0.update_date ");
-
       body.append(" FROM eip_t_report t0 ");
       body.append(" WHERE ");
       body.append(" t0.user_id = #bind($login_user_id) AND ");
@@ -417,7 +402,6 @@ public class ReportSelectData extends
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
       select.append(" t0.update_date ");
-
       body.append(" FROM eip_t_report t0, ");
       body.append(" eip_t_report_map t1 ");
       body.append(" WHERE ");
@@ -437,7 +421,6 @@ public class ReportSelectData extends
       select.append(" t0.report_name, ");
       select.append(" t0.start_date, ");
       select.append(" t0.update_date ");
-
       body.append(" FROM eip_t_report t0 ");
       body.append(" WHERE ");
       body.append(" t0.report_name <> '' ");
@@ -455,16 +438,42 @@ public class ReportSelectData extends
     }
     // replyを除く
 
-    StringBuilder last = new StringBuilder();
-
-    last.append(" ORDER BY t0.create_date desc ");
-    last.append(" limit ");
-    if (onlyUnread) {
-      last.append(5);
-    } else {
-      last.append(20);
+    SQLTemplate<EipTReport> countQuery =
+      Database.sql(EipTReport.class, count.toString() + body.toString()).param(
+        "login_user_id",
+        uid);
+    if (search != null) {
+      countQuery.param("search", current_search);
     }
 
+    int offset = 0;
+    countValue = 0;
+    if (onlyUnread) {
+      limit = 5;
+    } else {
+      limit = 20;
+    }
+    List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
+
+    for (DataRow row : fetchCount) {
+      countValue = ((Long) row.get("c")).intValue();
+    }
+    page = getCurrentPage();
+    if (limit > 0) {
+      int num = ((int) (Math.ceil(countValue / (double) limit)));
+      if ((num > 0) && (num < page)) {
+        page = num;
+      }
+    } else {
+      page = 1;
+    }
+    offset = limit * (page - 1);
+    StringBuilder last = new StringBuilder();
+    last.append(" ORDER BY t0.create_date desc ");
+    last.append(" LIMIT ");
+    last.append(limit);
+    last.append(" OFFSET ");
+    last.append(offset);
     SQLTemplate<EipTReport> query =
       Database.sql(
         EipTReport.class,
@@ -474,14 +483,12 @@ public class ReportSelectData extends
     if (search != null) {
       query.param("search", current_search);
     }
-
     return query;
   }
 
   public SQLTemplate<EipTReport> getCountSQLTemplate(RunData rundata,
       Context context) {
     StringBuilder cnt = new StringBuilder();
-    cnt.append("");
 
     StringBuilder body = new StringBuilder();
 
