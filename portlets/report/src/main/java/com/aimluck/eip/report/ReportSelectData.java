@@ -255,12 +255,6 @@ public class ReportSelectData extends
       } else {
         target_keyword.setValue(ReportUtils.getTargetKeyword(rundata, context));
       }
-      // SelectQuery<EipTReport> query = getSelectQuery(rundata, context);
-      // buildSelectQueryForFilter(query, rundata, context);
-      // buildSelectQueryForListView(query);
-      // buildSelectQueryForListViewSort(query, rundata, context);
-      //
-      // ResultList<EipTReport> list = query.getResultList();
       SQLTemplate<EipTReport> query = getSQLTemplate(rundata, context);
       List<DataRow> fetchList = query.fetchListAsDataRow();
       List<EipTReport> list = new ArrayList<EipTReport>();
@@ -268,7 +262,6 @@ public class ReportSelectData extends
         EipTReport object = Database.objectFromRowData(row, EipTReport.class);
         list.add(object);
       }
-      // List<EipTReport> fetchList = query.fetchList();
       ResultList<EipTReport> list2 =
         new ResultList<EipTReport>(list, page, limit, countValue);
       return list2;
@@ -469,7 +462,7 @@ public class ReportSelectData extends
     }
     offset = limit * (page - 1);
     StringBuilder last = new StringBuilder();
-    last.append(" ORDER BY t0.create_date desc ");
+    last.append(" ORDER BY t0.update_date desc ");
     last.append(" LIMIT ");
     last.append(limit);
     last.append(" OFFSET ");
