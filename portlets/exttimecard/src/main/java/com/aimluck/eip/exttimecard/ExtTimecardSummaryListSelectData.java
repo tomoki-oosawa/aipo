@@ -1008,7 +1008,7 @@ public class ExtTimecardSummaryListSelectData extends
       /** 就業、残業、休出時間 */
       int late_coming_day = 0, early_leaving_day = 0, absent_day = 0;
       /** 遅刻、早退、欠勤 */
-      double paid_holiday = 0;
+      double paid_holiday = 0, paid_holiday_double = 0;
       int compensatory_holiday = 0;
       /** 有休、代休 */
       int other_day = 0, no_input = 0;
@@ -1167,6 +1167,7 @@ public class ExtTimecardSummaryListSelectData extends
             } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
               /** 有休 */
               paid_holiday++;
+              paid_holiday_double++;
             } else if (type.equals(EipTExtTimecard.TYPE_MORNING_OFF)) {
               /** 午前休 */
               if (lrd.getTotalWorkHour() != ExtTimecardListResultData.NO_DATA) {
@@ -1248,6 +1249,7 @@ public class ExtTimecardSummaryListSelectData extends
                 rest_hour += lrd.getRestHour();
               }
               paid_holiday = paid_holiday + 0.5;
+              paid_holiday_double = paid_holiday_double + 0.5;
             } else if (type.equals(EipTExtTimecard.TYPE_AFTERNOON_OFF)) {
               /** 午後休 */
               if (lrd.getTotalWorkHour() != ExtTimecardListResultData.NO_DATA) {
@@ -1329,6 +1331,7 @@ public class ExtTimecardSummaryListSelectData extends
                 rest_hour += lrd.getRestHour();
               }
               paid_holiday = paid_holiday + 0.5;
+              paid_holiday_double = paid_holiday_double + 0.5;
             } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
               /** 代休 */
               compensatory_holiday++;
@@ -1402,6 +1405,7 @@ public class ExtTimecardSummaryListSelectData extends
       summary_rd.setEarlyLeavingDay(early_leaving_day);
       summary_rd.setAbsentDay(absent_day);
       summary_rd.setPaidHoliday(paid_holiday);
+      summary_rd.setPaidHolidayDouble(paid_holiday_double);
       summary_rd.setCompensatoryHoliday(compensatory_holiday);
       summary_rd.setOtherDay(other_day);
       summary_rd.setNoInput(no_input);
