@@ -108,7 +108,7 @@ public class ScheduleSearchSelectData extends ScheduleMonthlySelectData {
   }
 
   @Override
-  protected String getTargetUserId(RunData rundata, Context context) {
+  public String getTargetUserId(RunData rundata, Context context) {
     return getTargetUserId(rundata, context, TARGET_USER_ID_AT_SERCH);
   }
 

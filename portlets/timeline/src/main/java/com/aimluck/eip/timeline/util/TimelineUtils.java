@@ -1147,6 +1147,12 @@ public class TimelineUtils {
       case "U":
         type = "A";
         break;
+      case "L":
+        type = "T";
+        break;
+      case "FILE":
+        type = "T";
+        break;
     }
     boolean hasKeyword = false;
     StringBuilder select = new StringBuilder();
@@ -1164,7 +1170,6 @@ public class TimelineUtils {
     select.append(" eip_t_timeline.update_date,");
     select.append(" eip_t_timeline.timeline_id,");
     select.append(" eip_t_timeline.pinned,");
-
     // ログインユーザーがいいね！をしているかどうか
     select
       .append(" (SELECT COUNT(*) FROM eip_t_timeline_like t0 WHERE (t0.timeline_id = eip_t_timeline.timeline_id) AND (t0.owner_id = #bind($user_id))) AS is_like,");
@@ -1176,7 +1181,19 @@ public class TimelineUtils {
     count.append("SELECT count( DISTINCT eip_t_timeline.timeline_id) AS c ");
 
     StringBuilder body = new StringBuilder();
-    body.append(" FROM eip_t_timeline ");
+
+    body.append(" FROM ");
+    if ("L".equals(displayParam) || "FILE".equals(displayParam)) {
+      body.append("(");
+    }
+    body.append(" eip_t_timeline ");
+    if ("L".equals(displayParam)) {
+      body.append(" JOIN eip_t_timeline_url AS url ");
+      body.append(" ON eip_t_timeline.timeline_id = url.timeline_id ) ");
+    } else if ("FILE".equals(displayParam)) {
+      body.append(" JOIN eip_t_timeline_file AS file ");
+      body.append(" ON eip_t_timeline.timeline_id = file.timeline_id ) ");
+    }
 
     if ((keywordParam != null) && (!keywordParam.equals(""))) {
       hasKeyword = true;
@@ -1309,7 +1326,6 @@ public class TimelineUtils {
     } else {
       return new ResultList<EipTTimeline>(list, -1, -1, list.size());
     }
-
   }
 
   public static void deleteTimelineActivity(RunData rundata, Context context,

@@ -89,6 +89,11 @@
       <artifactId>aipo-portlet-schedule</artifactId>
       <version>${aipo.version}</version>
     </dependency>
+    <dependency>
+      <groupId>com.aimluck.eip</groupId>
+      <artifactId>aipo-portlet-facilities</artifactId>
+      <version>${aipo.version}</version>
+    </dependency>
   </dependencies>
 
 </project>

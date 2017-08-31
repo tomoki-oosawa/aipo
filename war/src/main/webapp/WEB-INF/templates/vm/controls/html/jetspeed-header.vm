@@ -98,7 +98,11 @@
 										<ul class="userListIcon clearfix" id="roomMemberPane">
 										</ul>
 										<div class="floatRight" id="messageRoomSetting">
-											<a href="javascript:void(0)" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aimluck.io.openDialog(this, '$!jslink.getPortletById($messagePortletId).addQueryData('template','MessageRoomFormScreen')&entityid=' + aipo.message.currentRoomId, '$messagePortletId', aipo.message.onLoadMessageRoomDialog);"><i class="icon-gear"></i></a>
+											<a href="javascript:void(0)" id="menubar_button_$!{messagePortletId}" class="customizeMenuIcon menubarOpenButton" title="$l10n.MESSAGE_ROOM_SETTING" onclick="aipo.customize.showMenu('$messagePortletId');"><span class="auiWFicon"><i class="icon-cog"></i></span></a>
+											<div class="menubar body-child" id="menubar_$!{messagePortletId}" style="display: none; z-index: 9999">
+											<ul id="roomMemberAdmin">
+                                            </ul>
+                                            </div>
 										</div>
 									</div>
 									<div id="messageFormDiv"></div>

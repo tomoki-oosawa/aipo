@@ -102,6 +102,10 @@
                         $l10n.TIMELINE_ONLY_POSTING
                         #elseif("$!{result.TargetDisplayName}" == "update")
                         $l10n.TIMELINE_ONLY_UPDATE
+                        #elseif("$!{result.TargetDisplayName}" == "link")
+                        $!l10n.TIMELINE_ONLY_LINK
+                        #elseif("$!{result.TargetDisplayName}" == "file")
+                        $l10n.TIMELINE_ONLY_FILE
                         #end
 					</span>
 				</a>
@@ -141,6 +145,10 @@
 	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetDisplayName}" == "posting")selected#end" id="PostName_$!{portlet.ID}_$!{result.TargetDisplayName}" onclick="aipo.timeline.displayIndicator('${actionposting}', '$!{portlet.ID}', '$indicator_id3', '$!{result.TargetDisplayName}');">$l10n.TIMELINE_ONLY_POSTING</a></li>
         #set($actionupdate = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "update")))
 	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetDisplayName}" == "update")selected#end" id="PostName_$!{portlet.ID}_$!{result.TargetDisplayName}" onclick="aipo.timeline.displayIndicator('${actionupdate}', '$!{portlet.ID}', '$indicator_id3', '$!{result.TargetDisplayName}');">$l10n.TIMELINE_ONLY_UPDATE</a></li>
+	    #set($actionlink = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "link")))
+	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetDisplayName}" == "link")selected#end" id="PostName_$!{portlet.ID}_$!{result.TargetDisplayName}" onclick="aipo.timeline.displayIndicator('${actionlink}', '$!{portlet.ID}', '$indicator_id3', '$!{result.TargetDisplayName}');">$l10n.TIMELINE_ONLY_LINK</a></li>
+	    #set($actionfile = $!utils.escapeXML($!jslink.getPortletById($!portlet.ID).addQueryData("template","TimelineScreen").addQueryData("target_display_name", "file")))
+	    <li><a href="javascript:void(0)" class="PostName_$!{portlet.ID} #if("$!{result.TargetDisplayName}" == "file")selected#end" id="PostName_$!{portlet.ID}_$!{result.TargetDisplayName}" onclick="aipo.timeline.displayIndicator('${actionfile}', '$!{portlet.ID}', '$indicator_id3', '$!{result.TargetDisplayName}');">$l10n.TIMELINE_ONLY_FILE</a></li>
 	</ul>
 	</div>
 </div>
