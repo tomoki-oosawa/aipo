@@ -177,7 +177,8 @@ public class ExtTimecardUtils {
       int target_uid, String target_date) {
     try {
       ALDateTimeField datetime = new ALDateTimeField();
-      Date target_date_date = datetime.translateDate(target_date, "yyyy/MM/dd");
+      datetime.setValue(target_date);
+      Date target_date_date = datetime.getValue();
       SelectQuery<EipTExtTimecard> query =
         Database.query(EipTExtTimecard.class);
       Expression exp1 =

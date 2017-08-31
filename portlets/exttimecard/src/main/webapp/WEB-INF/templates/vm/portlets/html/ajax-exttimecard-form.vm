@@ -69,9 +69,6 @@
 <input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_NO_SELECT</label>
 #ALtditemfooter()
 
-
-#set ($start_hour = $result.TimecardSystem.ChangeHour)
-
 #if($!result.IsPast)
 #ALtdcaption("#ALrequired($!result.getFieldName('reason'))")
 #ALtditemheader()
