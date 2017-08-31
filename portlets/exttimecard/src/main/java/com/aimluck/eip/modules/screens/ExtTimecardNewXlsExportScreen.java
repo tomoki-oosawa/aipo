@@ -356,10 +356,22 @@ public class ExtTimecardNewXlsExportScreen extends ALXlsScreen {
         if (tclistrd.getRestHour() > 0.0) {
           rest_hour = Float.toString(tclistrd.getRestHour());
         }
-        late_coming_day = tclistrd.isLateComing() ? "1" : "0";
-        early_leaving_day = tclistrd.isEarlyLeaving() ? "1" : "0";
+        if (!type.equals(EipTExtTimecard.TYPE_MORNING_OFF)) {
+          late_coming_day = tclistrd.isLateComing() ? "1" : "0";
+        }
+        if (!type.equals(EipTExtTimecard.TYPE_AFTERNOON_OFF)) {
+          early_leaving_day = tclistrd.isEarlyLeaving() ? "1" : "0";
+        }
         absent_day = type.equals(EipTExtTimecard.TYPE_ABSENT) ? "1" : "0";
-        paid_holiday = type.equals(EipTExtTimecard.TYPE_HOLIDAY) ? "1" : "0";
+        if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
+          paid_holiday = type.equals(EipTExtTimecard.TYPE_HOLIDAY) ? "1" : "0";
+        } else if (type.equals(EipTExtTimecard.TYPE_MORNING_OFF)) {
+          paid_holiday =
+            type.equals(EipTExtTimecard.TYPE_MORNING_OFF) ? "0.5" : "0";
+        } else if (type.equals(EipTExtTimecard.TYPE_AFTERNOON_OFF)) {
+          paid_holiday =
+            type.equals(EipTExtTimecard.TYPE_AFTERNOON_OFF) ? "0.5" : "0";
+        }
         compensatory_holiday =
           type.equals(EipTExtTimecard.TYPE_COMPENSATORY) ? "1" : "0";
         other_day = type.equals(EipTExtTimecard.TYPE_ETC) ? "1" : "0";

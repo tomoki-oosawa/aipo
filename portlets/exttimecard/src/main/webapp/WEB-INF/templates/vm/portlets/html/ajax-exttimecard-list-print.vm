@@ -238,10 +238,6 @@
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 				1
 			#ALtdcellfooter()
-		#elseif ($!{rd.isTypeM} || $!{rd.isTypeN})
-			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
-				0.5
-			#ALtdcellfooter()
 		#else
 			#ALtdcellheaderAtt("class='center mb_hide' nowrap='nowrap'")
 				0

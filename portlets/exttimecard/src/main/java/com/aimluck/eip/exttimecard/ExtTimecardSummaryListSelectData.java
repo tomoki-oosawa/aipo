@@ -1233,11 +1233,11 @@ public class ExtTimecardSummaryListSelectData extends
               if (lrd.getMidnightWorkHour() != ExtTimecardListResultData.NO_DATA) {
                 total_midnight_work_hour += lrd.getMidnightWorkHour();
               }
-              /** 遅刻 */
-              if (lrd.isLateComing()) {
-                late_coming_day++;
-                late_coming_hour += lrd.getLateComingHour();
-              }
+              // /** 遅刻 */
+              // if (lrd.isLateComing()) {
+              // late_coming_day++;
+              // late_coming_hour += lrd.getLateComingHour();
+              // }
               /** 早退 */
               if (lrd.isEarlyLeaving()) {
                 early_leaving_day++;
@@ -1319,11 +1319,11 @@ public class ExtTimecardSummaryListSelectData extends
                 late_coming_day++;
                 late_coming_hour += lrd.getLateComingHour();
               }
-              /** 早退 */
-              if (lrd.isEarlyLeaving()) {
-                early_leaving_day++;
-                early_leaving_hour += lrd.getEarlyLeavingHour();
-              }
+              // /** 早退 */
+              // if (lrd.isEarlyLeaving()) {
+              // early_leaving_day++;
+              // early_leaving_hour += lrd.getEarlyLeavingHour();
+              // }
               /** 休憩時間 */
               if (lrd.getRestHour() != ExtTimecardListResultData.NO_DATA) {
                 rest_hour += lrd.getRestHour();
