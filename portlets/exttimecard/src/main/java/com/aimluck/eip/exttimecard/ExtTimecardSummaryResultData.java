@@ -296,8 +296,8 @@ public class ExtTimecardSummaryResultData implements ALData {
    *
    * @param days
    */
-  public void setPaidHoliday(int days) {
-    paid_holiday.setValue(days);
+  public void setPaidHoliday(double days) {
+    paid_holiday.setValue((long) days);
   }
 
   /**

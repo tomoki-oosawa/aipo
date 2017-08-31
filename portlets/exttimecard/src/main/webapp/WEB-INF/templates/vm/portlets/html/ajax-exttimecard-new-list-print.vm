@@ -302,6 +302,8 @@
 		## 有休日数の代入
 		#if ( $rd.isTypeH )
 			#set($paid_holiday = 1)
+		#elseif ( $!{rd.isTypeM} || $!{rd.isTypeN})
+		    #set($paid_holiday = 1)
 		#else
 			#set($paid_holiday = 0)
 		#end

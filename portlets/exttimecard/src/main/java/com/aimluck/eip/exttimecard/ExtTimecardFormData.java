@@ -353,7 +353,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         && !"outgoing".equals(edit_mode)
         && !"comeback".equals(edit_mode)) {
         // time has changed or not at work
-        if (isModify() || isNotAtWork()) {
+        if (isModify()
+          || (!"P".equals(type.getValue()) && !"M".equals(type.getValue()) && !"N"
+            .equals(type.getValue()))) {
           // Plans for the future is not checked
           if (isNotFuture()) {
             reason.setNotNull(true);
@@ -377,7 +379,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       }
 
       /** 更新・挿入時 */
-      if (edit_mode.equals("") && "P".equals(type.getValue())) {
+      if (edit_mode.equals("")
+        && ("P".equals(type.getValue()) || "M".equals(type.getValue()) || "N"
+          .equals(type.getValue()))) {
         /** 日付を punch_date に合わせる */
         if (ajustDate(clock_in_time, punch_date)
           && ajustDate(clock_out_time, punch_date)) {
@@ -398,7 +402,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
           out_flag = false;
         }
 
-        if (getIsPast() && "P".equals(type.getValue())) {
+        if (getIsPast()
+          && ("P".equals(type.getValue()) || "M".equals(type.getValue()) || "N"
+            .equals(type.getValue()))) {
           if (!clock_in_time.isNotNullValue()
             || (!clock_out_time.isNotNullValue() && out_flag)
             || current_clock_out_time_hour == -1
@@ -884,7 +890,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         /** 未来時刻への打刻は不可 */
 
         if (cal.getTime().after(punch_date.getValue())) {
-          if (!"P".equals(type.getValue())) {
+          if (!"P".equals(type.getValue())
+            && !"M".equals(type.getValue())
+            && !"N".equals(type.getValue())) {
             // 出退勤時間
             timecard.setClockInTime(null);
             timecard.setClockOutTime(null);
@@ -1020,7 +1028,9 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         // Calendar cal = Calendar.getInstance();
         if (cal.getTime().after(punch_date.getValue())) {
           // 削除する
-          if (!"P".equals(type.getValue())) {
+          if (!"P".equals(type.getValue())
+            && !"M".equals(type.getValue())
+            && !"N".equals(type.getValue())) {
             // 出退勤時間
             timecard.setClockInTime(null);
             timecard.setClockOutTime(null);
@@ -1527,10 +1537,6 @@ public class ExtTimecardFormData extends ALAbstractFormData {
 
   private boolean isNotFuture() {
     return Calendar.getInstance().getTime().after(punch_date.getValue());
-  }
-
-  private boolean isNotAtWork() {
-    return !"P".equals(type.getValue());
   }
 
   public boolean isNewRule() {

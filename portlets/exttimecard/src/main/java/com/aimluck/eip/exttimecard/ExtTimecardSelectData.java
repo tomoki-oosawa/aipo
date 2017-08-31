@@ -525,6 +525,10 @@ public class ExtTimecardSelectData extends
           rd.setIsTypeA(true);
         } else if ("H".equals(type)) {
           rd.setIsTypeH(true);
+        } else if ("M".equals(type)) {
+          rd.setIsTypeM(true);
+        } else if ("N".equals(type)) {
+          rd.setIsTypeN(true);
         } else if ("C".equals(type)) {
           rd.setIsTypeC(true);
         } else if ("E".equals(type)) {
@@ -674,6 +678,10 @@ public class ExtTimecardSelectData extends
         rd.setIsTypeA(true);
       } else if ("H".equals(type)) {
         rd.setIsTypeH(true);
+      } else if ("M".equals(type)) {
+        rd.setIsTypeM(true);
+      } else if ("N".equals(type)) {
+        rd.setIsTypeN(true);
       } else if ("C".equals(type)) {
         rd.setIsTypeC(true);
       } else if ("E".equals(type)) {

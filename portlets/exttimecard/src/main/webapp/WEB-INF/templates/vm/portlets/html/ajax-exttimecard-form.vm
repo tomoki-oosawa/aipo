@@ -64,8 +64,8 @@
 <input name="type" type="radio" value="P" id="typeP_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "P" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeP_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_PUNCH_IN</label>
 <input name="type" type="radio" value="A" id="typeA_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "A") checked="checked" #end /><label for="typeA_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_ABSENT_DAY</label>
 <input name="type" type="radio" value="H" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "H") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_PAID_HOLIDAY</label>
-<input name="type" type="radio" value="M" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "M") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_MORNING_OFF</label>
-<input name="type" type="radio" value="AN" id="typeH_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "AN") checked="checked" #end /><label for="typeH_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_AFTERNOON_OFF</label>
+<input name="type" type="radio" value="M" id="typeM_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "M" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeM_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_MORNING_OFF</label>
+<input name="type" type="radio" value="N" id="typeAN_$!{portlet.ID}" onClick="aipo.exttimecard.displayTimeBox();" #if ($!result.Type.toString() == "N" || $!result.Type.toString() == "D") checked="checked" #end /><label for="typeAN_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_AFTERNOON_OFF</label>
 <input name="type" type="radio" value="C" id="typeC_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "C") checked="checked" #end /><label for="typeC_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY</label>
 <input name="type" type="radio" value="E" id="typeE_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" #if ($!result.Type.toString() == "E") checked="checked" #end /><label for="typeE_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_OTHER</label>
 <input name="type" type="radio" value="D" id="typeD_$!{portlet.ID}" onClick="aipo.exttimecard.hideTimeBox();" /><label for="typeD_$!{portlet.ID}">&nbsp;$l10n.EXTTIMECARD_NO_SELECT</label>
@@ -77,7 +77,7 @@
 #ALtextfield('reason' $!result.Reason '90%' 50 'active')
 #ALtditemfooter()
 
-<tr id="clock_time_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "D") style="display:none" #end>
+<tr id="clock_time_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "M" && $!result.Type.toString() != "N" && $!result.Type.toString() != "D") style="display:none" #end>
 <td class="caption">#ALrequired($!result.getFieldName('clock_in_time'))</td>
 #ALtditemheader()
 <select name="clock_in_time_hour" size="1" >
@@ -121,7 +121,7 @@
 </select>
 #ALtditemfooter()
 
-<tr id="outgoing_comeback_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "D") style="display:none" #end>
+<tr id="outgoing_comeback_box" #if ($!result.Type.toString() != "P" && $!result.Type.toString() != "M" && $!result.Type.toString() != "N" && $!result.Type.toString() != "D") style="display:none" #end>
 <td class="caption">$!result.getFieldName('outgoing_comeback')</td>
 #ALtditemheader()
 #foreach ( $outcome in [1..5] )

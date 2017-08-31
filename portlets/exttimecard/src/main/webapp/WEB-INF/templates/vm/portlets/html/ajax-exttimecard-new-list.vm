@@ -151,7 +151,7 @@
 
 		#if($beforeafter > 0)
 
-  #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeM} || $!{rd.IsTypeAN} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
+  #if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeM} || $!{rd.IsTypeN} || $!{rd.IsTypeC} || $!{rd.IsTypeE} || $!{rd.IsTypeP})
     <td class='center' nowrap='nowrap' colspan='10'>
     #if($!{rd.IsTypeA})
 $l10n.EXTTIMECARD_ABSENT_DAY
@@ -159,7 +159,7 @@ $l10n.EXTTIMECARD_ABSENT_DAY
 $l10n.EXTTIMECARD_PAID_HOLIDAY
     #elseif($!{rd.IsTypeM})
 $l10n.EXTTIMECARD_MORNING_OFF
-    #elseif($!{rd.IsTypeAN})
+    #elseif($!{rd.IsTypeN})
 $l10n.EXTTIMECARD_AFTERNOON_OFF
     #elseif($!{rd.IsTypeC})
 $l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
@@ -197,16 +197,12 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 
 #else
 
-#if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeM} || $!{rd.IsTypeAN} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
+#if($!{rd.IsTypeA} || $!{rd.IsTypeH} || $!{rd.IsTypeC} || $!{rd.IsTypeE})
   <td class='center' nowrap='nowrap' colspan='10'>
   #if($!{rd.IsTypeA})
       $l10n.EXTTIMECARD_ABSENT_DAY
   #elseif($!{rd.IsTypeH})
       $l10n.EXTTIMECARD_PAID_HOLIDAY
-  #elseif($!{rd.IsTypeM})
-      $l10n.EXTTIMECARD_MORNING_OFF
-  #elseif($!{rd.IsTypeAN})
-      $l10n.EXTTIMECARD_AFTERNOON_OFF
   #elseif($!{rd.IsTypeC})
       $l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY
   #elseif($!{rd.IsTypeE})
@@ -233,7 +229,7 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
     ###if($saturday_sunday_holiday == 0)
       #if($!result.TargetUserId == $!result.UserId)
         #if($class == "today")
-          <td class='center $holidayClass' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_PUNCH_IN" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_PUNCH_IN');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
+          <td class='center' nowrap='nowrap'><input type="button" value="$l10n.EXTTIMECARD_MORNING_OFF" class="auiButtonAction" onclick="aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'mode', 'punchin');aipo.exttimecard.addHiddenValue(dojo.byId('form$!portlet.ID'), 'punchin', '$l10n.EXTTIMECARD_MORNING_OFF');dojo.byId('form$!portlet.ID').onsubmit();" /></td>
         #else
           #ALtdcellAtt("#AUIajaxbuttonLinkCallbackBoldInput($l10n.EXTTIMECARD_NOT_INPUT $!jslink.getPortletById($!portlet.ID).addQueryData('template','ExtTimecardFormScreen').addQueryData('eventSubmit_doExtTimecard_form','1').addQueryData('entityid', $entityid).addQueryData('date', $rdlist.Date) $!portlet.ID 'aipo.exttimecard.onLoadExtTimecardDialog')" "class='center $holidayClass' nowrap='nowrap'")
         #end

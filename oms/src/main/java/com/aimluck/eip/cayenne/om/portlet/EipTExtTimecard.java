@@ -45,6 +45,12 @@ public class EipTExtTimecard extends _EipTExtTimecard {
   /** タイプ「有休」 */
   public static final String TYPE_HOLIDAY = "H";
 
+  /** タイプ「午前休」 */
+  public static final String TYPE_MORNING_OFF = "M";
+
+  /** タイプ「午後休」 */
+  public static final String TYPE_AFTERNOON_OFF = "N";
+
   /** タイプ「代休」 */
   public static final String TYPE_COMPENSATORY = "C";
 

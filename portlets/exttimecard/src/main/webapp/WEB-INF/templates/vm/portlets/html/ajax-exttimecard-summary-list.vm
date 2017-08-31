@@ -101,8 +101,6 @@
 #ALtdheadAtt($l10n.EXTTIMECARD_EARLY_LEAVING_DAY "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_ABSENT_DAY "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_PAID_HOLIDAY "class='center'")
-#ALtdheadAtt($l10n.EXTTIMECARD_MORNING_OFF "class='center'")
-#ALtdheadAtt($l10n.EXTTIMECARD_AFTERNOON_OFF "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_COMPENSATORY_HOLIDAY "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_OTHER "class='center'")
 #ALtdheadAtt($l10n.EXTTIMECARD_NOT_INPUT "class='center'")

@@ -904,7 +904,8 @@ public class ExtTimecardSummaryListSelectData extends
       /** 就業、残業、休出時間 */
       int late_coming_day = 0, early_leaving_day = 0, absent_day = 0;
       /** 遅刻、早退、欠勤 */
-      int paid_holiday = 0, compensatory_holiday = 0;
+      double paid_holiday = 0;
+      int compensatory_holiday = 0;
       /** 有休、代休 */
       int other_day = 0, no_input = 0;
       /** その他、未入力 */
@@ -1007,7 +1008,8 @@ public class ExtTimecardSummaryListSelectData extends
       /** 就業、残業、休出時間 */
       int late_coming_day = 0, early_leaving_day = 0, absent_day = 0;
       /** 遅刻、早退、欠勤 */
-      int paid_holiday = 0, compensatory_holiday = 0;
+      double paid_holiday = 0;
+      int compensatory_holiday = 0;
       /** 有休、代休 */
       int other_day = 0, no_input = 0;
 
@@ -1165,6 +1167,168 @@ public class ExtTimecardSummaryListSelectData extends
             } else if (type.equals(EipTExtTimecard.TYPE_HOLIDAY)) {
               /** 有休 */
               paid_holiday++;
+            } else if (type.equals(EipTExtTimecard.TYPE_MORNING_OFF)) {
+              /** 午前休 */
+              if (lrd.getTotalWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_work_day++;
+                total_work_hour += lrd.getTotalWorkHour();
+              }
+              /** 出勤 */
+              if (lrd.getWorkHour() > 0) {
+                work_day++;
+                work_hour += lrd.getWorkHour();
+              }
+              /** 残業（平日） */
+              if (lrd.getOvertimeHourWithoutRestHour() > 0) {
+                overtime_day++;
+                overtime_hour += lrd.getOvertimeHourWithoutRestHour();
+              }
+              /** 法定内残業 */
+              if (lrd.getWithinStatutoryOvertimeWorkHourWithoutOffday() != ExtTimecardListResultData.NO_DATA) {
+                overtime_within_statutory_working_hour +=
+                  lrd.getWithinStatutoryOvertimeWorkHourWithoutOffday();
+              }
+              /** 休出 */
+              if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
+                off_day++;
+                off_hour += lrd.getOffHour();
+                // 所定内休日、法定内休日に振り分け
+                if (container.isStatutoryOffDay(lrd)) {
+                  statutory_off_day++;
+                  total_statutory_off_hour += lrd.getTotalStatutoryOffHour();
+                  statutory_off_day_regular_work_hour += lrd.getInworkHour();
+                  statutory_off_day_overtime_hour += lrd.getOvertimeHour();
+                  statutory_off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  statutory_off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    statutory_off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
+                } else {
+                  official_off_day++;
+                  total_official_off_hour += lrd.getTotalOfficialOffHour();
+                  off_day_regular_work_hour += lrd.getInworkHour();
+                  off_day_overtime_hour += lrd.getOvertimeHour();
+                  off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
+                }
+              } else {
+                /** 深夜勤務（平日） */
+                if (lrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_work_hour += lrd.getMidnightRegularWorkHour();
+                }
+                if (lrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_overtime_hour += lrd.getMidnightOvertimeWorkHour();
+                }
+              }
+              /** 深夜時間 */
+              if (lrd.getMidnightWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_midnight_work_hour += lrd.getMidnightWorkHour();
+              }
+              /** 遅刻 */
+              if (lrd.isLateComing()) {
+                late_coming_day++;
+                late_coming_hour += lrd.getLateComingHour();
+              }
+              /** 早退 */
+              if (lrd.isEarlyLeaving()) {
+                early_leaving_day++;
+                early_leaving_hour += lrd.getEarlyLeavingHour();
+              }
+              /** 休憩時間 */
+              if (lrd.getRestHour() != ExtTimecardListResultData.NO_DATA) {
+                rest_hour += lrd.getRestHour();
+              }
+              paid_holiday = paid_holiday + 0.5;
+            } else if (type.equals(EipTExtTimecard.TYPE_AFTERNOON_OFF)) {
+              /** 午後休 */
+              if (lrd.getTotalWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_work_day++;
+                total_work_hour += lrd.getTotalWorkHour();
+              }
+              /** 出勤 */
+              if (lrd.getWorkHour() > 0) {
+                work_day++;
+                work_hour += lrd.getWorkHour();
+              }
+              /** 残業（平日） */
+              if (lrd.getOvertimeHourWithoutRestHour() > 0) {
+                overtime_day++;
+                overtime_hour += lrd.getOvertimeHourWithoutRestHour();
+              }
+              /** 法定内残業 */
+              if (lrd.getWithinStatutoryOvertimeWorkHourWithoutOffday() != ExtTimecardListResultData.NO_DATA) {
+                overtime_within_statutory_working_hour +=
+                  lrd.getWithinStatutoryOvertimeWorkHourWithoutOffday();
+              }
+              /** 休出 */
+              if (lrd.getOffHour() != ExtTimecardListResultData.NO_DATA) {
+                off_day++;
+                off_hour += lrd.getOffHour();
+                // 所定内休日、法定内休日に振り分け
+                if (container.isStatutoryOffDay(lrd)) {
+                  statutory_off_day++;
+                  total_statutory_off_hour += lrd.getTotalStatutoryOffHour();
+                  statutory_off_day_regular_work_hour += lrd.getInworkHour();
+                  statutory_off_day_overtime_hour += lrd.getOvertimeHour();
+                  statutory_off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  statutory_off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    statutory_off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
+                } else {
+                  official_off_day++;
+                  total_official_off_hour += lrd.getTotalOfficialOffHour();
+                  off_day_regular_work_hour += lrd.getInworkHour();
+                  off_day_overtime_hour += lrd.getOvertimeHour();
+                  off_day_midnight_work_hour +=
+                    lrd.getMidnightOvertimeWorkHour();
+                  off_day_regular_midnight_work_hour +=
+                    lrd.getMidnightRegularWorkHour();
+                  if (lrd.getWithinStatutoryOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                    off_day_within_statutory_overtime_hour +=
+                      lrd.getWithinStatutoryOvertimeWorkHour();
+                  }
+                }
+              } else {
+                /** 深夜勤務（平日） */
+                if (lrd.getMidnightRegularWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_work_hour += lrd.getMidnightRegularWorkHour();
+                }
+                if (lrd.getMidnightOvertimeWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                  midnight_overtime_hour += lrd.getMidnightOvertimeWorkHour();
+                }
+              }
+              /** 深夜時間 */
+              if (lrd.getMidnightWorkHour() != ExtTimecardListResultData.NO_DATA) {
+                total_midnight_work_hour += lrd.getMidnightWorkHour();
+              }
+              /** 遅刻 */
+              if (lrd.isLateComing()) {
+                late_coming_day++;
+                late_coming_hour += lrd.getLateComingHour();
+              }
+              /** 早退 */
+              if (lrd.isEarlyLeaving()) {
+                early_leaving_day++;
+                early_leaving_hour += lrd.getEarlyLeavingHour();
+              }
+              /** 休憩時間 */
+              if (lrd.getRestHour() != ExtTimecardListResultData.NO_DATA) {
+                rest_hour += lrd.getRestHour();
+              }
+              paid_holiday = paid_holiday + 0.5;
             } else if (type.equals(EipTExtTimecard.TYPE_COMPENSATORY)) {
               /** 代休 */
               compensatory_holiday++;
