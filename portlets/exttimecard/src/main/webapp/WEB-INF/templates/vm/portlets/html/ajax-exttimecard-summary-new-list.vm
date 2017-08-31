@@ -130,7 +130,6 @@
 #ALtdcellAtt("$!{key.LateComingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
 #ALtdcellAtt("$!{key.EarlyLeavingDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
 #ALtdcellAtt("$!{key.AbsentDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
-##ALtdcellAtt("$!{key.PaidHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
 #ALtdcellAtt("$!{key.PaidHolidayDouble}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
 #ALtdcellAtt("$!{key.CompensatoryHoliday}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
 #ALtdcellAtt("$!{key.OtherDay}$l10n.EXTTIMECARD_DAY" "nowrap='nowrap' align='center' class=''")
