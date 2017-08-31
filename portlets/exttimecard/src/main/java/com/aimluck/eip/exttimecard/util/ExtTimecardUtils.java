@@ -34,6 +34,7 @@ import org.apache.turbine.services.TurbineServices;
 import org.apache.turbine.util.RunData;
 import org.apache.velocity.context.Context;
 
+import com.aimluck.commons.field.ALDateTimeField;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecard;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystem;
 import com.aimluck.eip.cayenne.om.portlet.EipTExtTimecardSystemMap;
@@ -163,6 +164,37 @@ public class ExtTimecardUtils {
       RunData rundata, Context context) {
     int user_id = Integer.valueOf(ALEipUtils.getUserId(rundata));
     return getEipTExtTimecardSystemByUserId(user_id);
+  }
+
+  /**
+   * 特定ユーザー、特定の日にちのEipTExtTimecardSystemのリストを取得します。
+   *
+   * @param target_uid
+   * @param target_date
+   * @return date_duplicated
+   */
+  public static List<EipTExtTimecard> getEipTExtTimecardsByUserIdAndDate(
+      int target_uid, String target_date) {
+    try {
+      ALDateTimeField datetime = new ALDateTimeField();
+      datetime.setValue(target_date);
+      Date target_date_date = datetime.getValue();
+      SelectQuery<EipTExtTimecard> query =
+        Database.query(EipTExtTimecard.class);
+      Expression exp1 =
+        ExpressionFactory.matchExp(EipTExtTimecard.USER_ID_PROPERTY, Integer
+          .valueOf(target_uid));
+      Expression exp2 =
+        ExpressionFactory.matchExp(
+          EipTExtTimecard.PUNCH_DATE_PROPERTY,
+          target_date_date);
+      query.setQualifier(exp1.andExp(exp2));
+      List<EipTExtTimecard> date_list = query.fetchList();
+      return date_list;
+    } catch (Exception ex) {
+      logger.error("exttimecard", ex);
+      return null;
+    }
   }
 
   /**
