@@ -347,7 +347,13 @@ $l10n.EXTTIMECARD_REMARKS：$!{rd.Remarks}
 
 				<td class='mb_hide $holidayClass'>
 				#if($!{rd.ReasonFlg})
+				 #if($!{rd.IsTypeM})
+                    $l10n.EXTTIMECARD_REASON： $!{rd.Reason}（$l10n.EXTTIMECARD_MORNING_OFF）
+                 #elseif($!{rd.IsTypeN})
+                    $l10n.EXTTIMECARD_REASON：$!{rd.Reason}（$l10n.EXTTIMECARD_AFTERNOON_OFF）
+                 #else
 					$l10n.EXTTIMECARD_REASON：$!{rd.Reason}
+				 #end
 					#if($!{rd.RemarksFlg})
 						、
 					#end
