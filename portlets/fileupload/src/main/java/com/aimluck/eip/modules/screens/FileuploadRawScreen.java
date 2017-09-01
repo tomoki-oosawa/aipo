@@ -171,7 +171,7 @@ public abstract class FileuploadRawScreen extends RawScreen {
         int endRange =
           httpRangeValue.length > 1
             ? Integer.parseInt(httpRangeValue[1])
-            : Integer.parseInt(httpRange) - 1;
+            : (int) fileSize - 1;
         Integer rangeLength = endRange - startRange + 1;
         response.setStatus(HttpServletResponse.SC_PARTIAL_CONTENT);
         response.setContentType(
