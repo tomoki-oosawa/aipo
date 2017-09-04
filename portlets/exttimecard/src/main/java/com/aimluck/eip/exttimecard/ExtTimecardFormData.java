@@ -272,8 +272,14 @@ public class ExtTimecardFormData extends ALAbstractFormData {
       init(action, rundata, context);
 
       // ALEipConstants.ENTITY_ID は null だが entity が存在する場合
+      int targetUserId;
+      if ("".equals(selectedUserId)) {
+        targetUserId = login_uid;
+      } else {
+        targetUserId = Integer.parseInt(selectedUserId);
+      }
       if ((ALEipUtils.getTemp(rundata, context, ALEipConstants.ENTITY_ID) == null)
-        && (hasEntityId(login_uid, session_date))) {
+        && (hasEntityId(targetUserId, session_date))) {
         // entity_id を ALEipConstants.ENTITY_ID にをセットする
         ALEipUtils.setTemp(rundata, context, ALEipConstants.ENTITY_ID, String
           .valueOf(entity_id));
@@ -1163,7 +1169,7 @@ public class ExtTimecardFormData extends ALAbstractFormData {
         action.putData(rundata, context);
         return false;
       }
-    }// ここまで「打刻のIPアドレス制限」
+    } // ここまで「打刻のIPアドレス制限」
 
     try {
       edit_mode = mode;
