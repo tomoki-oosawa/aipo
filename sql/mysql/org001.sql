@@ -1511,3 +1511,9 @@ ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `user_id`, `is_read`);
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `is_read`);
 
 ALTER TABLE `eip_t_message_read` ADD INDEX (`room_id`, `message_id`, `user_id`, `is_read`);
+
+ALTER TABLE `eip_t_report_map` ADD INDEX eip_t_report_map_index1(`user_id`,`report_id`);
+
+ALTER TABLE `eip_t_report_map` ADD INDEX eip_t_report_map_index2(`user_id`,`report_id`,`status`);
+
+ALTER TABLE `eip_t_report` ADD INDEX eip_t_report_index1(`user_id`,`create_date`);

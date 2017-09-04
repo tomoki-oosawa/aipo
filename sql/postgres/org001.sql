@@ -1325,6 +1325,7 @@ CREATE TABLE EIP_T_REPORT
     UPDATE_DATE TIMESTAMP,
     PRIMARY KEY(REPORT_ID)
 );
+CREATE INDEX eip_t_report_index1 ON eip_t_report (USER_ID,CREATE_DATE);
 
 -----------------------------------------------------------------------------
 -- EIP_T_REPORT_FILE
@@ -1372,6 +1373,8 @@ CREATE TABLE EIP_T_REPORT_MAP
    FOREIGN KEY (REPORT_ID) REFERENCES EIP_T_REPORT (REPORT_ID) ON DELETE CASCADE,
    PRIMARY KEY(ID)
 );
+CREATE INDEX eip_t_report_map_index1 ON eip_t_report_map (USER_ID,REPORT_ID);
+CREATE INDEX eip_t_report_map_index2 ON eip_t_report_map (USER_ID,REPORT_ID,STATUS);
 
 -----------------------------------------------------------------------------
 -- EIP_T_TIMELINE

@@ -87,3 +87,9 @@ UPDATE EIP_T_ACL_ROLE SET ACL_TYPE = 44 WHERE FEATURE_ID IN (SELECT FEATURE_ID F
 -- 20170706
 CREATE INDEX eip_t_message_read_index3 ON EIP_T_MESSAGE_READ (ROOM_ID, MESSAGE_ID, USER_ID, IS_READ);
 -- 20170706
+
+-- 20170904
+CREATE INDEX eip_t_report_map_index1 ON eip_t_report_map (USER_ID,REPORT_ID);
+CREATE INDEX eip_t_report_map_index2 ON eip_t_report_map (USER_ID,REPORT_ID,STATUS);
+CREATE INDEX eip_t_report_index1 ON eip_t_report (USER_ID,CREATE_DATE);
+-- 20170904
