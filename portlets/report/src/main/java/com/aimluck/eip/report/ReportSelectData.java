@@ -329,6 +329,7 @@ public class ReportSelectData extends
 
   public SQLTemplate<EipTReport> getSQLTemplate(RunData rundata, Context context) {
     boolean onlyUnread = false;
+    boolean isMySQL = Database.isJdbcMySQL();
     uid = ALEipUtils.getUserId(rundata);
     StringBuilder select = new StringBuilder();
     StringBuilder count = new StringBuilder();
@@ -359,6 +360,9 @@ public class ReportSelectData extends
       select.append(" t0.start_date, ");
       select.append(" t0.update_date ");
       body.append(" FROM eip_t_report t0, eip_t_report_map t1 ");
+      if (isMySQL) {
+        body.append(" FORCE INDEX (eip_t_report_map_index2) ");
+      }
       body.append(" WHERE ");
       body.append(" t1.user_id = #bind($login_user_id) AND ");
       body.append(" t0.report_id = t1.report_id AND ");
@@ -441,16 +445,19 @@ public class ReportSelectData extends
 
     int offset = 0;
     countValue = 0;
-    if (onlyUnread) {
-      limit = 5;
-    } else {
-      limit = 20;
-    }
+
+    // トップ画面(受信かつ未読)は5行、それ以外は20行表示
+    limit = onlyUnread ? 5 : 20;
+
     List<DataRow> fetchCount = countQuery.fetchListAsDataRow();
 
+    // MySQLはC,Postgresはc
+    String countCase = isMySQL ? "C" : "c";
+
     for (DataRow row : fetchCount) {
-      countValue = ((Long) row.get("c")).intValue();
+      countValue = ((Long) row.get(countCase)).intValue();
     }
+
     page = getCurrentPage();
     if (limit > 0) {
       int num = ((int) (Math.ceil(countValue / (double) limit)));
@@ -460,6 +467,7 @@ public class ReportSelectData extends
     } else {
       page = 1;
     }
+
     offset = limit * (page - 1);
     StringBuilder last = new StringBuilder();
     last.append(" ORDER BY t0.update_date desc ");
