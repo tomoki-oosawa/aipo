@@ -104,7 +104,7 @@
 
         #set($outcomes = $rdlist.OutgoingComeback)
         #set($listsize = $outcomes.size())
-        ###set($saturday_sunday_holiday = $rdlist.IsSaturdayOrSundayOrHoliday)
+        ## #set($saturday_sunday_holiday = $rdlist.IsSaturdayOrSundayOrHoliday)
         #set($beforeafter = $rdlist.BeforeAfter)
         #set($entityid = "")
         #if($isrd)
